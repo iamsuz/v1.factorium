@@ -1,0 +1,228 @@
+VB.html
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Confirmation Email</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+table{
+table-layout:fixed;
+width:70%;
+}
+#content a:link {
+text-decoration: none;
+color:#2b7de1;
+font-weight: normal;
+}
+#content{
+background-color:#FFF;
+max-width:660px;
+padding:40px;
+font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+font:Lucida Sans Unicode, sans-serif;
+background-color:#FFF;
+line-height:21px;
+}
+
+.wrapper{
+clear:both;
+background-color:#FFF;
+padding:2%;
+}
+
+.body{
+background-color:#FFF;
+
+max-width:100%;
+margin:0 auto;
+width:660px;
+clear:both;
+}
+#footer{
+max-width:660px;
+padding-top:10px;
+margin-left:0;
+text-align:center;
+font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+font-size:14px;
+background:#282a73;
+color:#FFF;
+height:100px;
+
+
+}
+#footer ul li{
+text-align:center;
+
+text-decoration:none;
+display:inline;
+margin-right:20px;
+
+}
+img {
+
+text-align:center;
+max-width:100%;
+height:auto;
+width:auto; 
+}
+a:link {
+text-decoration: none;
+color:#fed405;
+font-weight: bold;
+}
+
+a:visited {
+text-decoration: none;
+color:#fed405;
+font-weight: bold;
+}
+
+a:hover {
+text-decoration: underline;
+color:#fed405;
+font-weight: bold;
+}
+
+a:active {
+text-decoration: underline;
+font-weight: bold;
+}
+
+@media screen and (min-width: 150px) and (max-width: 478px){
+
+table{
+table-layout:fixed;
+width:100%;
+}
+#content a:link {
+text-decoration: none;
+color:#2b7de1;
+}
+#content{
+background-color:#FFF;
+max-width:660px;
+padding:20px;
+font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+font:Lucida Sans Unicode, sans-serif;
+background-color:#FFF;
+line-height:21px;
+}
+
+.wrapper{
+clear:both;
+background-color:#FFF;
+padding:2%;
+}
+
+.body{
+background-color:#FFF;
+
+max-width:100%;
+margin:0 auto;
+width:660px;
+clear:both;
+}
+#footer{
+max-width:660px;
+padding-top:30px;
+margin-left:0;
+text-align:center;
+font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+font-size:14px;
+background:#282a73;
+color:#fed405;
+height:100px;
+
+
+}
+#footer ul li{
+text-align:center;
+
+text-decoration:none;
+display:inline;
+margin-right:20px;
+
+}
+img {
+
+text-align:center;
+max-width:100%;
+height:auto;
+width:auto; 
+}
+a:link {
+text-decoration: none;
+color:#fed405;
+font-weight: bold;
+}
+
+a:visited {
+text-decoration: none;
+color:#fed405;
+font-weight: bold;
+}
+
+a:hover {
+text-decoration: underline;
+color:#fed405;
+font-weight: bold;
+}
+
+a:active {
+text-decoration: underline;
+font-weight: bold;
+}
+
+}
+
+
+</style>
+
+<body>
+<table>
+<tr>
+<td>
+<div class="wrapper">
+<div class="body">
+
+<div><img src="http://vestabyte.net/img/VB_header.png" width="100%"/>
+</div>
+
+<div id="content">
+<h2>Dear Admin(s)</h2>
+<p style ='font-size:15px;'>New User Registration Using @if($investor->social_accounts) {{$investor->social_accounts[0]->provider}} @else EB Website @endif </p>
+<p style ='font-size:15px;'>Name: <b>{{$investor->first_name}} {{$investor->last_name}}</b></p>
+<p style ='font-size:15px;'>Email: <b>{{$investor->email}}</b></p>
+<p style ='font-size:15px;'>Phone: <b>{{$investor->phone_number}}</b></p><br>
+<p style ='font-size:15px;'>Regards</p>
+<p style='font-size:15px;'>Vestabyte Team.</p>
+<p>As always if you have any queries, please drop us an email at this id or give us a call at +(03) 9607 2926</p>
+
+<p>Regards<br />
+<BR>
+Vestabyte Team</p>
+</div>
+
+<div id="footer">
+<img src="http://vestabyte.net/img/VB_footer.png" />
+<BR>
+<a href="tel:+61398117015">+613 98117015</a>&nbsp&nbsp&nbsp<a href="mailto:info@vestabyte.com">info@vestabyte.com</a>
+<BR>
+<a href="https://www.vestabyte.com/" target="new">HOME     </a>&nbsp&nbsp&nbsp
+<a href="https://www.vestabyte.com/#projects" target="new">INVESTMENTS </a>&nbsp&nbsp&nbsp
+<a href="https://www.vestabyte.com/pages/faq" target="new">FAQ</a>
+
+</div>
+
+</div>
+</div>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

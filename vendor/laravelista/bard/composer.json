@@ -1,0 +1,32 @@
+{
+  "name": "laravelista/bard",
+  "description": "Laravel friendly Bard that writes sitemap poetry in xml.",
+  "keywords": [
+    "sitemap",
+    "google",
+    "xml",
+    "laravel"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mario Basic",
+      "email": "mario.basic@outlook.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "sabre/xml": "0.4.*",
+    "symfony/http-foundation": "~2.0|~3.0",
+    "nesbot/carbon": "~1.0"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "~2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laravelista\\Bard\\": "src"
+    }
+  },
+  "minimum-stability": "stable"
+}
