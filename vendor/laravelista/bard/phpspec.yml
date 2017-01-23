@@ -1,6 +1,0 @@
-suites:
-    bard_suite:
-        namespace: Laravelista\Bard
-        psr4_prefix: Laravelista\Bard
-        src_path: src
-        spec_prefix: spec
