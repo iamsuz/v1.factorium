@@ -1,0 +1,8 @@
+/vendor
+/node_modules
+Homestead.yaml
+composer.lock
+bootstrap/cache/
+storage/
+.env
+.DS_Store
