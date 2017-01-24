@@ -8,7 +8,7 @@ Documentation for the estatebaron can be found on the docs.estatebaron.com .
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within estatebaron, please send an e-mail to Abhijeet at mahavrkar.abhi@gmail.com All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within estatebaron, please send an e-mail to Sujit at s.mahavarkar@gmail.com All security vulnerabilities will be promptly addressed.
 
 ### License
 
