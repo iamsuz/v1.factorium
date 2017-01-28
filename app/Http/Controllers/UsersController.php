@@ -35,10 +35,11 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $url = url();
         $user = Auth::user();
         $roles = $user->roles;
         if ($roles->contains('role', 'admin')) {
-            $users = User::paginate(100);
+            $users = User::paginate(100)->where('registration_site',$url);
             return view('users.index', compact('users'));
         }
 

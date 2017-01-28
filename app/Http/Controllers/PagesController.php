@@ -28,8 +28,8 @@ class PagesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin', ['only' => []]);
-        $this->middleware('superadmin', ['only'=>['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage',]]);
+        $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
+        $this->middleware('superadmin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
     }
     /**
     * returns home page
@@ -38,22 +38,24 @@ class PagesController extends Controller
     public function home() {
         // $geoip = new GeoIP();
         // $geoIpArray = $geoip->get();
+        $url = url();
         $geoIpArray = [];
         $investments = InvestmentInvestor::all();
         $role = Role::findOrFail(3);
         $investors = $role->users->count();
-        $color = Color::first();
+        $color = Color::all();
+        $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
         if(Auth::guest()) {
-            $projects = Project::where('active', '1')->get();
+            $projects = Project::where(['active'=>'1','project_site'=>$url])->get();
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
             $roles = $user->roles;
             if ($roles->contains('role', 'admin')) {
-                $projects = Project::whereIn('active', ['1', '2'])->get();
+                $projects = Project::where(['active'=>['1', '2'],'project_site'=>$url])->get();
             } else {
-                $projects = Project::where('active', '1')->get();
+                $projects = Project::where(['active'=>'1','project_site'=>$url])->get();
             }
             if(Auth::user()->roles->contains('role','superadmin')){
                 $currentUserRole = 'superadmin';
@@ -67,12 +69,16 @@ class PagesController extends Controller
         
 
         $BannerCities = ['Adelaide', 'Auckland', 'Brisbane', 'Canberra', 'Darwin', 'Hobart', 'Melbourne', 'Perth', 'Sydney'];
-        $siteConfiguration = SiteConfiguration::first();
+        $siteConfiguration = SiteConfiguration::all();
+        $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
         if(!$siteConfiguration)
         {
             $siteConfiguration = new SiteConfiguration;
+            $siteConfiguration->project_site = url();
             $siteConfiguration->save();
-            $siteConfiguration = SiteConfiguration::first();
+            $siteConfiguration = SiteConfiguration::all();
+            $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
+            // dd($siteConfiguration);
         }
         return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color'));
     }
@@ -83,8 +89,9 @@ class PagesController extends Controller
     */
     public function team()
     {
-        $aboutus = Aboutus::first();
-        $color = Color::first();
+        $aboutus = Aboutus::all();
+        $aboutus = $aboutus->where('project_site',url())->first();
+        $color = Color::where('project_site',url())->first();
         $adminedit = 0;
         if(Auth::user()){
             $user = Auth::user();
@@ -223,7 +230,7 @@ class PagesController extends Controller
         }
     }
     public function editTeam(){
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $user_id = $user->id;
         $aboutus = $user->aboutUs;
@@ -243,6 +250,7 @@ class PagesController extends Controller
             ));
         $aboutus = new Aboutus;
         $aboutus->user_id = $user->id;
+        $aboutus->project_site = url();
         $aboutus->main_heading = $request->main_heading;
         $aboutus->sub_heading = $request->sub_heading;
         $aboutus->content = $request->content;
@@ -413,9 +421,10 @@ class PagesController extends Controller
             ));
         // dd($request);
         $user = Auth::user();
-        $color = Color::where('user_id',$user->id)->first();
+        $color = Color::where('project_site',url())->first();
         if(!$color){
             $color = new Color;
+            $color->project_site = url();
         }
         $color->user_id = $user->id;
         $color->nav_footer_color = $request->first_color_code;

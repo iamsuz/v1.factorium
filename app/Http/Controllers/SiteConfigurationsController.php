@@ -23,6 +23,7 @@ class SiteConfigurationsController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware('superadmin');
         $this->middleware('admin',['only'=>['addProgressDetails']]);
     }
@@ -395,12 +396,14 @@ class SiteConfigurationsController extends Controller
     public function saveHomePageText1(Request $request)
     {
         $str = $request->text1;
-        $siteconfiguration = SiteConfiguration::first();
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         if(!$siteconfiguration)
         {
             $siteconfiguration = new SiteConfiguration;
             $siteconfiguration->save();
-            $siteconfiguration = SiteConfiguration::first();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         }
         $siteconfiguration->update(['homepg_text1' => $str]);
         return array('status' => 1, 'Message' => 'Data Successfully Updated');
@@ -410,14 +413,18 @@ class SiteConfigurationsController extends Controller
     {
         $uinput = $request->text1;
         $gotoid = $request->gotoid;
-        $siteconfiguration = SiteConfiguration::first();
-        if(!$siteconfiguration)
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url());
+        // dd($siteconfiguration);
+        if($siteconfiguration->isEmpty())
         {
             $siteconfiguration = new SiteConfiguration;
+            $siteconfiguration->project_site = url(); 
             $siteconfiguration->save();
-            $siteconfiguration = SiteConfiguration::first();
-        }
-        $siteconfiguration->update(['homepg_btn1_text'=>$uinput, 'homepg_btn1_gotoid'=>$gotoid]);
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();        }
+        $siteconfiguration = $siteconfiguration->first();
+        $siteconfiguration->update(['homepg_btn1_text' => $uinput,'homepg_btn1_gotoid' => $gotoid]);
         return array('status' => 1, 'Message' => 'Data Successfully Updated');
     }
 
@@ -488,12 +495,15 @@ class SiteConfigurationsController extends Controller
     {
         $title = $request->title_text_imput;
         if($title != ""){
-            $siteconfiguration = SiteConfiguration::first();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             if(!$siteconfiguration)
             {
                 $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
                 $siteconfiguration->save();
-                $siteconfiguration = SiteConfiguration::first();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             }
             $siteconfiguration->update(['title_text'=>$title]);
             Session::flash('message', 'Title Updated Successfully');
@@ -512,7 +522,8 @@ class SiteConfigurationsController extends Controller
             'google_link' => 'url|required',
             'instagram_link' => 'url|required',
             ));
-        $siteconfiguration = SiteConfiguration::first();
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         // dd($siteconfiguration);
         $result = $siteconfiguration->update([
             'facebook_link' => $request->facebook_link,
@@ -537,7 +548,8 @@ class SiteConfigurationsController extends Controller
             'financial_service_guide_link' => 'url|required',
             'media_kit_link' => 'url|required',
             ));
-        $siteconfiguration = SiteConfiguration::first();
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         $result = $siteconfiguration->update([
             'blog_link' => $request->blog_link,
             'terms_conditions_link' => $request->terms_conditions_link,
@@ -556,7 +568,9 @@ class SiteConfigurationsController extends Controller
         $this->validate($request, array(
             'investment_title_text1' => 'required',
             ));
-        SiteConfiguration::first()->update([
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
             'investment_title_text1' => $request->investment_title_text1,
             ]);
         return redirect()->back();
@@ -567,7 +581,9 @@ class SiteConfigurationsController extends Controller
         $this->validate($request, array(
             'investment_title1_description' => 'required',
             ));
-        SiteConfiguration::first()->update([
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
             'investment_title1_description' => $request->investment_title1_description,
             ]);
         return redirect()->back();
@@ -607,7 +623,9 @@ class SiteConfigurationsController extends Controller
     {
         if (Auth::user()->roles->contains('role', 'superadmin')){
             $fundingFlag = $request->show_funding_options;
-            SiteConfiguration::first()->update([
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
                 'show_funding_options' => $request->show_funding_options,
                 ]);
             return redirect()->back();
@@ -629,7 +647,9 @@ class SiteConfigurationsController extends Controller
             'how_it_works_desc4' => 'required',
             'how_it_works_desc5' => 'required',
             ));
-            SiteConfiguration::first()->update([
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
                 'how_it_works_title1' => $request->how_it_works_title1,
                 'how_it_works_title2' => $request->how_it_works_title2,
                 'how_it_works_title3' => $request->how_it_works_title3,

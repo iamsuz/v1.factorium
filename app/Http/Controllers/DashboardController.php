@@ -40,6 +40,7 @@ class DashboardController extends Controller
         $color = Color::first();
         $users = User::all();
         $projects = Project::all();
+        $projects = $projects->where('project_site',url());
         $notes = Note::all();
         $total_goal = Investment::all()->sum('goal_amount');
         $pledged_investments = InvestmentInvestor::all();
@@ -57,6 +58,7 @@ class DashboardController extends Controller
     {
         $color = Color::first();
         $projects = Project::all();
+        $projects = $projects->where('project_site',url());
         $pledged_investments = InvestmentInvestor::all();
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }

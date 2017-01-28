@@ -797,7 +797,7 @@ a:hover {
 		}
 
 		.navbar.navbar-fixed-top.fixed-theme {
-			/*background-color: #2c254a;*/
+			background-color: #2c254a;
 			/*border-color: #080808;*/
 			box-shadow: 0 0 5px rgba(0,0,0,.8);
 		}
