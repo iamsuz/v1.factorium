@@ -187,3 +187,4 @@ Route::post('/siteconfiguration/progress/{id}/images', ['as'=>'configuration.upl
 Route::post('/configuration/uploadHowItWorksImages', ['as'=>'configuration.uploadHowItWorksImages', 'uses'=>'SiteConfigurationsController@uploadHowItWorksImages']);
 Route::post('/siteconfiguration/progress/{id}/details', ['as'=>'configuration.addprogress','uses'=>'SiteConfigurationsController@addProgressDetails']);
 Route::post('/configuration/updateProjectDetails', ['as'=>'configuration.updateProjectDetails', 'uses'=>'SiteConfigurationsController@updateProjectDetails']);
+Route::post('/configuration/uploadProjectPgBackImg', ['as'=>'configuration.uploadProjectPgBackImg', 'uses'=>'SiteConfigurationsController@uploadProjectPgBackImg']);

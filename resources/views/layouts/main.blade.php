@@ -42,6 +42,9 @@
     {!! Html::style('/css/app2.css') !!}
     @show
 
+    <!-- JCrop -->
+    {!! Html::style('/assets/plugins/JCrop/css/jquery.Jcrop.css') !!}
+
     @yield('css-section')
 
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
@@ -215,6 +218,9 @@
 {!! Html::script('/js/bootstrap.min.js') !!}
 {!! Html::script('/js/circle-progress.js')!!}
 
+<!-- JCrop -->
+{!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
+
 <script type="text/javascript">
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -232,7 +238,7 @@
         $('#accordion').on('shown.bs.collapse', toggleChevron);
         $("iframe[name ='google_conversion_frame']").attr('style', 'height: 0px; display: none !important;');
         @if($color)
-        $('p').attr('style','color: #{{$color->nav_footer_color}}');
+        $('p').css('color', '#{{$color->nav_footer_color}}');
         $('.first_color').css('color', '#{{$color->nav_footer_color}}');
         $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
         $('.second_color').css('color','#{{$color->heading_color}}');

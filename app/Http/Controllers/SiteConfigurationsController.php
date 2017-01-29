@@ -388,6 +388,69 @@ class SiteConfigurationsController extends Controller
                         return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                     }
                 }
+                else if ($request->imgAction == 'projectPg back image'){
+                    $extension = strtolower(File::extension($src));
+                    $img = '';
+                    $result = false;
+                    $rw = 1510;
+                    $rh = 782;
+                    //Create new coords for image.
+                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                    switch ($extension) {
+                        case 'jpg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+                        
+                        case 'jpeg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+
+                        case 'png':
+                            $quality = 9;
+                            $img  = imagecreatefrompng($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagepng($dest, $src, $quality);
+                            break;
+
+                        default:
+                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                            break;
+                    }
+                    if($result){
+                        if($extension != 'png'){
+                            Image::make($src)->encode('png', 9)->save(public_path('assets/images/bgimage_sample.png'));
+                        }
+                        else{
+                            Image::make($src)->save(public_path('assets/images/bgimage_sample.png'));
+                        }
+                        File::delete($src);
+                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                    } else{
+                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                    }
+                }
                 else {}
             }
         }
@@ -747,9 +810,6 @@ class SiteConfigurationsController extends Controller
             $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
-                'project_min_investment_txt' => 'required',
-                'project_hold_period_txt' => 'required',
-                'project_returns_txt' => 'required',
             ));
             $projectId = $request->current_project_id;
             Project::where('id', $projectId)->update([
@@ -778,6 +838,35 @@ class SiteConfigurationsController extends Controller
                 'how_to_invest' => $request->project_how_to_invest_txt,
                 ]);
             return redirect()->back();
+        }
+    }
+    public function uploadProjectPgBackImg(Request $request)
+    {
+        if (Auth::user()->roles->contains('role', 'superadmin')){
+            $validation_rules = array(
+                'projectpg_back_img'   => 'required|mimes:jpeg,png,jpg',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+        
+            if($request->hasFile('projectpg_back_img') && $request->file('projectpg_back_img')->isValid()){
+                Image::make($request->projectpg_back_img)->resize(1510, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('projectpg_back_img')->getClientOriginalExtension();
+                $fileName = 'bgimage_sample'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('projectpg_back_img')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
         }
     }
 }

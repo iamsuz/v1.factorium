@@ -5,7 +5,7 @@ Configuration | Dashboard | @parent
 @stop
 
 @section('meta')
-<meta name="csrf-token" content="{{ csrf_token() }}" />
+<meta name="csrf-token" content="{{csrf_token()}}" />
 @endsection
 
 @section('css-section')
@@ -111,7 +111,7 @@ Configuration | Dashboard | @parent
 										<input type="text" class="form-control" id="favicon_image_name" name="favicon_image_name" readonly>
 									</div>
 	                        		<br>
-	                        		{!! Form::submit('Save Title', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_favicon_btn')) !!}
+	                        		{!! Form::submit('Save Favicon', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_favicon_btn')) !!}
                         		{!! Form::close() !!}
                         	</div>
                         </div>

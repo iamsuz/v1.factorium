@@ -8,6 +8,7 @@
 <meta property="og:description" content="Invest with small amounts in the construction of 2 townhouses in the prestigious mount waverley school zone. 20% returns in 18 months, Refer to PDS for details" />
 
 <meta name="description" content="Invest with small amounts in the construction of 2 townhouses in the prestigious mount waverley school zone. 20% returns in 18 months, Refer to PDS for details">
+<meta name="csrf-token" content="{{csrf_token()}}" />
 @stop
 
 @section('css-section')
@@ -149,6 +150,17 @@ Private
 				</div>
 			</div>
 		</div>
+		@if(Auth::guest())
+	    @else
+	    @if(Auth::user()->roles->contains('role','superadmin'))
+        <div class="col-md-12">
+            <div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
+            <span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
+            <input class="hide" type="file" name="projectpg_back_img" id="projectpg_back_img">
+            <input type="hidden" name="projectpg_back_img_name" id="projectpg_back_img_name">
+        </div>
+	    @endif
+	    @endif
 	</div>
 </section>
 <!-- <section class="chunk-box" style="overflow:hidden;">
@@ -878,6 +890,38 @@ Private
 		</div>
 	</div>
 </div>
+<div class="row">
+    <div class="text-center">
+        <!-- Edit Project Background Modal -->
+        <div class="modal fade" id="edit_project_back_img_modal" role="dialog">
+            <div class="modal-dialog" style="min-width: 800px;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Crop Image</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
+                        <!-- Hidden Fields to refer for JCrop -->
+                        <input type="hidden" name="image_crop" id="image_crop" value="" action="">
+                        <input type="hidden" name="image_action" id="image_action" value="">
+                        <input type="hidden" name="x_coord" id="x_coord" value="">
+                        <input type="hidden" name="y_coord" id="y_coord" value="">
+                        <input type="hidden" name="w_target" id="w_target" value="">
+                        <input type="hidden" name="h_target" id="h_target" value="">
+                        <input type="hidden" name="orig_width" id="orig_width" value="">
+                        <input type="hidden" name="orig_height" id="orig_height" value="">
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </div>
+</div>
 @stop
 @section('js-section')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
@@ -926,7 +970,6 @@ Private
 				diffinDays = 0;
 			}
 		}
-		@endif
 		if(daysPassedCheck == 1){
 			$(".days-left-circle").remove();
 		}
@@ -943,6 +986,7 @@ Private
 			setTimeout(function() { c1.circleProgress('value', '1.0'); }, 2000);
 			setTimeout(function() { c1.circleProgress('value', diffinDays); }, 3100);
 		}
+		@endif
 		$('#show-interest-btn').click(function (e) {
 			e.preventDefault();
 			$('#loadingModal').modal('show');
@@ -1062,6 +1106,8 @@ Private
 
 		//Edit Project Page Details by Admin
 		editProjectPageDetailsByAdmin();
+		//Edit Project Page Background Image
+		editProjectPageBackImg();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -1069,6 +1115,7 @@ Private
 			$('.store-project-page-details-btn').show();
 			$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{$project->title}}" style="font-size: 25px;">');
 			$('.project-description-field').html('<input type="text" name="project_description_txt" class="form-control" value="{{$project->description}}">');
+			@if($project->investment)
 			$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
 			$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
 			$('.project-returns-field').html('<input type="text" name="project_returns_txt" class="form-control" value="{{$project->investment->projected_returns}}">%');
@@ -1088,8 +1135,164 @@ Private
 			$('.project-pds1-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>');
 			$('.project-pds2-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds2_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_2_link}}@endif" @endif>');
 			$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control" rows="3" placeholder="How to invest">{!!$project->investment->how_to_invest!!}</textarea>');
+			@endif
 		});
 	}
+
+	function editProjectPageBackImg(){
+		$('.edit-projectpg-back-img').click(function(){
+			$('#projectpg_back_img').trigger('click');
+		});
+		$('#projectpg_back_img').change(function(e){
+			if($('#projectpg_back_img').val() != ''){
+				var formData = new FormData();
+                formData.append('projectpg_back_img', $('#projectpg_back_img')[0].files[0]);
+                $('.loader-overlay').show();
+                $.ajax({
+                    url: '/configuration/uploadProjectPgBackImg',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    contentType: false,
+                    processData: false
+                }).done(function(data){
+                    if(data.status == 1){
+                    	var imgPath = data.destPath+data.fileName;
+                        var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_project_back_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+                        $('#image_cropbox_container').html(str1);
+                        $('#edit_project_back_img_modal').modal({
+                            'show': true,
+                            'backdrop': false,
+                        });
+
+                        $('#image_crop').val(imgPath); //set hidden image value
+                        $('#image_crop').attr('action', 'projectPg back image');
+                        var target_width = 171;
+                        var target_height = 89;
+                        var origWidth = data.origWidth;
+                        var origHeight = data.origHeight;
+                        $('#image_cropbox').Jcrop({
+                            boxWidth: 530,
+                            aspectRatio: 171/89,
+                            keySupport: false,
+                            setSelect: [0, 0, target_width, target_height],
+                            bgColor: '',
+                            onSelect: function(c) {
+                                updateCoords(c, target_width, target_height, origWidth, origHeight);
+                            },
+                            onChange: function(c) {
+                                updateCoords(c, target_width, target_height, origWidth, origHeight);
+                            },
+                            onRelease: setSelect,
+                            minSize: [target_width, target_height],
+                        });
+                        $('.loader-overlay').hide();
+
+                        performCropOnImage();
+
+                        $('#modal_close_btn').click(function(e){
+			                $('#projectpg_back_img, #projectpg_back_img_name').val('');
+			            });
+                    }
+                    else{
+                      $('.loader-overlay').hide();
+                      $('#projectpg_back_img, #projectpg_back_img_name').val('');
+                      alert(data.message);
+                    }
+                });
+			}
+		});
+	}
+
+	function updateCoords(coords, w, h, origWidth, origHeight){
+	    var target_width= w;
+	    var target_height=h;
+        //Set New Coordinates
+        $('#x_coord').val(coords.x);
+        $('#y_coord').val(coords.y);
+        $('#w_target').val(coords.w);
+        $('#h_target').val(coords.h);
+        $('#orig_width').val(origWidth);
+        $('#orig_height').val(origHeight);
+
+        // showPreview(coordinates)
+        $("<img>").attr("src", $('#image_cropbox').attr("src")).load(function(){
+            var rx = target_width / coords.w;
+            var ry = target_height / coords.h;
+
+            var realWidth = this.width;
+            var realHeight = this.height;
+
+            var newWidth = 530;
+            var newHeight = (realHeight/realWidth)*newWidth;
+            
+            $('#preview_image').css({
+                width: Math.round(rx*newWidth)+'px',
+                height: Math.round(ry*newHeight)+'px',
+                marginLeft: '-'+Math.round(rx*coords.x)+'px',
+                marginTop: '-'+Math.round(ry*coords.y)+'px',
+            });
+
+        });
+    }
+
+    function setSelect(coords){
+        jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
+    }
+
+    function performCropOnImage(){
+        $('#perform_crop_btn').click(function(e){
+            $('.loader-overlay').show();
+            var imageName = $('#image_crop').val();
+            var imgAction = $('#image_crop').attr('action');
+            var xValue = $('#x_coord').val();
+            var yValue = $('#y_coord').val();
+            var wValue = $('#w_target').val();
+            var hValue = $('#h_target').val();
+            var origWidth = $('#orig_width').val();
+            var origHeight = $('#orig_height').val();
+            var hiwImgAction = $('#image_action').val();
+            console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+            $.ajax({
+                url: '/configuration/cropUploadedImage',
+                type: 'POST',
+                data: {
+                    imageName: imageName,
+                    imgAction: imgAction,
+                    xValue: xValue,
+                    yValue: yValue,
+                    wValue: wValue,
+                    hValue: hValue,
+                    origWidth: origWidth,
+                    origHeight: origHeight,
+                    hiwImgAction: hiwImgAction,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function(data){
+                console.log(data);
+                if(data.status){
+                    $('#image_crop').val(data.imageSource);
+                    location.reload('/');
+                }
+                else{
+                    $('.loader-overlay').hide();
+                    if(imgAction == 'projectPg back image'){
+                    	$('#edit_project_back_img_modal').modal('toggle');
+                      	$('#projectpg_back_img, #projectpg_back_img_name').val('');
+                  	}
+                  	else {}
+                  	alert(data.message);
+                }
+            
+        	});
+        });
+    }
 
 </script>
 @stop
