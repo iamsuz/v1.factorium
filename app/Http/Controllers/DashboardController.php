@@ -37,8 +37,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $color = Color::first();
-        $users = User::all();
+        $color = Color::where('project_site',url())->first();
+        $users = User::where('registration_site',url());
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
         $notes = Note::all();
@@ -49,14 +49,14 @@ class DashboardController extends Controller
 
     public function users()
     {
-        $color = Color::first();
-        $users = User::all();
+        $color = Color::where('project_site',url())->first();
+        $users = User::where('registration_site',url());
         return view('dashboard.users.index', compact('users','color'));
     }
 
     public function projects()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
         $pledged_investments = InvestmentInvestor::all();
@@ -86,21 +86,21 @@ class DashboardController extends Controller
 
     public function showUser($user_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         return view('dashboard.users.show', compact('user','color'));
     }
 
     public function usersInvestments($user_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         return view('dashboard.users.investments', compact('user','color'));
     }
 
     public function showProject($project_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         return view('dashboard.projects.show', compact('project', 'investments','color'));
@@ -108,7 +108,7 @@ class DashboardController extends Controller
 
     public function projectInvestors($project_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         return view('dashboard.projects.investors', compact('project', 'investments','color'));
@@ -116,7 +116,7 @@ class DashboardController extends Controller
 
     public function editProject($project_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         return view('dashboard.projects.edit', compact('project', 'investments','color'));
@@ -138,7 +138,7 @@ class DashboardController extends Controller
 
     public function verification($user_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         return view('dashboard.users.verification', compact('user','color'));
     }
@@ -265,7 +265,7 @@ class DashboardController extends Controller
      */
     public function edit($user_id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         return view('dashboard.users.edit', compact('user','color'));
     }
@@ -295,7 +295,7 @@ class DashboardController extends Controller
 
     public function siteConfigurations()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('dashboard.configuration.siteConfiguration',compact('color'));
     }
 }

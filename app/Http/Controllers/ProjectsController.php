@@ -41,7 +41,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $projects = Project::all();
         $pledged_investments = InvestmentInvestor::all();
         return view('projects.index', compact('projects', 'pledged_investments','color'));
@@ -54,7 +54,7 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('projects.create',compact('color'));
     }
 
@@ -155,7 +155,7 @@ class ProjectsController extends Controller
 
     public function confirmation($projects)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($projects);
         return view('projects.confirmation', compact('project','color'));
     }
@@ -170,7 +170,7 @@ class ProjectsController extends Controller
         $user_id = Auth::user();
         $project = Project::findOrFail($id);
         $project_prog = $project->project_progs;
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $completed_percent = 0;
         $pledged_amount = 0;
         if($project->investment) {

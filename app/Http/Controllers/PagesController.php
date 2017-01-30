@@ -113,7 +113,7 @@ class PagesController extends Controller
     */
     public function faq()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $faqGeneralBasics = Faq::where(['category'=>'General', 'sub_category'=> 'Basics', 'show'=>1 ])->get();
         $faqGeneralRegulatory = Faq::where(['category'=>'General', 'sub_category'=> 'Regulatory', 'show'=>1 ])->get();
         $faqGeneralLegalStructure = Faq::where(['category'=>'General', 'sub_category'=> 'Legal Structure', 'show'=>1 ])->get();
@@ -137,7 +137,7 @@ class PagesController extends Controller
     }
     public function financial()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('pages.financial',compact('color'));
     }
 
@@ -147,7 +147,7 @@ class PagesController extends Controller
     */
     public function privacy()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('pages.privacy',compact('color'));
     }
 
@@ -157,13 +157,13 @@ class PagesController extends Controller
     */
     public function terms()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('pages.terms',compact('color'));
     }
 
     public function subdivide()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('pages.subdivide',compact('color'));
     }
 
@@ -175,7 +175,7 @@ class PagesController extends Controller
 
     public function subdivideThankyou()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('pages.subdivideThankyou',compact('color'));
     }
 
@@ -191,7 +191,7 @@ class PagesController extends Controller
     }
 
     public function createFaq(){
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         if(Auth::user()){
             if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'superadmin')){
                 $categories = array('General' => array('Basics', 'Regulatory', 'Legal Structure', 'Fees', 'Website'), 'Investor' => array('Investing Basics', 'Investment Type', 'Investment Specific', 'Investment Support', 'Investment Risks'), 'Property Development & Venture' => '');

@@ -50,7 +50,7 @@ class UserRegistrationsController extends Controller
      */
     public function store(Request $request, AppMailer $mailer)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email||unique:user_registrations,email',
             'password' => 'required|min:6|max:60',
@@ -126,7 +126,7 @@ class UserRegistrationsController extends Controller
 
     public function activate($token)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = UserRegistration::whereToken($token)->firstOrFail();
         if($user->active) {
             // return redirect()->route('users.login')->withMessage('<p class="alert alert-info text-center">User Already Activated</p>');
@@ -155,7 +155,7 @@ class UserRegistrationsController extends Controller
             ]);
 
         $userReg = UserRegistration::whereToken($request->token)->firstOrFail();
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         if (!$request['username']) {
             $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
         }
@@ -202,7 +202,7 @@ class UserRegistrationsController extends Controller
 
     public function acceptedInvitation($token)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $invite = Invite::whereToken($token)->firstOrFail();
         if($invite->accepted){
             return view('users.alreadyAcceptedInvitation', compact('token','color'));
@@ -225,7 +225,7 @@ class UserRegistrationsController extends Controller
             ]);
 
         $userReg = Invite::whereToken($request->token)->firstOrFail();
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         if (!$request['username']) {
             $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
         }
@@ -267,7 +267,7 @@ class UserRegistrationsController extends Controller
 
     public function thanks()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('users.registrationFinish',compact('color'));
     }
 }

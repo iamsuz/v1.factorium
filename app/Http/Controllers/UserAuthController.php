@@ -49,7 +49,7 @@ class UserAuthController extends Controller
      */
     public function login()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('users.login',compact('color'));
     }
 

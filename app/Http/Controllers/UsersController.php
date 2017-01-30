@@ -53,7 +53,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         return view('users.create',compact('color'));
     }
     
@@ -93,7 +93,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $roles = $user->roles;
         if ($roles->contains('role', 'admin')) {
@@ -118,7 +118,7 @@ class UsersController extends Controller
     }
     public function submit($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($id);
         return view('users.submit', compact('user','color'));
     }
@@ -129,7 +129,7 @@ class UsersController extends Controller
      */
     public function showUser($username)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::whereUsername($username)->firstOrFail();
         return view('users.show', compact('user','color'));
     }
@@ -141,7 +141,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $roles = $user->roles;
         if ($roles->contains('role', 'admin')) {
@@ -156,7 +156,7 @@ class UsersController extends Controller
     }
     public function fbedit($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $roles = $user->roles;
         if ($roles->contains('role', 'admin')) {
@@ -227,7 +227,7 @@ class UsersController extends Controller
     }
     
     public function registrationFinish1(){
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         return view('users.registrationFinish', compact('user','color'));
     }
@@ -244,7 +244,7 @@ class UsersController extends Controller
 
     public function verification($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($id);
         return view('users.verify', compact('user','color'));
     }
@@ -273,14 +273,14 @@ class UsersController extends Controller
 
     public function verificationStatus($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($id);
         return view('users.verificationStatus', compact('user','color'));
     }
 
     public function showInterests($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($id);
         $pledged_investments = InvestmentInvestor::all();
         $interests = $user->investments;
@@ -289,7 +289,7 @@ class UsersController extends Controller
 
     public function showInvitation($id)
     {
-        $color = Color::first();
+        $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($id);
         return view('users.invitation', compact('user','color'));
     }
