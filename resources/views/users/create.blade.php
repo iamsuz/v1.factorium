@@ -28,8 +28,8 @@ Sign up for free Australia's top Venture Crowdfunding
 					@endif
 					<br>
 					<div class="text-left">
-						<h3 class="wow fadeIn animated font-bold" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">You are almost there!</h3>
-						<h4 class="wow fadeIn animated font-regular" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;"><br>Sign up for free, to see the current opportunities and receive updates.</h4>
+						<h3 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">You are almost there!</h3>
+						<h4 class="wow fadeIn animated font-regular first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;"><br>Sign up for free, to see the current opportunities and receive updates.</h4>
 						<br>
 					</div>
 				</div>
@@ -37,7 +37,7 @@ Sign up for free Australia's top Venture Crowdfunding
 			<div class="row">
 				<div class="col-md-6">
 					<section id="registerForm" style="padding:0 10px;">
-						<h4 class="font-bold" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
+						<h4 class="font-bold first_color" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
 						{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'form'))!!}
 						<div class="row form-group">
 							<!-- <div> -->
@@ -70,18 +70,17 @@ Sign up for free Australia's top Venture Crowdfunding
 						<div class="row">
 							<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s">
 								<input type="submit" value="Register" id="submit1" name="submit"  class="btn btn-block font-bold hide" hidden style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
-								<a class='btn btn-lg btn-danger font-semibold text-right' id="submitform" href='#' style="width:243px; background-color: #fed405; border-color: #fed405; font-size:1em; color:#000;border-radius:0;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register with EB</a>
+								<a class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform" href='#' style="width:243px; background-color: #fed405; font-size:1em; color:#000;border-radius:0; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register with EB</a>
 							</div>
 						</div>
 						{!! Form::close() !!}
 						<br>
-						<h4 class="text-left font-regular" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b>{!! Html::linkRoute('users.login', 'Sign In Here') !!}</b>
-						</h4>
+						<h4 class="text-left font-regular first_color" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b>{!! Html::linkRoute('users.login', 'Sign In Here') !!}</b>
 					</section>
 				</div>
 				<div class="col-md-3" style="position:relative;">
 					<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;">
-						<img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}"/> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
+						<div class="second_color_btn" style="border-radius: 100%;"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div><p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
 					</div>
 					<br><br>
 					<br><br>

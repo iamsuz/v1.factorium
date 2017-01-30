@@ -570,25 +570,51 @@
 </div>
 <section id="developer" class="chunk-box">
   <div class="container">
+    @if(Auth::guest())
+    @else
+    @if(Auth::user()->roles->contains('role','superadmin'))
+    <form action="{{route('configuration.editHomePgFundingSectionContent')}}" method="POST">
+    {{csrf_field()}}
+    @endif
+    @endif
     <div class="row">
-      <div class="col-md-5 col-md-offset-1">
-        <h3 class="text-center heading-font-semibold first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" font-size: 26px; line-height:1.3em;">Developer or Business <br>looking for funding? </h3>
-        <br>
-        <div class="text-center " data-wow-duration="1.5s" data-wow-delay="0.4s">
-          <a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn" style="padding: 8px 24px;font-size:22px;background-color:#fed405; color:#fff; border-radius:0px; letter-spacing:1px;">Submit Venture</a>
+        <div class="col-md-5 col-md-offset-1">
+            <h3 class="text-center heading-font-semibold first_color funding-section-title1-field" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" font-size: 26px; line-height:1.3em;">
+            @if($siteConfiguration->funding_section_title1 != ''){!!nl2br(e($siteConfiguration->funding_section_title1))!!}@endif
+            </h3>
+            <input type="hidden" id="hidden_funding_section_title1" value="@if($siteConfiguration->funding_section_title1 != '') {!! nl2br(e($siteConfiguration->funding_section_title1)) !!} @endif">
+            <br>
+            <div class="text-center funding-section-btn1-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
+                <a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn" style="padding: 8px 24px;font-size:22px;background-color:#fed405; color:#fff; border-radius:0px; letter-spacing:1px;">
+                @if($siteConfiguration->funding_section_btn1_text != ''){!!$siteConfiguration->funding_section_btn1_text!!}@endif
+                </a>
+            </div>
+            <br><br>
         </div>
-        <br><br>
-      </div>
-      <div class="col-md-5">
-        <h3 class="text-center heading-font-semibold first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" font-size: 26px; line-height:1.3em;">Are you an investor looking <br>for investment opportunities?</h3>
-        <br>
-        <div class="text-center " data-wow-duration="1.5s" data-wow-delay="0.4s">
-          <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn" style="padding: 8px 24px;font-size:22px; background-color:#fed405; color:#fff; border-radius:0px; letter-spacing:1px;">&nbsp;&nbsp; View Venture &nbsp; </a>
+        <div class="col-md-5">
+            <h3 class="text-center heading-font-semibold first_color funding-section-title2-field" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" font-size: 26px; line-height:1.3em;">
+            @if($siteConfiguration->funding_section_title2 != ''){!!nl2br(e($siteConfiguration->funding_section_title2))!!}@endif
+            </h3>
+            <input type="hidden" id="hidden_funding_section_title2" value="@if($siteConfiguration->funding_section_title2 != '') {!! nl2br(e($siteConfiguration->funding_section_title2)) !!} @endif">
+            <br>
+            <div class="text-center funding-section-btn2-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
+                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn" style="padding: 8px 24px;font-size:22px; background-color:#fed405; color:#fff; border-radius:0px; letter-spacing:1px;">
+                @if($siteConfiguration->funding_section_btn2_text != ''){!!$siteConfiguration->funding_section_btn2_text!!}@endif
+                </a>
+            </div>
+            <br>
+            <br>
         </div>
-        <br>
-        <br>
-      </div>
     </div>
+    @if(Auth::guest())
+    @else
+    @if(Auth::user()->roles->contains('role','superadmin'))
+    </form>
+    <div class="row text-center">
+        <i class="fa fa-pencil edit-pencil-style show-funding-section-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000" data-toggle="tooltip" title="Edit section content and button text" data-placement="right"></i>
+    </div>
+    @endif
+    @endif
   </div>
 </section>
 @endif
@@ -742,407 +768,640 @@
               <a href="{{$siteConfiguration->media_kit_link}}" download><span class="font-semibold" style="font-size: 16px; color: #fff;">Media Kit</span></a>
             </li>
           </ul>
-               <!--  <p style="margin:0 0 1px;">
-                    <a href="mailto:info@vestabyte.com" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61 3 98117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61 3 98117015</a>
-                  </p> -->
-                    <!-- <address style="margin:0px;">
-                        <p class="h1-faq" data-wow-duration="1.5s" data-wow-delay="0.8s" style="color:#fff;">569/585 Little Collins Street Melbourne VIC 3000.
-                        </p>
-                      </address> -->
-                    <!-- <br>
-                    <span class="copyright font-regular" data-wow-duration="1.5s" data-wow-delay="0.9s" style="color:#fff; font-size: 12px; margin-top: -10px;">
-                      © 2016 <a href="{{route('home')}}" class="font-regular">Vestabyte</a>. All Rights Reserved.
-                    </span> -->
-                  </div>
-                </div>
-                @if(Auth::guest())
-                @else
-                @if(Auth::user()->roles->contains('role','superadmin'))
-                <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Sitemap Links" data-placement="right"></i></div>
-                @endif
-                @endif
-                <div class="row text-center" style="padding-top: 20px;">
-                  <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo.png')}}">
-                  <p>
-                    <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer;">Estate Baron</a>
-                  </p>
-                </div>
-              </div>
-            </footer>
-            <div class="row">
-              <div class="text-center">
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" role="dialog">
-                  <div class="modal-dialog" style="min-width: 800px;">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Crop Image</h4>
-                      </div>
-                      <div class="modal-body">
-                        <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
-                        <!-- Hidden Fields to refer for JCrop -->
-                        <input type="hidden" name="image_crop" id="image_crop" value="" action="">
-                        <input type="hidden" name="image_action" id="image_action" value="">
-                        <input type="hidden" name="x_coord" id="x_coord" value="">
-                        <input type="hidden" name="y_coord" id="y_coord" value="">
-                        <input type="hidden" name="w_target" id="w_target" value="">
-                        <input type="hidden" name="h_target" id="h_target" value="">
-                        <input type="hidden" name="orig_width" id="orig_width" value="">
-                        <input type="hidden" name="orig_height" id="orig_height" value="">
-                      </div>
-                    </div>      
-                  </div>
-                </div>
-                <!-- Modal for Social Links Edit -->
-                <div class="modal fade" id="social_link_edit_modal" role="dialog">
-                  <div class="modal-dialog" style="width: 400px;">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <form method="POST" action="{{ route('configuration.updateSocialSiteLinks') }}">
-                        {{csrf_field()}}
-                        <div class="modal-header">
-                          <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Edit Social Links</h4>
-                        </div>
-                        <div class="modal-body">
-                          <table style="text-align: left; width: 100%">
-                            <tr><td colspan="2">
-                              <!-- {!! $errors->first(null, '<small class="text-danger">:message</small>') !!} -->
-                              @if (Session::has('socialLinkUpdateMessage'))
-                              <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px; margin-bottom: 5px; text-align: center;">
-                                <h5>{!! Session::get('socialLinkUpdateMessage') !!}</h5>
-                              </div>
-                              @endif
-                            </td></tr>
-                            <tr><td>Facebook: &nbsp;</td><td><input class="form-control" type="text" name="facebook_link" value="{{$siteConfiguration->facebook_link}}"></td></tr>
-                            <tr><td>Twitter: &nbsp;</td><td><input class="form-control" type="text" name="twitter_link" value="{{$siteConfiguration->twitter_link}}"></td></tr>
-                            <tr><td>YouTube: &nbsp;</td><td><input class="form-control" type="text" name="youtube_link" value="{{$siteConfiguration->youtube_link}}"></td></tr>
-                            <tr><td>LinkedIn: &nbsp;</td><td><input class="form-control" type="text" name="linkedin_link" value="{{$siteConfiguration->linkedin_link}}"></td></tr>
-                            <tr><td>Google+: &nbsp;</td><td><input class="form-control" type="text" name="google_link" value="{{$siteConfiguration->google_link}}"></td></tr>
-                            <tr><td>Instagram: &nbsp;</td><td><input class="form-control" type="text" name="instagram_link" value="{{$siteConfiguration->instagram_link}}"></td></tr>
-                          </table>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="Submit" class="btn btn-default">Save Links</button>
-                        </div>
-                      </form>
-                    </div>      
-                  </div>
-                </div>
-                <!-- Modal for Sitemap Links Edit -->
-                <div class="modal fade" id="sitemap_link_edit_modal" role="dialog">
-                  <div class="modal-dialog" style="width: 500px;">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <form method="POST" action="{{ route('configuration.updateSitemapLinks') }}">
-                        {{csrf_field()}}
-                        <div class="modal-header">
-                          <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Edit Sitemap Links</h4>
-                        </div>
-                        <div class="modal-body">
-                          <table style="text-align: left; width: 100%">
-                            <tr><td colspan="2">
-                              <!-- {!! $errors->first(null, '<small class="text-danger">:message</small>') !!} -->
-                              @if (Session::has('sitemapLinksUpdateMessage'))
-                              <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px; margin-bottom: 5px; text-align: center;">
-                                <h5>{!! Session::get('sitemapLinksUpdateMessage') !!}</h5>
-                              </div>
-                              @endif
-                            </td></tr>
-                            <tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="text" name="blog_link" value="{{$siteConfiguration->blog_link}}"></td></tr>
-                            <tr><td>Terms & Conditions:</td><td><input class="form-control" type="text" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr>
-                            <tr><td>Privacy:</td><td><input class="form-control" type="text" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr>
-                            <tr><td>Financial Service Guide:</td><td><input class="form-control" type="text" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr>
-                            <tr><td>Media Kit:</td><td><input class="form-control" type="text" name="media_kit_link" value="{{$siteConfiguration->media_kit_link}}"></td></tr>
-                          </table>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="Submit" class="btn btn-default">Save Links</button>
-                        </div>
-                      </form>
-                    </div>      
-                  </div>
-                </div>
+     <!--  <p style="margin:0 0 1px;">
+          <a href="mailto:info@vestabyte.com" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61 3 98117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61 3 98117015</a>
+        </p> -->
+          <!-- <address style="margin:0px;">
+              <p class="h1-faq" data-wow-duration="1.5s" data-wow-delay="0.8s" style="color:#fff;">569/585 Little Collins Street Melbourne VIC 3000.
+              </p>
+            </address> -->
+          <!-- <br>
+          <span class="copyright font-regular" data-wow-duration="1.5s" data-wow-delay="0.9s" style="color:#fff; font-size: 12px; margin-top: -10px;">
+            © 2016 <a href="{{route('home')}}" class="font-regular">Vestabyte</a>. All Rights Reserved.
+          </span> -->
+        </div>
+      </div>
+      @if(Auth::guest())
+      @else
+      @if(Auth::user()->roles->contains('role','superadmin'))
+      <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Sitemap Links" data-placement="right"></i></div>
+      @endif
+      @endif
+      <div class="row text-center" style="padding-top: 20px;">
+        <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo.png')}}">
+        <p>
+          <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer;">Estate Baron</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+  <div class="row">
+    <div class="text-center">
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style="min-width: 800px;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Crop Image</h4>
+            </div>
+            <div class="modal-body">
+              <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
               </div>
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
+              <!-- Hidden Fields to refer for JCrop -->
+              <input type="hidden" name="image_crop" id="image_crop" value="" action="">
+              <input type="hidden" name="image_action" id="image_action" value="">
+              <input type="hidden" name="x_coord" id="x_coord" value="">
+              <input type="hidden" name="y_coord" id="y_coord" value="">
+              <input type="hidden" name="w_target" id="w_target" value="">
+              <input type="hidden" name="h_target" id="h_target" value="">
+              <input type="hidden" name="orig_width" id="orig_width" value="">
+              <input type="hidden" name="orig_height" id="orig_height" value="">
+            </div>
+          </div>      
+        </div>
+      </div>
+      <!-- Modal for Social Links Edit -->
+      <div class="modal fade" id="social_link_edit_modal" role="dialog">
+        <div class="modal-dialog" style="width: 400px;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <form method="POST" action="{{ route('configuration.updateSocialSiteLinks') }}">
+              {{csrf_field()}}
+              <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Social Links</h4>
+              </div>
+              <div class="modal-body">
+                <table style="text-align: left; width: 100%">
+                  <tr><td colspan="2">
+                    <!-- {!! $errors->first(null, '<small class="text-danger">:message</small>') !!} -->
+                    @if (Session::has('socialLinkUpdateMessage'))
+                    <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px; margin-bottom: 5px; text-align: center;">
+                      <h5>{!! Session::get('socialLinkUpdateMessage') !!}</h5>
+                    </div>
+                    @endif
+                  </td></tr>
+                  <tr><td>Facebook: &nbsp;</td><td><input class="form-control" type="text" name="facebook_link" value="{{$siteConfiguration->facebook_link}}"></td></tr>
+                  <tr><td>Twitter: &nbsp;</td><td><input class="form-control" type="text" name="twitter_link" value="{{$siteConfiguration->twitter_link}}"></td></tr>
+                  <tr><td>YouTube: &nbsp;</td><td><input class="form-control" type="text" name="youtube_link" value="{{$siteConfiguration->youtube_link}}"></td></tr>
+                  <tr><td>LinkedIn: &nbsp;</td><td><input class="form-control" type="text" name="linkedin_link" value="{{$siteConfiguration->linkedin_link}}"></td></tr>
+                  <tr><td>Google+: &nbsp;</td><td><input class="form-control" type="text" name="google_link" value="{{$siteConfiguration->google_link}}"></td></tr>
+                  <tr><td>Instagram: &nbsp;</td><td><input class="form-control" type="text" name="instagram_link" value="{{$siteConfiguration->instagram_link}}"></td></tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="Submit" class="btn btn-default">Save Links</button>
+              </div>
+            </form>
+          </div>      
+        </div>
+      </div>
+      <!-- Modal for Sitemap Links Edit -->
+      <div class="modal fade" id="sitemap_link_edit_modal" role="dialog">
+        <div class="modal-dialog" style="width: 500px;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <form method="POST" action="{{ route('configuration.updateSitemapLinks') }}">
+              {{csrf_field()}}
+              <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Sitemap Links</h4>
+              </div>
+              <div class="modal-body">
+                <table style="text-align: left; width: 100%">
+                  <tr><td colspan="2">
+                    <!-- {!! $errors->first(null, '<small class="text-danger">:message</small>') !!} -->
+                    @if (Session::has('sitemapLinksUpdateMessage'))
+                    <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px; margin-bottom: 5px; text-align: center;">
+                      <h5>{!! Session::get('sitemapLinksUpdateMessage') !!}</h5>
+                    </div>
+                    @endif
+                  </td></tr>
+                  <tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="text" name="blog_link" value="{{$siteConfiguration->blog_link}}"></td></tr>
+                  <tr><td>Terms & Conditions:</td><td><input class="form-control" type="text" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr>
+                  <tr><td>Privacy:</td><td><input class="form-control" type="text" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr>
+                  <tr><td>Financial Service Guide:</td><td><input class="form-control" type="text" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr>
+                  <tr><td>Media Kit:</td><td><input class="form-control" type="text" name="media_kit_link" value="{{$siteConfiguration->media_kit_link}}"></td></tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="Submit" class="btn btn-default">Save Links</button>
+              </div>
+            </form>
+          </div>      
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-            {!! Html::script('js/jquery-1.11.3.min.js') !!}
-            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
-            <script type = "text/javascript" 
-            src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
-            {!! Html::script('plugins/wow.min.js') !!}
-            {!! Html::script('assets/plugins/owl-carousel/owl.carousel.js') !!}
-            <script type="text/javascript" src="js/circle-progress.js"></script>
-            {!! Html::script('js/bootstrap.min.js') !!}
-            <!-- <script src="https://youcanbook.me/resources/scripts/ycbm.modal.js"></script> -->
-            {!! Html::script('js/typed.min.js') !!}
-            {!! Html::script('js/navbar-transition.js') !!}
-            <!-- JCrop -->
-            {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
+  {!! Html::script('js/jquery-1.11.3.min.js') !!}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
+  <script type = "text/javascript" 
+  src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+  {!! Html::script('plugins/wow.min.js') !!}
+  {!! Html::script('assets/plugins/owl-carousel/owl.carousel.js') !!}
+  <script type="text/javascript" src="js/circle-progress.js"></script>
+  {!! Html::script('js/bootstrap.min.js') !!}
+  <!-- <script src="https://youcanbook.me/resources/scripts/ycbm.modal.js"></script> -->
+  {!! Html::script('js/typed.min.js') !!}
+  {!! Html::script('js/navbar-transition.js') !!}
+  <!-- JCrop -->
+  {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
 
-            <script>
-              jQuery(document).ready(function($) {
-               $("#owl-demo").owlCarousel({
-                autoPlay : 3000,
-                stopOnHover : true,
-                navigation:true,
-                paginationSpeed : 1000,
-                goToFirstSpeed : 2000,
-                singleItem : true,
-                autoHeight : true,
-                transitionStyle:"fade"
-              });
-               $(".element").typed({
-                strings: ["Top quality projects.", "High returns, short duration.", "Retail AFSL", " Full PDS", "Registered MIS", "Open to everyone", "Exclusive new opportunity"],
-                typeSpeed: 100,
-                startDelay: 1000,
-                backSpeed: 100,
-                backDelay: 500,
-                loop: true
-              });
-             });
-           </script>
-           <script type="text/javascript">
-            (function(){
-             var parallax = document.querySelectorAll(".parallax"),
-             speed = 0.2;
-             window.onscroll = function(){
-              [].slice.call(parallax).forEach(function(el,i){
-               var windowYOffset = window.pageYOffset,
-               elBackgrounPos = "50% -" + (windowYOffset * speed) + "px";
-               el.style.backgroundPosition = elBackgrounPos;
-             });
-            };
-          })();
-
-          function change1()
-          {
-           var elem = document.getElementById("button1");
-           if (elem.value=="Show Less") elem.value = "Read More";
-           else elem.value = "Show Less";
-         }
-         function change2()
-         {
-           var elem = document.getElementById("button2");
-           if (elem.value=="Show Less") elem.value = "Read More";
-           else elem.value = "Show Less";
-         }
-         function checkvalidi() {
-           if ((document.getElementById('email').value != '')) {
-            document.getElementById('password_form').style.display = 'block';
-            if (document.getElementById('password').Value == '') {
-             document.getElementById('err_msg').innerHTML = 'Just one more step, lets enter a password !';
-             document.getElementById('password').focus();
-             return false;
-           }
-           if (document.getElementById('password').value != '') {
-             return true;
-           }
-           return false;
-         }
-         return true;
-       }
-       var intervalId = 0;
-       window.addEventListener('focus', function() {
-         document.title = 'Vestabyte';
-         clearInterval(intervalId);
-       });
-       window.addEventListener('blur', function() {
-         intervalId = setInterval(function() { document.title = document.title == 'Make an Investment' ? 'from just $2000' : 'Make an Investment';} , 1500);
-       });
-       new WOW().init({
-         boxClass:     'wow',
-         animateClass: 'animated',
-         mobile:       true,
-         live:         true
-       });
-       jQuery(document).ready(function($) {
-         $('[data-toggle="tooltip"]').tooltip();
-         $('[data-toggle="popover"]').popover();
-         $('a[data-disabled]').click(function (e) {
-          e.preventDefault();
+  <script>
+    jQuery(document).ready(function($) {
+      $("#owl-demo").owlCarousel({
+        autoPlay : 3000,
+        stopOnHover : true,
+        navigation:true,
+        paginationSpeed : 1000,
+        goToFirstSpeed : 2000,
+        singleItem : true,
+        autoHeight : true,
+        transitionStyle:"fade"
+      });
+      $(".element").typed({
+        strings: ["Top quality projects.", "High returns, short duration.", "Retail AFSL", " Full PDS", "Registered MIS", "Open to everyone", "Exclusive new opportunity"],
+        typeSpeed: 100,
+        startDelay: 1000,
+        backSpeed: 100,
+        backDelay: 500,
+        loop: true
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    (function(){
+      var parallax = document.querySelectorAll(".parallax"),
+      speed = 0.2;
+      window.onscroll = function(){
+        [].slice.call(parallax).forEach(function(el,i){
+         var windowYOffset = window.pageYOffset,
+         elBackgrounPos = "50% -" + (windowYOffset * speed) + "px";
+         el.style.backgroundPosition = elBackgrounPos;
         });
-         $('#scheduler_toggle').click(function() {
-          $('#scheduler').toggle("slow");
-        });
-         var c1 = $('.circle1');
-         c1.circleProgress({
-          fill: { color: '#5BC0DE' },
-          emptyFill: "rgba(0, 0, 0, 0.5)"
-        });
-         if (document.getElementById("circle1")!=null){
-          document.getElementById("circle1").onmouseenter = function() {
-           setTimeout(function() { c1.circleProgress(); }, 200);
-         }
-       };
-       var c2 = $('.circle2');
-       c2.circleProgress({
+      };
+    })();
+
+    function change1()
+    {
+      var elem = document.getElementById("button1");
+      if (elem.value=="Show Less") elem.value = "Read More";
+      else elem.value = "Show Less";
+    }
+    function change2()
+    {
+      var elem = document.getElementById("button2");
+      if (elem.value=="Show Less") elem.value = "Read More";
+      else elem.value = "Show Less";
+    }
+    function checkvalidi() {
+      if ((document.getElementById('email').value != '')) {
+        document.getElementById('password_form').style.display = 'block';
+        if (document.getElementById('password').Value == '') {
+          document.getElementById('err_msg').innerHTML = 'Just one more step, lets enter a password !';
+          document.getElementById('password').focus();
+          return false;
+        }
+        if (document.getElementById('password').value != '') {
+          return true;
+        }
+        return false;
+      }
+      return true;
+    }
+    var intervalId = 0;
+    window.addEventListener('focus', function() {
+      document.title = 'Vestabyte';
+      clearInterval(intervalId);
+    });
+    window.addEventListener('blur', function() {
+      intervalId = setInterval(function() { document.title = document.title == 'Make an Investment' ? 'from just $2000' : 'Make an Investment';} , 1500);
+    });
+    new WOW().init({
+      boxClass:     'wow',
+      animateClass: 'animated',
+      mobile:       true,
+      live:         true
+    });
+    jQuery(document).ready(function($) {
+      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="popover"]').popover();
+      $('a[data-disabled]').click(function (e) {
+        e.preventDefault();
+      });
+      $('#scheduler_toggle').click(function() {
+        $('#scheduler').toggle("slow");
+      });
+      var c1 = $('.circle1');
+      c1.circleProgress({
         fill: { color: '#5BC0DE' },
         emptyFill: "rgba(0, 0, 0, 0.5)"
       });
-       if (document.getElementById("circle2")!=null) {
+      if (document.getElementById("circle1")!=null){
+        document.getElementById("circle1").onmouseenter = function() {
+          setTimeout(function() { c1.circleProgress(); }, 200);
+        }
+      };
+      var c2 = $('.circle2');
+      c2.circleProgress({
+        fill: { color: '#5BC0DE' },
+        emptyFill: "rgba(0, 0, 0, 0.5)"
+      });
+      if (document.getElementById("circle2")!=null) {
         document.getElementById("circle2").onmouseenter = function() {
-         setTimeout(function() { c2.circleProgress('redraw'); }, 200);
-       }
-     };
-     $("#view_project").effect( "pulsate", {times:105}, 500000 );
-     var c3 = $('.circle3');
-     c3.circleProgress({
-      fill: { color: '#5BC0DE' },
-      emptyFill: "rgba(0, 0, 0, 0.5)"
-    });
-     if (document.getElementById("circle3")!=null) {
-      document.getElementById("circle3").onmouseenter = function() {
-       setTimeout(function() { c3.circleProgress('redraw'); }, 200);
-     }
-   };
-   var c4 = $('.circle4');
-   c4.circleProgress({
-    fill: { color: '#5BC0DE' },
-    emptyFill: "rgba(0, 0, 0, 0.5)"
-  });
-   if (document.getElementById("circle4")!=null) {
-    document.getElementById("circle4").onmouseenter = function() {
-     setTimeout(function() { c4.circleProgress('redraw'); }, 200);
-   }
- };
- var c5 = $('.circle5');
- c5.circleProgress({
-  fill: { color: '#5BC0DE' },
-  emptyFill: "rgba(0, 0, 0, 0.5)"
-});
- if (document.getElementById("circle5")!=null) {
-  document.getElementById("circle5").onmouseenter = function() {
-   setTimeout(function() { c5.circleProgress('redraw'); }, 200);
- }
-};
-var c6 = $('.circle6');
-c6.circleProgress({
-  fill: { color: '#5BC0DE' },
-  emptyFill: "rgba(0, 0, 0, 0.5)"
-});
-if (document.getElementById("circle6")!=null) {
-  document.getElementById("circle6").onmouseenter = function() {
-   setTimeout(function() { c6.circleProgress('redraw'); }, 200);
- }
-};
-var c7 = $('.circle7');
-c7.circleProgress({
-  fill: { color: '#5BC0DE' },
-  emptyFill: "rgba(0, 0, 0, 0.5)"
-});
-if (document.getElementById("circle7")!=null) {
-  document.getElementById("circle7").onmouseenter = function() {
-   setTimeout(function() { c7.circleProgress('redraw'); }, 200);
- }
-};
-if ($(window).width() < 480) {
-  $('#promo').removeClass('parallax');
-  $('.small-logo').removeClass('hide');
-  $(".big-logo").remove();
-    // $(".navbar-0").remove();
-  } else {
-    $('#promo').addClass('parallax');
-    // $(".navbar-1").remove();
-  }
-  if ($(window).width() < 1025) {
-    // $('#promo').removeClass('parallax');
-    $('.small-logo').removeClass('hide');
-    $(".big-logo").remove();
-    $(".navbar-0").remove();
-    @if($color)
-    $('#header').attr('style','background-color: #{{$color->nav_footer_color}}');
-    @endif
-  } else {
-    // $('#promo').addClass('parallax');
-    $(".navbar-1").remove();
-    @if($color)
-    $('#header').attr('style','background-color: transparent');
-    @endif
-  }
-// var mm = window.matchMedia("(min-width:768px)&&(max-width:990px)");
-// if(mm.matches){
-// }else{
-//  $('#containernav').removeClass('container');
-//  $('#containernav').addClass('container-fluid');
-//  $(".navbar-0").remove();
-// }
-$("iframe[name ='google_conversion_frame']").attr('style', 'height: 0px; display: none !important;');
-
-var mq = window.matchMedia("(min-width: 1140px)");
-if(mq.matches) {
-} else {
-  $('#containernav').removeClass('container');
-  $('#containernav').addClass('container-fluid');
-}
-$('body').scrollspy({ target: '#header', offset: 400});
-$(window).bind('scroll', function() {
-  if ($(window).scrollTop() > 1) {
-   $('.big-logo').addClass('hide');
-   $('.small-logo').removeClass('hide');
-   @if($color)
-   $('#header').attr('style','background-color: #{{$color->nav_footer_color}}');
-   @endif
-        // $('#nav_home').removeClass('hide');
-        // $('#header').removeClass('hide');
+          setTimeout(function() { c2.circleProgress('redraw'); }, 200);
+        }
+      };
+      $("#view_project").effect( "pulsate", {times:105}, 500000 );
+      var c3 = $('.circle3');
+      c3.circleProgress({
+        fill: { color: '#5BC0DE' },
+        emptyFill: "rgba(0, 0, 0, 0.5)"
+      });
+      if (document.getElementById("circle3")!=null) {
+        document.getElementById("circle3").onmouseenter = function() {
+          setTimeout(function() { c3.circleProgress('redraw'); }, 200);
+        }
+      };
+      var c4 = $('.circle4');
+      c4.circleProgress({
+        fill: { color: '#5BC0DE' },
+        emptyFill: "rgba(0, 0, 0, 0.5)"
+      });
+      if (document.getElementById("circle4")!=null) {
+        document.getElementById("circle4").onmouseenter = function() {
+          setTimeout(function() { c4.circleProgress('redraw'); }, 200);
+        }
+      };
+      var c5 = $('.circle5');
+      c5.circleProgress({
+        fill: { color: '#5BC0DE' },
+        emptyFill: "rgba(0, 0, 0, 0.5)"
+      });
+      if (document.getElementById("circle5")!=null) {
+        document.getElementById("circle5").onmouseenter = function() {
+          setTimeout(function() { c5.circleProgress('redraw'); }, 200);
+        }
+      };
+      var c6 = $('.circle6');
+      c6.circleProgress({
+        fill: { color: '#5BC0DE' },
+        emptyFill: "rgba(0, 0, 0, 0.5)"
+      });
+      if (document.getElementById("circle6")!=null) {
+        document.getElementById("circle6").onmouseenter = function() {
+          setTimeout(function() { c6.circleProgress('redraw'); }, 200);
+        }
+      };
+      var c7 = $('.circle7');
+      c7.circleProgress({
+        fill: { color: '#5BC0DE' },
+        emptyFill: "rgba(0, 0, 0, 0.5)"
+      });
+      if (document.getElementById("circle7")!=null) {
+        document.getElementById("circle7").onmouseenter = function() {
+          setTimeout(function() { c7.circleProgress('redraw'); }, 200);
+        }
+      };
+      if ($(window).width() < 480) {
+        $('#promo').removeClass('parallax');
+        $('.small-logo').removeClass('hide');
+        $(".big-logo").remove();
+        // $(".navbar-0").remove();
       } else {
-        $('.big-logo').removeClass('hide');
-        $('.small-logo').addClass('hide');
+        $('#promo').addClass('parallax');
+        // $(".navbar-1").remove();
+      }
+      if ($(window).width() < 1025) {
+        // $('#promo').removeClass('parallax');
+        $('.small-logo').removeClass('hide');
+        $(".big-logo").remove();
+        $(".navbar-0").remove();
+        @if($color)
+        $('#header').attr('style','background-color: #{{$color->nav_footer_color}}');
+        @endif
+      } else {
+        // $('#promo').addClass('parallax');
+        $(".navbar-1").remove();
         @if($color)
         $('#header').attr('style','background-color: transparent');
         @endif
-        // $('#nav_home').addClass('hide');
-        // $('#header').addClass('hide');
       }
-    });
-@if($color)
-$('p').attr('style','color: #{{$color->nav_footer_color}}');
-$('.first_color').attr('style','color: #{{$color->nav_footer_color}}');
-$('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
-$('.second_color').css('color','#{{$color->heading_color}}');
-@endif
-$('.scrollto').click(function(e) {
-  e.preventDefault();
-  $(window).stop(true).scrollTo(this.hash, {duration:1000, interrupt:true});
-});
-});
-</script>
-<script type="text/javascript">
-  $(document).ready(function(e){
+      // var mm = window.matchMedia("(min-width:768px)&&(max-width:990px)");
+      // if(mm.matches){
+      // }else{
+      //  $('#containernav').removeClass('container');
+      //  $('#containernav').addClass('container-fluid');
+      //  $(".navbar-0").remove();
+      // }
+      $("iframe[name ='google_conversion_frame']").attr('style', 'height: 0px; display: none !important;');
 
-    $('[data-toggle="tooltip"]').tooltip();
-
-    if($('#current_user_role').val() == 'superadmin'){
-      $('.brand-big-image').on('mouseenter', function(event){
-        $('.edit-brand-img').show('fade', {}, 500);
-      });
-      $('.brand-big-image').on('mouseleave', function(event){
-        if (!$('.edit-brand-img').is(':hover')) {
-          setTimeout( function(){$('.edit-brand-img').hide('fade', {}, 500);} , 3000);
+      var mq = window.matchMedia("(min-width: 1140px)");
+      if(mq.matches) {
+      } else {
+        $('#containernav').removeClass('container');
+        $('#containernav').addClass('container-fluid');
+      }
+      $('body').scrollspy({ target: '#header', offset: 400});
+      $(window).bind('scroll', function() {
+        if ($(window).scrollTop() > 1) {
+          $('.big-logo').addClass('hide');
+          $('.small-logo').removeClass('hide');
+          @if($color)
+          $('#header').attr('style','background-color: #{{$color->nav_footer_color}}');
+          @endif
+          // $('#nav_home').removeClass('hide');
+          // $('#header').removeClass('hide');
+        } else {
+          $('.big-logo').removeClass('hide');
+          $('.small-logo').addClass('hide');
+          @if($color)
+          $('#header').attr('style','background-color: transparent');
+          @endif
+          // $('#nav_home').addClass('hide');
+          // $('#header').addClass('hide');
         }
       });
-      $('.edit-brand-img').on('mouseleave',function(){
-        $('.edit-brand-img').hide('fade', {}, 500);
+      @if($color)
+      $('p').attr('style','color: #{{$color->nav_footer_color}}');
+      $('.first_color').attr('style','color: #{{$color->nav_footer_color}}');
+      $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
+      $('.second_color').css('color','#{{$color->heading_color}}');
+      @endif
+      $('.scrollto').click(function(e) {
+        e.preventDefault();
+        $(window).stop(true).scrollTo(this.hash, {duration:1000, interrupt:true});
       });
-      $('.edit-brand-img').click(function(){
-        $('#brand_logo').val('');
-        $('#brand_logo').trigger('click');
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function(e){
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+      if($('#current_user_role').val() == 'superadmin'){
+        $('.brand-big-image').on('mouseenter', function(event){
+          $('.edit-brand-img').show('fade', {}, 500);
+        });
+        $('.brand-big-image').on('mouseleave', function(event){
+          if (!$('.edit-brand-img').is(':hover')) {
+            setTimeout( function(){$('.edit-brand-img').hide('fade', {}, 500);} , 3000);
+          }
+        });
+        $('.edit-brand-img').on('mouseleave',function(){
+          $('.edit-brand-img').hide('fade', {}, 500);
+        });
+        $('.edit-brand-img').click(function(){
+          $('#brand_logo').val('');
+          $('#brand_logo').trigger('click');
+        });
+        $('#brand_logo').change(function(event){
+          if($('#brand_logo').val() != ''){
+            var formData = new FormData();
+            formData.append('brand_logo', $('#brand_logo')[0].files[0]);
+            $('.loader-overlay').show();
+            $.ajax({
+              url: '/configuration/uploadLogo',
+              type: 'POST',
+              dataType: 'JSON',
+              data: formData,
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+              contentType: false,
+              processData: false
+            }).done(function(data){
+              $('.loader-overlay').hide();
+              if(data.status == 1){
+                var imgPath = data.destPath+data.fileName;
+                var str1 = $('<div class="col-sm-9" id="site_logo"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_logo" style="float: right;"><img src="../../'+imgPath+'" id="preview_image"></div>');
+
+                $('#image_cropbox_container').html(str1);
+                $('#myModal').modal({
+                  'show': true,
+                  'backdrop': false,
+                });
+
+                $('#image_crop').val(imgPath); //set hidden image value
+                $('#image_crop').attr('action', 'brand logo');
+                var target_width = 171;
+                var target_height = 60;
+                var origWidth = data.origWidth;
+                var origHeight = data.origHeight;
+                $('#image_cropbox').Jcrop({
+                  boxWidth: 530,
+                  aspectRatio: 171/60,
+                  keySupport: false,
+                  setSelect: [0, 0, target_width, target_height],
+                  bgColor: '',
+                  onSelect: function(c) {
+                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                  },
+                  onChange: function(c) {
+                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                  },
+                  onRelease: setSelect,
+                  minSize: [target_width, target_height],
+                });
+              }
+            });
+          }
+        });
+
+        performCropOnImage();
+
+        $('#modal_close_btn').click(function(e){
+          $('#brand_logo, #brand_logo_name').val('');
+        });
+      }
+      $('#footer_color_btn').click(function(e){
+        changeColor();
       });
-      $('#brand_logo').change(function(event){
-        if($('#brand_logo').val() != ''){
+      $('.show-social-link-edit-modal-btn').click(function(){
+        $('#social_link_edit_modal').modal({
+          'show': true,
+          'backdrop': false,
+        });
+      });
+      $('.show-sitemap-link-edit-modal-btn').click(function(){
+        $('#sitemap_link_edit_modal').modal({
+          'show': true,
+          'backdrop': false,
+        });
+      });
+      //Functionality to Edit Text 1 of Home Page. 
+      //This can be actioned by only superadmin 
+      editHomePageText1();
+      //Functionality to change Home Page Main Back Image
+      editHomePageBackImg1();
+      //Functionality to change Home Page Button 1 text
+      editHomePageButton1Text();
+      //functionality to edit the investment title1
+      editInvestmentTitleText1();
+      //functionality to edit the investment title1 Description
+      editInvestmentTitle1Description();
+      // Edit home page Invesrment Image
+      editHomePageInvestmentSectionImg();
+      //Edit how it works section content
+      editHowItWorksSectionContent();
+      //Edit How it works section Images
+      editHowItWorksSectionImages();
+      //Edit Funding Section Contents
+      editFundingSectionContent();
+    });
+
+    function updateCoords(coords, w, h, origWidth, origHeight){
+      var target_width= w;
+      var target_height=h;
+      //Set New Coordinates
+      $('#x_coord').val(coords.x);
+      $('#y_coord').val(coords.y);
+      $('#w_target').val(coords.w);
+      $('#h_target').val(coords.h);
+      $('#orig_width').val(origWidth);
+      $('#orig_height').val(origHeight);
+
+      // showPreview(coordinates)
+      $("<img>").attr("src", $('#image_cropbox').attr("src")).load(function(){
+        var rx = target_width / coords.w;
+        var ry = target_height / coords.h;
+
+        var realWidth = this.width;
+        var realHeight = this.height;
+
+        var newWidth = 530;
+        var newHeight = (realHeight/realWidth)*newWidth;
+        
+        $('#preview_image').css({
+          width: Math.round(rx*newWidth)+'px',
+          height: Math.round(ry*newHeight)+'px',
+          marginLeft: '-'+Math.round(rx*coords.x)+'px',
+          marginTop: '-'+Math.round(ry*coords.y)+'px',
+        });
+
+      });
+    }
+
+    function setSelect(coords){
+      jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
+    }
+
+    function performCropOnImage(){
+      $('#perform_crop_btn').click(function(e){
+        $('.loader-overlay').show();
+        var imageName = $('#image_crop').val();
+        var imgAction = $('#image_crop').attr('action');
+        var xValue = $('#x_coord').val();
+        var yValue = $('#y_coord').val();
+        var wValue = $('#w_target').val();
+        var hValue = $('#h_target').val();
+        var origWidth = $('#orig_width').val();
+        var origHeight = $('#orig_height').val();
+        var hiwImgAction = $('#image_action').val();
+        console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+        $.ajax({
+          url: '/configuration/cropUploadedImage',
+          type: 'POST',
+          data: {
+            imageName: imageName,
+            imgAction: imgAction,
+            xValue: xValue,
+            yValue: yValue,
+            wValue: wValue,
+            hValue: hValue,
+            origWidth: origWidth,
+            origHeight: origHeight,
+            hiwImgAction: hiwImgAction,
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+        }).done(function(data){
+          console.log(data);
+          if(data.status){
+            $('#image_crop').val(data.imageSource);
+            location.reload('/');
+          }
+          else{
+            $('.loader-overlay').hide();
+            $('#myModal').modal('toggle');
+            if(imgAction == 'brand logo'){
+              $('#brand_logo, #brand_logo_name').val('');
+            }
+            else if (imgAction == 'back image'){
+              $('#homepg_back_img, #homepg_back_img_name').val('');
+            }
+            else if (imgAction == 'investment image'){
+              $('#investment_page_image, #investment_page_image_name').val('');
+            }
+            else if (imgAction == 'howItWorks image'){
+              $('#how_it_works_image, #how_it_works_image_name').val('');
+            }
+            else {}
+              alert(data.message);
+          }
+          
+        });
+      });
+    }
+
+    //Functionality to Edit Text 1 of Home Page. 
+    //This can be actioned by only superadmin
+    function editHomePageText1(){
+      $('.edit-homepg-text1').click(function(){
+        var str1 = $.trim($('.homepg-text1 h2').html()).replace(/\r?\n|\r/g, "");
+        console.log(str1);
+        $('.homepg-text1').html('<textarea class="form-control text-textarea" name="homepg_text1_text" id="homepg_text1_text" rows="3" placeholder="You Can Add Description Here"></textarea><br><button type="button" class="btn btn-default text1-update-btn" style="margin-bottom:67px;"><small>Update<small></button>');
+        $('#homepg_text1_text').val(str1.replace(/<br ?\/?>/g, "\n"));
+        $('#homepg_text1_text').select();
+        $('.text1-update-btn').click(function(){
+          var text1 = $('#homepg_text1_text').val();
+          var newText = text1.replace(/[\n\r\s]+/g, "\n");
+          console.log(text1);
+          if((newText != '') && (newText != '\n')){
+            $.ajax({
+              url: '/configuration/saveHomePageText1',
+              type: 'POST',
+              dataType: 'JSON',
+              data: {text1},
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+            }).done(function(data){
+              if(data.status){
+                location.reload('/');
+              }
+              else{
+                alert('Something went wrong');
+              }
+            });
+          }
+          else{
+            alert('Please enter Detail.');
+          }
+        });
+      });
+    }
+
+    //Functionality to edit Home Page Main Back Image
+    function editHomePageBackImg1(){
+      $('.edit-homepg-back-img').click(function(e){
+        $('#homepg_back_img').trigger('click');
+      });
+      $('#homepg_back_img').change(function(e){
+        if($('#homepg_back_img').val() != ''){
           var formData = new FormData();
-          formData.append('brand_logo', $('#brand_logo')[0].files[0]);
+          formData.append('homepg_back_img', $('#homepg_back_img')[0].files[0]);
           $('.loader-overlay').show();
           $.ajax({
-            url: '/configuration/uploadLogo',
+            url: '/configuration/uploadHomePgBackImg1',
             type: 'POST',
             dataType: 'JSON',
             data: formData,
@@ -1152,10 +1411,10 @@ $('.scrollto').click(function(e) {
             contentType: false,
             processData: false
           }).done(function(data){
-            $('.loader-overlay').hide();
             if(data.status == 1){
+              console.log(data);
               var imgPath = data.destPath+data.fileName;
-              var str1 = $('<div class="col-sm-9" id="site_logo"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_logo" style="float: right;"><img src="../../'+imgPath+'" id="preview_image"></div>');
+              var str1 = $('<div class="col-sm-9" id="homepg_back_img1"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_back_img1" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
 
               $('#image_cropbox_container').html(str1);
               $('#myModal').modal({
@@ -1163,509 +1422,298 @@ $('.scrollto').click(function(e) {
                 'backdrop': false,
               });
 
-                                $('#image_crop').val(imgPath); //set hidden image value
-                                $('#image_crop').attr('action', 'brand logo');
-                                var target_width = 171;
-                                var target_height = 60;
-                                var origWidth = data.origWidth;
-                                var origHeight = data.origHeight;
-                                $('#image_cropbox').Jcrop({
-                                  boxWidth: 530,
-                                  aspectRatio: 171/60,
-                                  keySupport: false,
-                                  setSelect: [0, 0, target_width, target_height],
-                                  bgColor: '',
-                                  onSelect: function(c) {
-                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
-                                  },
-                                  onChange: function(c) {
-                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
-                                  },
-                                  onRelease: setSelect,
-                                  minSize: [target_width, target_height],
-                                });
-                              }
-                            });
-        }
-      });
-
-      performCropOnImage();
-
-      $('#modal_close_btn').click(function(e){
-        $('#brand_logo, #brand_logo_name').val('');
-      });
-    }
-    $('#footer_color_btn').click(function(e){
-      changeColor();
-    });
-    $('.show-social-link-edit-modal-btn').click(function(){
-      $('#social_link_edit_modal').modal({
-        'show': true,
-        'backdrop': false,
-      });
-    });
-    $('.show-sitemap-link-edit-modal-btn').click(function(){
-      $('#sitemap_link_edit_modal').modal({
-        'show': true,
-        'backdrop': false,
-      });
-    });
-        //Functionality to Edit Text 1 of Home Page. 
-        //This can be actioned by only superadmin 
-        editHomePageText1();
-        //Functionality to change Home Page Main Back Image
-        editHomePageBackImg1();
-        //Functionality to change Home Page Button 1 text
-        editHomePageButton1Text();
-        //functionality to edit the investment title1
-        editInvestmentTitleText1();
-        //functionality to edit the investment title1 Description
-        editInvestmentTitle1Description();
-        // Edit home page Invesrment Image
-        editHomePageInvestmentSectionImg();
-        //Edit how it works section content
-        editHowItWorksSectionContent();
-        //Edit How it works section Images
-        editHowItWorksSectionImages();
-      });
-
-function updateCoords(coords, w, h, origWidth, origHeight){
-  var target_width= w;
-  var target_height=h;
-            //Set New Coordinates
-            $('#x_coord').val(coords.x);
-            $('#y_coord').val(coords.y);
-            $('#w_target').val(coords.w);
-            $('#h_target').val(coords.h);
-            $('#orig_width').val(origWidth);
-            $('#orig_height').val(origHeight);
-
-            // showPreview(coordinates)
-            $("<img>").attr("src", $('#image_cropbox').attr("src")).load(function(){
-              var rx = target_width / coords.w;
-              var ry = target_height / coords.h;
-
-              var realWidth = this.width;
-              var realHeight = this.height;
-
-              var newWidth = 530;
-              var newHeight = (realHeight/realWidth)*newWidth;
-              
-              $('#preview_image').css({
-                width: Math.round(rx*newWidth)+'px',
-                height: Math.round(ry*newHeight)+'px',
-                marginLeft: '-'+Math.round(rx*coords.x)+'px',
-                marginTop: '-'+Math.round(ry*coords.y)+'px',
+              $('#image_crop').val(imgPath); //set hidden image value
+              $('#image_crop').attr('action', 'back image');
+              var target_width = 171;
+              var target_height = 104;
+              var origWidth = data.origWidth;
+              var origHeight = data.origHeight;
+              $('#image_cropbox').Jcrop({
+                boxWidth: 530,
+                aspectRatio: 171/104,
+                keySupport: false,
+                setSelect: [0, 0, target_width, target_height],
+                bgColor: '',
+                onSelect: function(c) {
+                  updateCoords(c, target_width, target_height, origWidth, origHeight);
+                },
+                onChange: function(c) {
+                  updateCoords(c, target_width, target_height, origWidth, origHeight);
+                },onRelease: setSelect,
+                minSize: [target_width, target_height],
               });
-
-            });
-          }
-
-          function setSelect(coords){
-            jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
-          }
-
-          function performCropOnImage(){
-            $('#perform_crop_btn').click(function(e){
-              $('.loader-overlay').show();
-              var imageName = $('#image_crop').val();
-              var imgAction = $('#image_crop').attr('action');
-              var xValue = $('#x_coord').val();
-              var yValue = $('#y_coord').val();
-              var wValue = $('#w_target').val();
-              var hValue = $('#h_target').val();
-              var origWidth = $('#orig_width').val();
-              var origHeight = $('#orig_height').val();
-              var hiwImgAction = $('#image_action').val();
-              console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
-              $.ajax({
-                url: '/configuration/cropUploadedImage',
-                type: 'POST',
-                data: {
-                  imageName: imageName,
-                  imgAction: imgAction,
-                  xValue: xValue,
-                  yValue: yValue,
-                  wValue: wValue,
-                  hValue: hValue,
-                  origWidth: origWidth,
-                  origHeight: origHeight,
-                  hiwImgAction: hiwImgAction,
-                },
-                headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-              }).done(function(data){
-                console.log(data);
-                if(data.status){
-                  $('#image_crop').val(data.imageSource);
-                  location.reload('/');
-                }
-                else{
-                  $('.loader-overlay').hide();
-                  $('#myModal').modal('toggle');
-                  if(imgAction == 'brand logo'){
-                    $('#brand_logo, #brand_logo_name').val('');
-                  }
-                  else if (imgAction == 'back image'){
-                    $('#homepg_back_img, #homepg_back_img_name').val('');
-                  }
-                  else if (imgAction == 'investment image'){
-                    $('#investment_page_image, #investment_page_image_name').val('');
-                  }
-                  else if (imgAction == 'howItWorks image'){
-                    $('#how_it_works_image, #how_it_works_image_name').val('');
-                  }
-                  else {}
-                    alert(data.message);
-                }
-                
-              });
-            });
-          }
-
-        //Functionality to Edit Text 1 of Home Page. 
-        //This can be actioned by only superadmin
-        function editHomePageText1(){
-          $('.edit-homepg-text1').click(function(){
-            var str1 = $.trim($('.homepg-text1 h2').html()).replace(/\r?\n|\r/g, "");
-            console.log(str1);
-            $('.homepg-text1').html('<textarea class="form-control text-textarea" name="homepg_text1_text" id="homepg_text1_text" rows="3" placeholder="You Can Add Description Here"></textarea><br><button type="button" class="btn btn-default text1-update-btn" style="margin-bottom:67px;"><small>Update<small></button>');
-            $('#homepg_text1_text').val(str1.replace(/<br ?\/?>/g, "\n"));
-            $('#homepg_text1_text').select();
-            $('.text1-update-btn').click(function(){
-              var text1 = $('#homepg_text1_text').val();
-              var newText = text1.replace(/[\n\r\s]+/g, "\n");
-              console.log(text1);
-              if((newText != '') && (newText != '\n')){
-                $.ajax({
-                  url: '/configuration/saveHomePageText1',
-                  type: 'POST',
-                  dataType: 'JSON',
-                  data: {text1},
-                  headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  },
-                }).done(function(data){
-                  if(data.status){
-                    location.reload('/');
-                  }
-                  else{
-                    alert('Something went wrong');
-                  }
-                });
-              }
-              else{
-                alert('Please enter Detail.');
-              }
-            });
-          });
-        }
-
-        //Functionality to edit Home Page Main Back Image
-        function editHomePageBackImg1(){
-          $('.edit-homepg-back-img').click(function(e){
-            $('#homepg_back_img').trigger('click');
-          });
-          $('#homepg_back_img').change(function(e){
-            if($('#homepg_back_img').val() != ''){
-              var formData = new FormData();
-              formData.append('homepg_back_img', $('#homepg_back_img')[0].files[0]);
-              $('.loader-overlay').show();
-              $.ajax({
-                url: '/configuration/uploadHomePgBackImg1',
-                type: 'POST',
-                dataType: 'JSON',
-                data: formData,
-                headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                contentType: false,
-                processData: false
-              }).done(function(data){
-                if(data.status == 1){
-                  console.log(data);
-                  var imgPath = data.destPath+data.fileName;
-                  var str1 = $('<div class="col-sm-9" id="homepg_back_img1"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_back_img1" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
-
-                  $('#image_cropbox_container').html(str1);
-                  $('#myModal').modal({
-                    'show': true,
-                    'backdrop': false,
-                  });
-
-                            $('#image_crop').val(imgPath); //set hidden image value
-                            $('#image_crop').attr('action', 'back image');
-                            var target_width = 171;
-                            var target_height = 104;
-                            var origWidth = data.origWidth;
-                            var origHeight = data.origHeight;
-                            $('#image_cropbox').Jcrop({
-                              boxWidth: 530,
-                              aspectRatio: 171/104,
-                              keySupport: false,
-                              setSelect: [0, 0, target_width, target_height],
-                              bgColor: '',
-                              onSelect: function(c) {
-                                updateCoords(c, target_width, target_height, origWidth, origHeight);
-                              },
-                              onChange: function(c) {
-                                updateCoords(c, target_width, target_height, origWidth, origHeight);
-                              },onRelease: setSelect,
-                              minSize: [target_width, target_height],
-                            });
-                            $('.loader-overlay').hide();
-                          }
-                          else{
-                            $('.loader-overlay').hide();
-                            $('#homepg_back_img, #homepg_back_img_name').val('');
-                            alert(data.message);
-                          }
-                        });
+              $('.loader-overlay').hide();
+            }
+            else{
+              $('.loader-overlay').hide();
+              $('#homepg_back_img, #homepg_back_img_name').val('');
+              alert(data.message);
             }
           });
         }
+      });
+    }
 
-        //Functionality to change Home Page Button 1 text
-        function editHomePageButton1Text(){
-          $('.edit-homepg-btn-text1').click(function(e){
-            var str1 = $('.homepg-btn1-section a').html();
-            $('.homepg-btn1-section').html('<input type="text" class="form-control text-textfield" name="homepg_btn1_text" id="homepg_btn1_text" placeholder="Text to set for Button"><br><span style="float:left;">GoTo Link for he Button: </span><input type="text" class="form-control text-textfield" name="homepg_btn1_gotoid" id="homepg_btn1_gotoid" placeholder="Goto Id for Button" style="margin-bottom:10px; font-size:14px; width:65%; margin-left:auto" value="@if($siteConfiguration->homepg_btn1_gotoid != ''){!!$siteConfiguration->homepg_btn1_gotoid!!}@endif"><br><button type="button" class="btn btn-default btn1-text-update-btn"><small>Update<small></button>');
-            $('#homepg_btn1_text').val($.trim(str1));
-            $('#homepg_btn1_text').select();
-            $('.btn1-text-update-btn').click(function(){
-              var text1 = $('#homepg_btn1_text').val();
-              var gotoid = $('#homepg_btn1_gotoid').val();
-              var newText = text1.replace(/[\s]+/g, "\s");
-              if((newText != '') && (newText != '\s') && (gotoid != '')){
-                $.ajax({
-                  url: '/configuration/saveHomePageBtn1Text',
-                  type: 'POST',
-                  dataType: 'JSON',
-                  data: {text1, gotoid},
-                  headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  },
-                }).done(function(data){
-                  if(data.status){
-                                // console.log(data);
-                                location.reload('/');
-                              }
-                              else{
-                                alert('Something went wrong');
-                              }
-                            });
-              }
-              else{
-                alert('Please enter Detail.');
-              }
-            });
-          });
-        }
-        function update(jscolor) {
-            // 'jscolor' instance can be used as a string
-            document.getElementById('footer').style.backgroundColor = '#' + jscolor;
-            $('#footer').attr('style', 'background-color:#'+jscolor);
-            $('#footer').attr('value', jscolor);
-          }
-          function update1(jscolor) {
-            // 'jscolor' instance can be used as a string
-            document.getElementById('second_color_venture').style.backgroundColor = '#' + jscolor;
-            $('#second_color_venture').attr('style', 'background-color:#'+jscolor);
-            $('#second_color_venture').attr('value', jscolor);
-          }
-          function changeColor(){
-            var first_color_code = $('#footer').attr('value');
-            var second_color_code = $('#second_color_venture').attr('value');
+    //Functionality to change Home Page Button 1 text
+    function editHomePageButton1Text(){
+      $('.edit-homepg-btn-text1').click(function(e){
+        var str1 = $('.homepg-btn1-section a').html();
+        $('.homepg-btn1-section').html('<input type="text" class="form-control text-textfield" name="homepg_btn1_text" id="homepg_btn1_text" placeholder="Text to set for Button"><br><span style="float:left;">GoTo Link for he Button: </span><input type="text" class="form-control text-textfield" name="homepg_btn1_gotoid" id="homepg_btn1_gotoid" placeholder="Goto Id for Button" style="margin-bottom:10px; font-size:14px; width:65%; margin-left:auto" value="@if($siteConfiguration->homepg_btn1_gotoid != ''){!!$siteConfiguration->homepg_btn1_gotoid!!}@endif"><br><button type="button" class="btn btn-default btn1-text-update-btn"><small>Update<small></button>');
+        $('#homepg_btn1_text').val($.trim(str1));
+        $('#homepg_btn1_text').select();
+        $('.btn1-text-update-btn').click(function(){
+          var text1 = $('#homepg_btn1_text').val();
+          var gotoid = $('#homepg_btn1_gotoid').val();
+          var newText = text1.replace(/[\s]+/g, "\s");
+          if((newText != '') && (newText != '\s') && (gotoid != '')){
             $.ajax({
-              url: '/configuration/changecolor/footer/home',
+              url: '/configuration/saveHomePageBtn1Text',
               type: 'POST',
               dataType: 'JSON',
-              data: {first_color_code ,second_color_code},
+              data: {text1, gotoid},
               headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               },
             }).done(function(data){
+              if(data.status){
+                            // console.log(data);
+                            location.reload('/');
+                          }
+                          else{
+                            alert('Something went wrong');
+                          }
+                        });
+          }
+          else{
+            alert('Please enter Detail.');
+          }
+        });
+      });
+    }
+    function update(jscolor) {
+      // 'jscolor' instance can be used as a string
+      document.getElementById('footer').style.backgroundColor = '#' + jscolor;
+      $('#footer').attr('style', 'background-color:#'+jscolor);
+      $('#footer').attr('value', jscolor);
+    }
+    function update1(jscolor) {
+      // 'jscolor' instance can be used as a string
+      document.getElementById('second_color_venture').style.backgroundColor = '#' + jscolor;
+      $('#second_color_venture').attr('style', 'background-color:#'+jscolor);
+      $('#second_color_venture').attr('value', jscolor);
+    }
+    function changeColor(){
+      var first_color_code = $('#footer').attr('value');
+      var second_color_code = $('#second_color_venture').attr('value');
+      $.ajax({
+        url: '/configuration/changecolor/footer/home',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {first_color_code ,second_color_code},
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+      }).done(function(data){
+        console.log(data);
+      });
+    }
+
+    function editInvestmentTitleText1(){
+      $('.show-investment-title1-edit-box').click(function(){
+        $('.investment-title1-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1') }}" method="POST">{{csrf_field()}}<input type="text" class="form-control" name="investment_title_text1" id="investment_title_text1" placeholder="Enter Title" style="width: 60%; float: left;">&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-text" style="padding: 10px;">Save</button></form></div>');
+        $('#investment_title_text1').val('@if($siteConfiguration->investment_title_text1 != '') {!! nl2br(e($siteConfiguration->investment_title_text1)) !!} @endif').select();
+        $('.submit-investment-title1-text').click(function(e){
+          if($('#investment_title_text1').val()==''){
+            e.preventDefault();
+            $('.investment-title1-error').html('Title Text cant be empty.');
+            
+          }
+        });
+      });
+    }
+
+    function editInvestmentTitle1Description(){
+      $('.show-investment-title1-desc-edit-box').click(function(){
+        $('.investment-title1-description-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-desc-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1Description') }}" method="POST">{{csrf_field()}}<textarea class="form-control" name="investment_title1_description" id="investment_title1_description" rows="5" placeholder="You Can Add Description Here" style="width: 80%; float: left;"></textarea>&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-desc" style="padding: 10px;">Save</button></form></div>');
+        var str1 = $.trim($('#hiddent_investment_title1_description').val()).replace(/\r?\n|\r/g, "");
+        console.log(str1);
+        $('#investment_title1_description').val(str1.replace(/<br ?\/?>/g, "\n"));
+        $('.submit-investment-title1-desc').click(function(e){
+          if($('#investment_title1_description').val()==''){
+            e.preventDefault();
+            $('.investment-title1-desc-error').html('Description cant be empty.');
+            
+          }
+        });
+      });
+    }
+
+    function editHomePageInvestmentSectionImg(){
+      $('.edit-homepg-investment-img').click(function(e){
+        $('#investment_page_image').val('');
+        $('#investment_page_image').trigger('click')
+      });
+      $('#investment_page_image').change(function(event){
+        if($('#investment_page_image').val() != ''){
+          var formData = new FormData();
+          formData.append('investment_page_image', $('#investment_page_image')[0].files[0]);
+          $('.loader-overlay').show();
+          $.ajax({
+            url: '/configuration/uploadHomePgInvestmentImage',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false
+          }).done(function(data){
+            if(data.status == 1){
               console.log(data);
-            });
-          }
+              var imgPath = data.destPath+data.fileName;
+              var str1 = $('<div class="col-sm-9" id="homepg_investment_img"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_Investment_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
 
-          function editInvestmentTitleText1(){
-            $('.show-investment-title1-edit-box').click(function(){
-              $('.investment-title1-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1') }}" method="POST">{{csrf_field()}}<input type="text" class="form-control" name="investment_title_text1" id="investment_title_text1" placeholder="Enter Title" style="width: 60%; float: left;">&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-text" style="padding: 10px;">Save</button></form></div>');
-              $('#investment_title_text1').val('@if($siteConfiguration->investment_title_text1 != '') {!! nl2br(e($siteConfiguration->investment_title_text1)) !!} @endif').select();
-              $('.submit-investment-title1-text').click(function(e){
-                if($('#investment_title_text1').val()==''){
-                  e.preventDefault();
-                  $('.investment-title1-error').html('Title Text cant be empty.');
-                  
-                }
+              $('#image_cropbox_container').html(str1);
+              $('#myModal').modal({
+                'show': true,
+                'backdrop': false,
               });
-            });
-          }
 
-          function editInvestmentTitle1Description(){
-            $('.show-investment-title1-desc-edit-box').click(function(){
-              $('.investment-title1-description-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-desc-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1Description') }}" method="POST">{{csrf_field()}}<textarea class="form-control" name="investment_title1_description" id="investment_title1_description" rows="5" placeholder="You Can Add Description Here" style="width: 80%; float: left;"></textarea>&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-desc" style="padding: 10px;">Save</button></form></div>');
-              var str1 = $.trim($('#hiddent_investment_title1_description').val()).replace(/\r?\n|\r/g, "");
-              console.log(str1);
-              $('#investment_title1_description').val(str1.replace(/<br ?\/?>/g, "\n"));
-              $('.submit-investment-title1-desc').click(function(e){
-                if($('#investment_title1_description').val()==''){
-                  e.preventDefault();
-                  $('.investment-title1-desc-error').html('Description cant be empty.');
-                  
-                }
-              });
-            });
-          }
-
-          function editHomePageInvestmentSectionImg(){
-            $('.edit-homepg-investment-img').click(function(e){
-              $('#investment_page_image').val('');
-              $('#investment_page_image').trigger('click')
-            });
-            $('#investment_page_image').change(function(event){
-              if($('#investment_page_image').val() != ''){
-                var formData = new FormData();
-                formData.append('investment_page_image', $('#investment_page_image')[0].files[0]);
-                $('.loader-overlay').show();
-                $.ajax({
-                  url: '/configuration/uploadHomePgInvestmentImage',
-                  type: 'POST',
-                  dataType: 'JSON',
-                  data: formData,
-                  headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                $('#image_crop').val(imgPath); //set hidden image value
+                $('#image_crop').attr('action', 'investment image');
+                var target_width = 171;
+                var target_height = 220;
+                var origWidth = data.origWidth;
+                var origHeight = data.origHeight;
+                $('#image_cropbox').Jcrop({
+                  boxWidth: 530,
+                  aspectRatio: 171/220,
+                  keySupport: false,
+                  setSelect: [0, 0, target_width, target_height],
+                  bgColor: '',
+                  onSelect: function(c) {
+                    updateCoords(c, target_width, target_height, origWidth, origHeight);
                   },
-                  contentType: false,
-                  processData: false
-                }).done(function(data){
-                  if(data.status == 1){
-                    console.log(data);
-                    var imgPath = data.destPath+data.fileName;
-                    var str1 = $('<div class="col-sm-9" id="homepg_investment_img"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_Investment_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
-
-                    $('#image_cropbox_container').html(str1);
-                    $('#myModal').modal({
-                      'show': true,
-                      'backdrop': false,
-                    });
-
-                      $('#image_crop').val(imgPath); //set hidden image value
-                      $('#image_crop').attr('action', 'investment image');
-                      var target_width = 171;
-                      var target_height = 220;
-                      var origWidth = data.origWidth;
-                      var origHeight = data.origHeight;
-                      $('#image_cropbox').Jcrop({
-                        boxWidth: 530,
-                        aspectRatio: 171/220,
-                        keySupport: false,
-                        setSelect: [0, 0, target_width, target_height],
-                        bgColor: '',
-                        onSelect: function(c) {
-                          updateCoords(c, target_width, target_height, origWidth, origHeight);
-                        },
-                        onChange: function(c) {
-                          updateCoords(c, target_width, target_height, origWidth, origHeight);
-                        },onRelease: setSelect,
-                        minSize: [target_width, target_height],
-                      });
-                      $('.loader-overlay').hide();
-                    }
-                    else{
-                      $('.loader-overlay').hide();
-                      $('#investment_page_image, #investment_page_image_name').val('');
-                      alert(data.message);
-                    }
-                  });
+                  onChange: function(c) {
+                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                  },onRelease: setSelect,
+                  minSize: [target_width, target_height],
+                });
+                $('.loader-overlay').hide();
+              }
+              else{
+                $('.loader-overlay').hide();
+                $('#investment_page_image, #investment_page_image_name').val('');
+                alert(data.message);
               }
             });
-          }
+        }
+      });
+    }
 
-          function editHowItWorksSectionContent(){
-            $('.show-how-it-works-contents-edit-box').click(function(){
-              $('.how-it-works-title1-section').html('<input type="text" name="how_it_works_title1" class="form-control" value="{!!$siteConfiguration->how_it_works_title1!!}"></input>');
-              $('.how-it-works-title2-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title2!!}" name="how_it_works_title2" class="form-control"></input>');
-              $('.how-it-works-title3-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title3!!}" name="how_it_works_title3" class="form-control"></input>');
-              $('.how-it-works-title4-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title4!!}" name="how_it_works_title4" class="form-control"></input>');
-              $('.how-it-works-title5-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title5!!}" name="how_it_works_title5" class="form-control"></input>');
-              $('.how-it-works-desc1-section').html('<textarea name="how_it_works_desc1" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc1!!}</textarea>');
-              $('.how-it-works-desc2-section').html('<textarea name="how_it_works_desc2" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc2!!}</textarea>');
-              $('.how-it-works-desc3-section').html('<textarea name="how_it_works_desc3" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc3!!}</textarea>');
-              $('.how-it-works-desc4-section').html('<textarea name="how_it_works_desc4" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc4!!}</textarea>');
-              $('.how-it-works-desc5-section').html('<textarea name="how_it_works_desc5" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc5!!}</textarea><br><button type="Submit" class="btn-default save-how-it-works-content">Save</button>');
-            });
-          }
+    function editHowItWorksSectionContent(){
+      $('.show-how-it-works-contents-edit-box').click(function(){
+        $('.how-it-works-title1-section').html('<input type="text" name="how_it_works_title1" class="form-control" value="{!!$siteConfiguration->how_it_works_title1!!}"></input>');
+        $('.how-it-works-title2-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title2!!}" name="how_it_works_title2" class="form-control"></input>');
+        $('.how-it-works-title3-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title3!!}" name="how_it_works_title3" class="form-control"></input>');
+        $('.how-it-works-title4-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title4!!}" name="how_it_works_title4" class="form-control"></input>');
+        $('.how-it-works-title5-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title5!!}" name="how_it_works_title5" class="form-control"></input>');
+        $('.how-it-works-desc1-section').html('<textarea name="how_it_works_desc1" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc1!!}</textarea>');
+        $('.how-it-works-desc2-section').html('<textarea name="how_it_works_desc2" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc2!!}</textarea>');
+        $('.how-it-works-desc3-section').html('<textarea name="how_it_works_desc3" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc3!!}</textarea>');
+        $('.how-it-works-desc4-section').html('<textarea name="how_it_works_desc4" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc4!!}</textarea>');
+        $('.how-it-works-desc5-section').html('<textarea name="how_it_works_desc5" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc5!!}</textarea><br><button type="Submit" class="btn-default save-how-it-works-content">Save</button>');
+      });
+    }
 
-          function editHowItWorksSectionImages(){
-            var imgAction = '';
-            $('.edit-how-it-works-img1, .edit-how-it-works-img2, .edit-how-it-works-img3, .edit-how-it-works-img4, .edit-how-it-works-img5').click(function(e){
-              imgAction = $(this).attr('action');
-              $('#how_it_works_image, #how_it_works_image_name').val('');
-              $('#how_it_works_image').trigger('click');
-            });
-            $('#how_it_works_image').change(function(event){
-              if($('#how_it_works_image').val() != ''){
-                var formData = new FormData();
-                formData.append('how_it_works_image', $('#how_it_works_image')[0].files[0]);
-                formData.append('imgAction', imgAction);
-                $('.loader-overlay').show();
-                $.ajax({
-                  url: '/configuration/uploadHowItWorksImages',
-                  type: 'POST',
-                  dataType: 'JSON',
-                  data: formData,
-                  headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  },
-                  contentType: false,
-                  processData: false
-                }).done(function(data){
-                  if(data.status == 1){
-                    console.log(data);
-                    var imgPath = data.destPath+data.fileName;
-                    var str1 = $('<div class="col-sm-8" id="how_it_works_img"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_how_it_works_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+    function editHowItWorksSectionImages(){
+      var imgAction = '';
+      $('.edit-how-it-works-img1, .edit-how-it-works-img2, .edit-how-it-works-img3, .edit-how-it-works-img4, .edit-how-it-works-img5').click(function(e){
+        imgAction = $(this).attr('action');
+        $('#how_it_works_image, #how_it_works_image_name').val('');
+        $('#how_it_works_image').trigger('click');
+      });
+      $('#how_it_works_image').change(function(event){
+        if($('#how_it_works_image').val() != ''){
+          var formData = new FormData();
+          formData.append('how_it_works_image', $('#how_it_works_image')[0].files[0]);
+          formData.append('imgAction', imgAction);
+          $('.loader-overlay').show();
+          $.ajax({
+            url: '/configuration/uploadHowItWorksImages',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false
+          }).done(function(data){
+            if(data.status == 1){
+              console.log(data);
+              var imgPath = data.destPath+data.fileName;
+              var str1 = $('<div class="col-sm-8" id="how_it_works_img"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_how_it_works_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
 
-                    $('#image_cropbox_container').html(str1);
-                    $('#myModal').modal({
-                      'show': true,
-                      'backdrop': false,
-                    });
-
-                  $('#image_crop').val(imgPath); //set hidden image value
-                  $('#image_crop').attr('action', 'howItWorks image');
-                  $('#image_action').val(imgAction);
-                  var target_width = 200;
-                  var target_height = 200;
-                  var origWidth = data.origWidth;
-                  var origHeight = data.origHeight;
-                  $('#image_cropbox').Jcrop({
-                    boxWidth: 530,
-                    aspectRatio: 1,
-                    keySupport: false,
-                    setSelect: [0, 0, target_width, target_height],
-                    bgColor: '',
-                    onSelect: function(c) {
-                      updateCoords(c, target_width, target_height, origWidth, origHeight);
-                    },
-                    onChange: function(c) {
-                      updateCoords(c, target_width, target_height, origWidth, origHeight);
-                    },onRelease: setSelect,
-                    minSize: [target_width, target_height],
-                  });
-                  $('.loader-overlay').hide();
-                }
-                else{
-                  $('.loader-overlay').hide();
-                  $('#how_it_works_image, #how_it_works_image_name').val('');
-                  alert(data.message);
-                }
+              $('#image_cropbox_container').html(str1);
+              $('#myModal').modal({
+                'show': true,
+                'backdrop': false,
               });
-              }            
+
+            $('#image_crop').val(imgPath); //set hidden image value
+            $('#image_crop').attr('action', 'howItWorks image');
+            $('#image_action').val(imgAction);
+            var target_width = 200;
+            var target_height = 200;
+            var origWidth = data.origWidth;
+            var origHeight = data.origHeight;
+            $('#image_cropbox').Jcrop({
+              boxWidth: 530,
+              aspectRatio: 1,
+              keySupport: false,
+              setSelect: [0, 0, target_width, target_height],
+              bgColor: '',
+              onSelect: function(c) {
+                updateCoords(c, target_width, target_height, origWidth, origHeight);
+              },
+              onChange: function(c) {
+                updateCoords(c, target_width, target_height, origWidth, origHeight);
+              },onRelease: setSelect,
+              minSize: [target_width, target_height],
             });
+            $('.loader-overlay').hide();
           }
-        </script>
-      </body>
-    </Html>
+          else{
+            $('.loader-overlay').hide();
+            $('#how_it_works_image, #how_it_works_image_name').val('');
+            alert(data.message);
+          }
+        });
+        }            
+      });
+    }
+    function editFundingSectionContent(){
+      $('.show-funding-section-text-edit-box').click(function(){
+          $('.funding-section-title1-field').html('<textarea class="form-control" rows="3" name="funding_section_title1" id="funding_section_title1" placeholder="Funding type 1 text"></textarea>');
+          var str1 = $.trim($('#hidden_funding_section_title1').val()).replace(/\r?\n|\r/g, "");
+          $('#funding_section_title1').val(str1.replace(/<br ?\/?>/g, "\n"));
+          
+          $('.funding-section-title2-field').html('<textarea class="form-control" rows="3" name="funding_section_title2" id="funding_section_title2" placeholder="Funding type 2 text"></textarea>');
+          var str2 = $.trim($('#hidden_funding_section_title2').val()).replace(/\r?\n|\r/g, "");
+          $('#funding_section_title2').val(str2.replace(/<br ?\/?>/g, "\n"));
+
+          $('.funding-section-btn1-field').html('<small>Funding Type1 Button text</small><input type="text" name="funding_section_btn1_text" id="funding_section_btn1_text" class="form-control" placeholder="Funding type 1 button text" value="{!!$siteConfiguration->funding_section_btn1_text!!}">');
+          $('.funding-section-btn2-field').html('<small>Funding Type2 Button text</small><input type="text" name="funding_section_btn2_text" id="funding_section_btn2_text" class="form-control" placeholder="Funding type 2 button text" value="{!!$siteConfiguration->funding_section_btn2_text!!}"><br><small class="funding-section-error" style="font-size:11px;color:#d30000;"></small><br><button type="Submit" class="btn btn-primary" id="save_funding_section_details">Save Details</button>');
+          $('#save_funding_section_details').click(function(e){
+              if(($('#funding_section_title1').val()=='') || ($('#funding_section_title2').val()=='') || ($('#funding_section_btn1_text').val()=='') || ($('#funding_section_btn2_text').val()=='')){
+                  e.preventDefault();
+                  $('.funding-section-error').html('All fields are mandatory');
+              }
+          });
+      });
+    }
+  </script>
+</body>
+</Html>

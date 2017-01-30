@@ -97,6 +97,18 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc5')) {
                 $table->string('how_it_works_desc5')->default('Monitor your projects progress online and receive payments as specified in the offer, all from the comfort of your home!');
             }
+            if (!Schema::hasColumn('site_configurations', 'funding_section_title1')) {
+                $table->string('funding_section_title1')->default('Developer or Business looking for funding?');
+            }
+            if (!Schema::hasColumn('site_configurations', 'funding_section_title2')) {
+                $table->string('funding_section_title2')->default('Are you an investor looking for investment opportunities?');
+            }
+            if (!Schema::hasColumn('site_configurations', 'funding_section_btn1_text')) {
+                $table->string('funding_section_btn1_text')->default('Submit Venture');
+            }
+            if (!Schema::hasColumn('site_configurations', 'funding_section_btn2_text')) {
+                $table->string('funding_section_btn2_text')->default('View Venture');
+            }
         });
     }
 
@@ -191,6 +203,18 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'how_it_works_desc5')) {
                 $table->dropColumn('how_it_works_desc5');
+            }
+            if (Schema::hasColumn('site_configurations', 'funding_section_title1')) {
+                $table->dropColumn('funding_section_title1');
+            }
+            if (Schema::hasColumn('site_configurations', 'funding_section_title2')) {
+                $table->dropColumn('funding_section_title2');
+            }
+            if (Schema::hasColumn('site_configurations', 'funding_section_btn1_text')) {
+                $table->dropColumn('funding_section_btn1_text');
+            }
+            if (Schema::hasColumn('site_configurations', 'funding_section_btn2_text')) {
+                $table->dropColumn('funding_section_btn2_text');
             }
         });
     }

@@ -111,7 +111,7 @@ Configuration | Dashboard | @parent
 										<input type="text" class="form-control" id="favicon_image_name" name="favicon_image_name" readonly>
 									</div>
 	                        		<br>
-	                        		{!! Form::submit('Save Favicon', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_favicon_btn')) !!}
+	                        		{!! Form::button('Upload Image', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_favicon_btn')) !!}
                         		{!! Form::close() !!}
                         	</div>
                         </div>
@@ -142,6 +142,34 @@ Configuration | Dashboard | @parent
                         		{!! Form::close() !!}
                         	</div>
                         </div>
+                    </div>
+                </div>      
+            </div>
+        </div>
+        <!-- Favicon Crop modal -->
+        <div class="modal fade" id="image_crop_modal" role="dialog" style="overflow: scroll;">
+            <div class="modal-dialog" style="min-width: 800px;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Crop Image</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
+                        <!-- Hidden Fields to refer for JCrop -->
+                        <input type="hidden" name="image_crop" id="image_crop" value="" action="">
+                        <input type="hidden" name="image_action" id="image_action" value="">
+                        <input type="hidden" name="x_coord" id="x_coord" value="">
+                        <input type="hidden" name="y_coord" id="y_coord" value="">
+                        <input type="hidden" name="w_target" id="w_target" value="">
+                        <input type="hidden" name="h_target" id="h_target" value="">
+                        <input type="hidden" name="orig_width" id="orig_width" value="">
+                        <input type="hidden" name="orig_height" id="orig_height" value="">
                     </div>
                 </div>      
             </div>
@@ -200,11 +228,151 @@ Configuration | Dashboard | @parent
 
 		$('#submit_favicon_btn').click(function(e){
 			if($('#favicon_image_url').val() == ''){
-				e.preventDefault();
 				$('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>No Image selected</h6></div>');
 			}
-			console.log($('#favicon_image_url').val());
+			else{
+				var formData = new FormData();
+                formData.append('favicon_image_url', $('#favicon_image_url')[0].files[0]);
+                $('.loader-overlay').show();
+                $.ajax({
+                    url: '/configuration/updateFavicon',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    contentType: false,
+                    processData: false
+                }).done(function(data){
+                	if(data.status == 1){
+                            console.log(data);
+                            var imgPath = data.fileName;
+                            var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_favicon_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+                            $('#image_cropbox_container').html(str1);
+                            $('#favicon_edit_modal').modal('hide');
+                            $('#image_crop_modal').modal({
+                                'show': true,
+                                'backdrop': false,
+                            });
+
+                            $('#image_crop').val(imgPath); //set hidden image value
+                            $('#image_crop').attr('action', 'favicon image');
+                            var target_width = 150;
+                            var target_height = 150;
+                            var origWidth = data.origWidth;
+                            var origHeight = data.origHeight;
+                            $('#image_cropbox').Jcrop({
+                                boxWidth: 530,
+                                aspectRatio: 1,
+                                keySupport: false,
+                                setSelect: [0, 0, target_width, target_height],
+                                bgColor: '',
+                                onSelect: function(c) {
+                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                },
+                                onChange: function(c) {
+                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                },onRelease: setSelect,
+                                minSize: [target_width, target_height],
+                            });
+                            $('.loader-overlay').hide();
+                        }
+                        else{
+                          $('.loader-overlay').hide();
+                          $('#favicon_image_url, #favicon_image_name').val('');
+                          $('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
+                        }
+                });
+			}
+			performCropOnImage();
 		});
 	});
+
+	function updateCoords(coords, w, h, origWidth, origHeight){
+	    var target_width= w;
+	    var target_height=h;
+        //Set New Coordinates
+        $('#x_coord').val(coords.x);
+        $('#y_coord').val(coords.y);
+        $('#w_target').val(coords.w);
+        $('#h_target').val(coords.h);
+        $('#orig_width').val(origWidth);
+        $('#orig_height').val(origHeight);
+
+        // showPreview(coordinates)
+        $("<img>").attr("src", $('#image_cropbox').attr("src")).load(function(){
+            var rx = target_width / coords.w;
+            var ry = target_height / coords.h;
+
+            var realWidth = this.width;
+            var realHeight = this.height;
+
+            var newWidth = 530;
+            var newHeight = (realHeight/realWidth)*newWidth;
+            
+            $('#preview_image').css({
+                width: Math.round(rx*newWidth)+'px',
+                height: Math.round(ry*newHeight)+'px',
+                marginLeft: '-'+Math.round(rx*coords.x)+'px',
+                marginTop: '-'+Math.round(ry*coords.y)+'px',
+            });
+
+        });
+    }
+
+    function setSelect(coords){
+        jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
+    }
+
+    function performCropOnImage(){
+        $('#perform_crop_btn').click(function(e){
+            $('.loader-overlay').show();
+            var imageName = $('#image_crop').val();
+            var imgAction = $('#image_crop').attr('action');
+            var xValue = $('#x_coord').val();
+            var yValue = $('#y_coord').val();
+            var wValue = $('#w_target').val();
+            var hValue = $('#h_target').val();
+            var origWidth = $('#orig_width').val();
+            var origHeight = $('#orig_height').val();
+            var hiwImgAction = $('#image_action').val();
+            console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+            $.ajax({
+                url: '/configuration/cropUploadedImage',
+                type: 'POST',
+                data: {
+                    imageName: imageName,
+                    imgAction: imgAction,
+                    xValue: xValue,
+                    yValue: yValue,
+                    wValue: wValue,
+                    hValue: hValue,
+                    origWidth: origWidth,
+                    origHeight: origHeight,
+                    hiwImgAction: hiwImgAction,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function(data){
+                console.log(data);
+                if(data.status){
+                    $('#image_crop').val(data.imageSource);
+                    location.reload('/');
+                }
+                else{
+                    $('.loader-overlay').hide();
+                    $('#image_crop_modal').modal('toggle');
+                    if (imgAction == 'favicon image'){
+                      	$('#favicon_image_url, #favicon_image_name').val('');
+                  	}
+                  	alert(data.message);
+                }
+            
+        	});
+        });
+    }
 </script>
 @stop

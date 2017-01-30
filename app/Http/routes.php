@@ -188,3 +188,4 @@ Route::post('/configuration/uploadHowItWorksImages', ['as'=>'configuration.uploa
 Route::post('/siteconfiguration/progress/{id}/details', ['as'=>'configuration.addprogress','uses'=>'SiteConfigurationsController@addProgressDetails']);
 Route::post('/configuration/updateProjectDetails', ['as'=>'configuration.updateProjectDetails', 'uses'=>'SiteConfigurationsController@updateProjectDetails']);
 Route::post('/configuration/uploadProjectPgBackImg', ['as'=>'configuration.uploadProjectPgBackImg', 'uses'=>'SiteConfigurationsController@uploadProjectPgBackImg']);
+Route::post('/configuration/editHomePgFundingSectionContent', ['as'=>'configuration.editHomePgFundingSectionContent', 'uses'=>'SiteConfigurationsController@editHomePgFundingSectionContent']);

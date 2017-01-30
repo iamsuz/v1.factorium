@@ -451,6 +451,38 @@ class SiteConfigurationsController extends Controller
                         return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                     }
                 }
+                else if ($request->imgAction == 'favicon image'){
+                    $extension = strtolower(File::extension($src));
+                    $img = '';
+                    $result = false;
+                    $rw = 200;
+                    $rh = 200;
+                    //Create new coords for image.
+                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                    if($extension == 'png'){
+                        $quality = 9;
+                        $img  = imagecreatefrompng(public_path('/'.$src));
+                        $dest = ImageCreateTrueColor($rw, $rh);
+                        //Removing black background
+                        imagealphablending($dest, FALSE);
+                        imagesavealpha($dest, TRUE);
+                        imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                        $result = imagepng($dest, $src, $quality);
+                    }
+                    if($result){
+                        Image::make($src)->save(public_path('/favicon.png'));
+                        File::delete($src);
+                        Session::flash('message', 'Favicon Updated Successfully');
+                        Session::flash('action', 'site-favicon');
+                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                    } else{
+                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                    }
+                }
                 else {}
             }
         }
@@ -533,23 +565,48 @@ class SiteConfigurationsController extends Controller
     public function updateFavicon(Request $request)
     {
         if (Auth::user()->roles->contains('role', 'superadmin')){
-            $this->validate($request, array(
-            'favicon_image_url'   => 'required|mimes:png',
-            ));
-            $destinationPath = public_path('/');
+            // $this->validate($request, array(
+            // 'favicon_image_url'   => 'required|mimes:png',
+            // ));
+            // $destinationPath = public_path('/');
+        
+            // if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
+            //     Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
+            //         $constraint->aspectRatio();
+            //     })->save();
+            //     $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
+            //     $fileName = 'favicon.'.$fileExt;
+            //     $uploadStatus = $request->file('favicon_image_url')->move($destinationPath, $fileName);
+            //     if($uploadStatus){
+            //         Session::flash('message', 'Favicon Updated Successfully');
+            //         Session::flash('action', 'site-favicon');
+            //     }
+            //     return redirect()->back();
+            // }
+
+            $validation_rules = array(
+                'favicon_image_url'   => 'required|mimes:png',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
+            }
+            $destinationPath = '/';
         
             if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
                 Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
                     $constraint->aspectRatio();
                 })->save();
                 $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
-                $fileName = 'favicon.'.$fileExt;
-                $uploadStatus = $request->file('favicon_image_url')->move($destinationPath, $fileName);
+                $fileName = 'favicon'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('favicon_image_url')->move(public_path($destinationPath), $fileName);
+                list($origWidth, $origHeight) = getimagesize(public_path($destinationPath).$fileName);
                 if($uploadStatus){
-                    Session::flash('message', 'Favicon Updated Successfully');
-                    Session::flash('action', 'site-favicon');
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
                 }
-                return redirect()->back();
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
             }
         }        
     }
@@ -868,5 +925,22 @@ class SiteConfigurationsController extends Controller
                 }
             }
         }
+    }
+    
+    public function editHomePgFundingSectionContent(Request $request)
+    {
+        $this->validate($request, array(
+            'funding_section_title1' => 'required',
+            'funding_section_title2' => 'required',
+            'funding_section_btn1_text' => 'required',
+            'funding_section_btn2_text' => 'required',
+            ));
+        SiteConfiguration::first()->update([
+            'funding_section_title1' => $request->funding_section_title1,
+            'funding_section_title2' => $request->funding_section_title2,
+            'funding_section_btn1_text' => $request->funding_section_btn1_text,
+            'funding_section_btn2_text' => $request->funding_section_btn2_text,
+            ]);
+        return redirect()->back();
     }
 }

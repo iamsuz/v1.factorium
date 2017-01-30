@@ -24,8 +24,8 @@ Login | @parent
 					@endif
 					<br>
 					<div class="text-left">
-						<h1 class="wow fadeIn animated font-bold" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">Login</h1>
-						<h3 class="font-regular" style="font-size:1.375em;">Sign in to see the current opportunities </h3>
+						<h1 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">Login</h1>
+						<h3 class="font-regular first_color" style="font-size:1.375em;">Sign in to see the current opportunities </h3>
 						<br>
 					</div>
 				</div>
@@ -33,7 +33,7 @@ Login | @parent
 			<div class="row">
 				<div class="col-md-6">
 					<section id="loginForm" style="padding:0 10px;">
-						<h4 class="font-bold" style="font-size:1.125em; color:#2d2d4b;">Login with email</h4>
+						<h4 class="font-bold first_color" style="font-size:1.125em; color:#2d2d4b;">Login with email</h4>
 						{!! Form::open(array( 'route'=>'users.auth', 'class'=>'form-horizontal', 'role'=>'form' )) !!}
 						<fieldset>
 							<div class="form-group <?php if($errors->first('email')){echo 'has-error';}?> has-feedback">
@@ -46,20 +46,20 @@ Login | @parent
 							</div>
 							<input type="hidden" value="" id="next" name="next">
 							<div class="form-group" style="width:50%;">
-								{!! Form::submit('Login', array('class'=>'btn btn-block', 'tabindex'=>'4','style'=>'border-radius:0px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
+								{!! Form::submit('Login', array('class'=>'btn btn-block second_color_btn', 'tabindex'=>'4','style'=>'border-radius:0px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
 							</div>
 							<p class="text-left" style="margin-left: -25px"> <a class="btn btn-link" href="{{ url('/password/email') }}"> Forgot Your Password?</a></p>
 						</fieldset>
 						{!! Form::close() !!}
 						<br>
-						<h4 class="text-left font-regular" style="margin-left: -15px; font-size:1.375em;color:#2d2a6e;">Don't have an account yet? 
+						<h4 class="text-left font-regular first_color" style="margin-left: -15px; font-size:1.375em;color:#2d2a6e;">Don't have an account yet? 
 							<b>{!! Html::linkRoute('users.create', 'Register here') !!}</b>
 						</h4>
 					</section>
 				</div>
 				<div class="col-md-3" style="position:relative;">
 					<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;margin-left:-25px;">
-						<img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}"/> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
+						<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
 					</div>
 					<br><br>
 					<br><br>
