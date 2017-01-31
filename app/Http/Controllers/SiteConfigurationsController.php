@@ -17,6 +17,7 @@ use File;
 use Illuminate\Support\Facades\Storage;
 use App\SiteConfiguration;
 use App\Investment;
+use App\SiteConfigMedia;
 
 
 class SiteConfigurationsController extends Controller
@@ -231,12 +232,32 @@ class SiteConfigurationsController extends Controller
                     }
                     if($result){
                         // dd($extension);
+                        $saveLoc = 'assets/images/media/home_page/';
+                        $finalFile = 'main_bg_'.time().'.png';
+                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
                         if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path('assets/images/main_bg.png'));
+                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
                         }
                         else{
-                            Image::make($src)->save(public_path('assets/images/main_bg.png'));
+                            Image::make($src)->save(public_path($saveLoc.$finalFile));
                         }
+                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                        // $siteMedia = SiteConfigMedia::first(array('site_configuration_id' => $siteConfigurationId, 'type' => 'homepg_back_img'));
+                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                            ->where('type','homepg_back_img')
+                            ->first();
+                        if($siteMedia){
+                            File::delete(public_path($siteMedia->path.$siteMedia->filename));    
+                        }
+                        else{
+                            $siteMedia = new SiteConfigMedia;
+                            $siteMedia->site_configuration_id = $siteConfigurationId;
+                            $siteMedia->type = 'homepg_back_img';
+                            $siteMedia->caption = 'Home Page Main fold Back Image';
+                        }
+                        $siteMedia->filename = $finalFile;
+                        $siteMedia->path = $finalpath;
+                        $siteMedia->save();
                         File::delete($src);
                         return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                     } else{

@@ -174,7 +174,15 @@
 </div>
 </nav>
 <!-- header content here -->
-<section id="promo" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities)) style="background: url({{asset('assets/images/main_bg.jpg')}}) 50% 0px repeat fixed; background-size:cover;" @endif @endif>
+@if($siteConfiguration->siteconfigmedia)
+@if($mainImg = $siteConfiguration->siteconfigmedia->where('type', 'homepg_back_img')->first())
+<section id="promo" style="background: url({{$mainImg->path}}) 50% 0px repeat fixed; background-size:cover;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
+@else
+<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}) 50% 0px repeat fixed; background-size:cover;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
+@endif
+@else
+<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}) 50% 0px repeat fixed; background-size:cover;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
+@endif
   <div class="color-overlay">
     <div class="content container" id="promo-content" style="padding-top:10%;">
       <!-- <img class="img-responsive" src="/assets/images/main_logo.png" alt="Vestabyte" width="250px" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:20px; margin-top:20px;"> -->
