@@ -7,7 +7,7 @@ class SiteConfigurationHelper
 {
     public static function getConfigurationAttr()
     {
-    	$siteConfiguration = SiteConfiguration::first();
+    	$siteConfiguration = SiteConfiguration::where('project_site', url())->first();
         return $siteConfiguration;
     }
 }
