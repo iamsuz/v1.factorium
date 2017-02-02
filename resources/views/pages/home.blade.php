@@ -303,7 +303,15 @@
             <input type="hidden" name="how_it_works_image_name" id="how_it_works_image_name">
             @endif
             @endif
+            @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+            @if($hiwimg = $siteConfigMedia->where('type', 'how_it_works_image1')->first())
+            <img src="{{asset($hiwimg->path)}}" class="img-responsive center-block"  width="200" height="200">
+            @else
             <img src="{{asset('assets/images/1.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
+            @else
+            <img src="{{asset('assets/images/1.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
             <h3 class="how-it-works-title1-section second_color">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif<br>&nbsp;</h3>
           </div>
           <p class="text-center how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){{$siteConfiguration->how_it_works_desc1}}@endif
@@ -317,7 +325,15 @@
             <div class="edit-button-style edit-how-it-works-img2" style="z-index: 10; position: inherit;" action="hiw_img2"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
+            @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+            @if($hiwimg = $siteConfigMedia->where('type', 'how_it_works_image2')->first())
+            <img src="{{asset($hiwimg->path)}}" class="img-responsive center-block"  width="200" height="200">
+            @else
             <img src="{{asset('assets/images/2.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
+            @else
+            <img src="{{asset('assets/images/2.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
             <h3 class="how-it-works-title2-section second_color">@if($siteConfiguration->how_it_works_title2 != ''){{$siteConfiguration->how_it_works_title2}}@endif<br>&nbsp;</h3>
           </div>
           <p class="text-center how-it-works-desc2-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){{$siteConfiguration->how_it_works_desc2}}@endif
@@ -331,7 +347,15 @@
             <div class="edit-button-style edit-how-it-works-img3" style="z-index: 10; position: inherit;" action="hiw_img3"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
+            @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+            @if($hiwimg = $siteConfigMedia->where('type', 'how_it_works_image3')->first())
+            <img src="{{asset($hiwimg->path)}}" class="img-responsive center-block"  width="200" height="200">
+            @else
             <img src="{{asset('assets/images/3.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
+            @else
+            <img src="{{asset('assets/images/3.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
             <h3 class="how-it-works-title3-section second_color">@if($siteConfiguration->how_it_works_title3 != ''){{$siteConfiguration->how_it_works_title3}}@endif</h3>
           </div>
           <p class="text-center how-it-works-desc3-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){{$siteConfiguration->how_it_works_desc3}}@endif
@@ -345,7 +369,15 @@
             <div class="edit-button-style edit-how-it-works-img4" style="z-index: 10; position: inherit;" action="hiw_img4"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
+            @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+            @if($hiwimg = $siteConfigMedia->where('type', 'how_it_works_image4')->first())
+            <img src="{{asset($hiwimg->path)}}" class="img-responsive center-block"  width="200" height="200">
+            @else
             <img src="{{asset('assets/images/4.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
+            @else
+            <img src="{{asset('assets/images/4.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
             <h3 class="how-it-works-title4-section second_color">@if($siteConfiguration->how_it_works_title4 != ''){{$siteConfiguration->how_it_works_title4}}@endif<br>&nbsp;</h3>
           </div>
           <p class="text-center how-it-works-desc4-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){{$siteConfiguration->how_it_works_desc4}}@endif
@@ -359,7 +391,15 @@
             <div class="edit-button-style edit-how-it-works-img5" style="z-index: 10; position: inherit;" action="hiw_img5"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
+            @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+            @if($hiwimg = $siteConfigMedia->where('type', 'how_it_works_image5')->first())
+            <img src="{{asset($hiwimg->path)}}" class="img-responsive center-block"  width="200" height="200">
+            @else
             <img src="{{asset('assets/images/5.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
+            @else
+            <img src="{{asset('assets/images/5.png')}}" class="img-responsive center-block"  width="200" height="200">
+            @endif
             <h3 class="how-it-works-title5-section second_color">@if($siteConfiguration->how_it_works_title5 != ''){{$siteConfiguration->how_it_works_title5}}@endif</h3>
           </div>
           <p class="text-center how-it-works-desc5-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc5 != ''){{$siteConfiguration->how_it_works_desc5}}@endif

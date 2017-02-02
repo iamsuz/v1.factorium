@@ -417,27 +417,51 @@ class SiteConfigurationsController extends Controller
                     }
                     $imgName = '';
                     if($request->hiwImgAction == 'hiw_img1'){
-                        $imgName = '1.png';
+                        $imgName = 'hiw_img1_'.time().'.png';
+                        $imgType = 'how_it_works_image1';
                     }
                     else if ($request->hiwImgAction == 'hiw_img2'){
-                        $imgName = '2.png';
+                        $imgName = 'hiw_img2_'.time().'.png';
+                        $imgType = 'how_it_works_image2';
                     }
                     else if ($request->hiwImgAction == 'hiw_img3'){
-                        $imgName = '3.png';
+                        $imgName = 'hiw_img3_'.time().'.png';
+                        $imgType = 'how_it_works_image3';
                     }
                     else if ($request->hiwImgAction == 'hiw_img4'){
-                        $imgName = '4.png';
+                        $imgName = 'hiw_img4_'.time().'.png';
+                        $imgType = 'how_it_works_image4';
                     }
                     else{
-                        $imgName = '5.png';
+                        $imgName = 'hiw_img5_'.time().'.png';
+                        $imgType = 'how_it_works_image5';
                     }
                     if($result){
+                        $saveLoc = 'assets/images/media/home_page/';
+                        $finalFile = $imgName;
+                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
                         if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path('assets/images/'.$imgName));
+                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
                         }
                         else{
-                            Image::make($src)->save(public_path('assets/images/'.$imgName));
+                            Image::make($src)->save(public_path($saveLoc.$finalFile));
                         }
+                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                            ->where('type',$imgType)
+                            ->first();
+                        if($siteMedia){
+                            File::delete(public_path($siteMedia->path));    
+                        }
+                        else{
+                            $siteMedia = new SiteConfigMedia;
+                            $siteMedia->site_configuration_id = $siteConfigurationId;
+                            $siteMedia->type = $imgType;
+                            $siteMedia->caption = 'Home Page How It works fold Image';
+                        }
+                        $siteMedia->filename = $finalFile;
+                        $siteMedia->path = $finalpath;
+                        $siteMedia->save();
                         File::delete($src);
                         return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                     } else{
