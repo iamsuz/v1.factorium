@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\SiteConfiguration;
 use App\Investment;
 use App\SiteConfigMedia;
+use App\Media;
 
 
 class SiteConfigurationsController extends Controller
@@ -469,6 +470,7 @@ class SiteConfigurationsController extends Controller
                     }
                 }
                 else if ($request->imgAction == 'projectPg back image'){
+                    $currentProjectId = $request->currentProjectId;
                     $extension = strtolower(File::extension($src));
                     $img = '';
                     $result = false;
@@ -519,12 +521,32 @@ class SiteConfigurationsController extends Controller
                             break;
                     }
                     if($result){
+                        $saveLoc = 'assets/images/media/project_page/';
+                        $finalFile = 'bgimage_sample_'.time().'.png';
+                        $finalpath = $saveLoc.$finalFile;
                         if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path('assets/images/bgimage_sample.png'));
+                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
                         }
                         else{
-                            Image::make($src)->save(public_path('assets/images/bgimage_sample.png'));
+                            Image::make($src)->save(public_path($saveLoc.$finalFile));
                         }
+                        $projectMedia = Media::where('project_id', $currentProjectId)
+                            ->where('project_site', url())
+                            ->where('type', 'projectpg_back_img')
+                            ->first();
+                        if($projectMedia){
+                            File::delete(public_path($projectMedia->path));    
+                        }
+                        else{
+                            $projectMedia = new Media;
+                            $projectMedia->project_id = $currentProjectId;
+                            $projectMedia->type = 'projectpg_back_img';
+                            $projectMedia->project_site = url();
+                            $projectMedia->caption = 'Project Page Main fold back Image';
+                        }
+                        $projectMedia->filename = $finalFile;
+                        $projectMedia->path = $finalpath;
+                        $projectMedia->save();
                         File::delete($src);
                         return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                     } else{

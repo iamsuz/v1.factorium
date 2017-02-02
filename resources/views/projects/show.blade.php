@@ -71,11 +71,12 @@ Private
 <a href="{{route('dashboard.projects.activate', [$project->id])}}"> Activate </a>
 @endif
 </u></a>
-<input type="hidden" name="current_project_id" value="{{$project->id}}">
+<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
 </div>
 @endif
 @endif
-<section style="background: @if($project->media->where('type', 'main_image')->last()) url({{asset($project->media->where('type', 'main_image')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
+<section style="background: @if($project->media->where('type', 'projectpg_back_img')->first()) url({{asset($project->media->where('type', 'projectpg_back_img')->first()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
+<!-- <section style="background: @if($project->media->where('type', 'main_image')->last()) url({{asset($project->media->where('type', 'main_image')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section"> -->
 	<div class="color-overlay">
 		<div class="container">
 			<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
@@ -1256,6 +1257,7 @@ Private
             var origWidth = $('#orig_width').val();
             var origHeight = $('#orig_height').val();
             var hiwImgAction = $('#image_action').val();
+            var currentProjectId = $('#current_project_id').val();
             console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
             $.ajax({
                 url: '/configuration/cropUploadedImage',
@@ -1270,6 +1272,7 @@ Private
                     origWidth: origWidth,
                     origHeight: origHeight,
                     hiwImgAction: hiwImgAction,
+                    currentProjectId: currentProjectId,
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
