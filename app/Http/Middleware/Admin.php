@@ -43,6 +43,11 @@ class Admin
                     return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">Admin Only</p>');
                 }
             }
+            else{
+                if($user->registration_site != url()){
+                    return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">You are not Admin for this site</p>');
+                }
+            }
         }
         return $next($request);
     }
