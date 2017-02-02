@@ -14,7 +14,15 @@
     @else
     <title>Best way to invest in Australian Real Estate Projects</title>
     @endif
+    @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+    @if($faviconImg=$siteConfigMedia->where('type', 'favicon_image_url')->first())
+    <link rel="shortcut icon" href="{{asset($faviconImg->path)}}?v=<?php echo filemtime($faviconImg->path); ?>" type="image/x-icon">
+    @else
     <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+    @endif
+    @else
+    <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+    @endif
     <!-- Open Graphic -->
     <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg">
     <meta property="og:site_name" content="Estate Baron" />
@@ -71,7 +79,15 @@
         <div class="container">
             <div class="logo pull-left">
                 <a href="{{route('home')}}">
-                    <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Vestabyte logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em;"></span>
+                    @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+                    @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
+                    <span class="logo-title"><img src="{{asset($mainLogo->path)}}" width="55%" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em;"></span>
+                    @else
+                    <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em;"></span>
+                    @endif
+                    @else
+                    <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em;"></span>
+                    @endif
                 </a>
             </div>
             <div class="navbar-header">
@@ -134,7 +150,15 @@
             <div class="row">
                 <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.2s">
                     <center>
-                        <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Vestabyte" width="200">
+                        @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+                        @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
+                        <img class="img-responsive" src="{{asset($mainLogo->path)}}" alt="Logo" width="200">
+                        @else
+                        <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Logo" width="200">
+                        @endif
+                        @else
+                        <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Logo" width="200">
+                        @endif
                     </center>
                 </div>
             </div>

@@ -168,9 +168,26 @@ class SiteConfigurationsController extends Controller
                     $newimage = imagepng($dest, $src, $quality);
                     if($newimage)
                     {
-                        Image::make($src)->resize(530, null, function($constraint){ $constraint->aspectRatio(); })->save(public_path('assets/images/vestabyte_logo.png'));
-                        Image::make($src)->resize(284, null, function($constraint){ $constraint->aspectRatio(); })->save(public_path('assets/images/header_logo.png'));
-                        Image::make($src)->resize(284, null, function($constraint){ $constraint->aspectRatio(); })->save(public_path('assets/images/main_logo.png'));
+                        $saveLoc = 'assets/images/media/home_page/';
+                        $finalFile = 'main_logo_'.time().'.png';
+                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                        Image::make($src)->resize(284, null, function($constraint){ $constraint->aspectRatio(); })->save(public_path($saveLoc.$finalFile));
+                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                            ->where('type','brand_logo')
+                            ->first();
+                        if($siteMedia){
+                            File::delete(public_path($siteMedia->path));    
+                        }
+                        else{
+                            $siteMedia = new SiteConfigMedia;
+                            $siteMedia->site_configuration_id = $siteConfigurationId;
+                            $siteMedia->type = 'brand_logo';
+                            $siteMedia->caption = 'Brand Logo';
+                        }
+                        $siteMedia->filename = $finalFile;
+                        $siteMedia->path = $finalpath;
+                        $siteMedia->save();
                         File::delete($src);
                         return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                     }
@@ -242,12 +259,11 @@ class SiteConfigurationsController extends Controller
                             Image::make($src)->save(public_path($saveLoc.$finalFile));
                         }
                         $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        // $siteMedia = SiteConfigMedia::first(array('site_configuration_id' => $siteConfigurationId, 'type' => 'homepg_back_img'));
                         $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
                             ->where('type','homepg_back_img')
                             ->first();
                         if($siteMedia){
-                            File::delete(public_path($siteMedia->path.$siteMedia->filename));    
+                            File::delete(public_path($siteMedia->path));    
                         }
                         else{
                             $siteMedia = new SiteConfigMedia;
@@ -317,12 +333,31 @@ class SiteConfigurationsController extends Controller
                     }
                     if($result){
                         // dd($extension);
+                        $saveLoc = 'assets/images/media/home_page/';
+                        $finalFile = 'Disclosure-250_'.time().'.png';
+                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
                         if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path('assets/images/Disclosure-250.png'));
+                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
                         }
                         else{
-                            Image::make($src)->save(public_path('assets/images/Disclosure-250.png'));
+                            Image::make($src)->save(public_path($saveLoc.$finalFile));
                         }
+                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                            ->where('type','investment_page_image')
+                            ->first();
+                        if($siteMedia){
+                            File::delete(public_path($siteMedia->path));    
+                        }
+                        else{
+                            $siteMedia = new SiteConfigMedia;
+                            $siteMedia->site_configuration_id = $siteConfigurationId;
+                            $siteMedia->type = 'investment_page_image';
+                            $siteMedia->caption = 'Home Page investment fold Image';
+                        }
+                        $siteMedia->filename = $finalFile;
+                        $siteMedia->path = $finalpath;
+                        $siteMedia->save();
                         File::delete($src);
                         return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                     } else{
@@ -495,7 +530,26 @@ class SiteConfigurationsController extends Controller
                         $result = imagepng($dest, $src, $quality);
                     }
                     if($result){
-                        Image::make($src)->save(public_path('/favicon.png'));
+                        $saveLoc = 'assets/images/media/home_page/';
+                        $finalFile = 'favicon_'.time().'.png';
+                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                        Image::make($src)->save(public_path($saveLoc.$finalFile));
+                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                            ->where('type','favicon_image_url')
+                            ->first();
+                        if($siteMedia){
+                            File::delete(public_path($siteMedia->path));    
+                        }
+                        else{
+                            $siteMedia = new SiteConfigMedia;
+                            $siteMedia->site_configuration_id = $siteConfigurationId;
+                            $siteMedia->type = 'favicon_image_url';
+                            $siteMedia->caption = 'Favicon Image';
+                        }
+                        $siteMedia->filename = $finalFile;
+                        $siteMedia->path = $finalpath;
+                        $siteMedia->save();
                         File::delete($src);
                         Session::flash('message', 'Favicon Updated Successfully');
                         Session::flash('action', 'site-favicon');
@@ -586,25 +640,6 @@ class SiteConfigurationsController extends Controller
     public function updateFavicon(Request $request)
     {
         if (Auth::user()->roles->contains('role', 'superadmin')){
-            // $this->validate($request, array(
-            // 'favicon_image_url'   => 'required|mimes:png',
-            // ));
-            // $destinationPath = public_path('/');
-        
-            // if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
-            //     Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
-            //         $constraint->aspectRatio();
-            //     })->save();
-            //     $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
-            //     $fileName = 'favicon.'.$fileExt;
-            //     $uploadStatus = $request->file('favicon_image_url')->move($destinationPath, $fileName);
-            //     if($uploadStatus){
-            //         Session::flash('message', 'Favicon Updated Successfully');
-            //         Session::flash('action', 'site-favicon');
-            //     }
-            //     return redirect()->back();
-            // }
-
             $validation_rules = array(
                 'favicon_image_url'   => 'required|mimes:png',
                 );

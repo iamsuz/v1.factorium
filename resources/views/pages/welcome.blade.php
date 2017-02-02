@@ -13,7 +13,15 @@ Sign Up | @parent
 		<div class="text-center wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding-top:6rem;">
 		<br>
 			<center>
-				<img class="img-responsive" src="{{asset('assets/images/vestabyte_logo.png')}}" alt="estate baron" width="350"></center>
+				@if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+                @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
+                <img class="img-responsive" src="{{asset($mainLogo->path)}}" alt="estate baron" width="350"></center>
+                @else
+                <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="estate baron" width="350"></center>
+                @endif
+                @else
+                <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="estate baron" width="350"></center>
+                @endif
 			</div>
 			<br>
 			<h1 class="text-center font-semibold" style="color: #fff;">Registered Members Only</h1>

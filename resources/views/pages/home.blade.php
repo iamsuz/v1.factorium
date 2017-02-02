@@ -15,7 +15,15 @@
   @else
   <title>Best way to invest in Australian Real Estate Projects</title>
   @endif
+  @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+  @if($faviconImg=$siteConfigMedia->where('type', 'favicon_image_url')->first())
+  <link rel="shortcut icon" href="{{asset($faviconImg->path)}}?v=<?php echo filemtime($faviconImg->path); ?>" type="image/x-icon">
+  @else
   <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+  @endif
+  @else
+  <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+  @endif
   <!-- <link rel="shortcut icon" href="/favicon.png" type="image/x-icon"> -->
   <!-- Open Graphic -->
   <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg" />
@@ -75,19 +83,31 @@
            <span class="icon-bar"></span>
            <span class="icon-bar"></span>
            <span class="icon-bar"></span>
-         </button>
-         <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{asset('assets/images/main_logo.png')}}" width="130" alt="Vestabyte logo" id="logo" style="margin-top:-5px;"></a>
-         <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="/assets/images/header_logo.png" alt="Vestabyte" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a>
-         @if(Auth::guest())
-         @else
-         @if(Auth::user()->roles->contains('role','superadmin'))
-         <div class="edit-button-style edit-brand-img" style="margin-left: 15px; margin-top: 50px; display: none;"><a data-toggle="tooltip" title="Edit"><i class="fa fa fa-edit fa-lg"></i></a></div>
-         <input class="hide" type="file" name="brand_logo" id="brand_logo">
-         <input type="hidden" name="brand_logo_name" id="brand_logo_name">
-         @endif
-         @endif
-       </div>
-       <div id="navbar" class="collapse navbar-collapse navbar-right" style="margin-top:10px;">
+          </button>
+          @if($siteConfiguration->siteconfigmedia)
+          @if($mainLogo = $siteConfiguration->siteconfigmedia->where('type', 'brand_logo')->first())
+            <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{$mainLogo->path}}" width="130" alt="Brand logo" id="logo" style="margin-top:-5px;"></a>
+            <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="{{$mainLogo->path}}" alt="Logo" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a>
+          @else
+            <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{asset('assets/images/main_logo.png')}}" width="130" alt="Brand logo" id="logo" style="margin-top:-5px;"></a>
+            <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="/assets/images/main_logo.png" alt="Logo" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a>
+          @endif
+          @else
+            <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{asset('assets/images/main_logo.png')}}" width="130" alt="Brand logo" id="logo" style="margin-top:-5px;"></a>
+            <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="/assets/images/main_logo.png" alt="Logo" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a>
+          @endif
+          <!-- <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{asset('assets/images/main_logo.png')}}" width="130" alt="Brand logo" id="logo" style="margin-top:-5px;"></a>
+          <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="/assets/images/header_logo.png" alt="Logo" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a> -->
+          @if(Auth::guest())
+          @else
+          @if(Auth::user()->roles->contains('role','superadmin'))
+          <div class="edit-button-style edit-brand-img" style="margin-left: 15px; margin-top: 50px; display: none;"><a data-toggle="tooltip" title="Edit"><i class="fa fa fa-edit fa-lg"></i></a></div>
+          <input class="hide" type="file" name="brand_logo" id="brand_logo">
+          <input type="hidden" name="brand_logo_name" id="brand_logo_name">
+          @endif
+          @endif
+        </div>
+      <div id="navbar" class="collapse navbar-collapse navbar-right" style="margin-top:10px;">
         <ul class="nav navbar-nav">
          <li class="active nav-item"><a href="{{route('home')}}/#promo" class="scrollto hide" id="nav_home">Home</a></li>
          <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto">How it works</a></li>
@@ -130,7 +150,15 @@
   <div class="container">
     <div class="logo pull-left">
       <a href="{{route('home')}}">
-       <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Vestabyte logo" id="logo" style="margin-top:10px;margin-bottom:10px;"></span>
+        @if($siteConfiguration->siteconfigmedia)
+        @if($mainLogo = $siteConfiguration->siteconfigmedia->where('type', 'brand_logo')->first())
+          <span class="logo-title"><img src="{{$mainLogo->path}}" width="55%" alt="Brand logo" id="logo" style="margin-top:10px;margin-bottom:10px;"></span>
+        @else
+          <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Brand logo" id="logo" style="margin-top:10px;margin-bottom:10px;"></span>
+        @endif
+        @else
+          <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Brand logo" id="logo" style="margin-top:10px;margin-bottom:10px;"></span>
+        @endif
      </a>
    </div><!--//logo-->
    <div class="navbar-header">
@@ -526,7 +554,16 @@
               @endif
               @endif
               <div class="col-md-12 col-sm-4 col-xs-4">
-                <center><img src="{{asset('assets/images/Disclosure-250.png')}}" alt="side image" class="security-image img-responsive" width="40%" style="padding-top:40px;">
+                <center>
+                @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
+                @if($InvestImg=$siteConfigMedia->where('type', 'investment_page_image')->first())
+                <img src="{{asset($InvestImg->path)}}" alt="side image" class="security-image img-responsive" width="40%" style="padding-top:40px;">
+                @else
+                <img src="{{asset('assets/images/Disclosure-250.png')}}" alt="side image" class="security-image img-responsive" width="40%" style="padding-top:40px;">
+                @endif
+                @else
+                <img src="{{asset('assets/images/Disclosure-250.png')}}" alt="side image" class="security-image img-responsive" width="40%" style="padding-top:40px;">
+                @endif
                 </center>
               </div>
             </div>
@@ -697,8 +734,15 @@
       <div class="row">
         <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.2s">
           <center>
-            <!-- <h1>Vestabyte</h1> -->
-            <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Vestabyte" width="200">
+            @if($siteConfiguration->siteconfigmedia)
+            @if($mainLogo = $siteConfiguration->siteconfigmedia->where('type', 'brand_logo')->first())
+            <img class="img-responsive" src="{{$mainLogo->path}}" alt="Logo" width="200">
+            @else
+            <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Logo" width="200">
+            @endif
+            @else
+            <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Logo" width="200">
+            @endif
           </center>
         </div>
       </div>
