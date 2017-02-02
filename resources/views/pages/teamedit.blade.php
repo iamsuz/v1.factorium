@@ -65,7 +65,7 @@ Edit | @parent
 			</div>
 		</fieldset>
 		{!! Form::close() !!}
-		@if($user->aboutUs)
+		@if($aboutus)
 		<h2>Founders</h2>
 		@if($member)
 		<div class="row">

@@ -47,7 +47,7 @@ class PagesController extends Controller
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
         if(Auth::guest()) {
-            $projects = Project::where(['active'=>'1','project_site'=>$url])->get();
+            $projects = Project::where(['active'=>'1','project_site'=>url()])->get();
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
@@ -233,8 +233,8 @@ class PagesController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $user_id = $user->id;
-        $aboutus = $user->aboutUs;
-        if($user->aboutUs)
+        $aboutus = Aboutus::where('project_site',url())->first();
+        if($aboutus)
         {
             $member = $aboutus->member;
             return view('pages.teamedit', compact('user','aboutus','member','color'));
@@ -254,6 +254,7 @@ class PagesController extends Controller
         $aboutus->main_heading = $request->main_heading;
         $aboutus->sub_heading = $request->sub_heading;
         $aboutus->content = $request->content;
+        $aboutus->project_site = url();
         $aboutus->save();
         Session::flash('message','Upadates Successfully');
         return redirect()->back();
