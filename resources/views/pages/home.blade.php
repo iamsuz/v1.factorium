@@ -1238,7 +1238,9 @@
 
       $('[data-toggle="tooltip"]').tooltip();
 
-      if($('#current_user_role').val() == 'superadmin'){
+      @if(Auth::guest())
+      @else
+      @if($superadmin_access == 1)
         $('.brand-big-image').on('mouseenter', function(event){
           $('.edit-brand-img').show('fade', {}, 500);
         });
@@ -1312,7 +1314,9 @@
         $('#modal_close_btn').click(function(e){
           $('#brand_logo, #brand_logo_name').val('');
         });
-      }
+      @endif
+      @endif
+
       $('#footer_color_btn').click(function(e){
         changeColor();
       });
