@@ -46,6 +46,7 @@ class PagesController extends Controller
         $color = Color::all();
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
+        $superadmin_access = 0;
         if(Auth::guest()) {
             $projects = Project::where(['active'=>'1','project_site'=>url()])->get();
             $currentUserRole = 'guest';
@@ -58,10 +59,8 @@ class PagesController extends Controller
                 $projects = Project::where(['active'=>'1','project_site'=>$url])->get();
             }
             if(Auth::user()->roles->contains('role','superadmin')){
-                $currentUserRole = 'superadmin';
-            }
-            else{
-                $currentUserRole = Auth::user()->roles->first()->role;
+                if($user->registration_site == url())
+                $superadmin_access = 1;
             }
         }
         $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
@@ -80,7 +79,7 @@ class PagesController extends Controller
             $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
             // dd($siteConfiguration);
         }
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color','superadmin_access'));
     }
 
     /**
@@ -129,7 +128,9 @@ class PagesController extends Controller
         $isAdmin = false;
         if(Auth::user()){
             if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'superadmin')){
-                $isAdmin = true;
+                if(Auth::user()->registration_site == url()){
+                    $isAdmin = true;
+                }
             }
         }
 
