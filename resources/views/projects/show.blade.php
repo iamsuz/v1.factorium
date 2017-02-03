@@ -29,6 +29,9 @@
 		-ms-filter: blur(5px);
 		filter: blur(5px);
 	}
+	.btn-hover-default-color:hover{
+      color: #fff !important;
+    }
 </style>
 @stop
 @section('content-section')
@@ -136,7 +139,7 @@ Private
 				<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
 					<br>
 					@if($project->investment)
-					<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center first_color second_color_btn @if(!$project->show_invest_now_button) disabled @endif" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+					<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center first_color second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 						@if($project->button_label)
 						<?php echo $project->button_label; ?>
 						@else

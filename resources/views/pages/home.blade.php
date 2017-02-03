@@ -56,6 +56,9 @@
   {!! Html::style('/assets/plugins/JCrop/css/jquery.Jcrop.css') !!}
 
   <style type="text/css">
+    .btn-hover-default-color:hover{
+      color: #fff !important;
+    }
   </style>
   {!! Html::script('assets/plugins/jscolor-2.0.4/jscolor.min.js') !!}
   <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
@@ -670,7 +673,7 @@
             <input type="hidden" id="hidden_funding_section_title1" value="@if($siteConfiguration->funding_section_title1 != '') {!! nl2br(e($siteConfiguration->funding_section_title1)) !!} @endif">
             <br>
             <div class="text-center funding-section-btn1-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                <a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn" style="padding: 8px 24px;font-size:22px;background-color:#fed405; color:#fff; border-radius:0px; letter-spacing:1px;">
+                <a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px;background-color:#fed405; border-radius:0px; letter-spacing:1px; color: #fff !important">
                 @if($siteConfiguration->funding_section_btn1_text != ''){!!$siteConfiguration->funding_section_btn1_text!!}@endif
                 </a>
             </div>
@@ -683,7 +686,7 @@
             <input type="hidden" id="hidden_funding_section_title2" value="@if($siteConfiguration->funding_section_title2 != '') {!! nl2br(e($siteConfiguration->funding_section_title2)) !!} @endif">
             <br>
             <div class="text-center funding-section-btn2-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn" style="padding: 8px 24px;font-size:22px; background-color:#fed405; color:#fff; border-radius:0px; letter-spacing:1px;">
+                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px; background-color:#fed405; border-radius:0px; letter-spacing:1px; color: #fff !important">
                 @if($siteConfiguration->funding_section_btn2_text != ''){!!$siteConfiguration->funding_section_btn2_text!!}@endif
                 </a>
             </div>
@@ -1229,7 +1232,7 @@
       $("a").mouseover(function() {
         $(this).css('color', '#{{$color->heading_color}}');
       }).mouseout(function() {
-        $(this).css('color', '');
+        $(this).css('color', '#fff');
       });
       @endif
       $('.scrollto').click(function(e) {

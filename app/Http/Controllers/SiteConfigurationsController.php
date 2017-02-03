@@ -1037,7 +1037,7 @@ class SiteConfigurationsController extends Controller
             'funding_section_btn1_text' => 'required',
             'funding_section_btn2_text' => 'required',
             ));
-        SiteConfiguration::first()->update([
+        SiteConfiguration::where('project_site', url())->first()->update([
             'funding_section_title1' => $request->funding_section_title1,
             'funding_section_title2' => $request->funding_section_title2,
             'funding_section_btn1_text' => $request->funding_section_btn1_text,

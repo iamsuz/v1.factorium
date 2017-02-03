@@ -159,7 +159,7 @@ footer {
 }
 a:hover {
 	text-decoration: none;
-	color: #efe92f !important;
+	color: #efe92f;
 }
 .panel-default {
 	border-color: #fff;
