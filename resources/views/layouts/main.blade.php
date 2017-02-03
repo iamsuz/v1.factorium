@@ -266,6 +266,11 @@
         $('.first_color').css('color', '#{{$color->nav_footer_color}}');
         $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
         $('.second_color').css('color','#{{$color->heading_color}}');
+        $("a").mouseover(function() {
+            $(this).css('color', '#{{$color->heading_color}}');
+        }).mouseout(function() {
+            $(this).css('color', '');
+        });
         @endif
     });
     function checkvalidi() {
