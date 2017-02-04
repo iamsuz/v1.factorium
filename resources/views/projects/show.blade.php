@@ -59,10 +59,10 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfXbxHUxjmBw-pW7cRIW6AsUv0wLk1Za0&callback=initMap" async defer></script>
 @if(Auth::guest())
 @else
-@if(Auth::user()->roles->contains('role','admin'))
+@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 <form method="POST" action="{{route('configuration.updateProjectDetails')}}">
 {{csrf_field()}}
-<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: -webkit-center;">
+<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
 <button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
 <button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br>
 <a href="" status="{{$project->active}}" style="color: #fff;"><u>
@@ -139,7 +139,7 @@ Private
 				<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
 					<br>
 					@if($project->investment)
-					<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center first_color second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+					<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 						@if($project->button_label)
 						<?php echo $project->button_label; ?>
 						@else
@@ -155,7 +155,7 @@ Private
 		</div>
 		@if(Auth::guest())
 	    @else
-	    @if(Auth::user()->roles->contains('role','superadmin'))
+	    @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
         <div class="col-md-12">
             <div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
             <span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
@@ -699,7 +699,7 @@ Private
 											<img src="{{asset('assets/images/default-male.png')}}" width="50" style="width:40px; height:50px;">
 										</div>
 										<div class="col-md-11">
-											<b>{{$comment->user->first_name}} {{$comment->user->last_name}}</b> . <span style="font-size: 0.7em; padding-left:5px;">{{$comment->updated_at->diffForHumans()}}</span> @if(!Auth::guest() && Auth::user()->roles->contains('role', 'admin'))<a href="{{route('projects.{projects}.comments.delete', [$project->id, $comment->id])}}"> <i class='fa fa-trash pull-right'></i> </a> @endif <br>
+											<b>{{$comment->user->first_name}} {{$comment->user->last_name}}</b> . <span style="font-size: 0.7em; padding-left:5px;">{{$comment->updated_at->diffForHumans()}}</span> @if(!Auth::guest() && App\Helpers\SiteConfigurationHelper::isSiteAdmin())<a href="{{route('projects.{projects}.comments.delete', [$project->id, $comment->id])}}"> <i class='fa fa-trash pull-right'></i> </a> @endif <br>
 											<p class="text-justify">{{$comment->text}}</p>
 										</div>
 									</div>
@@ -778,7 +778,7 @@ Private
 	</div>
 	@if(Auth::guest())
 	@else
-	@if(Auth::user()->roles->contains('role','admin')) 
+	@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
 	</form>
 	@endif
 	@endif
@@ -824,7 +824,7 @@ Private
 					@endforeach
 					<tr>
 						@if(Auth::user())
-						@if(Auth::user()->roles->contains('role','admin'))
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<h3>Add new Updare</h3>
 						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'POST')) !!}
 						<div class="row">
@@ -880,7 +880,7 @@ Private
 				</tbody>
 			</table>
 			@if(Auth::user())
-			@if(Auth::user()->roles->contains('role','admin'))
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<h3>Upload a Images</h3>
 			<div class="row">
 				<div class="col-md-12">

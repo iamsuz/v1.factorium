@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 use App\SiteConfiguration;
+use App\User;
+use Auth;
 
 class SiteConfigurationHelper
 {
@@ -9,6 +11,24 @@ class SiteConfigurationHelper
     {
     	$siteConfiguration = SiteConfiguration::where('project_site', url())->first();
         return $siteConfiguration;
+    }
+
+    public static function isSiteSuperadmin()
+    {
+    	$isSuperadmin = 0;
+    	if(Auth::user()->roles->contains('role','superadmin') && Auth::user()->registration_site==url()){
+    		$isSuperadmin = 1;
+    	}
+    	return $isSuperadmin;
+    }
+
+    public static function isSiteAdmin()
+    {
+    	$isAdmin = 0;
+    	if(Auth::user()->roles->contains('role','admin') && Auth::user()->registration_site==url()){
+    		$isAdmin = 1;
+    	}
+    	return $isAdmin;
     }
 }
 
