@@ -114,17 +114,17 @@ class PagesController extends Controller
     public function faq()
     {
         $color = Color::where('project_site',url())->first();
-        $faqGeneralBasics = Faq::where(['category'=>'General', 'sub_category'=> 'Basics', 'show'=>1 ])->get();
-        $faqGeneralRegulatory = Faq::where(['category'=>'General', 'sub_category'=> 'Regulatory', 'show'=>1 ])->get();
-        $faqGeneralLegalStructure = Faq::where(['category'=>'General', 'sub_category'=> 'Legal Structure', 'show'=>1 ])->get();
-        $faqGeneralFees = Faq::where(['category'=>'General', 'sub_category'=> 'Fees', 'show'=>1 ])->get();
-        $faqGeneralWebsite = Faq::where(['category'=>'General', 'sub_category'=> 'Website', 'show'=>1 ])->get();
-        $faqInvestorInvestingBasics = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investing Basics', 'show'=>1 ])->get();
-        $faqInvestorInvestmentType = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Type', 'show'=>1 ])->get();
-        $faqInvestorInvestmentSpecific = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Specific', 'show'=>1 ])->get();
-        $faqInvestorInvestmentSupport = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Support', 'show'=>1 ])->get();
-        $faqInvestorInvestmentRisks = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Risks', 'show'=>1 ])->get();
-        $faqPropertyDevelopmentVenture = Faq::where(['category'=>'Property Development & Venture', 'show'=>1 ])->get();
+        $faqGeneralBasics = Faq::where(['category'=>'General', 'sub_category'=> 'Basics', 'show'=>1,'project_site'=>url()])->get();
+        $faqGeneralRegulatory = Faq::where(['category'=>'General', 'sub_category'=> 'Regulatory', 'show'=>1,'project_site'=>url() ])->get();
+        $faqGeneralLegalStructure = Faq::where(['category'=>'General', 'sub_category'=> 'Legal Structure', 'show'=>1,'project_site'=>url() ])->get();
+        $faqGeneralFees = Faq::where(['category'=>'General', 'sub_category'=> 'Fees', 'show'=>1,'project_site'=>url() ])->get();
+        $faqGeneralWebsite = Faq::where(['category'=>'General', 'sub_category'=> 'Website', 'show'=>1,'project_site'=>url() ])->get();
+        $faqInvestorInvestingBasics = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investing Basics', 'show'=>1,'project_site'=>url() ])->get();
+        $faqInvestorInvestmentType = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Type', 'show'=>1,'project_site'=>url() ])->get();
+        $faqInvestorInvestmentSpecific = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Specific', 'show'=>1,'project_site'=>url() ])->get();
+        $faqInvestorInvestmentSupport = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Support', 'show'=>1,'project_site'=>url() ])->get();
+        $faqInvestorInvestmentRisks = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Risks', 'show'=>1,'project_site'=>url() ])->get();
+        $faqPropertyDevelopmentVenture = Faq::where(['category'=>'Property Development & Venture', 'show'=>1,'project_site'=>url() ])->get();
 
         $isAdmin = false;
         if(Auth::user()){
@@ -223,6 +223,7 @@ class PagesController extends Controller
                 $newFaq->sub_category = $request->sub_category;
                 $newFaq->question = $request->question;
                 $newFaq->answer = $request->answer;
+                $newFaq->project_site = url();
                 $newFaq->save();
                 
                 Session::flash('message', 'FAQ Created Successfully.');
