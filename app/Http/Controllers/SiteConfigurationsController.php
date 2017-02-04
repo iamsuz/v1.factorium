@@ -975,10 +975,11 @@ class SiteConfigurationsController extends Controller
                 'title' => $request->project_title_txt,
                 'description' => $request->project_description_txt,
                 ]);
-            Investment::where('id', $projectId)->update([
+            Investment::where('project_id', $projectId)->first()->update([
                 'minimum_accepted_amount' => $request->project_min_investment_txt,
                 'hold_period' => $request->project_hold_period_txt,
                 'projected_returns' => $request->project_returns_txt,
+                'goal_amount' => $request->project_goal_amount_txt,
                 'summary' => $request->project_summary_txt,
                 'security_long' => $request->project_security_long_txt,
                 'exit_d' => $request->project_investor_distribution_txt,

@@ -132,7 +132,7 @@ Private
 					</div>
 					<p class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
 						@if($project->investment)
-						${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}}
+						${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
 						@endif
 					</p>
 				</div>
@@ -223,6 +223,14 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
+								<!-- @if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="summary_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            <input class="hide" type="file" name="projectpg_thumbnail_image" id="projectpg_thumbnail_image">
+					            <input type="hidden" name="projectpg_thumbnail_image_name" id="projectpg_thumbnail_image_name">
+					            @endif
+					            @endif -->
 								<img src="{{asset('assets/images/summary.png')}}" alt="for whom" style="width:50px;" >
 								<h4 class="second_color" style="margin-top:30px; color:#fed405; font-size:1.375em;">Summary</h4>
 							</div>
@@ -233,6 +241,12 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
+								<!-- @if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif -->
 								<img src="{{asset('assets/images/securityp.png')}}" alt="security_long" style="width:50px;">
 								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Security</h4>
 							</div>
@@ -243,6 +257,12 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
+								<!-- @if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investor_distribution_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif -->
 								<img src="{{asset('assets/images/investor_distribution.png')}}" alt="exit" style="width: 50px; ">
 								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Investor<br> Distribution</h4>
 							</div>
@@ -275,6 +295,12 @@ Private
 							<div class="col-md-7 text-center marketability">
 								<div class="row">
 									<img src="{{asset('assets/images/marketability.png')}}" alt="for whom" style="width:50px; ">
+									<!-- @if(Auth::guest())
+						            @else
+						            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="marketability_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+						            @endif
+						            @endif -->
 									<br><br>
 									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Marketability</h4>
 									@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
@@ -1122,6 +1148,7 @@ Private
 			$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
 			$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
 			$('.project-returns-field').html('<input type="text" name="project_returns_txt" class="form-control" value="{{$project->investment->projected_returns}}">%');
+			$('.project-goal-amount-field').html('<input type="text" name="project_goal_amount_txt" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}">');
 			$('.project-summary-field').html('<textarea name="project_summary_txt" rows="3" class="form-control" placeholder="Enter Summary">{!!$project->investment->summary!!}</textarea>');
 			$('.project-security-long-field').html('<textarea name="project_security_long_txt" rows="3" class="form-control" placeholder="Enter Security Details">{!!$project->investment->security_long!!}</textarea>');
 			$('.project-investor-distribution-field').html('<textarea name="project_investor_distribution_txt" class="form-control" rows="4" placeholder="Enter Investor Distribution Details">{!!$project->investment->exit_d!!}</textarea>');
