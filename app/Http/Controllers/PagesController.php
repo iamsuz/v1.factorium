@@ -54,9 +54,10 @@ class PagesController extends Controller
             $user = Auth::user();
             $roles = $user->roles;
             if ($roles->contains('role', 'admin')) {
-                $projects = Project::where(['active'=>['1', '2'],'project_site'=>$url])->get();
+                $projects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->get();
+                // dd($projects);
             } else {
-                $projects = Project::where(['active'=>'1','project_site'=>$url])->get();
+                $projects = Project::where(['active'=>'1','project_site'=>url()])->get();
             }
             if(Auth::user()->roles->contains('role','superadmin')){
                 if($user->registration_site == url())

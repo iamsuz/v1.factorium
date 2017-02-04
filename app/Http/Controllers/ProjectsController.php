@@ -71,7 +71,7 @@ class ProjectsController extends Controller
         $request['user_id'] = $request->user()->id;
 
         //TODO::add transation
-
+        $request['project_site'] = url();
         $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
         $response = \Geocoder::geocode('json', $param);
         if(json_decode($response)->status != 'ZERO_RESULTS') {
@@ -82,8 +82,6 @@ class ProjectsController extends Controller
         } else {
             return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
         }
-
-
         $project = Project::create($request->all());
 
         $location = new \App\Location($request->all());
