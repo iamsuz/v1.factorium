@@ -163,6 +163,18 @@ class PagesController extends Controller
         return view('pages.terms',compact('color'));
     }
 
+    /**
+    * returns terms page
+    * @return view [description]
+    */
+    public function test(\App\Mailers\AppMailer $mailer)
+    {
+        $project = \App\Project::find(27);
+        $user = \Auth::user();
+        $mailer->sendInterestNotificationAdmin($project, $user);
+        return 'test';
+    }
+
     public function subdivide()
     {
         $color = Color::where('project_site',url())->first();
