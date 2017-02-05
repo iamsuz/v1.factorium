@@ -5,7 +5,7 @@
  */
 
 Route::get('/', ['as'=>'home', 'uses'=>'PagesController@home']);
-Route::get('/testemail', ['as'=>'home', 'uses'=>'PagesController@test']);
+Route::get('/testemail', ['as'=>'home1', 'uses'=>'PagesController@test']);
 Route::get('/pages/team', ['as'=>'pages.team', 'uses'=>'PagesController@team']);
 Route::get('/pages/team/edit', ['as'=>'pages.team.edit', 'uses'=>'PagesController@editTeam']);
 Route::post('/pages/team/create', ['as'=>'pages.team.create', 'uses'=>'PagesController@createTeam']);
