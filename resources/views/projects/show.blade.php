@@ -223,15 +223,15 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
-								<!-- @if(Auth::guest())
+								@if(Auth::guest())
 					            @else
 					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
 					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="summary_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 					            <input class="hide" type="file" name="projectpg_thumbnail_image" id="projectpg_thumbnail_image">
 					            <input type="hidden" name="projectpg_thumbnail_image_name" id="projectpg_thumbnail_image_name">
 					            @endif
-					            @endif -->
-								<img src="{{asset('assets/images/summary.png')}}" alt="for whom" style="width:50px;" >
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/summary.png')}}@endif" alt="for whom" style="width:50px;" >
 								<h4 class="second_color" style="margin-top:30px; color:#fed405; font-size:1.375em;">Summary</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
@@ -241,13 +241,13 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
-								<!-- @if(Auth::guest())
+								@if(Auth::guest())
 					            @else
 					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
 					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 					            @endif
-					            @endif -->
-								<img src="{{asset('assets/images/securityp.png')}}" alt="security_long" style="width:50px;">
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security_long" style="width:50px;">
 								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Security</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
@@ -257,13 +257,13 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
-								<!-- @if(Auth::guest())
+								@if(Auth::guest())
 					            @else
 					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
 					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investor_distribution_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 					            @endif
-					            @endif -->
-								<img src="{{asset('assets/images/investor_distribution.png')}}" alt="exit" style="width: 50px; ">
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
 								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Investor<br> Distribution</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
@@ -294,13 +294,13 @@ Private
 							</div>
 							<div class="col-md-7 text-center marketability">
 								<div class="row">
-									<img src="{{asset('assets/images/marketability.png')}}" alt="for whom" style="width:50px; ">
-									<!-- @if(Auth::guest())
+									@if(Auth::guest())
 						            @else
 						            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-						            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="marketability_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+						            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="marketability_image"><a data-toggle="tooltip" title="Edit Marketability Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						            @endif
-						            @endif -->
+						            @endif
+									<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/marketability.png')}}@endif" alt="for whom" style="width:50px; ">
 									<br><br>
 									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Marketability</h4>
 									@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
@@ -314,7 +314,13 @@ Private
 								</div>
 								<br>
 								<div class="row">
-									<img src="{{asset('assets/images/residents.png')}}" alt="residents" style="width:50px; ">
+									@if(Auth::guest())
+						            @else
+						            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="residents_image"><a data-toggle="tooltip" title="Edit Residents Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+						            @endif
+						            @endif
+									<img src="@if($projMedia=$project->media->where('type', 'residents_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/residents.png')}}@endif" alt="residents" style="width:50px; ">
 									<br><br>
 									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Residents</h4>
 									@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!$project->investment->residents!!}</p> @endif
@@ -343,27 +349,57 @@ Private
 						<br>
 						<div class="row">
 							<div class=" col-md-2 text-center new-col">
-								<img src="{{asset('assets/images/type.png')}}" alt="type" style="width:50px;"> <br><br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_type_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
 								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Type</h4><br>
 								@if($project->investment) <p class="minimize project-investment-type-field" style="font-size:0.875em;">{{$project->investment->investment_type}}</p>@endif
 							</div>
 							<div class="col-md-2 text-center new-col">
-								<img src="{{asset('assets/images/securityp.png')}}" alt="security" style="width:50px;"><br><br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security" style="width:50px;"><br><br>
 								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Security</h4><br>
 								@if($project->investment) <p class="minimize project-security-field" style="font-size:0.875em;">{{$project->investment->security}}</p> @endif
 							</div>
 							<div class="col-md-2 text-center new-col" >
-								<img src="{{asset('assets/images/expected_returns.png')}}" alt="expected returns" style="width:50px;"><br><br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="expected_returns_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/expected_returns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
 								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Expected<br> Returns</h4>
 								@if($project->investment) <p class="minimize project-expected-returns-field" style="font-size:0.875em;">{{$project->investment->expected_returns_long}}</p> @endif
 							</div>
 							<div class="col-md-2 text-center new-col" >
-								<img src="{{asset('assets/images/returns_paid_as.png')}}" alt="returns paid as" style="width:50px;"><br><br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="returns_paid_as_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/returns_paid_as.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
 								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Returns<br> Paid As</h4>
 								@if($project->investment) <p class="minimize project-return-paid-as-field" style="font-size:0.875em;">{{$project->investment->returns_paid_as}}</p> @endif
 							</div>
 							<div class="col-md-2 text-center new-col" >
-								<img src="{{asset('assets/images/taxation.png')}}" alt="Taxation" style="width:50px;"><br><br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="taxation_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
 								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Taxation</h4><br>
 								@if($project->investment) <p class="minimize project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
 							</div>
@@ -380,7 +416,13 @@ Private
 						<br>
 						<div class="row">
 							<div class="col-md-4 text-center">
-								<img src="{{asset('assets/images/developer.png')}}" alt="proposer" style="width:50px;"> <br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="developer_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
 								@if($project->property_type == "1")
 								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Developer</h4><br>
 								@else
@@ -398,12 +440,24 @@ Private
 								</div>
 							</div>
 							<div class="col-md-4 text-center">
-								<img src="{{asset('assets/images/duration.png')}}" alt="duration" style="width:50px;">
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="duration_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/duration.png')}}@endif" alt="duration" style="width:50px;">
 								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Duration</h4><br>
 								@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
 							</div>
 							<div class="col-md-4 text-center">
-								<img src="{{asset('assets/images/current_status.png')}}" alt="current_status" style="width:50px;">
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="current_status_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/current_status.png')}}@endif" alt="current_status" style="width:50px;">
 								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Current Status</h4><br>
 								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
 							</div>
@@ -411,7 +465,13 @@ Private
 						<br><br><br>
 						<div class="row">
 							<div class="col-md-2 text-center">
-								<img src="{{asset('assets/images/rationale.png')}}" alt="rationale" style="width:50px;">
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="rationale_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/rationale.png')}}@endif" alt="rationale" style="width:50px;">
 								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Rationale</h4><br>
 							</div>
 							<div class="col-md-10 text-left"> 
@@ -420,7 +480,13 @@ Private
 						</div>
 						<div class="row">
 							<div class="col-md-2 text-center">
-								<img src="{{asset('assets/images/risk.png')}}" alt="risk" style="width:50px;">
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_risk_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/risk.png')}}@endif" alt="risk" style="width:50px;">
 								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Risk</h4><br>
 							</div>
 							<div class="col-md-10 text-left"> 
@@ -507,7 +573,13 @@ Private
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-12 text-center">
-								<img src="{{asset('assets/images/how_to_invest.png')}}" alt="exit" width="110px" /><br><br>
+								@if(Auth::guest())
+					            @else
+					            @if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+					            <div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="how_to_invest_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					            @endif
+					            @endif
+								<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
 								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:42px;">How To Invest</h4><br>
 								@if($project->investment)<p class="project-how-to-invest-field">{!!$project->investment->how_to_invest!!}</p> @endif
 							</div>
@@ -1137,6 +1209,8 @@ Private
 		editProjectPageDetailsByAdmin();
 		//Edit Project Page Background Image
 		editProjectPageBackImg();
+		//Edit Project Page Thumbnails
+		editProjectPageThumbImages();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -1285,7 +1359,7 @@ Private
             var hValue = $('#h_target').val();
             var origWidth = $('#orig_width').val();
             var origHeight = $('#orig_height').val();
-            var hiwImgAction = $('#image_action').val();
+            var projectThumbAction = $('#image_action').val();
             var currentProjectId = $('#current_project_id').val();
             console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
             $.ajax({
@@ -1300,7 +1374,7 @@ Private
                     hValue: hValue,
                     origWidth: origWidth,
                     origHeight: origHeight,
-                    hiwImgAction: hiwImgAction,
+                    projectThumbAction: projectThumbAction,
                     currentProjectId: currentProjectId,
                 },
                 headers: {
@@ -1323,6 +1397,80 @@ Private
                 }
             
         	});
+        });
+    }
+
+    function editProjectPageThumbImages(){
+    	var imgAction = '';
+		$('.edit-projectpg-thumbnails').click(function(){
+			$('#projectpg_thumbnail_image').trigger('click');
+			imgAction = $(this).attr('action');
+			$('#projectpg_thumbnail_image, #projectpg_thumbnail_image_name').val('');
+		});
+		$('#projectpg_thumbnail_image').change(function(e){
+			console.log(imgAction);
+			if($('#projectpg_thumbnail_image').val() != ''){
+				var formData = new FormData();
+				formData.append('projectpg_thumbnail_image', $('#projectpg_thumbnail_image')[0].files[0]);
+				formData.append('imgAction', imgAction);
+                $('.loader-overlay').show();
+                $.ajax({
+                    url: '/configuration/uploadprojectPgThumbnailImages',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    contentType: false,
+                    processData: false
+                }).done(function(data){
+                    if(data.status == 1){
+                    	var imgPath = data.destPath+data.fileName;
+                        var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_project_thumb_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+                        $('#image_cropbox_container').html(str1);
+                        $('#edit_project_back_img_modal').modal({
+                            'show': true,
+                            'backdrop': false,
+                        });
+
+                        $('#image_crop').val(imgPath); //set hidden image value
+                        $('#image_crop').attr('action', 'projectPg thumbnail image');
+                        $('#image_action').val(imgAction);
+                        var target_width = 150;
+                        var target_height = 150;
+                        var origWidth = data.origWidth;
+                        var origHeight = data.origHeight;
+                        $('#image_cropbox').Jcrop({
+                            boxWidth: 530,
+                            aspectRatio: 1,
+                            keySupport: false,
+                            setSelect: [0, 0, target_width, target_height],
+                            bgColor: '',
+                            onSelect: function(c) {
+                                updateCoords(c, target_width, target_height, origWidth, origHeight);
+                            },
+                            onChange: function(c) {
+                                updateCoords(c, target_width, target_height, origWidth, origHeight);
+                            },
+                            onRelease: setSelect,
+                            minSize: [target_width, target_height],
+                        });
+                        $('.loader-overlay').hide();
+                    }
+                    else{
+                      $('.loader-overlay').hide();
+                      $('#projectpg_thumbnail_image, #projectpg_thumbnail_image_name').val('');
+                      alert(data.message);
+                    }
+                });
+			}
+		});
+		performCropOnImage();
+
+        $('#modal_close_btn').click(function(e){
+            $('#projectpg_thumbnail_image, #projectpg_thumbnail_image_name').val('');
         });
     }
 
