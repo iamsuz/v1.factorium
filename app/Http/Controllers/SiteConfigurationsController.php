@@ -604,6 +604,152 @@ class SiteConfigurationsController extends Controller
                         return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                     }
                 }
+                else if ($request->imgAction == 'projectPg thumbnail image'){
+                    $currentProjectId = $request->currentProjectId;
+                    $extension = strtolower(File::extension($src));
+                    $img = '';
+                    $result = false;
+                    $rw = 500;
+                    $rh = 500;
+
+                    //Create new coords for image.
+                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                    switch ($extension) {
+                        case 'jpg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+                        
+                        case 'jpeg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+
+                        case 'png':
+                            $quality = 9;
+                            $img  = imagecreatefrompng($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagepng($dest, $src, $quality);
+                            break;
+
+                        default:
+                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                            break;
+                    }
+                    $imgName = '';
+                    if($request->projectThumbAction == 'summary_image'){
+                        $imgName = 'summary_image_'.time().'.png';
+                        $imgType = 'summary_image';
+                    }
+                    else if($request->projectThumbAction == 'security_image'){
+                        $imgName = 'security_image_'.time().'.png';
+                        $imgType = 'security_image';
+                    }
+                    else if($request->projectThumbAction == 'investor_distribution_image'){
+                        $imgName = 'investor_distribution_image_'.time().'.png';
+                        $imgType = 'investor_distribution_image';
+                    }
+                    else if($request->projectThumbAction == 'marketability_image'){
+                        $imgName = 'marketability_image_'.time().'.png';
+                        $imgType = 'marketability_image';
+                    }
+                    else if($request->projectThumbAction == 'residents_image'){
+                        $imgName = 'residents_image_'.time().'.png';
+                        $imgType = 'residents_image';
+                    }
+                    else if($request->projectThumbAction == 'investment_type_image'){
+                        $imgName = 'investment_type_image_'.time().'.png';
+                        $imgType = 'investment_type_image';
+                    }
+                    else if($request->projectThumbAction == 'expected_returns_image'){
+                        $imgName = 'expected_returns_image_'.time().'.png';
+                        $imgType = 'expected_returns_image';
+                    }
+                    else if($request->projectThumbAction == 'returns_paid_as_image'){
+                        $imgName = 'returns_paid_as_image_'.time().'.png';
+                        $imgType = 'returns_paid_as_image';
+                    }
+                    else if($request->projectThumbAction == 'taxation_image'){
+                        $imgName = 'taxation_image_'.time().'.png';
+                        $imgType = 'taxation_image';
+                    }
+                    else if($request->projectThumbAction == 'developer_image'){
+                        $imgName = 'developer_image_'.time().'.png';
+                        $imgType = 'developer_image';
+                    }
+                    else if($request->projectThumbAction == 'duration_image'){
+                        $imgName = 'duration_image_'.time().'.png';
+                        $imgType = 'duration_image';
+                    }
+                    else if($request->projectThumbAction == 'current_status_image'){
+                        $imgName = 'current_status_image_'.time().'.png';
+                        $imgType = 'current_status_image';
+                    }
+                    else if($request->projectThumbAction == 'rationale_image'){
+                        $imgName = 'rationale_image_'.time().'.png';
+                        $imgType = 'rationale_image';
+                    }
+                    else if($request->projectThumbAction == 'investment_risk_image'){
+                        $imgName = 'investment_risk_image_'.time().'.png';
+                        $imgType = 'investment_risk_image';
+                    }
+                    else{
+                        $imgName = 'how_to_invest_image_'.time().'.png';
+                        $imgType = 'how_to_invest_image';
+                    }
+                    if($result){
+                        $saveLoc = 'assets/images/media/project_page/';
+                        $finalFile = $imgName;
+                        $finalpath = $saveLoc.$finalFile;
+                        if($extension != 'png'){
+                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
+                        }
+                        else{
+                            Image::make($src)->save(public_path($saveLoc.$finalFile));
+                        }
+                        $projectMedia = Media::where('project_id', $currentProjectId)
+                            ->where('project_site', url())
+                            ->where('type', $imgType)
+                            ->first();
+                        if($projectMedia){
+                            File::delete(public_path($projectMedia->path));    
+                        }
+                        else{
+                            $projectMedia = new Media;
+                            $projectMedia->project_id = $currentProjectId;
+                            $projectMedia->type = $imgType;
+                            $projectMedia->project_site = url();
+                            $projectMedia->caption = 'Project Page Thumbnail Image';
+                        }
+                        $projectMedia->filename = $finalFile;
+                        $projectMedia->path = $finalpath;
+                        $projectMedia->save();
+                        File::delete($src);
+                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                    } else{
+                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                    }
+                }
                 else {}
             }
         }
@@ -1045,5 +1191,36 @@ class SiteConfigurationsController extends Controller
             'funding_section_btn2_text' => $request->funding_section_btn2_text,
             ]);
         return redirect()->back();
+    }
+
+    public function uploadprojectPgThumbnailImages(Request $request)
+    {
+        if (Auth::user()->roles->contains('role', 'superadmin')){
+            $validation_rules = array(
+                'projectpg_thumbnail_image'   => 'required|mimes:jpeg,png,jpg',
+                'imgAction' => 'required',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+        
+            if($request->hasFile('projectpg_thumbnail_image') && $request->file('projectpg_thumbnail_image')->isValid()){
+                Image::make($request->projectpg_thumbnail_image)->resize(530, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('projectpg_thumbnail_image')->getClientOriginalExtension();
+                $fileName = 'projectpg_thumbnail_image'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('projectpg_thumbnail_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
+        }
     }
 }
