@@ -537,7 +537,7 @@
                             <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
 
 
-                                        <img align="center" alt="Brand Logo" src="@if($brandlogo=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia->where('type','brand_logo')->first()){{asset($brandlogo->path)}}@else{{asset('assets/images/main_logo.png')}}@endif" width="200" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;margin:7px 10px;" class="mcnImage">
+                                        <img align="center" alt="Brand Logo" src="@if($brandlogo=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia->where('type','brand_logo')->first()){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/'.$brandlogo->path}}@else{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/main_logo.png'}}@endif" width="200" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;margin:7px 10px;" class="mcnImage">
 
 
                             </td>
@@ -706,7 +706,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                                                    <a href="https://www.facebook.com/estatebaron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{asset('assets/images/email/facebook.png')}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
+                                                                                    <a href="https://www.facebook.com/estatebaron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/email/facebook.png'}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -739,7 +739,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                                                    <a href="https://twitter.com/estatebaron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{asset('assets/images/email/twitter.png')}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
+                                                                                    <a href="https://twitter.com/estatebaron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/email/twitter.png'}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -771,7 +771,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                                                    <a href="http://www.instagram.com/estate_baron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{asset('assets/images/email/instagram.png')}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
+                                                                                    <a href="http://www.instagram.com/estate_baron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/email/instagram.png'}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
