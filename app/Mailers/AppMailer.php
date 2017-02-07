@@ -8,6 +8,7 @@ use App\User;
 use App\Project;
 use App\UserRegistration;
 use Illuminate\Contracts\Mail\Mailer;
+use App\Helpers\SiteConfigurationHelper;
 
 class AppMailer
 {
@@ -45,7 +46,8 @@ class AppMailer
     {
         $this->to = $user->email;
         $this->view = 'emails.registrationConfirm';
-        $this->subject = 'Please complete your registration on Vestabyte';
+        $siteTitle = ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron';
+        $this->subject = 'Please complete your registration on '.$siteTitle;
         $this->data = compact('user');
 
         $this->deliver();
@@ -227,14 +229,14 @@ class AppMailer
     public function deliver()
     {
         $this->mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, 'Vestabyte')->to($this->to)->subject($this->subject);
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
     }
 
     public function deliverWithFile()
     {
         $this->mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, 'Vestabyte')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
         });
     }
 }

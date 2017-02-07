@@ -222,7 +222,6 @@
       background-color:#FFFFFF;
       border-top:0;
       border-bottom:0;
-      padding-top:9px;
       padding-bottom:0;
     }
   /*
@@ -529,16 +528,16 @@
                                 <td valign="top" id="templatePreheader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"></td>
                             </tr>
                             <tr>
-                                <td valign="top" id="templateHeader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                <td valign="top" id="templateHeader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnImageBlockOuter">
             <tr>
                 <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
                     <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                         <tbody><tr>
-                            <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
 
 
-                                        <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">
+                                        <img align="center" alt="Brand Logo" src="@if($brandlogo=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia->where('type','brand_logo')->first()){{asset($brandlogo->path)}}@else{{asset('assets/images/main_logo.png')}}@endif" width="200" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;margin:7px 10px;" class="mcnImage">
 
 
                             </td>
@@ -568,10 +567,10 @@
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 
                             <br> <br>
-<strong><span style="color:#282a73"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Thank you valued user</span></span></span></strong>
+<strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Thank you valued user</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Welcome to Vestabyte<br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Welcome to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif<br>
 <br>
 Australia’s leading venture crowdfunding investment platform</span></span></span><br>
 &nbsp;</div>
@@ -594,7 +593,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
     <tbody class="mcnButtonBlockOuter">
         <tr>
             <td style="padding-top: 0;padding-right: 18px;padding-bottom: 18px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="left" class="mcnButtonBlockInner">
-                <table border="0" cellpadding="0" cellspacing="0" class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 0px;background-color: #2d2d4b;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <table border="0" cellpadding="0" cellspacing="0" class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 0px;background-color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #2d2d4b @endif;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                     <tbody>
                         <tr>
                             <td align="center" valign="middle" class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 16px;padding: 10px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -624,7 +623,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
 
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 
-<span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:info@vestabyte.com" target="_blank">info@vestabyte.com</a><br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br />Live Chat:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;<a title="Vestabyte.com" href="http://Vestabyte.com">Vestabyte.com</span></span></span></div><br>
+<span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:info@estatebaron.com" target="_blank">info@estatebaron.com</a><br /></span></span></span></div><br>
 
                         </td>
                     </tr>
@@ -658,7 +657,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Regards,<br>
-                            <br><span style="color:#282a73"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">Vestabyte Team<br><br>
+                            <br><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif Team<br><br>
                         </td>
                     </tr>
                 </tbody></table>
@@ -707,7 +706,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                                                    <a href="https://www.facebook.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/facebook.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
+                                                                                    <a href="https://www.facebook.com/estatebaron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{asset('assets/images/email/facebook.png')}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -740,7 +739,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                                                    <a href="https://twitter.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/twitter.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
+                                                                                    <a href="https://twitter.com/estatebaron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{asset('assets/images/email/twitter.png')}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -772,7 +771,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                                                    <a href="https://www.linkedin.com/company/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/linkedin.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
+                                                                                    <a href="http://www.instagram.com/estate_baron" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="{{asset('assets/images/email/instagram.png')}}" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -834,19 +833,17 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
 
                         <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #1e4762;font-family: Helvetica;font-size: 9px;line-height: 150%;text-align: justify;">
 
-The advice provided in relation to the Vestabyte Platform,
-including on the Vestabyte Platform website,
+The advice provided in relation to the @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif Platform,
+including on the @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif Platform website,
 is general advice only and has been prepared without taking into account your financial situation, objectives
 and needs.
-Before making any decision in relation to Vestabyte or any products offered by Vestabyte you should read the
-Product Disclosure Statement (PDS) and consider whether they are right for you.
-The PDS is available at the Project and Project Application Pages.
-<ahref="http://www.vestabyte.com/terms/terms.pdf">Terms and Conditions</a>.
+Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif you should read the Prospectus and consider whether they are right for you. 
+The Prospectus is available at the Project and Project Application Pages. 
+<ahref="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->terms_conditions_link}}">Terms and Conditions</a>.
 This email and any attachment is confidential and may be protected by copyright.
 If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
-Vestabyte accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.
-Vestabyte does not guarantee that this email and any attachment is secure, free of viruses or error-free. 
-Copyright &copy; 2016 Vestabyte Pty Ltd (ABN 612 771 490), All rights reserved.<br>
+@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.
+@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif does not guarantee that this email and any attachment is secure, free of viruses or error-free.<br>
 
 &nbsp;
 </html>

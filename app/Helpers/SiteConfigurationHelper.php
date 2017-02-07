@@ -3,6 +3,7 @@
 namespace App\Helpers;
 use App\SiteConfiguration;
 use App\User;
+use App\Color;
 use Auth;
 
 class SiteConfigurationHelper
@@ -29,6 +30,12 @@ class SiteConfigurationHelper
     		$isAdmin = 1;
     	}
     	return $isAdmin;
+    }
+
+    public static function getSiteThemeColors()
+    {
+        $color = Color::where('project_site', url())->first();
+        return $color;
     }
 }
 
