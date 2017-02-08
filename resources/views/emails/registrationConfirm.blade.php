@@ -537,7 +537,9 @@
                             <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
 
 
-                                        <img align="center" alt="Brand Logo" src="@if($brandlogo=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia->where('type','brand_logo')->first()){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/'.$brandlogo->path}}@else{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/main_logo.png'}}@endif" width="200" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;margin:7px 10px;" class="mcnImage">
+                                        <!-- <img align="center" alt="Brand Logo" src="@if($brandlogo=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia->where('type','brand_logo')->first()){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/'.$brandlogo->path}}@else{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/main_logo.png'}}@endif" width="200" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;margin:7px 10px;" class="mcnImage"> -->
+
+                                        <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif</p>
 
 
                             </td>
@@ -572,7 +574,7 @@
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Welcome to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif<br>
 <br>
-Australia’s leading venture crowdfunding investment platform</span></span></span><br>
+<!-- Australia’s leading venture crowdfunding investment platform</span></span></span><br>
 &nbsp;</div>
 
                          </td>
@@ -696,7 +698,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                         <!--[if mso]>
                                         <td align="center" valign="top">
                                         <![endif]-->
-<table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+<!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
                                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -717,7 +719,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                         </tbody></table>
                                                     </td>
                                                 </tr>
-                                            </tbody></table>
+                                            </tbody></table> -->
                                         
                                         <!--[if mso]>
                                         </td>
@@ -729,7 +731,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                         
                                         
                                             
-                      <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                      <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
                                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -750,7 +752,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                         </tbody></table>
                                                     </td>
                                                 </tr>
-                                            </tbody></table>
+                                            </tbody></table> -->
                                         
                                         <!--[if mso]>
                                         </td>
@@ -761,7 +763,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                         <![endif]-->
                                         
                                         
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                            <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 0;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
                                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -782,7 +784,7 @@ Australia’s leading venture crowdfunding investment platform</span></span></sp
                                                         </tbody></table>
                                                     </td>
                                                 </tr>
-                                            </tbody></table>
+                                            </tbody></table> -->
                                         
                                         <!--[if mso]>
                                         </td>
