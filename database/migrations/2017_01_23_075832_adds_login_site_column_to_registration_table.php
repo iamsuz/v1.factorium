@@ -13,7 +13,7 @@ class AddsLoginSiteColumnToRegistrationTable extends Migration
     public function up()
     {
         Schema::table('user_registrations', function (Blueprint $table) {
-            $table->string('registration_site')->default('estatebaron.com');
+            $table->string('registration_site')->default('https://estatebaron.com');
         });
     }
 
