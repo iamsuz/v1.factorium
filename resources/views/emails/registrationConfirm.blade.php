@@ -841,11 +841,11 @@ is general advice only and has been prepared without taking into account your fi
 and needs.
 Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif you should read the Prospectus and consider whether they are right for you. 
 The Prospectus is available at the Project and Project Application Pages. 
-<ahref="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->terms_conditions_link}}">Terms and Conditions</a>.
 This email and any attachment is confidential and may be protected by copyright.
 If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.
-@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif does not guarantee that this email and any attachment is secure, free of viruses or error-free.<br>
+@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif does not guarantee that this email and any attachment is secure, free of viruses or error-free.
+The @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif platform is operated by Tech Baron PTY LTD (ABN 67617252909) which is an Corporate Authorised Representative of AFSL 299812). <a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link}}">Financial Services Guide</a>.<br>
 
 &nbsp;
 </html>
