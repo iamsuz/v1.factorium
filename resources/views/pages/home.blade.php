@@ -317,7 +317,7 @@
             @endif
             <h3 class="how-it-works-title1-section second_color">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif<br>&nbsp;</h3>
           </div>
-          <p class="text-center how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){{$siteConfiguration->how_it_works_desc1}}@endif
+          <p class="text-center how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != '') {!! $siteConfiguration->how_it_works_desc1 !!} @endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.6s">
@@ -1723,11 +1723,11 @@
         $('.how-it-works-title3-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title3!!}" name="how_it_works_title3" class="form-control"></input>');
         $('.how-it-works-title4-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title4!!}" name="how_it_works_title4" class="form-control"></input>');
         $('.how-it-works-title5-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title5!!}" name="how_it_works_title5" class="form-control"></input>');
-        $('.how-it-works-desc1-section').html('<textarea name="how_it_works_desc1" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc1!!}</textarea>');
-        $('.how-it-works-desc2-section').html('<textarea name="how_it_works_desc2" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc2!!}</textarea>');
-        $('.how-it-works-desc3-section').html('<textarea name="how_it_works_desc3" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc3!!}</textarea>');
-        $('.how-it-works-desc4-section').html('<textarea name="how_it_works_desc4" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc4!!}</textarea>');
-        $('.how-it-works-desc5-section').html('<textarea name="how_it_works_desc5" class="form-control" rows="6">{!!$siteConfiguration->how_it_works_desc5!!}</textarea><br><button type="Submit" class="btn-default save-how-it-works-content">Save</button>');
+        $('.how-it-works-desc1-section').html('<textarea name="how_it_works_desc1" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc1}}</textarea>');
+        $('.how-it-works-desc2-section').html('<textarea name="how_it_works_desc2" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc2}}</textarea>');
+        $('.how-it-works-desc3-section').html('<textarea name="how_it_works_desc3" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc3}}</textarea>');
+        $('.how-it-works-desc4-section').html('<textarea name="how_it_works_desc4" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc4}}</textarea>');
+        $('.how-it-works-desc5-section').html('<textarea name="how_it_works_desc5" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc5}}</textarea><br><button type="Submit" class="btn-default save-how-it-works-content">Save</button>');
       });
     }
 

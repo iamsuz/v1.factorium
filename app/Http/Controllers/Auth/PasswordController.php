@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-
+use App\Color;
+use Auth;
 class PasswordController extends Controller
 {
     /*
@@ -19,8 +20,7 @@ class PasswordController extends Controller
     */
 
     use ResetsPasswords;
-
-    protected $redirectTo = '/users';
+    protected $redirectTo = '/';
 
     /**
      * Create a new password controller instance.
@@ -30,5 +30,19 @@ class PasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+    public function getEmail()
+    {
+        $color = Color::where('project_site',url())->first();
+        return view('auth.password',compact('color'));
+    }
+    public function getReset($token = null)
+    {
+        $color = Color::where('project_site',url())->first();
+        if (is_null($token)) {
+            throw new NotFoundHttpException;
+        }
+
+        return view('auth.reset',compact('color'))->with('token', $token);
     }
 }
