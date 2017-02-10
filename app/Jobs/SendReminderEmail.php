@@ -18,7 +18,7 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
     protected $mailer;
-    protected $from = 'info@vestabyte.com';
+    protected $from = 'info@estatebaron.com';
     protected $to;
     protected $bcc;
     protected $view;
@@ -61,7 +61,7 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
         $this->data = compact('project', 'investor');
         // dd($investor);
         $mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, 'Vestabyte')->to($this->to)->subject($this->subject);
+            $message->from($this->from, 'Estate Baron')->to($this->to)->subject($this->subject);
         });
     }
 }

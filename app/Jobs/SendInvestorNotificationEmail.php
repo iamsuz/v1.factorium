@@ -18,7 +18,7 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
 {
     use InteractsWithQueue, SerializesModels;
     protected $mailer;
-    protected $from = 'info@vestabyte.com';
+    protected $from = 'info@estatebaron.com';
     protected $to;
     protected $bcc;
     protected $view;
@@ -54,7 +54,7 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
         $this->data = compact('user', 'project');
 
         $mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, 'Vestabyte')->to($this->to)->subject($this->subject);
+            $message->from($this->from, 'Estate Baron')->to($this->to)->subject($this->subject);
         });
 
     }

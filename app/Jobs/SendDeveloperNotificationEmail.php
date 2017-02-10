@@ -18,7 +18,7 @@ class SendDeveloperNotificationEmail extends Job implements SelfHandling, Should
 {
     use InteractsWithQueue, SerializesModels;
     protected $mailer;
-    protected $from = 'info@vestabyte.com';
+    protected $from = 'info@estatebaron.com';
     protected $to;
     protected $bcc;
     protected $view;
@@ -54,7 +54,7 @@ class SendDeveloperNotificationEmail extends Job implements SelfHandling, Should
         $this->data = compact('project', 'investor');
 
         $mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, 'Vestabyte')->to($this->to)->subject($this->subject);
+            $message->from($this->from, 'Estate Baron')->to($this->to)->subject($this->subject);
         });
 
     }

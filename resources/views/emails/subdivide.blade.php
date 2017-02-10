@@ -195,7 +195,9 @@
       <td>
         <div class='wrapper' style='clear:both;background-color:#e9e9e9;padding:2%;'>
           <div class='body' style='background-color:#e9e9e9;box-shadow: 5px 5px 2px #aaaaaa;max-width:100%;margin:0 auto;width:660px;clear:both;'>
-            <div><img src='http://www.vestabyte.com/assets/images/email/VB_header.png' width='100%' style="max-width: 100%;"/>
+            <div style="background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
+              <!-- <img src='http://www.vestabyte.com/assets/images/email/VB_header.png' width='100%' style="max-width: 100%;"/> -->
+              <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px; margin: 0px; line-height: 60px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif</p>
             </div>
             <div id='content' style='max-width:100%;padding:40px;background-color:#FFF;line-height:21px;'>
               <!-- <div align='center'><img src='".URL."public/images/eb.png' align='middle' width='300px'><br></div> -->
@@ -208,24 +210,24 @@
              <p style ='font-size:15px;'>Section 32 and any plans/drawings</p>
              <br>
              <p style ='font-size:15px;'>Regards,</p>
-             <p style='font-size:15px;'>Vestabyte Team</p>
+             <p style='font-size:15px;'>@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif Team</p>
             </div>
-            <div id='footer' bgcolor="#2D2D4B" style='max-width:100%;padding-top:30px;margin-left:0;text-align:center;background:#2d2d4b;color:#fed405;height:150px;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;'>
-            <img src='http://www.vestabyte.com/assets/images/email/VB_footer.png' />
-            <table style=" text-align:center;background:#2d2d4b; font-size: 13px; width: 100%; height: auto;">
+            <div id='footer' bgcolor="#2D2D4B" style='max-width:100%;padding-top:30px;margin-left:0;text-align:center;background:#2d2d4b;color:#fed405;height:60px;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;'>
+            <!-- <img src='http://www.vestabyte.com/assets/images/email/VB_footer.png' /> -->
+            <table style=" text-align:center;/*background:#2d2d4b;*/ font-size: 13px; width: 100%; height: auto;">
               <tr>
-                <td style='text-align:right;' width="25%"><a href="tel:+61398117015"  style='text-decoration:none; color:#fed405;'>+61 398117015&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
-                <td style='text-align:left;' width="25%"><a href="mailto:info@vestabyte.com"  style='text-decoration:none; color:#fed405;'>info@vestabyte.com</a>
+                <!-- <td style='text-align:right;' width="25%"><a href="tel:+61398117015"  style='text-decoration:none; color:#fed405;'>+61 398117015&nbsp;&nbsp;&nbsp;&nbsp;</a></td> -->
+                <td style='text-align:center;' width="25%"><a href="mailto:info@estatebaron.com"  style='text-decoration:none; color:#fed405;'>info@estatebaron.com</a>
                 </td>
               </tr>
             </table>
-            <table style="text-align:center;background:#2d2d4b; font-size: 16px; width: 100%">
+            <!-- <table style="text-align:center;background:#2d2d4b; font-size: 16px; width: 100%">
               <tr>
                 <td width="40%" class="end-td" style='text-align:right;'><a href='https://www.vestabyte.com/' target='new' style='text-decoration:none; color:#fed405;'><b>HOME</b></a></td>
                 <td width="20%" class="middle-td" style='text-align:center;' class="investment"><a href='https://www.vestabyte.com/#projects' target='new' style='text-decoration:none; color:#fed405;'><b>INVESTMENT</b></a></td>
                 <td width="40%" char="end-td" style='text-align:left;'><a href='https://www.vestabyte.com/pages/faq' target='new' style='text-decoration:none; color:#fed405;'><b>FAQs</b></a></td>
               </tr>
-            </table>
+            </table> -->
           </div>
           </div>
         </div>

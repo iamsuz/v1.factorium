@@ -17,7 +17,7 @@ class AppMailer
     }
 
     protected $mailer;
-    protected $from = 'info@vestabyte.com';
+    protected $from = 'info@estatebaron.com';
     protected $to;
     protected $bcc;
     protected $view;
@@ -36,7 +36,8 @@ class AppMailer
     {
         $this->to = $user->email;
         $this->view = 'emails.confirm';
-        $this->subject = 'Please complete your registration on Vestabyte';
+        $siteTitle = ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron';
+        $this->subject = 'Please complete your registration on '.$siteTitle;
         $this->data = compact('user');
 
         $this->deliver();
@@ -192,7 +193,8 @@ class AppMailer
     {
         $this->to = $email;
         $this->view = 'emails.invitation';
-        $this->subject = 'You have been invited to Vestabyte by '.$user->first_name;
+        $siteTitle = ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron';
+        $this->subject = 'You have been invited to '.$siteTitle.' by '.$user->first_name;
         $this->data = compact('user', 'token');
 
         $this->deliver();
