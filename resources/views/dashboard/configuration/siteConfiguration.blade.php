@@ -76,6 +76,29 @@ Configuration | Dashboard | @parent
 								</div>
 							</div>
 						</div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'website-name')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Website Name</b></h3>
+                                    <p><small>This will be the reference name for the website.</small></p>
+                                    <hr>
+                                    <p>
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-primary btn-sm change-site-name-btn" style="cursor: pointer;">
+                                            <strong>Change Website Name</strong>
+                                        </span>
+                                    </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -174,6 +197,33 @@ Configuration | Dashboard | @parent
                 </div>      
             </div>
         </div>
+        <!-- Modal for Site Name edit-->
+        <div class="modal fade" id="site_name_edit_modal" role="dialog">
+            <div class="modal-dialog" style="margin-top: 10%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update Website Name</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row text-center" id="modal_body_container">
+                            <div class="col-md-10 col-md-offset-1">
+                                {!! Form::open(array('route'=>['configuration.updateWebsiteName'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                                    <h5><i><small>Enter the text in below text field and save to display new name for the website.</small></i></h5>
+                                    <br>
+                                    <div class="row site-name-error" style="text-align: -webkit-center;"></div>
+                                    {!! Form::text('site_name_input', null, array('placeholder'=>'Enter website name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'site_name_input')) !!}
+                                    {!! $errors->first('site_name_input', '<small class="text-danger">:message</small>') !!}
+                                    <br>
+                                    {!! Form::submit('Save Website Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_website_name_btn')) !!}
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>      
+            </div>
+        </div>
     </div>
 </div>
 @stop
@@ -197,6 +247,21 @@ Configuration | Dashboard | @parent
 				$('.title-text-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Title field is empty</h6></div>')
 			}
 		});
+
+        $('.change-site-name-btn').click(function(){
+            $('#site_name_edit_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#site_name_input').select();
+        });
+
+        $('#submit_website_name_btn').click(function(e){
+            if($('#site_name_input').val() == ''){
+                e.preventDefault();
+                $('.site-name-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Website name field is empty</h6></div>')
+            }
+        });
 
 		$('.change-favicon-btn').click(function(){
 			$('#favicon_edit_modal').modal({

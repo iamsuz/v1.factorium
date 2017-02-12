@@ -191,3 +191,4 @@ Route::post('/configuration/updateProjectDetails', ['as'=>'configuration.updateP
 Route::post('/configuration/uploadProjectPgBackImg', ['as'=>'configuration.uploadProjectPgBackImg', 'uses'=>'SiteConfigurationsController@uploadProjectPgBackImg']);
 Route::post('/configuration/editHomePgFundingSectionContent', ['as'=>'configuration.editHomePgFundingSectionContent', 'uses'=>'SiteConfigurationsController@editHomePgFundingSectionContent']);
 Route::post('/configuration/uploadprojectPgThumbnailImages', ['as'=>'configuration.uploadprojectPgThumbnailImages', 'uses'=>'SiteConfigurationsController@uploadprojectPgThumbnailImages']);
+Route::post('/configuration/updateWebsiteName', ['as'=>'configuration.updateWebsiteName', 'uses'=>'SiteConfigurationsController@updateWebsiteName']);

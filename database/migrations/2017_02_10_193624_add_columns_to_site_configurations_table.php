@@ -109,6 +109,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'funding_section_btn2_text')) {
                 $table->string('funding_section_btn2_text')->default('View Venture');
             }
+            if (!Schema::hasColumn('site_configurations', 'website_name')) {
+                $table->string('website_name')->default('Estate Baron');
+            }
         });
     }
 
@@ -215,6 +218,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'funding_section_btn2_text')) {
                 $table->dropColumn('funding_section_btn2_text');
+            }
+            if (Schema::hasColumn('site_configurations', 'website_name')) {
+                $table->dropColumn('website_name');
             }
         });
     }

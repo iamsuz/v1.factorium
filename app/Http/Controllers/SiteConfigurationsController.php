@@ -880,6 +880,27 @@ class SiteConfigurationsController extends Controller
         }
     }
 
+    public function updateWebsiteName(Request $request)
+    {
+        $websiteName = $request->site_name_input;
+        if($websiteName != ""){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            if(!$siteconfiguration)
+            {
+                $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
+                $siteconfiguration->save();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            }
+            $siteconfiguration->update(['website_name'=>$websiteName]);
+            Session::flash('message', 'Website Name Updated Successfully');
+            Session::flash('action', 'website-name');
+            return redirect()->back();
+        }
+    }
+
     public function updateSocialSiteLinks(Request $request)
     {
         $this->validate($request, array(
