@@ -1038,17 +1038,18 @@ class SiteConfigurationsController extends Controller
             ));
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            // trim(preg_replace('/\s+/', ' ', $string));
             $siteconfiguration->update([
                 'how_it_works_title1' => $request->how_it_works_title1,
                 'how_it_works_title2' => $request->how_it_works_title2,
                 'how_it_works_title3' => $request->how_it_works_title3,
                 'how_it_works_title4' => $request->how_it_works_title4,
                 'how_it_works_title5' => $request->how_it_works_title5,
-                'how_it_works_desc1' => $request->how_it_works_desc1,
-                'how_it_works_desc2' => $request->how_it_works_desc2,
-                'how_it_works_desc3' => $request->how_it_works_desc3,
-                'how_it_works_desc4' => $request->how_it_works_desc4,
-                'how_it_works_desc5' => $request->how_it_works_desc5,
+                'how_it_works_desc1' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc1)),
+                'how_it_works_desc2' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc2)),
+                'how_it_works_desc3' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc3)),
+                'how_it_works_desc4' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc4)),
+                'how_it_works_desc5' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc5)),
                 ]);
             return redirect()->back();
         }
@@ -1147,22 +1148,22 @@ class SiteConfigurationsController extends Controller
                 'hold_period' => $request->project_hold_period_txt,
                 'projected_returns' => $request->project_returns_txt,
                 'goal_amount' => $request->project_goal_amount_txt,
-                'summary' => $request->project_summary_txt,
-                'security_long' => $request->project_security_long_txt,
-                'exit_d' => $request->project_investor_distribution_txt,
-                'marketability' => $request->project_marketability_txt,
-                'residents' => $request->project_residents_txt,
-                'investment_type' => $request->project_investment_type_txt,
-                'security' => $request->project_security_txt,
-                'expected_returns_long' => $request->project_expected_returns_txt,
-                'returns_paid_as' => $request->project_return_paid_as_txt,
-                'taxation' => $request->project_taxation_txt,
-                'current_status' => $request->project_current_status_txt,
-                'rationale' => $request->project_rationale_txt,
-                'risk' => $request->project_risk_txt,
+                'summary' => trim(preg_replace('/\s+/', ' ', $request->project_summary_txt)),
+                'security_long' => trim(preg_replace('/\s+/', ' ', $request->project_security_long_txt)),
+                'exit_d' => trim(preg_replace('/\s+/', ' ', $request->project_investor_distribution_txt)),
+                'marketability' => trim(preg_replace('/\s+/', ' ', $request->project_marketability_txt)),
+                'residents' => trim(preg_replace('/\s+/', ' ', $request->project_residents_txt)),
+                'investment_type' => trim(preg_replace('/\s+/', ' ', $request->project_investment_type_txt)),
+                'security' => trim(preg_replace('/\s+/', ' ', $request->project_security_txt)),
+                'expected_returns_long' => trim(preg_replace('/\s+/', ' ', $request->project_expected_returns_txt)),
+                'returns_paid_as' => trim(preg_replace('/\s+/', ' ', $request->project_return_paid_as_txt)),
+                'taxation' => trim(preg_replace('/\s+/', ' ', $request->project_taxation_txt)),
+                'current_status' => trim(preg_replace('/\s+/', ' ', $request->project_current_status_txt)),
+                'rationale' => trim(preg_replace('/\s+/', ' ', $request->project_rationale_txt)),
+                'risk' => trim(preg_replace('/\s+/', ' ', $request->project_risk_txt)),
                 'PDS_part_1_link' => $request->project_pds1_link_txt,
                 'PDS_part_2_link' => $request->project_pds2_link_txt,
-                'how_to_invest' => $request->project_how_to_invest_txt,
+                'how_to_invest' => trim(preg_replace('/\s+/', ' ', $request->project_how_to_invest_txt)),
                 ]);
             return redirect()->back();
         }
@@ -1206,8 +1207,8 @@ class SiteConfigurationsController extends Controller
             'funding_section_btn2_text' => 'required',
             ));
         SiteConfiguration::where('project_site', url())->first()->update([
-            'funding_section_title1' => $request->funding_section_title1,
-            'funding_section_title2' => $request->funding_section_title2,
+            'funding_section_title1' => trim(preg_replace('/\s+/', ' ', $request->funding_section_title1)),
+            'funding_section_title2' => trim(preg_replace('/\s+/', ' ', $request->funding_section_title2)),
             'funding_section_btn1_text' => $request->funding_section_btn1_text,
             'funding_section_btn2_text' => $request->funding_section_btn2_text,
             ]);
