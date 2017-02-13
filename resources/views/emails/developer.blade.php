@@ -200,7 +200,7 @@
             <div style="text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
             <!-- <img src='http://www.vestabyte.com/assets/images/email/VB_header.png' width='100%' style="max-width: 100%;"/> -->
 
-              <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px; margin: 0px; line-height: 60px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif</p>
+              <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px; margin: 0px; line-height: 60px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
               
             </div>
             <div id='content' style='max-width:100%;padding:40px;background-color:#FFF;line-height:21px;'>
@@ -211,7 +211,7 @@
                                 <!-- <p style ='font-size:15px;'>If you have any queries, please do not hesitate to reach out to us by replying to this email or calling us at 1 300 033 221.</p><br> -->
                                 <br>
                                 <p style ='font-size:15px;'>Regards,</p>
-                                <p style='font-size:15px;'>@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text){{$siteTitle}}@else Estate Baron @endif Team</p>
+                                <p style='font-size:15px;'>@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Team</p>
             </div>
            <div id='footer' bgcolor="#2D2D4B" style='max-width:100%;padding-top:30px;margin-left:0;text-align:center;background:#2d2d4b;color:#fed405;height:60px;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;'>
             <!-- <img src='http://www.vestabyte.com/assets/images/email/VB_footer.png' /> -->
