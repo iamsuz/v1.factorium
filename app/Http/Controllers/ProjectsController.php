@@ -23,6 +23,8 @@ use App\Http\Requests\InvestmentRequest;
 use App\Jobs\SendReminderEmail;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
+use App\Investment;
+use Carbon\Carbon;
 
 class ProjectsController extends Controller
 {
@@ -147,6 +149,22 @@ class ProjectsController extends Controller
                 $project->documents()->save($document5);
             }
         }
+        $investmentDetails = new Investment;
+        $investmentDetails->project_id = $project->id;
+        $investmentDetails->goal_amount = 10000;
+        $investmentDetails->minimum_accepted_amount = 500;
+        $investmentDetails->maximum_accepted_amount = 10000;
+        $investmentDetails->total_projected_costs = 10000;
+        $investmentDetails->total_debt = 500;
+        $investmentDetails->total_equity = 100;
+        $investmentDetails->projected_returns = 100;
+        $investmentDetails->hold_period = '24';
+        $investmentDetails->developer_equity = 100;
+        $investmentDetails->fund_raising_start_date = Carbon::now()->toDateTimeString();
+        $investmentDetails->fund_raising_close_date = Carbon::now()->addDays(30)->toDateTimeString();
+        $investmentDetails->project_site = url();
+        $investmentDetails->save();
+
         $mailer->sendProjectSubmit($user, $project);
         return redirect()->route('projects.confirmation', $project)->withMessage('<p class="alert alert-success text-center">Successfully Added New Project.</p>');
     }
