@@ -481,9 +481,9 @@ class ProjectsController extends Controller
         $extension = $request->file->getClientOriginalExtension();
         $photo = $request->file->move($destinationPath, $filename);
         $photo= Image::make($destinationPath.'/'.$filename);
-        $photo->resize(1366, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save();
+        // $photo->resize(1366, null, function ($constraint) {
+        //     $constraint->aspectRatio();
+        // })->save();
         $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
         $project->media()->save($media);
         return 1;

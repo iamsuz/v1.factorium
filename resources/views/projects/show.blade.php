@@ -342,7 +342,7 @@
 								<div class="col-md-10">
 									<center>
 										@if($project->media->where('type','residents')->last())
-										<img src="{{asset($project->media->where('type', 'residents')->first()->path)}}" width="100%" alt="Image">
+										<img src="{{asset($project->media->where('type', 'residents')->last()->path)}}" width="100%" alt="Image">
 										@endif
 									</center>
 								</div> 
@@ -1252,22 +1252,22 @@
 			$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
 			$('.project-returns-field').html('<input type="text" name="project_returns_txt" class="form-control" value="{{$project->investment->projected_returns}}">%');
 			$('.project-goal-amount-field').html('<input type="text" name="project_goal_amount_txt" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}">');
-			$('.project-summary-field').html('<textarea name="project_summary_txt" rows="3" class="form-control" placeholder="Enter Summary">{!!$project->investment->summary!!}</textarea>');
-			$('.project-security-long-field').html('<textarea name="project_security_long_txt" rows="3" class="form-control" placeholder="Enter Security Details">{!!$project->investment->security_long!!}</textarea>');
-			$('.project-investor-distribution-field').html('<textarea name="project_investor_distribution_txt" class="form-control" rows="4" placeholder="Enter Investor Distribution Details">{!!$project->investment->exit_d!!}</textarea>');
-			$('.project-marketability-field').html('<textarea name="project_marketability_txt" class="form-control" rows="3" placeholder="Enter Marketability Details">{!!$project->investment->marketability!!}</textarea>');
-			$('.project-residents-field').html('<textarea name="project_residents_txt" class="form-control" rows="3" placeholder="Enter Residents">{!!$project->investment->residents!!}</textarea>');
+			$('.project-summary-field').html('<textarea name="project_summary_txt" rows="3" class="form-control" placeholder="Enter Summary">{{$project->investment->summary}}</textarea>');
+			$('.project-security-long-field').html('<textarea name="project_security_long_txt" rows="3" class="form-control" placeholder="Enter Security Details">{{$project->investment->security_long}}</textarea>');
+			$('.project-investor-distribution-field').html('<textarea name="project_investor_distribution_txt" class="form-control" rows="4" placeholder="Enter Investor Distribution Details">{{$project->investment->exit_d}}</textarea>');
+			$('.project-marketability-field').html('<textarea name="project_marketability_txt" class="form-control" rows="3" placeholder="Enter Marketability Details">{{$project->investment->marketability}}</textarea>');
+			$('.project-residents-field').html('<textarea name="project_residents_txt" class="form-control" rows="3" placeholder="Enter Residents">{{$project->investment->residents}}</textarea>');
 			$('.project-investment-type-field').html('<textarea name="project_investment_type_txt" class="form-control" rows="3" placeholder="Investment type">{{$project->investment->investment_type}}</textarea>');
 			$('.project-security-field').html('<textarea name="project_security_txt" class="form-control" rows="3" placeholder="Investment Security">{{$project->investment->security}}</textarea>');
 			$('.project-expected-returns-field').html('<textarea name="project_expected_returns_txt" class="form-control" rows="3" placeholder="Expected Returns">{{$project->investment->expected_returns_long}}</textarea>');
 			$('.project-return-paid-as-field').html('<textarea name="project_return_paid_as_txt" class="form-control" rows="3" placeholder="Return paid as">{{$project->investment->returns_paid_as}}</textarea>');
 			$('.project-taxation-field').html('<textarea name="project_taxation_txt" class="form-control" rows="3" placeholder="Taxation">{{$project->investment->taxation}}</textarea>');
-			$('.project-current-status-field').html('<textarea name="project_current_status_txt" class="form-control" rows="3" placeholder="Current Status">{!!$project->investment->current_status!!}</textarea>');
-			$('.project-rationale-field').html('<textarea name="project_rationale_txt" class="form-control" rows="3" placeholder="Rationale">{!!$project->investment->rationale!!}</textarea>');
-			$('.project-risk-field').html('<textarea name="project_risk_txt" class="form-control" rows="3" placeholder="Risk">{!!$project->investment->risk!!}</textarea>');
+			$('.project-current-status-field').html('<textarea name="project_current_status_txt" class="form-control" rows="3" placeholder="Current Status">{{$project->investment->current_status}}</textarea>');
+			$('.project-rationale-field').html('<textarea name="project_rationale_txt" class="form-control" rows="3" placeholder="Rationale">{{$project->investment->rationale}}</textarea>');
+			$('.project-risk-field').html('<textarea name="project_risk_txt" class="form-control" rows="3" placeholder="Risk">{{$project->investment->risk}}</textarea>');
 			$('.project-pds1-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>');
 			$('.project-pds2-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds2_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_2_link}}@endif" @endif>');
-			$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control" rows="3" placeholder="How to invest">{!!$project->investment->how_to_invest!!}</textarea>');
+			$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control" rows="3" placeholder="How to invest">{{$project->investment->how_to_invest}}</textarea>');
 			@endif
 		});
 	}
