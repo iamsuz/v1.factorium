@@ -288,7 +288,7 @@
 							<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Suburb Profile</h2>
 							<br><br><br>
 							<div class="row">
-								<div class="col-md-10 col-md-offset-1">
+								<div class="col-md-12">
 									<div id="map" data-role="page" ></div>
 									<address class="text-center"><p style="font-size:15px;">{{$project->location->line_1}}, <!-- {{$project->location->line_2}}, --> {{$project->location->city}}, {{$project->location->postal_code}}, {{$project->location->country}}</p></address>
 								</div>
@@ -314,7 +314,7 @@
 								<div class="col-md-10 col-md-offset-2">
 									<center>
 										@if($project->media->where('type','marketability')->last())
-										<img src="{{asset($project->media->where('type', 'marketability')->last()->path)}}" style="max-width:100%" alt="Marketability">
+										<img src="{{asset($project->media->where('type', 'marketability')->last()->path)}}" style="width:100%" alt="Marketability">
 										@endif
 									</center>
 								</div>
@@ -339,7 +339,7 @@
 							<div class="row">
 								<div class="col-md-2">
 								</div>
-								<div class="col-md-8 col-md-offset-1">
+								<div class="col-md-10">
 									<center>
 										@if($project->media->where('type','residents')->last())
 										<img src="{{asset($project->media->where('type', 'residents')->first()->path)}}" width="100%" alt="Image">
