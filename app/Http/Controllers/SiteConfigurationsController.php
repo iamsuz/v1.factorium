@@ -1158,6 +1158,7 @@ class SiteConfigurationsController extends Controller
                 'expected_returns_long' => trim(preg_replace('/\s+/', ' ', $request->project_expected_returns_txt)),
                 'returns_paid_as' => trim(preg_replace('/\s+/', ' ', $request->project_return_paid_as_txt)),
                 'taxation' => trim(preg_replace('/\s+/', ' ', $request->project_taxation_txt)),
+                'proposer' => trim(preg_replace('/\s+/', ' ', $request->project_developer_txt)),
                 'current_status' => trim(preg_replace('/\s+/', ' ', $request->project_current_status_txt)),
                 'rationale' => trim(preg_replace('/\s+/', ' ', $request->project_rationale_txt)),
                 'risk' => trim(preg_replace('/\s+/', ' ', $request->project_risk_txt)),

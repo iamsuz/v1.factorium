@@ -457,7 +457,7 @@
 									@else
 									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Venture</h4><br>
 									@endif
-									@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->proposer!!}</p> @endif
+									@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
 									<div class="row">
 										<div class="col-md-12 text-center">
 											<center>
@@ -526,24 +526,25 @@
 						</div>
 					</div>
 				</div>
-			</section>
-			<section>
-				<div class="container">
-					<div class="row" style="background-color:#E6E6E6;">
-						<div class="col-md-12">
-							<h2 class="download-text first_color">Downloads</h2>
-							<div class="row">
-								<div class="col-md-3 text-left">
-									<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-									<span style="font-size:1em;" class="project-pds1-link-field">
-										<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Part 1 PDS</a>
-									</span>
-								</div>
-								<div class="col-md-3 text-left">
-									<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-									<span style="font-size:1em;" class="project-pds2-link-field">
-										<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_2_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 2 PDS" style="text-decoration:underline;" class="download-links">Part 2 PDS</a></span>
-									</div>
+			</div>
+		</section>
+		<section>
+			<div class="container">
+				<div class="row" style="background-color:#E6E6E6;">
+					<div class="col-md-12">
+						<h2 class="download-text first_color">Downloads</h2>
+						<div class="row">
+							<div class="col-md-3 text-left">
+								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+								<span style="font-size:1em;" class="project-pds1-link-field">
+								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Prospectus</a>
+								</span>
+							</div>
+							<!-- <div class="col-md-3 text-left">
+								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+								<span style="font-size:1em;" class="project-pds2-link-field">
+								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_2_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 2 PDS" style="text-decoration:underline;" class="download-links">Part 2 PDS</a></span>
+							</div> -->
 							<!-- <div class="col-md-3 text-left">
 								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
 								<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Part 1 PDS</a></p>
@@ -1262,6 +1263,7 @@
 			$('.project-expected-returns-field').html('<textarea name="project_expected_returns_txt" class="form-control" rows="3" placeholder="Expected Returns">{{$project->investment->expected_returns_long}}</textarea>');
 			$('.project-return-paid-as-field').html('<textarea name="project_return_paid_as_txt" class="form-control" rows="3" placeholder="Return paid as">{{$project->investment->returns_paid_as}}</textarea>');
 			$('.project-taxation-field').html('<textarea name="project_taxation_txt" class="form-control" rows="3" placeholder="Taxation">{{$project->investment->taxation}}</textarea>');
+			$('.project-developer-field').html('<textarea name="project_developer_txt" class="form-control" rows="3" placeholder="Developer">{{$project->investment->proposer}}</textarea>');
 			$('.project-current-status-field').html('<textarea name="project_current_status_txt" class="form-control" rows="3" placeholder="Current Status">{{$project->investment->current_status}}</textarea>');
 			$('.project-rationale-field').html('<textarea name="project_rationale_txt" class="form-control" rows="3" placeholder="Rationale">{{$project->investment->rationale}}</textarea>');
 			$('.project-risk-field').html('<textarea name="project_risk_txt" class="form-control" rows="3" placeholder="Risk">{{$project->investment->risk}}</textarea>');
