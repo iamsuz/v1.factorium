@@ -535,7 +535,7 @@ class SiteConfigurationsController extends Controller
                             ->where('type', 'projectpg_back_img')
                             ->first();
                         if($projectMedia){
-                            File::delete(public_path($projectMedia->path));    
+                            // File::delete(public_path($projectMedia->path));    
                         }
                         else{
                             $projectMedia = new Media;

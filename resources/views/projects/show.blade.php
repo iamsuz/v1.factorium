@@ -78,7 +78,7 @@
 	@endif
 	@endif
 	<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
-	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->first()) url({{asset($project->media->where('type', 'projectpg_back_img')->first()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
+	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
 		<div class="color-overlay">
 			<div class="container">
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
