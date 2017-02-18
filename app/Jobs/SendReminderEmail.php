@@ -46,20 +46,20 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
      */
     public function handle(Mailer $mailer)
     {
-        //
         $investor = $this->investor;
         $project = $this->project;
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.admin';
         $this->subject = 'Application Received for '.$project->title;
         $this->data = compact('project', 'investor');
-        // dd($investor);
         $mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, 'Estate Baron')->to($this->to)->subject($this->subject);
         });

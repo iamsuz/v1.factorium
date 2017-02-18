@@ -77,9 +77,11 @@ class AppMailer
     public function sendRegistrationNotificationAdmin(User $investor)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
@@ -93,9 +95,11 @@ class AppMailer
     public function sendRegistrationNotificationAdminOther(User $investor)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
@@ -109,9 +113,11 @@ class AppMailer
     public function sendInterestNotificationAdmin(Project $project, User $investor)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
@@ -125,9 +131,11 @@ class AppMailer
     public function sendSubdivideEmailToAdmin($details)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
@@ -139,11 +147,12 @@ class AppMailer
     }
     public function sendProjectSubmit(User $investor, Project $project)
     {
-// dd($project);
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
@@ -157,9 +166,11 @@ class AppMailer
     public function sendIdVerificationEmailToAdmin($details)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
@@ -214,9 +225,11 @@ class AppMailer
     public function sendInvoiceToAdmin($investment)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
-            array_push($recipients, $user->email);
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;

@@ -371,6 +371,7 @@ class ProjectsController extends Controller
     public function showInterest($project_id, AppMailer $mailer)
     {
         
+        $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         if(!$project->show_invest_now_button) {
             return redirect()->route('projects.show', $project);
@@ -388,7 +389,7 @@ class ProjectsController extends Controller
             // $this->dispatch(new SendInvestorNotificationEmail($user,$project));
             // $this->dispatch(new SendReminderEmail($user,$project));
             // $this->dispatch(new SendDeveloperNotificationEmail($user,$project));
-            return view('projects.offer', compact('project'));
+            return view('projects.offer', compact('project','color'));
         } else {
             return redirect()->back()->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Warning!</strong>Project investment plan is not yet done</p>');
         }

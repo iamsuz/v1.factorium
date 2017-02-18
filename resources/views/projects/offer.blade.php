@@ -14,7 +14,7 @@ Offer Doc
 				<div class="row">
 					<div class="col-md-7"><br>
 						<iframe src="{{$project->investment? $project->investment->embedded_offer_doc_link : 'test'}}&amp;project_name={{$project->title}}&amp;project_id={{$project->id}}&amp;user_id={{Auth::user()->id}}&amp;first_name={{Auth::user()->first_name}}&amp; last_name={{Auth::user()->last_name}}&amp;email={{Auth::user()->email}}&amp;phone_number={{Auth::user()->phone_number}}" width="100%" height="500" frameBorder="0" class="gfiframe"></iframe>
-						<script src="//www.vestabyte.com/registry/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js" type="text/javascript"></script>
+						<script src="https://www.vestabyte.com/registry/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js" type="text/javascript"></script>
 					</div>
 					@if ($project->show_download_pdf_page)
 					<div class="col-md-5">
