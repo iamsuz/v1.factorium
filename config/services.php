@@ -36,24 +36,24 @@ return [
     ],
 
     'facebook' => [
-    'client_id' => '255756764800708',
-    'client_secret' => '6cb850653967e7eeee5b13cadade0fd6',
-    'redirect' => 'http://www.newdawnfund.com/auth/facebook/callback',
+    'client_id' => '1215086048524228',
+    'client_secret' => 'cd31a14a3ad6d456c03406ff6d4b0e59',
+    'redirect' => 'http://estatebaron.com/auth/facebook/callback',
     ],
     'linkedin' => [
-    'client_id' => '812v9uwe6qtx1q',
-    'client_secret' => 'U07jt0Ldehk86Ori',
-    'redirect' => 'http://www.newdawnfund.com/auth/linkedin/callback',
+    'client_id' => '754ylsamh53veh',
+    'client_secret' => 'WkI3b34nx6eii7xz',
+    'redirect' => 'http://estatebaron.com/auth/linkedin/callback',
     ],
     'twitter' => [
     'client_id' => 'rXLmiW1spxnHTmVq305ZJwTe9',
     'client_secret' => 'vXP4coQnehpHYJhbVRNCAYLhnVgSUE2qmRxWpbhVcvcEkwOBoc',
-    'redirect' => 'http://localhost:8000/auth/twitter/callback',
+    'redirect' => 'http://estatebaron.com/auth/twitter/callback',
     ],
     'google' => [
-    'client_id' => '187907114060-jlrn4atd499vopee68cpsfcvsckothq0.apps.googleusercontent.com',
-    'client_secret' => '0h9akYIyxt6x027Efy9EO4iW',
-    'redirect' => 'http://www.newdawnfund.com/auth/google/callback',
+    'client_id' => '124057571877-5er7hciotfl6i1pmlu1ajnofa5sh1o76.apps.googleusercontent.com',
+    'client_secret' => 'o-allW730HIwLdLlpIkO7LE6',
+    'redirect' => 'http://estatebaron.com/auth/google/callback',
     ],
 
 ];
