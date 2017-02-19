@@ -38,7 +38,7 @@ return [
     'facebook' => [
     'client_id' => '1215086048524228',
     'client_secret' => 'cd31a14a3ad6d456c03406ff6d4b0e59',
-    'redirect' => 'http://'.url().'/auth/facebook/callback',
+    'redirect' => url('auth/facebook/callback'),
     ],
     'linkedin' => [
     'client_id' => '754ylsamh53veh',
