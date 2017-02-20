@@ -634,12 +634,22 @@ class ProjectsController extends Controller
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Your invitation to '.$sent_emails.' was sent succesfully, we will notify when your invite was accepted.</p>');
     }
 
+    public function gformRedirects(Request $request)
+    {
+        $url = $request->request_url;
+        $amount = $request->amount_to_invest;
+        $project_id = $request->project_id;
+        $user_id = $request->user_id;
+        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id);
+    }
+
     public function gform(Request $request)
     {
+        // dd($request);
         $project = Project::findOrFail($request->project_id);
         $user = User::findOrFail($request->user_id);
-        $amount = floatval(str_replace(',', '', str_replace('$ ', '', $request->amount_to_invest)));
-        $amount_5 = $amount*0.05; //5 percent of investment
+        $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
+        // $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount]);
 
         // $intercom = IntercomBasicAuthClient::factory(array(

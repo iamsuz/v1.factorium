@@ -33,6 +33,7 @@ Route::pattern('dashboard', '[0-9]+');
 Route::resource('dashboard', 'DashboardController');
 
 Route::get('/gform', 'ProjectsController@gform');
+Route::get('/gformredirect','ProjectsController@gformRedirects');
 
 Route::get('/dashboard/users', ['as'=>'dashboard.users', 'uses'=>'DashboardController@users']);
 Route::get('/dashboard/projects', ['as'=>'dashboard.projects', 'uses'=>'DashboardController@projects']);
