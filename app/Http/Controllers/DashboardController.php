@@ -42,8 +42,8 @@ class DashboardController extends Controller
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
         $notes = Note::all();
-        $total_goal = Investment::all()->sum('goal_amount');
-        $pledged_investments = InvestmentInvestor::all();
+        $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
+        $pledged_investments = InvestmentInvestor::all()->where('project_site',url());
         return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color'));
     }
 

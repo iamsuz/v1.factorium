@@ -650,7 +650,7 @@ class ProjectsController extends Controller
         $user = User::findOrFail($request->user_id);
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         // $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount]);
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url()]);
 
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'sdaro77j',
