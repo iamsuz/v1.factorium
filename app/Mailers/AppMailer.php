@@ -215,9 +215,9 @@ class AppMailer
     {
         $this->to = $investment->user->email;
         $this->view = 'emails.invoice';
-        $this->subject = 'Unit certificate for '.$investment->project->title;
+        $this->subject = 'Share certificate for '.$investment->project->title;
         $this->data = compact('investment');
-        $this->pathToFile = storage_path().'/app/invoices/Invoice-'.$investment->id.'.pdf';
+        $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
 
         $this->deliverWithFile();
     }
@@ -234,9 +234,9 @@ class AppMailer
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.adminInvoice';
-        $this->subject = 'Unit certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
+        $this->subject = 'Share certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
         $this->data = compact('investment');
-        $this->pathToFile = storage_path().'/app/invoices/Invoice-'.$investment->id.'.pdf';
+        $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
 
         $this->deliverWithFile();
     }

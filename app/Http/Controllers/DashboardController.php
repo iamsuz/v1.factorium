@@ -203,7 +203,7 @@ class DashboardController extends Controller
         if($investment->accepted) {
             $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment]);
             $pdf->setPaper('a4', 'landscape');
-            $pdf->save(storage_path().'/app/invoices/Invoice-'.$investment->id.'.pdf');
+            $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
             $mailer->sendInvoiceToUser($investment);
             $mailer->sendInvoiceToAdmin($investment);
         }

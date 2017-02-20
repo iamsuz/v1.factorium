@@ -671,10 +671,10 @@ class ProjectsController extends Controller
             'spv_postal_code' => 'required',
             'spv_country' => 'required',
             'spv_contact_number' => 'required|numeric',
-            // 'spv_logo' => 'required',
             'spv_md_name' => 'required',
             // 'spv_logo_image_path' => 'required',
         ]);
+        //validate SPV logo
         $projectMedia = Media::where('project_id', $project_id)
                 ->where('project_site', url())
                 ->where('type', 'spv_logo_image')
@@ -682,6 +682,16 @@ class ProjectsController extends Controller
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_logo' => 'required',
+            ]);    
+        }
+        //Validate SPV MD Signature
+        $projectMedia = Media::where('project_id', $project_id)
+                ->where('project_site', url())
+                ->where('type', 'spv_md_sign_image')
+                ->first();
+        if(!$projectMedia){
+            $this->validate($request, [
+                'spv_md_sign' => 'required',
             ]);    
         }
         $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
@@ -725,6 +735,30 @@ class ProjectsController extends Controller
                     $projectMedia->type = 'spv_logo_image';
                     $projectMedia->project_site = url();
                     $projectMedia->caption = 'Project SPV Logo Image';
+                }
+                $projectMedia->filename = $finalFile;
+                $projectMedia->path = $finalpath;
+                $projectMedia->save();
+            }
+            if($request->spv_md_sign_image_path && $request->spv_md_sign_image_path != ''){
+                $saveLoc = 'assets/images/media/project_page/';
+                $finalFile = 'spv_md_sign'.time().'.png';
+                $finalpath = $saveLoc.$finalFile;
+                Image::make($request->spv_md_sign_image_path)->save(public_path($finalpath));
+                File::delete($request->spv_md_sign_image_path);
+                $projectMedia = Media::where('project_id', $project_id)
+                    ->where('project_site', url())
+                    ->where('type', 'spv_md_sign_image')
+                    ->first();
+                if($projectMedia){
+                    File::delete(public_path($projectMedia->path));    
+                }
+                else{
+                    $projectMedia = new Media;
+                    $projectMedia->project_id = $project_id;
+                    $projectMedia->type = 'spv_md_sign_image';
+                    $projectMedia->project_site = url();
+                    $projectMedia->caption = 'Project SPV MD Signature Image';
                 }
                 $projectMedia->filename = $finalFile;
                 $projectMedia->path = $finalpath;

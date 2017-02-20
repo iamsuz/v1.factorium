@@ -1575,7 +1575,7 @@ Edit {{$project->title}} | Dashboard | @parent
 																	Browse&hellip; <input type="file" name="spv_logo" id="spv_logo" class="form-control" style="display: none;">
 																</span>
 															</label>
-															<input type="text" class="form-control" id="spv_logo_name" name="spv_logo_name" value="@if($project->media->where('type', 'spv_logo_image')){{$project->media->where('type', 'spv_logo_image')->first()->filename}}@endif" readonly>
+															<input type="text" class="form-control" id="spv_logo_name" name="spv_logo_name" value="@if(!$project->media->where('type', 'spv_logo_image')->isEmpty()){{$project->media->where('type', 'spv_logo_image')->first()->filename}}@endif" readonly>
 															<input type="hidden" name="spv_logo_image_path" id="spv_logo_image_path" value="">
 														</div>
 														<div class="row spv_logo_error" style="text-align: -webkit-center;"></div>
@@ -1585,7 +1585,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											</div>
 										</div>
 									</div>
-									<!-- <div class="row">
+									<div class="row">
 										<div class="form-group @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
 											{!!Form::label('spv_md_sign', 'Project SPV MD Signature', array('class'=>'col-sm-2 control-label'))!!}
 											<div class="col-sm-9">
@@ -1597,7 +1597,7 @@ Edit {{$project->title}} | Dashboard | @parent
 																	Browse&hellip; <input type="file" name="spv_md_sign" id="spv_md_sign" class="form-control" style="display: none;">
 																</span>
 															</label>
-															<input type="text" class="form-control" id="spv_md_sign_name" name="spv_md_sign_name" value="" readonly>
+															<input type="text" class="form-control" id="spv_md_sign_name" name="spv_md_sign_name" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->filename}}@endif" readonly>
 															<input type="hidden" name="spv_md_sign_image_path" id="spv_md_sign_image_path" value="">
 														</div>
 														<div class="row spv_md_sign_error" style="text-align: -webkit-center;"></div>
@@ -1606,7 +1606,7 @@ Edit {{$project->title}} | Dashboard | @parent
 												</div>
 											</div>
 										</div>
-									</div> -->
+									</div>
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-9">
@@ -2136,7 +2136,12 @@ Edit {{$project->title}} | Dashboard | @parent
                 $('.loader-overlay').hide();
                 if(data.status){
                     $('#image_crop').val(data.imageSource);
-                    $('#spv_logo_image_path').val(data.imageSource);
+                    if (imgAction == 'spv_logo_image'){
+                    	$('#spv_logo_image_path').val(data.imageSource);
+                    }
+                    else if(imgAction == 'spv_md_sign_image'){
+                    	$('#spv_md_sign_image_path').val(data.imageSource);
+                    }
                     // location.reload('/');
                 }
                 else{
@@ -2144,84 +2149,86 @@ Edit {{$project->title}} | Dashboard | @parent
                     if (imgAction == 'spv_logo_image'){
                       	$('#spv_logo, #spv_logo_name').val('');
                   	}
+                  	else if(imgAction == 'spv_md_sign_image'){
+                  		$('#spv_md_sign, #spv_md_sign_name').val('');
+                  	}
                   	alert(data.message);
                 }
-            
         	});
         });
     }
 
     function uploadProjectSpvMDSign(){
-  //   	$('#spv_md_sign').change(function(){
-		// 	$('.spv_md_sign_error').html('');
-		// 	var file = $('#spv_md_sign')[0].files[0];
-		// 	if (file){
-		// 		fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
-		// 		if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
-		// 			$('#spv_md_sign_name').val(file.name);
+    	$('#spv_md_sign').change(function(){
+			$('.spv_md_sign_error').html('');
+			var file = $('#spv_md_sign')[0].files[0];
+			if (file){
+				fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
+				if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
+					$('#spv_md_sign_name').val(file.name);
 
-		// 			var formData = new FormData();
-	 //                formData.append('spv_logo', $('#spv_logo')[0].files[0]);
-	 //                $('.loader-overlay').show();
-	 //                $.ajax({
-	 //                    url: '/configuration/updateProjectSpvLogo',
-	 //                    type: 'POST',
-	 //                    dataType: 'JSON',
-	 //                    data: formData,
-	 //                    headers: {
-	 //                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	 //                    },
-	 //                    contentType: false,
-	 //                    processData: false
-	 //                }).done(function(data){
-	 //                	if(data.status == 1){
-  //                           console.log(data);
-  //                           var imgPath = data.destPath+data.fileName;
-  //                           var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_logo_img" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
+					var formData = new FormData();
+	                formData.append('spv_md_sign', $('#spv_md_sign')[0].files[0]);
+	                $('.loader-overlay').show();
+	                $.ajax({
+	                    url: '/configuration/updateProjectSpvMDSign',
+	                    type: 'POST',
+	                    dataType: 'JSON',
+	                    data: formData,
+	                    headers: {
+	                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	                    },
+	                    contentType: false,
+	                    processData: false
+	                }).done(function(data){
+	                	if(data.status == 1){
+                            console.log(data);
+                            var imgPath = data.destPath+data.fileName;
+                            var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_md_sign_image" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
 
-  //                           $('#image_cropbox_container').html(str1);
-  //                           $('#favicon_edit_modal').modal('hide');
-  //                           $('#image_crop_modal').modal({
-  //                               'show': true,
-  //                               'backdrop': false,
-  //                           });
+                            $('#image_cropbox_container').html(str1);
+                            $('#favicon_edit_modal').modal('hide');
+                            $('#image_crop_modal').modal({
+                                'show': true,
+                                'backdrop': false,
+                            });
 
-  //                           $('#image_crop').val(imgPath); //set hidden image value
-  //                           $('#image_crop').attr('action', 'spv_logo_image');
-  //                           var target_width = 150;
-  //                           var target_height = 50;
-  //                           var origWidth = data.origWidth;
-  //                           var origHeight = data.origHeight;
-  //                           $('#image_cropbox').Jcrop({
-  //                               boxWidth: 530,
-  //                               aspectRatio: 3/1,
-  //                               keySupport: false,
-  //                               setSelect: [0, 0, target_width, target_height],
-  //                               bgColor: '',
-  //                               onSelect: function(c) {
-  //                                   updateCoords(c, target_width, target_height, origWidth, origHeight);
-  //                               },
-  //                               onChange: function(c) {
-  //                                   updateCoords(c, target_width, target_height, origWidth, origHeight);
-  //                               },onRelease: setSelect,
-  //                               minSize: [target_width, target_height],
-  //                           });
-  //                           $('.loader-overlay').hide();
-  //                       }
-  //                       else{
-  //                         $('.loader-overlay').hide();
-  //                         $('#spv_logo, #spv_logo_name').val('');
-  //                         $('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
-  //                       }
-	 //                });
-		// 		}
-		// 		else{
-		// 			$('#spv_logo').val('');
-		// 			$('#spv_logo_name').val('');
-		// 			$('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
-		// 		}
-		// 	}
-		// });
+                            $('#image_crop').val(imgPath); //set hidden image value
+                            $('#image_crop').attr('action', 'spv_md_sign_image');
+                            var target_width = 150;
+                            var target_height = 50;
+                            var origWidth = data.origWidth;
+                            var origHeight = data.origHeight;
+                            $('#image_cropbox').Jcrop({
+                                boxWidth: 530,
+                                aspectRatio: 3/1,
+                                keySupport: false,
+                                setSelect: [0, 0, target_width, target_height],
+                                bgColor: '',
+                                onSelect: function(c) {
+                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                },
+                                onChange: function(c) {
+                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                },onRelease: setSelect,
+                                minSize: [target_width, target_height],
+                            });
+                            $('.loader-overlay').hide();
+                        }
+                        else{
+                          $('.loader-overlay').hide();
+                          $('#spv_md_sign, #spv_md_sign_name').val('');
+                          $('.spv_md_sign_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
+                        }
+	                });
+				}
+				else{
+					$('#spv_md_sign').val('');
+					$('#spv_md_sign_name').val('');
+					$('.spv_md_sign_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
+				}
+			}
+		});
     }
 </script>
 @stop

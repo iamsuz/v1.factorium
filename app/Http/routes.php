@@ -194,3 +194,4 @@ Route::post('/configuration/uploadprojectPgThumbnailImages', ['as'=>'configurati
 Route::post('/configuration/updateWebsiteName', ['as'=>'configuration.updateWebsiteName', 'uses'=>'SiteConfigurationsController@updateWebsiteName']);
 Route::post('projects/{projects}/projectSPVDetails', ['as'=>'projects.projectSPVDetails', 'uses'=>'ProjectsController@storeProjectSPVDetails']);
 Route::post('/configuration/updateProjectSpvLogo', ['as'=>'configuration.updateProjectSpvLogo', 'uses'=>'SiteConfigurationsController@updateProjectSpvLogo']);
+Route::post('/configuration/updateProjectSpvMDSign', ['as'=>'configuration.updateProjectSpvMDSign', 'uses'=>'SiteConfigurationsController@updateProjectSpvMDSign']);

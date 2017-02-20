@@ -146,7 +146,7 @@
 							Invest Now
 							@endif
 						</b></a>
-						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the prospectus before making any decisions</small></h6>
+						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
 						@else
 						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 						@endif
