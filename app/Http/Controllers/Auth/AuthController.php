@@ -25,7 +25,7 @@ class AuthController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('facebook')->redirect('https://xtra.estatebaron.com/auth/facebook/callback');
+        return Socialite::driver('facebook')->redirectUrl('https://xtra.estatebaron.com/auth/facebook/callback')->redirect();
     }
     public function redirectToProvider1()
     {
