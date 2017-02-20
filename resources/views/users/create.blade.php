@@ -78,15 +78,15 @@ Sign up for free Australia's top Venture Crowdfunding
 						<h4 class="text-left font-regular first_color" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b>{!! Html::linkRoute('users.login', 'Sign In Here') !!}</b>
 					</section>
 				</div>
-				<div class="col-md-3" style="position:relative;">
+				{{-- <div class="col-md-3" style="position:relative;">
 					<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;">
 						<div class="second_color_btn" style="border-radius: 100%;"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div><p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
 					</div>
 					<br><br>
 					<br><br>
 					<br>
-				</div>
-				<div class="col-md-3">
+				</div> --}}
+				{{-- <div class="col-md-3">
 					<div class="row" style="text-align:center;">
 						<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 							<!-- <a class='btn btn-lg btn-danger'><i class="fa fa-google-plus" style="width:16px;"></i></a> -->
@@ -103,7 +103,7 @@ Sign up for free Australia's top Venture Crowdfunding
 						</div>	
 						<br><br>
 					</div>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</div>
