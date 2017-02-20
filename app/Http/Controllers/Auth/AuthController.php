@@ -30,8 +30,8 @@ class AuthController extends Controller
         'client_secret' => 'cd31a14a3ad6d456c03406ff6d4b0e59',
         'redirect'     => url('/auth/facebook/callback')
         ];
-        Socialite::buildProvider(\Laravel\Socialite\Two\FacebookProvider::class, $config);
-        return Socialite::driver('facebook')->redirect();
+        return  Socialite::buildProvider(\Laravel\Socialite\Two\FacebookProvider::class, $config)->redirect();
+        // return Socialite::driver('facebook')->redirect();
     }
     public function redirectToProvider1()
     {
