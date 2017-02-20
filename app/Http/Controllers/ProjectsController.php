@@ -25,6 +25,8 @@ use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use App\Investment;
 use Carbon\Carbon;
+use App\ProjectSpvDetail;
+use App\Media;
 
 class ProjectsController extends Controller
 {
@@ -656,6 +658,80 @@ class ProjectsController extends Controller
         $this->dispatch(new SendReminderEmail($user,$project));
 
         return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+    }
+
+    public function storeProjectSPVDetails(Request $request, $project_id)
+    {
+        // dd($request->spv_logo_image_path);
+        $this->validate($request, [
+            'spv_name' => 'required',
+            'spv_line_1' => 'required',
+            'spv_city' => 'required',
+            'spv_state' => 'required',
+            'spv_postal_code' => 'required',
+            'spv_country' => 'required',
+            'spv_contact_number' => 'required|numeric',
+            // 'spv_logo' => 'required',
+            'spv_md_name' => 'required',
+            // 'spv_logo_image_path' => 'required',
+        ]);
+        $projectMedia = Media::where('project_id', $project_id)
+                ->where('project_site', url())
+                ->where('type', 'spv_logo_image')
+                ->first();
+        if(!$projectMedia){
+            $this->validate($request, [
+                'spv_logo' => 'required',
+            ]);    
+        }
+        $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
+        if(!$projectSpv)
+        {
+            $projectSpv = new ProjectSpvDetail;
+            $projectSpv->project_id = $project_id;
+            $projectSpv->save();
+            $projectSpv = ProjectSpvDetail::where('project_id',$project_id)->first();
+        }
+        $spv_result = $projectSpv->update([
+            'spv_name' => $request->spv_name,
+            'spv_line_1' => $request->spv_line_1,
+            'spv_line_2' => $request->spv_line_2,
+            'spv_city' => $request->spv_city,
+            'spv_state' => $request->spv_state,
+            'spv_postal_code' => $request->spv_postal_code,
+            'spv_country' => $request->spv_country,
+            'spv_contact_number' => $request->spv_contact_number,
+            'spv_md_name' => $request->spv_md_name,
+        ]);
+        if($spv_result)
+        {
+            if($request->spv_logo_image_path && $request->spv_logo_image_path != ''){
+                $saveLoc = 'assets/images/media/project_page/';
+                $finalFile = 'spv_logo_'.time().'.png';
+                $finalpath = $saveLoc.$finalFile;
+                Image::make($request->spv_logo_image_path)->save(public_path($finalpath));
+                File::delete($request->spv_logo_image_path);
+                
+                $projectMedia = Media::where('project_id', $project_id)
+                    ->where('project_site', url())
+                    ->where('type', 'spv_logo_image')
+                    ->first();
+                if($projectMedia){
+                    File::delete(public_path($projectMedia->path));    
+                }
+                else{
+                    $projectMedia = new Media;
+                    $projectMedia->project_id = $project_id;
+                    $projectMedia->type = 'spv_logo_image';
+                    $projectMedia->project_site = url();
+                    $projectMedia->caption = 'Project SPV Logo Image';
+                }
+                $projectMedia->filename = $finalFile;
+                $projectMedia->path = $finalpath;
+                $projectMedia->save();
+            }
+            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Updated Project SPV Details.</p>');
+        }
     }
 
 }

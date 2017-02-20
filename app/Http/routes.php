@@ -192,3 +192,5 @@ Route::post('/configuration/uploadProjectPgBackImg', ['as'=>'configuration.uploa
 Route::post('/configuration/editHomePgFundingSectionContent', ['as'=>'configuration.editHomePgFundingSectionContent', 'uses'=>'SiteConfigurationsController@editHomePgFundingSectionContent']);
 Route::post('/configuration/uploadprojectPgThumbnailImages', ['as'=>'configuration.uploadprojectPgThumbnailImages', 'uses'=>'SiteConfigurationsController@uploadprojectPgThumbnailImages']);
 Route::post('/configuration/updateWebsiteName', ['as'=>'configuration.updateWebsiteName', 'uses'=>'SiteConfigurationsController@updateWebsiteName']);
+Route::post('projects/{projects}/projectSPVDetails', ['as'=>'projects.projectSPVDetails', 'uses'=>'ProjectsController@storeProjectSPVDetails']);
+Route::post('/configuration/updateProjectSpvLogo', ['as'=>'configuration.updateProjectSpvLogo', 'uses'=>'SiteConfigurationsController@updateProjectSpvLogo']);

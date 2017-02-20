@@ -130,4 +130,9 @@ class Project extends Model
     {
         return $this->hasMany('App\ProjectProg');
     }
+
+    public function projectspvdetail()
+    {
+        return $this->hasOne('App\ProjectSpvDetail');
+    }
 }

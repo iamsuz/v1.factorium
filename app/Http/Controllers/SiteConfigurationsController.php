@@ -750,6 +750,73 @@ class SiteConfigurationsController extends Controller
                         return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                     }
                 }
+                else if ($request->imgAction == 'spv_logo_image'){
+                    $currentProjectId = $request->currentProjectId;
+                    $extension = strtolower(File::extension($src));
+                    $img = '';
+                    $result = false;
+                    $rw = 450;
+                    $rh = 150;
+                    //Create new coords for image.
+                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                    switch ($extension) {
+                        case 'jpg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+                        
+                        case 'jpeg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+
+                        case 'png':
+                            $quality = 9;
+                            $img  = imagecreatefrompng($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagepng($dest, $src, $quality);
+                            break;
+
+                        default:
+                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                            break;
+                    }
+                    if($result){
+                        // $saveLoc = 'assets/images/media/project_page/';
+                        // $finalFile = 'spv_logo_'.time().'.png';
+                        // $finalpath = $saveLoc.$finalFile;
+                        if($extension != 'png'){
+                            Image::make($src)->encode('png', 9)->save();
+                        }
+                        // else{
+                        //     Image::make($src)->save(public_path($saveLoc.$finalFile));
+                        // }
+                        // File::delete($src);
+                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                    } else{
+                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                    }
+                }
                 else {}
             }
         }
@@ -856,7 +923,32 @@ class SiteConfigurationsController extends Controller
                     return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
-        }        
+        }    if (Auth::user()->roles->contains('role', 'superadmin')){
+            $validation_rules = array(
+                'favicon_image_url'   => 'required|mimes:png',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
+            }
+            $destinationPath = '/';
+        
+            if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
+                Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
+                $fileName = 'favicon'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('favicon_image_url')->move(public_path($destinationPath), $fileName);
+                list($origWidth, $origHeight) = getimagesize(public_path($destinationPath).$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
+        }    
     }
 
     public function updateSiteTitle(Request $request)
@@ -1236,6 +1328,36 @@ class SiteConfigurationsController extends Controller
                 $fileExt = $request->file('projectpg_thumbnail_image')->getClientOriginalExtension();
                 $fileName = 'projectpg_thumbnail_image'.'_'.time().'.'.$fileExt;
                 $uploadStatus = $request->file('projectpg_thumbnail_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
+        }
+    }
+
+    public function updateProjectSpvLogo(Request $request)
+    {
+        if (Auth::user()->roles->contains('role', 'admin')){
+            $validation_rules = array(
+                'spv_logo'   => 'required|mimes:png,jpg,jpeg',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+        
+            if($request->hasFile('spv_logo') && $request->file('spv_logo')->isValid()){
+                Image::make($request->spv_logo)->resize(450, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('spv_logo')->getClientOriginalExtension();
+                $fileName = 'spv_logo'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('spv_logo')->move($destinationPath, $fileName);
                 list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
                 if($uploadStatus){
                     return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);

@@ -4,6 +4,10 @@
 Edit {{$project->title}} | Dashboard | @parent
 @stop
 
+@section('meta')
+<meta name="csrf-token" content="{{csrf_token()}}" />
+@endsection
+
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
@@ -1460,6 +1464,166 @@ Edit {{$project->title}} | Dashboard | @parent
 			</section>
 			<section>
 				<div class="row well">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-12">
+								{!! Form::open(array('route'=>['projects.projectSPVDetails', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+								<fieldset>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_name')){{'has-error'}} @endif">
+											{!!Form::label('spv_name', 'Project SPV Name', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('spv_name')){{'has-error'}} @endif">
+														{!! Form::text('spv_name', $project->projectspvdetail?$project->projectspvdetail->spv_name:null, array('placeholder'=>'SPV Name', 'class'=>'form-control', 'tabindex'=>'21')) !!}
+														{!! $errors->first('spv_name', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_line_1') || $errors->first('spv_line_2')){{'has-error'}} @endif">
+											{!!Form::label('spv_line_1', 'Address Lines', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-6 @if($errors->first('spv_line_1')){{'has-error'}} @endif">
+														{!! Form::text('spv_line_1', $project->projectspvdetail?$project->projectspvdetail->spv_line_1:null, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'22')) !!}
+														{!! $errors->first('spv_line_1', '<small class="text-danger">:message</small>') !!}
+													</div>
+													<div class="col-sm-6 @if($errors->first('spv_line_2')){{'has-error'}} @endif">
+														{!! Form::text('spv_line_2', $project->projectspvdetail?$project->projectspvdetail->spv_line_2:null, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'23')) !!}
+														{!! $errors->first('spv_line_2', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_city') && $errors->first('spv_state')){{'has-error'}} @endif">
+											{!!Form::label('spv_city', 'City', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-6 @if($errors->first('spv_city')){{'has-error'}} @endif">
+														{!! Form::text('spv_city', $project->projectspvdetail?$project->projectspvdetail->spv_city:null, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'24')) !!}
+														{!! $errors->first('spv_city', '<small class="text-danger">:message</small>') !!}
+													</div>
+													<div class="col-sm-6 @if($errors->first('spv_state')){{'has-error'}} @endif">
+														{!! Form::text('spv_state', $project->projectspvdetail?$project->projectspvdetail->spv_state:null, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'25')) !!}
+														{!! $errors->first('spv_state', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_postal_code') || $errors->first('spv_country')){{'has-error'}} @endif">
+											{!!Form::label('spv_postal_code', 'postal code', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-6 @if($errors->first('spv_postal_code')){{'has-error'}} @endif">
+														{!! Form::text('spv_postal_code', $project->projectspvdetail?$project->projectspvdetail->spv_postal_code:null, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'26')) !!}
+														{!! $errors->first('spv_postal_code', '<small class="text-danger">:message</small>') !!}
+													</div>
+													<div class="col-sm-6 @if($errors->first('spv_country')){{'has-error'}} @endif">
+														<select name="spv_country" class="form-control" tabindex="27">
+															@foreach(\App\Http\Utilities\Country::aus() as $country => $code)
+															<option value="{{$code}}" @if($project->projectspvdetail)@if($project->projectspvdetail->spv_country == $code) selected @endif @endif>{{$country}}</option>
+															@endforeach
+														</select>
+														{!! $errors->first('spv_country', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
+											{!!Form::label('spv_contact_number', 'Project SPV Contact Number', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
+														{!! Form::Text('spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28', 'maxlength'=>11)) !!}
+														{!! $errors->first('spv_contact_number', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_md_name')){{'has-error'}} @endif">
+											{!!Form::label('spv_md_name', 'Project SPV MD Name Number', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('spv_md_name')){{'has-error'}} @endif">
+														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'28', 'maxlength'=>11)) !!}
+														{!! $errors->first('spv_md_name', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('spv_logo')){{'has-error'}} @endif">
+											{!!Form::label('spv_logo', 'Logo Image', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('spv_logo')){{'has-error'}} @endif">
+														<div class="input-group">
+															<label class="input-group-btn">
+																<span class="btn btn-primary" style="padding: 10px 12px;">
+																	Browse&hellip; <input type="file" name="spv_logo" id="spv_logo" class="form-control" style="display: none;">
+																</span>
+															</label>
+															<input type="text" class="form-control" id="spv_logo_name" name="spv_logo_name" value="@if($project->media->where('type', 'spv_logo_image')){{$project->media->where('type', 'spv_logo_image')->first()->filename}}@endif" readonly>
+															<input type="hidden" name="spv_logo_image_path" id="spv_logo_image_path" value="">
+														</div>
+														<div class="row spv_logo_error" style="text-align: -webkit-center;"></div>
+														{!! $errors->first('spv_logo', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <div class="row">
+										<div class="form-group @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
+											{!!Form::label('spv_md_sign', 'Project SPV MD Signature', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
+														<div class="input-group">
+															<label class="input-group-btn">
+																<span class="btn btn-primary" style="padding: 10px 12px;">
+																	Browse&hellip; <input type="file" name="spv_md_sign" id="spv_md_sign" class="form-control" style="display: none;">
+																</span>
+															</label>
+															<input type="text" class="form-control" id="spv_md_sign_name" name="spv_md_sign_name" value="" readonly>
+															<input type="hidden" name="spv_md_sign_image_path" id="spv_md_sign_image_path" value="">
+														</div>
+														<div class="row spv_md_sign_error" style="text-align: -webkit-center;"></div>
+														{!! $errors->first('spv_md_sign', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div> -->
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-9">
+												{!! Form::submit('Update Certificate details', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
+											</div>
+										</div>
+									</div>
+									<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
+								</fieldset>
+								{!! Form::close() !!}
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section>
+				<div class="row well">
 					Add Image For Main Image 1366 X 500
 					<div class="col-md-12">
 						<div class="row">
@@ -1713,6 +1877,39 @@ Edit {{$project->title}} | Dashboard | @parent
 		</div>
 	</div>
 </div>
+
+<div class="row">
+    <div class="text-center">
+    	<!-- Project SPV Logo Crop modal -->
+        <div class="modal fade" id="image_crop_modal" role="dialog" style="overflow: scroll;">
+            <div class="modal-dialog" style="min-width: 800px;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Crop Image</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
+                        <!-- Hidden Fields to refer for JCrop -->
+                        <input type="hidden" name="image_crop" id="image_crop" value="" action="">
+                        <input type="hidden" name="image_action" id="image_action" value="">
+                        <input type="hidden" name="x_coord" id="x_coord" value="">
+                        <input type="hidden" name="y_coord" id="y_coord" value="">
+                        <input type="hidden" name="w_target" id="w_target" value="">
+                        <input type="hidden" name="h_target" id="h_target" value="">
+                        <input type="hidden" name="orig_width" id="orig_width" value="">
+                        <input type="hidden" name="orig_height" id="orig_height" value="">
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('js-section')
@@ -1780,6 +1977,251 @@ Edit {{$project->title}} | Dashboard | @parent
 			$(this).val(setVal);
 			$('#show_download_pdf_page').val(setVal);
 		});
+
+		$('#modal_close_btn').click(function(){
+			$('#spv_logo, #spv_md_sign').val('');
+			$('#spv_logo_name, #spv_md_sign_name').val('');
+		});
+
+		//Upload Project SPV Logo
+		uploadProjectSPVLogo();
+		performCropOnImage();
+		uploadProjectSpvMDSign();
 	});
+
+	function uploadProjectSPVLogo(){
+		$('#spv_logo').change(function(){
+			$('.spv_logo_error').html('');
+			var file = $('#spv_logo')[0].files[0];
+			if (file){
+				fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
+				if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
+					$('#spv_logo_name').val(file.name);
+
+					var formData = new FormData();
+	                formData.append('spv_logo', $('#spv_logo')[0].files[0]);
+	                $('.loader-overlay').show();
+	                $.ajax({
+	                    url: '/configuration/updateProjectSpvLogo',
+	                    type: 'POST',
+	                    dataType: 'JSON',
+	                    data: formData,
+	                    headers: {
+	                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	                    },
+	                    contentType: false,
+	                    processData: false
+	                }).done(function(data){
+	                	if(data.status == 1){
+                            console.log(data);
+                            var imgPath = data.destPath+data.fileName;
+                            var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_logo_img" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
+
+                            $('#image_cropbox_container').html(str1);
+                            $('#favicon_edit_modal').modal('hide');
+                            $('#image_crop_modal').modal({
+                                'show': true,
+                                'backdrop': false,
+                            });
+
+                            $('#image_crop').val(imgPath); //set hidden image value
+                            $('#image_crop').attr('action', 'spv_logo_image');
+                            var target_width = 150;
+                            var target_height = 50;
+                            var origWidth = data.origWidth;
+                            var origHeight = data.origHeight;
+                            $('#image_cropbox').Jcrop({
+                                boxWidth: 530,
+                                aspectRatio: 3/1,
+                                keySupport: false,
+                                setSelect: [0, 0, target_width, target_height],
+                                bgColor: '',
+                                onSelect: function(c) {
+                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                },
+                                onChange: function(c) {
+                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                },onRelease: setSelect,
+                                minSize: [target_width, target_height],
+                            });
+                            $('.loader-overlay').hide();
+                        }
+                        else{
+                          $('.loader-overlay').hide();
+                          $('#spv_logo, #spv_logo_name').val('');
+                          $('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
+                        }
+	                });
+				}
+				else{
+					$('#spv_logo').val('');
+					$('#spv_logo_name').val('');
+					$('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
+				}
+			}
+		});
+	}
+
+	function updateCoords(coords, w, h, origWidth, origHeight){
+	    var target_width= w;
+	    var target_height=h;
+        //Set New Coordinates
+        $('#x_coord').val(coords.x);
+        $('#y_coord').val(coords.y);
+        $('#w_target').val(coords.w);
+        $('#h_target').val(coords.h);
+        $('#orig_width').val(origWidth);
+        $('#orig_height').val(origHeight);
+
+        // showPreview(coordinates)
+        $("<img>").attr("src", $('#image_cropbox').attr("src")).load(function(){
+            var rx = target_width / coords.w;
+            var ry = target_height / coords.h;
+
+            var realWidth = this.width;
+            var realHeight = this.height;
+
+            var newWidth = 530;
+            var newHeight = (realHeight/realWidth)*newWidth;
+            
+            $('#preview_image').css({
+                width: Math.round(rx*newWidth)+'px',
+                height: Math.round(ry*newHeight)+'px',
+                marginLeft: '-'+Math.round(rx*coords.x)+'px',
+                marginTop: '-'+Math.round(ry*coords.y)+'px',
+            });
+
+        });
+    }
+
+    function setSelect(coords){
+        jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
+    }
+
+    function performCropOnImage(){
+        $('#perform_crop_btn').click(function(e){
+            $('.loader-overlay').show();
+            var imageName = $('#image_crop').val();
+            var imgAction = $('#image_crop').attr('action');
+            var xValue = $('#x_coord').val();
+            var yValue = $('#y_coord').val();
+            var wValue = $('#w_target').val();
+            var hValue = $('#h_target').val();
+            var origWidth = $('#orig_width').val();
+            var origHeight = $('#orig_height').val();
+            var hiwImgAction = $('#image_action').val();
+            var currentProjectId = $('#current_project_id').val();
+            console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+            $.ajax({
+                url: '/configuration/cropUploadedImage',
+                type: 'POST',
+                data: {
+                    imageName: imageName,
+                    imgAction: imgAction,
+                    xValue: xValue,
+                    yValue: yValue,
+                    wValue: wValue,
+                    hValue: hValue,
+                    origWidth: origWidth,
+                    origHeight: origHeight,
+                    hiwImgAction: hiwImgAction,
+                    currentProjectId: currentProjectId,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function(data){
+                console.log(data);
+                $('#image_crop_modal').modal('toggle');
+                $('.loader-overlay').hide();
+                if(data.status){
+                    $('#image_crop').val(data.imageSource);
+                    $('#spv_logo_image_path').val(data.imageSource);
+                    // location.reload('/');
+                }
+                else{
+                    // $('#image_crop_modal').modal('toggle');
+                    if (imgAction == 'spv_logo_image'){
+                      	$('#spv_logo, #spv_logo_name').val('');
+                  	}
+                  	alert(data.message);
+                }
+            
+        	});
+        });
+    }
+
+    function uploadProjectSpvMDSign(){
+  //   	$('#spv_md_sign').change(function(){
+		// 	$('.spv_md_sign_error').html('');
+		// 	var file = $('#spv_md_sign')[0].files[0];
+		// 	if (file){
+		// 		fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
+		// 		if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
+		// 			$('#spv_md_sign_name').val(file.name);
+
+		// 			var formData = new FormData();
+	 //                formData.append('spv_logo', $('#spv_logo')[0].files[0]);
+	 //                $('.loader-overlay').show();
+	 //                $.ajax({
+	 //                    url: '/configuration/updateProjectSpvLogo',
+	 //                    type: 'POST',
+	 //                    dataType: 'JSON',
+	 //                    data: formData,
+	 //                    headers: {
+	 //                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	 //                    },
+	 //                    contentType: false,
+	 //                    processData: false
+	 //                }).done(function(data){
+	 //                	if(data.status == 1){
+  //                           console.log(data);
+  //                           var imgPath = data.destPath+data.fileName;
+  //                           var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_logo_img" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
+
+  //                           $('#image_cropbox_container').html(str1);
+  //                           $('#favicon_edit_modal').modal('hide');
+  //                           $('#image_crop_modal').modal({
+  //                               'show': true,
+  //                               'backdrop': false,
+  //                           });
+
+  //                           $('#image_crop').val(imgPath); //set hidden image value
+  //                           $('#image_crop').attr('action', 'spv_logo_image');
+  //                           var target_width = 150;
+  //                           var target_height = 50;
+  //                           var origWidth = data.origWidth;
+  //                           var origHeight = data.origHeight;
+  //                           $('#image_cropbox').Jcrop({
+  //                               boxWidth: 530,
+  //                               aspectRatio: 3/1,
+  //                               keySupport: false,
+  //                               setSelect: [0, 0, target_width, target_height],
+  //                               bgColor: '',
+  //                               onSelect: function(c) {
+  //                                   updateCoords(c, target_width, target_height, origWidth, origHeight);
+  //                               },
+  //                               onChange: function(c) {
+  //                                   updateCoords(c, target_width, target_height, origWidth, origHeight);
+  //                               },onRelease: setSelect,
+  //                               minSize: [target_width, target_height],
+  //                           });
+  //                           $('.loader-overlay').hide();
+  //                       }
+  //                       else{
+  //                         $('.loader-overlay').hide();
+  //                         $('#spv_logo, #spv_logo_name').val('');
+  //                         $('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
+  //                       }
+	 //                });
+		// 		}
+		// 		else{
+		// 			$('#spv_logo').val('');
+		// 			$('#spv_logo_name').val('');
+		// 			$('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
+		// 		}
+		// 	}
+		// });
+    }
 </script>
 @stop
