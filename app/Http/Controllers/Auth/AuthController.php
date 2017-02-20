@@ -14,6 +14,7 @@ use App\SocialAccountService1;
 use App\SocialAccountService2;
 use App\SocialAccountService3;
 use Socialite;
+use App\Color;
 
 class AuthController extends Controller
 {
@@ -59,10 +60,12 @@ class AuthController extends Controller
         // }
         // dd($user->phone_number);
         if($user->phone_number != ''){
-            return view('users.show',compact('user'));
+            $color = Color::where('project_site',url())->first();
+            return view('users.show',compact('user','color'));
         }
         else{
-            return view('users.fbedit', compact('user'));
+            $color = Color::where('project_site',url())->first();
+            return view('users.fbedit', compact('user','color'));
         }
     }
     public function handleProviderCallback1(SocialAccountService1 $service,AppMailer $mailer)
