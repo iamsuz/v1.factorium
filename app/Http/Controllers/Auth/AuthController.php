@@ -26,9 +26,9 @@ class AuthController extends Controller
     public function redirectToProvider()
     {
         $config = [
-        'client_id'    = '1215086048524228',
-        'client_token' = 'cd31a14a3ad6d456c03406ff6d4b0e59',
-        'redirect'     = url('/auth/facebook/callback')
+        'client_id'    => '1215086048524228',
+        'client_token' => 'cd31a14a3ad6d456c03406ff6d4b0e59',
+        'redirect'     => url('/auth/facebook/callback')
         ];
         Socialite::buildProvider(\Laravel\Socialite\Two\FacebookProvider::class, $config);
         return Socialite::driver('facebook')->redirect();
