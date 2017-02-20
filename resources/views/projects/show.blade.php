@@ -115,7 +115,7 @@
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Per Annum</h6>
+									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Return</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3">
 									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
@@ -166,6 +166,7 @@
 			@endif
 		</div>
 	</section>
+	<h6 style="color: #707070;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the Prospectus in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
 <!-- <section class="chunk-box" style="overflow:hidden;">
 	<div class="container-fluid">
 		<div class="row">

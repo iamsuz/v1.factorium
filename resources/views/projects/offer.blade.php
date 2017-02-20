@@ -19,9 +19,9 @@ Offer Doc
 					@if ($project->show_download_pdf_page)
 					<div class="col-md-5">
 						<br>
-						<p class="" style="font-size:1em;color:#282a73;">Please read the following PDS and Financial Services 
+						<!-- <p class="" style="font-size:1em;color:#282a73;">Please read the following PDS and Financial Services 
 							Guide carefully and when you are ready to invest, fill the application form electronically and transfer your funds to the following account
-						</p>
+						</p> -->
 						<!-- <table class="table table-bordered" width="100%">
 							<tr>
 								<th>Bank</th>
@@ -46,35 +46,38 @@ Offer Doc
 						</table> -->
 						<!-- @if($project->investment) -->
 						<!-- @if($project->investment->bank) -->
-						<table class="table table-bordered table-hover">
+						<!-- <table class="table table-bordered table-hover">
 							<tr><td>Bank</td><td>{!!$project->investment->bank!!}</td></tr>
 							<tr><td>Account Name</td><td>{!!$project->investment->bank_account_name!!}</td></tr>
 							<tr><td>BSB </td><td>{!!$project->investment->bsb!!}</td></tr>
 							<tr><td>Account No</td><td>{!!$project->investment->bank_account_number!!}</td></tr>
 							<tr><td>Reference</td><td>{!!$project->investment->bank_reference!!}</td></tr>
-						</table>
+						</table> -->
 						<!-- @endif -->
 						<!-- @endif -->
-						<p>We will get in touch with you to confirm receipt and provide investor unit certificates to reflect your investment in the project</p>
+						<!-- <p>We will get in touch with you to confirm receipt and provide investor unit certificates to reflect your investment in the project</p> -->
 						<table class="table table-hover">
-							<tr >
+							<!-- <tr >
 								<td class="font-regular">
 									Read this Document to get all details of the {{$project->title}}<br>
 									<a class="btn btn-primary btn-block font-bold " style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{$project->investment->PDS_part_2_link}}" target="_blank">Download Part 2 PDS</a>
 								</td>
-							</tr>
+							</tr> -->
 							<tr >
 								<td class="font-regular">
-									Read this Document for the fund structure and other technical/legal details
+									<!-- Read this Document for the fund structure and other technical/legal details -->
+									This Prospectus contains forward looking statements. Those statements are based upon the Directors’ current expectations in regard to future events or results. All forecasts in this Prospectus are based upon the assumptions described in Section 10.1. Actual results may be materially affected by changes in circumstances, some of which may be outside the control of the Company. The reliance that investors place on the forecasts is a matter for their own commercial judgment. No representation or warranty is made that any forecast, assumption or estimate contained in this Prospectus will be achieved.
+									<br><br>
+									Seek professional advice from your accountant, stockbroker, lawyer or other professional adviser before deciding whether to invest. The information provided in this Prospectus does not constitute personal financial product advice and has been prepared without taking into account your investment objectives, financial situation or particular needs. It is important that you read this Prospectus in its entirety before deciding to invest and consider the risk factors that could affect the Company’s performance.
 									<br>
-									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{$project->investment->PDS_part_1_link}}" target="_blank">Download Part 1 PDS</a>
+									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{$project->investment->PDS_part_1_link}}" target="_blank">Download Prospectus</a>
 								</td>
 							</tr>
 							<tr >
 								<td class="font-regular">
 									We have to provide this document to you along with the application form, it defines the services we are providing as an authorized Representative of our license holding partner
 									<br>
-									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{asset('assets/documents/FSG.pdf')}}" target="_blank">Download Financial Services Guide</a>
+									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link}}" target="_blank">Download Financial Services Guide</a>
 								</td>
 							</tr>
 						</table>

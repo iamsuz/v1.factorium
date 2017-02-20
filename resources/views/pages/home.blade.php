@@ -487,7 +487,7 @@
                     </div>
                     <div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
                     </div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->projected_returns}}%@endif<small><small><br>PA</small></small></h4>
+                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->projected_returns}}%@endif<small><small><br>Return</small></small></h4>
                     </div>
                   </div>
                 </div>
@@ -613,28 +613,30 @@
           </div>
           <div class="col-md-6" data-wow-duration="1.5s">
             <h3 class="text-left first_color investment-title1-section" style="font-weight:600 !important; color:#282a73; font-size:32px;">
-              @if($siteConfiguration->investment_title_text1 != '')
+              Compliance
+              <!-- @if($siteConfiguration->investment_title_text1 != '')
               {!! nl2br(e($siteConfiguration->investment_title_text1)) !!}
-              @endif
-              @if(Auth::guest())
+              @endif -->
+              <!-- @if(Auth::guest())
               @else
               @if($superadmin_access == 1)
               <i class="fa fa-pencil edit-pencil-style show-investment-title1-edit-box" style="font-size: 20px; color: #000;" data-toggle="tooltip" title="Edit Title" data-placement="right"></i>
               @endif
-              @endif
+              @endif -->
             </h3><br>
             <p class="investment-title1-description-section" style="font-size:16px;">
-              @if($siteConfiguration->investment_title1_description != '')
+              The advice provided on this website, is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Prospectus relevant to that offer and consider whether they are right for you. The Prospectus is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to provide General advice and deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="{{$siteConfiguration->financial_service_guide_link}}" target="_blank"><span style="color: #44673f; text-decoration: none;">Financial Services Guide<span></a>.
+              <!-- @if($siteConfiguration->investment_title1_description != '')
               {!! nl2br(e($siteConfiguration->investment_title1_description)) !!}
-              @endif
-              @if(Auth::guest())
+              @endif -->
+              <!-- @if(Auth::guest())
               @else
               @if($superadmin_access == 1)
               <i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000;" data-toggle="tooltip" title="Edit Description" data-placement="right"></i>
               @endif
-              @endif
+              @endif -->
             </p>
-            <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->investment_title1_description != '') {!! nl2br(e($siteConfiguration->investment_title1_description)) !!} @endif">
+            <!-- <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->investment_title1_description != '') {!! nl2br(e($siteConfiguration->investment_title1_description)) !!} @endif"> -->
           </div>
         </div>
       </div>
