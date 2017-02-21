@@ -204,7 +204,7 @@
                 <div class="col-md-4 col-md-offset-4 text-center">
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
                         <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
-                        <li class="footer-list-item"><a href="https://estatebaron.com/blog/" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
+                        <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
                         <!-- @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_funding_options != '')
                         <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->funding_link}}" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->

@@ -22,6 +22,7 @@ use App\SiteConfiguration;
 use Validator;
 use Intervention\Image\Facades\Image;
 use File;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class PagesController extends Controller
 {
@@ -447,5 +448,15 @@ class PagesController extends Controller
         $color->heading_color = $request->second_color_code;
         $color->save();
         return redirect()->back()->withMessage('Successfully Update color');
+    }
+
+    public function termsConditions()
+    {
+        $siteConfiguration = SiteConfiguration::where('project_site', url())->first();
+        $websiteName = $siteConfiguration->website_name;
+        $clientName = $siteConfiguration->client_name;
+        $docName = "terms-conditions-".$websiteName."-".$clientName.".pdf";
+        $pdf = PDF::loadView('pdf.termsConditions');
+        return $pdf->stream();
     }
 }

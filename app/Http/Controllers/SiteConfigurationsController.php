@@ -1085,19 +1085,19 @@ class SiteConfigurationsController extends Controller
     {
         $this->validate($request, array(
             'blog_link' => 'url|required',
-            'terms_conditions_link' => 'url|required',
-            'privacy_link' => 'url|required',
-            'financial_service_guide_link' => 'url|required',
-            'media_kit_link' => 'url|required',
+            // 'terms_conditions_link' => 'url|required',
+            // 'privacy_link' => 'url|required',
+            // 'financial_service_guide_link' => 'url|required',
+            // 'media_kit_link' => 'url|required',
             ));
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         $result = $siteconfiguration->update([
             'blog_link' => $request->blog_link,
-            'terms_conditions_link' => $request->terms_conditions_link,
-            'privacy_link' => $request->privacy_link,
-            'financial_service_guide_link' => $request->financial_service_guide_link,
-            'media_kit_link' => $request->media_kit_link,
+            // 'terms_conditions_link' => $request->terms_conditions_link,
+            // 'privacy_link' => $request->privacy_link,
+            // 'financial_service_guide_link' => $request->financial_service_guide_link,
+            // 'media_kit_link' => $request->media_kit_link,
             ]);
         if($result){
             Session::flash('sitemapLinksUpdateMessage', 'Saved Successfully');
@@ -1458,16 +1458,6 @@ class SiteConfigurationsController extends Controller
                 }
             }
         }
-    }
-
-    public function termsConditions()
-    {
-        $siteConfiguration = SiteConfiguration::where('project_site', url())->first();
-        $websiteName = $siteConfiguration->website_name;
-        $clientName = $siteConfiguration->client_name;
-        $docName = "terms-conditions-".$websiteName."-".$clientName.".pdf";
-        $pdf = PDF::loadView('pdf.termsConditions');
-        return $pdf->stream();
     }
 
     public function updateClientName(Request $request)

@@ -843,7 +843,7 @@
               <a href="#promo" class="scrollto"><span class="font-semibold" style="font-size: 16px; color: #fff;">Home</span></a>
             </li>
             <li class="footer-list-item">
-              <a href="https://estatebaron.com/blog/"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
+              <a href="{{$siteConfiguration->blog_link}}"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
             </li>
             <!-- @if($siteConfiguration->show_funding_options != '')
             <li class="footer-list-item">
