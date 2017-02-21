@@ -35,7 +35,7 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform','gformRedirects']]);
+        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects']]);
     }
 
     /**
@@ -636,7 +636,7 @@ class ProjectsController extends Controller
 
     public function gformRedirects(Request $request)
     {
-        $url = $request->request_url;
+        $url = url();
         $amount = $request->amount_to_invest;
         $project_id = $request->project_id;
         $user_id = $request->user_id;
