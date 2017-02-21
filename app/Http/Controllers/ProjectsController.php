@@ -35,7 +35,7 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform']]);
+        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform','gformRedirects']]);
     }
 
     /**
