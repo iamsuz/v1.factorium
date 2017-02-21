@@ -38,7 +38,7 @@ class AddColumnsToSiteConfigurationsTable extends Migration
                 $table->string('instagram_link')->default('https://whitelabel.estatebaron.com');
             }
             if (!Schema::hasColumn('site_configurations', 'blog_link')) {
-                $table->string('blog_link')->default('https://whitelabel.estatebaron.com/blog_link');
+                $table->string('blog_link')->default('https://estatebaron.com/blog/');
             }
             if (!Schema::hasColumn('site_configurations', 'funding_link')) {
                 $table->string('funding_link')->default('https://whitelabel.estatebaron.com/funding_link');
@@ -47,10 +47,10 @@ class AddColumnsToSiteConfigurationsTable extends Migration
                 $table->string('terms_conditions_link')->default('https://whitelabel.estatebaron.com/terms_conditions_link');
             }
             if (!Schema::hasColumn('site_configurations', 'privacy_link')) {
-                $table->string('privacy_link')->default('https://whitelabel.estatebaron.com/privacy_link');
+                $table->string('privacy_link')->default('https://estatebaron.com/pages/privacy');
             }
             if (!Schema::hasColumn('site_configurations', 'financial_service_guide_link')) {
-                $table->string('financial_service_guide_link')->default('https://whitelabel.estatebaron.com/financial_service_guide_link');
+                $table->string('financial_service_guide_link')->default('https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0');
             }
             if (!Schema::hasColumn('site_configurations', 'media_kit_link')) {
                 $table->string('media_kit_link')->default('https://whitelabel.estatebaron.com/media_kit_link');
@@ -111,6 +111,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (!Schema::hasColumn('site_configurations', 'website_name')) {
                 $table->string('website_name')->default('Estate Baron');
+            }
+            if (!Schema::hasColumn('site_configurations', 'client_name')) {
+                $table->string('client_name')->default('Moresh Kokane');
             }
         });
     }
@@ -221,6 +224,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'website_name')) {
                 $table->dropColumn('website_name');
+            }
+            if (Schema::hasColumn('site_configurations', 'client_name')) {
+                $table->dropColumn('client_name');
             }
         });
     }

@@ -315,9 +315,9 @@
             @else
             <img src="{{asset('assets/images/1.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title1-section second_color">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif<br>&nbsp;</h3>
+            <h3 class="how-it-works-title1-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif</h3>
           </div>
-          <p class="text-center how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != '') {!! $siteConfiguration->how_it_works_desc1 !!} @endif
+          <p class="text-center how-it-works-desc1-section text-justify" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != '') {!! $siteConfiguration->how_it_works_desc1 !!} @endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.6s">
@@ -337,9 +337,9 @@
             @else
             <img src="{{asset('assets/images/2.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title2-section second_color">@if($siteConfiguration->how_it_works_title2 != ''){{$siteConfiguration->how_it_works_title2}}@endif<br>&nbsp;</h3>
+            <h3 class="how-it-works-title2-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title2 != ''){{$siteConfiguration->how_it_works_title2}}@endif</h3>
           </div>
-          <p class="text-center how-it-works-desc2-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){{$siteConfiguration->how_it_works_desc2}}@endif
+          <p class="text-center how-it-works-desc2-section text-justify" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){{$siteConfiguration->how_it_works_desc2}}@endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.7s">
@@ -359,9 +359,9 @@
             @else
             <img src="{{asset('assets/images/3.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title3-section second_color">@if($siteConfiguration->how_it_works_title3 != ''){{$siteConfiguration->how_it_works_title3}}@endif</h3>
+            <h3 class="how-it-works-title3-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title3 != ''){{$siteConfiguration->how_it_works_title3}}@endif</h3>
           </div>
-          <p class="text-center how-it-works-desc3-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){{$siteConfiguration->how_it_works_desc3}}@endif
+          <p class="text-center how-it-works-desc3-section text-justify" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){{$siteConfiguration->how_it_works_desc3}}@endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s">
@@ -381,9 +381,9 @@
             @else
             <img src="{{asset('assets/images/4.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title4-section second_color">@if($siteConfiguration->how_it_works_title4 != ''){{$siteConfiguration->how_it_works_title4}}@endif<br>&nbsp;</h3>
+            <h3 class="how-it-works-title4-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title4 != ''){{$siteConfiguration->how_it_works_title4}}@endif</h3>
           </div>
-          <p class="text-center how-it-works-desc4-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){{$siteConfiguration->how_it_works_desc4}}@endif
+          <p class="text-center how-it-works-desc4-section text-justify" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){{$siteConfiguration->how_it_works_desc4}}@endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s">
@@ -403,9 +403,9 @@
             @else
             <img src="{{asset('assets/images/5.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title5-section second_color">@if($siteConfiguration->how_it_works_title5 != ''){{$siteConfiguration->how_it_works_title5}}@endif</h3>
+            <h3 class="how-it-works-title5-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title5 != ''){{$siteConfiguration->how_it_works_title5}}@endif</h3>
           </div>
-          <p class="text-center how-it-works-desc5-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc5 != ''){{$siteConfiguration->how_it_works_desc5}}@endif
+          <p class="text-center how-it-works-desc5-section text-justify" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc5 != ''){{$siteConfiguration->how_it_works_desc5}}@endif
           </p>
         </div>
         @if(Auth::guest())
@@ -625,7 +625,7 @@
               @endif -->
             </h3><br>
             <p class="investment-title1-description-section" style="font-size:16px;">
-              The advice provided on this website, is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Prospectus relevant to that offer and consider whether they are right for you. The Prospectus is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to provide General advice and deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="{{$siteConfiguration->financial_service_guide_link}}" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
+              The advice provided on this website, is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Prospectus relevant to that offer and consider whether they are right for you. The Prospectus is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to provide General advice and deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
               <!-- @if($siteConfiguration->investment_title1_description != '')
               {!! nl2br(e($siteConfiguration->investment_title1_description)) !!}
               @endif -->
@@ -843,27 +843,28 @@
               <a href="#promo" class="scrollto"><span class="font-semibold" style="font-size: 16px; color: #fff;">Home</span></a>
             </li>
             <li class="footer-list-item">
-              <a href="{{$siteConfiguration->blog_link}}"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
+              <a href="https://estatebaron.com/blog/"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
             </li>
-            @if($siteConfiguration->show_funding_options != '')
+            <!-- @if($siteConfiguration->show_funding_options != '')
             <li class="footer-list-item">
               <a href="{{$siteConfiguration->funding_link}}"><span class="font-semibold" style="font-size: 16px; color:#fff;">Funding</span></a>
             </li><br>
-            @endif
+            @endif -->
             <li class="footer-list-item">
-              <a href="{{$siteConfiguration->terms_conditions_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Terms & conditions</span></a>
+              <!-- <a href="{{$siteConfiguration->terms_conditions_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Terms & conditions</span></a> -->
+              <a href="{{route('site.termsConditions')}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Terms & conditions</span></a>
             </li>
             <span style="color:#fff;"> </span>
             <!-- <li class="footer-list-item"><a href="#"><span>Venture Finance</span></a></li> -->
             <li class="footer-list-item">
-              <a href="{{$siteConfiguration->privacy_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Privacy</span></a>
+              <a href="https://estatebaron.com/pages/privacy" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Privacy</span></a>
             </li><br>
             <li class="footer-list-item">
-              <a href="{{$siteConfiguration->financial_service_guide_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Financial Service Guide</span></a>
+              <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Financial Service Guide</span></a>
             </li>
-            <li class="footer-list-item">
+            <!-- <li class="footer-list-item">
               <a href="{{$siteConfiguration->media_kit_link}}" download><span class="font-semibold" style="font-size: 16px; color: #fff;">Media Kit</span></a>
-            </li>
+            </li> -->
           </ul>
      <!--  <p style="margin:0 0 1px;">
           <a href="mailto:info@vestabyte.com" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61 3 98117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61 3 98117015</a>
@@ -980,10 +981,10 @@
                     @endif
                   </td></tr>
                   <tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="text" name="blog_link" value="{{$siteConfiguration->blog_link}}"></td></tr>
-                  <tr><td>Terms & Conditions:</td><td><input class="form-control" type="text" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr>
-                  <tr><td>Privacy:</td><td><input class="form-control" type="text" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr>
-                  <tr><td>Financial Service Guide:</td><td><input class="form-control" type="text" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr>
-                  <tr><td>Media Kit:</td><td><input class="form-control" type="text" name="media_kit_link" value="{{$siteConfiguration->media_kit_link}}"></td></tr>
+                  <!-- <tr><td>Terms & Conditions:</td><td><input class="form-control" type="text" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr> -->
+                  <!-- <tr><td>Privacy:</td><td><input class="form-control" type="text" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr> -->
+                  <!-- <tr><td>Financial Service Guide:</td><td><input class="form-control" type="text" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr> -->
+                  <!-- <tr><td>Media Kit:</td><td><input class="form-control" type="text" name="media_kit_link" value="{{$siteConfiguration->media_kit_link}}"></td></tr> -->
                 </table>
               </div>
               <div class="modal-footer">

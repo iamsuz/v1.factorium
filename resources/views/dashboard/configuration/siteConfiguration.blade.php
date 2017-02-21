@@ -99,6 +99,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'client-name')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Client Name</b></h3>
+                                    <p><small>This will be the client name who owns the website.</small></p>
+                                    <hr>
+                                    <p>
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-primary btn-sm change-client-name-btn" style="cursor: pointer;">
+                                            <strong>Change Client Name</strong>
+                                        </span>
+                                    </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -217,6 +240,33 @@ Configuration | Dashboard | @parent
                                     {!! $errors->first('site_name_input', '<small class="text-danger">:message</small>') !!}
                                     <br>
                                     {!! Form::submit('Save Website Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_website_name_btn')) !!}
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>      
+            </div>
+        </div>
+        <!-- Modal for Client Name edit-->
+        <div class="modal fade" id="client_name_edit_modal" role="dialog">
+            <div class="modal-dialog" style="margin-top: 10%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update Client Name</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row text-center" id="modal_body_container">
+                            <div class="col-md-10 col-md-offset-1">
+                                {!! Form::open(array('route'=>['configuration.updateClientName'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                                    <h5><i><small>Enter the text in below text field and save to display new client name for the website.</small></i></h5>
+                                    <br>
+                                    <div class="row client-name-error" style="text-align: -webkit-center;"></div>
+                                    {!! Form::text('client_name_input', null, array('placeholder'=>'Enter client name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'client_name_input')) !!}
+                                    {!! $errors->first('client_name_input', '<small class="text-danger">:message</small>') !!}
+                                    <br>
+                                    {!! Form::submit('Save Client Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_client_name_btn')) !!}
                                 {!! Form::close() !!}
                             </div>
                         </div>
@@ -352,7 +402,9 @@ Configuration | Dashboard | @parent
                 });
 			}
 			performCropOnImage();
-		});
+        });
+        // Additional functionality functions
+        editClientName();
 	});
 
 	function updateCoords(coords, w, h, origWidth, origHeight){
@@ -437,6 +489,23 @@ Configuration | Dashboard | @parent
                 }
             
         	});
+        });
+    }
+
+    function editClientName(){
+        $('.change-client-name-btn').click(function(){
+            $('#client_name_edit_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#client_name_input').select();
+        });
+
+        $('#submit_client_name_btn').click(function(e){
+            if($('#client_name_input').val() == ''){
+                e.preventDefault();
+                $('.client-name-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Client name field is empty</h6></div>')
+            }
         });
     }
 </script>

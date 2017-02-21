@@ -1543,7 +1543,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
-														{!! Form::Text('spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28', 'maxlength'=>11)) !!}
+														{!! Form::input('number', 'spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28')) !!}
 														{!! $errors->first('spv_contact_number', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1552,11 +1552,11 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<div class="row">
 										<div class="form-group @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-											{!!Form::label('spv_md_name', 'Project SPV MD Name Number', array('class'=>'col-sm-2 control-label'))!!}
+											{!!Form::label('spv_md_name', 'Project SPV MD Name', array('class'=>'col-sm-2 control-label'))!!}
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'28', 'maxlength'=>11)) !!}
+														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'28')) !!}
 														{!! $errors->first('spv_md_name', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>

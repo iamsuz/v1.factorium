@@ -842,7 +842,7 @@ This email and any attachment is confidential and may be protected by copyright.
 If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif does not guarantee that this email and any attachment is secure, free of viruses or error-free.
-The @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif platform is operated by Tech Baron PTY LTD (ABN 67617252909) which is a Corporate Authorised Representative 001251881 of AFSL 299812). <a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link}}">Financial Services Guide</a>.<br>
+The @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif platform is operated by Tech Baron PTY LTD (ABN 67617252909) which is a Corporate Authorised Representative 001251881 of AFSL 299812). <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0">Financial Services Guide</a>.<br>
 
 &nbsp;
 </html>

@@ -196,3 +196,5 @@ Route::post('/configuration/updateWebsiteName', ['as'=>'configuration.updateWebs
 Route::post('projects/{projects}/projectSPVDetails', ['as'=>'projects.projectSPVDetails', 'uses'=>'ProjectsController@storeProjectSPVDetails']);
 Route::post('/configuration/updateProjectSpvLogo', ['as'=>'configuration.updateProjectSpvLogo', 'uses'=>'SiteConfigurationsController@updateProjectSpvLogo']);
 Route::post('/configuration/updateProjectSpvMDSign', ['as'=>'configuration.updateProjectSpvMDSign', 'uses'=>'SiteConfigurationsController@updateProjectSpvMDSign']);
+Route::get('/site/termsConditions', ['as'=>'site.termsConditions', 'uses'=>'SiteConfigurationsController@termsConditions']);
+Route::post('/configuration/updateClientName', ['as'=>'configuration.updateClientName', 'uses'=>'SiteConfigurationsController@updateClientName']);

@@ -19,6 +19,7 @@ use App\SiteConfiguration;
 use App\Investment;
 use App\SiteConfigMedia;
 use App\Media;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 class SiteConfigurationsController extends Controller
@@ -1456,6 +1457,37 @@ class SiteConfigurationsController extends Controller
                     return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
+        }
+    }
+
+    public function termsConditions()
+    {
+        $siteConfiguration = SiteConfiguration::where('project_site', url())->first();
+        $websiteName = $siteConfiguration->website_name;
+        $clientName = $siteConfiguration->client_name;
+        $docName = "terms-conditions-".$websiteName."-".$clientName.".pdf";
+        $pdf = PDF::loadView('pdf.termsConditions');
+        return $pdf->stream();
+    }
+
+    public function updateClientName(Request $request)
+    {
+        $clientName = $request->client_name_input;
+        if($clientName != ""){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            if(!$siteconfiguration)
+            {
+                $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
+                 $siteconfiguration->save();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            }
+            $siteconfiguration->update(['client_name'=>$clientName]);
+            Session::flash('message', 'Client Name Updated Successfully');
+            Session::flash('action', 'client-name');
+            return redirect()->back();
         }
     }
 }
