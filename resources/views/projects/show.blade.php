@@ -1247,8 +1247,8 @@
 	function editProjectPageDetailsByAdmin(){
 		$('.edit-project-page-details-btn').click(function(e){
 			$('.store-project-page-details-btn').show();
-			$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{$project->title}}" style="font-size: 25px;">');
-			$('.project-description-field').html('<input type="text" name="project_description_txt" class="form-control" value="{{$project->description}}">');
+			$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
+			$('.project-description-field').html('<input type="text" name="project_description_txt" class="form-control" value="{{nl2br(e($project->description))}}">');
 			@if($project->investment)
 			$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
 			$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
