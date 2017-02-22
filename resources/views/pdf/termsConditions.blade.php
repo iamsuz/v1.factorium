@@ -4,7 +4,7 @@
 
 <div style="text-align: justify;">
 	
-	<p>Tech Baron Pty Ltd (ABN 67617252909) henceforth referred as TB is a Technology Services provider which provides technology services to various Real Estate Ventures and Other Businesses in the form of websites where various opportunities to invest may be listed. TB operates these websites as a Tech services provides however it is not responsible for the content listed on these which is the sole obligation of the Real Estate Venture or Business in question.</p>
+	<p>Tech Baron Pty Ltd (ABN 67617252909) henceforth referred as TB is a Technology Services provider which provides technology services to various Real Estate Ventures and Other Businesses in the form of websites where various opportunities to invest may be listed. TB operates these websites as a Tech services provider however it is not responsible for the content listed on these which is the sole obligation of the Real Estate Venture or Business in question.</p>
 
 	<p>The content provided in relation to the {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name !!} website (henceforth described as this “Platform” or “Website”) is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any investment or any products offered by this website you should read the Prospectus, Product Disclosure Statement or Information Memorandum (Offer Document) and consider whether they are right for you. The Offer Document is available at the Project and Project Application Pages. The Platform is owned by {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!} and operated by TB which is a Corporate Authorised Representative 001251881 of AFSL 299812). TB is authorized to provide General advice only and Deal in a financial product including Securities. TB is however not party to any of the offers listed on this website. You can find a copy of our financial services guide <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank">here</a></p>
 
@@ -23,7 +23,7 @@
 	<h1><b>2. How Transactions work</b></h1>
 
 	<p>TB builds custom websites where investment opportunities presented by the Client can be listed. When you are interested in a particular listing you are directed to the Offer Document with a summary of it listed on a webpage.</p>
-	<p>TB provides hosting and technology services for its clients in the form of subdomain on its site. These subdomains can look like Issuer.TB.com.au TB also provides independent websites.</p>
+	<p>TB provides hosting and technology services for its clients in the form of subdomain on its site. These subdomains can look like Issuer.estatebaron.com. TB also provides independent websites.</p>
 	<p>Any transactions or engagements you have on these websites or subdomains are an independent transaction between you and the Issuer associated with the offer.</p>
 	<p>TB will provide reporting services by presenting the data and aggregations associated with various transactions entered on investor’s dashboards but is not party to any transactions you undertake on the websites of the Issuers.</p>
 	<p>TB will seek separate permissions from the investors to collect and present this data from the various financial provider’s websites to the investors TB user account.</p>

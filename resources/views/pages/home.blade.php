@@ -843,7 +843,7 @@
               <a href="#promo" class="scrollto"><span class="font-semibold" style="font-size: 16px; color: #fff;">Home</span></a>
             </li>
             <li class="footer-list-item">
-              <a href="{{$siteConfiguration->blog_link}}"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
+              <a href="https://estatebaron.com/blog/"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
             </li>
             <!-- @if($siteConfiguration->show_funding_options != '')
             <li class="footer-list-item">
@@ -879,12 +879,12 @@
           </span> -->
         </div>
       </div>
-      @if(Auth::guest())
+      <!-- @if(Auth::guest())
       @else
       @if($superadmin_access == 1)
       <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Sitemap Links" data-placement="right"></i></div>
       @endif
-      @endif
+      @endif -->
       <div class="row text-center" style="padding-top: 20px;">
         <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo.png')}}">
         <p>
