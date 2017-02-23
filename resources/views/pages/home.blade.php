@@ -840,55 +840,44 @@
         <div class="col-md-4 col-md-offset-4 text-center">
           <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
             <li class="footer-list-item">
-              <a href="#promo" class="scrollto"><span class="font-semibold" style="font-size: 16px; color: #fff;">Home</span></a>
+              <a href="#promo" class="scrollto a-link"><span class="font-semibold" style="font-size: 16px;">Home</span></a>
             </li>
             <li class="footer-list-item">
-              <a href="https://estatebaron.com/blog/"><span class="font-semibold" style="font-size: 16px; color: #fff;">Blog</span></a>
+              <a href="https://estatebaron.com/blog/" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
             </li>
-            <!-- @if($siteConfiguration->show_funding_options != '')
+            {{-- @if($siteConfiguration->show_funding_options != '')
             <li class="footer-list-item">
-              <a href="{{$siteConfiguration->funding_link}}"><span class="font-semibold" style="font-size: 16px; color:#fff;">Funding</span></a>
+              <a href="{{$siteConfiguration->funding_link}}" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a>
             </li><br>
-            @endif -->
+            @endif --}}
             <li class="footer-list-item">
-              <!-- <a href="{{$siteConfiguration->terms_conditions_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Terms & conditions</span></a> -->
-              <a href="{{route('site.termsConditions')}}" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Terms & conditions</span></a>
+              <!-- <a href="{{$siteConfiguration->terms_conditions_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a> -->
+              <a href="{{route('site.termsConditions')}}" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a>
             </li>
             <span style="color:#fff;"> </span>
             <!-- <li class="footer-list-item"><a href="#"><span>Venture Finance</span></a></li> -->
             <li class="footer-list-item">
-              <a href="https://estatebaron.com/pages/privacy" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Privacy</span></a>
+              <a href="https://estatebaron.com/pages/privacy" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a>
             </li><br>
             <li class="footer-list-item">
-              <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank"><span class="font-semibold" style="font-size: 16px; color: #fff;">Financial Service Guide</span></a>
+              <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a>
             </li>
             <!-- <li class="footer-list-item">
-              <a href="{{$siteConfiguration->media_kit_link}}" download><span class="font-semibold" style="font-size: 16px; color: #fff;">Media Kit</span></a>
+              <a href="{{$siteConfiguration->media_kit_link}}" download class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a>
             </li> -->
           </ul>
-     <!--  <p style="margin:0 0 1px;">
-          <a href="mailto:info@vestabyte.com" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61 3 98117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61 3 98117015</a>
-        </p> -->
-          <!-- <address style="margin:0px;">
-              <p class="h1-faq" data-wow-duration="1.5s" data-wow-delay="0.8s" style="color:#fff;">569/585 Little Collins Street Melbourne VIC 3000.
-              </p>
-            </address> -->
-          <!-- <br>
-          <span class="copyright font-regular" data-wow-duration="1.5s" data-wow-delay="0.9s" style="color:#fff; font-size: 12px; margin-top: -10px;">
-            © 2016 <a href="{{route('home')}}" class="font-regular">Vestabyte</a>. All Rights Reserved.
-          </span> -->
         </div>
       </div>
-      <!-- @if(Auth::guest())
+      {{--@if(Auth::guest())
       @else
       @if($superadmin_access == 1)
       <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Sitemap Links" data-placement="right"></i></div>
       @endif
-      @endif -->
+      @endif--}}
       <div class="row text-center" style="padding-top: 20px;">
         <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo.png')}}">
         <p>
-          <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer;">Estate Baron</a>
+          <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>
         </p>
       </div>
     </div>
@@ -1235,7 +1224,12 @@
       $("a").mouseover(function() {
         $(this).css('color', '#{{$color->heading_color}}');
       }).mouseout(function() {
-        $(this).css('color', '#fff');
+        $(this).css('color', '');
+      });
+      $(".a-link").mouseover(function() {
+          $(this).css('color', '#{{$color->heading_color}}');
+      }).mouseout(function() {
+          $(this).css('color', '#fff');
       });
       @endif
       $('.scrollto').click(function(e) {

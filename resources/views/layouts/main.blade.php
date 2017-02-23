@@ -203,16 +203,16 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 text-center">
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
-                        <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
-                        <li class="footer-list-item"><a href="https://estatebaron.com/blog/" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
+                        <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
+                        <li class="footer-list-item"><a href="https://estatebaron.com/blog/" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
                         <!-- @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_funding_options != '')
-                        <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->funding_link}}" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
+                        <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->
-                        <li class="footer-list-item"><a href="{{route('site.termsConditions')}}" target="_blank" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a></li>
+                        <li class="footer-list-item"><a href="{{route('site.termsConditions')}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
-                        <li class="footer-list-item"><a href="https://estatebaron.com/pages/privacy" target="_blank" style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
-                        <li class="footer-list-item"><a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" style="color:#fff;" target="_blank"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
-                        <!-- <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->media_kit_link}}" download style="color:#fff;"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
+                        <li class="footer-list-item"><a href="https://estatebaron.com/pages/privacy" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
+                        <li class="footer-list-item"><a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
+                        <!-- <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
                         <a href="mailto:info@vestabyte.com" style="color:#fed405; font-size: 14px;" class="font-semibold second_color">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61398117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61398117015</a>
@@ -228,7 +228,7 @@
         <div class="row text-center" style="padding-top: 20px;">
           <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo.png')}}">
           <p>
-            <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer;">Estate Baron</a>
+            <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer; color: #fff" class="a-link">Estate Baron</a>
           </p>
         </div>
     </div>
@@ -267,6 +267,11 @@
         $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
         $('.second_color').css('color','#{{$color->heading_color}}');
         $("a").mouseover(function() {
+            $(this).css('color', '#{{$color->heading_color}}');
+        }).mouseout(function() {
+            $(this).css('color', '');
+        });
+        $(".a-link").mouseover(function() {
             $(this).css('color', '#{{$color->heading_color}}');
         }).mouseout(function() {
             $(this).css('color', '#fff');

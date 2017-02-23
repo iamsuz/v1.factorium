@@ -74,24 +74,26 @@ Sign Up | @parent
 								</div><br>
 								<div class="row">
 									<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s">
-										<input type="submit" value="Register" id="submit" name="submit"  class="btn btn-block font-bold second_color_btn" style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
+										<input type="submit" value="Register" id="submit" name="submit"  class="btn btn-block font-bold second_color_btn hide" style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
+										<a class='btn btn-lg btn-danger font-semibold text-right second_color_btn no-hower-style' id="submitform" href='#' style="width:243px; background-color: #fed405; font-size:1.125em; color:#000;border-radius:0; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register</a>
+
 									</div>
 								</div>
 								{!! Form::close() !!}
 								<br>
-								<h4 class="text-left font-regular first_color" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b><!-- {!! Html::linkRoute('users.login', 'Sign In Here') !!} --><a href="/users/login" id="redirection">Sign In Here</a></b>
+								<h4 class="text-left font-regular first_color" style="font-size:1.375em;color:#2d2a6e;">If you have an existing Estate Baron account. <b><!-- {!! Html::linkRoute('users.login', 'Sign In Here') !!} --><a href="/users/login" id="redirection">Sign In Here</a></b>
 								</h4>
 							</section>
 						</div>
-						<div class="col-md-3" style="position:relative;">
+						{{--<div class="col-md-3" style="position:relative;">
 							<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;">
 								<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;"/></div><p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
 							</div>
 							<br><br>
 							<br><br>
 							<br>
-						</div>
-						<div class="col-md-3">
+						</div>--}}
+						{{--<div class="col-md-3">
 							<div class="row" style="text-align:center;">
 								<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 									<!-- <a class='btn btn-lg btn-danger'><i class="fa fa-google-plus" style="width:16px;"></i></a> -->
@@ -108,7 +110,7 @@ Sign Up | @parent
 								</div>	
 								<br><br>
 							</div>
-						</div>
+						</div>--}}
 					</div>
 				</div>
 			</div>
@@ -143,5 +145,15 @@ Sign Up | @parent
 		} else {
 			document.getElementById("redirection").href = '/users/login?next=#projects';
 		}
+		$(document).ready(function(){
+			$('#submitform').click(function(){
+				$('#submit').trigger('click');
+			});
+			$(".no-hower-style").mouseover(function() {
+	        	$(this).css('color', '#000');
+	      	}).mouseout(function() {
+	        	$(this).css('color', '#000');
+	      	});
+		});
 	</script>
 	@stop

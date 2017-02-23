@@ -45,8 +45,8 @@ Login | @parent
 								{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 							</div>
 							<input type="hidden" value="" id="next" name="next">
-							<div class="form-group" style="width:50%;">
-								{!! Form::submit('Login', array('class'=>'btn btn-block second_color_btn', 'tabindex'=>'4','style'=>'border-radius:0px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
+							<div class="form-group" style="width:75%;">
+								{!! Form::submit('Login with Estate Baron account', array('class'=>'btn btn-block second_color_btn', 'tabindex'=>'4','style'=>'border-radius:0px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
 							</div>
 							<p class="text-left" style="margin-left: -25px"> <a class="btn btn-link" href="{{ url('/password/email') }}"> Forgot Your Password?</a></p>
 						</fieldset>
