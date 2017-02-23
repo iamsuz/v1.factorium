@@ -1232,7 +1232,7 @@
 		@if(Auth::check())
 		@else
 		window.setInterval(function(){
-			// window.location = "/welcome?next=projects/{{$project->id}}"
+			window.location = "/welcome?next=projects/{{$project->id}}"
 		},5000); 
 		@endif
 

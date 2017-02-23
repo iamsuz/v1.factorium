@@ -6,23 +6,34 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="author" content="Vestabyte">
-    <meta name="description" content="Australian Property and Venture Crowdfunding. Vestabyte.com is an online marketplace offering crowdfunding for property investment and venture opportunities.">
-    <meta name="copyright" content="Vestabyte copyright (c) 2016">
-    <title>Vestabyte.com - Equity Crowdfunding | Flexible Crowd Sourced Equity Funding Solutions</title>
-    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
+    <meta name="author" content="Estate Baron">
+    <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors.">
+    <meta name="copyright" content="Estate Baron Crowdinvest Pty Ltd copyright (c) 2016">
+    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text != '')
+    <title>{!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text !!}</title>
+    @else
+    <title>Invest in Australian Real Estate Projects</title>
+    @endif
+    @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+    @if($faviconImg=$siteConfigMedia->where('type', 'favicon_image_url')->first())
+    <link rel="shortcut icon" href="{{asset($faviconImg->path)}}?v=<?php echo filemtime($faviconImg->path); ?>" type="image/x-icon">
+    @else
+    <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+    @endif
+    @else
+    <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+    @endif
     <!-- Open Graphic -->
-    <meta property="og:image" content="https://www.vestabyte.com//assets/images/main_bg.png">
-    <meta property="og:site_name" content="Vestabyte">
-    <meta property="og:url" content="https://www.vestabyte.com">
+    <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg">
+    <meta property="og:site_name" content="Estate Baron" />
+    <meta property="og:url" content="https://www.estatebaron.com" />
     <meta property="og:type" content="website">
     <!-- META DATA -->
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 
     @section('meta-section')
-    <meta property="og:title" content="Vestabyte.com - Equity Crowdfunding | Flexible Crowd Sourced Equity Funding Solutions">
-    <meta property="og:description" content="Australian Property and Venture Crowdfunding. Vestabyte.com is an online marketplace offering crowdfunding for property investment and venture opportunities.">
-    <meta name="description" content="Australian Property and Venture Crowdfunding. Vestabyte.com is an online marketplace offering crowdfunding for property investment and venture opportunities.">
+    <meta property="og:title" content="Best way to invest in Australian Real Estate Projects" />
+    <meta property="og:description" content="Invest in Melbourne Real Estate Developments from $100. View listing now. " />
     @show
 
     @if (Config::get('analytics.gtm.enable'))
@@ -78,13 +89,19 @@
             <div class="col-md-12 text-center">
                 <ul class="list-inline footer-list wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
                     <li class="footer-list-item"><a href="#promo" class="scrollto"><h3>Home</h3></a></li>
-                    <li class="footer-list-item"><a href="/blog"><h3>Blog</h3></a></li>
-                    <li class="footer-list-item"><a href="{{route('pages.terms')}}"><h3>Terms & conditions</h3></a></li>
+                    <!-- <li class="footer-list-item"><a href="/blog"><h3>Blog</h3></a></li> -->
+                    <li class="footer-list-item"><a href="https://estatebaron.com/blog/"><h3>Blog</h3></a></li>
+                    <!-- <li class="footer-list-item"><a href="{{route('pages.terms')}}"><h3>Terms & conditions</h3></a></li> -->
+                    <li class="footer-list-item"><a href="{{route('site.termsConditions')}}"><h3>Terms & conditions</h3></a></li>
                     <li class="footer-list-item"><a href="http://www.meetup.com/Real-Estate-Crowdfunding-and-Syndication-Investors/"><h3>Meetup</h3></a></li>
                     <li class="footer-list-item"><a href="{{route('projects.create')}}"><h3>Developer Finance</h3></a></li>
-                    <li class="footer-list-item"><a href="{{route('pages.privacy')}}"><h3>Privacy</h3></a></li>
-                    <li class="footer-list-item"><a href="{{asset('media_kit/EB_Media_Kit.zip')}}" download><h3>Media Kit</h3></a></li>
-                    <li class="footer-list-item"><a href="{{route('pages.financial')}}"><h3>Financial Service Guide</h3></a></li>
+                    <!-- <li class="footer-list-item"><a href="{{route('pages.privacy')}}"><h3>Privacy</h3></a></li> -->
+                    <li class="footer-list-item"><a href="https://estatebaron.com/pages/privacy"><h3>Privacy</h3></a></li>
+
+                    <!-- <li class="footer-list-item"><a href="{{asset('media_kit/EB_Media_Kit.zip')}}" download><h3>Media Kit</h3></a></li> -->
+                    <!-- <li class="footer-list-item"><a href="{{route('pages.financial')}}"><h3>Financial Service Guide</h3></a></li> -->
+                    <li class="footer-list-item"><a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0"><h3>Financial Service Guide</h3></a></li>
+
                 </ul>
                 <address style="margin:0px;"><h3 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.8s" style="margin:0px;"><small>350 Collins st, Melbourne 3000. <i class="fa fa-phone"></i> 1 300 033 221</small></h3></address>
                 <h3 class="copyright wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.9s" style="margin:0px;"><small>© 2016 <a href="{{route('home')}}">Estatebaron</a>. All Rights Reserved. Made with <i class="fa fa-heart"></i> in Melbourne</small></h3>
@@ -115,6 +132,18 @@
         $('#accordion').on('hidden.bs.collapse', toggleChevron);
         $('#accordion').on('shown.bs.collapse', toggleChevron);
         $("iframe[name ='google_conversion_frame']").attr('style', 'height: 0px; display: none !important;');
+
+        @if($color=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())
+        $('p').css('color', '#{{$color->nav_footer_color}}');
+        $('.first_color').css('color', '#{{$color->nav_footer_color}}');
+        $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
+        $('.second_color').css('color','#{{$color->heading_color}}');
+        $("a").mouseover(function() {
+            $(this).css('color', '#{{$color->heading_color}}');
+        }).mouseout(function() {
+            $(this).css('color', '');
+        });
+        @endif
     });
     function checkvalidi() {
         if ((document.getElementById('email').value != '')) {

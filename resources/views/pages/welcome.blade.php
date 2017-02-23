@@ -8,7 +8,7 @@ Sign Up | @parent
 @stop
 
 @section('content-section')
-<div class="title" style="min-height:300px; background:#2d2d4b; margin-top:-70px;">
+<div class="title" style="min-height:300px; background:@if($color=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())@if($color->nav_footer_color)#{{$color->nav_footer_color}} @else #2d2d4b @endif @else #2d2d4b @endif; margin-top:-70px;">
 	<div class="container">
 		<div class="text-center wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding-top:6rem;">
 		<br>
@@ -45,7 +45,7 @@ Sign Up | @parent
 					<div class="row">
 						<div class="col-md-6">
 							<section id="registerForm" style="padding:0 10px;">
-								<h4 class="font-bold" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
+								<h4 class="font-bold first_color" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
 								{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'form'))!!}
 								<div class="row form-group">
 									<!-- <div> -->
@@ -67,25 +67,25 @@ Sign Up | @parent
 								<div class="row text-left">
 									<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s">
 										<div class="btn-group" data-toggle="buttons">
-											<input type="radio" name="role" id="investor_role" autocomplete="off" value="investor" checked tabindex="1"><span class="font-regular" style="font-size:0.875em; color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I am an Investor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-											<input type="radio" name="role" id="developer_role" autocomplete="off" value="developer" tabindex="2"><span class="font-regular" style="font-size:0.875em;color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I have a venture </span>
+											<input type="radio" name="role" id="investor_role" autocomplete="off" value="investor" checked tabindex="1"><span class="font-regular first_color" style="font-size:0.875em; color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I am an Investor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+											<input type="radio" name="role" id="developer_role" autocomplete="off" value="developer" tabindex="2"><span class="font-regular first_color" style="font-size:0.875em;color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I have a venture </span>
 										</div>
 									</div>
 								</div><br>
 								<div class="row">
 									<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s">
-										<input type="submit" value="Register" id="submit" name="submit"  class="btn btn-block font-bold" style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
+										<input type="submit" value="Register" id="submit" name="submit"  class="btn btn-block font-bold second_color_btn" style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
 									</div>
 								</div>
 								{!! Form::close() !!}
 								<br>
-								<h4 class="text-left font-regular" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b><!-- {!! Html::linkRoute('users.login', 'Sign In Here') !!} --><a href="/users/login" id="redirection">Sign In Here</a></b>
+								<h4 class="text-left font-regular first_color" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b><!-- {!! Html::linkRoute('users.login', 'Sign In Here') !!} --><a href="/users/login" id="redirection">Sign In Here</a></b>
 								</h4>
 							</section>
 						</div>
 						<div class="col-md-3" style="position:relative;">
 							<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;">
-								<img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}"/> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
+								<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;"/></div><p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
 							</div>
 							<br><br>
 							<br><br>
@@ -115,7 +115,7 @@ Sign Up | @parent
 		</div>
 	</section>
 	@endif
-	<footer id="footer">
+	<footer id="footer" style="background-color: @if($color=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())@if($color->nav_footer_color)#{{$color->nav_footer_color}} @else #2d2d4b @endif @else #2d2d4b @endif";>
 		<div class="container" style="height: 300px;">
 			<div class="row">
 				<div class="col-md-12">
