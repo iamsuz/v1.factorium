@@ -1340,8 +1340,8 @@
       //color main Page overlay
       @if($color)
       @if($color->nav_footer_color)
-      var rgb = hex2rgb({{trim($color->nav_footer_color)}});
-      // var overlayColor = rgb[0].toString()+rgb[1].toString()+rgb[2].toString();
+      var hexColor = '{{trim($color->nav_footer_color)}}';
+      var rgb = hex2rgb(hexColor);
       var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', 0.6)';
       $('.main-fold-overlay-color').css('background', rgbaColor);
       @endif
