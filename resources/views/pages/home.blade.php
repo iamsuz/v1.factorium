@@ -214,7 +214,7 @@
 @else
 <section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}) 50% 0px repeat fixed; background-size:cover;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
 @endif
-  <div class="color-overlay">
+  <div class="color-overlay main-fold-overlay-color">
     <div class="content container" id="promo-content" style="padding-top:10%;">
       <!-- <img class="img-responsive" src="/assets/images/main_logo.png" alt="Vestabyte" width="250px" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:20px; margin-top:20px;"> -->
       <!-- <h2 class="text-center " data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size: 3.5em; line-height: 1.3em; ">Property Investment starting $2000</h2> -->
@@ -624,7 +624,7 @@
               @endif
               @endif -->
             </h3><br>
-            <p class="investment-title1-description-section" style="font-size:16px;">
+            <p class="investment-title1-description-section text-justify" style="font-size:16px;">
               The advice provided on this website, is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Prospectus relevant to that offer and consider whether they are right for you. The Prospectus is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to provide General advice and deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
               <!-- @if($siteConfiguration->investment_title1_description != '')
               {!! nl2br(e($siteConfiguration->investment_title1_description)) !!}
@@ -1337,6 +1337,15 @@
           'backdrop': false,
         });
       });
+      //color main Page overlay
+      @if($color)
+      @if($color->nav_footer_color)
+      var rgb = hex2rgb({{trim($color->nav_footer_color)}});
+      // var overlayColor = rgb[0].toString()+rgb[1].toString()+rgb[2].toString();
+      var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', 0.6)';
+      $('.main-fold-overlay-color').css('background', rgbaColor);
+      @endif
+      @endif
       //Functionality to Edit Text 1 of Home Page. 
       //This can be actioned by only superadmin 
       editHomePageText1();
@@ -1814,6 +1823,14 @@
               }
           });
       });
+    }
+
+    function hex2rgb(hexStr){
+      var hex = parseInt(hexStr, 16);
+      var r = (hex & 0xff0000) >> 16;
+      var g = (hex & 0x00ff00) >> 8;
+      var b = hex & 0x0000ff;
+      return [r, g, b];
     }
   </script>
 </body>
