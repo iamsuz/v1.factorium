@@ -640,18 +640,17 @@ class ProjectsController extends Controller
         $amount = $request->amount_to_invest;
         $project_id = $request->project_id;
         $user_id = $request->user_id;
-        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id);
+        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number);
     }
 
     public function gform(Request $request)
     {
-        // dd($request);
         $project = Project::findOrFail($request->project_id);
         $user = User::findOrFail($request->user_id);
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         // $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url()]);
-
+        $user->update($request->all());
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'sdaro77j',
         //     'api_key' => '0c8ef70a8258f33354e82f24676932620f6ebcee',

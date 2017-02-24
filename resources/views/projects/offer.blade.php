@@ -8,12 +8,12 @@ Offer Doc
 @stop
 @section('content-section')
 <div class="container-fluid">
-	<div class="row">
+	<div class="row" id="forScroll">
 		<div class="col-md-12">
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
 				<div class="row">
 					<div class="col-md-7"><br>
-						<iframe src="{{$project->investment? $project->investment->embedded_offer_doc_link : 'test'}}&amp;project_name={{$project->title}}&amp;project_id={{$project->id}}&amp;user_id={{Auth::user()->id}}&amp;first_name={{Auth::user()->first_name}}&amp; last_name={{Auth::user()->last_name}}&amp;email={{Auth::user()->email}}&amp;phone_number={{Auth::user()->phone_number}}&amp;request_url={{Auth::user()->registration_site}}&amp;spv_name={{$project->projectspvdetail? $project->projectspvdetail->spv_name : ''}}" width="100%" height="500" frameBorder="0" class="gfiframe"></iframe>
+						<iframe src="{{$project->investment? $project->investment->embedded_offer_doc_link : 'test'}}&amp;project_name={{$project->title}}&amp;project_id={{$project->id}}&amp;user_id={{Auth::user()->id}}&amp;first_name={{Auth::user()->first_name}}&amp; last_name={{Auth::user()->last_name}}&amp;email={{Auth::user()->email}}&amp;phone_number={{Auth::user()->phone_number}}&amp;request_url={{Auth::user()->registration_site}}&amp;spv_name={{$project->projectspvdetail? $project->projectspvdetail->spv_name : ''}}&amp;line_1={{Auth::user()->line_1}}&amp;line_2={{Auth::user()->line_2}}&amp;city={{Auth::user()->city}}&amp;state={{Auth::user()->state}}&amp;postal_code={{Auth::user()->postal_code}}&amp;country={{Auth::user()->country}}&amp;account_name={{Auth::user()->account_name}}&amp;bsb={{Auth::user()->bsb}}&amp;account_number={{Auth::user()->account_number}}" width="100%" height="500" frameBorder="0" class="gfiframe"></iframe>
 						<script src="https://www.vestabyte.com/registry/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js" type="text/javascript"></script>
 					</div>
 					@if ($project->show_download_pdf_page)
@@ -135,6 +135,11 @@ Offer Doc
 		}else{
 			$('#section-colors-left').toggleClass('panel-open-left panel-close-left');
 		}
+		$('#gform_submit_button_11').click(function(event){
+			$('html, body').animate({
+				scrollTop: $("#forScroll").offset().top
+			}, 2000);
+		});
 		var mq = window.matchMedia("(min-width: 768px)");
 		if(mq.matches){
 		}else{
