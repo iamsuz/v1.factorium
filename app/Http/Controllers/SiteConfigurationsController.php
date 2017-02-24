@@ -143,8 +143,8 @@ class SiteConfigurationsController extends Controller
 
     public function cropUploadedImage(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin'))
-        {
+        // if (Auth::user()->roles->contains('role', 'superadmin'))
+        // {
             if($request->imageName){
                 
                 $src  = $request->imageName;
@@ -967,7 +967,7 @@ class SiteConfigurationsController extends Controller
                 }
                 else {}
             }
-        }
+        // }
     }
 
     public function saveHomePageText1(Request $request)
