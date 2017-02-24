@@ -61,473 +61,472 @@
 @else
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 <form method="POST" action="{{route('configuration.updateProjectDetails')}}">
-	{{csrf_field()}}
-	<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
-		<button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
-		<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br>
-		<a href="" status="{{$project->active}}" style="color: #fff;"><u>
-			@if($project->active == '1') 
-			<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a> 
-			@elseif($project->active == '2')
-			Private
-			@elseif($project->active == '0')
-			<a href="{{route('dashboard.projects.activate', [$project->id])}}"> Activate </a>
-			@endif
-		</u></a>
-	</div>
-	@endif
-	@endif
-	<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
-	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
-		<div class="color-overlay">
-			<div class="container">
-				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
-					<div class="col-md-4 col-sm-6">
-						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
-						<p class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</p>
-						<br>
-					</div>
-					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
-						<div id="circle">
-							<div class="text-center" style="color:#fff;">
-								<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
-									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
-										<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
-											<span id="daysremained"></span>
-											<br>
-											<p style="font-size: 1.1em; margin: 0 0 -3px;" class="h1-faq">Days Left</p>
-										</p>
-									</div>
+{{csrf_field()}}
+<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
+	<button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
+	<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br>
+	<a href="" status="{{$project->active}}" style="color: #fff;"><u>
+		@if($project->active == '1') 
+		<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a> 
+		@elseif($project->active == '2')
+		Private
+		@elseif($project->active == '0')
+		<a href="{{route('dashboard.projects.activate', [$project->id])}}"> Activate </a>
+		@endif
+	</u></a>
+</div>
+@endif
+@endif
+<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
+<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
+	<div class="color-overlay">
+		<div class="container">
+			<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
+				<div class="col-md-4 col-sm-6">
+					<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
+					<p class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</p>
+					<br>
+				</div>
+				<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
+					<div id="circle">
+						<div class="text-center" style="color:#fff;">
+							<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
+								<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
+									<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
+										<span id="daysremained"></span>
+										<br>
+										<p style="font-size: 1.1em; margin: 0 0 -3px;" class="h1-faq">Days Left</p>
+									</p>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div><br>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="" style="color:#fff;">
-							@if($project->investment)
-							<div class="row text-left">
-								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{(int)$project->investment->minimum_accepted_amount}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Return</h6>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3">
-									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
-										@if($project->investment) {{$number_of_investors}} @else ### @endif
-									</h4>
-									<h6 class="font-regular" style="font-size: 0.875em;color: #fff">Investors</h6>
-								</div>
-							</div>
-							@endif
-						</div>
-						<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
-							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
-							</div>
-						</div>
-						<p class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
-							@if($project->investment)
-							${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
-							@endif
-						</p>
-					</div>
-					<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
-						<br>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="" style="color:#fff;">
 						@if($project->investment)
-						<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
-							@if($project->button_label)
-							<?php echo $project->button_label; ?>
-							@else
-							Invest Now
-							@endif
-						</b></a>
-						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
-						@else
-						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+						<div class="row text-left">
+							<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+								<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{(int)$project->investment->minimum_accepted_amount}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+								<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+								<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Return</h6>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-3">
+								<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
+									@if($project->investment) {{$number_of_investors}} @else ### @endif
+								</h4>
+								<h6 class="font-regular" style="font-size: 0.875em;color: #fff">Investors</h6>
+							</div>
+						</div>
 						@endif
 					</div>
-				</div>
-			</div>
-			@if(Auth::guest())
-			@else
-			@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-			<div class="col-md-12">
-				<div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
-				<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
-				<input class="hide" type="file" name="projectpg_back_img" id="projectpg_back_img">
-				<input type="hidden" name="projectpg_back_img_name" id="projectpg_back_img_name">
-			</div>
-			@endif
-			@endif
-		</div>
-	</section>
-	<h6 style="color: #707070;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the Prospectus in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
-<!-- <section class="chunk-box" style="overflow:hidden;">
-	<div class="container-fluid">
-		<div class="row">
-			@if (Session::has('message'))
-			{!! Session::get('message') !!}
-			@endif
-			<div class="col-md-offset-1 col-md-5">
-				<h2>@if($project->investment) ${{ number_format($project->investment->goal_amount) }} <small>Total Required</small>@else ######@endif </h2>
-			</div>
-			<div class="col-md-5 text-center" style="padding-top:1.5em">
-				@if($project->investment)
-				<a href="{{route('projects.interest', $project)}}" class="btn btn-block btn-primary pulse-button" @if($completed_percent == 100) disabled data-disabled @endif @if(Auth::user() && Auth::user()->investments->contains($project))  @endif">
-					@if(Auth::user() && Auth::user()->investments->contains($project))
-					Already expressed interest, View Offer Docs again
-					@else
-					<span style="font-size: 15px;">I &nbspAM &nbspINTERESTED</span>
-					@endif
-				</a>
-				<h4><small>* Note that this is a No Obligation Expression of interest, you get to review the document before making any decisions</small></h4>
-				@else
-				<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
-				@endif
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-offset-1 col-md-5">
-				<h2>@if($project->investment)${{ number_format($pledged_amount) }} <small>Pledged</small>@else #####@endif</h2>
-			</div>
-			<div class="col-md-5" style="padding-top:1.6em">
-				<div class="progress" style="height:2em;background-color:#ccc;">
-					<div class="progress-bar progress-bar-info  progress-bar-striped" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$completed_percent}}%;font-size: 1.1em;line-height: 1.8em;">
-						{{round(($completed_percent), 2)}}%
+					<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
+						<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+						</div>
 					</div>
+					<p class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
+						@if($project->investment)
+						${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
+						@endif
+					</p>
 				</div>
-				<h4 class="text-center">
-					<small>@if($project->investment) @if($project->id == 2) 54 @elseif($project->id == 3) 27 @else {{$number_of_investors}} @endif @else ### @endif Investors Interested</small>
-				</h4>
+				<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
+					<br>
+					@if($project->investment)
+					<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+						@if($project->button_label)
+						<?php echo $project->button_label; ?>
+						@else
+						Invest Now
+						@endif
+					</b></a>
+					<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
+					@else
+					<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+					@endif
+				</div>
 			</div>
+		</div>
+		@if(Auth::guest())
+		@else
+		@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+		<div class="col-md-12">
+			<div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
+			<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
+			<input class="hide" type="file" name="projectpg_back_img" id="projectpg_back_img">
+			<input type="hidden" name="projectpg_back_img_name" id="projectpg_back_img_name">
+		</div>
+		@endif
+		@endif
+	</div>
+</section>
+<h6 style="color: #707070;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the Prospectus in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
+<!-- <section class="chunk-box" style="overflow:hidden;">
+<div class="container-fluid">
+	<div class="row">
+		@if (Session::has('message'))
+		{!! Session::get('message') !!}
+		@endif
+		<div class="col-md-offset-1 col-md-5">
+			<h2>@if($project->investment) ${{ number_format($project->investment->goal_amount) }} <small>Total Required</small>@else ######@endif </h2>
+		</div>
+		<div class="col-md-5 text-center" style="padding-top:1.5em">
+			@if($project->investment)
+			<a href="{{route('projects.interest', $project)}}" class="btn btn-block btn-primary pulse-button" @if($completed_percent == 100) disabled data-disabled @endif @if(Auth::user() && Auth::user()->investments->contains($project))  @endif">
+				@if(Auth::user() && Auth::user()->investments->contains($project))
+				Already expressed interest, View Offer Docs again
+				@else
+				<span style="font-size: 15px;">I &nbspAM &nbspINTERESTED</span>
+				@endif
+			</a>
+			<h4><small>* Note that this is a No Obligation Expression of interest, you get to review the document before making any decisions</small></h4>
+			@else
+			<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+			@endif
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-5">
+			<h2>@if($project->investment)${{ number_format($pledged_amount) }} <small>Pledged</small>@else #####@endif</h2>
+		</div>
+		<div class="col-md-5" style="padding-top:1.6em">
+			<div class="progress" style="height:2em;background-color:#ccc;">
+				<div class="progress-bar progress-bar-info  progress-bar-striped" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$completed_percent}}%;font-size: 1.1em;line-height: 1.8em;">
+					{{round(($completed_percent), 2)}}%
+				</div>
+			</div>
+			<h4 class="text-center">
+				<small>@if($project->investment) @if($project->id == 2) 54 @elseif($project->id == 3) 27 @else {{$number_of_investors}} @endif @else ### @endif Investors Interested</small>
+			</h4>
+		</div>
+	</div>
+</div>
 </section> -->
 <br>
 <ul class="nav nav-tabs text-center">
-	<li class="active" style="width: 50%; font-size: 1.5em;">
-		<a data-toggle="tab" href="#home" style="padding: 15px 15px;">Project Details</a></li>
-		<li style="width: 49%; font-size: 1.5em;"><a data-toggle="tab" href="#menu1" style="padding: 15px 15px;">Project Progress</a></li>
-	</ul>
-	<div class="tab-content">
-		<div id="home" class="tab-pane fade in active">
-			<section class="chunk-box ">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Summary</h2>
-							<br>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="summary_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									<input class="hide" type="file" name="projectpg_thumbnail_image" id="projectpg_thumbnail_image">
-									<input type="hidden" name="projectpg_thumbnail_image_name" id="projectpg_thumbnail_image_name">
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/summary.png')}}@endif" alt="for whom" style="width:50px;" >
-									<h4 class="second_color" style="margin-top:30px; color:#fed405; font-size:1.375em;">Summary</h4>
-								</div>
-								<div class="col-md-10 text-left"> 
-									@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field">{!!$project->investment->summary!!}</p> @endif
-								</div>
+	<li class="active" style="width: 50%; font-size: 1.5em;"><a data-toggle="tab" href="#home" style="padding: 15px 15px;">Project Details</a></li>
+	<li style="width: 49%; font-size: 1.5em;"><a data-toggle="tab" href="#menu1" style="padding: 15px 15px;">Project Progress</a></li>
+</ul>
+<div class="tab-content">
+	<div id="home" class="tab-pane fade in active">
+		<section class="chunk-box ">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Summary</h2>
+						<br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="summary_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								<input class="hide" type="file" name="projectpg_thumbnail_image" id="projectpg_thumbnail_image">
+								<input type="hidden" name="projectpg_thumbnail_image_name" id="projectpg_thumbnail_image_name">
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/summary.png')}}@endif" alt="for whom" style="width:50px;" >
+								<h4 class="second_color" style="margin-top:30px; color:#fed405; font-size:1.375em;">Summary</h4>
 							</div>
-							<br>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security_long" style="width:50px;">
-									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Security</h4>
-								</div>
-								<div class="col-md-10 text-left"> 
-									@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field">{!!$project->investment->security_long!!}</p> @endif
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investor_distribution_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
-									<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Investor<br> Distribution</h4>
-								</div>
-								<div class="col-md-10 text-left"> 
-									@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field">{!!$project->investment->exit_d!!}</p> @endif
-									<center>
-										@if($project->media->where('type','exit_image')->last())
-										<img src="{{asset($project->media->where('type', 'exit_image')->last()->path)}}" style="max-width:100%" alt="Exit">
-										@endif
-									</center>
-								</div>
-							</div>
-							<br>
-						</div>
-					</div>
-				</div>
-			</section>
-			@if($project->property_type == "1")
-			<section class="chunk-box">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Suburb Profile</h2>
-							<br><br><br>
-							<div class="row">
-								<div class="col-md-12">
-									<div id="map" data-role="page" ></div>
-									<address class="text-center"><p style="font-size:15px;">{{$project->location->line_1}}, <!-- {{$project->location->line_2}}, --> {{$project->location->city}}, {{$project->location->postal_code}}, {{$project->location->country}}</p></address>
-								</div>
-							</div>
-							<br><br>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="marketability_image"><a data-toggle="tooltip" title="Edit Marketability Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/marketability.png')}}@endif" alt="for whom" style="width:50px; ">
-									<br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Marketability</h4>
-								</div>
-								<div class="col-md-10"> 
-									@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-10 col-md-offset-2">
-									<center>
-										@if($project->media->where('type','marketability')->last())
-										<img src="{{asset($project->media->where('type', 'marketability')->last()->path)}}" style="width:100%" alt="Marketability">
-										@endif
-									</center>
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="residents_image"><a data-toggle="tooltip" title="Edit Residents Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'residents_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/residents.png')}}@endif" alt="residents" style="width:50px; ">
-									<br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Residents</h4>
-								</div>
-								<div class="col-md-10"> 
-									@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!$project->investment->residents!!}</p> @endif
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-2">
-								</div>
-								<div class="col-md-10">
-									<center>
-										@if($project->media->where('type','residents')->last())
-										<img src="{{asset($project->media->where('type', 'residents')->last()->path)}}" width="100%" alt="Image">
-										@endif
-									</center>
-								</div> 
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field">{!!$project->investment->summary!!}</p> @endif
 							</div>
 						</div>
-					</div>
-				</div>
-			</section>
-			@endif
-			<section class="chunk-box">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Investment Profile</h2>
-							<br>
-							<div class="row">
-								<div class=" col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_type_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Type</h4><br>
-								</div>
-								<div class="col-md-10"> 
-									@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{{$project->investment->investment_type}}</p>@endif
-								</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security_long" style="width:50px;">
+								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Security</h4>
 							</div>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security" style="width:50px;"><br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Security</h4><br>
-								</div>
-								<div class="col-md-10"> 
-									@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{{$project->investment->security}}</p> @endif
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-2 text-center" >
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="expected_returns_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/expected_returns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Expected<br> Returns</h4>
-								</div>
-								<div class="col-md-10"> 
-									@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{{$project->investment->expected_returns_long}}</p> @endif
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-2 text-center" >
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="returns_paid_as_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/returns_paid_as.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Returns<br> Paid As</h4>
-								</div>
-								<div class="col-md-10"> 
-									@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{{$project->investment->returns_paid_as}}</p> @endif
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-2 text-center" >
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="taxation_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
-									<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Taxation</h4><br>
-									</div>
-									<div class="col-md-10"> 
-									@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
-								</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field">{!!$project->investment->security_long!!}</p> @endif
 							</div>
 						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investor_distribution_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
+								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Investor<br> Distribution</h4>
+							</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field">{!!$project->investment->exit_d!!}</p> @endif
+								<center>
+									@if($project->media->where('type','exit_image')->last())
+									<img src="{{asset($project->media->where('type', 'exit_image')->last()->path)}}" style="max-width:100%" alt="Exit">
+									@endif
+								</center>
+							</div>
+						</div>
+						<br>
 					</div>
 				</div>
-			</section>
-			<section class="chunk-box ">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Profile</h2>
-							<br>
-							<div class="row">
-								<div class="col-md-4 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="developer_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
-									@if($project->property_type == "1")
-									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Developer</h4><br>
-									@else
-									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Venture</h4><br>
-									@endif
-									@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
-									<div class="row">
-										<div class="col-md-12 text-center">
-											<center>
-												@if($project->media->where('type','project_developer')->last())
-												<img src="{{asset($project->media->where('type', 'project_developer')->last()->path)}}" width="30%" alt="Developer" style="padding:1em;" style="width:40px;">
-												@endif
-											</center>
-										</div>	
-									</div>
-								</div>
-								<div class="col-md-4 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="duration_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/duration.png')}}@endif" alt="duration" style="width:50px;">
-									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Duration</h4><br>
-									@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
-								</div>
-								<div class="col-md-4 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="current_status_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/current_status.png')}}@endif" alt="current_status" style="width:50px;">
-									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Current Status</h4><br>
-									@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
-								</div>
+			</div>
+		</section>
+		@if($project->property_type == "1")
+		<section class="chunk-box">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Suburb Profile</h2>
+						<br><br><br>
+						<div class="row">
+							<div class="col-md-12">
+								<div id="map" data-role="page" ></div>
+								<address class="text-center"><p style="font-size:15px;">{{$project->location->line_1}}, <!-- {{$project->location->line_2}}, --> {{$project->location->city}}, {{$project->location->postal_code}}, {{$project->location->country}}</p></address>
 							</div>
-							<br><br><br>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="rationale_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/rationale.png')}}@endif" alt="rationale" style="width:50px;">
-									<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Rationale</h4><br>
-								</div>
-								<div class="col-md-10 text-left"> 
-									@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field">{!!$project->investment->rationale!!}</p> @endif
-								</div>
+						</div>
+						<br><br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="marketability_image"><a data-toggle="tooltip" title="Edit Marketability Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/marketability.png')}}@endif" alt="for whom" style="width:50px; ">
+								<br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Marketability</h4>
 							</div>
-							<div class="row">
-								<div class="col-md-2 text-center">
-									@if(Auth::guest())
-									@else
-									@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-									<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_risk_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-									@endif
-									@endif
-									<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/risk.png')}}@endif" alt="risk" style="width:50px;">
-									<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Risk</h4><br>
-								</div>
-								<div class="col-md-10 text-left"> 
-									@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field">{!!$project->investment->risk!!}</p> @endif
-								</div>
+							<div class="col-md-10"> 
+								@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
 							</div>
-							<br><br>
+						</div>
+						<div class="row">
+							<div class="col-md-10 col-md-offset-2">
+								<center>
+									@if($project->media->where('type','marketability')->last())
+									<img src="{{asset($project->media->where('type', 'marketability')->last()->path)}}" style="width:100%" alt="Marketability">
+									@endif
+								</center>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="residents_image"><a data-toggle="tooltip" title="Edit Residents Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'residents_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/residents.png')}}@endif" alt="residents" style="width:50px; ">
+								<br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Residents</h4>
+							</div>
+							<div class="col-md-10"> 
+								@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!$project->investment->residents!!}</p> @endif
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+							</div>
+							<div class="col-md-10">
+								<center>
+									@if($project->media->where('type','residents')->last())
+									<img src="{{asset($project->media->where('type', 'residents')->last()->path)}}" width="100%" alt="Image">
+									@endif
+								</center>
+							</div> 
 						</div>
 					</div>
 				</div>
 			</div>
+		</section>
+		@endif
+		<section class="chunk-box">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Investment Profile</h2>
+						<br>
+						<div class="row">
+							<div class=" col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_type_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Type</h4><br>
+							</div>
+							<div class="col-md-10"> 
+								@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{{$project->investment->investment_type}}</p>@endif
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security" style="width:50px;"><br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Security</h4><br>
+							</div>
+							<div class="col-md-10"> 
+								@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{{$project->investment->security}}</p> @endif
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 text-center" >
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="expected_returns_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/expected_returns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Expected<br> Returns</h4>
+							</div>
+							<div class="col-md-10"> 
+								@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{{$project->investment->expected_returns_long}}</p> @endif
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 text-center" >
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="returns_paid_as_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/returns_paid_as.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Returns<br> Paid As</h4>
+							</div>
+							<div class="col-md-10"> 
+								@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{{$project->investment->returns_paid_as}}</p> @endif
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 text-center" >
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="taxation_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
+								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Taxation</h4><br>
+								</div>
+								<div class="col-md-10"> 
+								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="chunk-box ">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Profile</h2>
+						<br>
+						<div class="row">
+							<div class="col-md-4 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="developer_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
+								@if($project->property_type == "1")
+								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Developer</h4><br>
+								@else
+								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Venture</h4><br>
+								@endif
+								@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
+								<div class="row">
+									<div class="col-md-12 text-center">
+										<center>
+											@if($project->media->where('type','project_developer')->last())
+											<img src="{{asset($project->media->where('type', 'project_developer')->last()->path)}}" width="30%" alt="Developer" style="padding:1em;" style="width:40px;">
+											@endif
+										</center>
+									</div>	
+								</div>
+							</div>
+							<div class="col-md-4 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="duration_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/duration.png')}}@endif" alt="duration" style="width:50px;">
+								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Duration</h4><br>
+								@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
+							</div>
+							<div class="col-md-4 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="current_status_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/current_status.png')}}@endif" alt="current_status" style="width:50px;">
+								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Current Status</h4><br>
+								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
+							</div>
+						</div>
+						<br><br><br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="rationale_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/rationale.png')}}@endif" alt="rationale" style="width:50px;">
+								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Rationale</h4><br>
+							</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field">{!!$project->investment->rationale!!}</p> @endif
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_risk_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/risk.png')}}@endif" alt="risk" style="width:50px;">
+								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Risk</h4><br>
+							</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field">{!!$project->investment->risk!!}</p> @endif
+							</div>
+						</div>
+						<br><br>
+					</div>
+				</div>
+			</div>
+		<!-- </div> -->
 		</section>
 		<section>
 			<div class="container">
@@ -908,27 +907,27 @@
 	@if(Auth::guest())
 	@else
 	@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
-</form>
-@endif
-@endif
-<div id="menu1" class="tab-pane fade">
-	<div class="container">
-		<h3>Progress</h3>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th style="width: 140px;">Date of Progress</th>
-					<th>Description</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($project_prog as $project_progs)
-				<tr>
-					<td>{{$project_progs->updated_date}}
-					</td>
-					<td>{{$project_progs->progress_description}} </td>
-					<td>{{$project_progs->progress_details}}
+	</form>
+	@endif
+	@endif
+	<div id="menu1" class="tab-pane fade">
+		<div class="container">
+			<h3>Progress</h3>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="width: 140px;">Date of Progress</th>
+						<th>Description</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($project_prog as $project_progs)
+					<tr>
+						<td>{{$project_progs->updated_date}}
+						</td>
+						<td>{{$project_progs->progress_description}} </td>
+						<td>{{$project_progs->progress_details}}
 							{{--<div class="row">
 								 @foreach($project->media->chunk(1) as $set)
 								@foreach($set as $photo)
@@ -1004,8 +1003,8 @@
 							{!! Form::close() !!}
 							@endif
 							@endif
-						</tr>
-					</div>
+						</div>
+					</tr>
 				</tbody>
 			</table>
 			@if(Auth::user())
