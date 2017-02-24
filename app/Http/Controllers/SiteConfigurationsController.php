@@ -878,6 +878,93 @@ class SiteConfigurationsController extends Controller
                         return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                     }
                 }
+                else if ($request->imgAction == 'project_thumbnail'){
+                    $projectId = $request->projectId;
+                    $extension = strtolower(File::extension($src));
+                    $img = '';
+                    $result = false;
+                    $rw = 1024;
+                    $rh = 683;
+
+                    //Create new coords for image.
+                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                    switch ($extension) {
+                        case 'jpg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+                        
+                        case 'jpeg':
+                            $quality = 90;
+                            $img  = imagecreatefromjpeg($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagejpeg($dest, $src, $quality);
+                            break;
+
+                        case 'png':
+                            $quality = 9;
+                            $img  = imagecreatefrompng($src);
+                            $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                            imagealphablending($dest, FALSE);
+                            imagesavealpha($dest, TRUE);
+                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                            $result = imagepng($dest, $src, $quality);
+                            break;
+
+                        default:
+                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                            break;
+                    }
+                    $imgName = 'project_thumbnail_'.$projectId.'_'.time().'.png';
+                    $imgType = 'project_thumbnail';
+                    if($result){
+                        $saveLoc = 'assets/images/media/home_page/';
+                        $finalFile = $imgName;
+                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                        if($extension != 'png'){
+                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
+                        }
+                        else{
+                            Image::make($src)->save(public_path($saveLoc.$finalFile));
+                        }
+                        $projectMedia = Media::where('project_id', $projectId)
+                            ->where('project_site', url())
+                            ->where('type', $imgType)
+                            ->first();
+                        if($projectMedia){
+                            File::delete(public_path($projectMedia->path));    
+                        }
+                        else{
+                            $projectMedia = new Media;
+                            $projectMedia->project_id = $projectId;
+                            $projectMedia->type = $imgType;
+                            $projectMedia->project_site = url();
+                            $projectMedia->caption = 'Project Page Thumbnail Image';
+                        }
+                        $projectMedia->filename = $finalFile;
+                        $projectMedia->path = $finalpath;
+                        $projectMedia->save();
+                        File::delete($src);
+                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                    } else{
+                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                    }
+                }
                 else {}
             }
         }
@@ -1478,6 +1565,38 @@ class SiteConfigurationsController extends Controller
             Session::flash('message', 'Client Name Updated Successfully');
             Session::flash('action', 'client-name');
             return redirect()->back();
+        }
+    }
+
+    public function uploadProjectThumbImage(Request $request)
+    {
+        if (Auth::user()->roles->contains('role', 'admin')){
+            $validation_rules = array(
+                'project_thumb_image'   => 'required|mimes:jpeg,png,jpg',
+                'imgAction' => 'required',
+                'projectId' => 'required',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+        
+            if($request->hasFile('project_thumb_image') && $request->file('project_thumb_image')->isValid()){
+                // Image::make($request->project_thumb_image)->resize(530, null, function($constraint){
+                //     $constraint->aspectRatio();
+                // })->save();
+                $fileExt = $request->file('project_thumb_image')->getClientOriginalExtension();
+                $fileName = 'project_thumbnail_'.$request->projectId.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('project_thumb_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
         }
     }
 }

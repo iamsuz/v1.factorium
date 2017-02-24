@@ -431,6 +431,9 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12"> 
+        <input class="hide" type="file" name="
+        project_thumb_image" id="project_thumb_image">
+        <input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
         @if(count($projects)==3)
         @foreach($projects->chunk(3) as $sets)
         <div class="row">
@@ -446,6 +449,12 @@
           }
           ?>
           <div class="col-md-4" style="" id="circle{{$project->id}}">
+            @if(Auth::guest())
+            @else
+            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+            <div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+            @endif
+            @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;">
                 <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
@@ -518,6 +527,12 @@
           }
           ?>
           <div class="col-sm-6 col-md-6"  id="circle{{$project->id}}">
+            @if(Auth::guest())
+            @else
+            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+            <div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+            @endif
+            @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;">
                 <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
@@ -908,6 +923,7 @@
               <input type="hidden" name="h_target" id="h_target" value="">
               <input type="hidden" name="orig_width" id="orig_width" value="">
               <input type="hidden" name="orig_height" id="orig_height" value="">
+              <input type="hidden" name="project_id" id="project_id" value="">
             </div>
           </div>      
         </div>
@@ -1365,6 +1381,8 @@
       editHowItWorksSectionImages();
       //Edit Funding Section Contents
       editFundingSectionContent();
+      //Edit Project Thumb Image
+      editProjectThumbImage()
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -1415,6 +1433,7 @@
         var origWidth = $('#orig_width').val();
         var origHeight = $('#orig_height').val();
         var hiwImgAction = $('#image_action').val();
+        var projectId = $('#project_id').val();
         console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
         $.ajax({
           url: '/configuration/cropUploadedImage',
@@ -1429,6 +1448,7 @@
             origWidth: origWidth,
             origHeight: origHeight,
             hiwImgAction: hiwImgAction,
+            projectId: projectId
           },
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1453,6 +1473,9 @@
             }
             else if (imgAction == 'howItWorks image'){
               $('#how_it_works_image, #how_it_works_image_name').val('');
+            }
+            else if (imgAction == 'project_thumbnail'){
+              $('#project_thumb_image, #project_thumb_image_name').val('');
             }
             else {}
               alert(data.message);
@@ -1825,6 +1848,78 @@
       });
     }
 
+    function editProjectThumbImage(){
+      var imgAction = '';
+      var projectId = '';
+      $('.edit-project-thumb-img').click(function(e){
+        imgAction = $(this).attr('action');
+        projectId = $(this).attr('projectid');
+        $('#project_id').val(projectId);
+        $('#project_thumb_image, #project_thumb_image_name').val('');
+        $('#project_thumb_image').trigger('click');
+      });
+      $('#project_thumb_image').change(function(event){
+        if($('#project_thumb_image').val() != ''){
+          var formData = new FormData();
+          formData.append('project_thumb_image', $('#project_thumb_image')[0].files[0]);
+          formData.append('imgAction', imgAction);
+          formData.append('projectId', projectId);
+          $('.loader-overlay').show();
+          $.ajax({
+            url: '/configuration/uploadProjectThumbImage',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false
+          }).done(function(data){
+            if(data.status == 1){
+              console.log(data);
+              var imgPath = data.destPath+data.fileName;
+              var str1 = $('<div class="col-sm-8" id="project_thumb_img"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_project_thumb_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+              $('#image_cropbox_container').html(str1);
+              $('#myModal').modal({
+                'show': true,
+                'backdrop': false,
+              });
+
+            $('#image_crop').val(imgPath); //set hidden image value
+            $('#image_crop').attr('action', 'project_thumbnail');
+            $('#image_action').val(imgAction);
+            var target_width = 150;
+            var target_height = 100;
+            var origWidth = data.origWidth;
+            var origHeight = data.origHeight;
+            $('#image_cropbox').Jcrop({
+              boxWidth: 530,
+              aspectRatio: 3/2,
+              keySupport: false,
+              setSelect: [0, 0, target_width, target_height],
+              bgColor: '',
+              onSelect: function(c) {
+                updateCoords(c, target_width, target_height, origWidth, origHeight);
+              },
+              onChange: function(c) {
+                updateCoords(c, target_width, target_height, origWidth, origHeight);
+              },onRelease: setSelect,
+              minSize: [target_width, target_height],
+            });
+            $('.loader-overlay').hide();
+          }
+          else{
+            $('.loader-overlay').hide();
+            $('#project_thumb_image, #project_thumb_image_name').val('');
+            alert(data.message);
+          }
+        });
+        }            
+      });
+    }
+
     function hex2rgb(hexStr){
       var hex = parseInt(hexStr, 16);
       var r = (hex & 0xff0000) >> 16;
@@ -1832,6 +1927,7 @@
       var b = hex & 0x0000ff;
       return [r, g, b];
     }
+
   </script>
 </body>
 </Html>

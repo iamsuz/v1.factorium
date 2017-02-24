@@ -198,3 +198,4 @@ Route::post('/configuration/updateProjectSpvLogo', ['as'=>'configuration.updateP
 Route::post('/configuration/updateProjectSpvMDSign', ['as'=>'configuration.updateProjectSpvMDSign', 'uses'=>'SiteConfigurationsController@updateProjectSpvMDSign']);
 Route::get('/site/termsConditions', ['as'=>'site.termsConditions', 'uses'=>'PagesController@termsConditions']);
 Route::post('/configuration/updateClientName', ['as'=>'configuration.updateClientName', 'uses'=>'SiteConfigurationsController@updateClientName']);
+Route::post('/configuration/uploadProjectThumbImage', ['as'=>'configuration.uploadProjectThumbImage', 'uses'=>'SiteConfigurationsController@uploadProjectThumbImage']);
