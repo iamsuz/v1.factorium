@@ -53,7 +53,7 @@
 
 							{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
 							@if($investment->accepted)
-							<i class="fa fa-check" aria-hidden="true" style="color: #6db980">&nbsp;Share certificate issued</i>
+							<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<small style=" font-family: SourceSansPro-Regular;">Share certificate issued</small></i>
 							@else
 							<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue share certificate">
 							@endif

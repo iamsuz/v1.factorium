@@ -75,6 +75,7 @@ Offer Doc
 							</tr>
 							<tr >
 								<td class="font-regular">
+									<b>Tech Baron PTY LTD Declaration</b><br>
 									We have to provide this document to you along with the application form, it defines the services we are providing as an authorized Representative of our license holding partner
 									<br>
 									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank">Download Financial Services Guide</a>
