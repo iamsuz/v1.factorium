@@ -953,7 +953,7 @@
 					<tr>
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<h3>Add new Updare</h3>
+						<h3>Add new Update</h3>
 						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'POST')) !!}
 						<div class="row">
 							<td>
@@ -994,7 +994,7 @@
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-6">
-												{!! Form::submit('Add new Column', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
+												{!! Form::submit('Add new Update', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
 											</div>
 										</div>
 									</div>
