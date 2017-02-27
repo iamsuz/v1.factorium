@@ -197,7 +197,7 @@ class DashboardController extends Controller
             ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $investment->accepted = $request->accepted;
+        $investment->accepted = 1;
         $investment->save();
 
         if($investment->accepted) {

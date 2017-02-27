@@ -51,7 +51,12 @@
 							{{method_field('PATCH')}}
 							{{csrf_field()}}
 
-							<input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }}
+							{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
+							@if($investment->accepted)
+							<i class="fa fa-check" aria-hidden="true" style="color: #6db980">&nbsp;Share certificate issued</i>
+							@else
+							<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue share certificate">
+							@endif
 							<input type="hidden" name="investor" value="{{$investment->user->id}}">
 						</form>
 					</div>
@@ -75,6 +80,14 @@
 		$('input[type=text]').focusout(function() {
 			var dad = $(this).parent();
 			dad.submit();
+		});
+
+		$('.issue-share-certi-btn').click(function(e){
+			if (confirm('Are you sure ?')) {
+				console.log('confirmed');
+		    } else {
+		    	e.preventDefault();
+		    }			
 		});
 	});
 </script>
