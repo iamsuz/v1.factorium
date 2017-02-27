@@ -317,8 +317,7 @@
             @endif
             <h3 class="how-it-works-title1-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif</h3>
           </div>
-          <p class="how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != '') {!! $siteConfiguration->how_it_works_desc1 !!} @endif
-          </p>
+          <p class="how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){{$siteConfiguration->how_it_works_desc1}}@endif</p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.6s">
           <div class="" style="color:#6B798F;">
