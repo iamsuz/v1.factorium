@@ -928,6 +928,8 @@
 						</td>
 						<td>{{$project_progs->progress_description}} </td>
 						<td>{{$project_progs->progress_details}}
+							<p>Link</p>
+							<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
 							{{--<div class="row">
 								 @foreach($project->media->chunk(1) as $set)
 								@foreach($set as $photo)
