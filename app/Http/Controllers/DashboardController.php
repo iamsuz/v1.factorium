@@ -201,17 +201,19 @@ class DashboardController extends Controller
         $investment->save();
 
         if($investment->accepted) {
-            $shareInit = 0;
+            $shareInit = 1;
             $investmentShares = InvestmentInvestor::orderBy('updated_at','ASC')->get()
                             ->where('project_id', $investment->project_id)
                             ->where('accepted', 1);
             foreach ($investmentShares as $investmentShare) {
+                echo("<script>console.log('".$investmentShare."');</script>");
                 if($investmentShare->id != $investment->id){
                     $shareInit += intval($investmentShare->amount);
                 } else {
                     break;
                 }
             }
+            echo("<script>console.log('".$shareInit."');</script>");
             $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit]);
             $pdf->setPaper('a4', 'landscape');
             $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
