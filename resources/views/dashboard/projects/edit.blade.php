@@ -2195,13 +2195,13 @@ Edit {{$project->title}} | Dashboard | @parent
 
                             $('#image_crop').val(imgPath); //set hidden image value
                             $('#image_crop').attr('action', 'spv_md_sign_image');
-                            var target_width = 150;
-                            var target_height = 50;
+                            var target_width = 160;
+                            var target_height = 120;
                             var origWidth = data.origWidth;
                             var origHeight = data.origHeight;
                             $('#image_cropbox').Jcrop({
                                 boxWidth: 530,
-                                aspectRatio: 3/1,
+                                aspectRatio: 4/3,
                                 keySupport: false,
                                 setSelect: [0, 0, target_width, target_height],
                                 bgColor: '',

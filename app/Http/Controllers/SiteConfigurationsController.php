@@ -823,8 +823,8 @@ class SiteConfigurationsController extends Controller
                     $extension = strtolower(File::extension($src));
                     $img = '';
                     $result = false;
-                    $rw = 450;
-                    $rh = 150;
+                    $rw = 400;
+                    $rh = 300;
                     //Create new coords for image.
                     $newXValue = ($xValue * $origWidth) / $convertedWidth;
                     $newYValue = ($yValue * $origHeight) / $convertedHeight;
@@ -1530,7 +1530,7 @@ class SiteConfigurationsController extends Controller
             $destinationPath = 'assets/images/websiteLogo/';
         
             if($request->hasFile('spv_md_sign') && $request->file('spv_md_sign')->isValid()){
-                Image::make($request->spv_md_sign)->resize(450, null, function($constraint){
+                Image::make($request->spv_md_sign)->resize(400, null, function($constraint){
                     $constraint->aspectRatio();
                 })->save();
                 $fileExt = $request->file('spv_md_sign')->getClientOriginalExtension();
