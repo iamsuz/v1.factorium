@@ -7,6 +7,9 @@
 <meta property="og:image" content="@if($project->media->where('type', 'project_thumbnail')->last()){{asset($project->media->where('type', 'project_thumbnail')->last()->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" />
 <meta property="og:title" content="Invest in {{$project->title}} with just ${{(int)$project->investment->minimum_accepted_amount}}" />
 <meta property="og:description" content="{{$project->description}}" />
+<meta property="og:site_name" content="Estate Baron" />
+<meta property="og:url" content="{{$project->project_site}}" />
+<meta property="og:type" content="website" />
 
 <meta name="description" content="Invest with small amounts in the construction of 2 townhouses in the prestigious mount waverley school zone. 20% returns in 18 months, Refer to PDS for details">
 <meta name="csrf-token" content="{{csrf_token()}}" />
@@ -62,112 +65,112 @@
 @else
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 <form method="POST" action="{{route('configuration.updateProjectDetails')}}">
-{{csrf_field()}}
-<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
-	<button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
-	<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br>
-	<a href="" status="{{$project->active}}" style="color: #fff;"><u>
-		@if($project->active == '1') 
-		<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a> 
-		@elseif($project->active == '2')
-		Private
-		@elseif($project->active == '0')
-		<a href="{{route('dashboard.projects.activate', [$project->id])}}"> Activate </a>
-		@endif
-	</u></a>
-</div>
-@endif
-@endif
-<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
-<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
-	<div class="color-overlay">
-		<div class="container">
-			<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
-				<div class="col-md-4 col-sm-6">
-					<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
-					<p class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</p>
-					<br>
-				</div>
-				<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
-					<div id="circle">
-						<div class="text-center" style="color:#fff;">
-							<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
-								<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
-									<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
-										<span id="daysremained"></span>
-										<br>
-										<p style="font-size: 1.1em; margin: 0 0 -3px;" class="h1-faq">Days Left</p>
-									</p>
+	{{csrf_field()}}
+	<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
+		<button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
+		<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br>
+		<a href="" status="{{$project->active}}" style="color: #fff;"><u>
+			@if($project->active == '1') 
+			<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a> 
+			@elseif($project->active == '2')
+			Private
+			@elseif($project->active == '0')
+			<a href="{{route('dashboard.projects.activate', [$project->id])}}"> Activate </a>
+			@endif
+		</u></a>
+	</div>
+	@endif
+	@endif
+	<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
+	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
+		<div class="color-overlay">
+			<div class="container">
+				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
+					<div class="col-md-4 col-sm-6">
+						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
+						<p class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</p>
+						<br>
+					</div>
+					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
+						<div id="circle">
+							<div class="text-center" style="color:#fff;">
+								<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
+									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
+										<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
+											<span id="daysremained"></span>
+											<br>
+											<p style="font-size: 1.1em; margin: 0 0 -3px;" class="h1-faq">Days Left</p>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div><br>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="" style="color:#fff;">
-						@if($project->investment)
-						<div class="row text-left">
-							<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-								<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{(int)$project->investment->minimum_accepted_amount}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
+				</div><br>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="" style="color:#fff;">
+							@if($project->investment)
+							<div class="row text-left">
+								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{(int)$project->investment->minimum_accepted_amount}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Return</h6>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-3">
+									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
+										@if($project->investment) {{$number_of_investors}} @else ### @endif
+									</h4>
+									<h6 class="font-regular" style="font-size: 0.875em;color: #fff">Investors</h6>
+								</div>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-								<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-								<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Return</h6>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-3">
-								<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
-									@if($project->investment) {{$number_of_investors}} @else ### @endif
-								</h4>
-								<h6 class="font-regular" style="font-size: 0.875em;color: #fff">Investors</h6>
+							@endif
+						</div>
+						<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
+							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
 							</div>
 						</div>
-						@endif
+						<p class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
+							@if($project->investment)
+							${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
+							@endif
+						</p>
 					</div>
-					<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
-						<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
-						</div>
-					</div>
-					<p class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
+					<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
+						<br>
 						@if($project->investment)
-						${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
-						@endif
-					</p>
-				</div>
-				<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
-					<br>
-					@if($project->investment)
-					<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
-						@if($project->button_label)
-						<?php echo $project->button_label; ?>
+						<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+							@if($project->button_label)
+							<?php echo $project->button_label; ?>
+							@else
+							Invest Now
+							@endif
+						</b></a>
+						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
 						@else
-						Invest Now
+						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 						@endif
-					</b></a>
-					<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
-					@else
-					<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
-					@endif
+					</div>
 				</div>
 			</div>
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+			<div class="col-md-12">
+				<div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
+				<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
+				<input class="hide" type="file" name="projectpg_back_img" id="projectpg_back_img">
+				<input type="hidden" name="projectpg_back_img_name" id="projectpg_back_img_name">
+			</div>
+			@endif
+			@endif
 		</div>
-		@if(Auth::guest())
-		@else
-		@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
-		<div class="col-md-12">
-			<div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
-			<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
-			<input class="hide" type="file" name="projectpg_back_img" id="projectpg_back_img">
-			<input type="hidden" name="projectpg_back_img_name" id="projectpg_back_img_name">
-		</div>
-		@endif
-		@endif
-	</div>
-</section>
-<h6 style="color: #707070;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the Prospectus in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
+	</section>
+	<h6 style="color: #707070;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the Prospectus in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
 <!-- <section class="chunk-box" style="overflow:hidden;">
 <div class="container-fluid">
 	<div class="row">
@@ -429,8 +432,8 @@
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
 								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Taxation</h4><br>
-								</div>
-								<div class="col-md-10"> 
+							</div>
+							<div class="col-md-10"> 
 								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
 							</div>
 						</div>
@@ -527,7 +530,7 @@
 					</div>
 				</div>
 			</div>
-		<!-- </div> -->
+			<!-- </div> -->
 		</section>
 		<section>
 			<div class="container">
@@ -538,7 +541,7 @@
 							<div class="col-md-3 text-left">
 								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
 								<span style="font-size:1em;" class="project-pds1-link-field">
-								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Prospectus</a>
+									<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Prospectus</a>
 								</span>
 							</div>
 							<!-- <div class="col-md-3 text-left">
@@ -908,29 +911,29 @@
 	@if(Auth::guest())
 	@else
 	@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
-	</form>
-	@endif
-	@endif
-	<div id="menu1" class="tab-pane fade">
-		<div class="container">
-			<h3>Progress</h3>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th style="width: 140px;">Date of Progress</th>
-						<th>Description</th>
-						<th>Details</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach($project_prog as $project_progs)
-					<tr>
-						<td>{{$project_progs->updated_date}}
-						</td>
-						<td>{{$project_progs->progress_description}} </td>
-						<td>{{$project_progs->progress_details}}
-							<p>Link</p>
-							<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
+</form>
+@endif
+@endif
+<div id="menu1" class="tab-pane fade">
+	<div class="container">
+		<h3>Progress</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 140px;">Date of Progress</th>
+					<th>Description</th>
+					<th>Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($project_prog as $project_progs)
+				<tr>
+					<td>{{$project_progs->updated_date}}
+					</td>
+					<td>{{$project_progs->progress_description}} </td>
+					<td>{{$project_progs->progress_details}}
+						<p>Link</p>
+						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
 							{{--<div class="row">
 								 @foreach($project->media->chunk(1) as $set)
 								@foreach($set as $photo)
