@@ -4,7 +4,7 @@
 @stop
 @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr())
 @section('meta-section')
-<meta property="og:image" content="@if($project->media->where('type', 'project_thumbnail')->last()){{asset($project->media->where('type', 'project_thumbnail')->last()->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" />
+<meta property="og:image" content="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" />
 <meta property="og:title" content="Invest in {{$project->title}} with just ${{(int)$project->investment->minimum_accepted_amount}}" />
 <meta property="og:description" content="{{$project->description}}" />
 <meta property="og:site_name" content="" />
