@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="Estate Baron">
-    <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors.">
+    {{-- <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors."> --}}
     <meta name="copyright" content="Estate Baron Crowdinvest Pty Ltd copyright (c) 2016">
     @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text != '')
     <title>{!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text !!}</title>
@@ -24,16 +24,11 @@
     <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
     @endif
     <!-- Open Graphic -->
-    <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg">
-    <meta property="og:site_name" content="Estate Baron" />
-    <meta property="og:url" content="https://www.estatebaron.com" />
-    <meta property="og:type" content="website">
+    
     <!-- META DATA -->
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 
     @section('meta-section')
-    <meta property="og:title" content="Best way to invest in Australian Real Estate Projects" />
-    <meta property="og:description" content="Invest in Melbourne Real Estate Developments from $100. View listing now. " />
     @show
     
     @yield('meta')    

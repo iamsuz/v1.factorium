@@ -1,20 +1,20 @@
 @extends('layouts.main')
 @section('title-section')
-{{$project->title}} crowdfunding with just $2000
+{{$project->title}} crowdfunding with just ${{(int)$project->investment->minimum_accepted_amount}}
 @stop
-
+@if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr())
 @section('meta-section')
 <meta property="og:image" content="@if($project->media->where('type', 'project_thumbnail')->last()){{asset($project->media->where('type', 'project_thumbnail')->last()->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" />
 <meta property="og:title" content="Invest in {{$project->title}} with just ${{(int)$project->investment->minimum_accepted_amount}}" />
 <meta property="og:description" content="{{$project->description}}" />
-<meta property="og:site_name" content="Estate Baron" />
+<meta property="og:site_name" content="{{$siteConfiguration->website_name}}" />
 <meta property="og:url" content="{{$project->project_site}}" />
 <meta property="og:type" content="website" />
 
-<meta name="description" content="Invest with small amounts in the construction of 2 townhouses in the prestigious mount waverley school zone. 20% returns in 18 months, Refer to PDS for details">
+<meta name="description" content="{{$project->description}}">
 <meta name="csrf-token" content="{{csrf_token()}}" />
 @stop
-
+@endif
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
