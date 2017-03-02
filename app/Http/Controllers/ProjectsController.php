@@ -645,7 +645,6 @@ class ProjectsController extends Controller
 
     public function gform(Request $request)
     {
-        dd($request);
         $project = Project::findOrFail($request->project_id);
         $user = User::findOrFail($request->user_id);
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
