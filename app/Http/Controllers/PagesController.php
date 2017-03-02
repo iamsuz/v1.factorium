@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\SubdivideRequest;
+use App\Jobs\SendReminderEmail;
+use App\Jobs\SendInvestorNotificationEmail;
+use App\Jobs\SendDeveloperNotificationEmail;
 use App\Faq;
 use Session;
 use App\SiteConfiguration;
@@ -168,11 +171,13 @@ class PagesController extends Controller
     * returns terms page
     * @return view [description]
     */
-    public function test(\App\Mailers\AppMailer $mailer)
+    public function test()
     {
-        $project = \App\Project::find(27);
+        $project = \App\Project::find(16);
+        $investments = $project->investors;
         $user = \Auth::user();
-        $mailer->sendInterestNotificationAdmin($project, $user);
+        $this->dispatch(new SendInvestorNotificationEmail($user,$project));
+        $this->dispatch(new SendReminderEmail($user,$project));
         return 'test';
     }
 

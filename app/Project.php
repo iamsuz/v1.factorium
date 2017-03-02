@@ -95,7 +95,7 @@ class Project extends Model
      */
     public function investors()
     {
-        return $this->belongsToMany('App\User', 'investment_investor')->withTimestamps();
+        return $this->belongsToMany('App\User', 'investment_investor')->withPivot('amount')->withTimestamps();
     }
 
     /**
