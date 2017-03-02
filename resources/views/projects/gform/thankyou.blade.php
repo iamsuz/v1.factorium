@@ -14,7 +14,7 @@
 	<div class="container">
 		<br>
 		<section id="section-colors-left" class="color-panel-right panel-open-left center" style="opacity: .8;">
-			<div class="color-wrap-left">
+			<div class="color-wrap-left" style="margin-top: 1093px !important; position: fixed;">
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<h2>
