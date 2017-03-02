@@ -243,7 +243,7 @@
       </div>
       <br><br><br>
       <div class="row">
-        <div class="center-btn text-center homepg-btn1-section col-md-6 col-md-offset-3" data-wow-duration="1.5s" data-wow-delay="0.5s">
+        <div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
          <a href="#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" class="btn btn-red btn-lg font-regular scrollto" role="button" style="font-size:22px;">
           @if(!empty($siteConfiguration))
           @if($siteConfiguration->homepg_btn1_text != '')
