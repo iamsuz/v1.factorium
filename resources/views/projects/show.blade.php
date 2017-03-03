@@ -219,11 +219,21 @@
 </ul>
 <div class="tab-content">
 	<div id="home" class="tab-pane fade in active">
+		@if(Auth::guest())
+		@else
+		@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+		<div class="text-center">
+			<input type="button" name="edit_sub_headings" value="Edit sub headings" class="btn btn-primary btn-lg edit-sub-headings">
+			<input type="button" name="save_sub_headings" value="Save sub headings" class="btn btn-default btn-lg save-sub-headings" style="display: none;">
+		</div>
+		@endif
+		@endif
 		<section class="chunk-box ">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Summary</h2>
+						<h2 class="text-center first_color show-project-summary-input" style="font-size:2.625em;color:#282a73;">
+						@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@else Project Summary @endif</h2>
 						<br>
 						<div class="row">
 							<div class="col-md-2 text-center">
@@ -236,7 +246,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/summary.png')}}@endif" alt="for whom" style="width:50px;" >
-								<h4 class="second_color" style="margin-top:30px; color:#fed405; font-size:1.375em;">Summary</h4>
+								<h4 class="second_color show-summary-input" style="margin-top:30px; color:#fed405; font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->summary_label))}}@else Summary @endif</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
 								@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field">{!!$project->investment->summary!!}</p> @endif
@@ -252,7 +262,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security_long" style="width:50px;">
-								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Security</h4>
+								<h4 class="second_color show-security-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->security_label))}}@else Security @endif</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
 								@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field">{!!$project->investment->security_long!!}</p> @endif
@@ -268,7 +278,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
-								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Investor<br> Distribution</h4>
+								<h4 class="second_color show-investor-distribution-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investor_distribution_label))}}@else Investor<br> Distribution @endif</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
 								@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field">{!!$project->investment->exit_d!!}</p> @endif
@@ -289,14 +299,25 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Suburb Profile</h2>
-						<br><br><br>
+						<h2 class="text-center first_color show-suburb-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->suburb_profile_label))}}@else Suburb Profile @endif</h2>
+						<br>
+						@if(Auth::guest())
+						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						<div class="text-center"><label><input type="checkbox" name="show_suburb_profile_map" id="show_suburb_profile_map" data-toggle="toggle" @if($project->projectconfiguration)@if($project->projectconfiguration->show_suburb_profile_map) checked @endif @endif>&nbsp;Show Map</label></div>
+						@endif
+						@endif
+						<br><br>
+						@if($project->projectconfiguration)
+						@if($project->projectconfiguration->show_suburb_profile_map)
 						<div class="row">
 							<div class="col-md-12">
 								<div id="map" data-role="page" ></div>
 								<address class="text-center"><p style="font-size:15px;">{{$project->location->line_1}}, <!-- {{$project->location->line_2}}, --> {{$project->location->city}}, {{$project->location->postal_code}}, {{$project->location->country}}</p></address>
 							</div>
 						</div>
+						@endif
+						@endif
 						<br><br>
 						<div class="row">
 							<div class="col-md-2 text-center">
@@ -308,7 +329,7 @@
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/marketability.png')}}@endif" alt="for whom" style="width:50px; ">
 								<br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Marketability</h4>
+								<h4 class="second_color show-marketability-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->marketability_label))}}@else Marketability @endif</h4>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
@@ -334,7 +355,7 @@
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'residents_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/residents.png')}}@endif" alt="residents" style="width:50px; ">
 								<br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Residents</h4>
+								<h4 class="second_color show-residents-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->residents_label))}}@else Residents @endif</h4>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!$project->investment->residents!!}</p> @endif
@@ -360,7 +381,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Investment Profile</h2>
+						<h2 class="text-center first_color show-investment-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_profile_label))}}@else Investment Profile @endif</h2>
 						<br>
 						<div class="row">
 							<div class=" col-md-2 text-center">
@@ -371,7 +392,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Type</h4><br>
+								<h4 class="second_color show-investment-type-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_type_label))}}@else Type @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{{$project->investment->investment_type}}</p>@endif
@@ -386,7 +407,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security" style="width:50px;"><br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Security</h4><br>
+								<h4 class="second_color show-investment-security-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_security_label))}}@else Security @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{{$project->investment->security}}</p> @endif
@@ -401,7 +422,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/expected_returns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Expected<br> Returns</h4>
+								<h4 class="second_color show-expected-returns-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->expected_returns_label))}}@else Expected<br> Returns @endif</h4>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{{$project->investment->expected_returns_long}}</p> @endif
@@ -416,7 +437,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/returns_paid_as.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Returns<br> Paid As</h4>
+								<h4 class="second_color show-return-paid-as-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->return_paid_as_label))}}@else Returns<br> Paid As @endif</h4>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{{$project->investment->returns_paid_as}}</p> @endif
@@ -431,7 +452,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
-								<h4 class="second_color" style="margin-top:0px; color:#fed405;font-size:1.375em;">Taxation</h4><br>
+								<h4 class="second_color show-taxation-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->taxation_label))}}@else Taxation @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
 								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
@@ -445,9 +466,70 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Profile</h2>
+						<h2 class="text-center first_color show-project-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_profile_label))}}@else Project Profile @endif</h2>
 						<br>
 						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="developer_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
+								@if($project->property_type == "1")
+								<h4 class="second_color show-developer-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->developer_label))}}@else Developer @endif</h4><br>
+								@else
+								<h4 class="second_color show-venture-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->venture_label))}}@else Venture @endif</h4><br>
+								@endif
+							</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
+							</div>
+							<div class="row">
+								<div class="col-md-12 text-center">
+									<center>
+										@if($project->media->where('type','project_developer')->last())
+										<img src="{{asset($project->media->where('type', 'project_developer')->last()->path)}}" width="30%" alt="Developer" style="padding:1em;" style="width:40px;">
+										@endif
+									</center>
+								</div>	
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="duration_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/duration.png')}}@endif" alt="duration" style="width:50px;">
+								<h4 class="second_color show-duration-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->duration_label))}}@else Duration @endif</h4><br>
+							</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2 text-center">
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="current_status_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+								@endif
+								@endif
+								<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/current_status.png')}}@endif" alt="current_status" style="width:50px;">
+								<h4 class="second_color show-current-status-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->current_status_label))}}@else Current Status @endif</h4><br>
+							</div>
+							<div class="col-md-10 text-left"> 
+								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
+							</div>
+						</div>
+						<br>
+						{{--<div class="row">
 							<div class="col-md-4 text-center">
 								@if(Auth::guest())
 								@else
@@ -457,9 +539,9 @@
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
 								@if($project->property_type == "1")
-								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Developer</h4><br>
+								<h4 class="second_color show-developer-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->developer_label))}}@else Developer @endif</h4><br>
 								@else
-								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Venture</h4><br>
+								<h4 class="second_color show-venture-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->venture_label))}}@else Venture @endif</h4><br>
 								@endif
 								@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
 								<div class="row">
@@ -480,7 +562,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/duration.png')}}@endif" alt="duration" style="width:50px;">
-								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Duration</h4><br>
+								<h4 class="second_color show-duration-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->duration_label))}}@else Duration @endif</h4><br>
 								@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
 							</div>
 							<div class="col-md-4 text-center">
@@ -491,11 +573,11 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/current_status.png')}}@endif" alt="current_status" style="width:50px;">
-								<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">Current Status</h4><br>
+								<h4 class="second_color show-current-status-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->current_status_label))}}@else Current Status @endif</h4><br>
 								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
 							</div>
 						</div>
-						<br><br><br>
+						<br><br><br>--}}
 						<div class="row">
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
@@ -505,7 +587,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/rationale.png')}}@endif" alt="rationale" style="width:50px;">
-								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Rationale</h4><br>
+								<h4 class="second_color show-rationale-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->rationale_label))}}@else Rationale @endif</h4><br>
 							</div>
 							<div class="col-md-10 text-left"> 
 								@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field">{!!$project->investment->rationale!!}</p> @endif
@@ -520,7 +602,7 @@
 								@endif
 								@endif
 								<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/risk.png')}}@endif" alt="risk" style="width:50px;">
-								<h4 class="second_color" style="margin-top:30px; color:#fed405;font-size:1.375em;">Risk</h4><br>
+								<h4 class="second_color show-risk-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@else Risk @endif</h4><br>
 							</div>
 							<div class="col-md-10 text-left"> 
 								@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field">{!!$project->investment->risk!!}</p> @endif
@@ -1247,6 +1329,10 @@
 		editProjectPageBackImg();
 		//Edit Project Page Thumbnails
 		editProjectPageThumbImages();
+		//HideShowMap
+		toggleMapVisibility();
+		//Edit Project Page Sub Headings
+		editProjectPageSubHeadings();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -1508,6 +1594,99 @@
 
 		$('#modal_close_btn').click(function(e){
 			$('#projectpg_thumbnail_image, #projectpg_thumbnail_image_name').val('');
+		});
+	}
+
+	function toggleMapVisibility(){
+		$('#show_suburb_profile_map').change(function(){
+			var showMap = $(this).is(':checked');
+			var projectId = $('#current_project_id').val();
+			$.ajax({
+		        url: '/configuration/project/saveShowMapStatus',
+		        type: 'POST',
+		        dataType: 'JSON',
+		        data: {showMap, projectId},
+		        headers: {
+		          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	        	},
+	      	}).done(function(data){
+		        console.log(data);
+		        location.reload('/');
+	      	});			
+		});
+	}
+	
+	function editProjectPageSubHeadings(){
+		$('.edit-sub-headings').click(function(){
+			$(this).attr('disabled', true);
+			$('.save-sub-headings').show();
+			$('.show-project-summary-input').html('<input type="text" name="project_summary_label" id="project_summary_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Project Summary">');
+			$('.show-summary-input').html('<input type="text" name="summary_label" id="summary_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->summary_label))}}@endif"  placeholder="Summary">');
+			$('.show-security-input').html('<input type="text" name="security_label" id="security_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->security_label))}}@endif"  placeholder="Security">');
+			$('.show-investor-distribution-input').html('<input type="text" name="investor_distribution_label" id="investor_distribution_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investor_distribution_label))}}@endif" placeholder="Investor Distribution">');
+			$('.show-suburb-profile-input').html('<input type="text" name="suburb_profile_label" id="suburb_profile_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->suburb_profile_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Suburb Profile">');
+			$('.show-marketability-input').html('<input type="text" name="marketability_label" id="marketability_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->marketability_label))}}@endif"  placeholder="Marketability">');
+			$('.show-residents-input').html('<input type="text" name="residents_label" id="residents_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->residents_label))}}@endif"  placeholder="Residents">');
+			$('.show-investment-profile-input').html('<input type="text" name="investment_profile_label" id="investment_profile_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_profile_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Investment Profile">');
+			$('.show-investment-type-input').html('<input type="text" name="investment_type_label" id="investment_type_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_type_label))}}@endif"  placeholder="Type">');
+			$('.show-investment-security-input').html('<input type="text" name="investment_security_label" id="investment_security_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_security_label))}}@endif"  placeholder="Security">');
+			$('.show-expected-returns-input').html('<input type="text" name="expected_returns_label" id="expected_returns_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->expected_returns_label))}}@endif"  placeholder="Expected Returns">');
+			$('.show-return-paid-as-input').html('<input type="text" name="return_paid_as_label" id="return_paid_as_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->return_paid_as_label))}}@endif"  placeholder="Returns Paid As">');
+			$('.show-taxation-input').html('<input type="text" name="taxation_label" id="taxation_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->taxation_label))}}@endif"  placeholder="Taxation">');
+			$('.show-project-profile-input').html('<input type="text" name="project_profile_label" id="project_profile_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_profile_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Project Profile">');
+			$('.show-developer-input').html('<input type="text" name="developer_label" id="developer_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->developer_label))}}@endif"  placeholder="Developer">');
+			$('.show-venture-input').html('<input type="text" name="venture_label" id="venture_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->venture_label))}}@endif"  placeholder="Venture">');
+			$('.show-duration-input').html('<input type="text" name="duration_label" id="duration_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->duration_label))}}@endif"  placeholder="Duration">');
+			$('.show-current-status-input').html('<input type="text" name="current_status_label" id="current_status_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->current_status_label))}}@endif"  placeholder="Current Status">');
+			$('.show-rationale-input').html('<input type="text" name="rationale_label" id="rationale_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->rationale_label))}}@endif"  placeholder="Rationale">');
+			$('.show-risk-input').html('<input type="text" name="investment_risk_label" id="investment_risk_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@endif"  placeholder="Risk">');
+		});
+		
+		$('.save-sub-headings').click(function(){
+			var project_summary_label = $('#project_summary_label').val();
+			var summary_label = $('#summary_label').val();
+			var security_label = $('#security_label').val();
+			var investor_distribution_label = $('#investor_distribution_label').val();
+			var suburb_profile_label = $('#suburb_profile_label').val();
+			var marketability_label = $('#marketability_label').val();
+			var residents_label = $('#residents_label').val();
+			var investment_profile_label = $('#investment_profile_label').val();
+			var investment_type_label = $('#investment_type_label').val();
+			var investment_security_label = $('#investment_security_label').val();
+			var expected_returns_label = $('#expected_returns_label').val();
+			var return_paid_as_label = $('#return_paid_as_label').val();
+			var taxation_label = $('#taxation_label').val();
+			var project_profile_label = $('#project_profile_label').val();
+			var developer_label = $('#developer_label').val();
+			var venture_label = $('#venture_label').val();
+			var duration_label = $('#duration_label').val();
+			var current_status_label = $('#current_status_label').val();
+			var rationale_label = $('#rationale_label').val();
+			var investment_risk_label = $('#investment_risk_label').val();
+			var labelIsEmpty = false;
+			$('.check-input-empty').each(function(){
+				if($(this).val() == ''){
+					labelIsEmpty = true;
+				}
+			});
+			if(!labelIsEmpty){
+				var projectId = $('#current_project_id').val();
+				$.ajax({
+			        url: '/configuration/project/updateProjectPageSubHeading',
+			        type: 'POST',
+			        dataType: 'JSON',
+			        data: {projectId, project_summary_label, summary_label, security_label, investor_distribution_label, suburb_profile_label, marketability_label, residents_label, investment_profile_label, investment_type_label, investment_security_label, expected_returns_label, return_paid_as_label, taxation_label, project_profile_label, developer_label, venture_label, duration_label, current_status_label, rationale_label, investment_risk_label},
+			        headers: {
+			          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		        	},
+		      	}).done(function(data){
+			        console.log(data);
+			        location.reload('/');
+		      	});
+			} else {
+				alert("Label Inputs can't be empty");
+			}
+
 		});
 	}
 

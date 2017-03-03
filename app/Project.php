@@ -135,4 +135,8 @@ class Project extends Model
     {
         return $this->hasOne('App\ProjectSpvDetail');
     }
+    public function projectconfiguration()
+    {
+        return $this->hasOne('App\ProjectConfiguration');
+    }
 }

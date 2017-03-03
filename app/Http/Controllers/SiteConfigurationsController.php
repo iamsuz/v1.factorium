@@ -19,6 +19,7 @@ use App\SiteConfiguration;
 use App\Investment;
 use App\SiteConfigMedia;
 use App\Media;
+use App\ProjectConfiguration;
 use Barryvdh\DomPDF\Facade as PDF;
 
 
@@ -1598,5 +1599,64 @@ class SiteConfigurationsController extends Controller
                 }
             }
         }
+    }
+
+    public function saveShowMapStatus(Request $request)
+    {
+        $showMap = 0;
+        if($request->showMap == 'true'){
+            $showMap = 1;
+        }
+        $projectId =$request->projectId;
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = (int)$projectId;
+            $projectConfiguration->save();
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+        }
+        $projectConfiguration->update(['show_suburb_profile_map'=>$showMap]);
+        return $resultArray = array('status' => 1);
+    }
+
+    public function updateProjectPageSubHeading(Request $request)
+    {
+        $projectId =$request->projectId;
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = (int)$projectId;
+            $projectConfiguration->save();
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+        }
+        $projectConfiguration->update([
+            'project_summary_label'=>$request->project_summary_label,
+            'summary_label'=>$request->summary_label,
+            'security_label'=>$request->security_label,
+            'investor_distribution_label'=>$request->investor_distribution_label,
+            'suburb_profile_label'=>$request->suburb_profile_label,
+            'marketability_label'=>$request->marketability_label,
+            'residents_label'=>$request->residents_label,
+            'investment_profile_label'=>$request->investment_profile_label,
+            'investment_type_label'=>$request->investment_type_label,
+            'investment_security_label'=>$request->investment_security_label,
+            'expected_returns_label'=>$request->expected_returns_label,
+            'return_paid_as_label'=>$request->return_paid_as_label,
+            'taxation_label'=>$request->taxation_label,
+            'project_profile_label'=>$request->project_profile_label,
+            'developer_label'=>$request->developer_label,
+            'venture_label'=>$request->venture_label,
+            'duration_label'=>$request->duration_label,
+            'current_status_label'=>$request->current_status_label,
+            'rationale_label'=>$request->rationale_label,
+            'investment_risk_label'=>$request->investment_risk_label,
+            ]);
+        return $resultArray = array('status' => 1);
     }
 }
