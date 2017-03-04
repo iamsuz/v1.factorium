@@ -444,6 +444,85 @@
         <input class="hide" type="file" name="
         project_thumb_image" id="project_thumb_image">
         <input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
+        @if(count($projects)==1)
+        @foreach($projects->chunk(1) as $sets)
+        <div class="row">
+          @foreach($sets as $project)
+          <?php
+          $pledged_amount = $investments->where('project_id', $project->id)->sum('amount');
+          if($project->investment) {
+            $completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
+            $remaining_amount = $project->investment->goal_amount - $pledged_amount;
+          } else {
+            $completed_percent = 0;
+            $remaining_amount = 0;
+          }
+          ?>
+          <div class="col-md-8 col-md-offset-2" style="" id="circle{{$project->id}}">
+            @if(Auth::guest())
+            @else
+            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+            <div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+            @endif
+            @endif
+            <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
+              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;">
+                <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
+                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" />
+                  <div class="@if($project->invite_only) invite-only-overlay @endif thn">
+                    <div class="content">
+                      <div class="row">
+                        <div class="col-md-12">
+                          @if($project->invite_only)
+                          <div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
+                            @if(Auth::user())
+                            <h3>
+                              Invite Only Project
+                            </h3>
+                            @else 
+                            <h3>
+                              <a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
+                              <small style="color:white;">
+                                <br> to access Private Project
+                              </small>
+                            </h3>
+                            @endif
+                          </div>
+                          @endif
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="caption">
+                  <div class="row text-left">
+                    <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
+                      <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
+                      <h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{(int)$project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->projected_returns}}%@endif<small><small><br>Return</small></small></h4>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
+                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+                  </div>
+                </div>
+                <p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
+              </div>
+            </a>
+          </div>
+          @endforeach
+        </div>
+        @endforeach
+        @else
         @if(count($projects)==3)
         @foreach($projects->chunk(3) as $sets)
         <div class="row">
@@ -601,6 +680,7 @@
         @endforeach
       </div>
       @endforeach
+      @endif
       @endif
     </div>
   </div>
