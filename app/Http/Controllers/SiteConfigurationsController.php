@@ -1314,6 +1314,25 @@ class SiteConfigurationsController extends Controller
         $project->media()->save($media);
         return 1;
     }
+    public function uploadGallaryImage(Request $request, $project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        // dd($project);
+        $image_type = 'gallary_images';
+
+        $destinationPath = 'assets/images/projects/gallary/'.$project_id;
+        $filename = $request->file->getClientOriginalName();
+        $filename = time().'_'.$filename;
+        $extension = $request->file->getClientOriginalExtension();
+        $photo = $request->file->move($destinationPath, $filename);
+        $photo= Image::make($destinationPath.'/'.$filename);
+        $photo->resize(1566, 885, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save();
+        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension, 'project_site'=>url()]);
+        $project->media()->save($media);
+        return 1;
+    }
 
     public function uploadHowItWorksImages(Request $request)
     {
