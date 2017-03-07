@@ -27,6 +27,7 @@ use App\Investment;
 use Carbon\Carbon;
 use App\ProjectSpvDetail;
 use App\Media;
+use Validator;
 
 class ProjectsController extends Controller
 {
@@ -777,4 +778,25 @@ class ProjectsController extends Controller
         }
     }
 
+    public function uploadSubSectionImages(Request $request)
+    {
+        $validation_rules = array(
+            'project_sub_heading_image'   => 'required|mimes:jpeg,png,jpg',
+            );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if($validator->fails()){
+            return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+        }
+        $project = Project::findOrFail($request->projectId);
+        $image_type = $request->imgType;
+        $destinationPath = 'assets/images/projects/'.$request->projectId;
+        $filename = $request->project_sub_heading_image->getClientOriginalName();
+        $filename = time().'_'.$filename;
+        $extension = $request->project_sub_heading_image->getClientOriginalExtension();
+        $photo = $request->project_sub_heading_image->move($destinationPath, $filename);
+        $photo= Image::make($destinationPath.'/'.$filename);
+        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+        $project->media()->save($media);
+        return $resultArray = array('status' => 1, 'message' => 'The Image uploaded Successfully');
+    }
 }

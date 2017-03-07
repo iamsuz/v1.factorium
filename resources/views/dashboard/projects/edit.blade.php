@@ -49,7 +49,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							{{--<div class="row">
 								<div class="form-group @if($errors->first('description')){{'has-error'}} @endif">
 									{!!Form::label('description', 'Description', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -57,7 +57,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
-							</div>
+							</div>--}}
 							<div class="row">
 								<div class="form-group @if($errors->first('additional_info')){{'has-error'}} @endif">
 									{!!Form::label('additional_info', 'Additional Info', array('class'=>'col-sm-2 control-label'))!!}
@@ -462,7 +462,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							{{--<div class="row">
 								<div class="form-group @if($errors->first('security_long')){{'has-error'}} @endif">
 									{!!Form::label('security_long', 'Security Long', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -552,7 +552,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>--}}
 							<div class="row">
 								<div class="form-group @if($errors->first('bank') && $errors->first('bank_account_name')){{'has-error'}} @endif">
 									{!!Form::label('bank', 'Bank', array('class'=>'col-sm-2 control-label'))!!}
@@ -615,7 +615,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							{{--<div class="row">
 								<div class="form-group @if($errors->first('PDS_part_1_link') && $errors->first('PDS_part_2_link')){{'has-error'}} @endif">
 									{!!Form::label('PDS_part_1_link', 'PDS Part 1 link', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -632,8 +632,8 @@ Edit {{$project->title}} | Dashboard | @parent
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="row">
+							</div>--}}
+							{{--<div class="row">
 								<div class="form-group @if($errors->first('exit_d')){{'has-error'}} @endif">
 									{!!Form::label('exit_d', 'Investor Distributor', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -710,7 +710,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>--}}
 							<div class="row">
 								<div class="form-group @if($errors->first('plans_permit_url')){{'has-error'}} @endif">
 									{!!Form::label('plans_permit_url', 'Plans and Permit Document', array('class'=>'col-sm-2 control-label'))!!}

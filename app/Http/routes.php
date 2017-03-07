@@ -202,3 +202,4 @@ Route::post('/configuration/updateClientName', ['as'=>'configuration.updateClien
 Route::post('/configuration/uploadProjectThumbImage', ['as'=>'configuration.uploadProjectThumbImage', 'uses'=>'SiteConfigurationsController@uploadProjectThumbImage']);
 Route::post('/configuration/project/saveShowMapStatus', ['as'=>'configuration.project.saveShowMapStatus', 'uses'=>'SiteConfigurationsController@saveShowMapStatus']);
 Route::post('/configuration/project/updateProjectPageSubHeading', ['as'=>'configuration.project.updateProjectPageSubHeading', 'uses'=>'SiteConfigurationsController@updateProjectPageSubHeading']);
+Route::post('/project/edit/uploadSubSectionImages', ['as'=>'project.uploadSubSectionImages', 'uses'=>'ProjectsController@uploadSubSectionImages']);
