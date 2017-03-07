@@ -232,8 +232,7 @@
 		@endif
 		<section>
 			<div class="container">
-			<h2 class="text-center first_color" style="font-size:2.625em;color:#282a73;">Project Gallary</h2>
-				<div id="myCarousel" class="carousel slide" data-ride="carousel">
+				<div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: 20px;">
 					<!-- Indicators -->
 					<ol class="carousel-indicators">
 						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
