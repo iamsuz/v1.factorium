@@ -240,16 +240,16 @@
 						@endforeach
 					</ol>
 					<!-- Wrapper for slides -->
-					<div class="carousel-inner" role="listbox" style="height: 345px !important;">
+					<div class="carousel-inner" role="listbox" style="height: 500px">
 						<div class="item active">
-						<img src="@if($project->media->where('type', 'projectpg_back_img')->last()) {{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}} @else {{asset('assets/images/bgimage_sample.png')}} @endif" alt="Flower" width="100%" height="345">
+						<img src="@if($project->media->where('type', 'projectpg_back_img')->last()) {{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}} @else {{asset('assets/images/bgimage_sample.png')}} @endif" alt="Flower" width="100%">
 						</div> 
 						@foreach($project->media->chunk(1) as $set)
 						@foreach($set as $photo)
 						@if($photo->type === 'gallary_images')
 						<div class="item">
 							<div class="row">
-								<img src="/{{$photo->path}}" alt="{{$photo->caption}}" alt="Chania" width="100%" height="345">
+								<img src="/{{$photo->path}}" alt="{{$photo->caption}}" alt="Chania" width="100%">
 							</div>
 						</div>
 						@else

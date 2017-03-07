@@ -15,7 +15,7 @@ Thank You | @parent
 			<div class="row" id="section-1">
 				<div class="col-md-12">
 					<div style="padding:10em 0;">
-						<h1 class="text-center wow fadeIn animated h1-faq">Welcome to Vestabyte<br><br><br>
+						<h1 class="text-center wow fadeIn animated h1-faq">Welcome to @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name}} @else Estate Baron @endif<br><br><br>
 							<small>Activate your account via the link sent to your email address</small>
 						</h1>
 					</div>

@@ -196,7 +196,8 @@ class UserRegistrationsController extends Controller
         $mailer->sendRegistrationNotificationAdmin($user);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
-            return view('users.registrationFinish', compact('user','color'));
+            // return view('users.registrationFinish', compact('user','color'));
+            return redirect('/#projects');
         }
     }
 
