@@ -657,7 +657,7 @@
 
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px"><img src="{{public_path().'/'.$investment->project->media->where('type', 'spv_md_sign_image')->first()->path}}" width="150"><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">
                             <br><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->first()->spv_md_name}}@else Moresh Kokane @endif<br>
                             <span style="font-family:helvetica; font-weight:lighter; line-height:21px;">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->first()->spv_name}}@else Estate Baron @endif</span>
                             <br><br>
