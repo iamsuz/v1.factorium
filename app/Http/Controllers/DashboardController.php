@@ -312,4 +312,22 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         return view('dashboard.configuration.siteConfiguration',compact('color'));
     }
+
+    public function investmentMoneyReceived(Request $request, AppMailer $mailer, $investment_id)
+    {
+        // $this->validate($request, [
+        //     'investor' => 'required',
+        //     ]);
+
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $investment->money_received = 1;
+        $investment->save();
+
+        if($investment->money_received) {
+            $mailer->sendMoneyReceivedConfirmationToUser($investment);
+        }
+
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+
+    }
 }

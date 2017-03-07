@@ -241,6 +241,24 @@ class AppMailer
         $this->deliverWithFile();
     }
 
+    public function sendMoneyReceivedConfirmationToUser($investment)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->bcc = $recipients;
+        $this->to = $investment->user->email;
+        $this->view = 'emails.moneyReceivedConfirm';
+        $this->subject = 'Funds received for '.$investment->project->title;
+        $this->data = compact('investment');
+        
+        $this->deliver();
+    }
+
     public function deliver()
     {
         $this->mailer->send($this->view, $this->data, function ($message) {

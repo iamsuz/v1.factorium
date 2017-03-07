@@ -35,8 +35,8 @@
 						</a>
 						<br>{{$investment->user->email}}<br>{{$investment->user->phone_number}}
 					</div>
-					<div class="col-md-3">{{$investment->created_at->toFormattedDateString()}}</div>
-					<div class="col-md-3">
+					<div class="col-md-2 text-right">{{$investment->created_at->toFormattedDateString()}}</div>
+					<div class="col-md-2">
 						<form action="{{route('dashboard.investment.update', $investment->id)}}" method="POST">
 							{{method_field('PATCH')}}
 							{{csrf_field()}}
@@ -44,6 +44,17 @@
 							
 							<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}">
 							<input type="hidden" name="investor" value="{{$investment->user->id}}">
+						</form>
+					</div>
+					<div class="col-md-2">
+						<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
+							{{method_field('PATCH')}}
+							{{csrf_field()}}
+							@if($investment->money_received)
+							<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
+							@else
+							<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
+							@endif
 						</form>
 					</div>
 					<div class="col-md-3">
@@ -88,6 +99,14 @@
 		    } else {
 		    	e.preventDefault();
 		    }			
+		});
+
+		$('.money-received-btn').click(function(e){
+			if (confirm('Are you sure ?')) {
+				console.log('confirmed');
+		    } else {
+		    	e.preventDefault();
+		    }
 		});
 	});
 </script>
