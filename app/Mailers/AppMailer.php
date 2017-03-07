@@ -250,13 +250,13 @@ class AppMailer
                 array_push($recipients, $user->email);
             }
         }
-        $this->bcc = $recipients;
         $this->to = $investment->user->email;
+        $this->bcc = $recipients;
         $this->view = 'emails.moneyReceivedConfirm';
         $this->subject = 'Funds received for '.$investment->project->title;
         $this->data = compact('investment');
         
-        $this->deliver();
+        $this->deliverWithBcc();
     }
 
     public function deliver()
@@ -270,6 +270,13 @@ class AppMailer
     {
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
+        });
+    }
+
+    public function deliverWithBcc()
+    {
+        $this->mailer->send($this->view, $this->data, function ($message) {
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->bcc($this->bcc)->subject($this->subject);
         });
     }
 }

@@ -572,13 +572,8 @@
 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear {{$investment->user->first_name}},</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-  <span style="color:#">
-    <span style="font-size:14px">
-      <span style="font-family:helvetica; font-weight:lighter; line-height:21px">
-        Thank you for applying to invest ${{$investment->amount}} in the {{$investment->project->title}}. I wish to let you know that we have received your funds.<br><br>Once the fund raising process is complete and if your application is accepted we will issue you a share certificate denoting your investment in the Project. After that as the project progresses you will receive regular updates regarding the project in form of emails, pictures and videos as well as Account and Tax statements.<br><br>I will be in touch over the next few weeks.<br><br>Thanks Again.
-      </span>
-    </span>
-  </span>
+  <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Thank you for applying to invest ${{$investment->amount}} in the {{$investment->project->title}}. I wish to let you know that we have received your funds.<br><br>
+  <span style="color:#">Once the fund raising process is complete and if your application is accepted we will issue you a share certificate denoting your investment in the Project. After that as the project progresses you will receive regular updates regarding the project in form of emails, pictures and videos as well as Account and Tax statements.</span><br><br><span style="color:#">I will be in touch over the next few weeks.</span><br><br><span style="color:#">Thanks Again.</span>
 &nbsp;
 
 </div>
