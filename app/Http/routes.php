@@ -17,7 +17,7 @@ Route::patch('/pages/team/members/{id}', ['as'=>'team.members.update', 'uses'=>'
 Route::delete('pages/{aboutus_id}/members/{member_id}', ['as'=>'team.member.destroy', 'uses'=>'PagesController@deleteTeamMember']);
 Route::get('/pages/users/sort', ['as'=>'pages.team', 'uses'=>'PagesController@sortusers']);
 Route::get('/pages/privacy', ['as'=>'pages.privacy', 'uses'=>'PagesController@privacy']);
-Route::get('/pages/financialserviceguide', ['as'=>'pages.financial', 'uses'=>'PagesController@financial']);
+// Route::get('/pages/financialserviceguide', ['as'=>'pages.financial', 'uses'=>'PagesController@financial']);
 Route::get('/pages/faq', ['as'=>'pages.faq', 'uses'=>'PagesController@faq']);
 Route::pattern('faq_id', '[0-9]+');
 Route::get('/pages/faq/{faq_id}/deleteFaq', ['as'=>'pages.faq.delete', 'uses'=>'PagesController@deleteFaq']);
