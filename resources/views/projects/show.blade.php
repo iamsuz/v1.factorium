@@ -232,29 +232,28 @@
 		@endif
 		<section>
 			<div class="container">
+			@if($project->media->where('type', 'gallary_images')->first())
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: 20px;">
 					<!-- Indicators -->
 					<ol class="carousel-indicators">
-						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						{{-- <li data-target="#myCarousel" data-slide-to="0" class="active"></li> --}}
 						@foreach($project->media->where('type','gallary_images') as $photos)
 						<li data-target="#myCarousel" data-slide-to=""></li>
 						@endforeach
 					</ol>
 					<!-- Wrapper for slides -->
-					<div class="carousel-inner" role="listbox" style="height: 500px;">
-						<div class="item active">
-						<img src="@if($project->media->where('type', 'projectpg_back_img')->last()) {{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}} @else {{asset('assets/images/bgimage_sample.png')}} @endif" alt="Flower" width="100%">
-						</div> 
+					<div class="carousel-inner" role="listbox" style="height: 500px">
+						{{-- <div class="item active">
+						<img src="@if($project->media->where('type', 'gallary_images')->first()) {{asset($project->media->where('type', 'gallary_images')->first()->path)}} @else {{asset('assets/images/bgimage_sample.png')}} @endif" alt="Flower" width="100%">
+						</div>  --}}
 						@foreach($project->media->chunk(1) as $set)
 						@foreach($set as $photo)
 						@if($photo->type === 'gallary_images')
 						<div class="item">
 							<div class="row">
 								<img src="/{{$photo->path}}" alt="{{$photo->caption}}" alt="Chania" width="100%">
- 							</div>
- 						</div>
- 						@else
-						{{-- <h4>Add a Marketability Image</h4> --}}
+							</div>
+						</div>
 						@endif
 						@endforeach
 						@endforeach
@@ -269,6 +268,7 @@
 						<span class="sr-only">Next</span>
 					</a>
  				</div>
+ 				@endif
  				@if(Auth::user())
 				@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
 				<h3>Upload a Images</h3>
@@ -1356,6 +1356,8 @@
 				window.location.href = "{{route('projects.interest', $project)}}";
 			}
 		});
+		$('.item').first().addClass('active');
+		$('.carousel-indicators > li').first().addClass('active');
 		var daysPassedCheck=0;
 		@if($project->investment && $project->investment->fund_raising_close_date) 
 		fund_close_date = new Date({{date('Y,m-1,d', strtotime($project->investment->fund_raising_close_date))}});
