@@ -50,14 +50,14 @@
 						<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
 							{{method_field('PATCH')}}
 							{{csrf_field()}}
-							@if($investment->money_received)
+							@if($investment->money_received || $investment->accepted)
 							<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
 							@else
 							<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
 							@endif
 						</form>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<form action="{{route('dashboard.investment.accept', $investment->id)}}" method="POST">
 							{{method_field('PATCH')}}
 							{{csrf_field()}}
@@ -71,6 +71,20 @@
 							<input type="hidden" name="investor" value="{{$investment->user->id}}">
 						</form>
 					</div>
+					@if($investment->money_received || $investment->accepted)
+					@else
+					<div class="col-md-1" style="text-align: right;">
+					@if(Session::has('action'))
+					@if(Session::get('action') == $investment->id)
+					<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
+					@else
+					<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+					@endif
+					@else
+					<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+					@endif
+					</div>
+					@endif
 				</div>
 				@endforeach
 			</ul>
@@ -102,6 +116,14 @@
 		});
 
 		$('.money-received-btn').click(function(e){
+			if (confirm('Are you sure ?')) {
+				console.log('confirmed');
+		    } else {
+		    	e.preventDefault();
+		    }
+		});
+
+		$('.send-investment-reminder').click(function(e){
 			if (confirm('Are you sure ?')) {
 				console.log('confirmed');
 		    } else {

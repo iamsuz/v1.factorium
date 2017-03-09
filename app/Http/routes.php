@@ -204,3 +204,4 @@ Route::post('/configuration/project/saveShowMapStatus', ['as'=>'configuration.pr
 Route::post('/configuration/project/updateProjectPageSubHeading', ['as'=>'configuration.project.updateProjectPageSubHeading', 'uses'=>'SiteConfigurationsController@updateProjectPageSubHeading']);
 Route::post('/project/edit/uploadSubSectionImages', ['as'=>'project.uploadSubSectionImages', 'uses'=>'ProjectsController@uploadSubSectionImages']);
 Route::patch('/dashboard/projects/{investment_id}/investments/moneyReceived', ['as'=>'dashboard.investment.moneyReceived', 'uses'=>'DashboardController@investmentMoneyReceived']);
+Route::get('/dashboard/projects/{investment_id}/investments/reminder', ['as'=>'dashboard.investment.reminder', 'uses'=>'DashboardController@investmentReminder']);

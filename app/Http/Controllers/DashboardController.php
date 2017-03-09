@@ -18,6 +18,7 @@ use Chumper\Datatable\Datatable;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\SiteConfiguration;
+use Session;
 
 class DashboardController extends Controller
 {
@@ -198,6 +199,7 @@ class DashboardController extends Controller
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investment->accepted = 1;
+        $investment->money_received = 1;
         $investment->save();
 
         if($investment->accepted) {
@@ -315,10 +317,6 @@ class DashboardController extends Controller
 
     public function investmentMoneyReceived(Request $request, AppMailer $mailer, $investment_id)
     {
-        // $this->validate($request, [
-        //     'investor' => 'required',
-        //     ]);
-
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investment->money_received = 1;
         $investment->save();
@@ -329,5 +327,12 @@ class DashboardController extends Controller
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
 
+    }
+
+    public function investmentReminder(AppMailer $mailer, $investment_id){
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $mailer->sendInvestmentReminderToUser($investment);
+        Session::flash('action', $investment->id);
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Reminder sent</p>');        
     }
 }

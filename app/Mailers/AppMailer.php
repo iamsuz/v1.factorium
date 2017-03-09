@@ -259,6 +259,24 @@ class AppMailer
         $this->deliverWithBcc();
     }
 
+    public function sendInvestmentReminderToUser($investment)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $investment->user->email;
+        $this->bcc = $recipients;
+        $this->view = 'emails.investmentReminder';
+        $this->subject = 'investment Reminder for '.$investment->project->title;
+        $this->data = compact('investment');
+        
+        $this->deliverWithBcc();   
+    }
+
     public function deliver()
     {
         $this->mailer->send($this->view, $this->data, function ($message) {
