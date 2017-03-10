@@ -11,7 +11,7 @@ class IdImage extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'filename', 'path','filename_for_id','path_for_id','doc1','doc2', 'verify_id'];
+    protected $fillable = ['user_id', 'filename', 'path','filename_for_id','path_for_id','doc1','doc2', 'verify_id','fixing_message','fixing_message_for_id'];
 
     /**
      * this is a many to many relationship between user and their photo

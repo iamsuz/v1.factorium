@@ -148,7 +148,8 @@ class DashboardController extends Controller
     {
         $user = User::findOrFail($user_id);
         $user->update(['verify_id'=>$request->status]);
-        $user->idImage()->update(['verify_id'=>$request->status]);
+        $user->idImage()->get()->last()->update(['verify_id'=>$request->status, 'fixing_message'=>$request->fixing_message, 'fixing_message_for_id'=>$request->fixing_message_for_id]);
+        $idimages = $user->idImage()->get()->last();
         if($request->status == '2') {
             $invitee = Invite::whereEmail($user->email)->first();
             if($invitee) {
@@ -158,7 +159,7 @@ class DashboardController extends Controller
         } else {
             $message = '<p class="alert alert-warning text-center">User has to try again.</p>';
         }
-        $mailer->sendVerificationNotificationToUser($user, $request->status);
+        $mailer->sendVerificationNotificationToUser($user, $request->status, $idimages);
         return redirect()->back()->withMessage($message);
     }
 

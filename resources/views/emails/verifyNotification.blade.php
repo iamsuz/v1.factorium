@@ -566,7 +566,16 @@
 @if($status == 1) 
 We have received your verification request and will process it shortly.
 @elseif($status == -1)
-Unfortunately we were unable to verify the images you have submitted, please try again.
+Unfortunately we were unable to verify the images you have submitted, please try again.<br><br>
+@if($idimages->fixing_message) 
+Please fix personal image.<br>
+Note - {{$idimages->fixing_message}}
+@endif
+<br><br>
+@if($idimages->fixing_message_for_id)
+Please fix personal ID image <br>
+Note - {{$idimages->fixing_message_for_id}}
+@endif
 @else
 We have successfully verified your images.
 <br> <br>You may now start investing in projects.

@@ -18,10 +18,10 @@
 			@if($user->idImage)
 			<div class="row">
 				<div class="col-md-6">
-					<img src="{{asset($user->idImage->path)}}" alt="photo" class="thumbnail">
+					<img src="{{asset($user->idImage->get()->last()->path)}}" alt="photo" class="thumbnail">
 				</div>
 				<div class="col-md-6">
-					<img src="{{asset($user->idImage->path_for_id)}}" alt="photo" class="thumbnail">
+					<img src="{{asset($user->idImage->get()->last()->path_for_id)}}" alt="photo" class="thumbnail">
 				</div>
 			</div>
 			<br>
@@ -40,6 +40,15 @@
 			<div class="row">
 				<div class="col-md-12">
 					{!! Form::open(array('route'=>['dashboard.users.verify', $user], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+					<div class="row">
+						<div class="col-md-6">
+							<textarea class="form-control" name="fixing_message" placeholder="Write comment which user needs to fix"></textarea>
+						</div>
+						<div class="col-md-6">
+							<textarea class="form-control" name="fixing_message_for_id" placeholder="Write comment which user needs to fix"></textarea>
+						</div>
+					</div>
+					<br>
 					<div class="row text-center">
 						<div class="col-md-12">
 							<div class="btn-group" data-toggle="buttons">
