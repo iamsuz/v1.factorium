@@ -25,7 +25,6 @@ class ProjectRequest extends Request
     {
         return [
             'title'=>'required|min:3|max:50',
-            'description'=>'required',
             'line_1'=>'required',
             'line_2'=>'',
             'city'=>'required|regex:/^[(a-zA-Z\s)]+$/u',
