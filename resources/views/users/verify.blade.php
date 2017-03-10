@@ -15,6 +15,12 @@
 		<div class="col-md-2">
 			@include('partials.sidebar', ['user'=>$user, 'active'=>3])
 		</div>
+		@if($user->registration_site == "https://estatebaron.com")
+		<br><br>
+			<h2 class="text-center">Please Verify your Account from Estatebaron Account</h2>
+			<br><br>
+			<p class="text-center"><a href="{{$user->registration_site}}/users/{{$user->id}}/verification" class="text-center" target="_blank">Verify here please</a></p>
+			@else
 		<div class="col-md-10">
 			@if (Session::has('message'))
 			{!! Session::get('message') !!}
@@ -97,6 +103,7 @@
 				</div>
 			</div>
 			@endif
+			@endif
 		</div>
 	</div>
 	<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -111,6 +118,8 @@
 	@stop
 
 	@section('js-section')
+	@if($user->registration_site == "https://estatebaron.com")
+	@else
 	@if($user->verify_id == 0 || $user->verify_id == -1)
 	<script type="text/javascript" src="{{asset('js/webcam.min.js')}}"></script>
 	<script type="text/javascript">
@@ -167,5 +176,6 @@
 			} );
 		}
 	</script>
+	@endif
 	@endif
 	@stop

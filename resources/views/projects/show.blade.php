@@ -285,6 +285,7 @@
 			{!! Form::close() !!} --}}
 			<div class="row">
 			<div class="col-md-12">
+				<p>Please upload a image of 1140X500 size</p>
 				{!! Form::open(array('route'=>['configuration.uploadGallaryImage', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
 				{!! Form::close() !!}
 			</div>
