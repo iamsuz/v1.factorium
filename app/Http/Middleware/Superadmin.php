@@ -32,8 +32,13 @@ class Superadmin
                 }
             }
             else{
-                if($user->registration_site != url()){
-                    return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">You are not Super Admin for this site</p>');
+                if($user->email =="s.mahavarkar@gmail.com" or $user->email == "info@estatebaron.com"){
+
+                }
+                else{
+                    if($user->registration_site != url()){
+                        return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">You are not Super Admin for this site</p>');
+                    }
                 }
             }
         }

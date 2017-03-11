@@ -41,7 +41,6 @@ class Authenticate
                 return redirect()->guest('users/login')->withMessage('<p class="alert alert-warning text-center ">please login</p>');
             }
         }
-
         return $next($request);
     }
 }
