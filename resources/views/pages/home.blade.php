@@ -287,6 +287,11 @@
         <input class="hide" type="file" name="homepg_back_img" id="homepg_back_img">
         <input type="hidden" name="homepg_back_img_name" id="homepg_back_img_name">
       </div>
+    </div><br>
+    <div class="row text-center col-md-6">
+      <div class="col-md-1 update-overlay-opacity" action="decrease" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 100% 0% 0% 100%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>-</b></span></div>
+      <div class="col-md-3" style="background-color: rgba(255, 255, 255, 0.7); border:1px solid #000;"><span style="color: #000;"><small><small>Overlay Opacity</small></small></span></div>
+      <div class="col-md-1 update-overlay-opacity" action="increase" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 0% 100% 100% 0%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>+</b></span></div>
     </div>
     @endif
     @endif
@@ -753,7 +758,7 @@
 @else
 @if($superadmin_access == 1)
 <form action="{{route('configuration.storeShowFundingOptionsFlag')}}" method="POST">
-  {{csrf_field()}}
+  {{csrf_field()}}x
   <div class="text-center"><label><input type="checkbox" name="show_funding_options" data-toggle="toggle" @if($siteConfiguration->show_funding_options != '') checked @endif>Show Funding Options</label></div>
   <div class="text-center"><button type="Submit" class="btn btn-sm btn-primary">Save</button></div>
 </form>
@@ -1466,9 +1471,15 @@
       @if($color->nav_footer_color)
       var hexColor = '{{trim($color->nav_footer_color)}}';
       var rgb = hex2rgb(hexColor);
-      var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', 0.6)';
+      var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', {{$siteConfiguration->overlay_opacity}})';
+      $('.main-fold-overlay-color').css('background', rgbaColor);
+      @else
+      var rgbaColor = 'rgba(45, 45, 75, {{$siteConfiguration->overlay_opacity}})';
       $('.main-fold-overlay-color').css('background', rgbaColor);
       @endif
+      @else
+      var rgbaColor = 'rgba(45, 45, 75, {{$siteConfiguration->overlay_opacity}})';
+      $('.main-fold-overlay-color').css('background', rgbaColor);
       @endif
       //Functionality to Edit Text 1 of Home Page. 
       //This can be actioned by only superadmin 
@@ -1490,7 +1501,9 @@
       //Edit Funding Section Contents
       editFundingSectionContent();
       //Edit Project Thumb Image
-      editProjectThumbImage()
+      editProjectThumbImage();
+      //Update Home Page Overlay Opacity
+      updateOverlayOpacity();
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -2034,6 +2047,39 @@
       var g = (hex & 0x00ff00) >> 8;
       var b = hex & 0x0000ff;
       return [r, g, b];
+    }
+
+    function updateOverlayOpacity(){
+      $('.update-overlay-opacity').click(function(e){
+        var action = $(this).attr('action');
+        $.ajax({
+          url: '/configuration/home/updateOverlayOpacity',
+          type: 'POST',
+          dataType: 'JSON',
+          data: {action},
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+        }).done(function(data){
+          if(data.status){
+            console.log(data.opacity);
+            @if($color)
+            @if($color->nav_footer_color)
+            var hexColor = '{{trim($color->nav_footer_color)}}';
+            var rgb = hex2rgb(hexColor);
+            var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+data.opacity+')';
+            $('.main-fold-overlay-color').css('background', rgbaColor);
+            @else
+            var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
+            $('.main-fold-overlay-color').css('background', rgbaColor);
+            @endif
+            @else
+            var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
+            $('.main-fold-overlay-color').css('background', rgbaColor);
+            @endif
+          }
+        });        
+      });
     }
 
   </script>

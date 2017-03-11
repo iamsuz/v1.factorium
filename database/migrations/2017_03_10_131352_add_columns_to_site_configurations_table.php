@@ -115,6 +115,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'client_name')) {
                 $table->string('client_name')->default('Moresh Kokane');
             }
+            if (!Schema::hasColumn('site_configurations', 'overlay_opacity')) {
+                $table->decimal('overlay_opacity', 1, 1)->default(0.7);
+            }
         });
     }
 
@@ -227,6 +230,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'client_name')) {
                 $table->dropColumn('client_name');
+            }
+            if (Schema::hasColumn('site_configurations', 'overlay_opacity')) {
+                $table->dropColumn('overlay_opacity');
             }
         });
     }

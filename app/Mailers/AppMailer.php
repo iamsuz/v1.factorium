@@ -272,7 +272,7 @@ class AppMailer
         $this->to = $investment->user->email;
         $this->bcc = $recipients;
         $this->view = 'emails.investmentReminder';
-        $this->subject = 'investment Reminder for '.$investment->project->title;
+        $this->subject = 'Investment Reminder for '.$investment->project->title;
         $this->data = compact('investment');
         
         $this->deliverWithBcc();   
