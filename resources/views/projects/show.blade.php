@@ -83,7 +83,7 @@
 	@endif
 	<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
 	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
-		<div class="color-overlay">
+		<div class="color-overlay main-fold-overlay-color">
 			<div class="container">
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
 					<div class="col-md-4 col-sm-6">
@@ -119,7 +119,7 @@
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
-									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Return</h6>
+									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Expected Return</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3">
 									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
@@ -166,6 +166,11 @@
 				<input class="hide" type="file" name="projectpg_back_img" id="projectpg_back_img">
 				<input type="hidden" name="projectpg_back_img_name" id="projectpg_back_img_name">
 			</div>
+			<div class="row text-center col-md-6">
+                <div class="col-md-1 update-overlay-opacity" action="decrease" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 100% 0% 0% 100%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>-</b></span></div>
+               	<div class="col-md-3" style="background-color: rgba(255, 255, 255, 0.7); border:1px solid #000;"><span style="color: #000;"><small><small>Overlay Opacity</small></small></span></div>
+                <div class="col-md-1 update-overlay-opacity" action="increase" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 0% 100% 100% 0%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>+</b></span></div>
+            </div>
 			@endif
 			@endif
 		</div>
@@ -1523,6 +1528,22 @@
 		},5000); 
 		@endif
 
+		//Overlay Opacity
+		@if($color)
+    	@if($color->nav_footer_color)
+    	var hexColor = '{{trim($color->nav_footer_color)}}';
+    	var rgb = hex2rgb(hexColor);
+    	var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', {{$project->projectconfiguration->overlay_opacity}})';
+    	$('.main-fold-overlay-color').css('background', rgbaColor);
+    	@else
+    	var rgbaColor = 'rgba(45, 45, 75, {{$project->projectconfiguration->overlay_opacity}})';
+    	$('.main-fold-overlay-color').css('background', rgbaColor);
+    	@endif
+    	@else
+    	var rgbaColor = 'rgba(45, 45, 75, {{$project->projectconfiguration->overlay_opacity}})';
+    	$('.main-fold-overlay-color').css('background', rgbaColor);
+    	@endif
+
 		//Edit Project Page Details by Admin
 		editProjectPageDetailsByAdmin();
 		//Edit Project Page Background Image
@@ -1535,6 +1556,8 @@
 		editProjectPageSubHeadings();
 		//upload sub section Images
 		uploadSubSectionImages();
+		//update main fold overlay opacity
+		updateOverlayOpacity();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -1930,6 +1953,48 @@
 			}
 		});
 	}
+
+	function updateOverlayOpacity(){
+      	$('.update-overlay-opacity').click(function(e){
+	        var action = $(this).attr('action');
+	        var projectId = '{{$project->id}}';
+	        $.ajax({
+	          	url: '/configuration/project/updateProjectPgOverlayOpacity',
+	          	type: 'POST',
+	          	dataType: 'JSON',
+	          	data: {action, projectId},
+	          	headers: {
+	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	          	},
+	        }).done(function(data){
+	          	if(data.status){
+	            	console.log(data.opacity);
+	            	@if($color)
+	            	@if($color->nav_footer_color)
+	            	var hexColor = '{{trim($color->nav_footer_color)}}';
+	            	var rgb = hex2rgb(hexColor);
+	            	var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+data.opacity+')';
+	            	$('.main-fold-overlay-color').css('background', rgbaColor);
+	            	@else
+	            	var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
+	            	$('.main-fold-overlay-color').css('background', rgbaColor);
+	            	@endif
+	            	@else
+	            	var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
+	            	$('.main-fold-overlay-color').css('background', rgbaColor);
+	            	@endif
+	          	}
+	        });        
+      	});
+    }
+
+    function hex2rgb(hexStr){
+      	var hex = parseInt(hexStr, 16);
+      	var r = (hex & 0xff0000) >> 16;
+      	var g = (hex & 0x00ff00) >> 8;
+      	var b = hex & 0x0000ff;
+      	return [r, g, b];
+    }
 
 </script>
 @stop
