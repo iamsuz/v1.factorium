@@ -228,7 +228,7 @@ a:hover {
 
 #project-title-section .color-overlay {
 	min-height: 30em;
-	background: rgba(0, 0, 0, 0.6) none repeat scroll 0 0 !important;
+	/*background: rgba(0, 0, 0, 0.6) none repeat scroll 0 0 !important;*/
 }
 
 @keyframes arrow

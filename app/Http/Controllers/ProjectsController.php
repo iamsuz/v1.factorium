@@ -28,6 +28,7 @@ use Carbon\Carbon;
 use App\ProjectSpvDetail;
 use App\Media;
 use Validator;
+use App\ProjectConfiguration;
 
 class ProjectsController extends Controller
 {
@@ -246,6 +247,14 @@ class ProjectsController extends Controller
             } else {
                 return redirect()->route('users.show', Auth::user())->withMessage('<p class="alert alert-warning text-center">This is an Invite Only Project, You do not have access to this project.<br>Please click <a href="/#projects">here</a> to see other projects.</p>');
             }
+        }
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', $project->id)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = $project->id;
+            $projectConfiguration->save();
         }
         return view('projects.show', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
     }

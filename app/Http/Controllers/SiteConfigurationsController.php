@@ -1704,4 +1704,31 @@ class SiteConfigurationsController extends Controller
             return $resultArray = array('status' => 1, 'opacity' => $siteconfiguration->overlay_opacity);
         }
     }
+
+    public function updateProjectPgOverlayOpacity(Request $request)
+    {
+        $action = $request->action;
+        if($action != ''){
+            $projectId =$request->projectId;
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+            if(!$projectConfiguration)
+            {
+                $projectConfiguration = new ProjectConfiguration;
+                $projectConfiguration->project_id = (int)$projectId;
+                $projectConfiguration->save();
+                $projectConfiguration = ProjectConfiguration::all();
+                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+            }
+            $overlayOpacity = $projectConfiguration->overlay_opacity;
+            if($action == 'increase' && $overlayOpacity<1.0){
+                $overlayOpacity += 0.1;
+            }
+            if($action == 'decrease' && $overlayOpacity>0.0){
+                $overlayOpacity -= 0.1;
+            }
+            $projectConfiguration->update(['overlay_opacity'=>$overlayOpacity]);
+            return $resultArray = array('status' => 1, 'opacity' => $projectConfiguration->overlay_opacity);
+        }
+    }
 }

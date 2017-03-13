@@ -1339,7 +1339,9 @@
           $('.big-logo').removeClass('hide');
           $('.small-logo').addClass('hide');
           @if($color)
-          $('#header').attr('style','background-color: transparent');
+          if ($(window).width() > 990){
+            $('#header').attr('style','background-color: transparent');
+          }
           @endif
           // $('#nav_home').addClass('hide');
           // $('#header').addClass('hide');
