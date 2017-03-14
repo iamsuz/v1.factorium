@@ -35,99 +35,122 @@ Configuration | Dashboard | @parent
 								@if (Session::has('message'))
 								@if(Session::get('action') == 'site-favicon')
 								<div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-								<h5>{!! Session::get('message') !!}</h5>
-								</div>
-								@endif
-								@endif
-								<div class="caption">
-									<h3><b>Favicon</b></h3>
-									<p><small>This Icon will appear on the title bar of the website page.</small></p>
-									<hr>
-									<p>
-									<label class="input-group-btn">
-										<span class="btn btn-primary btn-sm change-favicon-btn" style="cursor: pointer;">
-											<strong>Change Favicon</strong>
-										</span>
-									</label>
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="thumbnail text-center">
-								@if (Session::has('message'))
-								@if(Session::get('action') == 'site-title')
-								<div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-								<h5>{!! Session::get('message') !!}</h5>
-								</div>
-								@endif
-								@endif
-								<div class="caption">
-									<h3><b>Website Title</b></h3>
-									<p><small>This text will appear on the title bar of the website page.</small></p>
-									<hr>
-									<p>
-									<label class="input-group-btn">
-										<span class="btn btn-primary btn-sm change-title-btn" style="cursor: pointer;">
-											<strong>Change Title</strong>
-										</span>
-									</label>
-									</p>
-								</div>
-							</div>
-						</div>
-                        <div class="col-md-4">
-                            <div class="thumbnail text-center">
-                                @if (Session::has('message'))
-                                @if(Session::get('action') == 'website-name')
-                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-                                <h5>{!! Session::get('message') !!}</h5>
+                                    <h5>{!! Session::get('message') !!}</h5>
                                 </div>
                                 @endif
                                 @endif
                                 <div class="caption">
-                                    <h3><b>Website Name</b></h3>
-                                    <p><small>This will be the reference name for the website.</small></p>
-                                    <hr>
-                                    <p>
-                                    <label class="input-group-btn">
-                                        <span class="btn btn-primary btn-sm change-site-name-btn" style="cursor: pointer;">
-                                            <strong>Change Website Name</strong>
-                                        </span>
-                                    </label>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="thumbnail text-center">
-                                @if (Session::has('message'))
-                                @if(Session::get('action') == 'client-name')
-                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                   <h3><b>Favicon</b></h3>
+                                   <p><small>This Icon will appear on the title bar of the website page.</small></p>
+                                   <hr>
+                                   <p>
+                                       <label class="input-group-btn">
+                                          <span class="btn btn-primary btn-sm change-favicon-btn" style="cursor: pointer;">
+                                             <strong>Change Favicon</strong>
+                                         </span>
+                                     </label>
+                                 </p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="col-md-4">
+                         <div class="thumbnail text-center">
+                            @if (Session::has('message'))
+                            @if(Session::get('action') == 'site-title')
+                            <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
                                 <h5>{!! Session::get('message') !!}</h5>
-                                </div>
-                                @endif
-                                @endif
-                                <div class="caption">
-                                    <h3><b>Client Name</b></h3>
-                                    <p><small>This will be the client name who owns the website.</small></p>
-                                    <hr>
-                                    <p>
-                                    <label class="input-group-btn">
-                                        <span class="btn btn-primary btn-sm change-client-name-btn" style="cursor: pointer;">
-                                            <strong>Change Client Name</strong>
-                                        </span>
-                                    </label>
-                                    </p>
-                                </div>
                             </div>
+                            @endif
+                            @endif
+                            <div class="caption">
+                               <h3><b>Website Title</b></h3>
+                               <p><small>This text will appear on the title bar of the website page.</small></p>
+                               <hr>
+                               <p>
+                                   <label class="input-group-btn">
+                                      <span class="btn btn-primary btn-sm change-title-btn" style="cursor: pointer;">
+                                         <strong>Change Title</strong>
+                                     </span>
+                                 </label>
+                             </p>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="col-md-4">
+                    <div class="thumbnail text-center">
+                        @if (Session::has('message'))
+                        @if(Session::get('action') == 'website-name')
+                        <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                            <h5>{!! Session::get('message') !!}</h5>
                         </div>
-					</div>
-				</div>
-			</div>
+                        @endif
+                        @endif
+                        <div class="caption">
+                            <h3><b>Website Name</b></h3>
+                            <p><small>This will be the reference name for the website.</small></p>
+                            <hr>
+                            <p>
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary btn-sm change-site-name-btn" style="cursor: pointer;">
+                                        <strong>Change Website Name</strong>
+                                    </span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="thumbnail text-center">
+                        @if (Session::has('message'))
+                        @if(Session::get('action') == 'client-name')
+                        <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                            <h5>{!! Session::get('message') !!}</h5>
+                        </div>
+                        @endif
+                        @endif
+                        <div class="caption">
+                            <h3><b>Client Name</b></h3>
+                            <p><small>This will be the client name who owns the website.</small></p>
+                            <hr>
+                            <p>
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary btn-sm change-client-name-btn" style="cursor: pointer;">
+                                        <strong>Change Client Name</strong>
+                                    </span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="thumbnail text-center">
+                        @if (Session::has('message'))
+                        @if(Session::get('action') == 'mailer_email')
+                        <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                            <h5>{!! Session::get('message') !!}</h5>
+                        </div>
+                        @endif
+                        @endif
+                        <div class="caption">
+                            <h3><b>Mailer Email</b></h3>
+                            <p><small>This will be the email address from which all emails will be sent.</small></p>
+                            <hr>
+                            <p>
+                                <label class="input-group-btn">
+                                <span class="btn btn-primary btn-sm change-mailer-email-btn" style="cursor: pointer;">
+                                        <strong>Change Email address</strong>
+                                    </span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		</div>
-	</div>
+</div>
+</div>
 </div>
 
 <div class="row">
@@ -145,136 +168,163 @@ Configuration | Dashboard | @parent
                         <div class="row text-center" id="modal_body_container">
                         	<div class="col-md-10 col-md-offset-1">
                         		{!! Form::open(array('route'=>['configuration.updateFavicon'], 'files' => true, 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-	                        		<h5><i><small>Select image in below form and save to display new favicon for the website. Valid extension: png</small></i></h5>
-	                        		<br>
-	                        		<div class="row favicon-error" style="text-align: -webkit-center;"></div>
-	                        		<div class="input-group">
-										<label class="input-group-btn">
-											<span class="btn btn-primary" style="padding: 10px 12px;">
-												Browse&hellip; <input type="file" name="favicon_image_url" id="favicon_image_url" class="form-control" style="display: none;">
-											</span>
-										</label>
-										<input type="text" class="form-control" id="favicon_image_name" name="favicon_image_name" readonly>
-									</div>
-	                        		<br>
-	                        		{!! Form::button('Upload Image', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_favicon_btn')) !!}
-                        		{!! Form::close() !!}
-                        	</div>
+                             <h5><i><small>Select image in below form and save to display new favicon for the website. Valid extension: png</small></i></h5>
+                             <br>
+                             <div class="row favicon-error" style="text-align: -webkit-center;"></div>
+                             <div class="input-group">
+                              <label class="input-group-btn">
+                                 <span class="btn btn-primary" style="padding: 10px 12px;">
+                                    Browse&hellip; <input type="file" name="favicon_image_url" id="favicon_image_url" class="form-control" style="display: none;">
+                                </span>
+                            </label>
+                            <input type="text" class="form-control" id="favicon_image_name" name="favicon_image_name" readonly>
                         </div>
+                        <br>
+                        {!! Form::button('Upload Image', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_favicon_btn')) !!}
+                        {!! Form::close() !!}
                     </div>
-                </div>      
+                </div>
             </div>
-        </div>
-        <!-- Modal for Site Title edit-->
-        <div class="modal fade" id="title_text_edit_modal" role="dialog">
-            <div class="modal-dialog" style="margin-top: 10%;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Update Title</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row text-center" id="modal_body_container">
-                        	<div class="col-md-10 col-md-offset-1">
-                        		{!! Form::open(array('route'=>['configuration.updateSiteTitle'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-	                        		<h5><i><small>Enter the text in below text field and save to display new title for the website.</small></i></h5>
-	                        		<br>
-	                        		<div class="row title-text-error" style="text-align: -webkit-center;"></div>
-	                        		{!! Form::text('title_text_imput', null, array('placeholder'=>'Enter website title', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'title_text_imput')) !!}
-									{!! $errors->first('title_text_imput', '<small class="text-danger">:message</small>') !!}
-	                        		<br>
-	                        		{!! Form::submit('Save Title', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
-                        		{!! Form::close() !!}
-                        	</div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-        </div>
-        <!-- Favicon Crop modal -->
-        <div class="modal fade" id="image_crop_modal" role="dialog" style="overflow: scroll;">
-            <div class="modal-dialog" style="min-width: 800px;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Crop Image</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
-                        <!-- Hidden Fields to refer for JCrop -->
-                        <input type="hidden" name="image_crop" id="image_crop" value="" action="">
-                        <input type="hidden" name="image_action" id="image_action" value="">
-                        <input type="hidden" name="x_coord" id="x_coord" value="">
-                        <input type="hidden" name="y_coord" id="y_coord" value="">
-                        <input type="hidden" name="w_target" id="w_target" value="">
-                        <input type="hidden" name="h_target" id="h_target" value="">
-                        <input type="hidden" name="orig_width" id="orig_width" value="">
-                        <input type="hidden" name="orig_height" id="orig_height" value="">
-                    </div>
-                </div>      
-            </div>
-        </div>
-        <!-- Modal for Site Name edit-->
-        <div class="modal fade" id="site_name_edit_modal" role="dialog">
-            <div class="modal-dialog" style="margin-top: 10%;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Update Website Name</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row text-center" id="modal_body_container">
-                            <div class="col-md-10 col-md-offset-1">
-                                {!! Form::open(array('route'=>['configuration.updateWebsiteName'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-                                    <h5><i><small>Enter the text in below text field and save to display new name for the website.</small></i></h5>
-                                    <br>
-                                    <div class="row site-name-error" style="text-align: -webkit-center;"></div>
-                                    {!! Form::text('site_name_input', null, array('placeholder'=>'Enter website name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'site_name_input')) !!}
-                                    {!! $errors->first('site_name_input', '<small class="text-danger">:message</small>') !!}
-                                    <br>
-                                    {!! Form::submit('Save Website Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_website_name_btn')) !!}
-                                {!! Form::close() !!}
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-        </div>
-        <!-- Modal for Client Name edit-->
-        <div class="modal fade" id="client_name_edit_modal" role="dialog">
-            <div class="modal-dialog" style="margin-top: 10%;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Update Client Name</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row text-center" id="modal_body_container">
-                            <div class="col-md-10 col-md-offset-1">
-                                {!! Form::open(array('route'=>['configuration.updateClientName'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-                                    <h5><i><small>Enter the text in below text field and save to display new client name for the website.</small></i></h5>
-                                    <br>
-                                    <div class="row client-name-error" style="text-align: -webkit-center;"></div>
-                                    {!! Form::text('client_name_input', null, array('placeholder'=>'Enter client name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'client_name_input')) !!}
-                                    {!! $errors->first('client_name_input', '<small class="text-danger">:message</small>') !!}
-                                    <br>
-                                    {!! Form::submit('Save Client Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_client_name_btn')) !!}
-                                {!! Form::close() !!}
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-        </div>
+        </div>      
     </div>
+</div>
+<!-- Modal for Site Title edit-->
+<div class="modal fade" id="title_text_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Title</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                   <div class="col-md-10 col-md-offset-1">
+                      {!! Form::open(array('route'=>['configuration.updateSiteTitle'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                      <h5><i><small>Enter the text in below text field and save to display new title for the website.</small></i></h5>
+                      <br>
+                      <div class="row title-text-error" style="text-align: -webkit-center;"></div>
+                      {!! Form::text('title_text_imput', null, array('placeholder'=>'Enter website title', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'title_text_imput')) !!}
+                      {!! $errors->first('title_text_imput', '<small class="text-danger">:message</small>') !!}
+                      <br>
+                      {!! Form::submit('Save Title', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
+                      {!! Form::close() !!}
+                  </div>
+              </div>
+          </div>
+      </div>      
+  </div>
+</div>
+<!-- Mailer Modal -->
+<div class="modal fade" id="mailer_email_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Title</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updatemaileremail'], 'method'=>'PATCH', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the email in below text field and save to display new email for the website.</small></i></h5>
+                        <br>
+                        <div class="row title-text-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::text('mailer_email', null, array('placeholder'=>'Enter Mailer email info@estatebaron.com', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'mailer_email', 'value'=>'{{$siteConfiguration->mailer_email}}')) !!}
+                        {!! $errors->first('mailer_email', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::submit('Change Email', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+<!-- Favicon Crop modal -->
+<div class="modal fade" id="image_crop_modal" role="dialog" style="overflow: scroll;">
+    <div class="modal-dialog" style="min-width: 800px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Crop Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
+                <!-- Hidden Fields to refer for JCrop -->
+                <input type="hidden" name="image_crop" id="image_crop" value="" action="">
+                <input type="hidden" name="image_action" id="image_action" value="">
+                <input type="hidden" name="x_coord" id="x_coord" value="">
+                <input type="hidden" name="y_coord" id="y_coord" value="">
+                <input type="hidden" name="w_target" id="w_target" value="">
+                <input type="hidden" name="h_target" id="h_target" value="">
+                <input type="hidden" name="orig_width" id="orig_width" value="">
+                <input type="hidden" name="orig_height" id="orig_height" value="">
+            </div>
+        </div>      
+    </div>
+</div>
+<!-- Modal for Site Name edit-->
+<div class="modal fade" id="site_name_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Website Name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateWebsiteName'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to display new name for the website.</small></i></h5>
+                        <br>
+                        <div class="row site-name-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::text('site_name_input', null, array('placeholder'=>'Enter website name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'site_name_input')) !!}
+                        {!! $errors->first('site_name_input', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::submit('Save Website Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_website_name_btn')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+<!-- Modal for Client Name edit-->
+<div class="modal fade" id="client_name_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Client Name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateClientName'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to display new client name for the website.</small></i></h5>
+                        <br>
+                        <div class="row client-name-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::text('client_name_input', null, array('placeholder'=>'Enter client name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'client_name_input')) !!}
+                        {!! $errors->first('client_name_input', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::submit('Save Client Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_client_name_btn')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+</div>
 </div>
 @stop
 
@@ -289,7 +339,7 @@ Configuration | Dashboard | @parent
                 'backdrop': false,
             });
             $('#title_text_imput').select();
-		});
+        });
 
 		$('#submit_title_text_btn').click(function(e){
 			if($('#title_text_imput').val() == ''){
@@ -312,65 +362,79 @@ Configuration | Dashboard | @parent
                 $('.site-name-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Website name field is empty</h6></div>')
             }
         });
+        $('.change-mailer-email-btn').click(function(){
+            $('#mailer_email_edit_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#site_name_input').select();
+        });
 
-		$('.change-favicon-btn').click(function(){
-			$('#favicon_edit_modal').modal({
-				'show':true,
-				'backdrop':false,
-			});
-		});
+        $('#submit_website_name_btn').click(function(e){
+            if($('#site_name_input').val() == ''){
+                e.preventDefault();
+                $('.site-name-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Website name field is empty</h6></div>')
+            }
+        });
 
-		$('#modal_close_btn').click(function(){
-			$('#favicon_image_url').val('');
-			$('#favicon_image_name').val('');
-		});
+        $('.change-favicon-btn').click(function(){
+         $('#favicon_edit_modal').modal({
+            'show':true,
+            'backdrop':false,
+        });
+     });
 
-		$('#favicon_image_url').change(function(){
-			$('.favicon-error').html('');
-			var file = $('#favicon_image_url')[0].files[0];
-			if (file){
-				fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
-				if(fileExtension == 'png'){
-					$('#favicon_image_name').val(file.name);
-				}
-				else{
-					$('#favicon_image_url').val('');
-					$('#favicon_image_name').val('');
-					$('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png</h6></div>');
-				}
-			}
-		});
+        $('#modal_close_btn').click(function(){
+         $('#favicon_image_url').val('');
+         $('#favicon_image_name').val('');
+     });
 
-		$('#submit_favicon_btn').click(function(e){
-			if($('#favicon_image_url').val() == ''){
-				$('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>No Image selected</h6></div>');
-			}
-			else{
-				var formData = new FormData();
-                formData.append('favicon_image_url', $('#favicon_image_url')[0].files[0]);
-                $('.loader-overlay').show();
-                $.ajax({
-                    url: '/configuration/updateFavicon',
-                    type: 'POST',
-                    dataType: 'JSON',
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    contentType: false,
-                    processData: false
-                }).done(function(data){
-                	if(data.status == 1){
-                            console.log(data);
-                            var imgPath = data.fileName;
-                            var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_favicon_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+        $('#favicon_image_url').change(function(){
+         $('.favicon-error').html('');
+         var file = $('#favicon_image_url')[0].files[0];
+         if (file){
+            fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
+            if(fileExtension == 'png'){
+               $('#favicon_image_name').val(file.name);
+           }
+           else{
+               $('#favicon_image_url').val('');
+               $('#favicon_image_name').val('');
+               $('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png</h6></div>');
+           }
+       }
+   });
 
-                            $('#image_cropbox_container').html(str1);
-                            $('#favicon_edit_modal').modal('hide');
-                            $('#image_crop_modal').modal({
-                                'show': true,
-                                'backdrop': false,
-                            });
+        $('#submit_favicon_btn').click(function(e){
+         if($('#favicon_image_url').val() == ''){
+            $('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>No Image selected</h6></div>');
+        }
+        else{
+            var formData = new FormData();
+            formData.append('favicon_image_url', $('#favicon_image_url')[0].files[0]);
+            $('.loader-overlay').show();
+            $.ajax({
+                url: '/configuration/updateFavicon',
+                type: 'POST',
+                dataType: 'JSON',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                processData: false
+            }).done(function(data){
+               if(data.status == 1){
+                console.log(data);
+                var imgPath = data.fileName;
+                var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_favicon_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+                $('#image_cropbox_container').html(str1);
+                $('#favicon_edit_modal').modal('hide');
+                $('#image_crop_modal').modal({
+                    'show': true,
+                    'backdrop': false,
+                });
 
                             $('#image_crop').val(imgPath); //set hidden image value
                             $('#image_crop').attr('action', 'favicon image');
@@ -398,18 +462,18 @@ Configuration | Dashboard | @parent
                           $('.loader-overlay').hide();
                           $('#favicon_image_url, #favicon_image_name').val('');
                           $('.favicon-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
-                        }
-                });
-			}
-			performCropOnImage();
-        });
+                      }
+                  });
+        }
+        performCropOnImage();
+    });
         // Additional functionality functions
         editClientName();
-	});
+    });
 
-	function updateCoords(coords, w, h, origWidth, origHeight){
-	    var target_width= w;
-	    var target_height=h;
+function updateCoords(coords, w, h, origWidth, origHeight){
+   var target_width= w;
+   var target_height=h;
         //Set New Coordinates
         $('#x_coord').val(coords.x);
         $('#y_coord').val(coords.y);
@@ -483,12 +547,12 @@ Configuration | Dashboard | @parent
                     $('.loader-overlay').hide();
                     $('#image_crop_modal').modal('toggle');
                     if (imgAction == 'favicon image'){
-                      	$('#favicon_image_url, #favicon_image_name').val('');
-                  	}
-                  	alert(data.message);
-                }
-            
-        	});
+                     $('#favicon_image_url, #favicon_image_name').val('');
+                 }
+                 alert(data.message);
+             }
+
+         });
         });
     }
 

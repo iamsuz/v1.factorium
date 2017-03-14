@@ -5,6 +5,7 @@
  */
 
 Route::get('/', ['as'=>'home', 'uses'=>'PagesController@home']);
+Route::get('/tests', ['as'=>'home2', 'uses'=>'PagesController@something']);
 Route::get('/testemail', ['as'=>'home1', 'uses'=>'PagesController@test']);
 Route::get('/pages/team', ['as'=>'pages.team', 'uses'=>'PagesController@team']);
 Route::get('/pages/team/edit', ['as'=>'pages.team.edit', 'uses'=>'PagesController@editTeam']);
@@ -207,3 +208,4 @@ Route::patch('/dashboard/projects/{investment_id}/investments/moneyReceived', ['
 Route::get('/dashboard/projects/{investment_id}/investments/reminder', ['as'=>'dashboard.investment.reminder', 'uses'=>'DashboardController@investmentReminder']);
 Route::post('/configuration/home/updateOverlayOpacity', ['as'=>'configuration.home.updateOverlayOpacity', 'uses'=>'SiteConfigurationsController@updateOverlayOpacity']);
 Route::post('/configuration/project/updateProjectPgOverlayOpacity', ['as'=>'configuration.project.updateProjectPgOverlayOpacity', 'uses'=>'SiteConfigurationsController@updateProjectPgOverlayOpacity']);
+Route::patch('/configuration/updatemaileremail', ['as'=>'configuration.updatemaileremail', 'uses'=>'SiteConfigurationsController@uploadMailerEmail']);
