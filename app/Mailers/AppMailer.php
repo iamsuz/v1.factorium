@@ -280,6 +280,7 @@ class AppMailer
 
     public function deliver()
     {
+        $this->from = SiteConfiguration::getConfigurationAttr()->mailer_email;
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
@@ -287,6 +288,7 @@ class AppMailer
 
     public function deliverWithFile()
     {
+        $this->from = SiteConfiguration::getConfigurationAttr()->mailer_email;
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
         });
@@ -294,6 +296,7 @@ class AppMailer
 
     public function deliverWithBcc()
     {
+        $this->from = SiteConfiguration::getConfigurationAttr()->mailer_email;
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->bcc($this->bcc)->subject($this->subject);
         });
