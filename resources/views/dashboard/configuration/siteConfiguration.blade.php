@@ -231,7 +231,7 @@ Configuration | Dashboard | @parent
                         <h5><i><small>Enter the email in below text field and save to display new email for the website.</small></i></h5>
                         <br>
                         <div class="row title-text-error" style="text-align: -webkit-center;"></div>
-                        {!! Form::text('mailer_email', null, array('placeholder'=>'Enter Mailer email info@estatebaron.com', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'mailer_email', 'value'=>'{{$siteConfiguration->mailer_email}}')) !!}
+                        {!! Form::text('mailer_email', null, array('placeholder'=>'Enter Mailer email info@estatebaron.com', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'mailer_email', 'Value'=> $siteconfiguration->mailer_email)) !!}
                         {!! $errors->first('mailer_email', '<small class="text-danger">:message</small>') !!}
                         <br>
                         {!! Form::submit('Change Email', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
