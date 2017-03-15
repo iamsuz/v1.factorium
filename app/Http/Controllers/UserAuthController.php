@@ -79,6 +79,9 @@ class UserAuthController extends Controller
             if($request->next){
                 $this->redirectTo = "/".$request->next;
             }
+            else{
+                $this->redirectTo = "/#projects";    
+            }
             return redirect($this->redirectTo);
         }
         if (Auth::viaRemember()) {

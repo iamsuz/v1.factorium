@@ -143,7 +143,7 @@ Sign Up | @parent
 			var project = getParameterByName('project');
 			document.getElementById("redirection").href = '/users/login?next=projects/'+project;
 		} else {
-			document.getElementById("redirection").href = '/users/login?next=#projects';
+			document.getElementById("redirection").href = '/users/login?next={{app('request')->input('next')}}';
 		}
 		$(document).ready(function(){
 			$('#submitform').click(function(){
