@@ -9,7 +9,7 @@
 	</div>
 	<a href="{{route('users.show', [$user])}}" class="list-group-item @if($active == 1) active @endif">Profile </a>
 	<a href="{{route('home')}}#projects" class="list-group-item @if($active == 7) active @endif">All Projects</a>
-	<a href="{{route('users.invitation', [$user])}}" class="list-group-item @if($active == 6) active @endif">Invite friends </a>
+	{{--<a href="{{route('users.invitation', [$user])}}" class="list-group-item @if($active == 6) active @endif">Invite friends </a>--}}
 	@if($user->invite_only_projects->count())
 	<a href="{{route('projects.invite.only')}}" class="list-group-item @if($active == 8) active @endif">Invite for Projects </a>
 	@endif

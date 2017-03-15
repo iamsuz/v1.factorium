@@ -312,7 +312,7 @@
         {{csrf_field()}}
         @endif
         @endif
-        <div class="col-md-offset-1 col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.5s">
+        <div class="col-md-offset-1 col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.5s" style="margin-top: 50px;">
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
@@ -335,7 +335,7 @@
           </div>
           <p class="how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){{$siteConfiguration->how_it_works_desc1}}@endif</p>
         </div>
-        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.6s">
+        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.6s" style="margin-top: 50px;">
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
@@ -357,7 +357,7 @@
           <p class="how-it-works-desc2-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){{$siteConfiguration->how_it_works_desc2}}@endif
           </p>
         </div>
-        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.7s">
+        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.7s" style="margin-top: 50px;">
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
@@ -379,7 +379,7 @@
           <p class="how-it-works-desc3-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){{$siteConfiguration->how_it_works_desc3}}@endif
           </p>
         </div>
-        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s">
+        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s" style="margin-top: 50px;">
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
@@ -401,7 +401,7 @@
           <p class="how-it-works-desc4-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){{$siteConfiguration->how_it_works_desc4}}@endif
           </p>
         </div>
-        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s">
+        <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s" style="margin-top: 50px;">
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
@@ -706,7 +706,7 @@
               <input type="hidden" name="investment_page_image_name" id="investment_page_image_name">
               @endif
               @endif
-              <div class="col-md-12 col-sm-4 col-xs-4">
+              <div class="col-md-12">
                 <center>
                 @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
                 @if($InvestImg=$siteConfigMedia->where('type', 'investment_page_image')->first())
@@ -1715,33 +1715,44 @@
       $('.edit-homepg-btn-text1').click(function(e){
         var str1 = $('.homepg-btn1-section a').html();
         $('.homepg-btn1-section').html('<input type="text" class="form-control text-textfield" name="homepg_btn1_text" id="homepg_btn1_text" placeholder="Text to set for Button"><br><span style="float:left;">GoTo Link for he Button: </span><input type="text" class="form-control text-textfield" name="homepg_btn1_gotoid" id="homepg_btn1_gotoid" placeholder="Goto Id for Button" style="margin-bottom:10px; font-size:14px; width:65%; margin-left:auto" value="@if($siteConfiguration->homepg_btn1_gotoid != ''){!!$siteConfiguration->homepg_btn1_gotoid!!}@endif"><br><button type="button" class="btn btn-default btn1-text-update-btn"><small>Update<small></button>');
-        $('#homepg_btn1_text').val($.trim(str1));
+        var btnText = $('#homepg_btn1_text').val($.trim(str1));
+        $('#homepg_btn1_text').keypress(function(e){
+          if($(this).val().length > 20){
+            e.preventDefault();
+            alert('Button text limit is 20');
+          }
+        });
         $('#homepg_btn1_text').select();
         $('.btn1-text-update-btn').click(function(){
-          var text1 = $('#homepg_btn1_text').val();
-          var gotoid = $('#homepg_btn1_gotoid').val();
-          var newText = text1.replace(/[\s]+/g, "\s");
-          if((newText != '') && (newText != '\s') && (gotoid != '')){
-            $.ajax({
-              url: '/configuration/saveHomePageBtn1Text',
-              type: 'POST',
-              dataType: 'JSON',
-              data: {text1, gotoid},
-              headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              },
-            }).done(function(data){
-              if(data.status){
-                            // console.log(data);
-                            location.reload('/');
-                          }
-                          else{
-                            alert('Something went wrong');
-                          }
-                        });
+          if($('#homepg_btn1_text').val.length <= 20){
+            var text1 = $('#homepg_btn1_text').val();
+            var gotoid = $('#homepg_btn1_gotoid').val();
+            var newText = text1.replace(/[\s]+/g, "\s");
+            if((newText != '') && (newText != '\s') && (gotoid != '')){
+              $.ajax({
+                url: '/configuration/saveHomePageBtn1Text',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {text1, gotoid},
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+              }).done(function(data){
+                if(data.status){
+                              // console.log(data);
+                              location.reload('/');
+                            }
+                            else{
+                              alert('Something went wrong');
+                            }
+                          });
+            }
+            else{
+              alert('Please enter Detail.');
+            }
           }
           else{
-            alert('Please enter Detail.');
+            alert('Button text limit is 20');
           }
         });
       });
