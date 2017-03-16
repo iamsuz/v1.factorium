@@ -78,6 +78,11 @@
             <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
         </div>
     </div>
+    @if (Session::has('loginaction'))
+    <div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.3); display: none;">
+      <div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 10px 30px; color: #fff; top: 70%; left:30%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 1em; width: 40%"><span>Welcome {{Auth::user()->first_name}}</span></div>
+    </div>
+    @endif
     <!-- topbar nav content here -->
     @section('topbar-section')
     <nav class="navbar navbar-default navbar-fixed-top header" id="header" role="navigation" @if($color) style='background-color: #{{$color->nav_footer_color}}' @endif>
@@ -276,6 +281,17 @@
         $('a[data-disabled]').click(function (e) {
             e.preventDefault();
         });
+        //login flash
+        @if (Session::has('loginaction'))
+        $('#session_flash_message').show()
+        setInterval(function() {
+            $('#session_flash_message').fadeOut(500);
+        }, 3000);
+        @endif
+        //sidebar active tab color
+        $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('background-color', '#{{$color->heading_color}}');
+        $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('border-color', '#{{$color->heading_color}}');
+
         function toggleChevron(e) {
             $(e.target)
             .prev('.panel-heading')

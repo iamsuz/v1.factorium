@@ -438,8 +438,8 @@ class PagesController extends Controller
     public function changeColorFooter(Request $request)
     {
         $this->validate($request, array(
-            'first_color_code'=>'',
-            'second_color_code'=>''
+            'first_color_code'=>'required',
+            'second_color_code'=>'required'
             ));
         // dd($request);
         $user = Auth::user();

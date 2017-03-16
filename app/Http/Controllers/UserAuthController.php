@@ -82,6 +82,7 @@ class UserAuthController extends Controller
             else{
                 $this->redirectTo = "/#projects";    
             }
+            Session::flash('loginaction', 'success.');
             return redirect($this->redirectTo);
         }
         if (Auth::viaRemember()) {
