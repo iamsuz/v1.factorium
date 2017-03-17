@@ -88,7 +88,7 @@
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
 					<div class="col-md-4 col-sm-6">
 						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
-						<p class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</p>
+						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</span>
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
@@ -131,14 +131,14 @@
 							@endif
 						</div>
 						<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
-							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+							<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
 							</div>
 						</div>
-						<p class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
+						<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
 							@if($project->investment)
 							${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
 							@endif
-						</p>
+						</span>
 					</div>
 					<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
 						<br>
