@@ -307,7 +307,7 @@
   </div>
 </div>
 </section>
-<section id="how-it-works" class="chunk-box" style="padding: 4em 0;">
+<section id="how-it-works" class="chunk-box" style="padding: 2em 0;">
   <div class="container-fluid">
     <div class="row how-it-works-section">
       @if(Auth::guest())
