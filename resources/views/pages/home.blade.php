@@ -90,8 +90,8 @@
       </div>
     </div>
     @if (Session::has('loginaction'))
-    <div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.3); display: none;">
-      <div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 10px 30px; color: #fff; top: 70%; left:30%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 1em; width: 40%"><span>Welcome {{Auth::user()->first_name}}</span></div>
+    <div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;">
+      <div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div>
     </div>
     @endif
     <nav id="header" class="main-nav navbar navbar-fixed-top navbar-0" >
@@ -857,8 +857,8 @@
   @if(Auth::guest())
   @else
   @if($superadmin_access == 1)
-  <input id="footer_color" class="jscolor {onFineChange:'update(this)'}" value="@if($color) {{$color->nav_footer_color}} @endif">
-  <input id="second_color" class="jscolor {onFineChange:'update1(this)'}" value="@if($color) {{$color->heading_color}} @endif">
+  <input id="footer_color" class="jscolor {onFineChange:'update(this)'}" value="@if($color){{$color->nav_footer_color}}@endif">
+  <input id="second_color" class="jscolor {onFineChange:'update1(this)'}" value="@if($color){{$color->heading_color}}@endif">
   <button id="footer_color_btn">Apply Color</button>
     <!-- <div class="row" style="position: absolute; z-index: 10; margin: auto;">
       <br>
@@ -1381,7 +1381,7 @@
       $('#session_flash_message').show()
       setInterval(function() {
         $('#session_flash_message').fadeOut(500);
-      }, 3000);
+      }, 5000);
       @endif
 
       $('[data-toggle="tooltip"]').tooltip();
@@ -1772,18 +1772,18 @@
     function update(jscolor) {
       // 'jscolor' instance can be used as a string
       document.getElementById('footer').style.backgroundColor = '#' + jscolor;
-      $('#footer').attr('style', 'background-color:#'+jscolor);
-      $('#footer').attr('value', jscolor);
+      $('#footer, #footer_color').attr('style', 'background-color:#'+jscolor);
+      $('#footer, #footer_color').attr('value', jscolor);
     }
     function update1(jscolor) {
       // 'jscolor' instance can be used as a string
       document.getElementById('second_color_venture').style.backgroundColor = '#' + jscolor;
-      $('#second_color_venture').attr('style', 'background-color:#'+jscolor);
-      $('#second_color_venture').attr('value', jscolor);
+      $('#second_color_venture, #second_color').attr('style', 'background-color:#'+jscolor);
+      $('#second_color_venture, #second_color').attr('value', jscolor);
     }
     function changeColor(){
-      var first_color_code = $('#footer').attr('value');
-      var second_color_code = $('#second_color_venture').attr('value');
+      var first_color_code = $('#footer_color').attr('value');
+      var second_color_code = $('#second_color').attr('value');
       $.ajax({
         url: '/configuration/changecolor/footer/home',
         type: 'POST',
@@ -1794,6 +1794,7 @@
         },
       }).done(function(data){
         console.log(data);
+        alert(data.message);
       });
     }
 

@@ -437,11 +437,19 @@ class PagesController extends Controller
     }
     public function changeColorFooter(Request $request)
     {
-        $this->validate($request, array(
+        // $this->validate($request, array(
+        //     'first_color_code'=>'required',
+        //     'second_color_code'=>'required'
+        //     ));
+        // dd($request);
+        $validation_rules = array(
             'first_color_code'=>'required',
             'second_color_code'=>'required'
-            ));
-        // dd($request);
+            );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if($validator->fails()){
+            return $resultArray = array('status' => 0, 'message' => 'Both color fields must be specified.');
+        }
         $user = Auth::user();
         $color = Color::where('project_site',url())->first();
         if(!$color){
@@ -452,7 +460,8 @@ class PagesController extends Controller
         $color->nav_footer_color = $request->first_color_code;
         $color->heading_color = $request->second_color_code;
         $color->save();
-        return redirect()->back()->withMessage('Successfully Update color');
+        // return redirect()->back()->withMessage('Successfully Update color');
+        return $resultArray = array('status' => 1, 'message' => 'Successfully Updated color');
     }
 
     public function termsConditions()

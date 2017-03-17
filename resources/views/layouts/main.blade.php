@@ -79,8 +79,8 @@
         </div>
     </div>
     @if (Session::has('loginaction'))
-    <div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.3); display: none;">
-      <div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 10px 30px; color: #fff; top: 70%; left:30%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 1em; width: 40%"><span>Welcome {{Auth::user()->first_name}}</span></div>
+    <div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;">
+      <div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div>
     </div>
     @endif
     <!-- topbar nav content here -->
@@ -286,14 +286,9 @@
         $('#session_flash_message').show()
         setInterval(function() {
             $('#session_flash_message').fadeOut(500);
-        }, 3000);
+        }, 5000);
         @endif
-        //sidebar active tab color
-        @if($color->heading_color)
-        $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('background-color', '#{{$color->heading_color}}');
-        $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('border-color', '#{{$color->heading_color}}');
-        @endif
-
+        
         function toggleChevron(e) {
             $(e.target)
             .prev('.panel-heading')
@@ -318,6 +313,12 @@
         }).mouseout(function() {
             $(this).css('color', '#fff');
         });
+        @endif
+
+        //sidebar active tab color
+        @if($color->heading_color)
+        $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('background-color', '#{{$color->heading_color}}');
+        $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('border-color', '#{{$color->heading_color}}');
         @endif
     });
     function checkvalidi() {
