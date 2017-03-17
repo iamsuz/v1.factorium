@@ -115,10 +115,10 @@
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
 									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{(int)$project->investment->minimum_accepted_amount}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px; width: 23%;">
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px;">
+								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px; width:27%;">
 									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Expected Return</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3">
