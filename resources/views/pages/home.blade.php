@@ -601,7 +601,7 @@
                 </div>
                 <br>
                 <div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
-                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+                  <div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
                   </div>
                 </div>
                 <p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
@@ -680,7 +680,7 @@
               </div>
               <br>
               <div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
-                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+                <div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
                 </div>
               </div>
               <p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
