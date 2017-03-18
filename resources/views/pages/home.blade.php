@@ -769,11 +769,10 @@
 </form>
 @endif
 @endif
-@if($siteConfiguration->show_funding_options != '')
-<div class="container">
+<div class="container @if($siteConfiguration->show_funding_options == '') hide @endif">
   <hr class="first_color" style="height:2px;border:none;color:#282a73;background-color:#282a73; " id="funding" />
 </div>
-<section id="developer" class="chunk-box">
+<section id="developer" class="chunk-box @if($siteConfiguration->show_funding_options == '') hide @endif">
   <div class="container">
     @if(Auth::guest())
     @else
@@ -822,7 +821,6 @@
     @endif
   </div>
 </section>
-@endif
 <div class="container">
   <hr class="first_color" style="height:2px;border:none;color:#282a73;background-color:#282a73;" />
 </div>
