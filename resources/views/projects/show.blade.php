@@ -1001,7 +1001,7 @@
 		</div>
 	</div>
 </section> -->
-<section class="chunk-box @if($project->investment && $project->investment->insvestment_structure_video_url == null) hide @endif">
+<section class="chunk-box @if($project->investment->investments_structure_video_url == "") hide @endif">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-offset-1 col-md-10">
