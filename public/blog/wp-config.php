@@ -37,6 +37,15 @@ define('DB_CHARSET', 'utf8mb4');
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
 
+/** FTP username for updating theme. */
+define( 'FTP_USER', 'estatebaron' );
+
+/** FTP password for updating theme. */
+define( 'FTP_PASS', 'estatebaronisawesome' );
+
+/** FTP host for updating theme. */
+define( 'FTP_HOST', 'ftp.estatebaron.com:21' );
+
 /**#@+
  * Authentication Unique Keys and Salts.
  *
