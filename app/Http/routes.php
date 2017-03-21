@@ -209,3 +209,4 @@ Route::get('/dashboard/projects/{investment_id}/investments/reminder', ['as'=>'d
 Route::post('/configuration/home/updateOverlayOpacity', ['as'=>'configuration.home.updateOverlayOpacity', 'uses'=>'SiteConfigurationsController@updateOverlayOpacity']);
 Route::post('/configuration/project/updateProjectPgOverlayOpacity', ['as'=>'configuration.project.updateProjectPgOverlayOpacity', 'uses'=>'SiteConfigurationsController@updateProjectPgOverlayOpacity']);
 Route::patch('/configuration/updatemaileremail', ['as'=>'configuration.updatemaileremail', 'uses'=>'SiteConfigurationsController@uploadMailerEmail']);
+Route::post('/configuration/project/toggleSubSectionsVisibility', ['as'=>'configuration.project.toggleSubSectionsVisibility', 'uses'=>'SiteConfigurationsController@toggleSubSectionsVisibility']);

@@ -286,7 +286,7 @@
         $('#session_flash_message').show()
         setInterval(function() {
             $('#session_flash_message').fadeOut(500);
-        }, 5000);
+        }, 2500);
         @endif
         
         function toggleChevron(e) {

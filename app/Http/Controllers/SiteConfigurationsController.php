@@ -1738,4 +1738,23 @@ class SiteConfigurationsController extends Controller
         $siteconfiguration->save();
         return redirect()->back();
     }
+    public function toggleSubSectionsVisibility(Request $request)
+    {
+        $action = $request->action;
+        if($action != ''){
+            $projectId =$request->projectId;
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+            if(!$projectConfiguration)
+            {
+                $projectConfiguration = new ProjectConfiguration;
+                $projectConfiguration->project_id = (int)$projectId;
+                $projectConfiguration->save();
+                $projectConfiguration = ProjectConfiguration::all();
+                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+            }
+            $projectConfiguration->update([$action=>$request->checkValue]);
+            return $resultArray = array('status' => 1);
+        }   
+    }
 }

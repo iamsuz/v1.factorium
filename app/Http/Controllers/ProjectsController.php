@@ -198,7 +198,14 @@ class ProjectsController extends Controller
             $number_of_investors = InvestmentInvestor::where('project_id', $project->id)->count();
             $completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
         }
-
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', $project->id)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = $project->id;
+            $projectConfiguration->save();
+        }
         if(!$project->active && app()->environment() == 'production') {
             if(Auth::guest()) {
                 return response()->view('errors.404', [], 404);
@@ -247,14 +254,6 @@ class ProjectsController extends Controller
             } else {
                 return redirect()->route('users.show', Auth::user())->withMessage('<p class="alert alert-warning text-center">This is an Invite Only Project, You do not have access to this project.<br>Please click <a href="/#projects">here</a> to see other projects.</p>');
             }
-        }
-        $projectConfiguration = ProjectConfiguration::all();
-        $projectConfiguration = $projectConfiguration->where('project_id', $project->id)->first();
-        if(!$projectConfiguration)
-        {
-            $projectConfiguration = new ProjectConfiguration;
-            $projectConfiguration->project_id = $project->id;
-            $projectConfiguration->save();
         }
         return view('projects.show', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
     }
