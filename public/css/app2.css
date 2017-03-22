@@ -733,3 +733,9 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.2) 20px
       ) !important;		
 }
+.carousel-control.right, .carousel-control.left{
+	background-image: linear-gradient(to right,rgba(0,0,0,.0) 0,rgba(0,0,0,0) 100%);
+}
+.carousel-control{
+	text-shadow: 0 2px 1px rgba(0,0,0,1);
+}
