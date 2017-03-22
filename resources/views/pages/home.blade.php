@@ -590,12 +590,12 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
+                    <div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s" style="margin: 0 0; width: 23%">
                       <h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{(int)$project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
                     </div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 15%;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
                     </div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->projected_returns}}%@endif<small><small><br>Return</small></small></h4>
+                    <div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; padding: 0 3%;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment){{$project->investment->projected_returns}}%@endif</span><small><small><br>Return</small></small></h4>
                     </div>
                   </div>
                 </div>
