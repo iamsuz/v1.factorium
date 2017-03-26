@@ -78,11 +78,6 @@
             <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
         </div>
     </div>
-    @if (Session::has('loginaction'))
-    <div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;">
-      <div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div>
-    </div>
-    @endif
     <!-- topbar nav content here -->
     @section('topbar-section')
     <nav class="navbar navbar-default navbar-fixed-top header" id="header" role="navigation" @if($color) style='background-color: #{{$color->nav_footer_color}}' @endif>
@@ -275,19 +270,21 @@
 </script>
 <!-- End Inspectlet Embed Code -->
 <script type="text/javascript">
+    //login flash
+    @if (Session::has('loginaction'))
+    $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
+    $('#session_flash_message').show()
+    setInterval(function() {
+        $('#session_flash_message').fadeOut(500);
+    }, 2500);
+    @endif
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
         $('a[data-disabled]').click(function (e) {
             e.preventDefault();
         });
-        //login flash
-        @if (Session::has('loginaction'))
-        $('#session_flash_message').show()
-        setInterval(function() {
-            $('#session_flash_message').fadeOut(500);
-        }, 2500);
-        @endif
         
         function toggleChevron(e) {
             $(e.target)
