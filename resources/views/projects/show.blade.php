@@ -332,8 +332,14 @@
 						<div class="col-md-10 text-left"> 
 							@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field">{!!$project->investment->summary!!}</p> @endif
 							<center>
-								@if($project->media->where('type','summary')->last())
-								<img src="{{asset($project->media->where('type', 'summary')->last()->path)}}" style="width:100%" alt="Summary">
+								@if($projectMediaImage=$project->media->where('type','summary')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'summary')->last()->path)}}" style="width:100%" alt="Summary" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -368,8 +374,14 @@
 						<div class="col-md-10 text-left"> 
 							@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field">{!!$project->investment->security_long!!}</p> @endif
 							<center>
-								@if($project->media->where('type','security')->last())
-								<img src="{{asset($project->media->where('type', 'security')->last()->path)}}" style="width:100%" alt="Security">
+								@if($projectMediaImage=$project->media->where('type','security')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'security')->last()->path)}}" style="width:100%" alt="Security" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -404,8 +416,14 @@
 						<div class="col-md-10 text-left"> 
 							@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field">{!!$project->investment->exit_d!!}</p> @endif
 							<center>
-								@if($project->media->where('type','exit_image')->last())
-								<img src="{{asset($project->media->where('type', 'exit_image')->last()->path)}}" style="max-width:100%" alt="Exit">
+								@if($projectMediaImage=$project->media->where('type','exit_image')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'exit_image')->last()->path)}}" style="max-width:100%" alt="Exit"  id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -470,8 +488,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
 							<center>
-								@if($project->media->where('type','marketability')->last())
-								<img src="{{asset($project->media->where('type', 'marketability')->last()->path)}}" style="width:100%" alt="Marketability">
+								@if($projectMediaImage=$project->media->where('type','marketability')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'marketability')->last()->path)}}" style="width:100%" alt="Marketability" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -507,8 +531,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!$project->investment->residents!!}</p> @endif
 							<center>
-								@if($project->media->where('type','residents')->last())
-								<img src="{{asset($project->media->where('type', 'residents')->last()->path)}}" width="100%" alt="Image">
+								@if($projectMediaImage=$project->media->where('type','residents')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'residents')->last()->path)}}" width="100%" alt="Image" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -553,8 +583,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{{$project->investment->investment_type}}</p>@endif
 							<center>
-								@if($project->media->where('type','investment_type')->last())
-								<img src="{{asset($project->media->where('type', 'investment_type')->last()->path)}}" width="100%" alt="investment_type">
+								@if($projectMediaImage=$project->media->where('type','investment_type')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'investment_type')->last()->path)}}" width="100%" alt="investment_type" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -589,8 +625,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{{$project->investment->security}}</p> @endif
 							<center>
-								@if($project->media->where('type','investment_security')->last())
-								<img src="{{asset($project->media->where('type', 'investment_security')->last()->path)}}" width="100%" alt="investment_type">
+								@if($projectMediaImage=$project->media->where('type','investment_security')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'investment_security')->last()->path)}}" width="100%" alt="investment_security" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -625,8 +667,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{{$project->investment->expected_returns_long}}</p> @endif
 							<center>
-								@if($project->media->where('type','expected_returns')->last())
-								<img src="{{asset($project->media->where('type', 'expected_returns')->last()->path)}}" width="100%" alt="expected returns">
+								@if($projectMediaImage=$project->media->where('type','expected_returns')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'expected_returns')->last()->path)}}" width="100%" alt="expected returns" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -661,8 +709,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{{$project->investment->returns_paid_as}}</p> @endif
 							<center>
-								@if($project->media->where('type','return_paid_as')->last())
-								<img src="{{asset($project->media->where('type', 'return_paid_as')->last()->path)}}" width="100%" alt="return pais as image">
+								@if($projectMediaImage=$project->media->where('type','return_paid_as')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'return_paid_as')->last()->path)}}" width="100%" alt="return pais as image" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -696,8 +750,14 @@
 						<div class="col-md-10"> 
 							@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
 							<center>
-								@if($project->media->where('type','taxation')->last())
-								<img src="{{asset($project->media->where('type', 'taxation')->last()->path)}}" width="100%" alt="taxation image">
+								@if($projectMediaImage=$project->media->where('type','taxation')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'taxation')->last()->path)}}" width="100%" alt="taxation image" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -745,8 +805,14 @@
 						<div class="col-md-10 text-left"> 
 							@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
 							<center>
-								@if($project->media->where('type','project_developer')->last())
-								<img src="{{asset($project->media->where('type', 'project_developer')->last()->path)}}" width="30%" alt="Developer" style="padding:1em;" style="width:40px;">
+								@if($projectMediaImage=$project->media->where('type','project_developer')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'project_developer')->last()->path)}}" width="30%" alt="Developer" style="padding:1em;" style="width:40px;" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -781,8 +847,14 @@
 						<div class="col-md-10 text-left"> 
 							@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
 							<center>
-								@if($project->media->where('type','project_duration')->last())
-								<img src="{{asset($project->media->where('type', 'project_duration')->last()->path)}}" alt="Duration" width="100%" >
+								@if($projectMediaImage=$project->media->where('type','project_duration')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'project_duration')->last()->path)}}" alt="Duration" width="100%" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -817,8 +889,14 @@
 						<div class="col-md-10 text-left"> 
 							@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
 							<center>
-								@if($project->media->where('type','current_status')->last())
-								<img src="{{asset($project->media->where('type', 'current_status')->last()->path)}}" alt="current status" width="100%">
+								@if($projectMediaImage=$project->media->where('type','current_status')->last())
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+								@endif
+								@endif
+								<img src="{{asset($project->media->where('type', 'current_status')->last()->path)}}" alt="current status" width="100%" id="project_media_{{$projectMediaImage->id}}">
 								@endif
 							</center>
 							@if(Auth::guest())
@@ -901,8 +979,14 @@
 					<div class="col-md-10 text-left"> 
 						@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field">{!!$project->investment->rationale!!}</p> @endif
 						<center>
-							@if($project->media->where('type','rationale')->last())
-							<img src="{{asset($project->media->where('type', 'rationale')->last()->path)}}" alt="rationale" width="100%"">
+							@if($projectMediaImage=$project->media->where('type','rationale')->last())
+							@if(Auth::guest())
+							@else
+							@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+							<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+							@endif
+							@endif
+							<img src="{{asset($project->media->where('type', 'rationale')->last()->path)}}" alt="rationale" width="100%" id="project_media_{{$projectMediaImage->id}}">
 							@endif
 						</center>
 						@if(Auth::guest())
@@ -936,8 +1020,14 @@
 							<div class="col-md-10 text-left"> 
 								@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field">{!!$project->investment->risk!!}</p> @endif
 								<center>
-									@if($project->media->where('type','investment_risk')->last())
-									<img src="{{asset($project->media->where('type', 'investment_risk')->last()->path)}}" alt="investment risk" width="100%"">
+									@if($projectMediaImage=$project->media->where('type','investment_risk')->last())
+									@if(Auth::guest())
+									@else
+									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+									<div class="row" style="position: absolute;right: 5%;font-size: 2em;color: #ce1818;opacity: 0.8;cursor: pointer;"><i class="fa fa-times delete-project-section-image" aria-hidden="true" data-toggle="tooltip" title="Delete Image" action="{{$projectMediaImage->id}}"></i></div>
+									@endif
+									@endif
+									<img src="{{asset($project->media->where('type', 'investment_risk')->last()->path)}}" alt="investment risk" width="100%" id="project_media_{{$projectMediaImage->id}}">
 									@endif
 								</center>
 								@if(Auth::guest())
@@ -1698,6 +1788,8 @@
 		updateOverlayOpacity();
 		//show-hide project page sub sections
 		toggleSubSectionsVisibility();
+		//Delete Sub section Images
+		deleteSubSectionImages();
 
 	});
 
@@ -2161,6 +2253,32 @@
 	        	}
 	        });
 		});
+    }
+
+    function deleteSubSectionImages(){
+    	$('.delete-project-section-image').click(function(){
+    		var mediaId = $(this).attr('action');
+    		var projectId = '{{$project->id}}';
+    		if(mediaId!=''){
+    			if (confirm('Are you sure ?')) {
+					$('.loader-overlay').show();
+					$.ajax({
+						url: '/project/edit/deleteSubSectionImages',
+						type: 'POST',
+						dataType: 'JSON',
+						data: {mediaId,projectId},
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+					}).done(function(data){
+						if(data.status){
+							$('#project_media_'+data.mediaImageId).remove();
+							$('.loader-overlay').hide();
+						}
+					});
+			    }
+    		}
+    	});
     }
 
 </script>

@@ -338,7 +338,7 @@
             @endif
             <h3 class="how-it-works-title1-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif</h3>
           </div>
-          <p class="how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){{$siteConfiguration->how_it_works_desc1}}@endif</p>
+          <p class="how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){!!$siteConfiguration->how_it_works_desc1!!}@endif</p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.6s" style="margin-top: 50px;">
           <div class="" style="color:#6B798F;">
@@ -359,7 +359,7 @@
             @endif
             <h3 class="how-it-works-title2-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title2 != ''){{$siteConfiguration->how_it_works_title2}}@endif</h3>
           </div>
-          <p class="how-it-works-desc2-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){{$siteConfiguration->how_it_works_desc2}}@endif
+          <p class="how-it-works-desc2-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){!!$siteConfiguration->how_it_works_desc2!!}@endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.7s" style="margin-top: 50px;">
@@ -381,7 +381,7 @@
             @endif
             <h3 class="how-it-works-title3-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title3 != ''){{$siteConfiguration->how_it_works_title3}}@endif</h3>
           </div>
-          <p class="how-it-works-desc3-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){{$siteConfiguration->how_it_works_desc3}}@endif
+          <p class="how-it-works-desc3-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){!!$siteConfiguration->how_it_works_desc3!!}@endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s" style="margin-top: 50px;">
@@ -403,7 +403,7 @@
             @endif
             <h3 class="how-it-works-title4-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title4 != ''){{$siteConfiguration->how_it_works_title4}}@endif</h3>
           </div>
-          <p class="how-it-works-desc4-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){{$siteConfiguration->how_it_works_desc4}}@endif
+          <p class="how-it-works-desc4-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){!!$siteConfiguration->how_it_works_desc4!!}@endif
           </p>
         </div>
         <div class="col-md-2 " data-wow-duration="1.5s" data-wow-delay="0.8s" style="margin-top: 50px;">
@@ -425,7 +425,7 @@
             @endif
             <h3 class="how-it-works-title5-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title5 != ''){{$siteConfiguration->how_it_works_title5}}@endif</h3>
           </div>
-          <p class="how-it-works-desc5-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc5 != ''){{$siteConfiguration->how_it_works_desc5}}@endif
+          <p class="how-it-works-desc5-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc5 != ''){!!$siteConfiguration->how_it_works_desc5!!}@endif
           </p>
         </div>
         @if(Auth::guest())
@@ -1114,6 +1114,8 @@
   {!! Html::script('js/navbar-transition.js') !!}
   <!-- JCrop -->
   {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
+  <!-- TinyMCE Rich text editor -->
+  {!! Html::script('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') !!}
 
   <script>
     jQuery(document).ready(function($) {
@@ -1516,6 +1518,8 @@
       editProjectThumbImage();
       //Update Home Page Overlay Opacity
       updateOverlayOpacity();
+      //Rich text editor initialization
+      richTextareaFieldInitialization();
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -1897,11 +1901,12 @@
         $('.how-it-works-title3-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title3!!}" name="how_it_works_title3" class="form-control"></input>');
         $('.how-it-works-title4-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title4!!}" name="how_it_works_title4" class="form-control"></input>');
         $('.how-it-works-title5-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title5!!}" name="how_it_works_title5" class="form-control"></input>');
-        $('.how-it-works-desc1-section').html('<textarea name="how_it_works_desc1" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc1}}</textarea>');
-        $('.how-it-works-desc2-section').html('<textarea name="how_it_works_desc2" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc2}}</textarea>');
-        $('.how-it-works-desc3-section').html('<textarea name="how_it_works_desc3" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc3}}</textarea>');
-        $('.how-it-works-desc4-section').html('<textarea name="how_it_works_desc4" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc4}}</textarea>');
-        $('.how-it-works-desc5-section').html('<textarea name="how_it_works_desc5" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc5}}</textarea><br><button type="Submit" class="btn-default save-how-it-works-content">Save</button>');
+        $('.how-it-works-desc1-section').replaceWith('<textarea name="how_it_works_desc1" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc1}}</textarea>');
+        $('.how-it-works-desc2-section').replaceWith('<textarea name="how_it_works_desc2" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc2}}</textarea>');
+        $('.how-it-works-desc3-section').replaceWith('<textarea name="how_it_works_desc3" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc3}}</textarea>');
+        $('.how-it-works-desc4-section').replaceWith('<textarea name="how_it_works_desc4" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc4}}</textarea>');
+        $('.how-it-works-desc5-section').replaceWith('<textarea name="how_it_works_desc5" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc5}}</textarea><br><button type="Submit" class="btn-default save-how-it-works-content">Save</button>');
+        richTextareaFieldInitialization();
       });
     }
 
@@ -2103,6 +2108,18 @@
             @endif
           }
         });        
+      });
+    }
+
+    function richTextareaFieldInitialization(){
+      tinymce.init({
+        forced_root_block : "div",
+        selector: 'textarea',
+        plugins: 'charmap textcolor',
+        toolbar: "alignleft aligncenter alignright alignjustify | forecolor backcolor",
+        menubar: false,
+        status: false,
+
       });
     }
 

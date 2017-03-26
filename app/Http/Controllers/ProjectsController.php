@@ -807,4 +807,25 @@ class ProjectsController extends Controller
         $project->media()->save($media);
         return $resultArray = array('status' => 1, 'message' => 'The Image uploaded Successfully');
     }
+
+    public function deleteSubSectionImages(Request $request)
+    {
+        $mediaId = $request->mediaId;
+        if($mediaId != '')
+        {
+            $projectMedia = Media::find($mediaId);
+            if($projectMedia)
+            {
+                if($projectMedia->project->project_site == url())
+                {
+                    $projectMedia = Media::where('type',$projectMedia->type)->where('project_id',(int)$request->projectId)->get();
+                    foreach ($projectMedia as $media) {
+                        File::delete($media->path);
+                        $media->delete();
+                    }
+                    return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
+                }
+            }
+        }
+    }
 }
