@@ -71,31 +71,31 @@ class AddColumnsToSiteConfigurationsTable extends Migration
                 $table->string('how_it_works_title1')->default('Risky Markets');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc1')) {
-                $table->string('how_it_works_desc1')->default('We live in an era of high stock market volatility, sharp crashes and ongoing risk of recession');
+                $table->longText('how_it_works_desc1')->default('We live in an era of high stock market volatility, sharp crashes and ongoing risk of recession');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title2')) {
                 $table->string('how_it_works_title2')->default('Safe Property');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc2')) {
-                $table->string('how_it_works_desc2')->default('Real Estate and Property Development offer high, predictable returns but require large amounts of capital, which can make it hard to get started');
+                $table->longText('how_it_works_desc2')->default('Real Estate and Property Development offer high, predictable returns but require large amounts of capital, which can make it hard to get started');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title3')) {
                 $table->string('how_it_works_title3')->default('Property Crowdfunding');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc3')) {
-                $table->string('how_it_works_desc3')->default('Property Crowdfunding is a way for many people to come together online and invest small amounts in projects of your choice');
+                $table->longText('how_it_works_desc3')->default('Property Crowdfunding is a way for many people to come together online and invest small amounts in projects of your choice');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title4')) {
                 $table->string('how_it_works_title4')->default('Pick your Project');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc4')) {
-                $table->string('how_it_works_desc4')->default('Sign up for free and invest with a click of a button in the projects that you like among the various opportunities listed');
+                $table->longText('how_it_works_desc4')->default('Sign up for free and invest with a click of a button in the projects that you like among the various opportunities listed');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title5')) {
                 $table->string('how_it_works_title5')->default('Arm chair Developer');
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc5')) {
-                $table->string('how_it_works_desc5')->default('Monitor your projects progress online and receive payments as specified in the offer, all from the comfort of your home!');
+                $table->longText('how_it_works_desc5')->default('Monitor your projects progress online and receive payments as specified in the offer, all from the comfort of your home!');
             }
             if (!Schema::hasColumn('site_configurations', 'funding_section_title1')) {
                 $table->string('funding_section_title1')->default('Developer or Business looking for funding?');
