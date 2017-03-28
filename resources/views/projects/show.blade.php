@@ -151,7 +151,7 @@
 							Invest Now
 							@endif
 						</b></a>
-						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
+						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Information Memorandum before making any decisions</small></h6>
 						@else
 						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 						@endif
@@ -1147,7 +1147,7 @@
 				</div>
 				<!-- <ol>
 				<li style="font-size:0.875em;"><a href="#" class="scrollto ">Read PDS/Offer document carefully</a></li>
-				<li style="font-size:0.875em;">Press ‚ÄúInvest Now‚Äù at the top of the screen</li>
+				<li style="font-size:0.875em;">Press ìInvest Nowî at the top of the screen</li>
 				<li style="font-size:0.875em;">Complete and Sign online application form</li>
 				<li style="font-size:0.875em;">Complete any AML/CTF obligations (Verification)</li>
 				<li style="font-size:0.875em;">Make a Bank transfer to</li>
