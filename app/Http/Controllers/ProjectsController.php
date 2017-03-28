@@ -828,4 +828,22 @@ class ProjectsController extends Controller
             }
         }
     }
+
+    public function deleteProjectCarouselImages(Request $request)
+    {
+        $mediaId = $request->mediaId;
+        if($mediaId != '')
+        {
+            $projectMedia = Media::find($mediaId);
+            if($projectMedia)
+            {
+                if($projectMedia->project->project_site == url())
+                {
+                    File::delete($projectMedia->path);
+                    $projectMedia->delete();
+                    return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
+                }
+            }
+        }
+    }
 }

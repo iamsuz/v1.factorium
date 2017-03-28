@@ -272,6 +272,21 @@
 					<span class="sr-only">Next</span>
 				</a>
 			</div>
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="row" id="carousel_image_delete_pane">
+				<div class="col-md-12">
+					@foreach($project->media->where('type','gallary_images') as $photos)
+						<div class="col-md-2 carousel-thumb-image" style="float: right; height: 100px;width: 150px;overflow: hidden;border: 1px solid #dfdfdf;cursor: pointer;margin: 5px; padding: 0px; border-radius: 30px;">
+							<div style="width: 100%; height: 100%;position: absolute;z-index: 1000; background-color: #f4f4f4; opacity: 0.5; display: none;" class="delete-carousel-section"><i class="fa fa-times delete-project-carousel-image" aria-hidden="true" action="{{$photos->id}}" style="z-index: 1001;margin-left: 30%;margin-top: 5%;font-size: 5em;color: #ce1818;"></i></div>
+							<img src="/{{$photos->path}}" style="width: 100%;">
+						</div>
+					@endforeach
+				</div>
+			</div>
+			@endif
+			@endif
 			@endif
 			@if(Auth::user())
 			@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
@@ -1790,6 +1805,8 @@
 		toggleSubSectionsVisibility();
 		//Delete Sub section Images
 		deleteSubSectionImages();
+		//Delete Carousel Image
+		deleteCarouselImage();
 
 	});
 
@@ -2279,6 +2296,37 @@
 			    }
     		}
     	});
+    }
+
+    function deleteCarouselImage(){
+    	$(".carousel-thumb-image").mouseover(function() {
+	        $(this).children('.delete-carousel-section').show();
+      	}).mouseout(function() {
+	        $(this).children('.delete-carousel-section').hide();
+      	});
+      	$('.delete-project-carousel-image').click(function(){
+      		var mediaId = $(this).attr('action');
+    		var projectId = '{{$project->id}}';
+    		if(mediaId!=''){
+    			if (confirm('Are you sure, you want to delete selected Image?')) {
+					$('.loader-overlay').show();
+					$.ajax({
+						url: '/project/edit/deleteProjectCarouselImages',
+						type: 'POST',
+						dataType: 'JSON',
+						data: {mediaId,projectId},
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+					}).done(function(data){
+						if(data.status){
+							location.reload('/#carousel_image_delete_pane');
+							$('.loader-overlay').hide();
+						}
+					});
+			    }
+    		}
+      	});
     }
 
 </script>
