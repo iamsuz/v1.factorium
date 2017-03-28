@@ -10,6 +10,7 @@ use App\Project;
 use App\UserRegistration;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Queue\SerializesModels;
+use App\Helpers\SiteConfigurationHelper;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -62,7 +63,7 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
         $this->subject = $investor->first_name.' '.$investor->last_name.' has invested '.$amount.' in '.$project->title;
         $this->data = compact('project', 'investor');
         $mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, 'Estate Baron')->to($this->to)->subject($this->subject);
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
     }
 }
