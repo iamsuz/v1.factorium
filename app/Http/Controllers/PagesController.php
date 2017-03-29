@@ -176,11 +176,9 @@ class PagesController extends Controller
         $project = \App\Project::find(16);
         $investments = $project->investors;
         $user = \Auth::user();
-        $this->dispatch(new SendInvestorNotificationEmail($user,$project));
+        // $mailer->sendInterestNotificationDeveloper($project, $user);
+        // $this->dispatch(new \sendInterestNotificationDeveloper($project, $user));
         $this->dispatch(new SendReminderEmail($user,$project));
-        $mailer->sendInterestNotificationDeveloper($project, $user);
-        // $this->dispatch(new sendInterestNotificationDeveloper($project, $user));
-        // $this->dispatch(new SendReminderEmail($user,$project));
         return 'test';
     }
 

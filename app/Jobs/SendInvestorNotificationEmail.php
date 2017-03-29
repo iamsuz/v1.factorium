@@ -8,9 +8,11 @@ use App\Role;
 use App\User;
 use App\Project;
 use App\UserRegistration;
-use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Mail\TransportManager;
 use App\Helpers\SiteConfigurationHelper;
+use Swift_MailTransport as MailTransport;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,6 +41,24 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
         $this->project = $project;
     }
 
+    public function overrideMailerConfig()
+    {
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $config = $siteconfig->mailSetting()->first();
+        // Config::set('mail.driver',$configs['driver']);
+        \Config::set('mail.host',$config->host);
+        \Config::set('mail.port',$config->port);
+        \Config::set('mail.username',$config->username);
+        \Config::set('mail.password',$config->password);
+        \Config::set('mail.sendmail',$config->from);
+        $app = \App::getInstance();
+        $app['swift.transport'] = $app->share(function ($app) {
+           return new TransportManager($app);
+       });
+
+        $mailer = new \Swift_Mailer($app['swift.transport']->driver());
+        Mail::setSwiftMailer($mailer);
+    }
     /**
      * Execute the job.
      *
@@ -46,7 +66,7 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
      */
     public function handle(Mailer $mailer)
     {
-        //
+        $this->overrideMailerConfig();
         $user = $this->investor;
         $amount = $user->investments->last()->pivot->amount;
         $project = $this->project;

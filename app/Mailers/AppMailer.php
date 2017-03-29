@@ -7,9 +7,12 @@ use App\Role;
 use App\User;
 use App\Project;
 use App\IdImage;
+use App\MailSetting;
 use App\UserRegistration;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Mail\TransportManager;
 use App\Helpers\SiteConfigurationHelper;
+use Swift_MailTransport as MailTransport;
 
 class AppMailer
 {
@@ -277,9 +280,28 @@ class AppMailer
         
         $this->deliverWithBcc();   
     }
+    public function overrideMailerConfig()
+    {
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $config = $siteconfig->mailSetting()->first();
+        // Config::set('mail.driver',$configs['driver']);
+        \Config::set('mail.host',$config->host);
+        \Config::set('mail.port',$config->port);
+        \Config::set('mail.username',$config->username);
+        \Config::set('mail.password',$config->password);
+        \Config::set('mail.sendmail',$config->from);
+        $app = \App::getInstance();
+        $app['swift.transport'] = $app->share(function ($app) {
+           return new TransportManager($app);
+       });
+
+        $mailer = new \Swift_Mailer($app['swift.transport']->driver());
+        Mail::setSwiftMailer($mailer);
+    }
 
     public function deliver()
     {
+        $this->overrideMailerConfig();
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
@@ -287,6 +309,7 @@ class AppMailer
 
     public function deliverWithFile()
     {
+        $this->overrideMailerConfig();
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
         });
@@ -294,6 +317,7 @@ class AppMailer
 
     public function deliverWithBcc()
     {
+        $this->overrideMailerConfig();
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->bcc($this->bcc)->subject($this->subject);
         });

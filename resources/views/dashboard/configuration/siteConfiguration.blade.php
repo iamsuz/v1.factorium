@@ -125,7 +125,7 @@ Configuration | Dashboard | @parent
                 <div class="col-md-4">
                     <div class="thumbnail text-center">
                         @if (Session::has('message'))
-                        @if(Session::get('action') == 'mailer_email')
+                        @if(Session::get('action') == 'mail_setting')
                         <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
                             <h5>{!! Session::get('message') !!}</h5>
                         </div>
@@ -137,7 +137,7 @@ Configuration | Dashboard | @parent
                             <hr>
                             <p>
                                 <label class="input-group-btn">
-                                <span class="btn btn-primary btn-sm change-mailer-email-btn" style="cursor: pointer;">
+                                    <span class="btn btn-primary btn-sm change-mailer-email-btn" style="cursor: pointer;">
                                         <strong>Change Email address</strong>
                                     </span>
                                 </label>
@@ -217,24 +217,98 @@ Configuration | Dashboard | @parent
 </div>
 <!-- Mailer Modal -->
 <div class="modal fade" id="mailer_email_edit_modal" role="dialog">
-    <div class="modal-dialog" style="margin-top: 10%;">
+    <div class="modal-dialog" style="margin-top: 10%; width: 70%">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Update Title</h4>
+                <h4 class="modal-title">Update Mail Configuration</h4>
             </div>
             <div class="modal-body">
                 <div class="row text-center" id="modal_body_container">
                     <div class="col-md-10 col-md-offset-1">
-                        {!! Form::open(array('route'=>['configuration.updatemaileremail'], 'method'=>'PATCH', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                    @if($siteconfiguration->mailSetting)
+                    {!! Form::model($mail_setting, array('route'=>['configuration.updatemailsettings',$mail_setting], 'method'=>'PATCH', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                    @else
+                        {!! Form::open(array('route'=>['configuration.createmailsettings'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        @endif
                         <h5><i><small>Enter the email in below text field and save to display new email for the website.</small></i></h5>
                         <br>
-                        <div class="row title-text-error" style="text-align: -webkit-center;"></div>
-                        {!! Form::text('mailer_email', null, array('placeholder'=>'Enter Mailer email info@estatebaron.com', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'mailer_email', 'Value'=> $siteconfiguration->mailer_email)) !!}
-                        {!! $errors->first('mailer_email', '<small class="text-danger">:message</small>') !!}
-                        <br>
-                        {!! Form::submit('Change Email', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
+                        <div class="row title-text-error" style="text-align: -webkit-center;">
+                            {!!Form::label('driver', 'Driver', array('class'=>'col-sm-2 control-label'))!!}
+                            <div class="col-md-4"> 
+                                {!! Form::text('driver', null, array('placeholder'=>'Enter MAIL_Driver (smtp)', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'mail_driver','required' => 'required')) !!}
+                                {!! $errors->first('driver', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                            <div class="col-md-2">
+                                <label>
+                                    <h4 class="text-center">Encryption</h4>
+                                </label>
+                            </div>
+                            <div class="col-md-4"> 
+                                {!! Form::text('encryption', null, array('placeholder'=>'Enter EMAIL_ENCRYPTION (tls)', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'mail_ecryption','required' => 'required')) !!}
+                                {!! $errors->first('encryption', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row title-text-error" style="text-align: -webkit-center;">
+                            <div class="col-md-2">
+                                <label>
+                                    <h4 class="text-center">Host</h4>
+                                </label>
+                            </div>
+                            <div class="col-md-4"> 
+                                {!! Form::text('host', null, array('placeholder'=>'Enter MAIL_HOST (smtp.gmail.com)', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'mail_host', 'required' => 'required')) !!}
+                                {!! $errors->first('host', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                            <div class="col-md-2">
+                                <label>
+                                    <h4 class="text-center">PORT</h4>
+                                </label>
+                            </div>
+                            <div class="col-md-4"> 
+                                {!! Form::text('port', null, array('placeholder'=>'Enter EMAIL_PORT (587)', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'mail_port','required' => 'required')) !!}
+                                {!! $errors->first('port', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row title-text-error">
+                            <div class="col-md-2">
+                                <label>
+                                    <h4 class="text-center">From</h4>
+                                </label>
+                            </div>
+                            <div class="col-md-10"> 
+                                {!! Form::text('from', null, array('placeholder'=>'Enter MAIL_FROM (info@estatebaron.com)', 'class'=>'form-control ', 'tabindex'=>'5', 'id'=>'mail_from','required' => 'required')) !!}
+                                {!! $errors->first('from', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row title-text-error">
+                        <div class="col-md-2">
+                                <label>
+                                    <h4 class="text-center">Username</h4>
+                                </label>
+                            </div>
+                            <div class="col-md-4"> 
+                                {!! Form::text('username', null, array('placeholder'=>'Enter email (info@estatebaron.com)', 'class'=>'form-control ', 'tabindex'=>'6', 'id'=>'mail_username','required' => 'required')) !!}
+                                {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                            <div class="col-md-2">
+                                <label>
+                                    <h4 class="text-center">Password</h4>
+                                </label>
+                            </div>
+                            <div class="col-md-4"> 
+                                {!! Form::text('password',null, array('placeholder'=>'Enter MAIL_PASSWORD', 'class'=>'form-control ', 'tabindex'=>'7', 'id'=>'mail_password','required' => 'required')) !!}
+                                {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
+                                <br>
+                            </div>
+                        </div>
+                        {!! Form::submit('Change Mail Settings', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>

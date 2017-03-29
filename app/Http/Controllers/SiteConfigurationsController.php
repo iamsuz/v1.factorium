@@ -21,6 +21,7 @@ use App\SiteConfigMedia;
 use App\Media;
 use App\ProjectConfiguration;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\MailSetting;
 
 
 class SiteConfigurationsController extends Controller
@@ -123,7 +124,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('brand_logo') && $request->file('brand_logo')->isValid()){
                 Image::make($request->brand_logo)->resize(530, null, function($constraint){
                     $constraint->aspectRatio();
@@ -146,861 +147,861 @@ class SiteConfigurationsController extends Controller
     {
         // if (Auth::user()->roles->contains('role', 'superadmin'))
         // {
-            if($request->imageName){
-                
-                $src  = $request->imageName;
-                $xValue = $request->xValue;
-                $yValue = $request->yValue;
-                $wValue = $request->wValue;
-                $hValue = $request->hValue;
-                $origWidth = $request->origWidth;
-                $origHeight = $request->origHeight;
-                $convertedWidth = 530;
-                $convertedHeight = ($origHeight/$origWidth) * $convertedWidth;
+        if($request->imageName){
+
+            $src  = $request->imageName;
+            $xValue = $request->xValue;
+            $yValue = $request->yValue;
+            $wValue = $request->wValue;
+            $hValue = $request->hValue;
+            $origWidth = $request->origWidth;
+            $origHeight = $request->origHeight;
+            $convertedWidth = 530;
+            $convertedHeight = ($origHeight/$origWidth) * $convertedWidth;
 
 
-                if($request->imgAction == 'brand logo'){
-                    $quality = 9;
-                    $img  = imagecreatefrompng($src);
-                    $dest = ImageCreateTrueColor(530, 186);
-                    
+            if($request->imgAction == 'brand logo'){
+                $quality = 9;
+                $img  = imagecreatefrompng($src);
+                $dest = ImageCreateTrueColor(530, 186);
+
                     //Removing black background
+                imagealphablending($dest, FALSE);
+                imagesavealpha($dest, TRUE);
+                imagecopyresampled ( $dest , $img , 0 , 0 , $xValue , $yValue , 530 , 186 , $wValue , $hValue );                                
+                $newimage = imagepng($dest, $src, $quality);
+                if($newimage)
+                {
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = 'main_logo_'.time().'.png';
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    Image::make($src)->resize(284, null, function($constraint){ $constraint->aspectRatio(); })->save(public_path($saveLoc.$finalFile));
+                    $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                    $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                    ->where('type','brand_logo')
+                    ->first();
+                    if($siteMedia){
+                        File::delete(public_path($siteMedia->path));    
+                    }
+                    else{
+                        $siteMedia = new SiteConfigMedia;
+                        $siteMedia->site_configuration_id = $siteConfigurationId;
+                        $siteMedia->type = 'brand_logo';
+                        $siteMedia->caption = 'Brand Logo';
+                    }
+                    $siteMedia->filename = $finalFile;
+                    $siteMedia->path = $finalpath;
+                    $siteMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                }
+                else
+                {
+                    return $resultArray = array('status' => 0, 'message' => 'something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'back image'){
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 1920;
+                $rh = 1170;
+
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
                     imagealphablending($dest, FALSE);
                     imagesavealpha($dest, TRUE);
-                    imagecopyresampled ( $dest , $img , 0 , 0 , $xValue , $yValue , 530 , 186 , $wValue , $hValue );                                
-                    $newimage = imagepng($dest, $src, $quality);
-                    if($newimage)
-                    {
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = 'main_logo_'.time().'.png';
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
-                        Image::make($src)->resize(284, null, function($constraint){ $constraint->aspectRatio(); })->save(public_path($saveLoc.$finalFile));
-                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
-                            ->where('type','brand_logo')
-                            ->first();
-                        if($siteMedia){
-                            File::delete(public_path($siteMedia->path));    
-                        }
-                        else{
-                            $siteMedia = new SiteConfigMedia;
-                            $siteMedia->site_configuration_id = $siteConfigurationId;
-                            $siteMedia->type = 'brand_logo';
-                            $siteMedia->caption = 'Brand Logo';
-                        }
-                        $siteMedia->filename = $finalFile;
-                        $siteMedia->path = $finalpath;
-                        $siteMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    }
-                    else
-                    {
-                        return $resultArray = array('status' => 0, 'message' => 'something went wrong.');
-                    }
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
                 }
-                else if ($request->imgAction == 'back image'){
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 1920;
-                    $rh = 1170;
-
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    if($result){
+                if($result){
                         // dd($extension);
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = 'main_bg_'.time().'.png';
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
-                        }
-                        else{
-                            Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        }
-                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
-                            ->where('type','homepg_back_img')
-                            ->first();
-                        if($siteMedia){
-                            File::delete(public_path($siteMedia->path));    
-                        }
-                        else{
-                            $siteMedia = new SiteConfigMedia;
-                            $siteMedia->site_configuration_id = $siteConfigurationId;
-                            $siteMedia->type = 'homepg_back_img';
-                            $siteMedia->caption = 'Home Page Main fold Back Image';
-                        }
-                        $siteMedia->filename = $finalFile;
-                        $siteMedia->path = $finalpath;
-                        $siteMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
-                }
-                else if ($request->imgAction == 'investment image') {
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 190;
-                    $rh = 244;
-
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    if($result){
-                        // dd($extension);
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = 'Disclosure-250_'.time().'.png';
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
-                        }
-                        else{
-                            Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        }
-                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
-                            ->where('type','investment_page_image')
-                            ->first();
-                        if($siteMedia){
-                            File::delete(public_path($siteMedia->path));    
-                        }
-                        else{
-                            $siteMedia = new SiteConfigMedia;
-                            $siteMedia->site_configuration_id = $siteConfigurationId;
-                            $siteMedia->type = 'investment_page_image';
-                            $siteMedia->caption = 'Home Page investment fold Image';
-                        }
-                        $siteMedia->filename = $finalFile;
-                        $siteMedia->path = $finalpath;
-                        $siteMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
-                }
-                else if ($request->imgAction == 'howItWorks image'){
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 200;
-                    $rh = 200;
-
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    $imgName = '';
-                    if($request->hiwImgAction == 'hiw_img1'){
-                        $imgName = 'hiw_img1_'.time().'.png';
-                        $imgType = 'how_it_works_image1';
-                    }
-                    else if ($request->hiwImgAction == 'hiw_img2'){
-                        $imgName = 'hiw_img2_'.time().'.png';
-                        $imgType = 'how_it_works_image2';
-                    }
-                    else if ($request->hiwImgAction == 'hiw_img3'){
-                        $imgName = 'hiw_img3_'.time().'.png';
-                        $imgType = 'how_it_works_image3';
-                    }
-                    else if ($request->hiwImgAction == 'hiw_img4'){
-                        $imgName = 'hiw_img4_'.time().'.png';
-                        $imgType = 'how_it_works_image4';
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = 'main_bg_'.time().'.png';
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
                     }
                     else{
-                        $imgName = 'hiw_img5_'.time().'.png';
-                        $imgType = 'how_it_works_image5';
-                    }
-                    if($result){
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = $imgName;
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
-                        }
-                        else{
-                            Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        }
-                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
-                            ->where('type',$imgType)
-                            ->first();
-                        if($siteMedia){
-                            File::delete(public_path($siteMedia->path));    
-                        }
-                        else{
-                            $siteMedia = new SiteConfigMedia;
-                            $siteMedia->site_configuration_id = $siteConfigurationId;
-                            $siteMedia->type = $imgType;
-                            $siteMedia->caption = 'Home Page How It works fold Image';
-                        }
-                        $siteMedia->filename = $finalFile;
-                        $siteMedia->path = $finalpath;
-                        $siteMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
-                }
-                else if ($request->imgAction == 'projectPg back image'){
-                    $currentProjectId = $request->currentProjectId;
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 1510;
-                    $rh = 782;
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    if($result){
-                        $saveLoc = 'assets/images/media/project_page/';
-                        $finalFile = 'bgimage_sample_'.time().'.png';
-                        $finalpath = $saveLoc.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
-                        }
-                        else{
-                            Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        }
-                        $projectMedia = Media::where('project_id', $currentProjectId)
-                            ->where('project_site', url())
-                            ->where('type', 'projectpg_back_img')
-                            ->first();
-                        if($projectMedia){
-                            // File::delete(public_path($projectMedia->path));    
-                        }
-                        else{
-                            $projectMedia = new Media;
-                            $projectMedia->project_id = $currentProjectId;
-                            $projectMedia->type = 'projectpg_back_img';
-                            $projectMedia->project_site = url();
-                            $projectMedia->caption = 'Project Page Main fold back Image';
-                        }
-                        $projectMedia->filename = $finalFile;
-                        $projectMedia->path = $finalpath;
-                        $projectMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
-                }
-                else if ($request->imgAction == 'favicon image'){
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 200;
-                    $rh = 200;
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    if($extension == 'png'){
-                        $quality = 9;
-                        $img  = imagecreatefrompng(public_path('/'.$src));
-                        $dest = ImageCreateTrueColor($rw, $rh);
-                        //Removing black background
-                        imagealphablending($dest, FALSE);
-                        imagesavealpha($dest, TRUE);
-                        imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                        $result = imagepng($dest, $src, $quality);
-                    }
-                    if($result){
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = 'favicon_'.time().'.png';
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
                         Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
-                            ->where('type','favicon_image_url')
-                            ->first();
-                        if($siteMedia){
-                            File::delete(public_path($siteMedia->path));    
-                        }
-                        else{
-                            $siteMedia = new SiteConfigMedia;
-                            $siteMedia->site_configuration_id = $siteConfigurationId;
-                            $siteMedia->type = 'favicon_image_url';
-                            $siteMedia->caption = 'Favicon Image';
-                        }
-                        $siteMedia->filename = $finalFile;
-                        $siteMedia->path = $finalpath;
-                        $siteMedia->save();
-                        File::delete($src);
-                        Session::flash('message', 'Favicon Updated Successfully');
-                        Session::flash('action', 'site-favicon');
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                     }
-                }
-                else if ($request->imgAction == 'projectPg thumbnail image'){
-                    $currentProjectId = $request->currentProjectId;
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 500;
-                    $rh = 500;
-
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    $imgName = '';
-                    if($request->projectThumbAction == 'summary_image'){
-                        $imgName = 'summary_image_'.time().'.png';
-                        $imgType = 'summary_image';
-                    }
-                    else if($request->projectThumbAction == 'security_image'){
-                        $imgName = 'security_image_'.time().'.png';
-                        $imgType = 'security_image';
-                    }
-                    else if($request->projectThumbAction == 'investor_distribution_image'){
-                        $imgName = 'investor_distribution_image_'.time().'.png';
-                        $imgType = 'investor_distribution_image';
-                    }
-                    else if($request->projectThumbAction == 'marketability_image'){
-                        $imgName = 'marketability_image_'.time().'.png';
-                        $imgType = 'marketability_image';
-                    }
-                    else if($request->projectThumbAction == 'residents_image'){
-                        $imgName = 'residents_image_'.time().'.png';
-                        $imgType = 'residents_image';
-                    }
-                    else if($request->projectThumbAction == 'investment_type_image'){
-                        $imgName = 'investment_type_image_'.time().'.png';
-                        $imgType = 'investment_type_image';
-                    }
-                    else if($request->projectThumbAction == 'expected_returns_image'){
-                        $imgName = 'expected_returns_image_'.time().'.png';
-                        $imgType = 'expected_returns_image';
-                    }
-                    else if($request->projectThumbAction == 'returns_paid_as_image'){
-                        $imgName = 'returns_paid_as_image_'.time().'.png';
-                        $imgType = 'returns_paid_as_image';
-                    }
-                    else if($request->projectThumbAction == 'taxation_image'){
-                        $imgName = 'taxation_image_'.time().'.png';
-                        $imgType = 'taxation_image';
-                    }
-                    else if($request->projectThumbAction == 'developer_image'){
-                        $imgName = 'developer_image_'.time().'.png';
-                        $imgType = 'developer_image';
-                    }
-                    else if($request->projectThumbAction == 'duration_image'){
-                        $imgName = 'duration_image_'.time().'.png';
-                        $imgType = 'duration_image';
-                    }
-                    else if($request->projectThumbAction == 'current_status_image'){
-                        $imgName = 'current_status_image_'.time().'.png';
-                        $imgType = 'current_status_image';
-                    }
-                    else if($request->projectThumbAction == 'rationale_image'){
-                        $imgName = 'rationale_image_'.time().'.png';
-                        $imgType = 'rationale_image';
-                    }
-                    else if($request->projectThumbAction == 'investment_risk_image'){
-                        $imgName = 'investment_risk_image_'.time().'.png';
-                        $imgType = 'investment_risk_image';
+                    $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                    $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                    ->where('type','homepg_back_img')
+                    ->first();
+                    if($siteMedia){
+                        File::delete(public_path($siteMedia->path));    
                     }
                     else{
-                        $imgName = 'how_to_invest_image_'.time().'.png';
-                        $imgType = 'how_to_invest_image';
+                        $siteMedia = new SiteConfigMedia;
+                        $siteMedia->site_configuration_id = $siteConfigurationId;
+                        $siteMedia->type = 'homepg_back_img';
+                        $siteMedia->caption = 'Home Page Main fold Back Image';
                     }
-                    if($result){
-                        $saveLoc = 'assets/images/media/project_page/';
-                        $finalFile = $imgName;
-                        $finalpath = $saveLoc.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
-                        }
-                        else{
-                            Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        }
-                        $projectMedia = Media::where('project_id', $currentProjectId)
-                            ->where('project_site', url())
-                            ->where('type', $imgType)
-                            ->first();
-                        if($projectMedia){
-                            File::delete(public_path($projectMedia->path));    
-                        }
-                        else{
-                            $projectMedia = new Media;
-                            $projectMedia->project_id = $currentProjectId;
-                            $projectMedia->type = $imgType;
-                            $projectMedia->project_site = url();
-                            $projectMedia->caption = 'Project Page Thumbnail Image';
-                        }
-                        $projectMedia->filename = $finalFile;
-                        $projectMedia->path = $finalpath;
-                        $projectMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
+                    $siteMedia->filename = $finalFile;
+                    $siteMedia->path = $finalpath;
+                    $siteMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                 }
-                else if ($request->imgAction == 'spv_logo_image'){
-                    $currentProjectId = $request->currentProjectId;
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 450;
-                    $rh = 150;
+            }
+            else if ($request->imgAction == 'investment image') {
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 190;
+                $rh = 244;
+
                     //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
 
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
                             //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
 
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
                             //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
 
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                if($result){
+                        // dd($extension);
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = 'Disclosure-250_'.time().'.png';
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
                     }
-                    if($result){
+                    else{
+                        Image::make($src)->save(public_path($saveLoc.$finalFile));
+                    }
+                    $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                    $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                    ->where('type','investment_page_image')
+                    ->first();
+                    if($siteMedia){
+                        File::delete(public_path($siteMedia->path));    
+                    }
+                    else{
+                        $siteMedia = new SiteConfigMedia;
+                        $siteMedia->site_configuration_id = $siteConfigurationId;
+                        $siteMedia->type = 'investment_page_image';
+                        $siteMedia->caption = 'Home Page investment fold Image';
+                    }
+                    $siteMedia->filename = $finalFile;
+                    $siteMedia->path = $finalpath;
+                    $siteMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'howItWorks image'){
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 200;
+                $rh = 200;
+
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                $imgName = '';
+                if($request->hiwImgAction == 'hiw_img1'){
+                    $imgName = 'hiw_img1_'.time().'.png';
+                    $imgType = 'how_it_works_image1';
+                }
+                else if ($request->hiwImgAction == 'hiw_img2'){
+                    $imgName = 'hiw_img2_'.time().'.png';
+                    $imgType = 'how_it_works_image2';
+                }
+                else if ($request->hiwImgAction == 'hiw_img3'){
+                    $imgName = 'hiw_img3_'.time().'.png';
+                    $imgType = 'how_it_works_image3';
+                }
+                else if ($request->hiwImgAction == 'hiw_img4'){
+                    $imgName = 'hiw_img4_'.time().'.png';
+                    $imgType = 'how_it_works_image4';
+                }
+                else{
+                    $imgName = 'hiw_img5_'.time().'.png';
+                    $imgType = 'how_it_works_image5';
+                }
+                if($result){
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = $imgName;
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
+                    }
+                    else{
+                        Image::make($src)->save(public_path($saveLoc.$finalFile));
+                    }
+                    $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                    $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                    ->where('type',$imgType)
+                    ->first();
+                    if($siteMedia){
+                        File::delete(public_path($siteMedia->path));    
+                    }
+                    else{
+                        $siteMedia = new SiteConfigMedia;
+                        $siteMedia->site_configuration_id = $siteConfigurationId;
+                        $siteMedia->type = $imgType;
+                        $siteMedia->caption = 'Home Page How It works fold Image';
+                    }
+                    $siteMedia->filename = $finalFile;
+                    $siteMedia->path = $finalpath;
+                    $siteMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'projectPg back image'){
+                $currentProjectId = $request->currentProjectId;
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 1510;
+                $rh = 782;
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                if($result){
+                    $saveLoc = 'assets/images/media/project_page/';
+                    $finalFile = 'bgimage_sample_'.time().'.png';
+                    $finalpath = $saveLoc.$finalFile;
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
+                    }
+                    else{
+                        Image::make($src)->save(public_path($saveLoc.$finalFile));
+                    }
+                    $projectMedia = Media::where('project_id', $currentProjectId)
+                    ->where('project_site', url())
+                    ->where('type', 'projectpg_back_img')
+                    ->first();
+                    if($projectMedia){
+                            // File::delete(public_path($projectMedia->path));    
+                    }
+                    else{
+                        $projectMedia = new Media;
+                        $projectMedia->project_id = $currentProjectId;
+                        $projectMedia->type = 'projectpg_back_img';
+                        $projectMedia->project_site = url();
+                        $projectMedia->caption = 'Project Page Main fold back Image';
+                    }
+                    $projectMedia->filename = $finalFile;
+                    $projectMedia->path = $finalpath;
+                    $projectMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'favicon image'){
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 200;
+                $rh = 200;
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                if($extension == 'png'){
+                    $quality = 9;
+                    $img  = imagecreatefrompng(public_path('/'.$src));
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                        //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                }
+                if($result){
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = 'favicon_'.time().'.png';
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    Image::make($src)->save(public_path($saveLoc.$finalFile));
+                    $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                    $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                    ->where('type','favicon_image_url')
+                    ->first();
+                    if($siteMedia){
+                        File::delete(public_path($siteMedia->path));    
+                    }
+                    else{
+                        $siteMedia = new SiteConfigMedia;
+                        $siteMedia->site_configuration_id = $siteConfigurationId;
+                        $siteMedia->type = 'favicon_image_url';
+                        $siteMedia->caption = 'Favicon Image';
+                    }
+                    $siteMedia->filename = $finalFile;
+                    $siteMedia->path = $finalpath;
+                    $siteMedia->save();
+                    File::delete($src);
+                    Session::flash('message', 'Favicon Updated Successfully');
+                    Session::flash('action', 'site-favicon');
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'projectPg thumbnail image'){
+                $currentProjectId = $request->currentProjectId;
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 500;
+                $rh = 500;
+
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                $imgName = '';
+                if($request->projectThumbAction == 'summary_image'){
+                    $imgName = 'summary_image_'.time().'.png';
+                    $imgType = 'summary_image';
+                }
+                else if($request->projectThumbAction == 'security_image'){
+                    $imgName = 'security_image_'.time().'.png';
+                    $imgType = 'security_image';
+                }
+                else if($request->projectThumbAction == 'investor_distribution_image'){
+                    $imgName = 'investor_distribution_image_'.time().'.png';
+                    $imgType = 'investor_distribution_image';
+                }
+                else if($request->projectThumbAction == 'marketability_image'){
+                    $imgName = 'marketability_image_'.time().'.png';
+                    $imgType = 'marketability_image';
+                }
+                else if($request->projectThumbAction == 'residents_image'){
+                    $imgName = 'residents_image_'.time().'.png';
+                    $imgType = 'residents_image';
+                }
+                else if($request->projectThumbAction == 'investment_type_image'){
+                    $imgName = 'investment_type_image_'.time().'.png';
+                    $imgType = 'investment_type_image';
+                }
+                else if($request->projectThumbAction == 'expected_returns_image'){
+                    $imgName = 'expected_returns_image_'.time().'.png';
+                    $imgType = 'expected_returns_image';
+                }
+                else if($request->projectThumbAction == 'returns_paid_as_image'){
+                    $imgName = 'returns_paid_as_image_'.time().'.png';
+                    $imgType = 'returns_paid_as_image';
+                }
+                else if($request->projectThumbAction == 'taxation_image'){
+                    $imgName = 'taxation_image_'.time().'.png';
+                    $imgType = 'taxation_image';
+                }
+                else if($request->projectThumbAction == 'developer_image'){
+                    $imgName = 'developer_image_'.time().'.png';
+                    $imgType = 'developer_image';
+                }
+                else if($request->projectThumbAction == 'duration_image'){
+                    $imgName = 'duration_image_'.time().'.png';
+                    $imgType = 'duration_image';
+                }
+                else if($request->projectThumbAction == 'current_status_image'){
+                    $imgName = 'current_status_image_'.time().'.png';
+                    $imgType = 'current_status_image';
+                }
+                else if($request->projectThumbAction == 'rationale_image'){
+                    $imgName = 'rationale_image_'.time().'.png';
+                    $imgType = 'rationale_image';
+                }
+                else if($request->projectThumbAction == 'investment_risk_image'){
+                    $imgName = 'investment_risk_image_'.time().'.png';
+                    $imgType = 'investment_risk_image';
+                }
+                else{
+                    $imgName = 'how_to_invest_image_'.time().'.png';
+                    $imgType = 'how_to_invest_image';
+                }
+                if($result){
+                    $saveLoc = 'assets/images/media/project_page/';
+                    $finalFile = $imgName;
+                    $finalpath = $saveLoc.$finalFile;
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
+                    }
+                    else{
+                        Image::make($src)->save(public_path($saveLoc.$finalFile));
+                    }
+                    $projectMedia = Media::where('project_id', $currentProjectId)
+                    ->where('project_site', url())
+                    ->where('type', $imgType)
+                    ->first();
+                    if($projectMedia){
+                        File::delete(public_path($projectMedia->path));    
+                    }
+                    else{
+                        $projectMedia = new Media;
+                        $projectMedia->project_id = $currentProjectId;
+                        $projectMedia->type = $imgType;
+                        $projectMedia->project_site = url();
+                        $projectMedia->caption = 'Project Page Thumbnail Image';
+                    }
+                    $projectMedia->filename = $finalFile;
+                    $projectMedia->path = $finalpath;
+                    $projectMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'spv_logo_image'){
+                $currentProjectId = $request->currentProjectId;
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 450;
+                $rh = 150;
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                if($result){
                         // $saveLoc = 'assets/images/media/project_page/';
                         // $finalFile = 'spv_logo_'.time().'.png';
                         // $finalpath = $saveLoc.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save();
-                        }
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save();
+                    }
                         // else{
                         //     Image::make($src)->save(public_path($saveLoc.$finalFile));
                         // }
                         // File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
                 }
-                else if ($request->imgAction == 'spv_md_sign_image'){
-                    $currentProjectId = $request->currentProjectId;
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 400;
-                    $rh = 300;
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    if($result){
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save();
-                        }
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
-                }
-                else if ($request->imgAction == 'project_thumbnail'){
-                    $projectId = $request->projectId;
-                    $extension = strtolower(File::extension($src));
-                    $img = '';
-                    $result = false;
-                    $rw = 1024;
-                    $rh = 683;
-
-                    //Create new coords for image.
-                    $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                    $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($hValue * $origHeight) / $convertedHeight;
-
-                    switch ($extension) {
-                        case 'jpg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-                        
-                        case 'jpeg':
-                            $quality = 90;
-                            $img  = imagecreatefromjpeg($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagejpeg($dest, $src, $quality);
-                            break;
-
-                        case 'png':
-                            $quality = 9;
-                            $img  = imagecreatefrompng($src);
-                            $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                            imagealphablending($dest, FALSE);
-                            imagesavealpha($dest, TRUE);
-                            imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                            $result = imagepng($dest, $src, $quality);
-                            break;
-
-                        default:
-                            return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                            break;
-                    }
-                    $imgName = 'project_thumbnail_'.$projectId.'_'.time().'.png';
-                    $imgType = 'project_thumbnail';
-                    if($result){
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = $imgName;
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
-                        if($extension != 'png'){
-                            Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
-                        }
-                        else{
-                            Image::make($src)->save(public_path($saveLoc.$finalFile));
-                        }
-                        $projectMedia = Media::where('project_id', $projectId)
-                            ->where('project_site', url())
-                            ->where('type', $imgType)
-                            ->first();
-                        if($projectMedia){
-                            File::delete(public_path($projectMedia->path));    
-                        }
-                        else{
-                            $projectMedia = new Media;
-                            $projectMedia->project_id = $projectId;
-                            $projectMedia->type = $imgType;
-                            $projectMedia->project_site = url();
-                            $projectMedia->caption = 'Project Page Thumbnail Image';
-                        }
-                        $projectMedia->filename = $finalFile;
-                        $projectMedia->path = $finalpath;
-                        $projectMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } else{
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
-                }
-                else {}
             }
-        // }
-    }
+            else if ($request->imgAction == 'spv_md_sign_image'){
+                $currentProjectId = $request->currentProjectId;
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 400;
+                $rh = 300;
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
 
-    public function saveHomePageText1(Request $request)
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                if($result){
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save();
+                    }
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else if ($request->imgAction == 'project_thumbnail'){
+                $projectId = $request->projectId;
+                $extension = strtolower(File::extension($src));
+                $img = '';
+                $result = false;
+                $rw = 1024;
+                $rh = 683;
+
+                    //Create new coords for image.
+                $newXValue = ($xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+
+                switch ($extension) {
+                    case 'jpg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'jpeg':
+                    $quality = 90;
+                    $img  = imagecreatefromjpeg($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagejpeg($dest, $src, $quality);
+                    break;
+
+                    case 'png':
+                    $quality = 9;
+                    $img  = imagecreatefrompng($src);
+                    $dest = ImageCreateTrueColor($rw, $rh);
+                            //Removing black background
+                    imagealphablending($dest, FALSE);
+                    imagesavealpha($dest, TRUE);
+                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                    $result = imagepng($dest, $src, $quality);
+                    break;
+
+                    default:
+                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                    break;
+                }
+                $imgName = 'project_thumbnail_'.$projectId.'_'.time().'.png';
+                $imgType = 'project_thumbnail';
+                if($result){
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = $imgName;
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    if($extension != 'png'){
+                        Image::make($src)->encode('png', 9)->save(public_path($saveLoc.$finalFile));
+                    }
+                    else{
+                        Image::make($src)->save(public_path($saveLoc.$finalFile));
+                    }
+                    $projectMedia = Media::where('project_id', $projectId)
+                    ->where('project_site', url())
+                    ->where('type', $imgType)
+                    ->first();
+                    if($projectMedia){
+                        File::delete(public_path($projectMedia->path));    
+                    }
+                    else{
+                        $projectMedia = new Media;
+                        $projectMedia->project_id = $projectId;
+                        $projectMedia->type = $imgType;
+                        $projectMedia->project_site = url();
+                        $projectMedia->caption = 'Project Page Thumbnail Image';
+                    }
+                    $projectMedia->filename = $finalFile;
+                    $projectMedia->path = $finalpath;
+                    $projectMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } else{
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+            else {}
+        }
+        // }
+}
+
+public function saveHomePageText1(Request $request)
+{
+    $str = $request->text1;
+    $siteconfiguration = SiteConfiguration::all();
+    $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+    if(!$siteconfiguration)
     {
-        $str = $request->text1;
+        $siteconfiguration = new SiteConfiguration;
+        $siteconfiguration->save();
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-        if(!$siteconfiguration)
-        {
-            $siteconfiguration = new SiteConfiguration;
-            $siteconfiguration->save();
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-        }
-        $siteconfiguration->update(['homepg_text1' => $str]);
-        return array('status' => 1, 'Message' => 'Data Successfully Updated');
     }
+    $siteconfiguration->update(['homepg_text1' => $str]);
+    return array('status' => 1, 'Message' => 'Data Successfully Updated');
+}
 
-    public function saveHomePageBtn1Text(Request $request)
-    {
-        $uinput = $request->text1;
-        $gotoid = $request->gotoid;
-        $siteconfiguration = SiteConfiguration::all();
-        $siteconfiguration = $siteconfiguration->where('project_site',url());
+public function saveHomePageBtn1Text(Request $request)
+{
+    $uinput = $request->text1;
+    $gotoid = $request->gotoid;
+    $siteconfiguration = SiteConfiguration::all();
+    $siteconfiguration = $siteconfiguration->where('project_site',url());
         // dd($siteconfiguration);
-        if($siteconfiguration->isEmpty())
-        {
-            $siteconfiguration = new SiteConfiguration;
-            $siteconfiguration->project_site = url(); 
-            $siteconfiguration->save();
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();        }
+    if($siteconfiguration->isEmpty())
+    {
+        $siteconfiguration = new SiteConfiguration;
+        $siteconfiguration->project_site = url(); 
+        $siteconfiguration->save();
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();        }
         $siteconfiguration = $siteconfiguration->first();
         $siteconfiguration->update(['homepg_btn1_text' => $uinput,'homepg_btn1_gotoid' => $gotoid]);
         return array('status' => 1, 'Message' => 'Data Successfully Updated');
@@ -1017,7 +1018,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('homepg_back_img') && $request->file('homepg_back_img')->isValid()){
                 // Image::make($request->homepg_back_img)->resize(530, null, function($constraint){
                 //     $constraint->aspectRatio();
@@ -1056,7 +1057,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
             }
             $destinationPath = '/';
-        
+
             if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
                 Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
                     $constraint->aspectRatio();
@@ -1081,7 +1082,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
             }
             $destinationPath = '/';
-        
+
             if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
                 Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
                     $constraint->aspectRatio();
@@ -1230,7 +1231,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('investment_page_image') && $request->file('investment_page_image')->isValid()){
                 Image::make($request->investment_page_image)->resize(530, null, function($constraint){
                     $constraint->aspectRatio();
@@ -1266,17 +1267,17 @@ class SiteConfigurationsController extends Controller
     {
         if (Auth::user()->roles->contains('role', 'superadmin')){
             $this->validate($request, array(
-            'how_it_works_title1' => 'required',
-            'how_it_works_title2' => 'required',
-            'how_it_works_title3' => 'required',
-            'how_it_works_title4' => 'required',
-            'how_it_works_title5' => 'required',
-            'how_it_works_desc1' => 'required',
-            'how_it_works_desc2' => 'required',
-            'how_it_works_desc3' => 'required',
-            'how_it_works_desc4' => 'required',
-            'how_it_works_desc5' => 'required',
-            ));
+                'how_it_works_title1' => 'required',
+                'how_it_works_title2' => 'required',
+                'how_it_works_title3' => 'required',
+                'how_it_works_title4' => 'required',
+                'how_it_works_title5' => 'required',
+                'how_it_works_desc1' => 'required',
+                'how_it_works_desc2' => 'required',
+                'how_it_works_desc3' => 'required',
+                'how_it_works_desc4' => 'required',
+                'how_it_works_desc5' => 'required',
+                ));
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             // trim(preg_replace('/\s+/', ' ', $string));
@@ -1346,7 +1347,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('how_it_works_image') && $request->file('how_it_works_image')->isValid()){
                 Image::make($request->how_it_works_image)->resize(530, null, function($constraint){
                     $constraint->aspectRatio();
@@ -1397,7 +1398,7 @@ class SiteConfigurationsController extends Controller
             $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
-            ));
+                ));
             $projectId = $request->current_project_id;
             Project::where('id', $projectId)->update([
                 'title' => $request->project_title_txt,
@@ -1440,7 +1441,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('projectpg_back_img') && $request->file('projectpg_back_img')->isValid()){
                 Image::make($request->projectpg_back_img)->resize(1510, null, function($constraint){
                     $constraint->aspectRatio();
@@ -1488,7 +1489,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('projectpg_thumbnail_image') && $request->file('projectpg_thumbnail_image')->isValid()){
                 Image::make($request->projectpg_thumbnail_image)->resize(530, null, function($constraint){
                     $constraint->aspectRatio();
@@ -1518,7 +1519,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('spv_logo') && $request->file('spv_logo')->isValid()){
                 Image::make($request->spv_logo)->resize(450, null, function($constraint){
                     $constraint->aspectRatio();
@@ -1548,7 +1549,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('spv_md_sign') && $request->file('spv_md_sign')->isValid()){
                 Image::make($request->spv_md_sign)->resize(400, null, function($constraint){
                     $constraint->aspectRatio();
@@ -1577,7 +1578,7 @@ class SiteConfigurationsController extends Controller
             {
                 $siteconfiguration = new SiteConfiguration;
                 $siteconfiguration->project_site = url();
-                 $siteconfiguration->save();
+                $siteconfiguration->save();
                 $siteconfiguration = SiteConfiguration::all();
                 $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             }
@@ -1601,7 +1602,7 @@ class SiteConfigurationsController extends Controller
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
             $destinationPath = 'assets/images/websiteLogo/';
-        
+
             if($request->hasFile('project_thumb_image') && $request->file('project_thumb_image')->isValid()){
                 // Image::make($request->project_thumb_image)->resize(530, null, function($constraint){
                 //     $constraint->aspectRatio();
@@ -1689,7 +1690,7 @@ class SiteConfigurationsController extends Controller
             {
                 $siteconfiguration = new SiteConfiguration;
                 $siteconfiguration->project_site = url();
-                 $siteconfiguration->save();
+                $siteconfiguration->save();
                 $siteconfiguration = SiteConfiguration::all();
                 $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             }
@@ -1731,11 +1732,47 @@ class SiteConfigurationsController extends Controller
             return $resultArray = array('status' => 1, 'opacity' => $projectConfiguration->overlay_opacity);
         }
     }
-    public function uploadMailerEmail(Request $request)
+    public function createMailSettings(Request $request)
     {
+        $this->validate($request, array(
+            'driver'=>'required',
+            'encryption'=>'required',
+            'host'=>'required',
+            'port'=>'required',
+            'from'=>'required',
+            'username'=>'required',
+            'password'=>'required'
+            ));
         $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
-        $siteconfiguration->mailer_email = $request->mailer_email;
-        $siteconfiguration->save();
+        $mail_setting = new MailSetting;
+        $mail_setting->site_configuration_id = $siteconfiguration->id;
+        $mail_setting->driver = $request->driver; 
+        $mail_setting->encryption = $request->encryption;
+        $mail_setting->host = $request->host;
+        $mail_setting->port = $request->port;
+        $mail_setting->from = $request->from;
+        $mail_setting->username = $request->username;
+        $mail_setting->password = $request->password;
+        $mail_setting->save();
+        Session::flash('message', 'Mail Settings Created Successfully');
+        Session::flash('action', 'mail_setting');
+        return redirect()->back();
+    }
+    public function updateMailSetting(Request $request, $id)
+    {
+        $this->validate($request, array(
+            'driver'=>'required',
+            'encryption'=>'required',
+            'host'=>'required',
+            'port'=>'required',
+            'from'=>'required',
+            'username'=>'required',
+            'password'=>'required'
+            ));
+        $mail_setting = MailSetting::findOrFail($id);
+        $mail_setting->update($request->all());
+        Session::flash('message', 'Mail Settings Updated Successfully');
+        Session::flash('action', 'mail_setting');
         return redirect()->back();
     }
     public function toggleSubSectionsVisibility(Request $request)

@@ -314,7 +314,8 @@ class DashboardController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
-        return view('dashboard.configuration.siteConfiguration',compact('color','siteconfiguration'));
+        $mail_setting = $siteconfiguration->mailSetting;
+        return view('dashboard.configuration.siteConfiguration',compact('color','siteconfiguration','mail_setting'));
     }
 
     public function investmentMoneyReceived(Request $request, AppMailer $mailer, $investment_id)
