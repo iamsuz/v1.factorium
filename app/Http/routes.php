@@ -210,6 +210,7 @@ Route::post('/configuration/home/updateOverlayOpacity', ['as'=>'configuration.ho
 Route::post('/configuration/project/updateProjectPgOverlayOpacity', ['as'=>'configuration.project.updateProjectPgOverlayOpacity', 'uses'=>'SiteConfigurationsController@updateProjectPgOverlayOpacity']);
 Route::patch('/configuration/updatemaileremail', ['as'=>'configuration.updatemaileremail', 'uses'=>'SiteConfigurationsController@uploadMailerEmail']);
 Route::patch('/configuration/{id}/updatemailsetting', ['as'=> 'configuration.updatemailsettings', 'uses'=>'SiteConfigurationsController@updateMailSetting']);
+Route::post('/configuration/createmailsetting', ['as'=> 'configuration.createmailsettings', 'uses'=>'SiteConfigurationsController@createMailSettings']);
 Route::post('/configuration/project/toggleSubSectionsVisibility', ['as'=>'configuration.project.toggleSubSectionsVisibility', 'uses'=>'SiteConfigurationsController@toggleSubSectionsVisibility']);
 Route::post('/project/edit/deleteSubSectionImages', ['as'=>'project.deleteSubSectionImages', 'uses'=>'ProjectsController@deleteSubSectionImages']);
 Route::post('/project/edit/deleteProjectCarouselImages', ['as'=>'project.deleteProjectCarouselImages', 'uses'=>'ProjectsController@deleteProjectCarouselImages']);
