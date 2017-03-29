@@ -66,7 +66,11 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
      */
     public function handle(Mailer $mailer)
     {
-        $this->overrideMailerConfig();
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $config = $siteconfig->mailSetting()->first();
+        if($config){
+            $this->overrideMailerConfig();
+        }
         $user = $this->investor;
         $amount = $user->investments->last()->pivot->amount;
         $project = $this->project;

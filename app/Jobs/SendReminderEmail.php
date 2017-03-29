@@ -67,7 +67,11 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
      */
     public function handle(Mailer $mailer)
     {
-        $this->overrideMailerConfig();
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $config = $siteconfig->mailSetting()->first();
+        if($config){
+            $this->overrideMailerConfig();
+        }
         $investor = $this->investor;
         $project = $this->project;
         $role = Role::findOrFail(1);
