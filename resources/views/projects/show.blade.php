@@ -1169,6 +1169,21 @@
 			</div>
 			@endif
 			@endif
+			<br>
+			<div class="col-md-10 col-md-offset-1">
+				@if($project->investment)
+				<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+					@if($project->button_label)
+					<?php echo $project->button_label; ?>
+					@else
+					Invest Now
+					@endif
+				</b></a>
+				<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
+				@else
+				<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+				@endif
+			</div>
 		</div>
 		<div class="col-md-6">
 			<h2 class="text-left second_color" style="font-size:42px;color:#282a73;padding-top:125px;">Project FAQs</h2>
