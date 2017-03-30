@@ -1458,7 +1458,6 @@
 @endif
 <div id="menu1" class="tab-pane fade">
 	<div class="container">
-		<h3>Progress</h3>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -1470,11 +1469,11 @@
 			<tbody>
 				@foreach($project_prog as $project_progs)
 				<tr>
-					<td>{{$project_progs->updated_date}}
+					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 					</td>
 					<td>{{$project_progs->progress_description}} </td>
 					<td>{{$project_progs->progress_details}}
-						<p>Link</p>
+						<br>
 						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
 							{{--<div class="row">
 								 @foreach($project->media->chunk(1) as $set)

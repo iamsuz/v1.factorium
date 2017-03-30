@@ -331,7 +331,7 @@
             @else
             <img src="{{asset('assets/images/1.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title1-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif</h3>
+            <h3 class="how-it-works-title1-section second_color text-center" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title1 != ''){{$siteConfiguration->how_it_works_title1}}@endif</h3>
           </div>
           <p class="how-it-works-desc1-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc1 != ''){!!$siteConfiguration->how_it_works_desc1!!}@endif</p>
         </div>
@@ -352,7 +352,7 @@
             @else
             <img src="{{asset('assets/images/2.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title2-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title2 != ''){{$siteConfiguration->how_it_works_title2}}@endif</h3>
+            <h3 class="how-it-works-title2-section second_color text-center" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title2 != ''){{$siteConfiguration->how_it_works_title2}}@endif</h3>
           </div>
           <p class="how-it-works-desc2-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc2 != ''){!!$siteConfiguration->how_it_works_desc2!!}@endif
           </p>
@@ -374,7 +374,7 @@
             @else
             <img src="{{asset('assets/images/3.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title3-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title3 != ''){{$siteConfiguration->how_it_works_title3}}@endif</h3>
+            <h3 class="how-it-works-title3-section second_color text-center" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title3 != ''){{$siteConfiguration->how_it_works_title3}}@endif</h3>
           </div>
           <p class="how-it-works-desc3-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc3 != ''){!!$siteConfiguration->how_it_works_desc3!!}@endif
           </p>
@@ -396,7 +396,7 @@
             @else
             <img src="{{asset('assets/images/4.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title4-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title4 != ''){{$siteConfiguration->how_it_works_title4}}@endif</h3>
+            <h3 class="how-it-works-title4-section second_color text-center" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title4 != ''){{$siteConfiguration->how_it_works_title4}}@endif</h3>
           </div>
           <p class="how-it-works-desc4-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc4 != ''){!!$siteConfiguration->how_it_works_desc4!!}@endif
           </p>
@@ -418,7 +418,7 @@
             @else
             <img src="{{asset('assets/images/5.png')}}" class="img-responsive center-block"  width="200" height="200">
             @endif
-            <h3 class="how-it-works-title5-section second_color" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title5 != ''){{$siteConfiguration->how_it_works_title5}}@endif</h3>
+            <h3 class="how-it-works-title5-section second_color text-center" style="min-height: 52px;">@if($siteConfiguration->how_it_works_title5 != ''){{$siteConfiguration->how_it_works_title5}}@endif</h3>
           </div>
           <p class="how-it-works-desc5-section" style="font-weight:100; color:#6B798F;">@if($siteConfiguration->how_it_works_desc5 != ''){!!$siteConfiguration->how_it_works_desc5!!}@endif
           </p>
@@ -2113,10 +2113,9 @@
         forced_root_block : "div",
         selector: 'textarea',
         plugins: 'charmap textcolor',
-        toolbar: "alignleft aligncenter alignright alignjustify | forecolor backcolor bold italic",
+        toolbar: "alignleft aligncenter alignright alignjustify forecolor",
         menubar: false,
-        status: false,
-
+        statusbar: false,
       });
     }
 
