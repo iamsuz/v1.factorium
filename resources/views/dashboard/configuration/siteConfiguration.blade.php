@@ -204,7 +204,7 @@ Configuration | Dashboard | @parent
                       <h5><i><small>Enter the text in below text field and save to display new title for the website.</small></i></h5>
                       <br>
                       <div class="row title-text-error" style="text-align: -webkit-center;"></div>
-                      {!! Form::text('title_text_imput', null, array('placeholder'=>'Enter website title', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'title_text_imput')) !!}
+                      {!! Form::text('title_text_imput', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text, array('placeholder'=>'Enter website title', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'title_text_imput')) !!}
                       {!! $errors->first('title_text_imput', '<small class="text-danger">:message</small>') !!}
                       <br>
                       {!! Form::submit('Save Title', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_title_text_btn')) !!}
@@ -360,7 +360,7 @@ Configuration | Dashboard | @parent
                         <h5><i><small>Enter the text in below text field and save to display new name for the website.</small></i></h5>
                         <br>
                         <div class="row site-name-error" style="text-align: -webkit-center;"></div>
-                        {!! Form::text('site_name_input', null, array('placeholder'=>'Enter website name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'site_name_input')) !!}
+                        {!! Form::text('site_name_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name, array('placeholder'=>'Enter website name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'site_name_input')) !!}
                         {!! $errors->first('site_name_input', '<small class="text-danger">:message</small>') !!}
                         <br>
                         {!! Form::submit('Save Website Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_website_name_btn')) !!}
@@ -387,7 +387,7 @@ Configuration | Dashboard | @parent
                         <h5><i><small>Enter the text in below text field and save to display new client name for the website.</small></i></h5>
                         <br>
                         <div class="row client-name-error" style="text-align: -webkit-center;"></div>
-                        {!! Form::text('client_name_input', null, array('placeholder'=>'Enter client name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'client_name_input')) !!}
+                        {!! Form::text('client_name_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name, array('placeholder'=>'Enter client name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'client_name_input')) !!}
                         {!! $errors->first('client_name_input', '<small class="text-danger">:message</small>') !!}
                         <br>
                         {!! Form::submit('Save Client Name', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_client_name_btn')) !!}

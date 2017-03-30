@@ -1456,7 +1456,7 @@
 </form>
 @endif
 @endif
-<div id="menu1" class="tab-pane fade">
+<div id="menu1" class="tab-pane fade" style="color: #000;">
 	<div class="container">
 		<table class="table table-striped">
 			<thead>
@@ -1500,7 +1500,7 @@
 					<tr>
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<h3>Add new Update</h3>
+						<h3 style="color: #000;">Add new Update</h3>
 						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'POST')) !!}
 						<div class="row">
 							<td>
@@ -1556,7 +1556,7 @@
 			</table>
 			@if(Auth::user())
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-			<h3>Upload a Images</h3>
+			<h3 style="color: #000;">Upload a Images</h3>
 			<div class="row">
 				<div class="col-md-12">
 					{!! Form::open(array('route'=>['configuration.uploadprogress', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
