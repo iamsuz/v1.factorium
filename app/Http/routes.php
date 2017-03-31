@@ -214,3 +214,4 @@ Route::post('/configuration/createmailsetting', ['as'=> 'configuration.createmai
 Route::post('/configuration/project/toggleSubSectionsVisibility', ['as'=>'configuration.project.toggleSubSectionsVisibility', 'uses'=>'SiteConfigurationsController@toggleSubSectionsVisibility']);
 Route::post('/project/edit/deleteSubSectionImages', ['as'=>'project.deleteSubSectionImages', 'uses'=>'ProjectsController@deleteSubSectionImages']);
 Route::post('/project/edit/deleteProjectCarouselImages', ['as'=>'project.deleteProjectCarouselImages', 'uses'=>'ProjectsController@deleteProjectCarouselImages']);
+Route::post('/configuration/project/toggleProspectusText', ['as'=>'configuration.project.toggleProspectusText', 'uses'=>'SiteConfigurationsController@toggleProspectusText']);

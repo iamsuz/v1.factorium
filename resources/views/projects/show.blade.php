@@ -151,7 +151,7 @@
 							Invest Now
 							@endif
 						</b></a>
-						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
+						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif before making any decisions</small></h6>
 						@else
 						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 						@endif
@@ -174,9 +174,17 @@
 			</div>
 			@endif
 			@endif
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="row text-center col-md-6">
+				<input type="checkbox" class="prospectus-text-switch" autocomplete="off" data-label-text="Set Text" data-size="mini" @if($project->projectconfiguration->show_prospectus_text) checked value="1" @else value="0" @endif>
+			</div>
+			@endif
+			@endif
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the Prospectus in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
+	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the Invest Now or Express Interest button.</h6>
 	<section>
 	<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
@@ -186,7 +194,7 @@
 						<div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
 							<span style="font-size:1em;" class="project-pds1-link-field">
-								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Prospectus</a>
+								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif</a>
 							</span>
 						</div>
 							<!-- <div class="col-md-3 text-left">
@@ -1179,7 +1187,7 @@
 					Invest Now
 					@endif
 				</b></a>
-				<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the Prospectus before making any decisions</small></h6>
+				<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif before making any decisions</small></h6>
 				@else
 				<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 				@endif
@@ -1821,7 +1829,7 @@
 		deleteSubSectionImages();
 		//Delete Carousel Image
 		deleteCarouselImage();
-
+		toggleProspectusText();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2342,6 +2350,38 @@
 			}
 		});
 	}
+
+	function toggleProspectusText(){
+    	$('.prospectus-text-switch').bootstrapSwitch({
+		    onText: "Prospectus",
+		    onColor: 'primary',
+		    offColor: 'primary',
+		    offText: "IM",
+		    animate: true,
+		});
+		$('.prospectus-text-switch').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			var checkValue = $(this).val();
+			var projectId = '{{$project->id}}';
+			$('.loader-overlay').show();
+			$.ajax({
+	          	url: '/configuration/project/toggleProspectusText',
+	          	type: 'POST',
+	          	dataType: 'JSON',
+	          	data: {checkValue, projectId},
+	          	headers: {
+	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	          	},
+	        }).done(function(data){
+	        	console.log(data);
+	        	$('.loader-overlay').hide();
+	        	if(!data.status){
+	        		alert('something went wrong');
+	        	}
+	        });
+		});
+    }
 
 </script>
 @stop

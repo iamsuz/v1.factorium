@@ -1794,4 +1794,20 @@ public function saveHomePageBtn1Text(Request $request)
             return $resultArray = array('status' => 1);
         }   
     }
+    public function toggleProspectusText(Request $request)
+    {
+        $projectId =$request->projectId;
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = (int)$projectId;
+            $projectConfiguration->save();
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+        }
+        $projectConfiguration->update(['show_prospectus_text'=>$request->checkValue]);
+        return $resultArray = array('status' => 1);
+    }
 }
