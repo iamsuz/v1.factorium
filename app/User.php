@@ -95,7 +95,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function investments()
     {
-        return $this->belongsToMany('App\Project', 'investment_investor')->withPivot('amount')->withTimestamps();
+        return $this->belongsToMany('App\Project', 'investment_investor')->withPivot('amount')->withPivot('investing_as')->withPivot('id')->withTimestamps();
     }
 
     /**

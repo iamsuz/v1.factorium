@@ -139,4 +139,8 @@ class Project extends Model
     {
         return $this->hasOne('App\ProjectConfiguration');
     }
+    public function investing_joint()
+    {
+        return $this->hasMany('App\InvestingJoint');
+    }
 }

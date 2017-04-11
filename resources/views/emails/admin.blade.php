@@ -548,7 +548,7 @@
                                 <img src="{{asset('assets/images/main_logo.png')}}" align="center" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">
                                 @endif -->
 
-                                <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
+                                <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;"> @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}} @else Estate Baron @endif</p>
 
                               </td>
                             </tr>
@@ -580,12 +580,19 @@
                 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear Admin(s),</span></span></span></strong>
 
                 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-                  <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Application form received from:<br>
+                  <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Application form received as {{$investing_as}} from:<br>
                     <br>
                     Name:  <b>{{$investor->first_name}} {{$investor->last_name}}</b>
                     <br><br> 
                     Email: <b>{{$investor->email}}</b>
                     <br><br>
+                    @if($investing_as == 'Joint Investor')
+                    Joint Investor Name:  <b>{{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}</b>
+                    <br><br>
+                    @elseif($investing_as == 'Trust or Company')
+                    Trust or Company Name: <b>{{$investing->investing_company}}</b>
+                    <br><br>
+                    @endif
                     Phone: <b>{{$investor->phone_number}}</b>
                     <br><br>
                     Project: <b>{{$project->title}}</b></span></span></span>

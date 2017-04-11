@@ -8,6 +8,7 @@ use App\Color;
 use App\ProjectFAQ;
 use App\ProjectProg;
 use App\Http\Requests;
+use App\InvestingJoint;
 use App\Mailers\AppMailer;
 use App\InvestmentInvestor;
 use Illuminate\Http\Request;
@@ -381,7 +382,7 @@ class ProjectsController extends Controller
 
     public function showInterest($project_id, AppMailer $mailer)
     {
-        
+
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         if(!$project->show_invest_now_button) {
@@ -649,7 +650,7 @@ class ProjectsController extends Controller
         $amount = $request->amount_to_invest;
         $project_id = $request->project_id;
         $user_id = $request->user_id;
-        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number);
+        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number.'&investing_as='.$request->investing_as.'&joint_investor_first='.$request->joint_investor_first.'&joint_investor_last='.$request->joint_investor_last.'&investing_company_name='.$request->investing_company_name);
     }
 
     public function gform(Request $request)
@@ -658,20 +659,18 @@ class ProjectsController extends Controller
         $user = User::findOrFail($request->user_id);
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         // $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url()]);
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
         $user->update($request->all());
-        // $intercom = IntercomBasicAuthClient::factory(array(
-        //     'app_id' => 'sdaro77j',
-        //     'api_key' => '0c8ef70a8258f33354e82f24676932620f6ebcee',
-        //     ));
-        // $intercom->createEvent(array(
-        //     "event_name" => "Expressed-Interest",
-        //     "created_at" => time(),
-        //     "user_id" => $user->id,
-        //     "project_id" => $project->id,
-        //     "project_name" => $project->title
-        //     ));
-
+        $investor = InvestmentInvestor::get()->last();
+        if($request->investing_as != 'Individual Investor'){
+            $investing_joint = new InvestingJoint;
+            $investing_joint->project_id = $project->id;
+            $investing_joint->investment_investor_id = $investor->id;
+            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+            $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->save();
+        }
         $this->dispatch(new SendInvestorNotificationEmail($user,$project));
         $this->dispatch(new SendReminderEmail($user,$project));
 
@@ -691,26 +690,26 @@ class ProjectsController extends Controller
             'spv_contact_number' => 'required|numeric',
             'spv_md_name' => 'required',
             // 'spv_logo_image_path' => 'required',
-        ]);
+            ]);
         //validate SPV logo
         $projectMedia = Media::where('project_id', $project_id)
-                ->where('project_site', url())
-                ->where('type', 'spv_logo_image')
-                ->first();
+        ->where('project_site', url())
+        ->where('type', 'spv_logo_image')
+        ->first();
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_logo' => 'required',
-            ]);    
+                ]);    
         }
         //Validate SPV MD Signature
         $projectMedia = Media::where('project_id', $project_id)
-                ->where('project_site', url())
-                ->where('type', 'spv_md_sign_image')
-                ->first();
+        ->where('project_site', url())
+        ->where('type', 'spv_md_sign_image')
+        ->first();
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_md_sign' => 'required',
-            ]);    
+                ]);    
         }
         $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
         if(!$projectSpv)
@@ -730,7 +729,7 @@ class ProjectsController extends Controller
             'spv_country' => $request->spv_country,
             'spv_contact_number' => $request->spv_contact_number,
             'spv_md_name' => $request->spv_md_name,
-        ]);
+            ]);
         if($spv_result)
         {
             if($request->spv_logo_image_path && $request->spv_logo_image_path != ''){
@@ -741,9 +740,9 @@ class ProjectsController extends Controller
                 File::delete($request->spv_logo_image_path);
                 
                 $projectMedia = Media::where('project_id', $project_id)
-                    ->where('project_site', url())
-                    ->where('type', 'spv_logo_image')
-                    ->first();
+                ->where('project_site', url())
+                ->where('type', 'spv_logo_image')
+                ->first();
                 if($projectMedia){
                     File::delete(public_path($projectMedia->path));    
                 }
@@ -765,9 +764,9 @@ class ProjectsController extends Controller
                 Image::make($request->spv_md_sign_image_path)->save(public_path($finalpath));
                 File::delete($request->spv_md_sign_image_path);
                 $projectMedia = Media::where('project_id', $project_id)
-                    ->where('project_site', url())
-                    ->where('type', 'spv_md_sign_image')
-                    ->first();
+                ->where('project_site', url())
+                ->where('type', 'spv_md_sign_image')
+                ->first();
                 if($projectMedia){
                     File::delete(public_path($projectMedia->path));    
                 }

@@ -7,6 +7,7 @@ use Mail;
 use App\Role;
 use App\User;
 use App\Project;
+use App\InvestingJoint;
 use App\UserRegistration;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Mail\Mailer;
@@ -82,11 +83,14 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
             }
         }
         $amount = $investor->investments->last()->pivot->amount;
+        $investing_as = $investor->investments->last()->pivot->investing_as;
+        $investment_investor_id = $investor->investments->last()->pivot->id;
+        $investing = InvestingJoint::where('investment_investor_id', $investment_investor_id)->get()->last();
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.admin';
         $this->subject = $investor->first_name.' '.$investor->last_name.' has invested '.$amount.' in '.$project->title;
-        $this->data = compact('project', 'investor');
+        $this->data = compact('project', 'investor' , 'investing_as','investing');
         $mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
