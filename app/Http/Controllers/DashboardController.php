@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Investment;
 use App\InvestmentInvestor;
+use App\InvestingJoint;
 use App\Invite;
 use App\Mailers\AppMailer;
 use App\Note;
@@ -202,7 +203,7 @@ class DashboardController extends Controller
         $investment->accepted = 1;
         $investment->money_received = 1;
         $investment->save();
-
+        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         if($investment->accepted) {
             $shareInit = 1;
             $investmentShares = InvestmentInvestor::orderBy('updated_at','ASC')->get()
@@ -217,7 +218,7 @@ class DashboardController extends Controller
                 }
             }
             echo("<script>console.log('".$shareInit."');</script>");
-            $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit]);
+            $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing]);
             $pdf->setPaper('a4', 'landscape');
             $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
             $mailer->sendInvoiceToUser($investment);
