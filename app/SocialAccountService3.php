@@ -53,8 +53,8 @@ class SocialAccountService3
                 // $userReg->delete();
                 //intercom create user
                 $intercom = IntercomBasicAuthClient::factory(array(
-                    'app_id' => 'sdaro77j',
-                    'api_key' => '0c8ef70a8258f33354e82f24676932620f6ebcee',
+                    'app_id' => 'refan8ue',
+                    'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
                     ));
                 $intercom->createUser(array(
                     "id" => $user->id,
