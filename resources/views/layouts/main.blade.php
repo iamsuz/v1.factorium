@@ -252,13 +252,12 @@
 {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
 
 <script>
-    peekin = {api_key: "3b784b7b1144a1329294"};
-    // If you'd like to identify the user, uncomment the following line:
-    @if(Auth::user())
-    peekin.identity = "{{Auth::user()->first_name}} {{Auth::user()->last_name}}";
-    @endif
+    (function(w, u, d){if(typeof u!=="function"){var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Upscope=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://js.upscope.io/upscope.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(d.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})(window, window.Upscope, document)
+
+    Upscope('init', {
+    apiKey: "RgfYeBGvVzVmKMEWhbfRBpug"
+    });
 </script>
-<script src="//cdn.peekin.io/peekin.js" async></script>
 <!-- Begin Inspectlet Embed Code -->
 <script type="text/javascript" id="inspectletjs">
     window.__insp = window.__insp || [];
