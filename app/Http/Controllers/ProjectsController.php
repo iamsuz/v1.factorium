@@ -30,6 +30,7 @@ use App\ProjectSpvDetail;
 use App\Media;
 use Validator;
 use App\ProjectConfiguration;
+use Session;
 
 class ProjectsController extends Controller
 {
@@ -842,6 +843,30 @@ class ProjectsController extends Controller
                     $projectMedia->delete();
                     return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
                 }
+            }
+        }
+    }
+
+    public function updateProjectBankDetails(Request $request)
+    {
+        $bankName = $request->bankName;
+        $accountName = $request->accountName;
+        $bsbName = $request->bsbName;
+        $accountNumber = $request->accountNumber;
+        $bankReference = $request->bankReference;
+        $projectId = $request->projectId;
+        if($projectId != ''){
+            $projectInvestment = Investment::where('project_id', (int)$projectId)->first();
+            if(!empty($projectInvestment)){
+                $projectInvestment->update([
+                    'bank' => $bankName,
+                    'bank_account_name' => $accountName,
+                    'bsb' => $bsbName,
+                    'bank_account_number' => $accountNumber,
+                    'bank_reference' => $bankReference
+                    ]);
+            Session::flash('bankDetailsUpdateMessage', 'Details Updated Successfully');
+                return $resultArray = array('status' => 1);
             }
         }
     }

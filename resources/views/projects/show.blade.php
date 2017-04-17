@@ -1161,8 +1161,35 @@
 				<li style="font-size:0.875em;">Make a Bank transfer to</li>
 			</ol> -->
 			@if($project->investment)
-			@if($project->investment->bank)
+			@if(Auth::guest())
+		    @else
+		    @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<div class="row">
+				<input type="button" class="btn btn-default col-md-4 col-md-offset-4 show-bank-detail-edit-section-btn" value="Edit Bank Details">
+				<input type="button" class="btn btn-primary col-md-4 col-md-offset-4 save-bank-detail-btn" style="display: none;" value="Save bank Details">
+			</div>
+			@if (Session::has('bankDetailsUpdateMessage'))
+            <div class="col-md-10 col-md-offset-1" style="background-color: #c9ffd5;color: #027039;padding: 1px; margin-top:5px; margin-bottom: 5px; text-align: center;">
+              <h5>{!! Session::get('bankDetailsUpdateMessage') !!}</h5>
+            </div>
+            @endif
+			@endif
+			@endif
+			<div class="row edit-bank-detail-section" style="display: none;">
+				<div class="col-md-10 col-md-offset-1 text-justify">
+					<h5>
+						<table class="table table-responsive font-bold" style="color:#2d2d4b;">
+							<tr><td>Bank</td><td><input type="text" value="{!!$project->investment->bank!!}" id="bank_name"></td></tr>
+							<tr><td>Account Name</td><td><input type="text" value="{!!$project->investment->bank_account_name!!}" id="account_name"> </td></tr>
+							<tr><td>BSB </td><td><input type="text" value="{!!$project->investment->bsb!!}" id="bsb_name"> </td></tr>
+							<tr><td>Account No</td><td><input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number"> </td></tr>
+							<tr><td>Reference</td><td><input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference"> </td></tr>
+						</table>
+					</h5>
+				</div>
+			</div>
+			@if($project->investment->bank)
+			<div class="row bank-detail-section">
 				<div class="col-md-10 col-md-offset-1 text-justify">
 					<h5>
 						<table class="table table-responsive font-bold" style="color:#2d2d4b;">
@@ -1830,6 +1857,7 @@
 		//Delete Carousel Image
 		deleteCarouselImage();
 		toggleProspectusText();
+		editBankDetailsFromFrontEnd();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2381,6 +2409,42 @@
 	        	}
 	        });
 		});
+    }
+
+    function editBankDetailsFromFrontEnd(){
+    	$('.show-bank-detail-edit-section-btn').click(function(){
+    		$('.show-bank-detail-edit-section-btn, .save-bank-detail-btn').toggle();
+    		$('.edit-bank-detail-section, .bank-detail-section').slideToggle();
+    		$('.save-bank-detail-btn').click(function(){
+    			var bankName = $.trim($('#bank_name').val());
+    			var accountName = $.trim($('#account_name').val());
+    			var bsbName = $.trim($('#bsb_name').val());
+    			var accountNumber = $.trim($('#account_number').val());
+    			var bankReference = $.trim($('#bank_reference').val());
+    			var projectId = '{{$project->id}}';
+    			if(bankName == '' || accountName == '' || bsbName == '' || accountNumber == '' || bankReference == ''){
+    				alert('All bank details are mandatory.');
+    			} else {
+    				$('.loader-overlay').show();
+    				$.ajax({
+			          	url: '/project/edit/updateProjectBankDetails',
+			          	type: 'POST',
+			          	dataType: 'JSON',
+			          	data: {bankName, accountName, bsbName, accountNumber, bankReference, projectId},
+			          	headers: {
+			            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			          	},
+			        }).done(function(data){
+			        	// $('.loader-overlay').hide();
+			        	if(data.status){
+			        		location.reload('/');
+			        	}
+			        });
+    			}
+
+
+    		});
+    	});
     }
 
 </script>

@@ -216,3 +216,4 @@ Route::post('/project/edit/deleteSubSectionImages', ['as'=>'project.deleteSubSec
 Route::post('/project/edit/deleteProjectCarouselImages', ['as'=>'project.deleteProjectCarouselImages', 'uses'=>'ProjectsController@deleteProjectCarouselImages']);
 Route::post('/configuration/project/toggleProspectusText', ['as'=>'configuration.project.toggleProspectusText', 'uses'=>'SiteConfigurationsController@toggleProspectusText']);
 Route::post('/configuration/home/swapProjectRanking', ['as'=>'configuration.home.swapProjectRanking', 'uses'=>'SiteConfigurationsController@swapProjectRanking']);
+Route::post('/project/edit/updateProjectBankDetails', ['as'=>'project.updateProjectBankDetails', 'uses'=>'ProjectsController@updateProjectBankDetails']);
