@@ -52,16 +52,16 @@ class PagesController extends Controller
         $currentUserRole = '';
         $superadmin_access = 0;
         if(Auth::guest()) {
-            $projects = Project::where(['active'=>'1','project_site'=>url()])->get();
+            $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
             $roles = $user->roles;
             if ($roles->contains('role', 'admin')) {
-                $projects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->get();
+                $projects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
                 // dd($projects);
             } else {
-                $projects = Project::where(['active'=>'1','project_site'=>url()])->get();
+                $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             }
             if(Auth::user()->roles->contains('role','superadmin')){
                 if($user->registration_site == url())

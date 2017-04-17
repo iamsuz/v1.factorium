@@ -529,8 +529,18 @@
         @endforeach
         @else
         @if(count($projects)==3)
+        @if(Auth::guest())
+        @else
+        @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+        <div class="row" style="margin-bottom: 20px;">
+          <input type="button" class="btn btn-default col-md-2 col-md-offset-5 enable-swap-btn" value="Enable Swap">
+          &nbsp;&nbsp;&nbsp;<button style="background: none; border: none;"><i class="fa fa-refresh swap-projects-btn" aria-hidden="true" style="font-size: 2em; cursor: pointer;color: #000; vertical-align: -webkit-baseline-middle;" data-toggle="tooltip" title="Swap"></i></button><br>
+          <div style="text-align: center;"><span class="projects-swap-guide-msg" style="font-size: 0.7em; color: #ce1e1e;"></span></div>
+        </div>
+        @endif
+        @endif
         @foreach($projects->chunk(3) as $sets)
-        <div class="row">
+        <div class="row" id="project-section-to-reload1">
           @foreach($sets as $project)
           <?php
           $pledged_amount = $investments->where('project_id', $project->id)->sum('amount');
@@ -542,7 +552,8 @@
             $remaining_amount = 0;
           }
           ?>
-          <div class="col-md-4" style="" id="circle{{$project->id}}">
+          <div class="col-md-4 swap-select-overlay" style="" id="circle{{$project->id}}">
+            <div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
             @if(Auth::guest())
             @else
             @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -607,8 +618,18 @@
         </div>
         @endforeach
         @else
+        @if(Auth::guest())
+        @else
+        @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+        <div class="row" style="margin-bottom: 20px;">
+          <input type="button" class="btn btn-default col-md-2 col-md-offset-5 enable-swap-btn" value="Enable Swap">
+          &nbsp;&nbsp;&nbsp;<button style="background: none; border: none;"><i class="fa fa-refresh swap-projects-btn" aria-hidden="true" style="font-size: 2em; cursor: pointer;color: #000; vertical-align: -webkit-baseline-middle;" data-toggle="tooltip" title="Swap"></i></button><br>
+          <div style="text-align: center;"><span class="projects-swap-guide-msg" style="font-size: 0.7em; color: #ce1e1e;"></span></div>
+        </div>
+        @endif
+        @endif
         @foreach($projects->chunk(2) as $sets)
-        <div class="row">
+        <div class="row" id="project-section-to-reload2">
           @foreach($sets as $project)
           <?php
           $pledged_amount = $investments->where('project_id', $project->id)->sum('amount');
@@ -620,7 +641,8 @@
             $remaining_amount = 0;
           }
           ?>
-          <div class="col-sm-6 col-md-6"  id="circle{{$project->id}}">
+          <div class="col-sm-6 col-md-6 swap-select-overlay"  id="circle{{$project->id}}">
+            <div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
             @if(Auth::guest())
             @else
             @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -1516,6 +1538,8 @@
       updateOverlayOpacity();
       //Rich text editor initialization
       richTextareaFieldInitialization();
+      //Swap projects raning
+      swapProjectsRanking();
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -2115,6 +2139,70 @@
         toolbar: "alignleft aligncenter alignright alignjustify forecolor",
         menubar: false,
         statusbar: false,
+      });
+    }
+
+    function swapProjectsRanking(){
+      $('.enable-swap-btn').click(function(){
+        $(this).attr('disabled', 'disabled');
+        $('.projects-swap-guide-msg').html('Select projects area to swap, then click on Swap icon.');
+        $(".swap-select-overlay").mouseenter(function() {
+          $(this).children( ".swap-select-overlay-style" ).show();
+        }).mouseleave(function() {
+          $(this).children( ".swap-select-overlay-style" ).hide();
+        });
+
+        //select the projects to swap
+        $('.swap-select-overlay-style').click(function(){
+          var selectedCount=0;
+          $('.swap-select-overlay-style').each(function(){
+            if($(this).attr('selected')){
+              selectedCount++;
+            }
+          });
+          if($(this).attr('selected')){
+            console.log('remove');
+            $(this).removeAttr('selected');
+            $(this).parent().css('border','none');
+          } else {
+            if(selectedCount<2){
+              console.log('add');
+              $(this).attr('selected', 'selected');
+              $(this).parent().css('border','1px solid #aaa');
+              $(this).parent().css('border-radius','5px');
+            }
+          }
+        });
+
+        //perform Swaping on projects
+        $('.swap-projects-btn').click(function(){
+          var projectRanks = [];
+          $('.swap-select-overlay-style').each(function(){
+            if($(this).attr('selected')){
+              projectRanks.push($(this).attr('projectRank'));
+            }
+          });
+          if(projectRanks.length == 2){
+            $('.loader-overlay').show();
+            $.ajax({
+              url: '/configuration/home/swapProjectRanking',
+              type: 'POST',
+              dataType: 'JSON',
+              data: {projectRanks},
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+            }).done(function(data){
+              if(data.status){
+                location.reload('/#projects');
+              }
+              $('.loader-overlay').hide();
+            });
+          } else {
+            alert('Select 2 projects');
+          }
+        });
+
       });
     }
 

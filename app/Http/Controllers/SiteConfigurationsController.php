@@ -1810,4 +1810,12 @@ public function saveHomePageBtn1Text(Request $request)
         $projectConfiguration->update(['show_prospectus_text'=>$request->checkValue]);
         return $resultArray = array('status' => 1);
     }
+    public function swapProjectRanking(Request $request)
+    {
+        $project0 = Project::where('project_rank', (int)$request->projectRanks[0])->first();
+        $project1 = Project::where('project_rank', (int)$request->projectRanks[1])->first();
+        $project0->update(['project_rank' => (int)$request->projectRanks[1]]);
+        $project1->update(['project_rank' => (int)$request->projectRanks[0]]);
+        return $resultArray = array('status' => 1);
+    }
 }
