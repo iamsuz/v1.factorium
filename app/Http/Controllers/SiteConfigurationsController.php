@@ -1427,6 +1427,11 @@ public function saveHomePageBtn1Text(Request $request)
                 'PDS_part_1_link' => $request->project_pds1_link_txt,
                 'PDS_part_2_link' => $request->project_pds2_link_txt,
                 'how_to_invest' => trim(preg_replace('/\s+/', ' ', $request->project_how_to_invest_txt)),
+                'bank' => trim($request->bank_name),
+                'bank_account_name' => trim($request->account_name),
+                'bsb' => trim($request->bsb_name),
+                'bank_account_number' => trim($request->account_number),
+                'bank_reference' => trim($request->bank_reference),
                 ]);
             return redirect()->back();
         }
@@ -1811,6 +1816,24 @@ public function saveHomePageBtn1Text(Request $request)
         $projectConfiguration->update(['show_prospectus_text'=>$request->checkValue]);
         return $resultArray = array('status' => 1);
     }
+
+    public function toggleProjectProgress(Request $request)
+    {
+        $projectId =$request->projectId;
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = (int)$projectId;
+            $projectConfiguration->save();
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+        }
+        $projectConfiguration->update(['show_project_progress'=>$request->checkValue]);
+        return $resultArray = array('status' => 1);
+    }
+
     public function swapProjectRanking(Request $request)
     {
         $project0 = Project::where('project_rank', (int)$request->projectRanks[0])->first();

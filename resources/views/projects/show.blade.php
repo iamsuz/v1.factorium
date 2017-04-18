@@ -131,15 +131,26 @@
 							</div>
 							@endif
 						</div>
-						<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
-							<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+
+						<div class="project-progress-section" style="@if(!$project->projectconfiguration->show_project_progress) display: none; @endif">
+							<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
+								<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+								</div>
 							</div>
+							<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
+								@if($project->investment)
+								${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
+								@endif
+							</span>
 						</div>
-						<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
-							@if($project->investment)
-							${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
-							@endif
-						</span>
+						@if(Auth::guest())
+						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<div class="text-right">
+							<input type="checkbox" class="project-progress-switch" autocomplete="off" data-label-text="ShowProgress" data-size="mini" @if($project->projectconfiguration->show_project_progress) checked value="1" @else value="0" @endif>
+						</div>
+						@endif
+						@endif
 					</div>
 					<div class="col-md-4 col-md-offset-4 project-invest-button-field" style="margin-top:0%;" id="express_interest">
 						<br>
@@ -1161,48 +1172,19 @@
 				<li style="font-size:0.875em;">Make a Bank transfer to</li>
 			</ol> -->
 			@if($project->investment)
-			@if(Auth::guest())
-		    @else
-		    @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<div class="row">
-				<input type="button" class="btn btn-default col-md-4 col-md-offset-4 show-bank-detail-edit-section-btn" value="Edit Bank Details">
-				<input type="button" class="btn btn-primary col-md-4 col-md-offset-4 save-bank-detail-btn" style="display: none;" value="Save bank Details">
-			</div>
-			@if (Session::has('bankDetailsUpdateMessage'))
-            <div class="col-md-10 col-md-offset-1" style="background-color: #c9ffd5;color: #027039;padding: 1px; margin-top:5px; margin-bottom: 5px; text-align: center;">
-              <h5>{!! Session::get('bankDetailsUpdateMessage') !!}</h5>
-            </div>
-            @endif
-			@endif
-			@endif
-			<div class="row edit-bank-detail-section" style="display: none;">
 				<div class="col-md-10 col-md-offset-1 text-justify">
 					<h5>
 						<table class="table table-responsive font-bold" style="color:#2d2d4b;">
-							<tr><td>Bank</td><td><input type="text" value="{!!$project->investment->bank!!}" id="bank_name"></td></tr>
-							<tr><td>Account Name</td><td><input type="text" value="{!!$project->investment->bank_account_name!!}" id="account_name"> </td></tr>
-							<tr><td>BSB </td><td><input type="text" value="{!!$project->investment->bsb!!}" id="bsb_name"> </td></tr>
-							<tr><td>Account No</td><td><input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number"> </td></tr>
-							<tr><td>Reference</td><td><input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference"> </td></tr>
+							<tr><td>Bank</td><td class="bank-name-field">{!!$project->investment->bank!!}</td></tr>
+							<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
+							<tr><td>BSB </td><td class="bsb-name-field">{!!$project->investment->bsb!!}</td></tr>
+							<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
+							<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
 						</table>
 					</h5>
 				</div>
 			</div>
-			@if($project->investment->bank)
-			<div class="row bank-detail-section">
-				<div class="col-md-10 col-md-offset-1 text-justify">
-					<h5>
-						<table class="table table-responsive font-bold" style="color:#2d2d4b;">
-							<tr><td>Bank</td><td>{!!$project->investment->bank!!}</td></tr>
-							<tr><td>Account Name</td><td>{!!$project->investment->bank_account_name!!}</td></tr>
-							<tr><td>BSB </td><td>{!!$project->investment->bsb!!}</td></tr>
-							<tr><td>Account No</td><td>{!!$project->investment->bank_account_number!!}</td></tr>
-							<tr><td>Reference</td><td>{!!$project->investment->bank_reference!!}</td></tr>
-						</table>
-					</h5>
-				</div>
-			</div>
-			@endif
 			@endif
 			<br>
 			<div class="col-md-10 col-md-offset-1">
@@ -1857,7 +1839,7 @@
 		//Delete Carousel Image
 		deleteCarouselImage();
 		toggleProspectusText();
-		editBankDetailsFromFrontEnd();
+		toggleProjectProgress();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -1888,6 +1870,11 @@
 			$('.project-pds1-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>');
 			$('.project-pds2-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds2_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_2_link}}@endif" @endif>');
 			$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control" rows="3" placeholder="How to invest">{{$project->investment->how_to_invest}}</textarea>');
+			$('.bank-name-field').html('<input type="text" value="{!!$project->investment->bank!!}" id="bank_name" name="bank_name">');
+			$('.account-name-field').html('<input type="text" value="{!!$project->investment->bank_account_name!!}" id="account_name" name="account_name">');
+			$('.bsb-name-field').html('<input type="text" value="{!!$project->investment->bsb!!}" id="bsb_name" name="bsb_name">');
+			$('.account-number-field').html('<input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number" name="account_number">');
+			$('.bank-reference-field').html('<input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference" name="bank_reference">');
 			@endif
 		});
 	}
@@ -2412,40 +2399,36 @@
 		});
     }
 
-    function editBankDetailsFromFrontEnd(){
-    	$('.show-bank-detail-edit-section-btn').click(function(){
-    		$('.show-bank-detail-edit-section-btn, .save-bank-detail-btn').toggle();
-    		$('.edit-bank-detail-section, .bank-detail-section').slideToggle();
-    		$('.save-bank-detail-btn').click(function(){
-    			var bankName = $.trim($('#bank_name').val());
-    			var accountName = $.trim($('#account_name').val());
-    			var bsbName = $.trim($('#bsb_name').val());
-    			var accountNumber = $.trim($('#account_number').val());
-    			var bankReference = $.trim($('#bank_reference').val());
-    			var projectId = '{{$project->id}}';
-    			if(bankName == '' || accountName == '' || bsbName == '' || accountNumber == '' || bankReference == ''){
-    				alert('All bank details are mandatory.');
-    			} else {
-    				$('.loader-overlay').show();
-    				$.ajax({
-			          	url: '/project/edit/updateProjectBankDetails',
-			          	type: 'POST',
-			          	dataType: 'JSON',
-			          	data: {bankName, accountName, bsbName, accountNumber, bankReference, projectId},
-			          	headers: {
-			            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			          	},
-			        }).done(function(data){
-			        	// $('.loader-overlay').hide();
-			        	if(data.status){
-			        		location.reload('/');
-			        	}
-			        });
-    			}
-
-
-    		});
-    	});
+    function toggleProjectProgress(){
+    	$('.project-progress-switch').bootstrapSwitch({
+		    onText: "show",
+		    onColor: 'primary',
+		    offColor: 'primary',
+		    offText: "hide",
+		    animate: true,
+		});
+		$('.project-progress-switch').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			var checkValue = $(this).val();
+			var projectId = '{{$project->id}}';
+			$('.loader-overlay').show();
+			$.ajax({
+	          	url: '/configuration/project/toggleProjectProgress',
+	          	type: 'POST',
+	          	dataType: 'JSON',
+	          	data: {checkValue, projectId},
+	          	headers: {
+	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	          	},
+	        }).done(function(data){
+	        	console.log(data);
+	        	$('.loader-overlay').hide();
+	        	if(data.status){
+	        		$('.project-progress-section').slideToggle();
+	        	}
+	        });
+		});
     }
 
 </script>

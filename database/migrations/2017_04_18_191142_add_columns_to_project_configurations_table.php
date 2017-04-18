@@ -64,6 +64,9 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             if (!Schema::hasColumn('project_configurations', 'show_prospectus_text')) {
                 $table->boolean('show_prospectus_text')->default(1);
             }
+            if (!Schema::hasColumn('project_configurations', 'show_project_progress')) {
+                $table->boolean('show_project_progress')->default(1);
+            }
         });
     }
 
@@ -125,6 +128,9 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('project_configurations', 'show_prospectus_text')) {
                 $table->dropColumn('show_prospectus_text');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_project_progress')) {
+                $table->dropColumn('show_project_progress');
             }
         });
     }
