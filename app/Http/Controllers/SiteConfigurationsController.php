@@ -1403,6 +1403,7 @@ public function saveHomePageBtn1Text(Request $request)
             Project::where('id', $projectId)->update([
                 'title' => $request->project_title_txt,
                 'description' => $request->project_description_txt,
+                'button_label'=>$request->project_button_invest_txt,
                 ]);
             Investment::where('project_id', $projectId)->first()->update([
                 'minimum_accepted_amount' => $request->project_min_investment_txt,

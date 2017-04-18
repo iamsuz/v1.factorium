@@ -141,7 +141,7 @@
 							@endif
 						</span>
 					</div>
-					<div class="col-md-4 col-md-offset-4" style="margin-top:0%;" id="express_interest">
+					<div class="col-md-4 col-md-offset-4 project-invest-button-field" style="margin-top:0%;" id="express_interest">
 						<br>
 						@if($project->investment)
 						<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
@@ -1864,6 +1864,7 @@
 		$('.edit-project-page-details-btn').click(function(e){
 			$('.store-project-page-details-btn').show();
 			$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
+			$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
 			$('.project-description-field').html('<input type="text" name="project_description_txt" class="form-control" value="{{nl2br(e($project->description))}}">');
 			@if($project->investment)
 			$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');

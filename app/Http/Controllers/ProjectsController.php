@@ -91,6 +91,8 @@ class ProjectsController extends Controller
             return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
         }
         $project = Project::create($request->all());
+        $project->project_rank = $project->id;
+        $project->save();
 
         $location = new \App\Location($request->all());
         $location = $project->location()->save($location);
