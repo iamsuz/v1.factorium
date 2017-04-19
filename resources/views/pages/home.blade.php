@@ -129,7 +129,7 @@
          @if($siteConfiguration->show_funding_options != '')
          <li class="nav-item"><a href="{{route('home')}}/#funding" class="scrollto">Funding</a></li>
          @endif
-         <li class="nav-item"><a href="/pages/team">About us</a></li>
+         <li class="nav-item"><a href="https://estatebaron.com/welcome-page">About us</a></li>
          <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
          @if (Auth::guest())
          <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
@@ -516,7 +516,7 @@
                   </div>
                 </div>
                 <br>
-                <div style="@if(!$project->projectconfiguration->show_project_progress) display: none; @endif">
+                <div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
                   <div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
                     <div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
                     </div>
@@ -608,7 +608,7 @@
                   </div>
                 </div>
                 <br>
-                <div style="@if(!$project->projectconfiguration->show_project_progress) display: none; @endif">
+                <div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
                   <div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
                     <div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
                     </div>
@@ -700,7 +700,7 @@
                 </div>
               </div>
               <br>
-              <div style="@if(!$project->projectconfiguration->show_project_progress) display: none; @endif">
+              <div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
                 <div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
                   <div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
                   </div>
