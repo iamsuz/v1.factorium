@@ -312,9 +312,11 @@
         @endif
 
         //sidebar active tab color
+        @if($color)
         @if($color->heading_color)
         $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('background-color', '#{{$color->heading_color}}');
         $('.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover').css('border-color', '#{{$color->heading_color}}');
+        @endif
         @endif
     });
     function checkvalidi() {
