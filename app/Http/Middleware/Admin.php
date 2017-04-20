@@ -44,7 +44,7 @@ class Admin
                 }
             }
             else{
-                if($user->email =="s.mahavarkar@gmail.com" or $user->email == "info@estatebaron.com"){
+                if($user->email == "info@estatebaron.com"){
 
                 }
                 else{

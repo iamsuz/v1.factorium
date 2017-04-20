@@ -32,8 +32,7 @@ class Superadmin
                 }
             }
             else{
-                if($user->email =="s.mahavarkar@gmail.com" or $user->email == "info@estatebaron.com"){
-
+                if($user->email == "info@estatebaron.com"){
                 }
                 else{
                     if($user->registration_site != url()){
