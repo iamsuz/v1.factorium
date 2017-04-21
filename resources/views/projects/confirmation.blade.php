@@ -16,7 +16,7 @@ Thank You | @parent
 				<div class="col-md-12">
 					<div style="padding:10em 0;">
 						<h1 class="text-center wow fadeIn animated h1-faq first_color">Thank you for submitting your Project <br>
-							<small class="first_color">we will review the details and contact you shortly.<br><br> <small class="first_color">If you have any queries call us at <a href="tel:+61398117015" class="first_color"> +61 3 98117015</a>.</small></small>
+							<small class="first_color">we will review the details and contact you shortly.</small>
 						</h1>
 					</div>
 					
