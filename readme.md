@@ -1,6 +1,6 @@
 ## Estate Baron
 
-estatebaron.com is a web application for RealEstate crown funding.
+estatebaron.com is a web application for RealEstate crowd investment.
 
 ## Official Documentation
 
