@@ -576,7 +576,8 @@
 <br>
 Name: <b>{{$investor->first_name}} {{$investor->last_name}}</b><br><br>
 Email: <b>{{$investor->email}}</b><br><br>
-Phone: <b>{{$investor->phone_number}}</b></span></span></span>
+Phone: <b>{{$investor->phone_number}}</b><br><br>
+Referrer: <b>{{$referrer}}</b></span></span></span>
 &nbsp;</div>
 
                          </td>

@@ -147,6 +147,8 @@ class UserRegistrationsController extends Controller
 
     public function storeDetails(Request $request, AppMailer $mailer)
     {
+        $cookies = \Cookie::get();
+        $referrer = isset($cookies['referrer']) ? $cookies['referrer'] : "";
         $this->validate($request, [
             'first_name' => 'required|min:1|max:50',
             'last_name' => 'required|min:1|max:50',
@@ -193,11 +195,11 @@ class UserRegistrationsController extends Controller
                 "role" => $roleText
                 ),
             ));
-        $mailer->sendRegistrationNotificationAdmin($user);
+        $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
             // return view('users.registrationFinish', compact('user','color'));
-            return redirect('/#projects');
+            return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));;
         }
     }
 

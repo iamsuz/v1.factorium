@@ -78,7 +78,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendRegistrationNotificationAdmin(User $investor)
+    public function sendRegistrationNotificationAdmin(User $investor,$referrer)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -91,7 +91,7 @@ class AppMailer
         $this->to = $recipients;
         $this->view = 'emails.regNotification';
         $this->subject = 'New User Sign Up '.$investor->first_name.' '.$investor->last_name.' '.$investor->phone_number;
-        $this->data = compact('investor');
+        $this->data = compact('investor','referrer');
 
         $this->deliver();
     }

@@ -12,6 +12,7 @@ use App\Mailers\AppMailer;
 use App\InvestmentInvestor;
 use Illuminate\Http\Request;
 use PulkitJalan\GeoIP\GeoIP;
+use Illuminate\Cookie\CookieJar;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -39,9 +40,13 @@ class PagesController extends Controller
     * returns home page
     * @return view [home page is returned]
     */
-    public function home() {
+    public function home(CookieJar $cookieJar, Request $request) {
         // $geoip = new GeoIP();
         // $geoIpArray = $geoip->get();
+        $request->referrer = \Request::server('HTTP_REFERER');
+        if($request->referrer){
+            $cookieJar->queue(cookie('referrer', $request->referrer));
+        }
         $url = url();
         $geoIpArray = [];
         $investments = InvestmentInvestor::all();
@@ -176,9 +181,9 @@ class PagesController extends Controller
         $project = \App\Project::find(16);
         $investments = $project->investors;
         $user = \Auth::user();
-        // $mailer->sendInterestNotificationDeveloper($project, $user);
+        $mailer->sendInterestNotificationDeveloper($project, $user);
         // $this->dispatch(new \sendInterestNotificationDeveloper($project, $user));
-        $this->dispatch(new SendReminderEmail($user,$project));
+        // $this->dispatch(new SendReminderEmail($user,$project));
         return 'test';
     }
 
