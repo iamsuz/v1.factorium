@@ -30,6 +30,8 @@ class SocialAccountService2
             if (!$user) {
                 // dd($providerUser);
                 // dd($providerUser->email);
+                $cookies = \Cookie::get();
+                $referrer = isset($cookies['referrer']) ? $cookies['referrer'] : "";
                 $fullname=$providerUser->getName();
                 $pieces = explode(" ", $fullname);
                 $firstname = $pieces[0];
@@ -80,7 +82,7 @@ class SocialAccountService2
 
             $account->user()->associate($user);
             $account->save();
-            $mailer->sendRegistrationNotificationAdminOther($user);
+            $mailer->sendRegistrationNotificationAdminOther($user,$referrer);
             return $user;
 
         }

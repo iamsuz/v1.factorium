@@ -129,7 +129,7 @@
          @if($siteConfiguration->show_funding_options != '')
          <li class="nav-item"><a href="{{route('home')}}/#funding" class="scrollto">Funding</a></li>
          @endif
-         <li class="nav-item"><a href="https://estatebaron.com/welcome-page">About us</a></li>
+         <li class="nav-item"><a href="/pages/team">About us</a></li>
          <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
          @if (Auth::guest())
          <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
