@@ -218,3 +218,4 @@ Route::post('/configuration/project/toggleProspectusText', ['as'=>'configuration
 Route::post('/configuration/home/swapProjectRanking', ['as'=>'configuration.home.swapProjectRanking', 'uses'=>'SiteConfigurationsController@swapProjectRanking']);
 Route::post('/project/edit/updateProjectBankDetails', ['as'=>'project.updateProjectBankDetails', 'uses'=>'ProjectsController@updateProjectBankDetails']);
 Route::post('/configuration/project/toggleProjectProgress', ['as'=>'configuration.project.toggleProjectProgress', 'uses'=>'SiteConfigurationsController@toggleProjectProgress']);
+Route::post('/configuration/project/toggleProjectElementVisibility', ['as'=>'configuration.project.toggleProjectElementVisibility', 'uses'=>'SiteConfigurationsController@toggleProjectElementVisibility']);

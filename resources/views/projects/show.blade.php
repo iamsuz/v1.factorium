@@ -93,7 +93,7 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
-						<div id="circle">
+						<div id="circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
 							<div class="text-center" style="color:#fff;">
 								<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
 									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
@@ -106,6 +106,14 @@
 								</div>
 							</div>
 						</div>
+						@if(Auth::guest())
+						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<div class="text-center" style="margin-top: -10%;">
+							<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowCircle" action="project_progress_circle" data-size="mini" @if($project->projectconfiguration->show_project_progress_circle) checked value="1" @else value="0" @endif>
+						</div>
+						@endif
+						@endif
 					</div>
 				</div><br>
 				<div class="row">
@@ -1840,6 +1848,7 @@
 		deleteCarouselImage();
 		toggleProspectusText();
 		toggleProjectProgress();
+		toggleProjectElementsVisibiity();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2426,6 +2435,39 @@
 	        	$('.loader-overlay').hide();
 	        	if(data.status){
 	        		$('.project-progress-section').slideToggle();
+	        	}
+	        });
+		});
+    }
+
+    function toggleProjectElementsVisibiity(){
+    	$('.toggle-elements').bootstrapSwitch({
+		    onText: "show",
+		    onColor: 'primary',
+		    offColor: 'primary',
+		    offText: "hide",
+		    animate: true,
+		});
+		$('.toggle-elements').on('switchChange.bootstrapSwitch', function () {
+			var toggleAction = $(this).attr('action');
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			var checkValue = $(this).val();
+			var projectId = '{{$project->id}}';
+			$('.loader-overlay').show();
+			$.ajax({
+	          	url: '/configuration/project/toggleProjectElementVisibility',
+	          	type: 'POST',
+	          	dataType: 'JSON',
+	          	data: {checkValue, projectId, toggleAction},
+	          	headers: {
+	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	          	},
+	        }).done(function(data){
+	        	console.log(data);
+	        	$('.loader-overlay').hide();
+	        	if(data.status){
+	        		$('.days-left-circle #circle').slideToggle();
 	        	}
 	        });
 		});

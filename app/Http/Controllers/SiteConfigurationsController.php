@@ -1842,4 +1842,26 @@ public function saveHomePageBtn1Text(Request $request)
         $project1->update(['project_rank' => (int)$request->projectRanks[0]]);
         return $resultArray = array('status' => 1);
     }
+
+    public function toggleProjectElementVisibility(Request $request)
+    {
+        $toggleAction = $request->toggleAction;
+        if($toggleAction){
+            $projectId =$request->projectId;
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+            if(!$projectConfiguration)
+            {
+                $projectConfiguration = new ProjectConfiguration;
+                $projectConfiguration->project_id = (int)$projectId;
+                $projectConfiguration->save();
+                $projectConfiguration = ProjectConfiguration::all();
+                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+            }
+            if($toggleAction == "project_progress_circle"){
+                $projectConfiguration->update(['show_project_progress_circle'=>$request->checkValue]);
+            }
+            return $resultArray = array('status' => 1);
+        }
+    }
 }
