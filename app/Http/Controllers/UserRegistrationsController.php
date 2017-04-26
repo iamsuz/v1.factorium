@@ -52,15 +52,38 @@ class UserRegistrationsController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users,email||unique:user_registrations,email',
+            'email' => 'required|email',
             'password' => 'required|min:6|max:60',
             'role'=>'required',
             'registration_site'=>'required'
+            ]);
+        $validator1 = Validator::make($request->all(), [
+            'email' => 'unique:users,email||unique:user_registrations,email',
             ]);
         if ($validator->fails()) {
             return redirect('/users/create')
             ->withErrors($validator)
             ->withInput();
+        }
+        if($validator1->fails()){
+            $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
+            $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
+            if(!$res1 && !$res2){
+                $originSite="";
+                if($user=User::where('email', $request->email)->first()){
+                    $originSite = $user->registration_site;
+                }
+                if($userReg=UserRegistration::where('email', $request->email)->first()){
+                    $originSite = $userReg->registration_site;
+                }
+                $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
+                return redirect('/users/create')->withErrors(['email'=> $errorMessage])->withInput();
+            }
+            else{
+                return redirect('/users/create')
+                    ->withErrors($validator1)
+                    ->withInput();
+            }
         }
         $user = UserRegistration::create($request->all());
         $mailer->sendRegistrationConfirmationTo($user);
