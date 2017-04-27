@@ -118,6 +118,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'overlay_opacity')) {
                 $table->decimal('overlay_opacity', 1, 1)->default(0.7);
             }
+            if (!Schema::hasColumn('site_configurations', 'show_splash_message')) {
+                $table->boolean('show_splash_message')->default(1);
+            }
         });
     }
 
@@ -233,6 +236,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'overlay_opacity')) {
                 $table->dropColumn('overlay_opacity');
+            }
+            if (Schema::hasColumn('site_configurations', 'show_splash_message')) {
+                $table->dropColumn('show_splash_message');
             }
         });
     }

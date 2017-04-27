@@ -9,7 +9,7 @@ Configuration | Dashboard | @parent
 @endsection
 
 @section('css-section')
-
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
 <style type="text/css">
 	.config-list-items{
 		border: 1px solid #ddd;
@@ -28,8 +28,7 @@ Configuration | Dashboard | @parent
 		<div class="col-md-10">
 			<div class="row">
 				<div class="col-md-offset-1 col-md-10">
-					<div class="row" style="padding-top:1.2em;">
-						
+					<div class="row" style="padding-top:1.2em;">						
 						<div class="col-md-4">
 							<div class="thumbnail text-center">
 								@if (Session::has('message'))
@@ -40,117 +39,125 @@ Configuration | Dashboard | @parent
                                 @endif
                                 @endif
                                 <div class="caption">
-                                   <h3><b>Favicon</b></h3>
-                                   <p><small>This Icon will appear on the title bar of the website page.</small></p>
-                                   <hr>
-                                   <p>
-                                       <label class="input-group-btn">
-                                          <span class="btn btn-primary btn-sm change-favicon-btn" style="cursor: pointer;">
-                                             <strong>Change Favicon</strong>
-                                         </span>
-                                     </label>
-                                 </p>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="col-md-4">
-                         <div class="thumbnail text-center">
-                            @if (Session::has('message'))
-                            @if(Session::get('action') == 'site-title')
-                            <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-                                <h5>{!! Session::get('message') !!}</h5>
+                                    <h3><b>Favicon</b></h3>
+                                    <p><small>This Icon will appear on the title bar of the website page.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-favicon-btn" style="cursor: pointer;">
+                                                <strong>Change Favicon</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
                             </div>
-                            @endif
-                            @endif
-                            <div class="caption">
-                               <h3><b>Website Title</b></h3>
-                               <p><small>This text will appear on the title bar of the website page.</small></p>
-                               <hr>
-                               <p>
-                                   <label class="input-group-btn">
-                                      <span class="btn btn-primary btn-sm change-title-btn" style="cursor: pointer;">
-                                         <strong>Change Title</strong>
-                                     </span>
-                                 </label>
-                             </p>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="col-md-4">
-                    <div class="thumbnail text-center">
-                        @if (Session::has('message'))
-                        @if(Session::get('action') == 'website-name')
-                        <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-                            <h5>{!! Session::get('message') !!}</h5>
                         </div>
-                        @endif
-                        @endif
-                        <div class="caption">
-                            <h3><b>Website Name</b></h3>
-                            <p><small>This will be the reference name for the website.</small></p>
-                            <hr>
-                            <p>
-                                <label class="input-group-btn">
-                                    <span class="btn btn-primary btn-sm change-site-name-btn" style="cursor: pointer;">
-                                        <strong>Change Website Name</strong>
-                                    </span>
-                                </label>
-                            </p>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'site-title')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Website Title</b></h3>
+                                    <p><small>This text will appear on the title bar of the website page.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-title-btn" style="cursor: pointer;">
+                                                <strong>Change Title</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="thumbnail text-center">
-                        @if (Session::has('message'))
-                        @if(Session::get('action') == 'client-name')
-                        <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-                            <h5>{!! Session::get('message') !!}</h5>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'website-name')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Website Name</b></h3>
+                                    <p><small>This will be the reference name for the website.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-site-name-btn" style="cursor: pointer;">
+                                                <strong>Change Website Name</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        @endif
-                        @endif
-                        <div class="caption">
-                            <h3><b>Client Name</b></h3>
-                            <p><small>This will be the client name who owns the website.</small></p>
-                            <hr>
-                            <p>
-                                <label class="input-group-btn">
-                                    <span class="btn btn-primary btn-sm change-client-name-btn" style="cursor: pointer;">
-                                        <strong>Change Client Name</strong>
-                                    </span>
-                                </label>
-                            </p>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'client-name')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Client Name</b></h3>
+                                    <p><small>This will be the client name who owns the website.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-client-name-btn" style="cursor: pointer;">
+                                                <strong>Change Client Name</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="thumbnail text-center">
-                        @if (Session::has('message'))
-                        @if(Session::get('action') == 'mail_setting')
-                        <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
-                            <h5>{!! Session::get('message') !!}</h5>
-                        </div>
-                        @endif
-                        @endif
-                        <div class="caption">
-                            <h3><b>Mailer Email</b></h3>
-                            <p><small>This will be the email address from which all emails will be sent.</small></p>
-                            <hr>
-                            <p>
-                                <label class="input-group-btn">
-                                    <span class="btn btn-primary btn-sm change-mailer-email-btn" style="cursor: pointer;">
-                                        <strong>Change Email address</strong>
-                                    </span>
-                                </label>
-                            </p>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'mail_setting')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Mailer Email</b></h3>
+                                    <p><small>This will be the email address from which all emails will be sent.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-mailer-email-btn" style="cursor: pointer;">
+                                                <strong>Change Email address</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <section style="padding: 5%">
+                <h2 class="text-center">Items Visibility</h2>
+                <hr>
+                <div class="row" style="padding: 0px 10px;">
+                    <div class="col-md-6">Splash Page</div>
+                    <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class splash-page-switch" autocomplete="off" data-label-text="Show" action="show_splash_message" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_message) value="1" checked @else value="0" @endif></div>
+                </div>
+                <hr>
+            </section>
         </div>
     </div>
-
-</div>
-</div>
 </div>
 
 <div class="row">
@@ -403,6 +410,7 @@ Configuration | Dashboard | @parent
 @stop
 
 @section('js-section')
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -543,6 +551,7 @@ Configuration | Dashboard | @parent
     });
         // Additional functionality functions
         editClientName();
+        editVisibilityOfSiteConfigItems();
     });
 
 function updateCoords(coords, w, h, origWidth, origHeight){
@@ -644,6 +653,29 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 e.preventDefault();
                 $('.client-name-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Client name field is empty</h6></div>')
             }
+        });
+    }
+
+    function editVisibilityOfSiteConfigItems(){
+        $('.common-switch-class').bootstrapSwitch();
+        $('.common-switch-class').on('switchChange.bootstrapSwitch', function () {
+            var setVal = $(this).val() == 1? 0 : 1;
+            $(this).val(setVal);
+            var checkValue = $(this).val();
+            var action = $(this).attr('action');
+            $('.loader-overlay').show();
+            $.ajax({
+                url: '/configuration/edit/visibilityOfSiteItems',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {checkValue, action},
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function(data){
+                console.log(data);
+                $('.loader-overlay').hide();
+            });
         });
     }
 </script>

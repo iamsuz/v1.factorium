@@ -1886,4 +1886,16 @@ public function saveHomePageBtn1Text(Request $request)
         }
 
     }
+
+    public function editVisibilityOfSiteConfigItems(Request $request)
+    {
+        $checkValue = $request->checkValue;
+        $action = $request->action;
+        if($action != ''){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([$action=>$request->checkValue]);
+            return $resultArray = array('status' => 1);            
+        }
+    }
 }
