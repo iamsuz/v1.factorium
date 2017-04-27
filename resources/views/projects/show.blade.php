@@ -128,7 +128,9 @@
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; height:70px; width:27%;">
-									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Expected Return</h6>
+									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4>
+									<h6 class="font-regular @if(Auth::guest()) @else @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) edit-project-page-labels @endif @endif" style="font-size: 0.875em;color: #fff" effect="expected_return_label_text">{{$project->projectconfiguration->expected_return_label_text}}</h6>
+
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3">
 									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
@@ -1849,6 +1851,7 @@
 		toggleProspectusText();
 		toggleProjectProgress();
 		toggleProjectElementsVisibiity();
+		editProjectPageLabelText();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2471,6 +2474,45 @@
 	        	}
 	        });
 		});
+    }
+
+    function editProjectPageLabelText(){
+    	$('.edit-project-page-labels').click(function(){
+    		var effect= $(this).attr('effect');
+    		if(effect !=''){
+    			if(effect == 'expected_return_label_text'){
+    				$(this).html('<input class="col-md-12" type="text" value="{{$project->projectconfiguration->expected_return_label_text}}" id="'+effect+'" style="color:#000; padding:0px;">');
+    				$('#'+effect).select();
+    			}
+    			$('#'+effect).focusout(function(){
+    				var baseElement = $(this);
+    				var newLabelText = baseElement.val();
+    				if(newLabelText != ''){
+    					baseElement.css('border-color', '');
+    					var projectId = '{{$project->id}}';
+    					$('.loader-overlay').show();
+    					$.ajax({
+				          	url: '/configuration/project/editProjectPageLabelText',
+				          	type: 'POST',
+				          	dataType: 'JSON',
+				          	data: {effect, projectId, newLabelText},
+				          	headers: {
+				            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				          	},
+				        }).done(function(data){
+				        	console.log(data);
+				        	$('.loader-overlay').hide();
+				        	if(data.status){
+				        		baseElement.replaceWith(data.newLabelText);
+				        	}
+				        });
+    				} else {
+    					$(this).css('border-color', '#ff0000');
+    					$(this).focus();
+    				}
+    			});
+    		}
+    	});
     }
 
 </script>

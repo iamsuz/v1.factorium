@@ -219,3 +219,4 @@ Route::post('/configuration/home/swapProjectRanking', ['as'=>'configuration.home
 Route::post('/project/edit/updateProjectBankDetails', ['as'=>'project.updateProjectBankDetails', 'uses'=>'ProjectsController@updateProjectBankDetails']);
 Route::post('/configuration/project/toggleProjectProgress', ['as'=>'configuration.project.toggleProjectProgress', 'uses'=>'SiteConfigurationsController@toggleProjectProgress']);
 Route::post('/configuration/project/toggleProjectElementVisibility', ['as'=>'configuration.project.toggleProjectElementVisibility', 'uses'=>'SiteConfigurationsController@toggleProjectElementVisibility']);
+Route::post('/configuration/project/editProjectPageLabelText', ['as'=>'configuration.project.editProjectPageLabelText', 'uses'=>'SiteConfigurationsController@editProjectPageLabelText']);

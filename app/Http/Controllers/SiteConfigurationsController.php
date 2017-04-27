@@ -1864,4 +1864,26 @@ public function saveHomePageBtn1Text(Request $request)
             return $resultArray = array('status' => 1);
         }
     }
+
+    public function editProjectPageLabelText(Request $request)
+    {
+        $newLabelText = $request->newLabelText;
+        $projectId = $request->projectId;
+        $effectScope = $request->effect;
+        if($projectId!='' && $newLabelText!=''){
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+            if(!$projectConfiguration)
+            {
+                $projectConfiguration = new ProjectConfiguration;
+                $projectConfiguration->project_id = (int)$projectId;
+                $projectConfiguration->save();
+                $projectConfiguration = ProjectConfiguration::all();
+                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+            }
+            $projectConfiguration->update([$effectScope => $newLabelText]);
+            return array('status' => 1, 'newLabelText' => $newLabelText);
+        }
+
+    }
 }

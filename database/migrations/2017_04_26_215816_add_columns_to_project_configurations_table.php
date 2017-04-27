@@ -73,6 +73,9 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             if (!Schema::hasColumn('project_configurations', 'show_project_thumbnail_on_home')) {
                 $table->boolean('show_project_thumbnail_on_home')->default(1);
             }
+            if (!Schema::hasColumn('project_configurations', 'expected_return_label_text')) {
+                $table->string('expected_return_label_text')->default('Expected Return');
+            }
         });
     }
 
@@ -143,6 +146,9 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('project_configurations', 'show_project_thumbnail_on_home')) {
                 $table->dropColumn('show_project_thumbnail_on_home');
+            }
+            if (Schema::hasColumn('project_configurations', 'expected_return_label_text')) {
+                $table->dropColumn('expected_return_label_text');
             }
         });
     }
