@@ -152,9 +152,14 @@ Configuration | Dashboard | @parent
                 <hr>
                 <div class="row" style="padding: 0px 10px;">
                     <div class="col-md-6">Splash Page</div>
-                    <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class splash-page-switch" autocomplete="off" data-label-text="Show" action="show_splash_message" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_message) value="1" checked @else value="0" @endif></div>
+                    <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class" autocomplete="off" data-label-text="Show" action="show_splash_page" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_page) value="1" checked @else value="0" @endif></div>
                 </div>
                 <hr>
+                <!-- <div class="row" style="padding: 0px 10px;">
+                    <div class="col-md-6">Welcome Flash Message</div>
+                    <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class splash-page-switch" autocomplete="off" data-label-text="Show" action="show_splash_message" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_message) value="1" checked @else value="0" @endif></div>
+                </div>
+                <hr> -->
             </section>
         </div>
     </div>

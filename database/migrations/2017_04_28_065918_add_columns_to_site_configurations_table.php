@@ -121,6 +121,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'show_splash_message')) {
                 $table->boolean('show_splash_message')->default(1);
             }
+            if (!Schema::hasColumn('site_configurations', 'show_splash_page')) {
+                $table->boolean('show_splash_page')->default(1);
+            }
         });
     }
 
@@ -239,6 +242,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'show_splash_message')) {
                 $table->dropColumn('show_splash_message');
+            }
+            if (Schema::hasColumn('site_configurations', 'show_splash_page')) {
+                $table->dropColumn('show_splash_page');
             }
         });
     }

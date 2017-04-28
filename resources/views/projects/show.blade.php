@@ -1805,11 +1805,14 @@
 			changeMonth: true,
 			changeYear: true
 		});
+
+		@if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_page)
 		@if(Auth::check())
 		@else
 		window.setInterval(function(){
 			window.location = "/welcome?next=projects/{{$project->id}}"
 		},5000); 
+		@endif
 		@endif
 
 		//Overlay Opacity
