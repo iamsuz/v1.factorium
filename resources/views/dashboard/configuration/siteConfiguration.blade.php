@@ -144,22 +144,48 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'embedded_link')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Embedded Link</b></h3>
+                                    <p><small>This is the link embedded the interest form for projects.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-intrest-embed-link-btn" style="cursor: pointer;">
+                                                <strong>Change Embed Link</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <section style="padding: 5%">
-                <h2 class="text-center">Items Visibility</h2>
-                <hr>
-                <div class="row" style="padding: 0px 10px;">
-                    <div class="col-md-6">Splash Page</div>
-                    <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class" autocomplete="off" data-label-text="Show" action="show_splash_page" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_page) value="1" checked @else value="0" @endif></div>
+            <section style="padding: 5% 0%;">
+                <div class="col-md-offset-1 col-md-10">
+                    <h2 class="text-center">Items Visibility</h2>
+                    <hr>
+                    <div class="row" style="padding: 0px 10px;">
+                        <div class="col-md-6">Splash Page</div>
+                        <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class" autocomplete="off" data-label-text="Show" action="show_splash_page" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_page) value="1" checked @else value="0" @endif></div>
+                    </div>
+                    <hr>
+                    <!-- <div class="row" style="padding: 0px 10px;">
+                        <div class="col-md-6">Welcome Flash Message</div>
+                        <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class splash-page-switch" autocomplete="off" data-label-text="Show" action="show_splash_message" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_message) value="1" checked @else value="0" @endif></div>
+                    </div>
+                    <hr> -->
+                    
                 </div>
-                <hr>
-                <!-- <div class="row" style="padding: 0px 10px;">
-                    <div class="col-md-6">Welcome Flash Message</div>
-                    <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class splash-page-switch" autocomplete="off" data-label-text="Show" action="show_splash_message" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_message) value="1" checked @else value="0" @endif></div>
-                </div>
-                <hr> -->
             </section>
         </div>
     </div>
@@ -410,6 +436,33 @@ Configuration | Dashboard | @parent
         </div>      
     </div>
 </div>
+<div class="modal fade" id="embedd_link_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Embed Interest Link</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateInterestFormLink'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to update the project interest form link.</small></i></h5>
+                        <br>
+                        <div class="row interest-link-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::text('interest_link_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->embedded_offer_doc_link, array('placeholder'=>'Enter Project Interest Form Link', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'interest_link_input')) !!}
+                        {!! $errors->first('interest_link_input', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::submit('Save Interest Link', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_interest_link_btn')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+
 </div>
 </div>
 @stop
@@ -557,6 +610,7 @@ Configuration | Dashboard | @parent
         // Additional functionality functions
         editClientName();
         editVisibilityOfSiteConfigItems();
+        editProjectInterestEmbedLink();
     });
 
 function updateCoords(coords, w, h, origWidth, origHeight){
@@ -682,6 +736,23 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 $('.loader-overlay').hide();
             });
         });
+    }
+
+    function editProjectInterestEmbedLink(){
+        $('.change-intrest-embed-link-btn').click(function(){
+            $('#embedd_link_edit_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#interest_link_input').select();
+        });
+
+        $('#submit_interest_link_btn').click(function(e){
+            if($('#interest_link_input').val() == ''){
+                e.preventDefault();
+                $('.interest-link-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Interest Link field is empty</h6></div>')
+            }
+        });    
     }
 </script>
 @stop

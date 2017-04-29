@@ -1898,4 +1898,17 @@ public function saveHomePageBtn1Text(Request $request)
             return $resultArray = array('status' => 1);            
         }
     }
+
+    public function updateInterestFormLink(Request $request)
+    {
+        $interestLink = $request->interest_link_input;
+        if($interestLink != ""){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update(['embedded_offer_doc_link'=>$interestLink]);
+            Session::flash('message', 'Interest Link Updated Successfully');
+            Session::flash('action', 'embedded_link');
+            return redirect()->back();
+        }        
+    }
 }

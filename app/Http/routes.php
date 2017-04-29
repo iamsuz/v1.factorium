@@ -221,3 +221,5 @@ Route::post('/configuration/project/toggleProjectProgress', ['as'=>'configuratio
 Route::post('/configuration/project/toggleProjectElementVisibility', ['as'=>'configuration.project.toggleProjectElementVisibility', 'uses'=>'SiteConfigurationsController@toggleProjectElementVisibility']);
 Route::post('/configuration/project/editProjectPageLabelText', ['as'=>'configuration.project.editProjectPageLabelText', 'uses'=>'SiteConfigurationsController@editProjectPageLabelText']);
 Route::post('/configuration/edit/visibilityOfSiteItems', ['as'=> 'configuration.edit.visibilityOfSiteItems', 'uses'=>'SiteConfigurationsController@editVisibilityOfSiteConfigItems']);
+Route::post('/configuration/updateInterestFormLink', ['as'=> 'configuration.updateInterestFormLink', 'uses'=>'SiteConfigurationsController@updateInterestFormLink']);
+
