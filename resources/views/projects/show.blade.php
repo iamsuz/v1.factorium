@@ -413,17 +413,26 @@
 	</section>
 	<section>
 		<div class="container">
-			<div class="row">
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="text-center row">
+				<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@else Project Summary @endif</small></small><br>
+				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_summary_whole_section" @if($project->projectconfiguration->show_project_summary_whole_section) checked value="1" @else value="0" @endif> 
+			</div>
+			@endif
+			@endif
+			<div class="row show_project_summary_whole_section" @if(!$project->projectconfiguration->show_project_summary_whole_section) style="display: none;" @endif>
 				<div class="col-md-12">
 					<h2 class="text-center first_color show-project-summary-input" style="font-size:2.625em;color:#282a73;">
-						@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@else Project Summary @endif</h2>
+						@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@else Project Summary @endif </h2>
 						<br>
 						@if(Auth::guest())
 						@else
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->summary_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_summary_section" @if($project->projectconfiguration->show_summary_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_summary_section" data-size="mini" @if($project->projectconfiguration->show_summary_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -467,7 +476,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->security_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_security_section" @if($project->projectconfiguration->show_project_security_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_security_section" data-size="mini" @if($project->projectconfiguration->show_project_security_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -509,7 +518,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->investor_distribution_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investor_distribution_section" @if($project->projectconfiguration->show_investor_distribution_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investor_distribution_section" data-size="mini" @if($project->projectconfiguration->show_investor_distribution_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -553,9 +562,18 @@
 		@if($project->property_type == "1")
 		<section class="chunk-box">
 			<div class="container">
-				<div class="row">
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-center row">
+					<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->suburb_profile_label))}}@else Suburb Profile @endif</small></small><br>
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_suburb_whole_section" @if($project->projectconfiguration->show_suburb_whole_section) checked value="1" @else value="0" @endif> 
+				</div>
+				@endif
+				@endif
+				<div class="row show_suburb_whole_section" @if(!$project->projectconfiguration->show_suburb_whole_section) style="display: none;" @endif>
 					<div class="col-md-12">
-						<h2 class="text-center first_color show-suburb-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->suburb_profile_label))}}@else Suburb Profile @endif</h2>
+						<h2 class="text-center first_color show-suburb-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->suburb_profile_label))}}@else Suburb Profile @endif </h2>
 						<br>
 						@if(Auth::guest())
 						@else
@@ -580,7 +598,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->marketability_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_marketability_section" @if($project->projectconfiguration->show_marketability_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_marketability_section" data-size="mini" @if($project->projectconfiguration->show_marketability_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -623,7 +641,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->residents_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_residents_section" @if($project->projectconfiguration->show_residents_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_residents_section" data-size="mini" @if($project->projectconfiguration->show_residents_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -667,7 +685,16 @@
 		@endif
 		<section class="chunk-box ">
 			<div class="container">
-				<div class="row">
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-center row">
+					<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_profile_label))}}@else Investment Profile @endif</small></small><br>
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_whole_section" @if($project->projectconfiguration->show_investment_whole_section) checked value="1" @else value="0" @endif> 
+				</div>
+				@endif
+				@endif
+				<div class="row show_investment_whole_section" @if(!$project->projectconfiguration->show_investment_whole_section) style="display: none;" @endif>
 					<div class="col-md-12">
 						<h2 class="text-center first_color show-investment-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_profile_label))}}@else Investment Profile @endif</h2>
 						<br>
@@ -676,7 +703,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->investment_type_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_type_section" @if($project->projectconfiguration->show_investment_type_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_type_section" data-size="mini" @if($project->projectconfiguration->show_investment_type_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -718,7 +745,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->investment_security_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_security_section" @if($project->projectconfiguration->show_investment_security_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_security_section" data-size="mini" @if($project->projectconfiguration->show_investment_security_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -760,7 +787,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->expected_returns_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_expected_return_section" @if($project->projectconfiguration->show_expected_return_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_expected_return_section" data-size="mini" @if($project->projectconfiguration->show_expected_return_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -801,7 +828,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->return_paid_as_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_return_paid_as_section" @if($project->projectconfiguration->show_return_paid_as_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_return_paid_as_section" data-size="mini" @if($project->projectconfiguration->show_return_paid_as_section) checked value="1" @else value="0" @endif>
 							<input type="hidden" name="show_return_paid_as_section" id="show_return_paid_as_section" @if($project->projectconfiguration->show_return_paid_as_section) value="1" @else value="0" @endif>
 						</div>
 						@endif
@@ -843,7 +870,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->taxation_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_taxation_section" @if($project->projectconfiguration->show_taxation_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_taxation_section" data-size="mini" @if($project->projectconfiguration->show_taxation_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -885,16 +912,25 @@
 		</section>
 		<section class="chunk-box">
 			<div class="container">
-				<div class="row">
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-center row">
+					<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_profile_label))}}@else Project Profile @endif</small></small><br>
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_profile_whole_section" @if($project->projectconfiguration->show_project_profile_whole_section) checked value="1" @else value="0" @endif> 
+				</div>
+				@endif
+				@endif
+				<div class="row show_project_profile_whole_section" @if(!$project->projectconfiguration->show_project_profile_whole_section) style="display: none;" @endif>
 					<div class="col-md-12">
-						<h2 class="text-center first_color show-project-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_profile_label))}}@else Project Profile @endif</h2>
+						<h2 class="text-center first_color show-project-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_profile_label))}}@else Project Profile @endif </h2>
 						<br>
 						@if(Auth::guest())
 						@else
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->developer_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_developer_section" @if($project->projectconfiguration->show_developer_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_developer_section" data-size="mini" @if($project->projectconfiguration->show_developer_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -940,7 +976,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->duration_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_duration_section" @if($project->projectconfiguration->show_duration_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_duration_section" data-size="mini" @if($project->projectconfiguration->show_duration_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -982,7 +1018,7 @@
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->current_status_label))}}</b></h5>
-							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_current_status_section" @if($project->projectconfiguration->show_current_status_section) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_current_status_section" data-size="mini" @if($project->projectconfiguration->show_current_status_section) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
@@ -1072,7 +1108,7 @@
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="row text-center">
 					<h5><b>{{nl2br(e($project->projectconfiguration->rationale_label))}}</b></h5>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_rationale_section" @if($project->projectconfiguration->show_rationale_section) checked value="1" @else value="0" @endif>
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_rationale_section" data-size="mini" @if($project->projectconfiguration->show_rationale_section) checked value="1" @else value="0" @endif>
 				</div>
 				@endif
 				@endif
@@ -1113,7 +1149,7 @@
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="row text-center">
 					<h5><b>{{nl2br(e($project->projectconfiguration->investment_risk_label))}}</b></h5>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_risk_section" @if($project->projectconfiguration->show_risk_section) checked value="1" @else value="0" @endif>
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_risk_section" data-size="mini" @if($project->projectconfiguration->show_risk_section) checked value="1" @else value="0" @endif>
 				</div>
 				@endif
 				@endif
@@ -1161,7 +1197,16 @@
 		<div class="row">
 			<br>
 			<div class="col-md-6">
-				<div class="row">
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-center row">
+					<small><small>How To Invest</small></small><br>
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_how_to_invest_whole_section" @if($project->projectconfiguration->show_how_to_invest_whole_section) checked value="1" @else value="0" @endif> 
+				</div>
+				@endif
+				@endif
+				<div class="row show_how_to_invest_whole_section" @if(!$project->projectconfiguration->show_how_to_invest_whole_section) style="display: none;" @endif>
 					<div class="col-md-12 text-center">
 						@if(Auth::guest())
 						@else
@@ -1172,6 +1217,37 @@
 						<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
 						<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:42px;">How To Invest</h4><br>
 						@if($project->investment)<p class="project-how-to-invest-field">{!!$project->investment->how_to_invest!!}</p> @endif
+
+						@if($project->investment)
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 text-justify">
+								<h5>
+									<table class="table table-responsive font-bold" style="color:#2d2d4b;">
+										<tr><td>Bank</td><td class="bank-name-field">{!!$project->investment->bank!!}</td></tr>
+										<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
+										<tr><td>BSB </td><td class="bsb-name-field">{!!$project->investment->bsb!!}</td></tr>
+										<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
+										<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
+									</table>
+								</h5>
+							</div>
+						</div>
+						@endif
+						<br>
+						<div class="col-md-10 col-md-offset-1">
+							@if($project->investment)
+							<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+								@if($project->button_label)
+								<?php echo $project->button_label; ?>
+								@else
+								Invest Now
+								@endif
+							</b></a>
+							<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif before making any decisions</small></h6>
+							@else
+							<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+							@endif
+						</div>
 					</div>
 				</div>
 				<!-- <ol>
@@ -1181,57 +1257,39 @@
 				<li style="font-size:0.875em;">Complete any AML/CTF obligations (Verification)</li>
 				<li style="font-size:0.875em;">Make a Bank transfer to</li>
 			</ol> -->
-			@if($project->investment)
-			<div class="row">
-				<div class="col-md-10 col-md-offset-1 text-justify">
-					<h5>
-						<table class="table table-responsive font-bold" style="color:#2d2d4b;">
-							<tr><td>Bank</td><td class="bank-name-field">{!!$project->investment->bank!!}</td></tr>
-							<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
-							<tr><td>BSB </td><td class="bsb-name-field">{!!$project->investment->bsb!!}</td></tr>
-							<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
-							<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
-						</table>
-					</h5>
-				</div>
-			</div>
-			@endif
-			<br>
-			<div class="col-md-10 col-md-offset-1">
-				@if($project->investment)
-				<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
-					@if($project->button_label)
-					<?php echo $project->button_label; ?>
-					@else
-					Invest Now
-					@endif
-				</b></a>
-				<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif before making any decisions</small></h6>
-				@else
-				<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
-				@endif
-			</div>
 		</div>
 		<div class="col-md-6">
-			<h2 class="text-left second_color" style="font-size:42px;color:#282a73;padding-top:125px;">Project FAQs</h2>
-			<br>
-			<div class="panel-group" id="accordion">
-				@foreach($project->projectFAQs as $key => $faq)
-				<div class="panel panel-info">
-					<div class="panel-heading collapse-header" data-toggle="collapse" data-target="#faq_{{$key}}">
-						<i class="indicator glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>
-						<h4 class="panel-title font-bold first_color" style="padding-left:30px; font-size:16px;color:#282a73;">
-							{{$faq->question}}
-						</h4>
-					</div>
-					<div id="faq_{{$key}}" class="panel-collapse collapse">
-						<div class="panel-body" style="padding-left:45px;">
-							<p style="font-size:16px;color:#282a73;" class="font-regular">{{$faq->answer}}</p>
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="row text-center">
+				<small><small>Project FAQs</small></small><br>
+				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_faqs_whole_section" @if($project->projectconfiguration->show_project_faqs_whole_section) checked value="1" @else value="0" @endif> 
+			</div>
+			@endif
+			@endif
+			<div class="show_project_faqs_whole_section" @if(!$project->projectconfiguration->show_project_faqs_whole_section) style="display: none;" @endif>
+				<h2 class="text-center second_color" style="font-size:42px;color:#282a73;">Project FAQs</h2>
+				<br>
+				<div class="panel-group" id="accordion">
+					@foreach($project->projectFAQs as $key => $faq)
+					<div class="panel panel-info">
+						<div class="panel-heading collapse-header" data-toggle="collapse" data-target="#faq_{{$key}}">
+							<i class="indicator glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>
+							<h4 class="panel-title font-bold first_color" style="padding-left:30px; font-size:16px;color:#282a73;">
+								{{$faq->question}}
+							</h4>
+						</div>
+						<div id="faq_{{$key}}" class="panel-collapse collapse">
+							<div class="panel-body" style="padding-left:45px;">
+								<p style="font-size:16px;color:#282a73;" class="font-regular">{{$faq->answer}}</p>
+							</div>
 						</div>
 					</div>
+					@endforeach
 				</div>
-				@endforeach
 			</div>
+			
 		</div>
 	</div>
 </div>
@@ -2308,6 +2366,7 @@
 			var checkValue = $(this).val();
 			var action = $(this).attr('action');
 			var projectId = '{{$project->id}}';
+			$('.loader-overlay').show();
 			$.ajax({
 				url: '/configuration/project/toggleSubSectionsVisibility',
 				type: 'POST',
@@ -2319,6 +2378,7 @@
 			}).done(function(data){
 				console.log(data);
 				if(data.status){
+					$('.loader-overlay').hide();
 					$('.'+action).slideToggle();
 				}
 			});

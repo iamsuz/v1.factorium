@@ -76,6 +76,24 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             if (!Schema::hasColumn('project_configurations', 'expected_return_label_text')) {
                 $table->string('expected_return_label_text')->default('Expected Return');
             }
+            if (!Schema::hasColumn('project_configurations', 'show_project_summary_whole_section')) {
+                $table->boolean('show_project_summary_whole_section')->default(1);
+            }
+            if (!Schema::hasColumn('project_configurations', 'show_suburb_whole_section')) {
+                $table->boolean('show_suburb_whole_section')->default(1);
+            }
+            if (!Schema::hasColumn('project_configurations', 'show_investment_whole_section')) {
+                $table->boolean('show_investment_whole_section')->default(1);
+            }
+            if (!Schema::hasColumn('project_configurations', 'show_project_profile_whole_section')) {
+                $table->boolean('show_project_profile_whole_section')->default(1);
+            }
+            if (!Schema::hasColumn('project_configurations', 'show_how_to_invest_whole_section')) {
+                $table->boolean('show_how_to_invest_whole_section')->default(1);
+            }
+            if (!Schema::hasColumn('project_configurations', 'show_project_faqs_whole_section')) {
+                $table->boolean('show_project_faqs_whole_section')->default(1);
+            }
         });
     }
 
@@ -149,6 +167,24 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('project_configurations', 'expected_return_label_text')) {
                 $table->dropColumn('expected_return_label_text');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_project_summary_whole_section')) {
+                $table->dropColumn('show_project_summary_whole_section');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_suburb_whole_section')) {
+                $table->dropColumn('show_suburb_whole_section');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_investment_whole_section')) {
+                $table->dropColumn('show_investment_whole_section');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_project_profile_whole_section')) {
+                $table->dropColumn('show_project_profile_whole_section');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_how_to_invest_whole_section')) {
+                $table->dropColumn('show_how_to_invest_whole_section');
+            }
+            if (Schema::hasColumn('project_configurations', 'show_project_faqs_whole_section')) {
+                $table->dropColumn('show_project_faqs_whole_section');
             }
         });
     }
