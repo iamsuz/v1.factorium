@@ -977,3 +977,11 @@ a:hover {
     cursor: pointer;
     border-radius: 10px;
 }
+.red-btn-style{
+	background-color: #EC3D28;
+	border-color: #EC3D28;
+	border-radius: 50px !important;
+}
+.red-btn-style:hover{
+	color: #fff !important;
+}

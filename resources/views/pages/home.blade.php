@@ -255,7 +255,7 @@
       <br><br><br>
       <div class="row">
         <div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
-         <a href="#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" class="btn btn-red btn-lg font-regular scrollto" role="button" style="font-size:22px;">
+         <a href="#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" class="btn btn-red btn-lg font-regular scrollto red-btn-style" role="button" style="font-size:22px;">
           @if(!empty($siteConfiguration))
           @if($siteConfiguration->homepg_btn1_text != '')
           {!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
@@ -471,7 +471,7 @@
             @endif
             @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
-              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;">
+              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" />
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
@@ -563,7 +563,7 @@
             @endif
             @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
-              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;">
+              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" />
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
@@ -654,7 +654,7 @@
             @endif
             @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
-              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;">
+              <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" />
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
