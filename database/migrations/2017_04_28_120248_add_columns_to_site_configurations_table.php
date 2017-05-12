@@ -17,103 +17,103 @@ class AddColumnsToSiteConfigurationsTable extends Migration
                 $table->string('homepg_btn1_text')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'title_text')) {
-                $table->string('title_text')->default('estatebaron.com - Equity Crowdfunding | Flexible Crowd Sourced Equity Funding Solutions');
+                $table->string('title_text')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'facebook_link')) {
-                $table->string('facebook_link')->default('https://whitelabel.estatebaron.com');
+                $table->string('facebook_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'twitter_link')) {
-                $table->string('twitter_link')->default('https://whitelabel.estatebaron.com');
+                $table->string('twitter_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'youtube_link')) {
-                $table->string('youtube_link')->default('https://whitelabel.estatebaron.com');
+                $table->string('youtube_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'linkedin_link')) {
-                $table->string('linkedin_link')->default('https://whitelabel.estatebaron.com');
+                $table->string('linkedin_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'google_link')) {
-                $table->string('google_link')->default('https://whitelabel.estatebaron.com');
+                $table->string('google_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'instagram_link')) {
-                $table->string('instagram_link')->default('https://whitelabel.estatebaron.com');
+                $table->string('instagram_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'blog_link')) {
-                $table->string('blog_link')->default('https://estatebaron.com/blog/');
+                $table->string('blog_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'funding_link')) {
-                $table->string('funding_link')->default('https://whitelabel.estatebaron.com/funding_link');
+                $table->string('funding_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'terms_conditions_link')) {
-                $table->string('terms_conditions_link')->default('https://whitelabel.estatebaron.com/terms_conditions_link');
+                $table->string('terms_conditions_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'privacy_link')) {
-                $table->string('privacy_link')->default('https://estatebaron.com/pages/privacy');
+                $table->string('privacy_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'financial_service_guide_link')) {
-                $table->string('financial_service_guide_link')->default('https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0');
+                $table->string('financial_service_guide_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'media_kit_link')) {
-                $table->string('media_kit_link')->default('https://whitelabel.estatebaron.com/media_kit_link');
+                $table->string('media_kit_link')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'investment_title_text1')) {
-                $table->string('investment_title_text1')->default('Investment Structure and Security');
+                $table->string('investment_title_text1')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'investment_title1_description')) {
-                $table->string('investment_title1_description')->default('We are a Corporate Authorised Representative of Guardian Securities Limited AFSL 7405661. The Vestabyte Investment Platform operates as a sub­trust within the Guardian Investment Fund (ARSN 168 048 057), a registered managed investment scheme.');
+                $table->string('investment_title1_description')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'homepg_btn1_gotoid')) {
-                $table->string('homepg_btn1_gotoid')->default('projects');
+                $table->string('homepg_btn1_gotoid')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'show_funding_options')) {
-                $table->string('show_funding_options')->default('on');
+                $table->string('show_funding_options')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title1')) {
-                $table->string('how_it_works_title1')->default('Risky Markets');
+                $table->string('how_it_works_title1')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc1')) {
-                $table->longText('how_it_works_desc1')->default('We live in an era of high stock market volatility, sharp crashes and ongoing risk of recession');
+                $table->longText('how_it_works_desc1')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title2')) {
-                $table->string('how_it_works_title2')->default('Safe Property');
+                $table->string('how_it_works_title2')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc2')) {
-                $table->longText('how_it_works_desc2')->default('Real Estate and Property Development offer high, predictable returns but require large amounts of capital, which can make it hard to get started');
+                $table->longText('how_it_works_desc2')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title3')) {
-                $table->string('how_it_works_title3')->default('Property Crowdfunding');
+                $table->string('how_it_works_title3')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc3')) {
-                $table->longText('how_it_works_desc3')->default('Property Crowdfunding is a way for many people to come together online and invest small amounts in projects of your choice');
+                $table->longText('how_it_works_desc3')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title4')) {
-                $table->string('how_it_works_title4')->default('Pick your Project');
+                $table->string('how_it_works_title4')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc4')) {
-                $table->longText('how_it_works_desc4')->default('Sign up for free and invest with a click of a button in the projects that you like among the various opportunities listed');
+                $table->longText('how_it_works_desc4')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_title5')) {
-                $table->string('how_it_works_title5')->default('Arm chair Developer');
+                $table->string('how_it_works_title5')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'how_it_works_desc5')) {
-                $table->longText('how_it_works_desc5')->default('Monitor your projects progress online and receive payments as specified in the offer, all from the comfort of your home!');
+                $table->longText('how_it_works_desc5')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'funding_section_title1')) {
-                $table->string('funding_section_title1')->default('Developer or Business looking for funding?');
+                $table->string('funding_section_title1')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'funding_section_title2')) {
-                $table->string('funding_section_title2')->default('Are you an investor looking for investment opportunities?');
+                $table->string('funding_section_title2')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'funding_section_btn1_text')) {
-                $table->string('funding_section_btn1_text')->default('Submit Venture');
+                $table->string('funding_section_btn1_text')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'funding_section_btn2_text')) {
-                $table->string('funding_section_btn2_text')->default('View Venture');
+                $table->string('funding_section_btn2_text')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'website_name')) {
-                $table->string('website_name')->default('Estate Baron');
+                $table->string('website_name')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'client_name')) {
-                $table->string('client_name')->default('Moresh Kokane');
+                $table->string('client_name')->nullable();
             }
             if (!Schema::hasColumn('site_configurations', 'overlay_opacity')) {
                 $table->decimal('overlay_opacity', 1, 1)->default(0.7);
@@ -125,7 +125,7 @@ class AddColumnsToSiteConfigurationsTable extends Migration
                 $table->boolean('show_splash_page')->default(1);
             }
             if (!Schema::hasColumn('site_configurations', 'embedded_offer_doc_link')) {
-                $table->string('embedded_offer_doc_link');
+                $table->string('embedded_offer_doc_link')->nullable();
             }
         });
     }

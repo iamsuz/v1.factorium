@@ -200,7 +200,7 @@ class SiteConfigurationsController extends Controller
                     return $resultArray = array('status' => 0, 'message' => 'something went wrong.');
                 }
             }
-            else if ($request->imgAction == 'back image'){
+            else if ($request->imgAction == 'back image') {
                 $extension = strtolower(File::extension($src));
                 $img = '';
                 $result = false;
@@ -213,44 +213,52 @@ class SiteConfigurationsController extends Controller
                 $newWValue = ($wValue * $origWidth) / $convertedWidth;
                 $newHValue = ($hValue * $origHeight) / $convertedHeight;
 
-                switch ($extension) {
-                    case 'jpg':
-                    $quality = 90;
-                    $img  = imagecreatefromjpeg($src);
-                    $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                    imagealphablending($dest, FALSE);
-                    imagesavealpha($dest, TRUE);
-                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                    $result = imagejpeg($dest, $src, $quality);
-                    break;
+                $bg_image = Image::make($src);
 
-                    case 'jpeg':
-                    $quality = 90;
-                    $img  = imagecreatefromjpeg($src);
-                    $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                    imagealphablending($dest, FALSE);
-                    imagesavealpha($dest, TRUE);
-                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                    $result = imagejpeg($dest, $src, $quality);
-                    break;
+                $result = $bg_image->crop( (int) $request->wValue, (int) $request->hValue, (int) $request->xValue, (int) $request->yValue);
 
-                    case 'png':
-                    $quality = 9;
-                    $img  = imagecreatefrompng($src);
-                    $dest = ImageCreateTrueColor($rw, $rh);
-                            //Removing black background
-                    imagealphablending($dest, FALSE);
-                    imagesavealpha($dest, TRUE);
-                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                    $result = imagepng($dest, $src, $quality);
-                    break;
+                // return 
+                // dd($request->xValue);
+                //////////////////////////
 
-                    default:
-                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                    break;
-                }
+                // switch ($extension.'123') {
+                //     case 'jpg':
+                //     $quality = 90;
+                //     $img  = imagecreatefromjpeg($src);
+                //     $dest = ImageCreateTrueColor($rw, $rh);
+                //             //Removing black background
+                //     imagealphablending($dest, FALSE);
+                //     imagesavealpha($dest, TRUE);
+                //     imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                //     $result = imagejpeg($dest, $src, $quality);
+                //     break;
+
+                //     case 'jpeg':
+                //     $quality = 90;
+                //     $img  = imagecreatefromjpeg($src);
+                //     $dest = ImageCreateTrueColor($rw, $rh);
+                //             //Removing black background
+                //     imagealphablending($dest, FALSE);
+                //     imagesavealpha($dest, TRUE);
+                //     imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                //     $result = imagejpeg($dest, $src, $quality);
+                //     break;
+
+                //     case 'png':
+                //     $quality = 9;
+                //     $img  = imagecreatefrompng($src);
+                //     $dest = ImageCreateTrueColor($rw, $rh);
+                //             //Removing black background
+                //     imagealphablending($dest, FALSE);
+                //     imagesavealpha($dest, TRUE);
+                //     imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                //     $result = imagepng($dest, $src, $quality);
+                //     break;
+
+                //     default:
+                //     return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                //     break;
+                // }
                 if($result){
                         // dd($extension);
                     $saveLoc = 'assets/images/media/home_page/';
@@ -1023,18 +1031,18 @@ public function saveHomePageBtn1Text(Request $request)
                 // Image::make($request->homepg_back_img)->resize(530, null, function($constraint){
                 //     $constraint->aspectRatio();
                 // })->save();
-                Image::make($request->homepg_back_img)->resize(1920, null, function($constraint){
-                    $constraint->aspectRatio();
-                })->save();
+                // Image::make($request->homepg_back_img)->resize(1920, null, function($constraint){
+                //     $constraint->aspectRatio();
+                // })->save();
                 $fileExt = $request->file('homepg_back_img')->getClientOriginalExtension();
                 $fileName = 'main_bg'.'_'.time().'.'.$fileExt;
                 $uploadStatus = $request->file('homepg_back_img')->move($destinationPath, $fileName);
                 list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                if($uploadStatus){
-                    if($fileExt != 'jpg'){
+                if($uploadStatus) {
+                    if($fileExt != 'jpg') {
                         Image::make($destinationPath.$fileName)->encode('jpg', 90)->save(public_path('assets/images/main_bg.jpg'));
                     }
-                    else{
+                    else {
                         Image::make($destinationPath.$fileName)->save(public_path('assets/images/main_bg.jpg'));
                     }
                     return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
