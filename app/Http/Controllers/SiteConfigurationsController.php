@@ -105,8 +105,13 @@ class SiteConfigurationsController extends Controller
                     $finalFile = time().'.'. $extension;
                     $finalpath = 'assets/images/media/home_page/'.$finalFile;
 
-                    Image::make($result)->save(public_path($saveLoc.$finalFile));
+                    $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
 
+                    if($type[$request->imgAction] == 'brand_logo') {
+                        $image->resize(274, null, function ($constraint) {
+						    $constraint->aspectRatio();
+						})->save();
+                    }
                     $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
                     $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
                     ->where('type', $type[$request->imgAction])
