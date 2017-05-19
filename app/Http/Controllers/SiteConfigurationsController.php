@@ -51,14 +51,15 @@ class SiteConfigurationsController extends Controller
             $destinationPath = 'assets/images/websiteLogo/';
 
             if($request->hasFile('brand_logo') && $request->file('brand_logo')->isValid()){
-                Image::make($request->brand_logo)->resize(530, null, function($constraint){
-                    $constraint->aspectRatio();
-                })->save();
                 $fileExt = $request->file('brand_logo')->getClientOriginalExtension();
-                $fileName = 'vestabyte_logo'.'_'.time().'.'.$fileExt;
-                $uploadStatus = $request->file('brand_logo')->move($destinationPath, $fileName);
-                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                if($uploadStatus){
+                $fileName = time().'.'. $fileExt;
+                
+                $origWidth = Image::make($request->brand_logo)->width();
+                $origHeight = Image::make($request->brand_logo)->height();
+
+                $image = Image::make($request->brand_logo)->save(public_path($destinationPath.$fileName));
+
+                if($image){
                     return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
                 }
                 else {
@@ -110,7 +111,7 @@ class SiteConfigurationsController extends Controller
                     if($type[$request->imgAction] == 'brand_logo') {
                         $image->resize(274, null, function ($constraint) {
 						    $constraint->aspectRatio();
-						})->save();
+						})->save(public_path($saveLoc.$finalFile));
                     }
                     $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
                     $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)

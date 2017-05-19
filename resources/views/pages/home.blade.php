@@ -1476,6 +1476,8 @@
                   onRelease: setSelect,
                   minSize: [target_width, target_height],
                 });
+              } else if (data.status == 0) {
+                alert('Please use png image for logo');
               }
             });
           }
