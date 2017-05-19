@@ -473,7 +473,7 @@
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
-                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" />
+                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" style="width: 100%" />
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
                       <div class="row">
