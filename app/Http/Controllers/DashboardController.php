@@ -339,4 +339,11 @@ class DashboardController extends Controller
         Session::flash('action', $investment->id);
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Reminder sent</p>');        
     }
+    public function investmentConfirmation(Request $request, AppMailer $mailer, $investment_id){
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $investment->investment_confirmation = $request->investment_confirmation;
+        $investment->save();
+        $mailer->sendInvestmentConfirmationToUser($investment);
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Confirmed</p>');        
+    }
 }
