@@ -18,7 +18,7 @@ class InvestmentInvestor extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'project_id', 'investment_id','amount', 'accepted'];
+    protected $fillable = ['user_id', 'project_id', 'investment_id','amount', 'accepted','investment_confirmation'];
 
     public function user()
     {

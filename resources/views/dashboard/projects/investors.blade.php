@@ -29,7 +29,7 @@
 			<ul class="list-group">
 				@foreach($investments as $investment)
 				<div class="row text-center list-group-item">
-					<div class="col-md-3 text-left">
+					<div class="col-md-2 text-left">
 						<a href="{{route('dashboard.users.show', [$investment->user_id])}}" >
 							<b>{{$investment->user->first_name}} {{$investment->user->last_name}}</b>
 						</a>
@@ -74,15 +74,39 @@
 					@if($investment->money_received || $investment->accepted)
 					@else
 					<div class="col-md-1" style="text-align: right;">
-					@if(Session::has('action'))
-					@if(Session::get('action') == $investment->id)
-					<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
-					@else
-					<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-					@endif
-					@else
-					<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-					@endif
+						@if(Session::has('action'))
+						@if(Session::get('action') == $investment->id)
+						<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
+						@else
+						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+						@endif
+						@else
+						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+						@endif
+					</div>
+					<div class="col-md-1" style="text-align: right;">
+						{{-- @if(Session::has('action'))
+						@if(Session::get('action') == $investment->id)
+						<i class="fa fa-check fa-money" aria-hidden="true" style="color: #6db980;"></i>
+						@else
+						<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+						@endif
+						@else
+						<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+						@endif --}}
+						<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm">
+							{{method_field('PATCH')}}
+							{{csrf_field()}}
+
+							{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
+							@if($investment->investment_confirmation == 1)
+							<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
+							@else
+							<a id="confirmation" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+							<input class="hidden" name="investment_confirmation" value="1">
+							@endif
+							<input type="hidden" name="investor" value="{{$investment->user->id}}">
+						</form>
 					</div>
 					@endif
 				</div>
@@ -110,25 +134,28 @@
 		$('.issue-share-certi-btn').click(function(e){
 			if (confirm('Are you sure ?')) {
 				console.log('confirmed');
-		    } else {
-		    	e.preventDefault();
-		    }			
+			} else {
+				e.preventDefault();
+			}			
 		});
 
 		$('.money-received-btn').click(function(e){
 			if (confirm('Are you sure ?')) {
 				console.log('confirmed');
-		    } else {
-		    	e.preventDefault();
-		    }
+			} else {
+				e.preventDefault();
+			}
 		});
 
 		$('.send-investment-reminder').click(function(e){
 			if (confirm('Are you sure ?')) {
 				console.log('confirmed');
-		    } else {
-		    	e.preventDefault();
-		    }
+			} else {
+				e.preventDefault();
+			}
+		});
+		$('#confirmation').click(function(e){
+			$('#confirmationForm').submit();
 		});
 	});
 </script>
