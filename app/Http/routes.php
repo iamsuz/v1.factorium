@@ -223,4 +223,5 @@ Route::post('/configuration/project/toggleProjectElementVisibility', ['as'=>'con
 Route::post('/configuration/project/editProjectPageLabelText', ['as'=>'configuration.project.editProjectPageLabelText', 'uses'=>'SiteConfigurationsController@editProjectPageLabelText']);
 Route::post('/configuration/edit/visibilityOfSiteItems', ['as'=> 'configuration.edit.visibilityOfSiteItems', 'uses'=>'SiteConfigurationsController@editVisibilityOfSiteConfigItems']);
 Route::post('/configuration/updateInterestFormLink', ['as'=> 'configuration.updateInterestFormLink', 'uses'=>'SiteConfigurationsController@updateInterestFormLink']);
-
+Route::get('/dashboard/broadcastMail', ['as'=>'dashboard.broadcastMail', 'uses'=>'DashboardController@createBroadcastMailForm']);
+Route::post('/dashboard/mail/broadcast', ['as'=>'dashboard.mail.broadcast', 'uses'=>'DashboardController@sendBroadcastMail']);

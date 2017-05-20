@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\SiteConfiguration;
 use Session;
+use Mailgun\Mailgun;
 
 class DashboardController extends Controller
 {
@@ -339,11 +340,50 @@ class DashboardController extends Controller
         Session::flash('action', $investment->id);
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Reminder sent</p>');        
     }
+
     public function investmentConfirmation(Request $request, AppMailer $mailer, $investment_id){
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investment->investment_confirmation = $request->investment_confirmation;
         $investment->save();
         $mailer->sendInvestmentConfirmationToUser($investment);
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Confirmed</p>');        
+    }
+    
+    public function createBroadcastMailForm(){
+        $color = Color::where('project_site',url())->first();
+        $investors = InvestmentInvestor::where('project_site', url())->groupBy('user_id')->get();
+        $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
+        return view('dashboard.broadcast.broadcastmail',compact('color','siteconfiguration', 'investors'));
+    }
+
+    public function sendBroadcastMail(Request $request)
+    {
+        $this->validate($request, [
+            'mail_subject' => 'required',
+        ]);
+
+        $subject = $request->mail_subject;
+        $content = $request->mail_content;
+        $emailStr = $request->email_string;
+        
+        # Instantiate the client.
+        $mgClient = new Mailgun(env('MAILGUN_API_KEY'));
+        $domain = env('MAILGUN_DOMAIN');
+
+        # Make the call to the client.
+        $result = $mgClient->sendMessage($domain, array(
+            'from'    => 'info@estatebaron.com',
+            'to'      => 'info@estatebaron.com',
+            'bcc'     => $emailStr,
+            'subject' => $subject,
+            'html'    => $content
+        ));
+        if($result->http_response_code == 200){
+            Session::flash('message', '<div class="row text-center" style="padding: 12px;border-radius: 8px;background-color: #EEFBF3;">Emails Queued Successfully</div>');
+        }
+        else{
+            Session::flash('message', '<div class="row text-center" style="background-color:#FAEBD7;padding: 12px;border-radius: 8px;">'.$result->http_response_body->message."</div>");
+        }
+        return redirect()->back();
     }
 }

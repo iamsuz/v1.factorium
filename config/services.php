@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => '',
-        'secret' => '',
+        'domain' => 'estatebaron.com',
+        'secret' => 'key-af088f1f3fe38f41ad93f66a2e4b814f',
     ],
 
     'mandrill' => [
