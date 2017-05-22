@@ -761,7 +761,7 @@
 								<h4 class="second_color show-investment-security-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_security_label))}}@else Security @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{{$project->investment->security}}</p> @endif
+								@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{!!$project->investment->security!!}</p> @endif
 								<center>
 									@if($projectMediaImage=$project->media->where('type','investment_security')->last())
 									@if(Auth::guest())
@@ -803,7 +803,7 @@
 								<h4 class="second_color show-expected-returns-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->expected_returns_label))}}@else Expected<br> Returns @endif</h4>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{{$project->investment->expected_returns_long}}</p> @endif
+								@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{!!$project->investment->expected_returns_long!!}</p> @endif
 								<center>
 									@if($projectMediaImage=$project->media->where('type','expected_returns')->last())
 									@if(Auth::guest())
@@ -845,7 +845,7 @@
 								<h4 class="second_color show-return-paid-as-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->return_paid_as_label))}}@else Returns<br> Paid As @endif</h4>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{{$project->investment->returns_paid_as}}</p> @endif
+								@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{!!$project->investment->returns_paid_as!!}</p> @endif
 								<center>
 									@if($projectMediaImage=$project->media->where('type','return_paid_as')->last())
 									@if(Auth::guest())
@@ -886,7 +886,7 @@
 								<h4 class="second_color show-taxation-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->taxation_label))}}@else Taxation @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{{$project->investment->taxation}}</p> @endif
+								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{!!$project->investment->taxation!!}</p> @endif
 								<center>
 									@if($projectMediaImage=$project->media->where('type','taxation')->last())
 									@if(Auth::guest())
