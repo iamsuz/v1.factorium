@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use File;
+use Session;
 use App\Color;
+use App\Media;
+use Validator;
 use App\Project;
 use Carbon\Carbon;
+use App\Investment;
+use App\MailSetting;
 use App\ProjectProg;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Session;
-use Validator;
-use Intervention\Image\Facades\Image;
-use File;
-use Illuminate\Support\Facades\Storage;
-use App\SiteConfiguration;
-use App\Investment;
 use App\SiteConfigMedia;
-use App\Media;
+use App\SiteConfiguration;
+use Illuminate\Http\Request;
 use App\ProjectConfiguration;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\MailSetting;
+use App\Http\Controllers\Controller;
+use App\ProjectConfigurationPartial;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 
 class SiteConfigurationsController extends Controller
@@ -100,12 +101,20 @@ class SiteConfigurationsController extends Controller
 
                 $extension = strtolower(File::extension($src));
 
+                $projectId = '';
+                if($request->projectId) {
+                    $projectId = $request->projectId;
+                }
+
+                if($request->currentProjectId) {
+                    $projectId = $request->currentProjectId;
+                }
+
                 $result = $this->cropImage($src, $newWValue, $newHValue, $newXValue, $newYValue);
-                if ($result && !$request->projectId) {
+                if ($result && !$projectId) {
                     $saveLoc = 'assets/images/media/home_page/';
                     $finalFile = time().'.'. $extension;
                     $finalpath = 'assets/images/media/home_page/'.$finalFile;
-
                     $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
 
                     if($type[$request->imgAction] == 'brand_logo') {
@@ -131,23 +140,28 @@ class SiteConfigurationsController extends Controller
                     $siteMedia->save();
                     File::delete($src);
                     return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                } elseif ($result && $request->projectId) {
+                } elseif ($result && $projectId) {
                     $saveLoc = 'assets/images/media/project_page/';
-                    $finalFile = time().'.'. $extension;
+                    $finalFile = 'proj_'.time().'.'. $extension;
                     $finalpath = $saveLoc.$finalFile;
 
-                    Image::make($result)->save(public_path($saveLoc.$finalFile));
+                    $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
 
-                    $projectMedia = Media::where('project_id', $request->projectId)
+                    if($type[$request->imgAction] == 'projectpg_back_img') {
+                        $image->resize(1080, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                        })->save(public_path($saveLoc.$finalFile));
+                    }
+                    $projectMedia = Media::where('project_id', $projectId)
                     ->where('project_site', url())
                     ->where('type', $type[$request->imgAction])
-                    ->first();
+                    ->first();                    
                     if($projectMedia){
                             File::delete(public_path($projectMedia->path));    
                     }
                     else{
                         $projectMedia = new Media;
-                        $projectMedia->project_id = $request->projectId;
+                        $projectMedia->project_id = $projectId;
                         $projectMedia->type = $type[$request->imgAction];
                         $projectMedia->project_site = url();
                         $projectMedia->caption = 'Project Page Main fold back Image';
@@ -919,25 +933,25 @@ class SiteConfigurationsController extends Controller
         $action = $request->action;
         if($action != ''){
             $projectId =$request->projectId;
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-            if(!$projectConfiguration)
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
             {
-                $projectConfiguration = new ProjectConfiguration;
-                $projectConfiguration->project_id = (int)$projectId;
-                $projectConfiguration->save();
-                $projectConfiguration = ProjectConfiguration::all();
-                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
+                $projectConfigurationPartial = ProjectConfigurationPartial::all();
+                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
-            $overlayOpacity = $projectConfiguration->overlay_opacity;
+            $overlayOpacity = $projectConfigurationPartial->overlay_opacity;
             if($action == 'increase' && $overlayOpacity<1.0){
                 $overlayOpacity += 0.1;
             }
             if($action == 'decrease' && $overlayOpacity>0.0){
                 $overlayOpacity -= 0.1;
             }
-            $projectConfiguration->update(['overlay_opacity'=>$overlayOpacity]);
-            return $resultArray = array('status' => 1, 'opacity' => $projectConfiguration->overlay_opacity);
+            $projectConfigurationPartial->update(['overlay_opacity'=>$overlayOpacity]);
+            return $resultArray = array('status' => 1, 'opacity' => $projectConfigurationPartial->overlay_opacity);
         }
     }
     public function createMailSettings(Request $request)
@@ -988,17 +1002,17 @@ class SiteConfigurationsController extends Controller
         $action = $request->action;
         if($action != ''){
             $projectId =$request->projectId;
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-            if(!$projectConfiguration)
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
             {
-                $projectConfiguration = new ProjectConfiguration;
-                $projectConfiguration->project_id = (int)$projectId;
-                $projectConfiguration->save();
-                $projectConfiguration = ProjectConfiguration::all();
-                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
+                $projectConfigurationPartial = ProjectConfigurationPartial::all();
+                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
-            $projectConfiguration->update([$action=>$request->checkValue]);
+            $projectConfigurationPartial->update([$action=>$request->checkValue]);
             return $resultArray = array('status' => 1);
         }   
     }

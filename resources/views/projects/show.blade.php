@@ -1679,6 +1679,7 @@
 						<input type="hidden" name="h_target" id="h_target" value="">
 						<input type="hidden" name="orig_width" id="orig_width" value="">
 						<input type="hidden" name="orig_height" id="orig_height" value="">
+						<input type="hidden" name="project_id" id="project_i" value="{{$project->id}}">
 					</div>
 				</div>      
 			</div>
@@ -1716,7 +1717,7 @@
 		fund_close_date = new Date({{date('Y,m-1,d', strtotime($project->investment->fund_raising_close_date))}});
 		var now = new Date();
 		totalDays = {{$project->investment->fund_raising_close_date->diffInDays()}} + {{$project->investment->fund_raising_start_date->diffInDays()}};
-		if(fund_close_date < now){
+		if(fund_close_date < now) {
 			var closeYear = fund_close_date.getFullYear();
 			var closeMonth = fund_close_date.getMonth()+1;
 			var closeDate = fund_close_date.getDate();
@@ -1728,9 +1729,9 @@
 			}
 			diffinDays = 0;
 		}
-		else{
+		else {
 			if(totalDays > 0){
-				diffinDays = {{$project->investment->fund_raising_close_date->diffInDays()}}/totalDays;
+				diffinDays = {{ $project->investment->fund_raising_close_date->diffInDays() }} / totalDays;
 			}
 			else {
 				diffinDays = 0;
@@ -1920,7 +1921,7 @@
 			$('.store-project-page-details-btn').show();
 			$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
 			$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
-			$('.project-description-field').html('<input type="text" name="project_description_txt" class="form-control" value="{{nl2br(e($project->description))}}">');
+			$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control">{{ nl2br(e($project->description)) }}</textarea>');
 			@if($project->investment)
 			$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
 			$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
@@ -2005,7 +2006,6 @@
 						});
 						$('.loader-overlay').hide();
 
-						performCropOnImage();
 
 						$('#modal_close_btn').click(function(e){
 							$('#projectpg_back_img, #projectpg_back_img_name').val('');
@@ -2057,7 +2057,6 @@
 		jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
 	}
 
-	function performCropOnImage(){
 		$('#perform_crop_btn').click(function(e){
 			$('.loader-overlay').show();
 			var imageName = $('#image_crop').val();
@@ -2107,7 +2106,6 @@
 
 			});
 		});
-	}
 
 	function editProjectPageThumbImages(){
 		var imgAction = '';
@@ -2176,7 +2174,6 @@
 				});
 			}
 		});
-		performCropOnImage();
 
 		$('#modal_close_btn').click(function(e){
 			$('#projectpg_thumbnail_image, #projectpg_thumbnail_image_name').val('');

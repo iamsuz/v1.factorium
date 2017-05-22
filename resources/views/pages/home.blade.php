@@ -1483,8 +1483,6 @@
           }
         });
 
-        performCropOnImage();
-
         $('#modal_close_btn').click(function(e){
           $('#brand_logo, #brand_logo_name').val('');
         });
@@ -1586,7 +1584,6 @@
       jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
     }
 
-    function performCropOnImage(){
       $('#perform_crop_btn').click(function(e){
         $('.loader-overlay').show();
         var imageName = $('#image_crop').val();
@@ -1648,7 +1645,6 @@
           
         });
       });
-    }
 
     //Functionality to Edit Text 1 of Home Page. 
     //This can be actioned by only superadmin

@@ -2,35 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\User;
-use App\Project;
 use App\Color;
+use App\Media;
+use Validator;
+use App\Project;
+use Carbon\Carbon;
+use App\Investment;
 use App\ProjectFAQ;
 use App\ProjectProg;
 use App\Http\Requests;
 use App\InvestingJoint;
+use App\ProjectSpvDetail;
 use App\Mailers\AppMailer;
 use App\InvestmentInvestor;
 use Illuminate\Http\Request;
+use App\ProjectConfiguration;
+use App\Jobs\SendReminderEmail;
 use App\Http\Requests\FAQRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\ProjectConfigurationPartial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\ProjectRequest;
-use Intervention\Image\Facades\Image;
 use Intercom\IntercomBasicAuthClient;
+use Intervention\Image\Facades\Image;
 use App\Http\Requests\InvestmentRequest;
-use App\Jobs\SendReminderEmail;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
-use App\Investment;
-use Carbon\Carbon;
-use App\ProjectSpvDetail;
-use App\Media;
-use Validator;
-use App\ProjectConfiguration;
-use Session;
 
 class ProjectsController extends Controller
 {
@@ -210,6 +211,16 @@ class ProjectsController extends Controller
             $projectConfiguration->project_id = $project->id;
             $projectConfiguration->save();
         }
+
+        $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $project->id)->first();
+        if(!$projectConfigurationPartial)
+        {
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = $project->id;
+            $projectConfigurationPartial->save();
+        }
+
         if(!$project->active && app()->environment() == 'production') {
             if(Auth::guest()) {
                 return response()->view('errors.404', [], 404);

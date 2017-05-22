@@ -137,10 +137,22 @@ class Project extends Model
     }
     public function projectconfiguration()
     {
-        return $this->hasOne('App\ProjectConfiguration');
+        return $this->hasOne('App\ProjectConfiguration')->join('project_configuration_partials', 'project_configurations.project_id', '=', 'project_configuration_partials.project_id');
+        // ->join('project_configuration_partials', function ($join) {
+        //     $join->on('project_configurations.project_id', '=', 'contacts.user_id')
+        //          ->where('contacts.user_id', '>', 5);
+        // })
+        // ->get();
     }
+
+    public function projectconfigurationpartial()
+    {
+        return $this->hasOne('App\ProjectConfigurationPartial');
+    }
+
     public function investing_joint()
     {
         return $this->hasMany('App\InvestingJoint');
     }
+
 }
