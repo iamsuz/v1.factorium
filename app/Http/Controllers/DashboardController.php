@@ -366,8 +366,14 @@ class DashboardController extends Controller
         $content = $request->mail_content;
         $emailStr = $request->email_string;
         
+        //Disable SSL Check
+        $client = new \GuzzleHttp\Client([
+            'verify' => false,
+        ]);
+        $adapter = new \Http\Adapter\Guzzle6\Client($client);
+
         # Instantiate the client.
-        $mgClient = new Mailgun(env('MAILGUN_API_KEY'));
+        $mgClient = new Mailgun(env('MAILGUN_API_KEY'), $adapter);
         $domain = env('MAILGUN_DOMAIN');
 
         # Make the call to the client.
