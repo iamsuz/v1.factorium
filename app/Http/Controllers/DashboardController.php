@@ -351,9 +351,9 @@ class DashboardController extends Controller
     
     public function createBroadcastMailForm(){
         $color = Color::where('project_site',url())->first();
-        $investors = InvestmentInvestor::where('project_site', url())->groupBy('user_id')->get();
+        $siteUsers = User::where('registration_site', url())->get();
         $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
-        return view('dashboard.broadcast.broadcastmail',compact('color','siteconfiguration', 'investors'));
+        return view('dashboard.broadcast.broadcastmail',compact('color','siteconfiguration', 'siteUsers'));
     }
 
     public function sendBroadcastMail(Request $request)

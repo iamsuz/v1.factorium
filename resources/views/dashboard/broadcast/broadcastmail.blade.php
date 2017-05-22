@@ -29,7 +29,7 @@ Broadcast | Dashboard | @parent
                 @if (Session::has('message'))
                 {!! Session::get('message') !!}
                 @endif
-                <div class="row text-center"><h2>All Investors</h2></div>
+                <div class="row text-center"><h2>Registered Users</h2></div>
                 <div class="row" style="border: 1px solid #ddd;max-height: 200px;overflow: auto;">
                     <table class="table">
                     <thead style="background: #ddd;">
@@ -42,17 +42,17 @@ Broadcast | Dashboard | @parent
                     </thead>
                     <tbody>
                         <?php $emailStr=array(); ?>
-                        @if(count($investors) == 0)
-                        <tr class="text-center"><td colspan="4"><small style="color: #e50000">There are no Investors available</small></td></tr>
+                        @if(count($siteUsers) == 0)
+                        <tr class="text-center"><td colspan="4"><small style="color: #e50000">There are no Registered users</small></td></tr>
                         @else
-                            @foreach($investors as $investor)
+                            @foreach($siteUsers as $siteUser)
                             <tr>
-                                <td><input class="email-select select-this-email" type="checkbox" name="" id="" value="{{$investor->user->email}}" checked></td>
-                                <td>{{$investor->user->first_name}}</td>
-                                <td>{{$investor->user->last_name}}</td>
-                                <td>{{$investor->user->email}}</td>
+                                <td><input class="email-select select-this-email" type="checkbox" name="" id="" value="{{$siteUser->email}}" checked></td>
+                                <td>{{$siteUser->first_name}}</td>
+                                <td>{{$siteUser->last_name}}</td>
+                                <td>{{$siteUser->email}}</td>
                             </tr>
-                            <?php array_push($emailStr, $investor->user->email); ?>
+                            <?php array_push($emailStr, $siteUser->email); ?>
                             @endforeach
                             <?php $emailStr = trim(implode(",", $emailStr)); ?>
                         @endif
@@ -108,7 +108,7 @@ Broadcast | Dashboard | @parent
         $('#broadcast_mail').click(function(e){
             if($('#email_string').val() == ""){
                 e.preventDefault();
-                alert('select atleast one investor from the list.');
+                alert('select atleast one user from the list.');
             } 
             else{
                 if (!confirm("Are you sure, you wanto to broadcast this message?")) {
