@@ -664,7 +664,13 @@ class ProjectsController extends Controller
         $amount = $request->amount_to_invest;
         $project_id = $request->project_id;
         $user_id = $request->user_id;
-        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number.'&investing_as='.$request->investing_as.'&joint_investor_first='.$request->joint_investor_first.'&joint_investor_last='.$request->joint_investor_last.'&investing_company_name='.$request->investing_company_name);
+        if($request->same_account){
+            $request->withdraw_bank_name = $request->bank_name;
+            $request->withdraw_account_name = $request->account_name;
+            $request->withdraw_account_number = $request->account_number;
+            $request->withdraw_bsb = $request->bsb;
+        }
+        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number.'&investing_as='.$request->investing_as.'&joint_investor_first='.$request->joint_investor_first.'&joint_investor_last='.$request->joint_investor_last.'&investing_company_name='.$request->investing_company_name.'&bank_name='.$request->bank_name.'&tfn='.$request->tfn.'&withdraw_bank_name='.$request->withdraw_bank_name.'&withdraw_account_name='.$request->withdraw_account_name.'&withdraw_account_number='.$request->withdraw_account_number.'&withdraw_bsb='.$request->withdraw_bsb);
     }
 
     public function gform(Request $request)
