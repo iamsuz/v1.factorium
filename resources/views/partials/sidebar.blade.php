@@ -20,4 +20,5 @@
 	@if($roles->contains('role', 'developer'))
 	<a href="{{route('users.submit', [$user])}}" class="list-group-item @if($active == 5) active @endif">Submit a Project </a>
 	@endif
+	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">My Investments </a>
 </div>

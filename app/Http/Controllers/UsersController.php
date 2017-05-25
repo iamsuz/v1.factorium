@@ -427,4 +427,32 @@ class UsersController extends Controller
 
     }
 
+    /**
+     * get user investments
+     * @param  User $user_id 
+     */
+    public function usersInvestments($user_id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = User::findOrFail($user_id);
+        $investments = InvestmentInvestor::where('user_id', $user->id)
+                        ->where('project_site', url())->get();
+        return view('users.investments', compact('user','color', 'investments'));
+    }
+
+    /**
+     * render share certificateof the user
+     * @param  InvestmentInvestor $investment_id
+     */
+    public function viewShareCertificate($investment_id)
+    {
+        $filename = '/app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
+        $path = storage_path($filename);
+
+        return \Response::make(file_get_contents($path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        ]);
+    }
+
 }

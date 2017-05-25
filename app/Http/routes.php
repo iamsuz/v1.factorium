@@ -225,3 +225,5 @@ Route::post('/configuration/edit/visibilityOfSiteItems', ['as'=> 'configuration.
 Route::post('/configuration/updateInterestFormLink', ['as'=> 'configuration.updateInterestFormLink', 'uses'=>'SiteConfigurationsController@updateInterestFormLink']);
 Route::get('/dashboard/broadcastMail', ['as'=>'dashboard.broadcastMail', 'uses'=>'DashboardController@createBroadcastMailForm']);
 Route::post('/dashboard/mail/broadcast', ['as'=>'dashboard.mail.broadcast', 'uses'=>'DashboardController@sendBroadcastMail']);
+Route::get('/users/{user_id}/investments', ['as'=>'users.investments', 'uses'=>'UsersController@usersInvestments']);
+Route::get('/user/view/{investment_id}/share', ['as'=>'user.view.share', 'uses'=>'UsersController@viewShareCertificate']);
