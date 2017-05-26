@@ -1019,34 +1019,34 @@ class SiteConfigurationsController extends Controller
     public function toggleProspectusText(Request $request)
     {
         $projectId =$request->projectId;
-        $projectConfiguration = ProjectConfiguration::all();
-        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-        if(!$projectConfiguration)
+        $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+        if(!$projectConfigurationPartial)
         {
-            $projectConfiguration = new ProjectConfiguration;
-            $projectConfiguration->project_id = (int)$projectId;
-            $projectConfiguration->save();
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = (int)$projectId;
+            $projectConfigurationPartial->save();
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
         }
-        $projectConfiguration->update(['show_prospectus_text'=>$request->checkValue]);
+        $projectConfigurationPartial->update(['show_prospectus_text'=>$request->checkValue]);
         return $resultArray = array('status' => 1);
     }
 
     public function toggleProjectProgress(Request $request)
     {
         $projectId =$request->projectId;
-        $projectConfiguration = ProjectConfiguration::all();
-        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-        if(!$projectConfiguration)
+        $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+        if(!$projectConfigurationPartial)
         {
-            $projectConfiguration = new ProjectConfiguration;
-            $projectConfiguration->project_id = (int)$projectId;
-            $projectConfiguration->save();
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = (int)$projectId;
+            $projectConfigurationPartial->save();
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
         }
-        $projectConfiguration->update(['show_project_progress'=>$request->checkValue]);
+        $projectConfigurationPartial->update(['show_project_progress'=>$request->checkValue]);
         return $resultArray = array('status' => 1);
     }
 
@@ -1064,18 +1064,18 @@ class SiteConfigurationsController extends Controller
         $toggleAction = $request->toggleAction;
         if($toggleAction){
             $projectId =$request->projectId;
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-            if(!$projectConfiguration)
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
             {
-                $projectConfiguration = new ProjectConfiguration;
-                $projectConfiguration->project_id = (int)$projectId;
-                $projectConfiguration->save();
-                $projectConfiguration = ProjectConfiguration::all();
-                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
+                $projectConfigurationPartial = ProjectConfigurationPartial::all();
+                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
             if($toggleAction == "project_progress_circle"){
-                $projectConfiguration->update(['show_project_progress_circle'=>$request->checkValue]);
+                $projectConfigurationPartial->update(['show_project_progress_circle'=>$request->checkValue]);
             }
             return $resultArray = array('status' => 1);
         }
