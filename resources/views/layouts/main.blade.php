@@ -80,7 +80,7 @@
     </div>
     <!-- topbar nav content here -->
     @section('topbar-section')
-    <nav class="navbar navbar-default navbar-fixed-top header" id="header" role="navigation" @if($color) style='background-color: #{{$color->nav_footer_color}}' @endif>
+    <nav class="navbar navbar-default navbar-fixed-top header" id="header" role="navigation"  style='background-color: @if($color)#{{$color->nav_footer_color}}@endif; border-color: transparent;' >
         <!-- topbar nav content here -->
         <div class="container">
             <div class="logo pull-left">
