@@ -1074,9 +1074,7 @@ class SiteConfigurationsController extends Controller
                 $projectConfigurationPartial = ProjectConfigurationPartial::all();
                 $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
-            if($toggleAction == "project_progress_circle"){
-                $projectConfigurationPartial->update(['show_project_progress_circle'=>$request->checkValue]);
-            }
+            $projectConfigurationPartial->update(['show_'.$toggleAction=>$request->checkValue]);
             return $resultArray = array('status' => 1);
         }
     }
