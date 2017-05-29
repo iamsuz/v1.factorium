@@ -93,14 +93,14 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
-						<div id="circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
-							<div class="text-center" style="color:#fff;">
+						<div id="circle" class="project_progress_circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
+							<div class="text-center" style="color:#fff">
 								<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
 									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
 										<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
-											<span id="daysremained"></span>
+											<span id="daysremained" style="color: #fff;"></span>
 											<br>
-											<p style="font-size: 1.1em; margin: 0 0 -3px;" class="h1-faq">Days Left</p>
+											<p style="font-size: 1.1em; margin: 0 0 -3px;" class="h1-faq avoid-p-color">Days Left</p>
 										</p>
 									</div>
 								</div>
@@ -2536,9 +2536,7 @@
 	        	console.log(data);
 	        	$('.loader-overlay').hide();
 	        	if(data.status){
-	        		console.log(toggleAction);
 	        		$('.'+toggleAction).slideToggle();
-	        		$('.days-left-circle #circle').slideToggle();
 	        	}
 	        });
 		});
