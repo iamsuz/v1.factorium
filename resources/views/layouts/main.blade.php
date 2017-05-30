@@ -47,7 +47,7 @@
 
     <!-- JCrop -->
     {!! Html::style('/assets/plugins/JCrop/css/jquery.Jcrop.css') !!}
-
+    {!! Html::script('/js/jquery-1.11.3.min.js') !!}
     @yield('css-section')
 
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->

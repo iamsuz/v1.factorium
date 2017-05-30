@@ -94,7 +94,7 @@
 						@else
 						<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
 						@endif --}}
-						<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm">
+						<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
 							{{method_field('PATCH')}}
 							{{csrf_field()}}
 
@@ -102,11 +102,18 @@
 							@if($investment->investment_confirmation == 1)
 							<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
 							@else
-							<a id="confirmation" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+							<a id="confirmation{{$investment->id}}" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
 							<input class="hidden" name="investment_confirmation" value="1">
 							@endif
 							<input type="hidden" name="investor" value="{{$investment->user->id}}">
 						</form>
+						<script>
+							$(document).ready(function() {
+								$('#confirmation{{$investment->id}}').click(function(e){
+									$('#confirmationForm{{$investment->id}}').submit();
+								});
+							});
+						</script>
 					</div>
 					@endif
 				</div>
@@ -153,9 +160,6 @@
 			} else {
 				e.preventDefault();
 			}
-		});
-		$('#confirmation').click(function(e){
-			$('#confirmationForm').submit();
 		});
 	});
 </script>
