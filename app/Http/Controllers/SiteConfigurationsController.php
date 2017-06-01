@@ -72,7 +72,7 @@ class SiteConfigurationsController extends Controller
 
     public function cropUploadedImage(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin'))
+        if (Auth::user()->roles->contains('role', 'superadmin') || Auth::user()->roles->contains('role', 'admin'))
         {
 
             $type = [];
@@ -111,6 +111,11 @@ class SiteConfigurationsController extends Controller
                 }
 
                 $result = $this->cropImage($src, $newWValue, $newHValue, $newXValue, $newYValue);
+                if($request->imgAction == 'testimonial_image'){
+                    $finalpath = $src;
+                    $image = Image::make($result)->save(public_path($finalpath));
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $finalpath);
+                }
                 if ($result && !$projectId) {
                     $saveLoc = 'assets/images/media/home_page/';
                     $finalFile = time().'.'. $extension;

@@ -985,3 +985,8 @@ a:hover {
 .red-btn-style:hover{
 	color: #fff !important;
 }
+.read-more-style{
+	color: rgba(40, 42, 115, 0.50);
+    padding: 0px 6px;
+    cursor: pointer;
+}

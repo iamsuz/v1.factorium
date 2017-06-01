@@ -27,6 +27,7 @@ use Validator;
 use Intervention\Image\Facades\Image;
 use File;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Testimonial;
 
 class PagesController extends Controller
 {
@@ -56,6 +57,7 @@ class PagesController extends Controller
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
         $superadmin_access = 0;
+        $admin_access = 0;
         if(Auth::guest()) {
             $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             $currentUserRole = 'guest';
@@ -65,6 +67,8 @@ class PagesController extends Controller
             if ($roles->contains('role', 'admin')) {
                 $projects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
                 // dd($projects);
+                if($user->registration_site == url())
+                $admin_access = 1;
             } else {
                 $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             }
@@ -89,7 +93,8 @@ class PagesController extends Controller
             $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
             // dd($siteConfiguration);
         }
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color','superadmin_access'));
+        $testimonials = Testimonial::where('project_site', url())->get();
+        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color','superadmin_access', 'admin_access', 'testimonials'));
     }
 
     /**
@@ -478,5 +483,56 @@ class PagesController extends Controller
         $docName = "terms-conditions-".$websiteName."-".$clientName.".pdf";
         $pdf = PDF::loadView('pdf.termsConditions');
         return $pdf->stream();
+    }
+
+    public function storeTestimonial(Request $request)
+    {
+        $this->validate($request, array(
+            'user_name'=>'required',
+            'user_summary'=>'required',
+            'user_content'=>'required',
+            'user_image_url'=>'required|mimes:jpeg,bmp,png,jpg,JPG',
+            'testimonial_img_path' => 'required',
+            ));
+
+        $testimonial = new Testimonial;
+        $testimonial->user_name = $request->user_name;
+        $testimonial->user_summary = $request->user_summary;
+        $testimonial->user_content = $request->user_content;
+        $testimonial->user_image_url = $request->testimonial_img_path;
+        $testimonial->project_site = url();
+        $testimonial->save();
+        return redirect()->back()->withMessage('Member added Successfully');
+    }
+
+    public function uploadTestimonialImgThumbnail(Request $request){
+        $validation_rules = array(
+            'user_image_url'=>'required|mimes:jpeg,png,jpg,JPG'
+            );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if($validator->fails()){
+            return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg,JPG');
+        }
+        $destinationPath = 'assets/images/testimonials';
+        if ($request->hasFile('user_image_url') && $request->file('user_image_url')->isValid())
+        {
+            Image::make($request->user_image_url)->resize(400, null, function($constraint){
+                $constraint->aspectRatio();
+            })->save();
+            $filename1 = $request->file('user_image_url')->getClientOriginalName();
+            $filename1 = str_slug($filename1.' '.rand(1, 9999));
+            $fileExtension1 = $request->file('user_image_url')->getClientOriginalExtension();
+            $filename1 = $filename1.'_'.time().'.'.$fileExtension1;
+            $uploadStatus1 = $request->file('user_image_url')->move($destinationPath, $filename1);
+            $finaldestination = $destinationPath.'/'.$filename1;
+            if($uploadStatus1){
+                list($origWidth, $origHeight) = getimagesize($destinationPath.'/'.$filename1);
+                return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $filename1, 'origWidth' => $origWidth, 'origHeight' => $origHeight, 'imgAction' => $request->imgAction);
+            }
+            else {
+                return $resultArray = array('status' => 0, 'message' => 'something went wrong.');
+            }
+
+        }
     }
 }

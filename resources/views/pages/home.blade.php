@@ -848,6 +848,103 @@
   <hr class="first_color" style="height:2px;border:none;color:#282a73;background-color:#282a73;" />
 </div>
 <br>
+<section id="testimonials" class="chunk-box">
+  <div class="container">
+    @if(Auth::guest())
+    @else
+    @if($admin_access == 1)
+      <span class="show-add-testimonial-form" style="cursor: pointer;"><i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;Add Testimonials</span>
+      <div class="add-testimonial-form col-md-12" style="display: none;">
+        <div class="col-md-6 col-md-offset-3 " style="border:1px solid #eee; border-radius: 5px; padding: 3%; margin-bottom: 3%">
+          {!! Form::open(array('route'=>['pages.testimonial.store'], 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true)) !!}
+            
+            {!!Form::label('user_name', 'Name', array('class'=>'control-label'))!!}
+            {!! Form::text('user_name', null, array('placeholder'=>'User Name', 'class'=>'form-control', 'tabindex'=>'1','required'=>'yes')) !!}
+            {!! $errors->first('user_name', '<small class="text-danger">:message</small>') !!}
+
+            {!!Form::label('user_summary', 'Summary', array('class'=>'control-label'))!!}
+            {!! Form::text('user_summary', null, array('placeholder'=>'User Summary(Who he is)', 'class'=>'form-control ', 'tabindex'=>'2', 'required'=>'yes')) !!}
+            {!! $errors->first('user_summary', '<small class="text-danger">:message</small>') !!}
+
+            {!!Form::label('user_content', 'Summary', array('class'=>'control-label'))!!}
+            {!! Form::textarea('user_content', null, array('placeholder'=>'User Note', 'class'=>'form-control ', 'tabindex'=>'3', 'required'=>'yes')) !!}
+            {!! $errors->first('user_content', '<small class="text-danger">:message</small>') !!}
+
+            <br>
+            <div class="input-group">
+              <label class="input-group-btn">
+                <span class="btn btn-primary" style="padding: 10px 12px;">
+                  Browse&hellip; <input type="file" name="user_image_url" id="testimonial_img_thumbnail" class="form-control" required="yes" action="testimonial_image" style="display: none;">
+                </span>
+              </label>
+              <input type="text" class="form-control" id="testimonial_image_name" readonly>
+              <input type="hidden" name="testimonial_img_path" id="testimonial_img_path" value="">
+            </div>
+
+            <br>
+            {!! Form::submit('Add Testimonial', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'5')) !!}
+          {!! Form::close() !!}
+          
+        </div>
+      </div>
+      <br><br>
+    @endif
+    @endif
+
+    @if((int)(count($testimonials)/3) > 0)
+    @foreach($testimonials->chunk(3) as $sets)
+    <div class="row">
+      @foreach($sets as $testimonial)
+      <div class="col-md-4" style="margin: 3% 0%;">
+        <div style="border-left: 5px solid #ddd;">
+          <center>
+            <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
+          </center>
+        </div>
+        <span style="font-style: italic; float: right;"><b>{{$testimonial->user_name}}</b></span><br>
+        <span style="font-style: italic; float: right;">{{$testimonial->user_summary}}</span><br>
+        <div style="clear: both; padding-bottom: 5px;"></div>
+        <p class="text-justify">
+          <i class="fa fa-quote-left fa-3x fa-pull-left" style="color:#aaa;"></i>
+          @if(strlen($testimonial->user_content) > 160)
+          {{substr($testimonial->user_content, 0, 160)}}<span class="ellipsis">...</span><span class="moreText" style="display: none;">{{substr($testimonial->user_content, 160)}}</span><span class="read-more read-more-style"><small><small><u>read more</u></small></small></span>
+          @else
+          {{$testimonial->user_content}}
+          @endif
+        </p>
+      </div>
+      @endforeach
+    </div>
+    @endforeach
+    @else
+    <div class="row">
+      @foreach($testimonials as $testimonial)
+      <div class="col-md-4" style="margin-bottom: 3%;">
+      <div style="border-left: 5px solid #ddd;">
+        <center>
+          <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
+        </center>
+      </div>
+      <span style="font-style: italic; float: right;"><b>{{$testimonial->user_name}}</b></span><br>
+      <span style="font-style: italic; float: right;">{{$testimonial->user_summary}}</span><br>
+      <div style="clear: both; padding-bottom: 5px;"></div>
+      <p class="text-justify">
+        <i class="fa fa-quote-left fa-3x fa-pull-left" style="color:#aaa;"></i>
+        @if(strlen($testimonial->user_content) > 160)
+        {{substr($testimonial->user_content, 0, 160)}}<span class="ellipsis">...</span><span class="moreText" style="display: none;">{{substr($testimonial->user_content, 160)}}</span><span class="read-more read-more-style"><small><small><u>read more</u></small></small></span>
+        @else
+        {{$testimonial->user_content}}
+        @endif
+      </p>
+    </div>
+      @endforeach
+    </div>
+    @endif
+
+
+  </div>  
+</section>
+<br>
 <h4 class="text-center h1-faq hide">As seen in</h4>
 <section class="chunk-box hide">
   <div class="container">
@@ -1546,6 +1643,8 @@
       richTextareaFieldInitialization();
       //Swap projects raning
       swapProjectsRanking();
+      //Manage testimonial actions
+      addTestimonials();
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -1618,8 +1717,14 @@
         }).done(function(data){
           console.log(data);
           if(data.status){
+            $('.loader-overlay').hide();
             $('#image_crop').val(data.imageSource);
-            location.reload('/');
+            if(imgAction != 'testimonial_image'){
+              location.reload('/');
+            } else {
+
+            }
+            $('#myModal').modal('toggle');
           }
           else{
             $('.loader-overlay').hide();
@@ -1638,6 +1743,9 @@
             }
             else if (imgAction == 'project_thumbnail'){
               $('#project_thumb_image, #project_thumb_image_name').val('');
+            }
+            else if (imgAction == 'testimonial_image'){
+              $('#testimonial_img_thumbnail, #testimonial_image_name').val('');
             }
             else {}
               alert(data.message);
@@ -2138,7 +2246,7 @@
     function richTextareaFieldInitialization(){
       tinymce.init({
         forced_root_block : "div",
-        selector: 'textarea',
+        selector: '#how-it-works textarea',
         plugins: 'charmap textcolor',
         toolbar: "alignleft aligncenter alignright alignjustify forecolor",
         menubar: false,
@@ -2207,6 +2315,91 @@
           }
         });
 
+      });
+    }
+
+    function addTestimonials(){
+      $('.show-add-testimonial-form').click(function(e){
+        $('.add-testimonial-form').slideToggle();
+      });
+      $('.read-more').on('click', function(){
+        var $parent = $(this).parent();
+        if($parent.data('visible')) {
+          $parent.data('visible', false).find('.ellipsis').show()
+          .end().find('.moreText').hide()
+          .end().find('.read-more').html('<small><small><u>read more</u></small></small>');
+        } else {
+          $parent.data('visible', true).find('.ellipsis').hide()
+          .end().find('.moreText').show()
+          .end().find('.read-more').html('<small><small><u>read less</u></small></small>');
+        }
+      });
+      // Upload testimonial image
+      $('#testimonial_img_thumbnail').change(function(e){
+        var imgAction = $(this).attr('action');
+        var file = $('#testimonial_img_thumbnail')[0].files[0];
+        if (file){
+          $('#testimonial_image_name').val(file.name);
+        }
+        if($('#testimonial_img_thumbnail').val() != ''){
+          $('.loader-overlay').show();
+          var formData = new FormData();
+          formData.append('user_image_url', $('#testimonial_img_thumbnail')[0].files[0]);
+          formData.append('imgAction', imgAction);
+          $.ajax({
+            url: '/pages/testimonial/uploadImg',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false
+          }).done(function(data){
+            if(data.status == 1){
+              console.log(data);
+              var imgPath = data.destPath+'/'+data.fileName;
+              var str1 = $('<div class="col-sm-9" id="user_img_container"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_img_container" style="float: right; width:171px; height:171px; padding:0px; overflow:hidden;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+              $('#image_cropbox_container').html(str1);
+              $('#myModal').modal({
+                  'show': true,
+                  'backdrop': false,
+              });
+
+              $('#image_crop').val(imgPath); //set hidden image value
+              $('#testimonial_img_path').val(imgPath);
+              $('#image_crop').attr('action', data.imgAction);
+              $('#image_action').val(imgAction);
+              var target_width = 171;
+              var target_height = 171;
+              var origWidth = data.origWidth;
+              var origHeight = data.origHeight;
+              $('#image_cropbox').Jcrop({
+                boxWidth: 530,
+                aspectRatio: 1,
+                keySupport: false,
+                setSelect: [0, 0, target_width, target_height],
+                bgColor: '',
+                onSelect: function(c) {
+                  updateCoords(c, target_width, target_height, origWidth, origHeight);
+                },
+                onChange: function(c) {
+                  updateCoords(c, target_width, target_height, origWidth, origHeight);
+                },onRelease: setSelect,
+                minSize: [target_width, target_height],
+              });
+              $('.loader-overlay').hide();
+            }
+            else {
+              $('.loader-overlay').hide();
+              $('#testimonial_img_thumbnail, #testimonial_image_name').val('');
+              alert(data.message);
+            }
+
+          });
+        }
       });
     }
 
