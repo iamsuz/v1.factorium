@@ -896,6 +896,15 @@
     <div class="row">
       @foreach($sets as $testimonial)
       <div class="col-md-4" style="margin: 3% 0%;">
+        @if(Auth::guest())
+        @else
+        @if($admin_access == 1)
+          {!! Form::open(array('route'=>['pages.testimonial.delete'], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+          <input type="hidden" name="testimonial_id" value="{{$testimonial->id}}">
+          <input type="submit" class="btn btn-primary btn-sm" name="delete_testimonial" value="delete">
+          {!! Form::close() !!}
+        @endif
+        @endif
         <div style="border-left: 5px solid #ddd;">
           <center>
             <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
@@ -906,8 +915,8 @@
         <div style="clear: both; padding-bottom: 5px;"></div>
         <p class="text-justify">
           <i class="fa fa-quote-left fa-3x fa-pull-left" style="color:#aaa;"></i>
-          @if(strlen($testimonial->user_content) > 160)
-          {{substr($testimonial->user_content, 0, 160)}}<span class="ellipsis">...</span><span class="moreText" style="display: none;">{{substr($testimonial->user_content, 160)}}</span><span class="read-more read-more-style"><small><small><u>read more</u></small></small></span>
+          @if(strlen($testimonial->user_content) > 150)
+          {{substr($testimonial->user_content, 0, 150)}}<span class="ellipsis">...</span><span class="moreText" style="display: none;">{{substr($testimonial->user_content, 150)}}</span><span class="read-more read-more-style"><small><small><u>read more</u></small></small></span>
           @else
           {{$testimonial->user_content}}
           @endif
@@ -917,7 +926,7 @@
     </div>
     @endforeach
     @else
-    <div class="row">
+    <div class="row" style="display:-webkit-box;-webkit-box-pack:center;-webkit-box-align:center;">
       @foreach($testimonials as $testimonial)
       <div class="col-md-4" style="margin-bottom: 3%;">
       <div style="border-left: 5px solid #ddd;">
@@ -930,8 +939,8 @@
       <div style="clear: both; padding-bottom: 5px;"></div>
       <p class="text-justify">
         <i class="fa fa-quote-left fa-3x fa-pull-left" style="color:#aaa;"></i>
-        @if(strlen($testimonial->user_content) > 160)
-        {{substr($testimonial->user_content, 0, 160)}}<span class="ellipsis">...</span><span class="moreText" style="display: none;">{{substr($testimonial->user_content, 160)}}</span><span class="read-more read-more-style"><small><small><u>read more</u></small></small></span>
+        @if(strlen($testimonial->user_content) > 150)
+        {{substr($testimonial->user_content, 0, 150)}}<span class="ellipsis">...</span><span class="moreText" style="display: none;">{{substr($testimonial->user_content, 150)}}</span><span class="read-more read-more-style"><small><small><u>read more</u></small></small></span>
         @else
         {{$testimonial->user_content}}
         @endif

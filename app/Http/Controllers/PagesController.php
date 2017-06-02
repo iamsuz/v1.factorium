@@ -505,6 +505,16 @@ class PagesController extends Controller
         return redirect()->back()->withMessage('Member added Successfully');
     }
 
+    public function deleteTestimonial(Request $request)
+    {
+        $this->validate($request, array(
+            'testimonial_id'=>'required'
+            ));
+        $testimonial = Testimonial::find($request->testimonial_id);
+        $testimonial->delete();
+        return redirect()->back();
+    }
+
     public function uploadTestimonialImgThumbnail(Request $request){
         $validation_rules = array(
             'user_image_url'=>'required|mimes:jpeg,png,jpg,JPG'
