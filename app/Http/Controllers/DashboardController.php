@@ -201,33 +201,43 @@ class DashboardController extends Controller
             ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $investment->accepted = 1;
-        $investment->money_received = 1;
-        $investment->save();
-        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
-        if($investment->accepted) {
-            $shareInit = 1;
-            $investmentShares = InvestmentInvestor::orderBy('updated_at','ASC')->get()
-                            ->where('project_id', $investment->project_id)
-                            ->where('accepted', 1);
-            foreach ($investmentShares as $investmentShare) {
-                echo("<script>console.log('".$investmentShare."');</script>");
-                if($investmentShare->id != $investment->id){
-                    $shareInit += intval($investmentShare->amount);
-                } else {
-                    break;
+
+        if($investment){
+            $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
+                            ->where('accepted', 1)
+                            ->orderBy('share_certificate_issued_at','DESC')->get()
+                            ->first();
+            $shareInit = 0;
+            if($investmentShares){
+                if($investmentShares->share_number){
+                    $shareNumber = explode('-', $investmentShares->share_number);
+                    $shareInit = $shareNumber[1]; 
                 }
             }
-            echo("<script>console.log('".$shareInit."');</script>");
-            $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing]);
-            $pdf->setPaper('a4', 'landscape');
-            $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-            $mailer->sendInvoiceToUser($investment);
-            $mailer->sendInvoiceToAdmin($investment);
+            $shareStart = $shareInit+1;
+            $shareEnd = $shareInit+$investment->amount;
+            $shareCount = (string)($shareStart)."-".(string)($shareEnd);
+
+            //Update current investment and with the share certificate details
+            $investment->accepted = 1;
+            $investment->money_received = 1;
+            $investment->share_certificate_issued_at = Carbon::now();
+            $investment->share_number = $shareCount;
+            $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
+            $investment->save();
+            // dd($investment);
+
+            $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
+
+            if($investment->accepted) {
+                $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
+                $pdf->setPaper('a4', 'landscape');
+                $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
+                $mailer->sendInvoiceToUser($investment);
+                $mailer->sendInvoiceToAdmin($investment);
+            }
+            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
         }
-
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
-
     }
 
     public function activateProject($project_id)
