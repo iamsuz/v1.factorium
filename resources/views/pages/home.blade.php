@@ -60,6 +60,12 @@
       color: #fff !important;
     }
   </style>
+
+  <!-- Google tag manager header script if set  -->
+  <?php 
+  echo $siteConfiguration->tag_manager_header;
+  ?>
+
   {!! Html::script('assets/plugins/jscolor-2.0.4/jscolor.min.js') !!}
   <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -80,6 +86,11 @@
     </script>
   </head>
   <body data-spy="scroll">
+    <!-- Google tag manager body script if set  -->
+    <?php 
+    echo $siteConfiguration->tag_manager_body;
+    ?>
+    
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')
     @endif

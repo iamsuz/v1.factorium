@@ -127,6 +127,12 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'embedded_offer_doc_link')) {
                 $table->string('embedded_offer_doc_link')->nullable();
             }
+            if (!Schema::hasColumn('site_configurations', 'tag_manager_header')) {
+                $table->longText('tag_manager_header')->nullable();
+            }
+            if (!Schema::hasColumn('site_configurations', 'tag_manager_body')) {
+                $table->longText('tag_manager_body')->nullable();
+            }
         });
     }
 
@@ -251,6 +257,12 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'embedded_offer_doc_link')) {
                 $table->dropColumn('embedded_offer_doc_link');
+            }
+            if (Schema::hasColumn('site_configurations', 'tag_manager_header')) {
+                $table->dropColumn('tag_manager_header');
+            }
+            if (Schema::hasColumn('site_configurations', 'tag_manager_body')) {
+                $table->dropColumn('tag_manager_body');
             }
         });
     }

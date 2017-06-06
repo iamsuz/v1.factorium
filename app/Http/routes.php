@@ -230,3 +230,4 @@ Route::get('/user/view/{investment_id}/share', ['as'=>'user.view.share', 'uses'=
 Route::post('/pages/testimonial/store', ['as'=>'pages.testimonial.store', 'uses'=>'PagesController@storeTestimonial']);
 Route::post('/pages/testimonial/uploadImg', ['as'=>'pages.testimonial.uploadImg', 'uses'=>'PagesController@uploadTestimonialImgThumbnail']);
 Route::post('/pages/testimonial/delete', ['as'=>'pages.testimonial.delete', 'uses'=>'PagesController@deleteTestimonial']);
+Route::post('/configuration/updateTagManager', ['as'=> 'configuration.updateTagManager', 'uses'=>'SiteConfigurationsController@updateTagManager']);

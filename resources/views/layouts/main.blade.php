@@ -50,6 +50,11 @@
     {!! Html::script('/js/jquery-1.11.3.min.js') !!}
     @yield('css-section')
 
+    <!-- Google tag manager header script if set  -->
+    <?php
+    echo App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header;
+    ?>
+
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -69,6 +74,11 @@
     </script>
 </head>
 <body data-spy="scroll">
+    <!-- Google tag manager body script if set  -->
+    <?php
+    echo App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body;
+    ?>
+
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')
     @endif

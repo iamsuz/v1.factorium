@@ -1129,4 +1129,20 @@ class SiteConfigurationsController extends Controller
             return redirect()->back();
         }        
     }
+
+    public function updateTagManager(Request $request)
+    {
+        $tagHeader = $request->tag_manager_header_input;
+        $tagBody = $request->tag_manager_body_input;
+
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'tag_manager_header'=>$tagHeader,
+            'tag_manager_body'=>$tagBody
+        ]);
+        Session::flash('message', 'Tag Manager Updated Successfully');
+        Session::flash('action', 'tag_manager');
+        return redirect()->back();
+    }
 }

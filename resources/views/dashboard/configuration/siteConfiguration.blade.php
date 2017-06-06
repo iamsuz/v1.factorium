@@ -167,6 +167,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'tag_manager')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Tag Manager</b></h3>
+                                    <p><small>This script will be added in the head and body section of the layouts.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-tag-manager-btn" style="cursor: pointer;">
+                                                <strong>Change Tag Manager</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -436,6 +459,7 @@ Configuration | Dashboard | @parent
         </div>      
     </div>
 </div>
+<!-- Modal for Emedd link edit-->
 <div class="modal fade" id="embedd_link_edit_modal" role="dialog">
     <div class="modal-dialog" style="margin-top: 10%;">
         <!-- Modal content-->
@@ -462,6 +486,36 @@ Configuration | Dashboard | @parent
         </div>      
     </div>
 </div>
+<!-- Modal for Tag Manager edit-->
+<div class="modal fade" id="tag_manager_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Tag Manager</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateTagManager'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to update the site tag manager scripts.</small></i></h5>
+                        <br>
+                        <div class="row tag-manager-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::textarea('tag_manager_header_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header, array('placeholder'=>'Enter tag manager header text', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'tag_manager_header_input', 'rows'=>'5')) !!}
+                        {!! $errors->first('tag_manager_header_input', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::textarea('tag_manager_body_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body, array('placeholder'=>'Enter tag manager body text', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'tag_manager_body_input', 'rows'=>'3')) !!}
+                        {!! $errors->first('tag_manager_body_input', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::submit('Save Tag Manager', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_tag_manager_btn')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
 
 </div>
 </div>
@@ -472,6 +526,19 @@ Configuration | Dashboard | @parent
 
 <script type="text/javascript">
 	$(document).ready(function(){
+        $('.change-tag-manager-btn').click(function(){
+            $('#tag_manager_edit_modal').modal({
+                'show':true,
+                'backdrop':false,
+            });
+        });
+
+        $('#submit_tag_manager_btn').click(function(e){
+            if($('#tag_manager_header_input').val()==''){
+                e.preventDefault();
+                $('.tag-manager-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Tag Manager required</h6></div>')
+            }
+        });
 
 		$('.change-title-btn').click(function(){
 			$('#title_text_edit_modal').modal({
@@ -522,6 +589,8 @@ Configuration | Dashboard | @parent
             'show':true,
             'backdrop':false,
         });
+
+
      });
 
         $('#modal_close_btn').click(function(){
