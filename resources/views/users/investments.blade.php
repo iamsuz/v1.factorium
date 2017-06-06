@@ -4,6 +4,10 @@
 {{$user->first_name}} Investments | @parent
 @stop
 
+@section('css-section')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+@stop
+
 @section('content-section')
 <div class="container">
 	<br>
