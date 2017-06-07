@@ -18,7 +18,11 @@
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<h2>
+							@if($project->projectconfiguration->payment_switch)
+							Thank you
+							@else
 							Thank you <br> Please deposit ${{number_format($amount)}} to
+							@endif
 						</h2>
 					</div>
 				</div>
@@ -27,6 +31,8 @@
 				@if($project->investment->bank)
 				<div class="row">
 					<div class="col-md-offset-3 col-md-8 text-justify">
+						@if($project->projectconfiguration->payment_switch)
+						@else
 						<table class="table table-bordered">
 							<tr><td>Bank</td><td>{!!$project->investment->bank!!}</td></tr>
 							<tr><td>Account Name</td><td>{!!$project->investment->bank_account_name!!}</td></tr>
@@ -34,6 +40,8 @@
 							<tr><td>Account No</td><td>{!!$project->investment->bank_account_number!!}</td></tr>
 							<tr><td>Reference</td><td>{!!$project->investment->bank_reference!!}</td></tr>
 						</table>
+
+						@endif
 					</div>
 				</div>
 				<br>

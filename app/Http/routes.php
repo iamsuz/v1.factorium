@@ -219,6 +219,7 @@ Route::post('/configuration/project/toggleProspectusText', ['as'=>'configuration
 Route::post('/configuration/home/swapProjectRanking', ['as'=>'configuration.home.swapProjectRanking', 'uses'=>'SiteConfigurationsController@swapProjectRanking']);
 Route::post('/project/edit/updateProjectBankDetails', ['as'=>'project.updateProjectBankDetails', 'uses'=>'ProjectsController@updateProjectBankDetails']);
 Route::post('/configuration/project/toggleProjectProgress', ['as'=>'configuration.project.toggleProjectProgress', 'uses'=>'SiteConfigurationsController@toggleProjectProgress']);
+Route::post('/configuration/project/toggleProjectpayment', ['as'=>'configuration.project.toggleProjectpayment', 'uses'=>'SiteConfigurationsController@toggleProjectpayment']);
 Route::post('/configuration/project/toggleProjectElementVisibility', ['as'=>'configuration.project.toggleProjectElementVisibility', 'uses'=>'SiteConfigurationsController@toggleProjectElementVisibility']);
 Route::post('/configuration/project/editProjectPageLabelText', ['as'=>'configuration.project.editProjectPageLabelText', 'uses'=>'SiteConfigurationsController@editProjectPageLabelText']);
 Route::post('/configuration/edit/visibilityOfSiteItems', ['as'=> 'configuration.edit.visibilityOfSiteItems', 'uses'=>'SiteConfigurationsController@editVisibilityOfSiteConfigItems']);

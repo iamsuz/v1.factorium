@@ -84,21 +84,12 @@
 						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
 						@endif
 					</div>
+					@if($project->projectconfiguration->payment_switch)
+					@else
 					<div class="col-md-1" style="text-align: right;">
-						{{-- @if(Session::has('action'))
-						@if(Session::get('action') == $investment->id)
-						<i class="fa fa-check fa-money" aria-hidden="true" style="color: #6db980;"></i>
-						@else
-						<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
-						@endif
-						@else
-						<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
-						@endif --}}
 						<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
 							{{method_field('PATCH')}}
 							{{csrf_field()}}
-
-							{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
 							@if($investment->investment_confirmation == 1)
 							<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
 							@else
@@ -115,6 +106,7 @@
 							});
 						</script>
 					</div>
+					@endif
 					@endif
 				</div>
 				@endforeach

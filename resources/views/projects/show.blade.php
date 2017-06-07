@@ -184,6 +184,14 @@
 						@else
 						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 						@endif
+						@if(Auth::guest())
+						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<div class="text-center">
+							<input type="checkbox" class="project-payment-switch" action="payment_switch" autocomplete="off" data-label-text="PaymentMethod" data-size="mini" @if($project->projectconfiguration->payment_switch) checked value="1" @else value="0" @endif>
+						</div>
+						@endif
+						@endif
 					</div>
 				</div>
 			</div>
@@ -215,7 +223,7 @@
 	</section>
 	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button.</h6>
 	<section>
-	<div class="container-fluid">
+		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
 				<div class="col-md-10 col-md-offset-1">
 					<h2 class="download-text first_color">Downloads</h2>
@@ -1230,6 +1238,11 @@
 						<div class="row">
 							<div class="col-md-10 col-md-offset-1 text-justify">
 								<h5>
+									@if($project->projectconfiguration->payment_switch)
+									<h5 class="text-center">
+										Please read the Prospectus and complete and submit the online Application Form by clicking the SUBMIT APPLICATION button. Please make payment via EFT within 48 hours of completing the Application Form. Alternatively please contact us should you wish to make payment using Cheque.
+									</h5>
+									@else
 									<table class="table table-responsive font-bold" style="color:#2d2d4b;">
 										<tr><td>Bank</td><td class="bank-name-field">{!!$project->investment->bank!!}</td></tr>
 										<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
@@ -1237,6 +1250,7 @@
 										<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
 										<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
 									</table>
+									@endif
 								</h5>
 							</div>
 						</div>
@@ -1922,6 +1936,7 @@
 		toggleProjectProgress();
 		toggleProjectElementsVisibiity();
 		editProjectPageLabelText();
+		togglePaymentSwitch();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2065,55 +2080,55 @@
 		jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
 	}
 
-		$('#perform_crop_btn').click(function(e){
-			$('.loader-overlay').show();
-			var imageName = $('#image_crop').val();
-			var imgAction = $('#image_crop').attr('action');
-			var xValue = $('#x_coord').val();
-			var yValue = $('#y_coord').val();
-			var wValue = $('#w_target').val();
-			var hValue = $('#h_target').val();
-			var origWidth = $('#orig_width').val();
-			var origHeight = $('#orig_height').val();
-			var projectThumbAction = $('#image_action').val();
-			var currentProjectId = $('#current_project_id').val();
-			console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
-			$.ajax({
-				url: '/configuration/cropUploadedImage',
-				type: 'POST',
-				data: {
-					imageName: imageName,
-					imgAction: imgAction,
-					xValue: xValue,
-					yValue: yValue,
-					wValue: wValue,
-					hValue: hValue,
-					origWidth: origWidth,
-					origHeight: origHeight,
-					projectThumbAction: projectThumbAction,
-					currentProjectId: currentProjectId,
-				},
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-			}).done(function(data){
-				console.log(data);
-				if(data.status){
-					$('#image_crop').val(data.imageSource);
-					location.reload('/');
+	$('#perform_crop_btn').click(function(e){
+		$('.loader-overlay').show();
+		var imageName = $('#image_crop').val();
+		var imgAction = $('#image_crop').attr('action');
+		var xValue = $('#x_coord').val();
+		var yValue = $('#y_coord').val();
+		var wValue = $('#w_target').val();
+		var hValue = $('#h_target').val();
+		var origWidth = $('#orig_width').val();
+		var origHeight = $('#orig_height').val();
+		var projectThumbAction = $('#image_action').val();
+		var currentProjectId = $('#current_project_id').val();
+		console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+		$.ajax({
+			url: '/configuration/cropUploadedImage',
+			type: 'POST',
+			data: {
+				imageName: imageName,
+				imgAction: imgAction,
+				xValue: xValue,
+				yValue: yValue,
+				wValue: wValue,
+				hValue: hValue,
+				origWidth: origWidth,
+				origHeight: origHeight,
+				projectThumbAction: projectThumbAction,
+				currentProjectId: currentProjectId,
+			},
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function(data){
+			console.log(data);
+			if(data.status){
+				$('#image_crop').val(data.imageSource);
+				location.reload('/');
+			}
+			else{
+				$('.loader-overlay').hide();
+				if(imgAction == 'projectPg back image'){
+					$('#edit_project_back_img_modal').modal('toggle');
+					$('#projectpg_back_img, #projectpg_back_img_name').val('');
 				}
-				else{
-					$('.loader-overlay').hide();
-					if(imgAction == 'projectPg back image'){
-						$('#edit_project_back_img_modal').modal('toggle');
-						$('#projectpg_back_img, #projectpg_back_img_name').val('');
-					}
-					else {}
-						alert(data.message);
-				}
+				else {}
+					alert(data.message);
+			}
 
-			});
 		});
+	});
 
 	function editProjectPageThumbImages(){
 		var imgAction = '';
@@ -2448,12 +2463,12 @@
 	}
 
 	function toggleProspectusText(){
-    	$('.prospectus-text-switch').bootstrapSwitch({
-		    onText: "Prospectus",
-		    onColor: 'primary',
-		    offColor: 'primary',
-		    offText: "IM",
-		    animate: true,
+		$('.prospectus-text-switch').bootstrapSwitch({
+			onText: "Prospectus",
+			onColor: 'primary',
+			offColor: 'primary',
+			offText: "IM",
+			animate: true,
 		});
 		$('.prospectus-text-switch').on('switchChange.bootstrapSwitch', function () {
 			var setVal = $(this).val() == 1? 0 : 1;
@@ -2462,30 +2477,30 @@
 			var projectId = '{{$project->id}}';
 			$('.loader-overlay').show();
 			$.ajax({
-	          	url: '/configuration/project/toggleProspectusText',
-	          	type: 'POST',
-	          	dataType: 'JSON',
-	          	data: {checkValue, projectId},
-	          	headers: {
-	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	          	},
-	        }).done(function(data){
-	        	console.log(data);
-	        	$('.loader-overlay').hide();
-	        	if(!data.status){
-	        		alert('something went wrong');
-	        	}
-	        });
+				url: '/configuration/project/toggleProspectusText',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {checkValue, projectId},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				$('.loader-overlay').hide();
+				if(!data.status){
+					alert('something went wrong');
+				}
+			});
 		});
-    }
+	}
 
-    function toggleProjectProgress(){
-    	$('.project-progress-switch').bootstrapSwitch({
-		    onText: "show",
-		    onColor: 'primary',
-		    offColor: 'primary',
-		    offText: "hide",
-		    animate: true,
+	function toggleProjectProgress(){
+		$('.project-progress-switch').bootstrapSwitch({
+			onText: "show",
+			onColor: 'primary',
+			offColor: 'primary',
+			offText: "hide",
+			animate: true,
 		});
 		$('.project-progress-switch').on('switchChange.bootstrapSwitch', function () {
 			var setVal = $(this).val() == 1? 0 : 1;
@@ -2494,28 +2509,59 @@
 			var projectId = '{{$project->id}}';
 			$('.loader-overlay').show();
 			$.ajax({
-	          	url: '/configuration/project/toggleProjectProgress',
-	          	type: 'POST',
-	          	dataType: 'JSON',
-	          	data: {checkValue, projectId},
-	          	headers: {
-	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	          	},
-	        }).done(function(data){
-	        	console.log(data);
-	        	$('.loader-overlay').hide();
-	        	if(data.status){
-	        		$('.project-progress-section').slideToggle();
-	        	}
-	        });
+				url: '/configuration/project/toggleProjectProgress',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {checkValue, projectId},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				$('.loader-overlay').hide();
+				if(data.status){
+					$('.project-progress-section').slideToggle();
+				}
+			});
 		});
-    }
+	}
+	function togglePaymentSwitch(){
+		$('.project-payment-switch').bootstrapSwitch({
+			onText: "Automate",
+			onColor: 'primary',
+			offColor: 'danger',
+			offText: "Manual",
+			animate: true,
+		});
+		$('.project-payment-switch').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			var checkValue = $(this).val();
+			var projectId = '{{$project->id}}';
+			$('.loader-overlay').show();
+			$.ajax({
+				url: '/configuration/project/toggleProjectpayment',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {checkValue, projectId},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				$('.loader-overlay').hide();
+				if(data.status){
+					$('.project-payment-section').slideToggle();
+				}
+			});
+		});
+	}
 
-    function toggleProjectElementsVisibiity(){
-    	$('.toggle-elements').bootstrapSwitch({
-		    onColor: 'primary',
-		    offColor: 'primary',
-		    animate: true,
+	function toggleProjectElementsVisibiity(){
+		$('.toggle-elements').bootstrapSwitch({
+			onColor: 'primary',
+			offColor: 'primary',
+			animate: true,
 		});
 		$('.toggle-elements').on('switchChange.bootstrapSwitch', function () {
 			var toggleAction = $(this).attr('action');
@@ -2525,61 +2571,61 @@
 			var projectId = '{{$project->id}}';
 			$('.loader-overlay').show();
 			$.ajax({
-	          	url: '/configuration/project/toggleProjectElementVisibility',
-	          	type: 'POST',
-	          	dataType: 'JSON',
-	          	data: {checkValue, projectId, toggleAction},
-	          	headers: {
-	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	          	},
-	        }).done(function(data){
-	        	console.log(data);
-	        	$('.loader-overlay').hide();
-	        	if(data.status){
-	        		$('.'+toggleAction).slideToggle();
-	        	}
-	        });
+				url: '/configuration/project/toggleProjectElementVisibility',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {checkValue, projectId, toggleAction},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				$('.loader-overlay').hide();
+				if(data.status){
+					$('.'+toggleAction).slideToggle();
+				}
+			});
 		});
-    }
+	}
 
-    function editProjectPageLabelText(){
-    	$('.edit-project-page-labels').click(function(){
-    		var effect= $(this).attr('effect');
-    		if(effect !=''){
-    			if(effect == 'expected_return_label_text'){
-    				$(this).html('<input class="col-md-12" type="text" value="{{$project->projectconfiguration->expected_return_label_text}}" id="'+effect+'" style="color:#000; padding:0px;">');
-    				$('#'+effect).select();
-    			}
-    			$('#'+effect).focusout(function(){
-    				var baseElement = $(this);
-    				var newLabelText = baseElement.val();
-    				if(newLabelText != ''){
-    					baseElement.css('border-color', '');
-    					var projectId = '{{$project->id}}';
-    					$('.loader-overlay').show();
-    					$.ajax({
-				          	url: '/configuration/project/editProjectPageLabelText',
-				          	type: 'POST',
-				          	dataType: 'JSON',
-				          	data: {effect, projectId, newLabelText},
-				          	headers: {
-				            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				          	},
-				        }).done(function(data){
-				        	console.log(data);
-				        	$('.loader-overlay').hide();
-				        	if(data.status){
-				        		baseElement.replaceWith(data.newLabelText);
-				        	}
-				        });
-    				} else {
-    					$(this).css('border-color', '#ff0000');
-    					$(this).focus();
-    				}
-    			});
-    		}
-    	});
-    }
+	function editProjectPageLabelText(){
+		$('.edit-project-page-labels').click(function(){
+			var effect= $(this).attr('effect');
+			if(effect !=''){
+				if(effect == 'expected_return_label_text'){
+					$(this).html('<input class="col-md-12" type="text" value="{{$project->projectconfiguration->expected_return_label_text}}" id="'+effect+'" style="color:#000; padding:0px;">');
+					$('#'+effect).select();
+				}
+				$('#'+effect).focusout(function(){
+					var baseElement = $(this);
+					var newLabelText = baseElement.val();
+					if(newLabelText != ''){
+						baseElement.css('border-color', '');
+						var projectId = '{{$project->id}}';
+						$('.loader-overlay').show();
+						$.ajax({
+							url: '/configuration/project/editProjectPageLabelText',
+							type: 'POST',
+							dataType: 'JSON',
+							data: {effect, projectId, newLabelText},
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							},
+						}).done(function(data){
+							console.log(data);
+							$('.loader-overlay').hide();
+							if(data.status){
+								baseElement.replaceWith(data.newLabelText);
+							}
+						});
+					} else {
+						$(this).css('border-color', '#ff0000');
+						$(this).focus();
+					}
+				});
+			}
+		});
+	}
 
 </script>
 @stop

@@ -538,7 +538,7 @@
                               <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
                                 <!-- <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage"> -->
                                 <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
-                              <img src="https://monthly.estatebaron.com/assets/images/email/2_email_prog.png" style="display:block" width="100%" height="100%" />
+                              <img src="https://monthly.estatebaron.com/assets/images/email/2_email_prog.png" style="display:block" width="100%" />
                               <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
                                 <tbody>
                                   <tr>
@@ -574,7 +574,7 @@
 
                                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                                   <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Thank you for applying to invest ${{$investment->amount}} in the {{$investment->project->title}}.<br><br>
-                                    <span style="color:#000">Your Investment ${{$investment->amount}} is confirmed, kindly send ${{$investment->amount}} to<br><br>
+                                    <span style="color:#000">Your Investment ${{$investment->amount}} is approved, kindly send ${{$investment->amount}} to<br><br>
                                       <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Bank <b> {!!$investment->investment->bank!!} </b>.</span></span></span><br>
                                       <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account Name <b> {!!$investment->investment->bank_account_name!!} </b>.</span></span></span><br>
                                       <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">BSB <b> {!!$investment->investment->bsb!!} </b>.</span></span></span><br>

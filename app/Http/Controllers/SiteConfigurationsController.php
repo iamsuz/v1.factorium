@@ -1055,6 +1055,22 @@ class SiteConfigurationsController extends Controller
         return $resultArray = array('status' => 1);
     }
 
+    public function toggleProjectpayment(Request $request)
+    {
+        $projectId =$request->projectId;
+        // $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
+        if(!$projectConfigurationPartial)
+        {
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = (int)$projectId;
+            $projectConfigurationPartial->save();
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
+        }
+        $projectConfigurationPartial->update(['payment_switch'=>$request->checkValue]);
+        return $resultArray = array('status' => 1);
+    }
     public function swapProjectRanking(Request $request)
     {
         $project0 = Project::where('project_rank', (int)$request->projectRanks[0])->first();
