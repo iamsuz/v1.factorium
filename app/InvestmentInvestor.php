@@ -34,4 +34,9 @@ class InvestmentInvestor extends Model
     {
     	return $this->belongsTo('App\Investment');
     }
+
+    public function investingJoint()
+    {
+        return $this->belongsTo('App\InvestingJoint');
+    }
 }

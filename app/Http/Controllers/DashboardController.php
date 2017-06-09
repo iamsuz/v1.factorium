@@ -114,7 +114,11 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
-        return view('dashboard.projects.investors', compact('project', 'investments','color'));
+        $shareInvestments = InvestmentInvestor::where('project_id', $project_id)
+                    ->where('accepted', 1)
+                    ->orderBy('share_certificate_issued_at','ASC')
+                    ->get();
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments'));
     }
 
     public function editProject($project_id)
