@@ -590,7 +590,7 @@
 <br>
 Australia’s leading venture crowdfunding investment platform --></span></span></span>
 <br><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Please deposit <b>${{$investment->amount}}</b> to <br></span></span></span>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Please deposit <b>${{$amount}}</b> to <br></span></span></span>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Bank <b> {!!$project->investment->bank!!} </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account Name <b> {!!$project->investment->bank_account_name!!} </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">BSB <b> {!!$project->investment->bsb!!} </b>.</span></span></span><br>
