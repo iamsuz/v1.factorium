@@ -486,10 +486,11 @@
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
                   <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                    <span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
                     <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
                     <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
                     <br>
-                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Express Interest" projectId="{{$project->id}}">
+                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
                   </div>
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
@@ -583,11 +584,12 @@
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
-                  <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                  <div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                    <span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
                     <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
                     <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
                     <br>
-                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Express Interest" projectId="{{$project->id}}">
+                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
                   </div>
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
@@ -681,10 +683,11 @@
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
                   <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                    <span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
                     <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
                     <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
                     <br>
-                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Express Interest" projectId="{{$project->id}}">
+                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
                   </div>
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
@@ -2450,24 +2453,30 @@
     function expressInterestInUpcomingProject(){
       $('.show-upcoming-project-interest-btn').click(function(e){
         var thisElement = $(this);
+        $(thisElement).parent('.project-thumb-overflow').find('.project-interest-error-text').html('');
         var projectId = $(this).attr('projectId');
         var email = $('.project-'+projectId+'-email').val();
         var phone = $('.project-'+projectId+'-phone').val();
-        $('.loader-overlay').show();
-        $.ajax({
-          url: '/pages/home/expressProjectInterest',
-          type: 'POST',
-          dataType: 'JSON',
-          data: {projectId, email, phone},
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-        }).done(function(data){
-          if(data.status){
-            $(thisElement).parent('.project-thumb-overflow').html('<i style="font-size: 8em;color: #12d04c;" class="fa fa-check-circle-o" aria-hidden="true"></i>');
-          }
-          $('.loader-overlay').hide();
-        });        
+        if(email!='' && phone!=''){
+          $('.loader-overlay').show();
+          $.ajax({
+            url: '/pages/home/expressProjectInterest',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {projectId, email, phone},
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+          }).done(function(data){
+            if(data.status){
+              $(thisElement).parent('.project-thumb-overflow').html('<span style="color: #17723c; text-shadow: 1px 1px #fff; font-size: 1.5em;">Thank you!<br><small><small>We will be in touch when this project is live</small></small></span>');
+            }
+            $('.loader-overlay').hide();
+          });
+        }
+        else{
+          $(thisElement).parent('.project-thumb-overflow').find('.project-interest-error-text').html('Email and Phone is Mandatory');
+        }
       });
     }
 
