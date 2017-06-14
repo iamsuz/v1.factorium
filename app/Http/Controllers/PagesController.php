@@ -545,4 +545,19 @@ class PagesController extends Controller
 
         }
     }
+
+    public function expressProjectInterest(AppMailer $mailer, Request $request)
+    {
+        $projectId = $request->projectId;
+        $email = $request->email;
+        $phone = $request->phone;
+        $project = Project::find($projectId);
+        if($project){
+            if($project->is_coming_soon){
+                $mailer->sendUpcomingProjectInterestMailToAdmins($project, $email, $phone);
+                return $resultArray = array('status' => 1);   
+            }
+        }
+        return $resultArray = array('status' => 0); 
+    }
 }

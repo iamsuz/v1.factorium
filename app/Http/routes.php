@@ -231,3 +231,4 @@ Route::post('/pages/testimonial/store', ['as'=>'pages.testimonial.store', 'uses'
 Route::post('/pages/testimonial/uploadImg', ['as'=>'pages.testimonial.uploadImg', 'uses'=>'PagesController@uploadTestimonialImgThumbnail']);
 Route::post('/pages/testimonial/delete', ['as'=>'pages.testimonial.delete', 'uses'=>'PagesController@deleteTestimonial']);
 Route::post('/configuration/updateTagManager', ['as'=> 'configuration.updateTagManager', 'uses'=>'SiteConfigurationsController@updateTagManager']);
+Route::post('/pages/home/expressProjectInterest', ['as'=>'pages.home.expressProjectInterest', 'uses'=>'PagesController@expressProjectInterest']);

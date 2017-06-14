@@ -990,3 +990,26 @@ a:hover {
     padding: 0px 6px;
     cursor: pointer;
 }
+.project-image-style {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+.project-thumb-overflow {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+.project-details:hover .project-image-style {
+  opacity: 0.5;
+}
+.project-details:hover .project-thumb-overflow {
+  opacity: 1;
+}

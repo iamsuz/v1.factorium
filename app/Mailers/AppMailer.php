@@ -297,6 +297,25 @@ class AppMailer
 
         $this->deliverWithBcc();
     }
+
+    public function sendUpcomingProjectInterestMailToAdmins($project, $email, $phone)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->bcc = 'abhi.mahavarkar@gmail.com';
+        $this->to = $recipients;
+        $this->view = 'emails.upcomingProjectInterestNotification';
+        $this->subject = 'User Expressed Interest in '.$project->title;
+        $this->data = compact('project', 'email', 'phone');
+        
+        $this->deliver();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();

@@ -483,8 +483,14 @@
             @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
-                <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
-                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" style="width: 100%" />
+                <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
+                  <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                    <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+                    <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+                    <br>
+                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Express Interest" projectId="{{$project->id}}">
+                  </div>
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
                       <div class="row">
@@ -575,8 +581,14 @@
             @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
-                <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
-                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" style="width: 100%"/>
+                <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+                  <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                    <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+                    <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+                    <br>
+                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Express Interest" projectId="{{$project->id}}">
+                  </div>
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
                       <div class="row">
@@ -666,8 +678,14 @@
             @endif
             <a @if($project->is_coming_soon) href="javascript:void(0);" @else href="{{route('projects.show', [$project])}}" @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;box-shadow: 3px 3px 5px #ccc;">
-                <div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs">
-                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive" style="width: 100%"/>
+                <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+                  <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/0001-139091381.png')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+                  <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+                    <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+                    <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+                    <br>
+                    <input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Express Interest" projectId="{{$project->id}}">
+                  </div>
                   <div class="@if($project->invite_only) invite-only-overlay @endif thn">
                     <div class="content">
                       <div class="row">
@@ -1668,6 +1686,9 @@
       swapProjectsRanking();
       //Manage testimonial actions
       addTestimonials();
+      //Add functionality to notify site admins about the person expressed interest in upcoming projects
+      expressInterestInUpcomingProject();
+
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -2423,6 +2444,30 @@
 
           });
         }
+      });
+    }
+
+    function expressInterestInUpcomingProject(){
+      $('.show-upcoming-project-interest-btn').click(function(e){
+        var thisElement = $(this);
+        var projectId = $(this).attr('projectId');
+        var email = $('.project-'+projectId+'-email').val();
+        var phone = $('.project-'+projectId+'-phone').val();
+        $('.loader-overlay').show();
+        $.ajax({
+          url: '/pages/home/expressProjectInterest',
+          type: 'POST',
+          dataType: 'JSON',
+          data: {projectId, email, phone},
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+        }).done(function(data){
+          if(data.status){
+            $(thisElement).parent('.project-thumb-overflow').html('<i style="font-size: 8em;color: #12d04c;" class="fa fa-check-circle-o" aria-hidden="true"></i>');
+          }
+          $('.loader-overlay').hide();
+        });        
       });
     }
 

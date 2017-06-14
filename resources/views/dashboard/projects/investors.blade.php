@@ -148,9 +148,6 @@
 		  						</tr>
 		  					</thead>
 		  					<tbody>
-		  					<?php
-		  					// dd($shareInvestments);
-		  					?>
 		  						@foreach($shareInvestments as $shareInvestment)
 		  						<tr>
 		  							<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
