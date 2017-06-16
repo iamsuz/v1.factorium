@@ -548,6 +548,14 @@ class PagesController extends Controller
 
     public function expressProjectInterest(AppMailer $mailer, Request $request)
     {
+        $validation_rules = array(
+            'email'=>'required|email',
+            'phone'=>'required|numeric'
+            );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()){
+            return $resultArray = array('status' => 0, 'message'=>$validator->messages()->first());
+        }
         $projectId = $request->projectId;
         $email = $request->email;
         $phone = $request->phone;

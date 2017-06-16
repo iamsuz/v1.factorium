@@ -2471,6 +2471,9 @@
             if(data.status){
               $(thisElement).parent('.project-thumb-overflow').html('<span style="color: #17723c; text-shadow: 1px 1px #fff; font-size: 1.5em;">Thank you!<br><small><small>We will be in touch when this project is live</small></small></span>');
             }
+            else {
+              $(thisElement).parent('.project-thumb-overflow').find('.project-interest-error-text').html(data.message);
+            }
             $('.loader-overlay').hide();
           });
         }
