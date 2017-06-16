@@ -360,7 +360,7 @@
 					@foreach($set as $photo)
 					@if($photo->type === 'gallary_images')
 					<div class="item">
-						<img src="/{{$photo->path}}" alt="{{$photo->caption}}" alt="Chania" style="height: 500px;">
+						<img src="/{{$photo->path}}" alt="{{$photo->caption}}" alt="Chania" style="max-height: 500px;">
 					</div>
 					@endif
 					@endforeach
