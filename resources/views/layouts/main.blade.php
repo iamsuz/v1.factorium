@@ -51,9 +51,9 @@
     @yield('css-section')
 
     <!-- Google tag manager header script if set  -->
-    <?php
-    echo App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header;
-    ?>
+    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header)
+    {!!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header!!}}
+    @endif
 
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -75,9 +75,9 @@
 </head>
 <body data-spy="scroll">
     <!-- Google tag manager body script if set  -->
-    <?php
-    echo App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body;
-    ?>
+    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body)
+    {!!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body!!}
+    @endif
 
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')

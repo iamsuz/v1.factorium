@@ -62,9 +62,9 @@
   </style>
 
   <!-- Google tag manager header script if set  -->
-  <?php 
-  echo $siteConfiguration->tag_manager_header;
-  ?>
+  @if($siteConfiguration->tag_manager_header)
+  {!!$siteConfiguration->tag_manager_header!!}
+  @endif
 
   {!! Html::script('assets/plugins/jscolor-2.0.4/jscolor.min.js') !!}
   <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
@@ -87,9 +87,9 @@
   </head>
   <body data-spy="scroll">
     <!-- Google tag manager body script if set  -->
-    <?php 
-    echo $siteConfiguration->tag_manager_body;
-    ?>
+    @if($siteConfiguration->tag_manager_body)
+    {!!$siteConfiguration->tag_manager_body!!}
+    @endif
     
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')

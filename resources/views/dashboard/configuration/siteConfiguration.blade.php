@@ -584,9 +584,8 @@ Configuration | Dashboard | @parent
         });
 
         $('#submit_tag_manager_btn').click(function(e){
-            if($('#tag_manager_header_input').val()==''){
+            if($('#tag_manager_header_input').val()=='' && $('#tag_manager_body_input').val()==''){
                 e.preventDefault();
-                $('.tag-manager-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Tag Manager required</h6></div>')
             }
         });
 
