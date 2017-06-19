@@ -623,7 +623,7 @@ class SiteConfigurationsController extends Controller
             $projectId = $request->current_project_id;
             Project::where('id', $projectId)->update([
                 'title' => $request->project_title_txt,
-                'description' => $request->project_description_txt,
+                'description' => trim(preg_replace('/\s+/', ' ', $request->project_description_txt)),
                 'button_label'=>$request->project_button_invest_txt,
                 ]);
             Investment::where('project_id', $projectId)->first()->update([
