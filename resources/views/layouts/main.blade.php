@@ -52,7 +52,7 @@
 
     <!-- Google tag manager header script if set  -->
     @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header)
-    {!!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header!!}}
+    {!!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header!!}
     @endif
 
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
