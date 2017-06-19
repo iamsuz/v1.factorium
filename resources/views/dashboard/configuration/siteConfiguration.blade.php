@@ -190,6 +190,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'conversion_pixel')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Conversion pixel</b></h3>
+                                    <p><small>This code will be added on confirm page once user invest in project.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-conversion-pixel-btn" style="cursor: pointer;">
+                                                <strong>Change Conversion Pixel</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -516,6 +539,33 @@ Configuration | Dashboard | @parent
         </div>      
     </div>
 </div>
+<!-- Modal for Conversion pixel edit-->
+<div class="modal fade" id="conversion_pixel_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Conversion Pixel</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateConversionPixel'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to update the site conversion pixel scripts.</small></i></h5>
+                        <br>
+                        <div class="row conversion-pixel-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::textarea('conversion_pixel_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->conversion_pixel, array('placeholder'=>'Enter Conversion pixel text', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'conversion_pixel_input', 'rows'=>'5')) !!}
+                        {!! $errors->first('conversion_pixel_input', '<small class="text-danger">:message</small>') !!}
+                        <br>
+                        {!! Form::submit('Save Conversion Pixel', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'id'=>'submit_conversion_pixel_btn')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
 
 </div>
 </div>
@@ -537,6 +587,20 @@ Configuration | Dashboard | @parent
             if($('#tag_manager_header_input').val()==''){
                 e.preventDefault();
                 $('.tag-manager-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Tag Manager required</h6></div>')
+            }
+        });
+
+        $('.change-conversion-pixel-btn').click(function(){
+            $('#conversion_pixel_edit_modal').modal({
+                'show':true,
+                'backdrop':false,
+            });
+        });
+
+        $('#submit_conversion_pixel_btn').click(function(e){
+            if($('#conversion_pixel_input').val()==''){
+                e.preventDefault();
+                $('.conversion-pixel-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Conversion Pixel required</h6></div>')
             }
         });
 

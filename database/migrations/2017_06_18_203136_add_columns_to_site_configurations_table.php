@@ -133,6 +133,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'tag_manager_body')) {
                 $table->longText('tag_manager_body')->nullable();
             }
+            if (!Schema::hasColumn('site_configurations', 'conversion_pixel')) {
+                $table->longText('conversion_pixel')->nullable();
+            }
         });
     }
 
@@ -263,6 +266,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'tag_manager_body')) {
                 $table->dropColumn('tag_manager_body');
+            }
+            if (Schema::hasColumn('site_configurations', 'conversion_pixel')) {
+                $table->dropColumn('conversion_pixel');
             }
         });
     }

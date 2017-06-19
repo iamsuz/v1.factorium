@@ -1145,4 +1145,18 @@ class SiteConfigurationsController extends Controller
         Session::flash('action', 'tag_manager');
         return redirect()->back();
     }
+
+    public function updateConversionPixel(Request $request)
+    {
+        $tag = $request->conversion_pixel_input;
+
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'conversion_pixel'=>$tag
+        ]);
+        Session::flash('message', 'Conversion Pixel Updated Successfully');
+        Session::flash('action', 'conversion_pixel');
+        return redirect()->back();   
+    }
 }

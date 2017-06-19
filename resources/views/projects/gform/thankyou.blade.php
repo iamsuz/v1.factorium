@@ -49,5 +49,8 @@
 	</div>
 	{!! Html::script('/js/jquery-1.11.3.min.js') !!}
 	{!! Html::script('/js/bootstrap.min.js') !!}
+	@if($siteConfig=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->conversion_pixel)
+	{!!$siteConfig!!}
+	@endif
 </body>
 </html>
