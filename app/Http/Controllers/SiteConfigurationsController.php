@@ -82,8 +82,8 @@ class SiteConfigurationsController extends Controller
             $type['howItWorks image'] = 'how_it_works_image'.substr($request->hiwImgAction, -1);
             $type['favicon image'] = 'favicon_image_url';
             $type['project_thumbnail'] = 'project_thumbnail';
-            $type['spv_logo_image'] = '';
-            $type['spv_md_sign_image'] = '';
+            $type['spv_logo_image'] = 'spv_logo_image';
+            $type['spv_md_sign_image'] = 'spv_md_sign_image';
             $type['projectPg back image'] = 'projectpg_back_img';
             $type['projectPg thumbnail image'] = $request->projectThumbAction;
 
@@ -111,7 +111,7 @@ class SiteConfigurationsController extends Controller
                 }
 
                 $result = $this->cropImage($src, $newWValue, $newHValue, $newXValue, $newYValue);
-                // dd($result);
+                // dd($src);
                 if($request->imgAction == 'testimonial_image'){
                     $finalpath = $src;
                     $image = Image::make($result)->save(public_path($finalpath));
@@ -147,36 +147,41 @@ class SiteConfigurationsController extends Controller
                     File::delete($src);
                     return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                 } elseif ($result && $projectId) {
-                    $saveLoc = 'assets/images/media/project_page/';
-                    $finalFile = 'proj_'.time().'.'. $extension;
-                    $finalpath = $saveLoc.$finalFile;
-
-                    $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
-
-                    if($type[$request->imgAction] == 'projectpg_back_img') {
-                        $image->resize(1080, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save(public_path($saveLoc.$finalFile));
-                    }
-                    $projectMedia = Media::where('project_id', $projectId)
-                    ->where('project_site', url())
-                    ->where('type', $type[$request->imgAction])
-                    ->first();                    
-                    if($projectMedia){
-                            File::delete(public_path($projectMedia->path));    
+                    if(($request->imgAction == $type['spv_logo_image']) || ($request->imgAction == $type['spv_md_sign_image'])){
+                        $image = Image::make($result)->save();
                     }
                     else{
-                        $projectMedia = new Media;
-                        $projectMedia->project_id = $projectId;
-                        $projectMedia->type = $type[$request->imgAction];
-                        $projectMedia->project_site = url();
-                        $projectMedia->caption = 'Project Page Main fold back Image';
-                    }
-                    $projectMedia->filename = $finalFile;
-                    $projectMedia->path = $finalpath;
-                    $projectMedia->save();
-                    File::delete($src);
-                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src, 'imgNewPath' => $finalpath);
+                        $saveLoc = 'assets/images/media/project_page/';
+                        $finalFile = 'proj_'.time().'.'. $extension;
+                        $finalpath = $saveLoc.$finalFile;
+
+                        $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
+
+                        if($type[$request->imgAction] == 'projectpg_back_img') {
+                            $image->resize(1080, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                            })->save(public_path($saveLoc.$finalFile));
+                        }
+                        $projectMedia = Media::where('project_id', $projectId)
+                        ->where('project_site', url())
+                        ->where('type', $type[$request->imgAction])
+                        ->first();                    
+                        if($projectMedia){
+                                File::delete(public_path($projectMedia->path));    
+                        }
+                        else{
+                            $projectMedia = new Media;
+                            $projectMedia->project_id = $projectId;
+                            $projectMedia->type = $type[$request->imgAction];
+                            $projectMedia->project_site = url();
+                            $projectMedia->caption = 'Project Page Main fold back Image';
+                        }
+                        $projectMedia->filename = $finalFile;
+                        $projectMedia->path = $finalpath;
+                        $projectMedia->save();
+                        File::delete($src);
+                    } 
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                 }
 
                 else {

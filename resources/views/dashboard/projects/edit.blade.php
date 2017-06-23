@@ -2137,10 +2137,10 @@ Edit {{$project->title}} | Dashboard | @parent
                 if(data.status){
                     $('#image_crop').val(data.imageSource);
                     if (imgAction == 'spv_logo_image'){
-                    	$('#spv_logo_image_path').val(data.imgNewPath);
+                    	$('#spv_logo_image_path').val(data.imageSource);
                     }
                     else if(imgAction == 'spv_md_sign_image'){
-                    	$('#spv_md_sign_image_path').val(data.imgNewPath);
+                    	$('#spv_md_sign_image_path').val(data.imageSource);
                     }
                     // location.reload('/');
                 }
