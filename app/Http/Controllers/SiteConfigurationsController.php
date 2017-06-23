@@ -111,6 +111,7 @@ class SiteConfigurationsController extends Controller
                 }
 
                 $result = $this->cropImage($src, $newWValue, $newHValue, $newXValue, $newYValue);
+                // dd($result);
                 if($request->imgAction == 'testimonial_image'){
                     $finalpath = $src;
                     $image = Image::make($result)->save(public_path($finalpath));
@@ -175,7 +176,7 @@ class SiteConfigurationsController extends Controller
                     $projectMedia->path = $finalpath;
                     $projectMedia->save();
                     File::delete($src);
-                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src, 'imgNewPath' => $finalpath);
                 }
 
                 else {
