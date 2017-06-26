@@ -377,73 +377,71 @@ class PagesController extends Controller
     }
 
     public function cropUploadedImage(Request $request){
-        if (Auth::user()->roles->contains('role', 'admin')){
-            if($request->imageName){
-                $src  = $request->imageName;
-                $xValue = $request->xValue;
-                $yValue = $request->yValue;
-                $wValue = $request->wValue;
-                $hValue = $request->hValue;
-                $origWidth = $request->origWidth;
-                $origHeight = $request->origHeight;
-                $convertedWidth = 530;
-                $convertedHeight = ($origHeight/$origWidth) * $convertedWidth;
-                $extension = strtolower(File::extension($src));
-                $img = '';
-                $result = false;
-                $rw = 350;
-                $rh = 300;
+        if($request->imageName){
+            $src  = $request->imageName;
+            $xValue = $request->xValue;
+            $yValue = $request->yValue;
+            $wValue = $request->wValue;
+            $hValue = $request->hValue;
+            $origWidth = $request->origWidth;
+            $origHeight = $request->origHeight;
+            $convertedWidth = 530;
+            $convertedHeight = ($origHeight/$origWidth) * $convertedWidth;
+            $extension = strtolower(File::extension($src));
+            $img = '';
+            $result = false;
+            $rw = 350;
+            $rh = 300;
 
-                //Create new coords for image.
-                $newXValue = ($xValue * $origWidth) / $convertedWidth;
-                $newYValue = ($yValue * $origHeight) / $convertedHeight;
-                $newWValue = ($wValue * $origWidth) / $convertedWidth;
-                $newHValue = ($hValue * $origHeight) / $convertedHeight;
+            //Create new coords for image.
+            $newXValue = ($xValue * $origWidth) / $convertedWidth;
+            $newYValue = ($yValue * $origHeight) / $convertedHeight;
+            $newWValue = ($wValue * $origWidth) / $convertedWidth;
+            $newHValue = ($hValue * $origHeight) / $convertedHeight;
 
-                switch ($extension) {
-                    case 'jpg':
-                    $quality = 90;
-                    $img  = imagecreatefromjpeg($src);
-                    $dest = ImageCreateTrueColor($rw, $rh);
-                        //Removing black background
-                    imagealphablending($dest, FALSE);
-                    imagesavealpha($dest, TRUE);
-                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                    $result = imagejpeg($dest, $src, $quality);
-                    break;
-                    
-                    case 'jpeg':
-                    $quality = 90;
-                    $img  = imagecreatefromjpeg($src);
-                    $dest = ImageCreateTrueColor($rw, $rh);
-                        //Removing black background
-                    imagealphablending($dest, FALSE);
-                    imagesavealpha($dest, TRUE);
-                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                    $result = imagejpeg($dest, $src, $quality);
-                    break;
+            switch ($extension) {
+                case 'jpg':
+                $quality = 90;
+                $img  = imagecreatefromjpeg($src);
+                $dest = ImageCreateTrueColor($rw, $rh);
+                    //Removing black background
+                imagealphablending($dest, FALSE);
+                imagesavealpha($dest, TRUE);
+                imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                $result = imagejpeg($dest, $src, $quality);
+                break;
+                
+                case 'jpeg':
+                $quality = 90;
+                $img  = imagecreatefromjpeg($src);
+                $dest = ImageCreateTrueColor($rw, $rh);
+                    //Removing black background
+                imagealphablending($dest, FALSE);
+                imagesavealpha($dest, TRUE);
+                imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                $result = imagejpeg($dest, $src, $quality);
+                break;
 
-                    case 'png':
-                    $quality = 9;
-                    $img  = imagecreatefrompng($src);
-                    $dest = ImageCreateTrueColor($rw, $rh);
-                        //Removing black background
-                    imagealphablending($dest, FALSE);
-                    imagesavealpha($dest, TRUE);
-                    imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
-                    $result = imagepng($dest, $src, $quality);
-                    break;
+                case 'png':
+                $quality = 9;
+                $img  = imagecreatefrompng($src);
+                $dest = ImageCreateTrueColor($rw, $rh);
+                    //Removing black background
+                imagealphablending($dest, FALSE);
+                imagesavealpha($dest, TRUE);
+                imagecopyresampled($dest, $img, 0, 0, $newXValue, $newYValue, $rw, $rh, $newWValue, $newHValue);
+                $result = imagepng($dest, $src, $quality);
+                break;
 
-                    default:
-                    return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
-                    break;
-                }
-                if($result){
-                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                } else{
-                    return $resultArray = array('status' => 0, 'message' => 'Failed to crop.');
-                }       
+                default:
+                return $resultArray = array('status' => 0, 'message' => 'Invalid File Extension.');
+                break;
             }
+            if($result){
+                return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+            } else{
+                return $resultArray = array('status' => 0, 'message' => 'Failed to crop.');
+            }       
         }
     }
     public function changeColorFooter(Request $request)
