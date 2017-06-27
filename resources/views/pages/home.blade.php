@@ -943,7 +943,7 @@
 
     @if((int)(count($testimonials)/3) > 0)
     @foreach($testimonials->chunk(3) as $sets)
-    <div class="row">
+    <div class="row" style="clear: both;">
       @foreach($sets as $testimonial)
       <div class="col-md-4" style="margin: 3% 0%;">
         @if(Auth::guest())
@@ -976,7 +976,7 @@
     </div>
     @endforeach
     @else
-    <div class="row" style="display:-webkit-box;-webkit-box-pack:center;-webkit-box-align:center;">
+    <div class="row" style="display:-webkit-box;-webkit-box-pack:center;-webkit-box-align:center; clear: both;">
       @foreach($testimonials as $testimonial)
 
       <div class="col-md-4" style="margin-bottom: 3% 0%;">

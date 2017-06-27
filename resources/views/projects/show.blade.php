@@ -67,9 +67,13 @@
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 <form method="POST" action="{{route('configuration.updateProjectDetails')}}">
 	{{csrf_field()}}
+	<div class="save-project-details-floating-btn-style save-project-details-floating-btn" style="display: none;" data-toggle="tooltip" title="Save the updated project details fields." data-placement="top">
+		<i class="fa fa-floppy-o" aria-hidden="true" style="font-size: 1.6em;"></i><br>
+		<span><b>Update Details</b></span>
+	</div>
 	<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
 		<button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
-		<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br>
+		<div style="display: none;"><button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br></div>
 		<a href="" status="{{$project->active}}" style="color: #fff;"><u>
 			@if($project->active == '1') 
 			<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a> 
@@ -1926,7 +1930,7 @@
 
 	function editProjectPageDetailsByAdmin(){
 		$('.edit-project-page-details-btn').click(function(e){
-			$('.store-project-page-details-btn').show();
+			$('.save-project-details-floating-btn').show();
 			$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
 			$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
 			$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control">{{ nl2br(e($project->description)) }}</textarea>');
@@ -1958,6 +1962,10 @@
 			$('.account-number-field').html('<input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number" name="account_number">');
 			$('.bank-reference-field').html('<input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference" name="bank_reference">');
 			@endif
+		});
+		
+		$('.save-project-details-floating-btn').click(function(e){
+			$('.store-project-page-details-btn').trigger('click');
 		});
 	}
 
