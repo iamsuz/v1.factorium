@@ -660,6 +660,8 @@ class SiteConfigurationsController extends Controller
                 'bank_account_number' => trim($request->account_number),
                 'bank_reference' => trim($request->bank_reference),
                 ]);
+            Session::flash('message', 'Project Details Updated');
+            Session::flash('editable', 'true');
             return redirect()->back();
         }
     }
