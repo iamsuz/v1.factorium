@@ -104,7 +104,7 @@
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
 					<div class="col-md-4 col-sm-6">
 						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
-						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{{$project->description}}</span>
+						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{!!$project->description!!}</span>
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
