@@ -20,6 +20,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+<!-- Summernote -->
+{!! Html::style('/assets/plugins/summernote/summernote.css') !!}
 @parent
 <style>
 	#map {
@@ -1712,6 +1714,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+<!-- Summernote editor -->
+{!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
 <script>
 	$(function () {
 		var minimized_elements = $('p.minimize');
@@ -1943,6 +1947,7 @@
 	function editProjectPageDetailsByAdmin(){
 		$('.edit-project-page-details-btn').click(function(e){
 			setProjectDetailsEditable();
+			setSummernoteEditboxToTextarea();
 		});
 		
 		$('.save-project-details-floating-btn').click(function(e){
@@ -1958,35 +1963,47 @@
 		$('.save-project-details-floating-btn, .exit-project-details-editable-btn').show();
 		$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
 		$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
-		$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control">{{ nl2br(e($project->description)) }}</textarea>');
+		$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control rich-text-element">{{ nl2br(e($project->description)) }}</textarea>');
 		@if($project->investment)
 		$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
 		$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
 		$('.project-returns-field').html('<input type="text" name="project_returns_txt" class="form-control" value="{{$project->investment->projected_returns}}">%');
 		$('.project-goal-amount-field').html('<input type="text" name="project_goal_amount_txt" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}">');
-		$('.project-summary-field').html('<textarea name="project_summary_txt" rows="3" class="form-control" placeholder="Enter Summary">{{$project->investment->summary}}</textarea>');
-		$('.project-security-long-field').html('<textarea name="project_security_long_txt" rows="3" class="form-control" placeholder="Enter Security Details">{{$project->investment->security_long}}</textarea>');
-		$('.project-investor-distribution-field').html('<textarea name="project_investor_distribution_txt" class="form-control" rows="4" placeholder="Enter Investor Distribution Details">{{$project->investment->exit_d}}</textarea>');
-		$('.project-marketability-field').html('<textarea name="project_marketability_txt" class="form-control" rows="3" placeholder="Enter Marketability Details">{{$project->investment->marketability}}</textarea>');
-		$('.project-residents-field').html('<textarea name="project_residents_txt" class="form-control" rows="3" placeholder="Enter Residents">{{$project->investment->residents}}</textarea>');
-		$('.project-investment-type-field').html('<textarea name="project_investment_type_txt" class="form-control" rows="3" placeholder="Investment type">{{$project->investment->investment_type}}</textarea>');
-		$('.project-security-field').html('<textarea name="project_security_txt" class="form-control" rows="3" placeholder="Investment Security">{{$project->investment->security}}</textarea>');
-		$('.project-expected-returns-field').html('<textarea name="project_expected_returns_txt" class="form-control" rows="3" placeholder="Expected Returns">{{$project->investment->expected_returns_long}}</textarea>');
-		$('.project-return-paid-as-field').html('<textarea name="project_return_paid_as_txt" class="form-control" rows="3" placeholder="Return paid as">{{$project->investment->returns_paid_as}}</textarea>');
-		$('.project-taxation-field').html('<textarea name="project_taxation_txt" class="form-control" rows="3" placeholder="Taxation">{{$project->investment->taxation}}</textarea>');
-		$('.project-developer-field').html('<textarea name="project_developer_txt" class="form-control" rows="3" placeholder="Developer">{{$project->investment->proposer}}</textarea>');
-		$('.project-current-status-field').html('<textarea name="project_current_status_txt" class="form-control" rows="3" placeholder="Current Status">{{$project->investment->current_status}}</textarea>');
-		$('.project-rationale-field').html('<textarea name="project_rationale_txt" class="form-control" rows="3" placeholder="Rationale">{{$project->investment->rationale}}</textarea>');
-		$('.project-risk-field').html('<textarea name="project_risk_txt" class="form-control" rows="3" placeholder="Risk">{{$project->investment->risk}}</textarea>');
+		$('.project-summary-field').html('<textarea name="project_summary_txt" rows="3" class="form-control rich-text-element" placeholder="Enter Summary">{{$project->investment->summary}}</textarea>');
+		$('.project-security-long-field').html('<textarea name="project_security_long_txt" rows="3" class="form-control rich-text-element" placeholder="Enter Security Details">{{$project->investment->security_long}}</textarea>');
+		$('.project-investor-distribution-field').html('<textarea name="project_investor_distribution_txt" class="form-control rich-text-element" rows="4" placeholder="Enter Investor Distribution Details">{{$project->investment->exit_d}}</textarea>');
+		$('.project-marketability-field').html('<textarea name="project_marketability_txt" class="form-control rich-text-element" rows="3" placeholder="Enter Marketability Details">{{$project->investment->marketability}}</textarea>');
+		$('.project-residents-field').html('<textarea name="project_residents_txt" class="form-control rich-text-element" rows="3" placeholder="Enter Residents">{{$project->investment->residents}}</textarea>');
+		$('.project-investment-type-field').html('<textarea name="project_investment_type_txt" class="form-control rich-text-element" rows="3" placeholder="Investment type">{{$project->investment->investment_type}}</textarea>');
+		$('.project-security-field').html('<textarea name="project_security_txt" class="form-control rich-text-element" rows="3" placeholder="Investment Security">{{$project->investment->security}}</textarea>');
+		$('.project-expected-returns-field').html('<textarea name="project_expected_returns_txt" class="form-control rich-text-element" rows="3" placeholder="Expected Returns">{{$project->investment->expected_returns_long}}</textarea>');
+		$('.project-return-paid-as-field').html('<textarea name="project_return_paid_as_txt" class="form-control rich-text-element" rows="3" placeholder="Return paid as">{{$project->investment->returns_paid_as}}</textarea>');
+		$('.project-taxation-field').html('<textarea name="project_taxation_txt" class="form-control rich-text-element" rows="3" placeholder="Taxation">{{$project->investment->taxation}}</textarea>');
+		$('.project-developer-field').html('<textarea name="project_developer_txt" class="form-control rich-text-element" rows="3" placeholder="Developer">{{$project->investment->proposer}}</textarea>');
+		$('.project-current-status-field').html('<textarea name="project_current_status_txt" class="form-control rich-text-element" rows="3" placeholder="Current Status">{{$project->investment->current_status}}</textarea>');
+		$('.project-rationale-field').html('<textarea name="project_rationale_txt" class="form-control rich-text-element" rows="3" placeholder="Rationale">{{$project->investment->rationale}}</textarea>');
+		$('.project-risk-field').html('<textarea name="project_risk_txt" class="form-control rich-text-element" rows="3" placeholder="Risk">{{$project->investment->risk}}</textarea>');
 		$('.project-pds1-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>');
 		$('.project-pds2-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds2_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_2_link}}@endif" @endif>');
-		$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control" rows="3" placeholder="How to invest">{{$project->investment->how_to_invest}}</textarea>');
+		$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control rich-text-element" rows="3" placeholder="How to invest">{{$project->investment->how_to_invest}}</textarea>');
 		$('.bank-name-field').html('<input type="text" value="{!!$project->investment->bank!!}" id="bank_name" name="bank_name">');
 		$('.account-name-field').html('<input type="text" value="{!!$project->investment->bank_account_name!!}" id="account_name" name="account_name">');
 		$('.bsb-name-field').html('<input type="text" value="{!!$project->investment->bsb!!}" id="bsb_name" name="bsb_name">');
 		$('.account-number-field').html('<input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number" name="account_number">');
 		$('.bank-reference-field').html('<input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference" name="bank_reference">');
 		@endif
+	}
+
+	function setSummernoteEditboxToTextarea(){
+		$('.rich-text-element').summernote({
+            height:100,
+            toolbar: [
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['paragraph']],
+			]
+        });
 	}
 
 	function editProjectPageBackImg(){
