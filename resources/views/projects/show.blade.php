@@ -1947,7 +1947,6 @@
 	function editProjectPageDetailsByAdmin(){
 		$('.edit-project-page-details-btn').click(function(e){
 			setProjectDetailsEditable();
-			setSummernoteEditboxToTextarea();
 		});
 		
 		$('.save-project-details-floating-btn').click(function(e){
@@ -1992,6 +1991,7 @@
 		$('.account-number-field').html('<input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number" name="account_number">');
 		$('.bank-reference-field').html('<input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference" name="bank_reference">');
 		@endif
+		setSummernoteEditboxToTextarea();
 	}
 
 	function setSummernoteEditboxToTextarea(){
