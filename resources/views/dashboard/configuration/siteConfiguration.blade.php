@@ -583,12 +583,6 @@ Configuration | Dashboard | @parent
             });
         });
 
-        $('#submit_tag_manager_btn').click(function(e){
-            if($('#tag_manager_header_input').val()=='' && $('#tag_manager_body_input').val()==''){
-                e.preventDefault();
-            }
-        });
-
         $('.change-conversion-pixel-btn').click(function(){
             $('#conversion_pixel_edit_modal').modal({
                 'show':true,
