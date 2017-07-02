@@ -107,6 +107,7 @@
 						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{!!$project->description!!}</span>
 						<br>
 					</div>
+					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
 						<div id="circle" class="project_progress_circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
 							<div class="text-center" style="color:#fff">
@@ -1963,6 +1964,7 @@
 		$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
 		$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
 		$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control rich-text-element">{{ nl2br(e($project->description)) }}</textarea>');
+		$('.project-close-date-field').html('<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}">');
 		@if($project->investment)
 		$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
 		$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');

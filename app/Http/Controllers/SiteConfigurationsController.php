@@ -633,6 +633,7 @@ class SiteConfigurationsController extends Controller
                 'button_label'=>$request->project_button_invest_txt,
                 ]);
             Investment::where('project_id', $projectId)->first()->update([
+                'fund_raising_close_date'=>$request->fund_raising_close_date,
                 'minimum_accepted_amount' => $request->project_min_investment_txt,
                 'hold_period' => $request->project_hold_period_txt,
                 'projected_returns' => $request->project_returns_txt,
