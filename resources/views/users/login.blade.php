@@ -35,6 +35,7 @@ Login | @parent
 					<section id="loginForm" style="padding:0 10px;">
 						<h4 class="font-bold first_color" style="font-size:1.125em; color:#2d2d4b;">Login with email</h4>
 						{!! Form::open(array( 'route'=>'users.auth', 'class'=>'form-horizontal', 'role'=>'form' )) !!}
+						<input type="hidden" name="redirectNotification" value="{{$redirectNotification}}">
 						<fieldset>
 							<div class="form-group <?php if($errors->first('email')){echo 'has-error';}?> has-feedback">
 								{!! Form::email('email', null, array('placeholder'=>'Email (you@somwehere.com)', 'class'=>'form-control', 'tabindex'=>'1')) !!}

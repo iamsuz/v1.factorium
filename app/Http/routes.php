@@ -226,6 +226,8 @@ Route::post('/configuration/updateInterestFormLink', ['as'=> 'configuration.upda
 Route::get('/dashboard/broadcastMail', ['as'=>'dashboard.broadcastMail', 'uses'=>'DashboardController@createBroadcastMailForm']);
 Route::post('/dashboard/mail/broadcast', ['as'=>'dashboard.mail.broadcast', 'uses'=>'DashboardController@sendBroadcastMail']);
 Route::get('/users/{user_id}/investments', ['as'=>'users.investments', 'uses'=>'UsersController@usersInvestments']);
+Route::get('/users/{user_id}/notification', ['as'=>'users.notifications', 'uses'=>'UsersController@usersNotifications']);
+Route::get('/pages/redirectNotification', ['as'=>'pages.redirectNotifications', 'uses'=>'PagesController@redirectUsersNotifications']);
 Route::get('/user/view/{investment_id}/share', ['as'=>'user.view.share', 'uses'=>'UsersController@viewShareCertificate']);
 Route::post('/pages/testimonial/store', ['as'=>'pages.testimonial.store', 'uses'=>'PagesController@storeTestimonial']);
 Route::post('/pages/testimonial/uploadImg', ['as'=>'pages.testimonial.uploadImg', 'uses'=>'PagesController@uploadTestimonialImgThumbnail']);

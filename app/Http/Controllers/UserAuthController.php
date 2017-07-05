@@ -47,10 +47,11 @@ class UserAuthController extends Controller
      * renders login page
      * @return view login page
      */
-    public function login()
+    public function login(Request $request)
     {
         $color = Color::where('project_site',url())->first();
-        return view('users.login',compact('color'));
+        $redirectNotification = $request->has('redirectNotification')?$request->redirectNotification:0;
+        return view('users.login',compact('color', 'redirectNotification'));
     }
 
     /**
@@ -78,6 +79,9 @@ class UserAuthController extends Controller
             }
             if($request->next){
                 $this->redirectTo = "/".$request->next;
+            }
+            if($request->redirectNotification){
+                $this->redirectTo = "/users/".Auth::User()->id."/notification";
             }
             else{
                 $this->redirectTo = "/#projects";    

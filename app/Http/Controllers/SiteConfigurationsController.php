@@ -15,6 +15,7 @@ use App\ProjectProg;
 use App\Http\Requests;
 use App\SiteConfigMedia;
 use App\SiteConfiguration;
+use App\User;
 use Illuminate\Http\Request;
 use App\ProjectConfiguration;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -23,6 +24,8 @@ use App\ProjectConfigurationPartial;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Mailers\AppMailer;
+use Illuminate\Support\Facades\Mail;
 
 
 class SiteConfigurationsController extends Controller
@@ -598,7 +601,7 @@ class SiteConfigurationsController extends Controller
             }
         }
     }
-    public function addProgressDetails(Request $request, $project_id)
+    public function addProgressDetails(Request $request, $project_id, AppMailer $mailer)
     {
         $this->validate($request, array(
             'updated_date'=>'required|date',
@@ -606,16 +609,23 @@ class SiteConfigurationsController extends Controller
             'progress_details'=>'required',
             'video_url'=>''
             ));
-        // dd($request->updated_date);
         $project = Project::findOrFail($project_id);
         $project_prog = new ProjectProg;
         $project_prog->project_id = $project_id;
         $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
-        // dd($project_prog->updated_date);
         $project_prog->progress_description = $request->progress_description;
         $project_prog->progress_details = $request->progress_details;
         $project_prog->video_url = $request->video_url;
         $project_prog->save();
+        $SiteConfiguration = SiteConfiguration::where('project_site', url())->first();
+
+        $investors = $project->investors->groupBy('email');
+        foreach ($investors as $email => $investor) {
+            $user = User::where('email',$email)->get()->first();
+            Mail::later(5, 'emails.updateNotification', compact('user','project'), function($message) use ($email, $project, $SiteConfiguration){
+                $message->to($email)->subject('You have received an update for '.$project->title.' on '.$SiteConfiguration->website_name);
+            });
+        }
         return redirect()->back();
     }
 

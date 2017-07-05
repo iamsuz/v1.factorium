@@ -566,4 +566,14 @@ class PagesController extends Controller
         }
         return $resultArray = array('status' => 0); 
     }
+
+    public function redirectUsersNotifications(){
+        if(Auth::User()){
+            $user = Auth::User();
+            return redirect()->route('users.notifications', [$user->id]);
+        }
+        else {
+            return redirect()->route('users.login', ['redirectNotification'=>1]);
+        }
+    }
 }

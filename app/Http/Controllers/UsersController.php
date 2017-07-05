@@ -12,6 +12,7 @@ use App\Invite;
 use App\Mailers\AppMailer;
 use App\Role;
 use App\User;
+use App\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -453,6 +454,27 @@ class UsersController extends Controller
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="'.$filename.'"'
         ]);
+    }
+
+    public function usersNotifications($user_id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = User::findOrFail($user_id);
+        $investments = InvestmentInvestor::where('user_id', $user->id)
+                        ->where('project_site', url())->get()->groupBy('project_id');
+        $project_prog = array();
+        if($investments->count()){
+            foreach ($investments as $projectId => $investment) {
+                $project_progs = Project::findOrFail(6)->project_progs;
+                if($project_progs->count()){
+                    foreach ($project_progs as $key => $value) {
+                        array_push($project_prog, $value);
+                    }
+                }
+            }
+        }
+        $project_prog = collect($project_prog);
+        return view('users.notification', compact('user','project_prog', 'color'));
     }
 
 }
