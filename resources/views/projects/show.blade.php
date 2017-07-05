@@ -1954,13 +1954,10 @@
 		toggleProjectProgress();
 		toggleProjectElementsVisibiity();
 		editProjectPageLabelText();
-<<<<<<< HEAD
 		@if (Session::has('editable'))
 		setProjectDetailsEditable();
 		@endif
-=======
 		togglePaymentSwitch();
->>>>>>> ae40fd436645191e549be0124488112b1ea9711f
 	});
 
 	function editProjectPageDetailsByAdmin(){
