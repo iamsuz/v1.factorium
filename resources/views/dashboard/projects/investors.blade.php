@@ -126,6 +126,7 @@
 								</script>
 							</div>
 							@endif
+<<<<<<< HEAD
 						</div>
 						@endforeach
 					</ul>
@@ -179,6 +180,51 @@
 		  		</div>
 		  		
 		  	</div>
+=======
+							<input type="hidden" name="investor" value="{{$investment->user->id}}">
+						</form>
+					</div>
+					@if($investment->money_received || $investment->accepted)
+					@else
+					<div class="col-md-1" style="text-align: right;">
+						@if(Session::has('action'))
+						@if(Session::get('action') == $investment->id)
+						<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
+						@else
+						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+						@endif
+						@else
+						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+						@endif
+					</div>
+					@if($project->projectconfiguration->payment_switch)
+					@else
+					<div class="col-md-1" style="text-align: right;">
+						<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
+							{{method_field('PATCH')}}
+							{{csrf_field()}}
+							@if($investment->investment_confirmation == 1)
+							<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
+							@else
+							<a id="confirmation{{$investment->id}}" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+							<input class="hidden" name="investment_confirmation" value="1">
+							@endif
+							<input type="hidden" name="investor" value="{{$investment->user->id}}">
+						</form>
+						<script>
+							$(document).ready(function() {
+								$('#confirmation{{$investment->id}}').click(function(e){
+									$('#confirmationForm{{$investment->id}}').submit();
+								});
+							});
+						</script>
+					</div>
+					@endif
+					@endif
+				</div>
+				@endforeach
+			</ul>
+>>>>>>> ae40fd436645191e549be0124488112b1ea9711f
 		</div>
 	</div>
 </div>
