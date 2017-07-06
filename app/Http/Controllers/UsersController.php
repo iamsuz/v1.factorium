@@ -465,7 +465,7 @@ class UsersController extends Controller
         $project_prog = array();
         if($investments->count()){
             foreach ($investments as $projectId => $investment) {
-                $project_progs = Project::findOrFail(6)->project_progs;
+                $project_progs = Project::findOrFail($projectId)->project_progs;
                 if($project_progs->count()){
                     foreach ($project_progs as $key => $value) {
                         array_push($project_prog, $value);
