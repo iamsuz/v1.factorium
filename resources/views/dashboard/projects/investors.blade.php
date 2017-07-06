@@ -26,11 +26,11 @@
 				</div>
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em;">
-			    <li class="active" style="width: 50%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
-			    <li style="width: 50%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">Share registry</h3></a></li>
-		  	</ul>
-		  	<div class="tab-content">
-		  		<div id="investors_tab" class="tab-pane fade in active">
+				<li class="active" style="width: 50%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
+				<li style="width: 50%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">Share registry</h3></a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="investors_tab" class="tab-pane fade in active">
 					<style type="text/css">
 						.edit-input{
 							display: none;
@@ -126,105 +126,82 @@
 								</script>
 							</div>
 							@endif
-<<<<<<< HEAD
+							@if($project->projectconfiguration->payment_switch)
+							@else
+							<div class="col-md-1" style="text-align: right;">
+								<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
+									{{method_field('PATCH')}}
+									{{csrf_field()}}
+									@if($investment->investment_confirmation == 1)
+									<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
+									@else
+									<a id="confirmation{{$investment->id}}" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+									<input class="hidden" name="investment_confirmation" value="1">
+									@endif
+									<input type="hidden" name="investor" value="{{$investment->user->id}}">
+								</form>
+								<script>
+									$(document).ready(function() {
+										$('#confirmation{{$investment->id}}').click(function(e){
+											$('#confirmationForm{{$investment->id}}').submit();
+										});
+									});
+								</script>
+							</div>
+							@endif
 						</div>
 						@endforeach
 					</ul>
-		  		</div>
-
-		  		<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;">
-		  			<!-- <ul class="list-group">Hello</ul> -->
-		  			<div class="table-responsive">
-		  				<table class="table table-bordered table-striped" id="shareRegistryTable">
-		  					<thead>
-		  						<tr>
-			  						<th>Share numbers</th>
-			  						<th>Investor Name</th>
-			  						<th>Investment type</th>
-			  						<th>Joint Investor Name</th>
-			  						<th>Entity details</th>
-			  						<th>Address</th>
-			  						<th>Share face value</th>
-			  						<th>Link to share certificate</th>
-		  						</tr>
-		  					</thead>
-		  					<tbody>
-		  						@foreach($shareInvestments as $shareInvestment)
-		  						<tr>
-		  							<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
-		  							<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
-		  							<td>{{$shareInvestment->investing_as}}</td>
-		  							<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
-		  							<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
-		  							<td>
-		  								{{$shareInvestment->user->line_1}}, 
-		  								{{$shareInvestment->user->line_2}}, 
-		  								{{$shareInvestment->user->city}}, 
-		  								{{$shareInvestment->user->state}}, 
-		  								{{$shareInvestment->user->country}}, 
-		  								{{$shareInvestment->user->postal_code}}
-
-		  							</td>
-		  							<td>{{$shareInvestment->amount}}</td>
-		  							<td>
-		  								<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
-		  								Share Certificate
-		  								</a>
-		  							</td>
-		  						</tr>
-		  						@endforeach
-		  					</tbody>
-		  				</table>
-		  			</div>
-		  			
-		  		</div>
-		  		
-		  	</div>
-=======
-							<input type="hidden" name="investor" value="{{$investment->user->id}}">
-						</form>
-					</div>
-					@if($investment->money_received || $investment->accepted)
-					@else
-					<div class="col-md-1" style="text-align: right;">
-						@if(Session::has('action'))
-						@if(Session::get('action') == $investment->id)
-						<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
-						@else
-						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-						@endif
-						@else
-						<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-						@endif
-					</div>
-					@if($project->projectconfiguration->payment_switch)
-					@else
-					<div class="col-md-1" style="text-align: right;">
-						<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
-							{{method_field('PATCH')}}
-							{{csrf_field()}}
-							@if($investment->investment_confirmation == 1)
-							<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
-							@else
-							<a id="confirmation{{$investment->id}}" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
-							<input class="hidden" name="investment_confirmation" value="1">
-							@endif
-							<input type="hidden" name="investor" value="{{$investment->user->id}}">
-						</form>
-						<script>
-							$(document).ready(function() {
-								$('#confirmation{{$investment->id}}').click(function(e){
-									$('#confirmationForm{{$investment->id}}').submit();
-								});
-							});
-						</script>
-					</div>
-					@endif
-					@endif
 				</div>
-				@endforeach
-			</ul>
->>>>>>> ae40fd436645191e549be0124488112b1ea9711f
+
+				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;">
+					<!-- <ul class="list-group">Hello</ul> -->
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped" id="shareRegistryTable">
+							<thead>
+								<tr>
+									<th>Share numbers</th>
+									<th>Investor Name</th>
+									<th>Investment type</th>
+									<th>Joint Investor Name</th>
+									<th>Entity details</th>
+									<th>Address</th>
+									<th>Share face value</th>
+									<th>Link to share certificate</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($shareInvestments as $shareInvestment)
+								<tr>
+									<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
+									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
+									<td>{{$shareInvestment->investing_as}}</td>
+									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
+									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
+									<td>
+										{{$shareInvestment->user->line_1}}, 
+										{{$shareInvestment->user->line_2}}, 
+										{{$shareInvestment->user->city}}, 
+										{{$shareInvestment->user->state}}, 
+										{{$shareInvestment->user->country}}, 
+										{{$shareInvestment->user->postal_code}}
+
+									</td>
+									<td>{{$shareInvestment->amount}}</td>
+									<td>
+										<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+											Share Certificate
+										</a>
+									</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>
