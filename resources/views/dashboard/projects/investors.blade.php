@@ -126,7 +126,7 @@
 								</script>
 							</div>
 							@endif
-							@if($project->projectconfiguration->payment_switch)
+							{{-- @if($project->projectconfiguration->payment_switch)
 							@else
 							<div class="col-md-1" style="text-align: right;">
 								<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
@@ -148,7 +148,7 @@
 									});
 								</script>
 							</div>
-							@endif
+							@endif --}}
 						</div>
 						@endforeach
 					</ul>
