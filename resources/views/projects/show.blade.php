@@ -203,7 +203,7 @@
 						@if(Auth::guest())
 						@else
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<div class="text-center">
+						<div class="text-center hide" >
 							<input type="checkbox" class="project-payment-switch" action="payment_switch" autocomplete="off" data-label-text="PaymentMethod" data-size="mini" @if($project->projectconfiguration->payment_switch) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
