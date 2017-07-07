@@ -670,9 +670,6 @@ class ProjectsController extends Controller
         //     $request->withdraw_account_number = $request->account_number;
         //     $request->withdraw_bsb = $request->bsb;
         // }
-        if(url() == "https://westminster.estatebaron.com"){
-            dd($request);
-        }
         return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number.'&investing_as='.$request->investing_as.'&joint_investor_first='.$request->joint_investor_first.'&joint_investor_last='.$request->joint_investor_last.'&investing_company_name='.$request->investing_company_name.'&bank_name='.$request->bank_name.'&tfn='.$request->tfn);
     }
 
@@ -683,6 +680,9 @@ class ProjectsController extends Controller
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         // $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
+        if(url() == "https://westminster.estatebaron.com"){
+            dd($request);
+        }
         $user->update($request->all());
         $investor = InvestmentInvestor::get()->last();
         if($request->investing_as != 'Individual Investor'){
