@@ -13,7 +13,10 @@ Offer Doc
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
 				<div class="row">
 					<div class="col-md-7"><br>
-						<?php $frameLink = 'test'; ?>
+						<?php $frameLink = 'test';
+						$user4 = Auth::user();
+						 ?>
+						<?php dd($user4->tfn); ?>
 						@if($project->investment)
 							@if($project->investment->embedded_offer_doc_link)
 								<?php $frameLink = $project->investment->embedded_offer_doc_link; ?>
