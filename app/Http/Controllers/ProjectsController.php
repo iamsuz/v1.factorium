@@ -680,9 +680,6 @@ class ProjectsController extends Controller
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         // $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
-        if(url() == "https://westminster.estatebaron.com"){
-            dd($request);
-        }
         $user->update($request->all());
         $investor = InvestmentInvestor::get()->last();
         if($request->investing_as != 'Individual Investor'){
