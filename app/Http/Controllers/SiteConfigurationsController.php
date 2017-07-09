@@ -607,13 +607,14 @@ class SiteConfigurationsController extends Controller
             'updated_date'=>'required|date',
             'progress_description'=>'required',
             'progress_details'=>'required',
-            'project_progress_image'=>'required|image',
             'video_url'=>'',
             ));
 
-        $destinationPath='';
-        $filename='';
+        $imagePath = '';
         if($request->project_progress_image){
+            $this->validate($request, array(
+                'project_progress_image'=>'image',
+            ));
             $destinationPath = 'assets/images/projects/progress/'.$project_id;
             $filename = $request->project_progress_image->getClientOriginalName();
             $filename = time().'_'.$filename;
@@ -623,6 +624,7 @@ class SiteConfigurationsController extends Controller
             $photo->resize(700, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->save();
+            $imagePath = $destinationPath.'/'.$filename;
         }
 
         $project = Project::findOrFail($project_id);
@@ -632,7 +634,7 @@ class SiteConfigurationsController extends Controller
         $project_prog->progress_description = $request->progress_description;
         $project_prog->progress_details = $request->progress_details;
         $project_prog->video_url = $request->video_url;
-        $project_prog->image_path = $destinationPath.'/'.$filename;
+        $project_prog->image_path = $imagePath;
         $project_prog->save();
 
         $SiteConfiguration = SiteConfiguration::where('project_site', url())->first();
