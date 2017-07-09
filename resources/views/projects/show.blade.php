@@ -1598,25 +1598,18 @@
 					<td>{{$project_progs->progress_details}}
 						<br>
 						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
-							{{--<div class="row">
-								 @foreach($project->media->chunk(1) as $set)
-								@foreach($set as $photo)
-								@if($photo->type === 'progress_images')
-								<div class="col-md-4 change_column">
+							@if($project_progs->image_path != '')
+							<div class="row">
+								<div class="col-md-10 change_column">
 									<div class="thumbnail">
-										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-										<div class="caption">
-											<!-- {{$photo->type}} -->
-											<!-- <a href="#" class="pull-right">Delete</a> -->
-										</div>
+										<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
 									</div>
 								</div>
-								@else
-								@endif
-								@endforeach
-								@endforeach 
-							</div> --}}
+							</div>
+							@endif
+							@if($project_progs->video_url != '')
 							<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
+							@endif
 						</td>
 					</tr>
 					@endforeach
@@ -1624,7 +1617,7 @@
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<h3 style="color: #000;">Add new Update</h3>
-						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'POST')) !!}
+						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
 						<div class="row">
 							<td>
 								<div class="form-group <?php if($errors->first('updated_date')){echo 'has-error';}?>">
@@ -1660,6 +1653,24 @@
 										</div>
 									</div>
 								</div>
+								<br>
+								<div class="row">
+									<div class="form-group <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
+										<div class="col-sm-12 <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
+											
+											<div class="input-group">
+				                              	<label class="input-group-btn">
+				                                 	<span class="btn btn-primary" style="padding: 10px 12px;">Browse&hellip;
+				                                 	<input type="file" name="project_progress_image" id="project_progress_image" class="form-control" style="display: none;">
+				                                	</span>
+				                            	</label>
+				                            	<input type="text" class="form-control" id="progress_image_name" name="progress_image_name" readonly placeholder="Select Image">
+				                        	</div>
+			                            	{!! $errors->first('project_progress_image', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</div>
+								<br>
 								<div class="col-md-12">
 									<div class="row">
 										<div class="form-group">
@@ -1677,7 +1688,7 @@
 					</tr>
 				</tbody>
 			</table>
-			@if(Auth::user())
+			{{-- @if(Auth::user())
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<h3 style="color: #000;">Upload a Images</h3>
 			<div class="row">
@@ -1687,7 +1698,7 @@
 				</div>
 			</div>
 			@endif
-			@endif
+			@endif--}}
 		</div>
 	</div>
 </div>
@@ -1958,6 +1969,7 @@
 		setProjectDetailsEditable();
 		@endif
 		togglePaymentSwitch();
+		projectProgress();
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2671,6 +2683,15 @@
 					}
 				});
 			}
+		});
+	}
+
+	function projectProgress(){
+		$('#project_progress_image').change(function(e){
+			var file = $('#project_progress_image')[0].files[0];
+			if (file){
+               	$('#progress_image_name').val(file.name);
+	       	}
 		});
 	}
 

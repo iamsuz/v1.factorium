@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectProg extends Model
 {
-     protected $fillable = ['project_id','updated_date','progress_description','progress_details','video_url'];
+     protected $fillable = ['project_id','updated_date','progress_description','progress_details','video_url', 'image_path'];
 
      public function project()
     {

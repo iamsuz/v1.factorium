@@ -607,8 +607,24 @@ class SiteConfigurationsController extends Controller
             'updated_date'=>'required|date',
             'progress_description'=>'required',
             'progress_details'=>'required',
-            'video_url'=>''
+            'project_progress_image'=>'required|image',
+            'video_url'=>'',
             ));
+
+        $destinationPath='';
+        $filename='';
+        if($request->project_progress_image){
+            $destinationPath = 'assets/images/projects/progress/'.$project_id;
+            $filename = $request->project_progress_image->getClientOriginalName();
+            $filename = time().'_'.$filename;
+            $extension = $request->project_progress_image->getClientOriginalExtension();
+            $photo = $request->project_progress_image->move($destinationPath, $filename);
+            $photo= Image::make($destinationPath.'/'.$filename);
+            $photo->resize(700, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save();
+        }
+
         $project = Project::findOrFail($project_id);
         $project_prog = new ProjectProg;
         $project_prog->project_id = $project_id;
@@ -616,7 +632,9 @@ class SiteConfigurationsController extends Controller
         $project_prog->progress_description = $request->progress_description;
         $project_prog->progress_details = $request->progress_details;
         $project_prog->video_url = $request->video_url;
+        $project_prog->image_path = $destinationPath.'/'.$filename;
         $project_prog->save();
+
         $SiteConfiguration = SiteConfiguration::where('project_site', url())->first();
 
         $investors = $project->investors->groupBy('email');

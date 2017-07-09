@@ -48,7 +48,18 @@
 							<td>{{$project_progs->progress_details}}
 								<br>
 								<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
-									<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
+								@if($project_progs->image_path != '')
+								<div class="row">
+									<div class="col-md-10 change_column">
+										<div class="thumbnail">
+											<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
+										</div>
+									</div>
+								</div>
+								@endif
+								@if($project_progs->video_url != '')
+								<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
+								@endif
 							</td>
 						</tr>
 						@endforeach
