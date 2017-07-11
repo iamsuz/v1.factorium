@@ -1617,7 +1617,7 @@
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<h3 style="color: #000;">Add new Update</h3>
-						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
+						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'id'=>'project_progress_form', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
 						<div class="row">
 							<td>
 								<div class="form-group <?php if($errors->first('updated_date')){echo 'has-error';}?>">
@@ -2692,6 +2692,9 @@
 			if (file){
                	$('#progress_image_name').val(file.name);
 	       	}
+		});
+		$('#project_progress_form').submit(function(e){
+			$('.loader-overlay').show();
 		});
 	}
 

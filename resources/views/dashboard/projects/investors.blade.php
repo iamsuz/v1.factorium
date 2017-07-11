@@ -225,6 +225,7 @@
 		$('.issue-share-certi-btn').click(function(e){
 			if (confirm('Are you sure ?')) {
 				console.log('confirmed');
+				$('.loader-overlay').show();
 			} else {
 				e.preventDefault();
 			}			
