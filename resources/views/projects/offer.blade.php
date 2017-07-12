@@ -12,7 +12,7 @@ Offer Doc
 		<div class="col-md-12">
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
 				<div class="row">
-					<div class="col-md-7"><br>
+					<div class="col-md-7 investment-gform"><br>
 						<?php $frameLink = 'test';?>
 						@if($project->investment)
 							@if($project->investment->embedded_offer_doc_link)
@@ -157,6 +157,11 @@ Offer Doc
 			$('#section-colors').addClass('hide');
 			$('#section-colors-left').addClass('hide');
 		}
+	});
+	$(document).ready(function(){
+		$('.investment-gform form').submit(function(){
+			$('.loader-overlay').show();
+		});
 	});
 </script>
 @stop
