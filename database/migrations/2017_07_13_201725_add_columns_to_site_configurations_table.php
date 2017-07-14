@@ -136,6 +136,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             if (!Schema::hasColumn('site_configurations', 'conversion_pixel')) {
                 $table->longText('conversion_pixel')->nullable();
             }
+            if (!Schema::hasColumn('site_configurations', 'font_family')) {
+                $table->string('font_family')->nullable();
+            }
         });
     }
 
@@ -269,6 +272,9 @@ class AddColumnsToSiteConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('site_configurations', 'conversion_pixel')) {
                 $table->dropColumn('conversion_pixel');
+            }
+            if (Schema::hasColumn('site_configurations', 'font_family')) {
+                $table->dropColumn('font_family');
             }
         });
     }

@@ -1214,4 +1214,16 @@ class SiteConfigurationsController extends Controller
         Session::flash('action', 'conversion_pixel');
         return redirect()->back();   
     }
+
+    public function changeFontFamily(Request $request)
+    {
+        $fontFamily = trim($request->fontFamily);
+        // $fontFamily = preg_replace('/\s+/', '+', $fontFamily);
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'font_family'=>$fontFamily
+        ]);
+        return $resultArray = array('status' => 1); 
+    }
 }

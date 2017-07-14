@@ -49,7 +49,12 @@
   {!! Html::style('plugins/animate.css') !!}
   <!-- <link rel="stylesheet" href="https://youcanbook.me/resources/css/simplemodal/simplemodal.css" type="text/css"/> -->
   {!! Html::style('css/app.css') !!}
+
+  @if($siteConfiguration->font_family != '')
+  <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
+  @else
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700,200italic,400italic,700italic' rel='stylesheet' type='text/css'>
+  @endif
   <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
   <!-- JCrop -->
@@ -59,6 +64,27 @@
     .btn-hover-default-color:hover{
       color: #fff !important;
     }
+
+    @if($siteConfiguration->font_family != '')
+    /*Override fonts*/
+    body, .font-regular, p {
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 400;
+    }
+    .heading-font-light, .h1-faq, h1>small, h2>small, h3>small, h4>small{
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 300;
+    }
+    .font-semibold{
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 600;
+    }
+    h1, h2, h3, h4, a, .font-bold {
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 700;
+    }
+    @endif
+
   </style>
 
   <!-- Google tag manager header script if set  -->
@@ -1047,6 +1073,12 @@
   <input id="footer_color" class="jscolor {onFineChange:'update(this)'}" value="@if($color){{$color->nav_footer_color}}@endif">
   <input id="second_color" class="jscolor {onFineChange:'update1(this)'}" value="@if($color){{$color->heading_color}}@endif">
   <button id="footer_color_btn">Apply Color</button>
+  <div style="float: right;">
+    <select id="font_style_select">
+      <option value="">---Select Font Family---</option>
+    </select>
+    <button id="font_style_apply_btn">Apply Font</button>
+  </div>
     <!-- <div class="row" style="position: absolute; z-index: 10; margin: auto;">
       <br>
       <div class="panel panel-default">
@@ -1709,7 +1741,8 @@
       addTestimonials();
       //Add functionality to notify site admins about the person expressed interest in upcoming projects
       expressInterestInUpcomingProject();
-
+      getGoogleWebDeveloperFonts();
+      saveGoogleFontFamily();
     });
 
     function updateCoords(coords, w, h, origWidth, origHeight){
@@ -2498,6 +2531,36 @@
         else{
           $(thisElement).parent('.project-thumb-overflow').find('.project-interest-error-text').html('Email and Phone is Mandatory');
         }
+      });
+    }
+
+    function getGoogleWebDeveloperFonts(){
+      var webFontAPI = 'AIzaSyBpa6-SZTPSFiyS7cmGqjfQlH2GwCLmAYY';
+      $.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key="+webFontAPI, function(fonts){
+          for (var i = 0; i < fonts.items.length; i++) {      
+            $('#font_style_select')
+             .append($("<option></option>")
+             .attr("value", fonts.items[i].family)
+             .text(fonts.items[i].family));
+          }
+          $('#font_style_select option[value="{{$siteConfiguration->font_family}}"]').attr('selected', 'selected');
+      });
+    }
+
+    function saveGoogleFontFamily(){
+      $('#font_style_apply_btn').click(function(){
+        var fontFamily = $('#font_style_select').val();
+        $.ajax({
+          url: '/configuration/home/changeFontFamily',
+          type: 'POST',
+          dataType: 'JSON',
+          data: {fontFamily},
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+        }).done(function(data){
+          location.reload('/#font_style_select');
+        });
       });
     }
 

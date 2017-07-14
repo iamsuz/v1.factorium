@@ -62,6 +62,36 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
+    <?php
+    $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr();
+    ?>
+
+    @if($siteConfiguration->font_family != '')
+    <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
+    @endif
+
+    <style type="text/css">
+        @if($siteConfiguration->font_family != '')
+        /*Override fonts*/
+        body, .font-regular, p {
+          font-family: {{$siteConfiguration->font_family}};
+          font-weight: 400;
+        }
+        .heading-font-light, .h1-faq, h1>small, h2>small, h3>small, h4>small{
+          font-family: {{$siteConfiguration->font_family}};
+          font-weight: 300;
+        }
+        .font-semibold{
+          font-family: {{$siteConfiguration->font_family}};
+          font-weight: 600;
+        }
+        h1, h2, h3, h4, a, .font-bold {
+          font-family: {{$siteConfiguration->font_family}};
+          font-weight: 700;
+        }
+        @endif
+    </style>
+
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
