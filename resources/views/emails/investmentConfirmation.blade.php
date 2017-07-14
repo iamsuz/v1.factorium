@@ -582,8 +582,8 @@
                                       <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Reference <b> {!!$investment->investment->bank_reference!!} </b>.</span></span></span>&nbsp;
                                     </span><br><br><span style="color:#000">This will allow us to process your application and complete the investment process.</span><br><br><br>
                                     <span style="color:#000">Regards</span><br><br>
-                                    <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->first()->spv_md_name}}@else Moresh Kokane @endif<br>
-                                      <span style="font-family:helvetica; font-weight:lighter; line-height:21px;">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->first()->spv_name}}@else Estate Baron @endif</span><br><br>
+                                    <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_md_name}}@else Moresh Kokane @endif<br>
+                                      <span style="font-family:helvetica; font-weight:lighter; line-height:21px;">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif</span><br><br>
                                     </div>
                                   </div>
                                 </td>
