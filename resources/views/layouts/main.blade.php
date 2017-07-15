@@ -127,7 +127,7 @@
                 <a href="{{route('home')}}">
                     @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
                     @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
-                    <span class="logo-title"><img src="{{asset($mainLogo->path)}}" width="55%" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em;"></span>
+                    <span class="logo-title"><img src="{{asset($mainLogo->path)}}" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em; height: 3.3em;"></span>
                     @else
                     <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="55%" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em;"></span>
                     @endif

@@ -137,7 +137,7 @@
           </button>
           @if($siteConfiguration->siteconfigmedia)
           @if($mainLogo = $siteConfiguration->siteconfigmedia->where('type', 'brand_logo')->first())
-            <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{$mainLogo->path}}" width="130" alt="Brand logo" id="logo" style="margin-top:-5px;"></a>
+            <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{$mainLogo->path}}" alt="Brand logo" id="logo" style="margin-top:-5px; height: inherit;"></a>
             <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="{{$mainLogo->path}}" alt="Logo" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a>
           @else
             <a id="brand" class="navbar-brand hide small-logo" href="{{route('home')}}"><img src="{{asset('assets/images/main_logo.png')}}" width="130" alt="Brand logo" id="logo" style="margin-top:-5px;"></a>
@@ -1078,6 +1078,9 @@
       <option value="">---Select Font Family---</option>
     </select>
     <button id="font_style_apply_btn">Apply Font</button>
+  </div><br>
+  <div style="position: absolute; right: 0; margin-top: 5px;">
+    <textarea class="font-select-preview" style="width: 18em;">This is font preview of selected font</textarea>
   </div>
     <!-- <div class="row" style="position: absolute; z-index: 10; margin: auto;">
       <br>
