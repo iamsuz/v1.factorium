@@ -2565,6 +2565,19 @@
           location.reload('/#font_style_select');
         });
       });
+
+      $('#font_style_select').change(function(e){
+        var fontFamily = $(this).val();
+        if(fontFamily != ''){
+          var fontConcat = fontFamily.replace(/ /g,"+");
+          $('<link>').appendTo('head').attr({
+            type: 'text/css', 
+            rel: 'stylesheet',
+            href: 'https://fonts.googleapis.com/css?family='+fontConcat
+          });
+          $('.font-select-preview').css('font-family', fontFamily);
+        }
+      });
     }
 
   </script>
