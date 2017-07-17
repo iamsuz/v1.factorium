@@ -26,6 +26,10 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Mailers\AppMailer;
 use Illuminate\Support\Facades\Mail;
+use App\Location;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
 
 
 class SiteConfigurationsController extends Controller
@@ -128,8 +132,8 @@ class SiteConfigurationsController extends Controller
 
                     if($type[$request->imgAction] == 'brand_logo') {
                         $image->resize(274, null, function ($constraint) {
-						    $constraint->aspectRatio();
-						})->save(public_path($saveLoc.$finalFile));
+                            $constraint->aspectRatio();
+                        })->save(public_path($saveLoc.$finalFile));
                     }
                     $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
                     $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
@@ -690,6 +694,25 @@ class SiteConfigurationsController extends Controller
                 'bsb' => trim($request->bsb_name),
                 'bank_account_number' => trim($request->account_number),
                 'bank_reference' => trim($request->bank_reference),
+                ]);
+                $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
+                $response = \Geocoder::geocode('json', $param);
+                if(json_decode($response)->status != 'ZERO_RESULTS') {
+                    $latitude =json_decode(($response))->results[0]->geometry->location->lat;
+                    $longitude =json_decode(($response))->results[0]->geometry->location->lng;
+                } else {
+                    return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
+                }
+                Location::where('id', $projectId)->update([
+                    'line_1'=>$request->line_1,
+                    'line_2'=>$request->line_2,
+                    'city'=>$request->city,
+                    'state'=>$request->state,
+                    'postal_code'=>$request->postal_code,
+                    'country_code'=>$request->country,
+                    'country'=>array_search($request->country, \App\Http\Utilities\Country::aus()),
+                    'latitude'=>$latitude,
+                    'longitude'=>$longitude
                 ]);
             Session::flash('message', 'Project Details Updated');
             Session::flash('editable', 'true');

@@ -211,6 +211,24 @@
 					</div>
 				</div>
 			</div>
+<!-- 			<div class="offer-doclink"></div> -->
+<!-- 			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="row offer-doclink">
+				<div class="form-group @if($errors->first('bank_reference') && $errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
+					<div class="col-sm-9">
+							{!!Form::label('embedded_offer_doc_link', 'Embedded Offer Doc link', array('class'=>'col-sm-3 control-label'))!!}
+							<div class="col-sm-5 @if($errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
+								{!! Form::text('embedded_offer_doc_link', $project->investment?$project->investment->embedded_offer_doc_link:null, array('placeholder'=>'embedded offer doc link', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+								{!! $errors->first('embedded_offer_doc_link', '<small class="text-danger">:message</small>') !!}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			@endif
+			@endif -->
 			@if(Auth::guest())
 			@else
 			@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
@@ -627,6 +645,9 @@
 						<br><br>
 						@if(Auth::guest())
 						@else
+
+						<div class="address-update"></div>
+						
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->marketability_label))}}</b></h5>
@@ -1224,6 +1245,73 @@
 	<!-- </div> -->
 </section>
 <br><br>
+@if(Auth::guest())
+@else
+@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+<section class="project-faq" style="display: none;">
+	<div class="row well">
+		<div class="col-md-12">
+			<div class="row">
+				@foreach($project->projectFAQs as $faq)
+				<div class="col-md-offset-2 col-md-7">
+					<b>{{$faq->question}}</b>
+					{{$faq->id}}
+					<p class="text-justify">{{$faq->answer}}</p>
+				</div>
+				<div class="col-md-2"> 
+					{!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $faq->id, $project->id]]) !!}
+					{!! Form::submit('Delete this FAQ?', ['class' => 'btn btn-danger']) !!}
+					{!! Form::close() !!}
+				</div>
+				@endforeach
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-12">
+					{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+					<fieldset>
+						<div class="row">
+							<div class="form-group @if($errors->first('question')){{'has-error'}} @endif">
+								{!!Form::label('question', 'Question', array('class'=>'col-sm-2 control-label'))!!}
+								<div class="col-sm-9">
+									<div class="row">
+										<div class="col-sm-12 @if($errors->first('question')){{'has-error'}} @endif">
+											{!! Form::text('question', null, array('placeholder'=>'Question', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
+											{!! $errors->first('question', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group @if($errors->first('answer')){{'has-error'}} @endif">
+								{!!Form::label('answer', 'Answer', array('class'=>'col-sm-2 control-label'))!!}
+								<div class="col-sm-9">
+									<div class="row">
+										<div class="col-sm-12 @if($errors->first('answer')){{'has-error'}} @endif">
+											{!! Form::textarea('answer', null, array('placeholder'=>'Answer', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
+											{!! $errors->first('answer', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-9">
+									{!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					{!! Form::close() !!}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+@endif
+@endif
 <section>
 	<div class="container">
 		<div class="row">
@@ -1988,6 +2076,8 @@
 
 	function setProjectDetailsEditable(){
 		$('.save-project-details-floating-btn, .exit-project-details-editable-btn').show();
+		$('.project-faq').show();
+		$('.address-update').html('<section> <div class="row well"> <div class="col-md-12"> <fieldset> <div class="row"> <div class="form-group @if($errors->first('line_1') && $errors->first('line_2')){{'has-error'}} @endif"> {!!Form::label('line_1', 'Lines', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('line_1')){{'has-error'}} @endif"> {!! Form::text('line_1', $project->location->line_1, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'3')) !!} {!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif"> {!! Form::text('line_2', $project->location->line_2, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'4')) !!} {!! $errors->first('line_2', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> <div class="row"> <div class="form-group @if($errors->first('city') && $errors->first('state')){{'has-error'}} @endif"> {!!Form::label('city', 'City', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif"> {!! Form::text('city', $project->location->city, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'5')) !!} {!! $errors->first('city', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif"> {!! Form::text('state', $project->location->state, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'6')) !!} {!! $errors->first('state', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> <div class="row"> <div class="form-group @if($errors->first('postal_code') && $errors->first('country')){{'has-error'}} @endif"> {!!Form::label('postal_code', 'postal code', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif"> {!! Form::text('postal_code', $project->location->postal_code, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'7')) !!} {!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif"> <select name="country" class="form-control" tabindex="8"> @foreach(\App\Http\Utilities\Country::aus() as $country => $code) <option value="{{$code}}" @if($project->location->country_code == $code) selected @endif>{{$country}}</option> @endforeach </select> {!! $errors->first('country', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> </fieldset> </div> </div> </section>');
 		$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
 		$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
 		$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control rich-text-element">{{ nl2br(e($project->description)) }}</textarea>');

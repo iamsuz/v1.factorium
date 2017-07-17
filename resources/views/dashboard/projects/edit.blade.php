@@ -40,7 +40,7 @@ Edit {{$project->title}} | Dashboard | @parent
 						<div class="col-md-12 center-block">
 							<h3 class="text-center"><small><a href="{{route('dashboard.projects.show', [$project])}}" class="pull-left"><i class="fa fa-chevron-left"></i>  BACK</a></small> Edit <i>{{$project->title}}</i></h3>
 							<br>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('title')){{'has-error'}} @endif">
 									{!!Form::label('title', 'Title', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -58,7 +58,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>--}}
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('additional_info')){{'has-error'}} @endif">
 									{!!Form::label('additional_info', 'Additional Info', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -106,7 +106,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('button_label')){{'has-error'}} @endif">
 									{!!Form::label('button_label', 'Button Label', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -119,7 +119,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</fieldset>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					<div class="col-md-12">
 						<fieldset>
@@ -182,7 +182,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					<div class="col-md-12">
 						<fieldset>
@@ -295,7 +295,7 @@ Edit {{$project->title}} | Dashboard | @parent
 				<div class="row well">
 					<div class="col-md-12">
 						<fieldset>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('goal_amount') && $errors->first('minimum_accepted_amount')){{'has-error'}} @endif">
 									{!!Form::label('goal_amount', 'Goal Amount', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -321,7 +321,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('total_projected_costs') && $errors->first('maximum_accepted_amount')){{'has-error'}} @endif">
 									{!!Form::label('total_projected_costs', 'Total Cost', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -335,7 +335,7 @@ Edit {{$project->title}} | Dashboard | @parent
 												</div>
 											</div>
 											{!!Form::label('maximum_accepted_amount', 'Max amount', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-5 @if($errors->first('maximum_accepted_amount')){{'has-error'}} @endif">
+											<div class="col-sm-5 style="display: none;" @if($errors->first('maximum_accepted_amount')){{'has-error'}} @endif">
 												<div class="input-group">
 													<div class="input-group-addon">$</div>
 													{!! Form::text('maximum_accepted_amount', $project->investment?$project->investment->maximum_accepted_amount:null, array('placeholder'=>'Maximum Accepted', 'class'=>'form-control', 'tabindex'=>'6','required'=>'yes')) !!}
@@ -347,7 +347,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('total_debt') && $errors->first('total_equity')){{'has-error'}} @endif">
 									{!!Form::label('total_debt', 'Total Debt', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -373,7 +373,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('projected_return') && $errors->first('hold_period')){{'has-error'}} @endif">
 									{!!Form::label('projected_returns', 'Projected Return', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -397,7 +397,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('developer_equity')){{'has-error'}} @endif">
 									{!!Form::label('developer_equity', 'Developer Equity', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -414,7 +414,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('fund_raising_start_date')){{'has-error'}} @endif">
 									{!!Form::label('fund_raising_start_date', 'fund raising start date', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -436,7 +436,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('proposer')){{'has-error'}} @endif">
 									{!!Form::label('proposer', 'Developer', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -449,7 +449,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('summary')){{'has-error'}} @endif">
 									{!!Form::label('summary', 'Summary', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -553,7 +553,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>--}}
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('bank') && $errors->first('bank_account_name')){{'has-error'}} @endif">
 									{!!Form::label('bank', 'Bank', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -575,7 +575,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('bsb') && $errors->first('bank_account_number')){{'has-error'}} @endif">
 									{!!Form::label('bsb', 'BSB', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -599,14 +599,14 @@ Edit {{$project->title}} | Dashboard | @parent
 							</div>
 							<div class="row">
 								<div class="form-group @if($errors->first('bank_reference') && $errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
-									{!!Form::label('bank_reference', 'Reference', array('class'=>'col-sm-2 control-label'))!!}
+<!-- 									{!!Form::label('bank_reference', 'Reference', array('class'=>'col-sm-2 control-label'))!!} -->
 									<div class="col-sm-9">
-										<div class="row">
+<!-- 										<div class="row">
 											<div class="col-sm-5 @if($errors->first('bank_reference')){{'has-error'}} @endif">
 												{!! Form::text('bank_reference', $project->investment?$project->investment->bank_reference:null, array('placeholder'=>'Bank Reference', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 												{!! $errors->first('bank_reference', '<small class="text-danger">:message</small>') !!}
-											</div>
-											{!!Form::label('embedded_offer_doc_link', 'Embedded Offer Doc link', array('class'=>'col-sm-2 control-label'))!!}
+											</div> -->
+											{!!Form::label('embedded_offer_doc_link', 'Embedded Offer Doc link', array('class'=>'col-sm-3 control-label'))!!}
 											<div class="col-sm-5 @if($errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
 												{!! Form::text('embedded_offer_doc_link', $project->investment?$project->investment->embedded_offer_doc_link:null, array('placeholder'=>'embedded offer doc link', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 												{!! $errors->first('embedded_offer_doc_link', '<small class="text-danger">:message</small>') !!}
@@ -711,7 +711,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>--}}
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('plans_permit_url')){{'has-error'}} @endif">
 									{!!Form::label('plans_permit_url', 'Plans and Permit Document', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -733,7 +733,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('consultancy_agency_agreement_url')){{'has-error'}} @endif">
 									{!!Form::label('consultancy_agency_agreement_url', 'Consultancy and Agency Agreement', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -755,7 +755,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('master_pds_url')){{'has-error'}} @endif">
 									{!!Form::label('master_pds_url', 'Master PDS Document', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -777,7 +777,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('land_ownership_url')){{'has-error'}} @endif">
 									{!!Form::label('land_ownership_url', 'Land Ownership Document', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -799,7 +799,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="form-group @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
 									{!!Form::label('investments_structure_video_url', 'Investment Structure Video URL', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
@@ -841,7 +841,7 @@ Edit {{$project->title}} | Dashboard | @parent
 				</div>
 			</div>
 			{!! Form::close() !!}
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					<div class="col-md-12">
 						{!! Form::open(array('route'=>['projects.investments', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
@@ -1158,7 +1158,7 @@ Edit {{$project->title}} | Dashboard | @parent
 												{!! $errors->first('bank_reference', '<small class="text-danger">:message</small>') !!}
 											</div>
 											{!!Form::label('embedded_offer_doc_link', 'Embedded Offer Doc link', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-5 @if($errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
+											<div class="col-sm-9 @if($errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
 												{!! Form::text('embedded_offer_doc_link', $project->investment?$project->investment->embedded_offer_doc_link:null, array('placeholder'=>'embedded offer doc link', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 												{!! $errors->first('embedded_offer_doc_link', '<small class="text-danger">:message</small>') !!}
 											</div>
@@ -1400,7 +1400,7 @@ Edit {{$project->title}} | Dashboard | @parent
 				</div>
 			</section>
 			@endif
-			<section>
+			<!-- <section>
 				<div class="row well">
 					<div class="col-md-12">
 						<div class="row">
@@ -1461,7 +1461,7 @@ Edit {{$project->title}} | Dashboard | @parent
 						</div>
 					</div>
 				</div>
-			</section>
+			</section> -->
 			<section>
 				<div class="row well">
 					<div class="col-md-12">
@@ -1622,7 +1622,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Main Image 1366 X 500
 					<div class="col-md-12">
@@ -1658,7 +1658,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Marketability
 					<div class="col-md-12">
@@ -1694,7 +1694,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Developer
 					<div class="col-md-12">
@@ -1730,7 +1730,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Investment Structure
 					<div class="col-md-12">
@@ -1766,7 +1766,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Exit
 					<div class="col-md-12">
@@ -1802,7 +1802,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Project Thumbnail 1024 X 683
 					<div class="col-md-12">
@@ -1838,7 +1838,7 @@ Edit {{$project->title}} | Dashboard | @parent
 					</div>
 				</div>
 			</section>
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					Add Image For Residents
 					<div class="col-md-12">
