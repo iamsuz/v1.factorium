@@ -552,7 +552,7 @@
                 </div>
                 <br>
                 <div class="caption">
-                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue for {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
                   <div class="row text-left">
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -658,7 +658,7 @@
                 </div>
                 <br>
                 <div class="caption">
-                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue for {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
                   <div class="row text-left">
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -762,7 +762,7 @@
                </div>
                <br>
                <div class="caption">
-                <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue for {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
                 <div class="row text-left">
                   <div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
                     <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -797,8 +797,8 @@
     </div>
   </div>
   <br><br>
-    <div class="row" style="padding: 1em 1em; background-color: rgba(140,114,171, 0.9)">
-      <p class="col-md-12 text-justify"><small style="color: #fff;">You can download the Prospectus for the offer on the Project details page which can be accessed by clicking on the Project listing below. The online Application form will be provided alongside the Prospectus. You should carefully review the Prospectus in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the Prospectus.</small></p>
+    <div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
+      <p class="col-md-12 text-justify"><small style="color: #888;">You can download the Prospectus for the offer on the Project details page which can be accessed by clicking on the Project listing below. The online Application form will be provided alongside the Prospectus. You should carefully review the Prospectus in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the Prospectus.</small></p>
     </div>
 </div>
 </section>
