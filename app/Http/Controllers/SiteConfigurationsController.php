@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Mailers\AppMailer;
 use Illuminate\Support\Facades\Mail;
 use App\Location;
+use App\Document;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -714,6 +715,22 @@ class SiteConfigurationsController extends Controller
                     'latitude'=>$latitude,
                     'longitude'=>$longitude
                 ]);
+
+                Document::where('project_id', $projectId)->where('type','reference_document')->where('project_site', url())->delete();
+                $i=0;
+                while ($i < (int)$request->add_doc_ref_count) {
+                    if (($request->doc_ref_title[$i] != '') && ($request->doc_ref_link[$i] != '')) {
+                        $document = new Document;
+                        $document->project_id = $projectId;
+                        $document->type = 'reference_document';
+                        $document->filename = $request->doc_ref_title[$i];
+                        $document->path = $request->doc_ref_link[$i];
+                        $document->verified = 1;
+                        $document->project_site = url();
+                        $document->save();
+                    }
+                    $i++;
+                }
             Session::flash('message', 'Project Details Updated');
             Session::flash('editable', 'true');
             return redirect()->back();
