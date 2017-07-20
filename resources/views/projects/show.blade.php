@@ -260,25 +260,15 @@
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
 				<div class="col-md-10 col-md-offset-1">
-					<h2 class="download-text first_color">Downloads</h2>
-					<div class="add-doc-ref-section"></div>
-					<div class="row doc-references">
+					<h2 class="download-text first_color">Downloads</h2><br>
+					<div class="row">
 						<div class="col-md-3 text-left">
-							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-							<span style="font-size:1em;" class="project-pds1-link-field">
+							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
+							<span style="font-size:1.3em;" class="project-pds1-link-field">
 								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif</a>
 							</span>
 						</div>
-						@if($project->documents)
-						@foreach($project->documents->where('type','reference_document')->where('project_site', url())->all() as $document)
-						<div class="col-md-3 text-left">
-							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-							<span style="font-size:1em;">
-								<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
-							</span>
-						</div>
-						@endforeach
-						@endif
+						
 							<!-- <div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
 							<span style="font-size:1em;" class="project-pds2-link-field">
@@ -301,6 +291,21 @@
 						<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->debt_details_url}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Master PDS" style="text-decoration:underline;" class="download-links">Debt Details</a></p>
 					</div> -->
 				</div>
+				<hr>
+				<div class="add-doc-ref-section"></div>
+				<div class="row doc-references">
+					@if($project->documents)
+					@foreach($project->documents->where('type','reference_document')->where('project_site', url())->all() as $document)
+					<div class="col-md-3 text-left" style="padding-bottom: 10px;">
+						<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+						<span style="font-size:1em;">
+							<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
+						</span>
+					</div>
+					@endforeach
+					@endif
+				</div>
+
 				{{-- <div class="row">
 				<div class="col-md-3 text-left">
 					<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">

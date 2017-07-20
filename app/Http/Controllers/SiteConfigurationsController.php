@@ -1185,17 +1185,15 @@ class SiteConfigurationsController extends Controller
         $projectId = $request->projectId;
         $effectScope = $request->effect;
         if($projectId!='' && $newLabelText!=''){
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-            if(!$projectConfiguration)
+            $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
             {
-                $projectConfiguration = new ProjectConfiguration;
-                $projectConfiguration->project_id = (int)$projectId;
-                $projectConfiguration->save();
-                $projectConfiguration = ProjectConfiguration::all();
-                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
+                $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
             }
-            $projectConfiguration->update([$effectScope => $newLabelText]);
+            $projectConfigurationPartial->update([$effectScope => $newLabelText]);
             return array('status' => 1, 'newLabelText' => $newLabelText);
         }
     }
