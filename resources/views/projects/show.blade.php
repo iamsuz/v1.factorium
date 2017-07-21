@@ -264,7 +264,7 @@
 					<div class="row">
 						<div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
-							<span style="font-size:1.3em;" class="project-pds1-link-field">
+							<span style="font-size:1.7em;" class="project-pds1-link-field">
 								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif</a>
 							</span>
 						</div>
@@ -292,15 +292,20 @@
 					</div> -->
 				</div>
 				<hr>
+				<h3 class="download-text first_color">Reference Documents</h3><br>
 				<div class="add-doc-ref-section"></div>
-				<div class="row doc-references">
+				<div class="doc-references">
 					@if($project->documents)
-					@foreach($project->documents->where('type','reference_document')->where('project_site', url())->all() as $document)
-					<div class="col-md-3 text-left" style="padding-bottom: 10px;">
-						<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-						<span style="font-size:1em;">
-							<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
-						</span>
+					@foreach($project->documents->where('type','reference_document')->where('project_site', url())->chunk(4) as $documents)
+					<div class="row">
+						@foreach($documents as $document)
+						<div class="col-md-3 text-left" style="padding-bottom: 10px;">
+							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+							<span style="font-size:1em;">
+								<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
+							</span>
+						</div>
+						@endforeach
 					</div>
 					@endforeach
 					@endif
