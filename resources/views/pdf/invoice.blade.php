@@ -10,7 +10,7 @@
 	@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif
 	<br>
 
-	@if($spv=$investment->project->projectspvdetail){{$spv->spv_line_1}}, @if($spv->first()->spv_line_2){{$spv->spv_line_2}},@endif {{$spv->spv_city}}, {{$spv->spv_state}}, {{$spv->spv_city}}, {{$spv->spv_postal_code}}@endif
+	@if($spv=$investment->project->projectspvdetail){{$spv->spv_line_1}}, @if($spv->first()->spv_line_2){{$spv->spv_line_2}},@endif {{$spv->spv_city}}, {{$spv->spv_state}}, {{array_search($spv->spv_country, \App\Http\Utilities\Country::aus())}}, {{$spv->spv_postal_code}}@endif
 	<br>	
 
 	@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +1 300 033 221 @endif

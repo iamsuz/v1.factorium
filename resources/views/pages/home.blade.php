@@ -798,7 +798,7 @@
   </div>
   <br><br>
     <div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
-      <p class="col-md-12 text-justify"><small style="color: #888;">You can download the Prospectus for the offer on the Project details page which can be accessed by clicking on the Project listing below. The online Application form will be provided alongside the Prospectus. You should carefully review the Prospectus in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the Prospectus.</small></p>
+      <p class="col-md-12 text-justify"><small style="color: #888;">You can download the Prospectus for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the Prospectus. You should carefully review the Prospectus in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the Prospectus.</small></p>
     </div>
 </div>
 </section>

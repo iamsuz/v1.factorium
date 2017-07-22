@@ -1475,7 +1475,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_name')){{'has-error'}} @endif">
-														{!! Form::text('spv_name', $project->projectspvdetail?$project->projectspvdetail->spv_name:null, array('placeholder'=>'SPV Name', 'class'=>'form-control', 'tabindex'=>'21')) !!}
+														{!! Form::text('spv_name', $project->projectspvdetail?$project->projectspvdetail->spv_name:null, array('placeholder'=>'SPV Name', 'class'=>'form-control', 'tabindex'=>'21', 'id'=>'spv_name')) !!}
 														{!! $errors->first('spv_name', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1488,11 +1488,11 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-6 @if($errors->first('spv_line_1')){{'has-error'}} @endif">
-														{!! Form::text('spv_line_1', $project->projectspvdetail?$project->projectspvdetail->spv_line_1:null, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'22')) !!}
+														{!! Form::text('spv_line_1', $project->projectspvdetail?$project->projectspvdetail->spv_line_1:null, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'22', 'id'=>'spv_line_1')) !!}
 														{!! $errors->first('spv_line_1', '<small class="text-danger">:message</small>') !!}
 													</div>
 													<div class="col-sm-6 @if($errors->first('spv_line_2')){{'has-error'}} @endif">
-														{!! Form::text('spv_line_2', $project->projectspvdetail?$project->projectspvdetail->spv_line_2:null, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'23')) !!}
+														{!! Form::text('spv_line_2', $project->projectspvdetail?$project->projectspvdetail->spv_line_2:null, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'23', 'id'=>'spv_line_2')) !!}
 														{!! $errors->first('spv_line_2', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1505,11 +1505,11 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-6 @if($errors->first('spv_city')){{'has-error'}} @endif">
-														{!! Form::text('spv_city', $project->projectspvdetail?$project->projectspvdetail->spv_city:null, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'24')) !!}
+														{!! Form::text('spv_city', $project->projectspvdetail?$project->projectspvdetail->spv_city:null, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'24', 'id'=>'spv_city')) !!}
 														{!! $errors->first('spv_city', '<small class="text-danger">:message</small>') !!}
 													</div>
 													<div class="col-sm-6 @if($errors->first('spv_state')){{'has-error'}} @endif">
-														{!! Form::text('spv_state', $project->projectspvdetail?$project->projectspvdetail->spv_state:null, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'25')) !!}
+														{!! Form::text('spv_state', $project->projectspvdetail?$project->projectspvdetail->spv_state:null, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'25', 'id'=>'spv_state')) !!}
 														{!! $errors->first('spv_state', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1522,11 +1522,11 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-6 @if($errors->first('spv_postal_code')){{'has-error'}} @endif">
-														{!! Form::text('spv_postal_code', $project->projectspvdetail?$project->projectspvdetail->spv_postal_code:null, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'26')) !!}
+														{!! Form::text('spv_postal_code', $project->projectspvdetail?$project->projectspvdetail->spv_postal_code:null, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'26', 'id'=>'spv_postal_code')) !!}
 														{!! $errors->first('spv_postal_code', '<small class="text-danger">:message</small>') !!}
 													</div>
 													<div class="col-sm-6 @if($errors->first('spv_country')){{'has-error'}} @endif">
-														<select name="spv_country" class="form-control" tabindex="27">
+														<select name="spv_country" class="form-control" tabindex="27" id="spv_country">
 															@foreach(\App\Http\Utilities\Country::aus() as $country => $code)
 															<option value="{{$code}}" @if($project->projectspvdetail)@if($project->projectspvdetail->spv_country == $code) selected @endif @endif>{{$country}}</option>
 															@endforeach
@@ -1543,7 +1543,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
-														{!! Form::input('number', 'spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28')) !!}
+														{!! Form::input('number', 'spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28', 'id'=>'spv_contact_number')) !!}
 														{!! $errors->first('spv_contact_number', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1556,7 +1556,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'28')) !!}
+														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'28', 'id'=>'spv_md_name')) !!}
 														{!! $errors->first('spv_md_name', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1577,6 +1577,7 @@ Edit {{$project->title}} | Dashboard | @parent
 															</label>
 															<input type="text" class="form-control" id="spv_logo_name" name="spv_logo_name" value="@if(!$project->media->where('type', 'spv_logo_image')->isEmpty()){{$project->media->where('type', 'spv_logo_image')->first()->filename}}@endif" readonly>
 															<input type="hidden" name="spv_logo_image_path" id="spv_logo_image_path" value="">
+															<input type="hidden" id="spv_logo_full_path" value="@if(!$project->media->where('type', 'spv_logo_image')->isEmpty()){{$project->media->where('type', 'spv_logo_image')->first()->path}}@endif">
 														</div>
 														<div class="row spv_logo_error" style="text-align: -webkit-center;"></div>
 														{!! $errors->first('spv_logo', '<small class="text-danger">:message</small>') !!}
@@ -1599,6 +1600,7 @@ Edit {{$project->title}} | Dashboard | @parent
 															</label>
 															<input type="text" class="form-control" id="spv_md_sign_name" name="spv_md_sign_name" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->filename}}@endif" readonly>
 															<input type="hidden" name="spv_md_sign_image_path" id="spv_md_sign_image_path" value="">
+															<input type="hidden" id="spv_md_sign_full_path" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->path}}@endif">
 														</div>
 														<div class="row spv_md_sign_error" style="text-align: -webkit-center;"></div>
 														{!! $errors->first('spv_md_sign', '<small class="text-danger">:message</small>') !!}
@@ -1607,6 +1609,11 @@ Edit {{$project->title}} | Dashboard | @parent
 											</div>
 										</div>
 									</div>
+									<div class="row text-center">
+										<p><a id="show_certificate_preview">+Preview</a></p>
+										<div class="col-md-10 col-md-offset-1 certificate-preview" style="background-color: #fff; border: 1px solid #eee; display: none;"></div>
+									</div>
+									<br>
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-9">
@@ -1987,6 +1994,7 @@ Edit {{$project->title}} | Dashboard | @parent
 		uploadProjectSPVLogo();
 		performCropOnImage();
 		uploadProjectSpvMDSign();
+		previewShareCertificate();
 	});
 
 	function uploadProjectSPVLogo(){
@@ -2229,6 +2237,26 @@ Edit {{$project->title}} | Dashboard | @parent
 				}
 			}
 		});
+    }
+
+    function previewShareCertificate(){
+    	$('#show_certificate_preview').click(function(e){
+    		e.preventDefault();
+    		var name = $('#spv_name').val();
+    		var line1 = $('#spv_line_1').val();
+    		var line2 = $('#spv_line_2').val();
+    		var city = $('#spv_city').val();
+    		var state = $('#spv_state').val();
+    		var postal = $('#spv_postal_code').val();
+    		var country = $('#spv_country').val();
+    		var number = $('#spv_contact_number').val();
+    		var mdName = $('#spv_md_name').val();
+    		var logo = $('#spv_logo_full_path').val();
+    		var mdSign = $('#spv_md_sign_full_path').val();
+    		$('.certificate-preview').html('<div style="text-align: center; margin:3em;"><h1>Share Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 redeemable preference shares of '+name+' numbered 1 to 200.<br><br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>Managing Director<br>'+name+'</div>').toggle();
+
+
+    	});
     }
 </script>
 @stop
