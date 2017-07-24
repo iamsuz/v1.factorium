@@ -14,7 +14,7 @@ Australia's Top Real Estate Equity Crowdfunding team
 @if($aboutus)
 <section class="chunk-box">
 	<div class="container">
-		<div class="row">
+		<div class="row text-justify">
 			<div class="col-md-6 col-md-offset-3">
 				@if($adminedit != 0) <a href="/pages/team/edit" class="pull-right">Edit</a> @endif
 				<h2 class="font-regular first_color text-justify" style=" font-size:2.625em; color:#282a73;"><b>{{$aboutus->main_heading}}</b></h2>
