@@ -30,7 +30,7 @@ Edit | @parent
 					<h2 class="text-center">Edit your Team details</h2>
 					<br>
 					<div class="row">
-						<div class="form-group text-justify <?php if($errors->first('main_heading')){echo 'has-error';}?>">
+						<div class="form-group <?php if($errors->first('main_heading')){echo 'has-error';}?>">
 							{!!Form::label('main_heading', 'Description', array('class'=>'col-sm-2 control-label'))!!}
 							<div class="col-sm-12 <?php if($errors->first('main_heading')){echo 'has-error';}?>">
 								{!! Form::text('main_heading', null, array('placeholder'=>'Heading', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
@@ -39,7 +39,7 @@ Edit | @parent
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group text-justify <?php if($errors->first('sub_heading')){echo 'has-error';}?>">
+						<div class="form-group <?php if($errors->first('sub_heading')){echo 'has-error';}?>">
 							<div class="col-sm-12 <?php if($errors->first('sub_heading')){echo 'has-error';}?>">
 								{!! Form::textarea('sub_heading', null, array('placeholder'=>'Sub Heading', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
 								{!! $errors->first('sub_heading', '<small class="text-danger">:message</small>') !!}
@@ -47,7 +47,7 @@ Edit | @parent
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group text-justify <?php if($errors->first('content')){echo 'has-error';}?>">
+						<div class="form-group <?php if($errors->first('content')){echo 'has-error';}?>">
 							<div class="col-sm-12 <?php if($errors->first('content')){echo 'has-error';}?>">
 								{!! Form::textarea('content', null, array('placeholder'=>'Content', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
 								{!! $errors->first('content', '<small class="text-danger">:message</small>') !!}
@@ -79,14 +79,14 @@ Edit | @parent
 						{!! Form::close() !!}
 					</div>
 					<img class="img-responsive img-circle" width="70%" height="70%" style="margin: 0 auto;" src="{{asset($members->founder_image_url)}}" alt="{{$members->founder_image_url}}" style="max-height: 100%; max-width: 100%;" />
-					<div class="caption text-left">
+					<div class="caption text-left text-justify">
 						<h3 class="font-regular" style=" font-size:1.375em; color:#fed405;">
 							<b>{{$members->founder_name}}</b>
 						</h3>
-						<p class="font-regular" style="font-size:1em;color:#282a73; margin-top:-10px;">
+						<p class="font-regular text-justify" style="font-size:1em;color:#282a73; margin-top:-10px;">
 							{{$members->founder_subheading}}
 						</p>
-						<p style="font-size:0.875em;">
+						<p style="font-size:0.875em;" class="text-justify">
 							{!! $members->founder_content !!}
 						</p>
 						<!-- <input type="button" onclick="change2()" id="button2" class="btn btn-xs btn-default" data-toggle="collapse" data-target="#more2" value="Read More"> -->
