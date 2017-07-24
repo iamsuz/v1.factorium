@@ -390,8 +390,8 @@ class PagesController extends Controller
             $extension = strtolower(File::extension($src));
             $img = '';
             $result = false;
-            $rw = 350;
-            $rh = 300;
+            $rw = 150;
+            $rh = 150;
 
             //Create new coords for image.
             $newXValue = ($xValue * $origWidth) / $convertedWidth;

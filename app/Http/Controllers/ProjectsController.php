@@ -609,12 +609,14 @@ class ProjectsController extends Controller
         $faq = new \App\ProjectFAQ($request->all());
         $project->projectFAQs()->save($faq);
 
+        Session::flash('editable', 'true');
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Added FAQ</p>');
     }
     public function deleteProjectFAQ($faq_id)
     {
         $faq = ProjectFAQ::findOrFail($faq_id);
         $faq->delete();
+        Session::flash('editable', 'true');
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted FAQ</p>');
     }
 

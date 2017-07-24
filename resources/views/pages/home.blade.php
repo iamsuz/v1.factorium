@@ -269,7 +269,7 @@
       <br><br><br>
       <div class="row">
         <div class="homepg-text1 text-center form-group col-md-6 col-md-offset-3">
-          <h2 class="text-center font-regular" style="color:#d3d3d3; font-size:32px;">
+          <h2 class="text-center font-regular" style="color: white; font-size:32px;">
             @if(!empty($siteConfiguration))
             @if($siteConfiguration->homepg_text1 != '')
             {!! nl2br(e($siteConfiguration->homepg_text1)) !!}
@@ -895,7 +895,7 @@
             <input type="hidden" id="hidden_funding_section_title1" value="@if($siteConfiguration->funding_section_title1 != '') {!! nl2br(e($siteConfiguration->funding_section_title1)) !!} @endif">
             <br>
             <div class="text-center funding-section-btn1-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                <a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px;background-color:#fed405; border-radius:0px; letter-spacing:1px; color: #fff !important">
+                <a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px;background-color:#fed405; border-radius:50px; letter-spacing:1px; color: #fff !important">
                 @if($siteConfiguration->funding_section_btn1_text != ''){!!$siteConfiguration->funding_section_btn1_text!!}@endif
                 </a>
             </div>
@@ -908,7 +908,7 @@
             <input type="hidden" id="hidden_funding_section_title2" value="@if($siteConfiguration->funding_section_title2 != '') {!! nl2br(e($siteConfiguration->funding_section_title2)) !!} @endif">
             <br>
             <div class="text-center funding-section-btn2-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px; background-color:#fed405; border-radius:0px; letter-spacing:1px; color: #fff !important">
+                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px; background-color:#fed405; border-radius:50px; letter-spacing:1px; color: #fff !important">
                 @if($siteConfiguration->funding_section_btn2_text != ''){!!$siteConfiguration->funding_section_btn2_text!!}@endif
                 </a>
             </div>
@@ -993,8 +993,8 @@
             <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
           </center>
         </div>
-        <span style="font-style: italic; float: right;"><b>{{$testimonial->user_name}}</b></span><br>
-        <span style="font-style: italic; float: right;">{{$testimonial->user_summary}}</span><br>
+        <span style="font-style: italic; float: left;"><b>{{$testimonial->user_name}}</b></span><br>
+        <span style="font-style: italic; float: left;">{{$testimonial->user_summary}}</span><br>
         <div style="clear: both; padding-bottom: 5px;"></div>
         <p class="text-justify">
           <i class="fa fa-quote-left fa-3x fa-pull-left" style="color:#aaa;"></i>
@@ -1027,8 +1027,8 @@
             <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
           </center>
         </div>
-        <span style="font-style: italic; float: right;"><b>{{$testimonial->user_name}}</b></span><br>
-        <span style="font-style: italic; float: right;">{{$testimonial->user_summary}}</span><br>
+        <span style="font-style: italic; float: left;"><b>{{$testimonial->user_name}}</b></span><br>
+        <span style="font-style: italic; float: left;">{{$testimonial->user_summary}}</span><br>
         <div style="clear: both; padding-bottom: 5px;"></div>
         <p class="text-justify">
           <i class="fa fa-quote-left fa-3x fa-pull-left" style="color:#aaa;"></i>

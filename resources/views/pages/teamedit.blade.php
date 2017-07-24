@@ -78,7 +78,7 @@ Edit | @parent
 						{!! Form::submit('Delete this Member?', ['class' => 'btn btn-danger pull-right']) !!}
 						{!! Form::close() !!}
 					</div>
-					<img class="img-responsive" width="100%" height="100%" src="{{asset($members->founder_image_url)}}" alt="{{$members->founder_image_url}}" />
+					<img class="img-responsive img-circle" width="70%" height="70%" style="margin: 0 auto;" src="{{asset($members->founder_image_url)}}" alt="{{$members->founder_image_url}}" style="max-height: 100%; max-width: 100%;" />
 					<div class="caption text-left">
 						<h3 class="font-regular" style=" font-size:1.375em; color:#fed405;">
 							<b>{{$members->founder_name}}</b>
@@ -226,7 +226,7 @@ Edit | @parent
                 	if(data.status == 1){
                         console.log(data);
                         var imgPath = data.destPath+'/'+data.fileName;
-                        var str1 = $('<div class="col-sm-9" id="founder_img_container"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_img_container" style="float: right; width:171px; height:147px;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+                        var str1 = $('<div class="col-sm-9" id="founder_img_container"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_img_container" style="float: right; width:171px; height:171px;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
 
                         $('#image_cropbox_container').html(str1);
                         $('#myModal').modal({
@@ -237,12 +237,12 @@ Edit | @parent
                         $('#image_crop').val(imgPath); //set hidden image value
                         $('#image_crop').attr('action', '');
                         var target_width = 171;
-                        var target_height = 147;
+                        var target_height = 171;
                         var origWidth = data.origWidth;
                         var origHeight = data.origHeight;
                         $('#image_cropbox').Jcrop({
                             boxWidth: 530,
-                            aspectRatio: 171/147,
+                            aspectRatio: 1,
                             keySupport: false,
                             setSelect: [0, 0, target_width, target_height],
                             bgColor: '',

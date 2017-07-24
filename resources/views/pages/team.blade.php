@@ -17,9 +17,9 @@ Australia's Top Real Estate Equity Crowdfunding team
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				@if($adminedit != 0) <a href="/pages/team/edit" class="pull-right">Edit</a> @endif
-				<h2 class="font-regular first_color" style=" font-size:2.625em; color:#282a73;"><b>{{$aboutus->main_heading}}</b></h2>
-				<h3 class="h1-faq first_color" style="font-size:1.375em;">{{$aboutus->sub_heading}}</h3>
-				<p style="font-size:0.875em;">
+				<h2 class="font-regular first_color text-justify" style=" font-size:2.625em; color:#282a73;"><b>{{$aboutus->main_heading}}</b></h2>
+				<h3 class="h1-faq first_color text-justify" style="font-size:1.375em;">{{$aboutus->sub_heading}}</h3>
+				<p style="font-size:0.875em;" class="text-justify">
 					{!! $aboutus->content !!}
 				</p>
 			</div>
@@ -41,7 +41,7 @@ Australia's Top Real Estate Equity Crowdfunding team
 						<div class="row">
 							@foreach($sets as $members)
 							<div class="col-sm-4 col-md-4">
-								<img class="img-responsive" width="100%" height="100%" src="{{asset($members->founder_image_url)}}" alt="{{$members->founder_image_url}}" />
+								<img class="img-responsive img-circle" width="70%" height="70%" style="margin: 0 auto;" src="{{asset($members->founder_image_url)}}" alt="{{$members->founder_image_url}}" />
 								<div class="caption text-left">
 									<h3 class="font-regular second_color" style=" font-size:1.375em; color:#fed405;">
 										<b>{{$members->founder_name}}</b>
@@ -49,7 +49,7 @@ Australia's Top Real Estate Equity Crowdfunding team
 									<p class="font-regular" style="font-size:1em;color:#282a73; margin-top:-10px;">
 										{{$members->founder_subheading}}
 									</p>
-									<p style="font-size:0.875em;">
+									<p style="font-size:0.875em;" class="text-justify">
 										{!! $members->founder_content !!}
 									</p>
 									<!-- <input type="button" onclick="change2()" id="button2" class="btn btn-xs btn-default" data-toggle="collapse" data-target="#more2" value="Read More"> -->
