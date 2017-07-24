@@ -30,7 +30,7 @@ Edit | @parent
 					<h2 class="text-center">Edit your Team details</h2>
 					<br>
 					<div class="row">
-						<div class="form-group <?php if($errors->first('main_heading')){echo 'has-error';}?>">
+						<div class="form-group text-justify <?php if($errors->first('main_heading')){echo 'has-error';}?>">
 							{!!Form::label('main_heading', 'Description', array('class'=>'col-sm-2 control-label'))!!}
 							<div class="col-sm-12 <?php if($errors->first('main_heading')){echo 'has-error';}?>">
 								{!! Form::text('main_heading', null, array('placeholder'=>'Heading', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
@@ -39,7 +39,7 @@ Edit | @parent
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group <?php if($errors->first('sub_heading')){echo 'has-error';}?>">
+						<div class="form-group text-justify <?php if($errors->first('sub_heading')){echo 'has-error';}?>">
 							<div class="col-sm-12 <?php if($errors->first('sub_heading')){echo 'has-error';}?>">
 								{!! Form::textarea('sub_heading', null, array('placeholder'=>'Sub Heading', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
 								{!! $errors->first('sub_heading', '<small class="text-danger">:message</small>') !!}
@@ -47,7 +47,7 @@ Edit | @parent
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group <?php if($errors->first('content')){echo 'has-error';}?>">
+						<div class="form-group text-justify <?php if($errors->first('content')){echo 'has-error';}?>">
 							<div class="col-sm-12 <?php if($errors->first('content')){echo 'has-error';}?>">
 								{!! Form::textarea('content', null, array('placeholder'=>'Content', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
 								{!! $errors->first('content', '<small class="text-danger">:message</small>') !!}
