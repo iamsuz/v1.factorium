@@ -11,12 +11,8 @@ html { margin: 0px;}*/
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-size: 100%;
-	padding-top: 100px;
-	padding-left: 100px;
-	padding-right: 100px;
 	width:100%;
 	height:100%;
-	margin: -50px;
 }
 .text-center{
 	text-align: center;
@@ -29,7 +25,7 @@ html { margin: 0px;}*/
 	opacity: 0.05;
 }
 </style>
-<div @if($investment->project->projectspvdetail) class="back-img" @endif>
+<div style="padding-top: 100px;padding-left: 100px;padding-right: 100px;margin: -50px;" @if($investment->project->projectspvdetail) @if($investment->project->projectspvdetail->certificate_frame) class="back-img" @endif @endif>
 	@if($investment->project->media->where('type', 'spv_logo_image')->first())
 	<div class="text-center watermark"><img src="{{$investment->project->media->where('type', 'spv_logo_image')->first()->path}}" width="700"></div>
 	@endif

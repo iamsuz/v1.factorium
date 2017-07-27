@@ -1620,11 +1620,13 @@ Edit {{$project->title}} | Dashboard | @parent
 															<input type="radio" name="certificate_frame" value="frame3.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") checked @endif @endif>
 															<input type="radio" name="certificate_frame" value="frame4.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") checked @endif @endif>
 															<input type="radio" name="certificate_frame" value="frame5.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") checked @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame1_thumb.jpg')}}" width="200px" height="150" selection="frame1.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame1.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame2_thumb.jpg')}}" width="200px" height="150" selection="frame2.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame2.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame3_thumb.jpg')}}" width="200px" height="150" selection="frame3.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame4_thumb.jpg')}}" width="200px" height="150" selection="frame4.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame5_thumb.jpg')}}" width="200px" height="150" selection="frame5.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") style="border: 1px solid #666;" @endif @endif>
+															<input type="radio" name="certificate_frame" value="" class="hide" @if($project->projectspvdetail) @if(!$project->projectspvdetail->certificate_frame) checked @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame1_thumb.jpg')}}" width="160px" height="120" selection="frame1.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame1.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame2_thumb.jpg')}}" width="160px" height="120" selection="frame2.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame2.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame3_thumb.jpg')}}" width="160px" height="120" selection="frame3.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame4_thumb.jpg')}}" width="160px" height="120" selection="frame4.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame5_thumb.jpg')}}" width="160px" height="120" selection="frame5.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") style="border: 1px solid #666;" @endif @endif>
+															<div class="certificate-thumb text-center" selection="" style="width: 160px; height: 120px; background-color: #fff; float: left; border: 1px dotted #ddd; padding: 45px; @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="") border: 1px solid #666; @endif @endif"><span><b>None</b></span></div>
 														</div>
 													</div>
 												</div>
@@ -1633,7 +1635,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<div class="row text-center">
 										<p><a id="show_certificate_preview">+Preview</a></p>
-										<div class="col-md-10 col-md-offset-1 certificate-preview" style=" border: 1px solid #eee; display: none;"></div>
+										<div class="col-md-10 col-md-offset-1 certificate-preview" style=" border: 1px solid #eee; display: none; background-color: #fff; font-size: 13px;"></div>
 									</div>
 									<br>
 									<div class="row">
@@ -2283,9 +2285,11 @@ Edit {{$project->title}} | Dashboard | @parent
     		var logo = $('#spv_logo_full_path').val();
     		var mdSign = $('#spv_md_sign_full_path').val();
     		var frame = $('input[name="certificate_frame"]:checked').val();
-    		$('.certificate-preview').css('background','url(../../../assets/images/certificate_frames/'+frame+') no-repeat');
-    		$('.certificate-preview').css('background-size', '100% 100%');
-    		$('.certificate-preview').html('<div style="text-align: center; margin:9em 7em;"><h1>Share Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 redeemable preference shares of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>Managing Director<br>'+name+'</div>').toggle();
+    		if(frame != ''){
+    			$('.certificate-preview').css('background','url(../../../assets/images/certificate_frames/'+frame+') no-repeat');
+    			$('.certificate-preview').css('background-size', '100% 100%');
+    		}
+    		$('.certificate-preview').html('<div class="text-center" style="top: 20%;width: 100%;position: absolute;opacity: 0.05;"><img src="../../../'+logo+'" width="700"></div><div style="text-align: center; margin:8em 6em;"><h1>Share Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 redeemable preference shares of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>Managing Director<br>'+name+'</div>').toggle();
 
 
     	});
