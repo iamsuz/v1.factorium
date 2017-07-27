@@ -1609,9 +1609,31 @@ Edit {{$project->title}} | Dashboard | @parent
 											</div>
 										</div>
 									</div>
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-11">
+												<div class="row">
+													<div class="col-sm-12">
+														<div class="input-group certi-frames" style="float: right;">
+															<input type="radio" name="certificate_frame" value="frame1.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame1.jpg") checked @endif @endif>
+															<input type="radio" name="certificate_frame" value="frame2.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame2.jpg") checked @endif @endif>
+															<input type="radio" name="certificate_frame" value="frame3.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") checked @endif @endif>
+															<input type="radio" name="certificate_frame" value="frame4.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") checked @endif @endif>
+															<input type="radio" name="certificate_frame" value="frame5.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") checked @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame1_thumb.jpg')}}" width="200px" height="150" selection="frame1.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame1.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame2_thumb.jpg')}}" width="200px" height="150" selection="frame2.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame2.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame3_thumb.jpg')}}" width="200px" height="150" selection="frame3.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame4_thumb.jpg')}}" width="200px" height="150" selection="frame4.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") style="border: 1px solid #666;" @endif @endif>
+															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame5_thumb.jpg')}}" width="200px" height="150" selection="frame5.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") style="border: 1px solid #666;" @endif @endif>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class="row text-center">
 										<p><a id="show_certificate_preview">+Preview</a></p>
-										<div class="col-md-10 col-md-offset-1 certificate-preview" style="background-color: #fff; border: 1px solid #eee; display: none;"></div>
+										<div class="col-md-10 col-md-offset-1 certificate-preview" style=" border: 1px solid #eee; display: none;"></div>
 									</div>
 									<br>
 									<div class="row">
@@ -1990,6 +2012,13 @@ Edit {{$project->title}} | Dashboard | @parent
 			$('#spv_logo_name, #spv_md_sign_name').val('');
 		});
 
+		$('.certificate-thumb').click(function(){
+			$('.certificate-thumb').css('border', 'none');
+			$(this).css('border', '1px solid #666');
+			var selectedImg = $(this).attr('selection');
+			$('input[name="certificate_frame"][value="' + selectedImg + '"]').prop('checked', true);
+		});
+
 		//Upload Project SPV Logo
 		uploadProjectSPVLogo();
 		performCropOnImage();
@@ -2253,7 +2282,10 @@ Edit {{$project->title}} | Dashboard | @parent
     		var mdName = $('#spv_md_name').val();
     		var logo = $('#spv_logo_full_path').val();
     		var mdSign = $('#spv_md_sign_full_path').val();
-    		$('.certificate-preview').html('<div style="text-align: center; margin:3em;"><h1>Share Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 redeemable preference shares of '+name+' numbered 1 to 200.<br><br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>Managing Director<br>'+name+'</div>').toggle();
+    		var frame = $('input[name="certificate_frame"]:checked').val();
+    		$('.certificate-preview').css('background','url(../../../assets/images/certificate_frames/'+frame+') no-repeat');
+    		$('.certificate-preview').css('background-size', '100% 100%');
+    		$('.certificate-preview').html('<div style="text-align: center; margin:9em 7em;"><h1>Share Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 redeemable preference shares of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>Managing Director<br>'+name+'</div>').toggle();
 
 
     	});

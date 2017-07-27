@@ -18,7 +18,7 @@ class ProjectSpvDetail extends Model
      *
      * @var array
      */
-    protected $fillable = ['project_id', 'spv_name','spv_line_1', 'spv_line_2','spv_city','spv_state','spv_postal_code','spv_country','spv_contact_number', 'spv_md_name'];
+    protected $fillable = ['project_id', 'spv_name','spv_line_1', 'spv_line_2','spv_city','spv_state','spv_postal_code','spv_country','spv_contact_number', 'spv_md_name', 'certificate_frame'];
 
     public function project()
     {

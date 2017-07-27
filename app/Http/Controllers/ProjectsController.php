@@ -701,7 +701,6 @@ class ProjectsController extends Controller
 
     public function storeProjectSPVDetails(Request $request, $project_id)
     {
-        // dd($request->spv_logo_image_path);
         $this->validate($request, [
             'spv_name' => 'required',
             'spv_line_1' => 'required',
@@ -751,6 +750,7 @@ class ProjectsController extends Controller
             'spv_country' => $request->spv_country,
             'spv_contact_number' => $request->spv_contact_number,
             'spv_md_name' => $request->spv_md_name,
+            'certificate_frame' => $request->certificate_frame,
             ]);
         if($spv_result)
         {

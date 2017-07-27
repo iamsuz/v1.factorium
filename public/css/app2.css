@@ -771,3 +771,7 @@ input[type="radio"] {
 .exit-project-details-editable-btn-style:hover{
 	background-color: rgba(255, 255, 255, 0.9);
 }
+.certificate-thumb:hover{
+	cursor: pointer;
+	border: 1px solid #ccc;
+}
