@@ -94,6 +94,12 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             if (!Schema::hasColumn('project_configurations', 'show_project_faqs_whole_section')) {
                 $table->boolean('show_project_faqs_whole_section')->default(1);
             }
+            if (!Schema::hasColumn('project_configurations', 'project_details_tab_label')) {
+                $table->string('project_details_tab_label')->default('Project Details');
+            }
+            if (!Schema::hasColumn('project_configurations', 'project_progress_tab_label')) {
+                $table->string('project_progress_tab_label')->default('Project Progress');
+            }
         });
     }
 
@@ -185,6 +191,12 @@ class AddColumnsToProjectConfigurationsTable extends Migration
             }
             if (Schema::hasColumn('project_configurations', 'show_project_faqs_whole_section')) {
                 $table->dropColumn('show_project_faqs_whole_section');
+            }
+            if (Schema::hasColumn('project_configurations', 'project_details_tab_label')) {
+                $table->dropColumn('project_details_tab_label');
+            }
+            if (Schema::hasColumn('project_configurations', 'project_progress_tab_label')) {
+                $table->dropColumn('project_progress_tab_label');
             }
         });
     }

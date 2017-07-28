@@ -387,8 +387,8 @@
 </section> -->
 <br>
 <ul class="nav nav-tabs text-center">
-	<li class="active" style="width: 50%; font-size: 1.5em;"><a data-toggle="tab" href="#home" style="padding: 15px 15px;">Project Details</a></li>
-	<li style="width: 49%; font-size: 1.5em;"><a data-toggle="tab" href="#menu1" style="padding: 15px 15px;">Project Progress</a></li>
+	<li class="active " style="width: 50%; font-size: 1.5em;"><a class="show-project-details-tab-input" data-toggle="tab" href="#home" style="padding: 15px 15px;">{{$project->projectconfiguration->project_details_tab_label}}</a></li>
+	<li style="width: 49%; font-size: 1.5em;" ><a class="show-project-progress-tab-input" data-toggle="tab" href="#menu1" style="padding: 15px 15px;">{{$project->projectconfiguration->project_progress_tab_label}}</a></li>
 </ul>
 <div class="tab-content">
 	<div id="home" class="tab-pane fade in active">
@@ -2406,6 +2406,8 @@
 		$('.edit-sub-headings').click(function(){
 			$(this).attr('disabled', true);
 			$('.save-sub-headings').show();
+			$('.show-project-details-tab-input').html('<input type="text" name="project_details_tab_label" id="project_details_tab_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_details_tab_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Project Details">');
+			$('.show-project-progress-tab-input').html('<input type="text" name="project_progress_tab_label" id="project_progress_tab_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_progress_tab_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Project Progress">')
 			$('.show-project-summary-input').html('<input type="text" name="project_summary_label" id="project_summary_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@endif" style="font-size: 22px; text-align:center" placeholder="Project Summary">');
 			$('.show-summary-input').html('<input type="text" name="summary_label" id="summary_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->summary_label))}}@endif"  placeholder="Summary">');
 			$('.show-security-input').html('<input type="text" name="security_label" id="security_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->security_label))}}@endif"  placeholder="Security">');
@@ -2429,6 +2431,8 @@
 		});
 		
 		$('.save-sub-headings').click(function(){
+			var project_details_tab_label = $('#project_details_tab_label').val();
+			var project_progress_tab_label = $('#project_progress_tab_label').val();
 			var project_summary_label = $('#project_summary_label').val();
 			var summary_label = $('#summary_label').val();
 			var security_label = $('#security_label').val();
@@ -2461,7 +2465,7 @@
 					url: '/configuration/project/updateProjectPageSubHeading',
 					type: 'POST',
 					dataType: 'JSON',
-					data: {projectId, project_summary_label, summary_label, security_label, investor_distribution_label, suburb_profile_label, marketability_label, residents_label, investment_profile_label, investment_type_label, investment_security_label, expected_returns_label, return_paid_as_label, taxation_label, project_profile_label, developer_label, venture_label, duration_label, current_status_label, rationale_label, investment_risk_label},
+					data: {project_details_tab_label, project_progress_tab_label, projectId, project_summary_label, summary_label, security_label, investor_distribution_label, suburb_profile_label, marketability_label, residents_label, investment_profile_label, investment_type_label, investment_security_label, expected_returns_label, return_paid_as_label, taxation_label, project_profile_label, developer_label, venture_label, duration_label, current_status_label, rationale_label, investment_risk_label},
 					headers: {
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 					},

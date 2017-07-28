@@ -962,6 +962,8 @@ class SiteConfigurationsController extends Controller
             $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
         }
         $projectConfiguration->update([
+            'project_details_tab_label'=>$request->project_details_tab_label,
+            'project_progress_tab_label'=>$request->project_progress_tab_label,
             'project_summary_label'=>$request->project_summary_label,
             'summary_label'=>$request->summary_label,
             'security_label'=>$request->security_label,

@@ -23,7 +23,7 @@ class ProjectConfiguration extends Model
         'suburb_profile_label', 'marketability_label', 'residents_label', 'investment_profile_label',
         'investment_type_label', 'investment_security_label', 'expected_returns_label', 'return_paid_as_label',
         'taxation_label', 'project_profile_label', 'developer_label', 'venture_label', 'duration_label',
-        'current_status_label', 'rationale_label', 'investment_risk_label', 'show_suburb_profile_map'
+        'current_status_label', 'rationale_label', 'investment_risk_label', 'show_suburb_profile_map', 'project_details_tab_label', 'project_progress_tab_label'
     ];
 
     public function project()
