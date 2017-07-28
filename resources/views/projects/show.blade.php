@@ -793,7 +793,7 @@
 								<h4 class="second_color show-investment-type-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_type_label))}}@else Type @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{{$project->investment->investment_type}}</p>@endif
+								@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{!!$project->investment->investment_type!!}</p>@endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','investment_type')->last())
 									@if(Auth::guest())
