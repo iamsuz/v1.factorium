@@ -91,14 +91,14 @@
 
 						</dd>
 
-						<dt>ID Verification</dt>
+<!-- 						<dt>ID Verification</dt>
 						<dd>
 							@if($user->verify_id == '2') Your id docs have been verified <i class="fa fa-check" style="color:green" data-toggle="tooltip" title="Verified User"></i> 
 							@elseif($user->verify_id == '1') Your id docs have been submitted for verification <i class="fa fa-hourglass-start" style="color:pink" data-toggle="tooltip" title="Submitted"></i> 
 							@elseif($user->verify_id == '0') You did not submit your id docs for verification <i class="fa fa-clock-o" data-toggle="tooltip" title="Not submitted"></i> 
 							@elseif($user->verify_id == '-1') Your verification failed please <a href="{{route('users.verification', $user)}}">try again</a> <i class="fa fa-refresh" style="color:red" data-toggle="tooltip" title="Try Again (verification failed)"></i> 
 							@else <i class="fa fa-clock-o" data-toggle="tooltip" title="Not submitted"></i> @endif
-						</dd>
+						</dd> -->
 						<dt>Registration Site</dt>
 						<dd>
 							<a href="{{$user->registration_site}}">{{$user->registration_site}}</a>

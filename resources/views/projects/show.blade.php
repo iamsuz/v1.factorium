@@ -292,6 +292,8 @@
 					</div> -->
 				</div>
 				<hr>
+				
+				<div class="reference_docs" style="@if(!$project->projectconfiguration->show_reference_docs) display: none; @endif">
 				<h3 class="download-text first_color">Reference Documents</h3><br>
 				<div class="add-doc-ref-section"></div>
 				<div class="doc-references">
@@ -310,6 +312,16 @@
 					@endforeach
 					@endif
 				</div>
+				</div>
+
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-center">
+					<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowReferenceDocs" action="reference_docs" data-size="mini" @if($project->projectconfiguration->show_reference_docs) checked value="1" @else value="0" @endif>
+				</div>
+				@endif
+				@endif
 
 				{{-- <div class="row">
 				<div class="col-md-3 text-left">
@@ -1383,7 +1395,7 @@
 						<br>
 						<div class="col-md-10 col-md-offset-1">
 							@if($project->investment)
-							<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+							<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 								@if($project->button_label)
 								<?php echo $project->button_label; ?>
 								@else

@@ -1221,7 +1221,7 @@
       <div class="row text-center" style="padding-top: 20px;">
         <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo_white.png')}}">
         <p>
-          <span style="color: #fff;">Powered by </span><a href="https://www.estatebaron.com/" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>
+          <span style="color: #fff;">Powered by </span><a href="https://estatebaron.com/whitelabel-property-crowdfunding" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>
         </p>
       </div>
     </div>

@@ -48,7 +48,7 @@ Login | @parent
 							<input type="hidden" value="" id="next" name="next">
 							<div class="form-group" style="width:75%;">
 								{!! Form::submit('Login with Estate Baron account', array('class'=>'btn btn-block second_color_btn hide', 'tabindex'=>'4', 'style'=>'border-radius:0px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
-								<button type="submit" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform" href='#' style="width:300px; background-color: #fed405; font-size:1em; color:#000;border-radius:0; border: 0px;" data-toggle="tooltip" title="If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Login with Estate Baron account</button>
+								<button type="submit" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform" href='#' style="width:300px; background-color: #fed405; font-size:1em; color:#000;border-radius:7px; border: 0px;" data-toggle="tooltip" title="If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Login with Estate Baron account</button>
 							</div>
 							<p class="text-left" style="margin-left: -25px"> <a class="btn btn-link" href="{{ url('/password/email') }}"> Forgot Your Password?</a></p>
 						</fieldset>
