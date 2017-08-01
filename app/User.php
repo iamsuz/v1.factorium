@@ -134,6 +134,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasOne('App\IdImage');
     }
 
+    public function investmentDoc()
+    {
+        return $this->hasMany('App\UserInvestmentDocument');
+    }
+
     /**
      * this is one to one relationship between user and metadata
      * @return

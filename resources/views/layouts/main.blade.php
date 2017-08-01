@@ -27,7 +27,7 @@
     
     <!-- META DATA -->
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
-
+    {!! Html::script('/js/jquery-1.11.3.min.js') !!}
     @section('meta-section')
     @show
     
@@ -284,7 +284,6 @@
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
-{!! Html::script('/js/jquery-1.11.3.min.js') !!}
 {!! Html::script('/js/bootstrap.min.js') !!}
 {!! Html::script('/js/circle-progress.js')!!}
 
