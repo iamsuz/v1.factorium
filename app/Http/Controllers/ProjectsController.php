@@ -396,7 +396,8 @@ class ProjectsController extends Controller
 
     public function showInterest($project_id, AppMailer $mailer)
     {
-
+        $action = '/offer/submit/'.$project_id.'/step1';
+        $projects_spv = ProjectSpvDetail::where('project_id',$project_id)->first();
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         if(!$project->show_invest_now_button) {
@@ -407,7 +408,7 @@ class ProjectsController extends Controller
         // }
         
         if($project->investment){
-            // $user = Auth::user();
+            $user = Auth::user();
             // $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>'0']);
             // // $mailer->sendInterestNotificationInvestor($user, $project);
             // // $mailer->sendInterestNotificationDeveloper($project, $user);
@@ -415,7 +416,7 @@ class ProjectsController extends Controller
             // $this->dispatch(new SendInvestorNotificationEmail($user,$project));
             // $this->dispatch(new SendReminderEmail($user,$project));
             // $this->dispatch(new SendDeveloperNotificationEmail($user,$project));
-            return view('projects.offer', compact('project','color'));
+            return view('projects.offer', compact('project','color','action','projects_spv','user'));
         } else {
             return redirect()->back()->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Warning!</strong>Project investment plan is not yet done</p>');
         }

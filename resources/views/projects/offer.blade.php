@@ -12,20 +12,298 @@ Offer Doc
 		<div class="col-md-12">
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
 				<div class="row">
-					<div class="col-md-7 investment-gform"><br>
-						<?php $frameLink = 'test';?>
-						@if($project->investment)
-							@if($project->investment->embedded_offer_doc_link)
-								<?php $frameLink = $project->investment->embedded_offer_doc_link; ?>
-							@else
-								@if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->embedded_offer_doc_link)
-									<?php $frameLink = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->embedded_offer_doc_link; ?>
-								@endif
-							@endif
-						@endif
-						<iframe src="{{$frameLink}}&amp;project_name={{$project->title}}&amp;project_id={{$project->id}}&amp;user_id={{Auth::user()->id}}&amp;first_name={{Auth::user()->first_name}}&amp; last_name={{Auth::user()->last_name}}&amp;email={{Auth::user()->email}}&amp;phone_number={{Auth::user()->phone_number}}&amp;request_url={{Auth::user()->registration_site}}&amp;spv_name={{$project->projectspvdetail? $project->projectspvdetail->spv_name : ''}}&amp;line_1={{Auth::user()->line_1}}&amp;line_2={{Auth::user()->line_2}}&amp;city={{Auth::user()->city}}&amp;state={{Auth::user()->state}}&amp;postal_code={{Auth::user()->postal_code}}&amp;country={{Auth::user()->country}}&amp;account_name={{Auth::user()->account_name}}&amp;bsb={{Auth::user()->bsb}}&amp;account_number={{Auth::user()->account_number}}&amp;tfn={{Auth::user()->tfn}}" width="100%" height="500" frameBorder="0" class="gfiframe"></iframe>
-						<script src="https://www.vestabyte.com/registry/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js" type="text/javascript"></script>
+					<div class="col-md-7 investment-gform" id="offer_frame" style="overflow-y: scroll;height: 600px;">
+						<div class="row">
+							<div class="col-md-offset-1 col-md-10" ><br>
+								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data">
+									{!! csrf_field() !!}
+									<div class="row" id="section-1">
+										<div class="col-md-12">
+											<div>
+												<label class="form-label">Peoject SPV Name</label><br>
+												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" @endif >
+												<h5>Name of the Company established as a special puropose Vehicle for this project that you are investing in</h5>
+												<p>
+													This Application Form is important. If you are in doubt as to how to deal with it, please contact your stockbroker or professional adviser without delay. You should read the entire prospectus carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the prospectus.
+												</p>
+												<label>I/We apply for *</label>
+												<input type="text" name="amount_to_invest" class="form-control" placeholder="$5000" style="width: 60%" id="apply_for" required>
+												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+												<label>I/We lodge full Application Money</label>
+												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ 0.00" style="width: 60%" id="application_money">
+												<input type="text" name="project_id" value="{{$projects_spv->project_id}}" hidden >
+												
+												{{-- <div class="row">
+													<div class="text-left col-md-3 wow fadeIn animated">
+														<button class="btn btn-primary btn-block" id="step-1">Next</button>
+													</div>
+												</div> --}}
+											</div>
+										</div>
+									</div>
+									<div class="row " id="section-2">
+										<div class="col-md-12">
+											<div >
+												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
+												<br>
+												<h4>Are you Investing as</h4>
+												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
+												<input type="radio" name="investing_as" value="Joint Investor"> Joint Investor<br>
+												<input type="radio" name="investing_as" value="Trust or Company"> Trust or Company<br>
+												<hr>
+											</div>
+
+										</div>
+									</div>
+									<div class="row " id="section-3">
+										<div class="col-md-12">
+											<div style="display: none;" id="company_trust">
+												<label>Company of Trust Name</label>
+												<div class="row">
+													<div class="col-md-9">
+														<input type="text" name="investing_company_name" class="form-control" placeholder="First Name" required disabled="disabled">
+													</div>
+												</div><br>
+											</div>
+											<div id="normal_name">
+												<label>Given Name(s)</label>
+												<div class="row">
+													<div class="col-md-9">
+														<input type="text" name="first_name" class="form-control" placeholder="First Name" required @if($user->first_name) value="{{$user->first_name}}" @endif>
+													</div>
+												</div><br>
+												<label>Surname</label>
+												<div class="row">
+													<div class="col-md-9">
+														<input type="text" name="last_name" class="form-control" placeholder="Last Name" required @if($user->last_name) value="{{$user->last_name}}" @endif>
+													</div>
+												</div><br>
+											</div>
+											<div style="display: none;" id="joint_investor">
+												<label>Joint Investor Details</label>
+												<div class="row">
+													<div class="col-md-6">
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required disabled="disabled">
+													</div>
+													<div class="col-md-6">
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled">
+													</div>
+												</div>
+												<br>
+												<hr>
+											</div>
+										</div>
+									</div>
+									<div class="row " id="section-4">
+										<div class="col-md-12">
+											<div id="trust_doc" style="display: none;">
+												<label>Trust or Company DOCS</label>
+												<input type="file" name="trust_or_company_docs" class="form-control" disabled="disabled" required><br>
+
+												<p>Please upload the first and last pages of your trust deed or Company incorporation papers</p>
+											</div>
+											<div id="normal_id_docs">
+												@if($user->idImage)
+												<div class="row">
+													<div class="col-md-6">
+														<img src="/{{$user->idImage->path}}" width="50%" class="img-responsive">
+													</div>
+													<div class="col-md-6">
+														<img src="/{{$user->idImage->path_for_id}}" width="50%" class="img-responsive">
+													</div>
+												</div>
+												<br>
+												@else
+												<label>ID DOCS</label>
+												<input type="file" name="user_id_doc" class="form-control" required><br>
+												<p>If you have not completed your verification process. Please upload a copy of your Driver License or Passport for AML/CTF purposes</p>
+												@endif
+											</div>
+											
+											<div id="joint_investor_docs" style="display: none;">
+												@if($user->investmentDoc)
+												<img src="/{{$user->investmentDoc->last()->path}}" class="img-responsive" width="50%">
+												@else
+												<label>Joint Investor ID DOCS</label>
+												<input type="file" name="joint_investor_id_doc" class="form-control" disabled="disabled" required><br>
+
+												<p>Please upload a copy of the joint investors Driver License or Passport for AML/CTF purposes</p>
+												@endif
+											</div>
+										</div>
+									</div>
+									<div class="row" >
+										<div class="col-md-12">
+											<div style="">
+												<h3>
+													Contact Details
+												</h3>
+												<hr>
+												<label>Enter your Postal Address</label>
+												<div class="row">
+													<div class="form-group @if($errors->first('line_1') && $errors->first('line_2')){{'has-error'}} @endif ">
+														<div class="col-sm-12">
+															<div class="row">
+																<div class="col-sm-6 @if($errors->first('line_1')){{'has-error'}} @endif">
+																	{!! Form::text('line_1', null, array('placeholder'=>'line 1', 'class'=>'form-control','required', 'Value'=> $user->line_1)) !!}
+																	{!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!}
+																</div>
+																<div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif">
+																	{!! Form::text('line_2', null, array('placeholder'=>'line 2', 'class'=>'form-control','required', 'Value'=> $user->line_2)) !!}
+																	{!! $errors->first('line_2', '<small class="text-danger">:message</small>') !!}
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<br>
+												<div class="row">
+													<div class="form-group @if($errors->first('city') && $errors->first('state')){{'has-error'}} @endif">
+														<div class="col-sm-12">
+															<div class="row">
+																<div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif">
+																	{!! Form::text('city', null, array('placeholder'=>'City', 'class'=>'form-control','required', 'Value'=> $user->city)) !!}
+																	{!! $errors->first('city', '<small class="text-danger">:message</small>') !!}
+																</div>
+																<div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif">
+																	{!! Form::text('state', null, array('placeholder'=>'state', 'class'=>'form-control','required', 'Value'=> $user->state)) !!}
+																	{!! $errors->first('state', '<small class="text-danger">:message</small>') !!}
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<br>
+												<div class="row">
+													<div class="form-group @if($errors->first('postal_code') && $errors->first('country')){{'has-error'}} @endif">
+														<div class="col-sm-12">
+															<div class="row">
+																<div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif">
+																	{!! Form::text('postal_code', null, array('placeholder'=>'postal code', 'class'=>'form-control','required', 'Value'=> $user->postal_code)) !!}
+																	{!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!}
+																</div>
+																<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
+																	<select name="country" class="form-control">
+																		@foreach(\App\Http\Utilities\Country::all() as $country => $code)
+																		<option @if($user->country == $country) value="{{$code}}" selected="selected" @else value="{{$code}}" @endif>{{$country}}</option>
+																		@endforeach
+																	</select>
+																	{!! $errors->first('country', '<small class="text-danger">:message</small>') !!}
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												{{-- <br><br>
+												<div class="row">
+													<div class="text-center col-md-offset-5 col-md-2 wow fadeIn animated">
+														<button class="btn btn-primary btn-block" id="step-3">Next</button>
+													</div>
+												</div> --}}
+											</div>
+
+										</div>
+									</div>
+									<br>
+									<div class="row " id="section-6">
+										<div class="col-md-12">
+											<div>
+												<label>Tax File Number</label>
+												<input type="text" class="form-control" name="tfn" placeholder="Tax File Number" @if($user->tfn) value="{{$user->tfn}}" @endif>
+												<p><small>You are not required to provide your TFN, but in it being unavailable we will be required to withhold tax at the highest marginal rate of 49.5% </small></p><br>
+												<div class="row">
+													<div class="col-md-6">
+														<label>Phone</label>
+														<input type="text" name="phone" class="form-control" placeholder="Phone" required @if($user->phone_number) value="{{$user->phone_number}}" @endif>
+													</div>
+													<div class="col-md-6">
+														<label>Email</label>
+														<input type="text" name="email" class="form-control" placeholder="Email" required @if($user->email) value="{{$user->email}}" @endif>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+									<div class="row " id="section-7">
+										<div class="col-md-12">
+											<h3>Nominated Bank Account</h3>
+											<h5 style="color: #000">Please enter your bank account details where you would like to receive any Divident or other payments related to this investment</h5>
+											<hr>
+											<div>
+												<div class="row">
+													<div class="col-md-4">
+														<label>Account Name</label>
+														<input type="text" name="account_name" class="form-control" placeholder="Account Name" required @if($user->account_name) value="{{$user->account_name}}" @endif>
+													</div>
+													<div class="col-md-4">
+														<label>BSB</label>
+														<input type="text" name="bsb" class="form-control" placeholder="BSB" required @if($user->bsb) value="{{$user->bsb}}" @endif>
+													</div>
+													<div class="col-md-4">
+														<label>Account Number</label>
+														<input type="text" name="account_number" class="form-control" placeholder="Account Number" required @if($user->account_number) value="{{$user->account_number}}" @endif>
+													</div>
+												</div>
+												
+												{{-- <div class="row">
+													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
+														<button class="btn btn-primary btn-block" id="step-7">Next</button>
+													</div>
+												</div> --}}
+											</div>
+
+										</div>
+									</div>
+									<br>
+									<div class="row " id="section-8">
+										<div class="col-md-12">
+											<div>
+												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advise by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this Prospectus in deciding to invest and will seek independent adviser from my financial adviser if needed.
+												{{-- <div class="row">
+													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
+														<button class="btn btn-primary btn-block" id="step-8">Next</button>
+													</div>
+												</div> --}}
+											</div>
+
+										</div>
+									</div>
+									<br>
+									{{-- <div class="row " id="section-9">
+										<div class="col-md-12">
+											<div>
+												<label>ID DOCS</label>
+												<input type="file" name="user_id_doc" class="form-control" required>
+												<p>If you have not completed your verification process, please upload a copy of your Drivers License or Passport for AML/CTF purposes</p>
+											</div>
+										</div>
+									</div> --}}
+									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
+									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
+									<div id="signature"></div>
+									<script>
+										$(document).ready(function() {
+											$("#signature").jSignature()
+										})
+									</script>
+									<br>
+									<div class="row " id="11">
+										<div class="col-md-12">
+											<div>
+												<input type="submit" name="submit" class="btn btn-primary" value="Submit">
+											</div>
+										</div>
+									</div>
+								</form>
+								<br><br>
+							</div>
+							<div class="col-md-2">
+								<img src="{{asset('assets/images/estate_baron_hat1.png')}}" alt="Estate Baron Masoct" class="pull-right img-responsive" style="padding-top:23em;position: fixed;width: 150px;">
+							</div>
+						</div>
 					</div>
+					
 					@if ($project->show_download_pdf_page)
 					<div class="col-md-5">
 						<br>
@@ -100,7 +378,7 @@ Offer Doc
 		</div>
 	</div>
 </div>
-<!-- <section id="section-colors-right" class="color-panel-right panel-close-right center" style="opacity: .8;">
+<!-- <section id="section-colors-right" class="color-panel-right panel-close-right left" style="opacity: .8;">
 	<div class="color-wrap-right">
 		<h3>Updates</h3>
 		<p style="color:#000;">Someone In <b><span id="addlocation"></span></b>, Victoria Invested <b>$<span id="addamount"></span></b> in Mount Waverley townhouse Development</p>
@@ -158,10 +436,75 @@ Offer Doc
 			$('#section-colors-left').addClass('hide');
 		}
 	});
-	$(document).ready(function(){
-		$('.investment-gform form').submit(function(){
-			$('.loader-overlay').show();
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
+	{!! Html::script('plugins/wow.min.js') !!}
+	<script type="text/javascript">
+		$(function () {
+			$('.scrollto').click(function(e) {
+				e.preventDefault();
+				$(window).stop(true).scrollTo(this.hash, {duration:1000, interrupt:true});
+			});
 		});
-	});
+		new WOW().init({
+			boxClass:     'wow',
+			animateClass: 'animated',
+			mobile:       true,
+			live:         true
+		});
+		$(document).ready(function(){
+			var qty=$("#apply_for");
+			qty.keyup(function(){
+				var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				$("#application_money").val(total);
+			});
+		});
+		$(document).ready( function() {
+			$("input[name='investing_as']").on('change',function() {
+				if($(this).is(':checked') && $(this).val() == 'Individual Investor')
+				{
+					$('#normal_id_docs').removeAttr('style');
+					$('#joint_investor_docs').attr('style','display:none;');
+					$('#trust_doc').attr('style','display:none;');
+					$('#company_trust').attr('style','display:none;');
+					$('#joint_investor').attr('style','display:none;');
+					$("input[name='joint_investor_first']").attr('disabled','disabled');
+					$("input[name='joint_investor_last']").attr('disabled','disabled');
+					$("input[name='investing_company_name']").attr('disabled','disabled');
+					$("input[name='id_docs']").removeAttr('disabled');
+					$("input[name='trust_or_company_docs']").attr('disabled','disabled');
+					$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
+				}
+				else if($(this).is(':checked') && $(this).val() == 'Joint Investor')
+				{
+					$('#joint_investor_docs').removeAttr('style');
+					$('#normal_id_docs').removeAttr('style');
+					$('#trust_doc').attr('style','display:none;');
+					$('#company_trust').attr('style','display:none;');
+					$('#joint_investor').removeAttr('style');
+					$("input[name='joint_investor_first']").removeAttr('disabled');
+					$("input[name='joint_investor_last']").removeAttr('disabled');
+					$("input[name='investing_company_name']").attr('disabled','disabled');
+					$("input[name='joint_investor_id_doc']").removeAttr('disabled');
+					$("input[name='trust_or_company_docs']").attr('disabled','disabled');
+					$("input[name='id_docs']").removeAttr('disabled');
+				}
+				else
+				{
+					$('#trust_doc').removeAttr('style');
+					$('#normal_id_docs').attr('style','display:none;');
+					$('#joint_investor_docs').attr('style','display:none;');
+					$('#joint_investor').attr('style','display:none;');
+					$('#company_trust').removeAttr('style');
+					$("input[name='joint_investor_first']").attr('disabled','disabled');
+					$("input[name='joint_investor_last']").attr('disabled','disabled');
+					$("input[name='investing_company_name']").removeAttr('disabled');
+					$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
+					$("input[name='trust_or_company_docs']").removeAttr('disabled');
+					$("input[name='id_docs']").attr('disabled','disabled');
+				}
+
+			});
+		});  
+	</script>
 </script>
 @stop

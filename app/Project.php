@@ -65,6 +65,10 @@ class Project extends Model
         return $this->hasMany('App\Document');
     }
 
+    public function investmentDocuments()
+    {
+        return $this->hasMany('App\UserInvestmentDocument');
+    }
     /**
      * this is a mutator to encrypt the password
      * @param raw password $value

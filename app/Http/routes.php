@@ -237,3 +237,4 @@ Route::post('/configuration/updateTagManager', ['as'=> 'configuration.updateTagM
 Route::post('/pages/home/expressProjectInterest', ['as'=>'pages.home.expressProjectInterest', 'uses'=>'PagesController@expressProjectInterest']);
 Route::post('/configuration/updateConversionPixel', ['as'=> 'configuration.updateConversionPixel', 'uses'=>'SiteConfigurationsController@updateConversionPixel']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
+Route::resource('offer', 'OfferController');
