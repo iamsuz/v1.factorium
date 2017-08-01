@@ -121,7 +121,7 @@ Offer Doc
 											</div>
 											
 											<div id="joint_investor_docs" style="display: none;">
-												@if($user->investmentDoc)
+												@if($user->investmentDoc->last())
 												<img src="/{{$user->investmentDoc->last()->path}}" class="img-responsive" width="50%">
 												@else
 												<label>Joint Investor ID DOCS</label>
