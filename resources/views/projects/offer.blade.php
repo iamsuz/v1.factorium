@@ -20,7 +20,7 @@ Offer Doc
 									<div class="row" id="section-1">
 										<div class="col-md-12">
 											<div>
-												<label class="form-label">Peoject SPV Name</label><br>
+												<label class="form-label">Project SPV Name</label><br>
 												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" @endif >
 												<h5>Name of the Company established as a special puropose Vehicle for this project that you are investing in</h5>
 												<p>
@@ -31,7 +31,7 @@ Offer Doc
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												<label>I/We lodge full Application Money</label>
 												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ 0.00" style="width: 60%" id="application_money">
-												<input type="text" name="project_id" value="{{$projects_spv->project_id}}" hidden >
+												<input type="text" name="project_id" @if($projects_spv) value="{{$projects_spv->project_id}}" @endif hidden >
 												
 												{{-- <div class="row">
 													<div class="text-left col-md-3 wow fadeIn animated">
