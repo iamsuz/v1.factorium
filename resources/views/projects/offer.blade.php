@@ -103,13 +103,10 @@ Offer Doc
 												<p>Please upload the first and last pages of your trust deed or Company incorporation papers</p>
 											</div>
 											<div id="normal_id_docs">
-												@if($user->idImage)
+												@if($user->investmentDoc->where('user_id',$user->id)->last())
 												<div class="row">
 													<div class="col-md-6">
-														<img src="/{{$user->idImage->path}}" width="50%" class="img-responsive">
-													</div>
-													<div class="col-md-6">
-														<img src="/{{$user->idImage->path_for_id}}" width="50%" class="img-responsive">
+														<img src="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}" width="50%" class="img-responsive">
 													</div>
 												</div>
 												<br>
@@ -121,14 +118,10 @@ Offer Doc
 											</div>
 											
 											<div id="joint_investor_docs" style="display: none;">
-												@if($user->investmentDoc->last())
-												<img src="/{{$user->investmentDoc->last()->path}}" class="img-responsive" width="50%">
-												@else
 												<label>Joint Investor ID DOCS</label>
 												<input type="file" name="joint_investor_id_doc" class="form-control" disabled="disabled" required><br>
 
 												<p>Please upload a copy of the joint investors Driver License or Passport for AML/CTF purposes</p>
-												@endif
 											</div>
 										</div>
 									</div>
