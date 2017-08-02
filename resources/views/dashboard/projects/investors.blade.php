@@ -154,9 +154,9 @@
 					</ul>
 				</div>
 
-				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;">
+				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: scroll;">
 					<!-- <ul class="list-group">Hello</ul> -->
-					<div class="table-responsive">
+					<div class="">
 						<table class="table table-bordered table-striped" id="shareRegistryTable">
 							<thead>
 								<tr>
@@ -168,6 +168,7 @@
 									<th>Address</th>
 									<th>Share face value</th>
 									<th>Link to share certificate</th>
+									<th>TFN</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -179,12 +180,12 @@
 									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
 									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
 									<td>
-										{{$shareInvestment->user->line_1}}, 
-										{{$shareInvestment->user->line_2}}, 
-										{{$shareInvestment->user->city}}, 
-										{{$shareInvestment->user->state}}, 
-										{{$shareInvestment->user->country}}, 
-										{{$shareInvestment->user->postal_code}}
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif 
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
 
 									</td>
 									<td>{{$shareInvestment->amount}}</td>
@@ -192,6 +193,9 @@
 										<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
 											Share Certificate
 										</a>
+									</td>
+									<td>
+									@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
 									</td>
 								</tr>
 								@endforeach

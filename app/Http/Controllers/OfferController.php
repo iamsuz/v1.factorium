@@ -59,7 +59,6 @@ class OfferController extends Controller
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
-        $user->update($request->all());
         $investor = InvestmentInvestor::get()->last();
         if($request->investing_as != 'Individual Investor'){
             $investing_joint = new InvestingJoint;
@@ -68,7 +67,21 @@ class OfferController extends Controller
             $investing_joint->joint_investor_first_name = $request->joint_investor_first;
             $investing_joint->joint_investor_last_name = $request->joint_investor_last;
             $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->account_name = $request->account_name;
+            $investing_joint->bsb = $request->bsb;
+            $investing_joint->account_number = $request->account_number;
+            $investing_joint->line_1 = $request->line_1;
+            $investing_joint->line_2 = $request->line_2;
+            $investing_joint->city = $request->city;
+            $investing_joint->state = $request->state;
+            $investing_joint->postal_code = $request->postal_code;
+            $investing_joint->country = $request->country;
+            $investing_joint->country_code = $request->country_code;
+            $investing_joint->tfn = $request->tfn;
             $investing_joint->save();
+        }
+        else{
+            $user->update($request->all());
         }
         $investor_joint = InvestingJoint::get()->last();
         if($request->hasFile('joint_investor_id_doc'))

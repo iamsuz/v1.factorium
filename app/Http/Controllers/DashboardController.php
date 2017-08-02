@@ -118,6 +118,7 @@ class DashboardController extends Controller
                     ->where('accepted', 1)
                     ->orderBy('share_certificate_issued_at','ASC')
                     ->get();
+        // dd($shareInvestments->last()->investingJoint);
         return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments'));
     }
 

@@ -18,5 +18,12 @@ class InvestingJoint extends Model
      *
      * @var array
      */
-    protected $fillable = ['project_id','investment_investor_id', 'joint_investor_first_name','joint_investor_last_name','investing_company'];
+    protected $fillable = ['project_id','investment_investor_id', 'joint_investor_first_name','joint_investor_last_name','investing_company','account_name','bsb','account_number','line_1','line_2','city','state','postal_code','country','country_code','tfn'];
+
+
+    public function investmentInvestors()
+    {
+        # code...
+        return $this->belongsTo('App\InvestmentInvestor');
+    }
 }

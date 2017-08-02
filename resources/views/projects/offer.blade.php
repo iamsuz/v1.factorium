@@ -178,7 +178,7 @@ Offer Doc
 																<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
 																	<select name="country" class="form-control">
 																		@foreach(\App\Http\Utilities\Country::all() as $country => $code)
-																		<option @if($user->country == $country) value="{{$code}}" selected="selected" @else value="{{$code}}" @endif>{{$country}}</option>
+																		<option @if($user->country == $country) value="{{$country}}" selected="selected" @else value="{{$country}}" @endif>{{$country}}</option>
 																		@endforeach
 																	</select>
 																	{!! $errors->first('country', '<small class="text-danger">:message</small>') !!}
@@ -263,15 +263,6 @@ Offer Doc
 										</div>
 									</div>
 									<br>
-									{{-- <div class="row " id="section-9">
-										<div class="col-md-12">
-											<div>
-												<label>ID DOCS</label>
-												<input type="file" name="user_id_doc" class="form-control" required>
-												<p>If you have not completed your verification process, please upload a copy of your Drivers License or Passport for AML/CTF purposes</p>
-											</div>
-										</div>
-									</div> --}}
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
