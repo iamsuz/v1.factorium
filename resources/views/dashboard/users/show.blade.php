@@ -61,7 +61,9 @@
 					<hr>
 					<dt>verify ID</dt>
 					<dd>
+						@if($user->investmentDoc->where('user_id',$user->id)->last())
 						<a href="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}">verify ID documents</a>
+						@endif
 					</dd>
 					<dt>change status</dt>
 					<dd>
