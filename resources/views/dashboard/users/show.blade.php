@@ -61,7 +61,7 @@
 					<hr>
 					<dt>verify ID</dt>
 					<dd>
-						<a href="{{route('dashboard.users.verification', $user)}}">verify ID documents</a>
+						<a href="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}">verify ID documents</a>
 					</dd>
 					<dt>change status</dt>
 					<dd>
