@@ -24,7 +24,10 @@ class UserInvestmentDocument extends Model
     {
     	return $this->belongsTo('App\Project');
     }
-
+    public function investors()
+    {
+        return $this->belongsTo('App\InvestmentInvestor');
+    }
     public function user()
     {
     	return $this->belongsTo('App\User');

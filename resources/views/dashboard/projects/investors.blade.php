@@ -169,6 +169,7 @@
 									<th>Share face value</th>
 									<th>Link to share certificate</th>
 									<th>TFN</th>
+									<th>Investment Documents</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -197,6 +198,7 @@
 									<td>
 									@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
 									</td>
+									<td>@if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a></td>
 								</tr>
 								@endforeach
 							</tbody>

@@ -39,4 +39,8 @@ class InvestmentInvestor extends Model
     {
         return $this->hasOne('App\InvestingJoint');
     }
+    public function userInvestmentDoc()
+    {
+        return $this->hasOne('App\UserInvestmentDocument');
+    }
 }
