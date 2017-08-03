@@ -713,7 +713,8 @@ class SiteConfigurationsController extends Controller
                     'country_code'=>$request->country,
                     'country'=>array_search($request->country, \App\Http\Utilities\Country::aus()),
                     'latitude'=>$latitude,
-                    'longitude'=>$longitude
+                    'longitude'=>$longitude,
+                    'zoom_level'=>$request->zoom_level,
                 ]);
 
                 Document::where('project_id', $projectId)->where('type','reference_document')->where('project_site', url())->delete();
