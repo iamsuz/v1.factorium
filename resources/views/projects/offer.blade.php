@@ -103,9 +103,10 @@ Offer Doc
 												<p>Please upload the first and last pages of your trust deed or Company incorporation papers</p>
 											</div>
 											<div id="normal_id_docs">
-												@if($user->investmentDoc->where('user_id',$user->id)->last())
+												@if($user->investmentDoc->where('user_id', $user->id AND 'type','normal_name'))
 												<div class="row">
 													<div class="col-md-6">
+													<a href="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}" target="_blank">Check Your Previosly Uploaded DOC</a>
 														<img src="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}" width="50%" class="img-responsive">
 													</div>
 												</div>
@@ -266,6 +267,7 @@ Offer Doc
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
+									<h4 class="text-center">Please Sign Here</h4 class="text-center">
 									<script>
 										$(document).ready(function() {
 											$("#signature").jSignature()

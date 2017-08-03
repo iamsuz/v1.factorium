@@ -41,6 +41,6 @@ class InvestmentInvestor extends Model
     }
     public function userInvestmentDoc()
     {
-        return $this->hasOne('App\UserInvestmentDocument');
+        return $this->hasMany('App\UserInvestmentDocument');
     }
 }

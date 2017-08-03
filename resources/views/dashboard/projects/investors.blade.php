@@ -44,6 +44,23 @@
 									<b>{{$investment->user->first_name}} {{$investment->user->last_name}}</b>
 								</a>
 								<br>{{$investment->user->email}}<br>{{$investment->user->phone_number}}
+								<br>
+								@if($investment->userInvestmentDoc)
+								@if($investment->userInvestmentDoc->where('type','joint_investor')->last())
+								<a href="/{{$investment->userInvestmentDoc->where('type','joint_investor')->last()->path}}">{{$investment->investingJoint->joint_investor_first_name}} {{$investment->investingJoint->joint_investor_last_name}} Doc</a>
+								<br>
+								@endif
+								@if($investment->userInvestmentDoc->where('type','normal_name')->last())
+								<a href="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}">{{$investment->user->first_name}} {{$investment->user->last_name}} Doc</a>
+								@endif
+								@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
+								<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank"> 
+									{{$investment->investingJoint->investing_company}} Doc 
+								</a>
+								@endif
+								@else 
+								NA 
+								@endif
 							</div>
 							<div class="col-md-2 text-right">{{$investment->created_at->toFormattedDateString()}}</div>
 							<div class="col-md-1">
@@ -51,7 +68,7 @@
 									{{method_field('PATCH')}}
 									{{csrf_field()}}
 									<a href="#" class="edit">${{number_format($investment->amount) }}</a>
-									
+
 									<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}">
 									<input type="hidden" name="investor" value="{{$investment->user->id}}">
 								</form>
@@ -196,9 +213,9 @@
 										</a>
 									</td>
 									<td>
-									@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
 									</td>
-									<td>@if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a></td>
+									<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
 								</tr>
 								@endforeach
 							</tbody>
