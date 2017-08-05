@@ -190,7 +190,7 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id, $editFlag = false)
     {
         $user_id = Auth::user();
         $project = Project::findOrFail($id);
@@ -257,7 +257,6 @@ class ProjectsController extends Controller
                 }
             }
         }
-
         if($project->invite_only)
         {
             if(Auth::guest()) {
@@ -265,12 +264,37 @@ class ProjectsController extends Controller
             }
             if($project->invited_users->contains(Auth::user())) 
             {
+                if($editFlag){
+                    return view('projects.showedit', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));    
+                }
                 return view('projects.show', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
             } else {
                 return redirect()->route('users.show', Auth::user())->withMessage('<p class="alert alert-warning text-center">This is an Invite Only Project, You do not have access to this project.<br>Please click <a href="/#projects">here</a> to see other projects.</p>');
             }
         }
+        if($editFlag){
+            return view('projects.showedit', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
+        }
         return view('projects.show', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function showedit($id){
+        if(Auth::guest()){
+            return response()->view('errors.404', [], 404);
+        } else {
+            $user = Auth::user();
+            $roles = $user->roles;
+            if ($roles->contains('role', 'admin')) {
+                return $this->show($id, true);
+            } else {
+                return response()->view('errors.404', [], 404);
+            }
+        }
     }
 
     /**

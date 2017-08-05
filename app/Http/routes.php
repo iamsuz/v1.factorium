@@ -238,3 +238,4 @@ Route::post('/pages/home/expressProjectInterest', ['as'=>'pages.home.expressProj
 Route::post('/configuration/updateConversionPixel', ['as'=> 'configuration.updateConversionPixel', 'uses'=>'SiteConfigurationsController@updateConversionPixel']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
+Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);

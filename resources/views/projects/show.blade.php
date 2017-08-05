@@ -74,18 +74,9 @@
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 <form method="POST" action="{{route('configuration.updateProjectDetails')}}">
 	{{csrf_field()}}
-	<div style="position: fixed;z-index: 100;top: 75%;right: 5%;">
-		<div class="save-project-details-floating-btn-style save-project-details-floating-btn" style="display: none;" data-toggle="tooltip" title="Save the updated project details fields." data-placement="top">
-			<i class="fa fa-floppy-o" aria-hidden="true" style="font-size: 1.6em;"></i><br>
-			<span><b>Update Details</b></span>
-		</div>
-		<div class="exit-project-details-editable-btn-style exit-project-details-editable-btn" style="display: none;" data-toggle="tooltip" title="Exit project details editable mode." data-placement="top">
-			<i class="fa fa-times" aria-hidden="true" style="font-size: 1.6em;"></i><br>
-			<span>Exit Edit Mode</span>
-		</div>
-	</div>
 	<div class="col-md-6 col-md-offset-3" style="position: absolute;margin-top: 15px;text-align: center;">
-		<button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button>
+		<!-- <button type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</button> -->
+		<a href="{{route('projects.showedit', [$project->id])}}" type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</a>
 		<div style="display: none;"><button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br></div>
 		<a href="" status="{{$project->active}}" style="color: #fff;"><u>
 			@if($project->active == '1') 
@@ -106,7 +97,7 @@
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
 					<div class="col-md-4 col-sm-6">
 						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
-						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{!!$project->description!!}</span>
+						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">{!!nl2br($project->description)!!}</span>
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div>
@@ -401,8 +392,8 @@
 </section> -->
 <br>
 <ul class="nav nav-tabs text-center">
-	<li class="active " style="width: 50%; font-size: 1.5em;"><a class="show-project-details-tab-input" data-toggle="tab" href="#home" style="padding: 15px 15px;">{{$project->projectconfiguration->project_details_tab_label}}</a></li>
-	<li style="width: 49%; font-size: 1.5em;" ><a class="show-project-progress-tab-input" data-toggle="tab" href="#menu1" style="padding: 15px 15px;">{{$project->projectconfiguration->project_progress_tab_label}}</a></li>
+	<li class="active " style="width: 50%; font-size: 1.5em;"><a class="show-project-details-tab-input" data-toggle="tab" href="#home" style="padding: 15px 15px;">@if($project->projectconfiguration){{$project->projectconfiguration->project_details_tab_label}} @else Project Details @endif</a></li>
+	<li style="width: 49%; font-size: 1.5em;" ><a class="show-project-progress-tab-input" data-toggle="tab" href="#menu1" style="padding: 15px 15px;">@if($project->projectconfiguration){{$project->projectconfiguration->project_progress_tab_label}} @else Project Progress @endif</a></li>
 </ul>
 <div class="tab-content">
 	<div id="home" class="tab-pane fade in active">
@@ -420,7 +411,7 @@
 		<section>
 			<div class="container">
 				@if($project->media->where('type', 'gallary_images')->first())
-				<div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: 20px;">
+				<div id="myCarousel" class="" data-ride="carousel" style="margin-top: 20px;">
 					<!-- Indicators -->
 					<ol class="carousel-indicators">
 						{{-- <li data-target="#myCarousel" data-slide-to="0" class="active"></li> --}}
@@ -535,7 +526,7 @@
 								<h4 class="second_color show-summary-input" style="margin-top:30px; color:#fed405; font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->summary_label))}}@else Summary @endif</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
-								@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field">{!!$project->investment->summary!!}</p> @endif
+								@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field text-justify">{!!nl2br($project->investment->summary)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','summary')->last())
 									@if(Auth::guest())
@@ -577,7 +568,7 @@
 								<h4 class="second_color show-security-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->security_label))}}@else Security @endif</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
-								@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field">{!!$project->investment->security_long!!}</p> @endif
+								@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field">{!!nl2br($project->investment->security_long)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','security')->last())
 									@if(Auth::guest())
@@ -619,7 +610,7 @@
 								<h4 class="second_color show-investor-distribution-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investor_distribution_label))}}@else Investor<br> Distribution @endif</h4>
 							</div>
 							<div class="col-md-10 text-left"> 
-								@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field">{!!$project->investment->exit_d!!}</p> @endif
+								@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field">{!!nl2br($project->investment->exit_d)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','exit_image')->last())
 									@if(Auth::guest())
@@ -704,7 +695,7 @@
 								<h4 class="second_color show-marketability-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->marketability_label))}}@else Marketability @endif</h4>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!$project->investment->marketability!!}</p> @endif
+								@if($project->investment) <p class="text-left project-marketability-field" style="font-size:0.875em;">{!!nl2br($project->investment->marketability)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','marketability')->last())
 									@if(Auth::guest())
@@ -747,7 +738,7 @@
 								<h4 class="second_color show-residents-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->residents_label))}}@else Residents @endif</h4>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!$project->investment->residents!!}</p> @endif
+								@if($project->investment) <p class="text-left project-residents-field" style="font-size:0.875em;">{!!nl2br($project->investment->residents)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','residents')->last())
 									@if(Auth::guest())
@@ -808,7 +799,7 @@
 								<h4 class="second_color show-investment-type-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_type_label))}}@else Type @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{!!$project->investment->investment_type!!}</p>@endif
+								@if($project->investment) <p class="project-investment-type-field" style="font-size:0.875em;">{!!nl2br($project->investment->investment_type)!!}</p>@endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','investment_type')->last())
 									@if(Auth::guest())
@@ -850,7 +841,7 @@
 								<h4 class="second_color show-investment-security-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_security_label))}}@else Security @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{!!$project->investment->security!!}</p> @endif
+								@if($project->investment) <p class=" project-security-field" style="font-size:0.875em;">{!!nl2br($project->investment->security)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','investment_security')->last())
 									@if(Auth::guest())
@@ -892,7 +883,7 @@
 								<h4 class="second_color show-expected-returns-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->expected_returns_label))}}@else Expected<br> Returns @endif</h4>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{!!$project->investment->expected_returns_long!!}</p> @endif
+								@if($project->investment) <p class=" project-expected-returns-field" style="font-size:0.875em;">{!!nl2br($project->investment->expected_returns_long)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','expected_returns')->last())
 									@if(Auth::guest())
@@ -934,7 +925,7 @@
 								<h4 class="second_color show-return-paid-as-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->return_paid_as_label))}}@else Returns<br> Paid As @endif</h4>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{!!$project->investment->returns_paid_as!!}</p> @endif
+								@if($project->investment) <p class=" project-return-paid-as-field" style="font-size:0.875em;">{!!nl2br($project->investment->returns_paid_as)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','return_paid_as')->last())
 									@if(Auth::guest())
@@ -975,7 +966,7 @@
 								<h4 class="second_color show-taxation-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->taxation_label))}}@else Taxation @endif</h4><br>
 							</div>
 							<div class="col-md-10"> 
-								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{!!$project->investment->taxation!!}</p> @endif
+								@if($project->investment) <p class=" project-taxation-field" style="font-size:0.875em;">{!!nl2br($project->investment->taxation)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','taxation')->last())
 									@if(Auth::guest())
@@ -1039,7 +1030,7 @@
 								@endif
 							</div>
 							<div class="col-md-10 text-left"> 
-								@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
+								@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!nl2br($project->investment->proposer)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','project_developer')->last())
 									@if(Auth::guest())
@@ -1081,7 +1072,7 @@
 								<h4 class="second_color show-duration-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->duration_label))}}@else Duration @endif</h4><br>
 							</div>
 							<div class="col-md-10 text-left"> 
-								@if($project->investment) <p style="font-size:0.875em;">{!!$project->investment->hold_period!!} Months</p> @endif
+								@if($project->investment) <p style="font-size:0.875em;">{!!nl2br($project->investment->hold_period)!!} Months</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','project_duration')->last())
 									@if(Auth::guest())
@@ -1123,7 +1114,7 @@
 								<h4 class="second_color show-current-status-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->current_status_label))}}@else Current Status @endif</h4><br>
 							</div>
 							<div class="col-md-10 text-left"> 
-								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!$project->investment->current_status!!}</p> @endif
+								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field">{!!nl2br($project->investment->current_status)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','current_status')->last())
 									@if(Auth::guest())
@@ -1157,7 +1148,7 @@
 						@else
 						<h4 class="second_color show-venture-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->venture_label))}}@else Venture @endif</h4><br>
 						@endif
-						@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!$project->investment->proposer!!}</p> @endif
+						@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field">{!!nl2br($project->investment->proposer)!!}</p> @endif
 						<div class="row">
 							<div class="col-md-12 text-center">
 								<center>
@@ -1213,7 +1204,7 @@
 						<h4 class="second_color show-rationale-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->rationale_label))}}@else Rationale @endif</h4><br>
 					</div>
 					<div class="col-md-10 text-left"> 
-						@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field">{!!$project->investment->rationale!!}</p> @endif
+						@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field">{!!nl2br($project->investment->rationale)!!}</p> @endif
 						<div>
 							@if($projectMediaImage=$project->media->where('type','rationale')->last())
 							@if(Auth::guest())
@@ -1254,7 +1245,7 @@
 						<h4 class="second_color show-risk-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@else Risk @endif</h4><br>
 					</div>
 					<div class="col-md-10 text-left"> 
-						@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field">{!!$project->investment->risk!!}</p> @endif
+						@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field">{!!nl2br($project->investment->risk)!!}</p> @endif
 						<div>
 							@if($projectMediaImage=$project->media->where('type','investment_risk')->last())
 							@if(Auth::guest())
@@ -1372,7 +1363,7 @@
 						@endif
 						<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
 						<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:42px;">How To Invest</h4><br>
-						@if($project->investment)<p class="project-how-to-invest-field">{!!$project->investment->how_to_invest!!}</p> @endif
+						@if($project->investment)<p class="project-how-to-invest-field">{!!nl2br($project->investment->how_to_invest)!!}</p> @endif
 
 						@if($project->investment)
 						<div class="row">
@@ -1444,7 +1435,7 @@
 						</div>
 						<div id="faq_{{$key}}" class="panel-collapse collapse">
 							<div class="panel-body" style="padding-left:45px;">
-								<p style="font-size:16px;color:#282a73;" class="font-regular">{{$faq->answer}}</p>
+								<p style="font-size:16px;color:#282a73;" class="font-regular">{!!nl2br($faq->answer)!!}</p>
 							</div>
 						</div>
 					</div>
@@ -2095,6 +2086,8 @@
 		@endif
 		togglePaymentSwitch();
 		projectProgress();
+
+		$('#myCarousel').addClass('carousel slide');
 	});
 
 	function editProjectPageDetailsByAdmin(){
@@ -2112,8 +2105,6 @@
 	}
 
 	function setProjectDetailsEditable(){
-		$('.save-project-details-floating-btn, .exit-project-details-editable-btn').show();
-		$('.project-faq').show();
 		$('.set_zoom').html('<div class="form-group" style="width: 450px; float: left;"> <label for="demo2" class="col-md-4 control-label">Set Map Zoom Level (upto 22x):</label> <input id="demo2" type="number" value="{{nl2br(e($project->location->zoom_level))}}" name="zoom_level" class="col-md-8 form-control "> </div> </form>');
 	    $("input[name='zoom_level']").TouchSpin({
 	        min: 1,
@@ -2122,51 +2113,7 @@
 	        maxboostedstep: 10000000,
 	        postfix: 'X',
 	    });
-		//Do
-		//Document reference editable
-		$('.add-doc-ref-section').html('<a href="" class="add-doc-ref-fields">Add new Link</a><input type="hidden" name="add_doc_ref_count" id="add_doc_ref_count" @if($project->documents) value="{{$project->documents->where('type','reference_document')->where('project_site', url())->count()}}" @else value="0" @endif>');
-		@if($project->documents)
-		$('.doc-references').html('');
-		@foreach($project->documents->where('type','reference_document')->where('project_site', url())->all() as $document)
-		$('.doc-references').append('<div class="col-md-3 text-left"><img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;"><input type="text" name="doc_ref_title[]" class="form-control" placeholder="Title" value="{{$document->filename}}"><input type="text" name="doc_ref_link[]" class="form-control" placeholder="Document Link" @if(Auth::check()) value="{{$document->path}}" @endif></div>');
-		@endforeach
-		@endif
-		// End
-		$('.address-update').html('<section> <div class="row well"> <div class="col-md-12"> <fieldset> <div class="row"> <div class="form-group @if($errors->first('line_1') && $errors->first('line_2')){{'has-error'}} @endif"> {!!Form::label('line_1', 'Lines', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('line_1')){{'has-error'}} @endif"> {!! Form::text('line_1', $project->location->line_1, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'3')) !!} {!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif"> {!! Form::text('line_2', $project->location->line_2, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'4')) !!} {!! $errors->first('line_2', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> <div class="row"> <div class="form-group @if($errors->first('city') && $errors->first('state')){{'has-error'}} @endif"> {!!Form::label('city', 'City', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif"> {!! Form::text('city', $project->location->city, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'5')) !!} {!! $errors->first('city', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif"> {!! Form::text('state', $project->location->state, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'6')) !!} {!! $errors->first('state', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> <div class="row"> <div class="form-group @if($errors->first('postal_code') && $errors->first('country')){{'has-error'}} @endif"> {!!Form::label('postal_code', 'postal code', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif"> {!! Form::text('postal_code', $project->location->postal_code, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'7')) !!} {!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif"> <select name="country" class="form-control" tabindex="8"> @foreach(\App\Http\Utilities\Country::aus() as $country => $code) <option value="{{$code}}" @if($project->location->country_code == $code) selected @endif>{{$country}}</option> @endforeach </select> {!! $errors->first('country', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> </fieldset> </div> </div> </section>');
-		$('.project-title-name').html('<input type="text" name="project_title_txt" class="form-control" value="{{nl2br(e($project->title))}}" style="font-size: 25px;">');
-		$('.project-invest-button-field').html('<input type="text" name="project_button_invest_txt" class="form-control" value="{{nl2br(e($project->button_label))}}" style="font-size: 25px;" placeholder="Button text">');
-		$('.project-description-field').html('<textarea type="text" name="project_description_txt" class="form-control rich-text-element">{{ nl2br(e($project->description)) }}</textarea>');
-		$('.project-close-date-field').html('<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}">');
-		@if($project->investment)
-		$('.project-min-investment-field').html('$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}">');
-		$('.project-hold-period-field').html('<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}">');
-		$('.project-returns-field').html('<input type="text" name="project_returns_txt" class="form-control" value="{{$project->investment->projected_returns}}">%');
-		$('.project-goal-amount-field').html('<input type="text" name="project_goal_amount_txt" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}">');
-		$('.project-summary-field').html('<textarea name="project_summary_txt" rows="3" class="form-control rich-text-element" placeholder="Enter Summary">{{$project->investment->summary}}</textarea>');
-		$('.project-security-long-field').html('<textarea name="project_security_long_txt" rows="3" class="form-control rich-text-element" placeholder="Enter Security Details">{{$project->investment->security_long}}</textarea>');
-		$('.project-investor-distribution-field').html('<textarea name="project_investor_distribution_txt" class="form-control rich-text-element" rows="4" placeholder="Enter Investor Distribution Details">{{$project->investment->exit_d}}</textarea>');
-		$('.project-marketability-field').html('<textarea name="project_marketability_txt" class="form-control rich-text-element" rows="3" placeholder="Enter Marketability Details">{{$project->investment->marketability}}</textarea>');
-		$('.project-residents-field').html('<textarea name="project_residents_txt" class="form-control rich-text-element" rows="3" placeholder="Enter Residents">{{$project->investment->residents}}</textarea>');
-		$('.project-investment-type-field').html('<textarea name="project_investment_type_txt" class="form-control rich-text-element" rows="3" placeholder="Investment type">{{$project->investment->investment_type}}</textarea>');
-		$('.project-security-field').html('<textarea name="project_security_txt" class="form-control rich-text-element" rows="3" placeholder="Investment Security">{{$project->investment->security}}</textarea>');
-		$('.project-expected-returns-field').html('<textarea name="project_expected_returns_txt" class="form-control rich-text-element" rows="3" placeholder="Expected Returns">{{$project->investment->expected_returns_long}}</textarea>');
-		$('.project-return-paid-as-field').html('<textarea name="project_return_paid_as_txt" class="form-control rich-text-element" rows="3" placeholder="Return paid as">{{$project->investment->returns_paid_as}}</textarea>');
-		$('.project-taxation-field').html('<textarea name="project_taxation_txt" class="form-control rich-text-element" rows="3" placeholder="Taxation">{{$project->investment->taxation}}</textarea>');
-		$('.project-developer-field').html('<textarea name="project_developer_txt" class="form-control rich-text-element" rows="3" placeholder="Developer">{{$project->investment->proposer}}</textarea>');
-		$('.project-current-status-field').html('<textarea name="project_current_status_txt" class="form-control rich-text-element" rows="3" placeholder="Current Status">{{$project->investment->current_status}}</textarea>');
-		$('.project-rationale-field').html('<textarea name="project_rationale_txt" class="form-control rich-text-element" rows="3" placeholder="Rationale">{{$project->investment->rationale}}</textarea>');
-		$('.project-risk-field').html('<textarea name="project_risk_txt" class="form-control rich-text-element" rows="3" placeholder="Risk">{{$project->investment->risk}}</textarea>');
-		$('.project-pds1-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>');
-		$('.project-pds2-link-field').html('<input type="text" name="" class="form-control" placeholder="Title"><input type="text" name="project_pds2_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_2_link}}@endif" @endif>');
-		$('.project-how-to-invest-field').html('<textarea name="project_how_to_invest_txt" class="form-control rich-text-element" rows="3" placeholder="How to invest">{{$project->investment->how_to_invest}}</textarea>');
-		$('.bank-name-field').html('<input type="text" value="{!!$project->investment->bank!!}" id="bank_name" name="bank_name">');
-		$('.account-name-field').html('<input type="text" value="{!!$project->investment->bank_account_name!!}" id="account_name" name="account_name">');
-		$('.bsb-name-field').html('<input type="text" value="{!!$project->investment->bsb!!}" id="bsb_name" name="bsb_name">');
-		$('.account-number-field').html('<input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number" name="account_number">');
-		$('.bank-reference-field').html('<input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference" name="bank_reference">');
-		@endif
-		setSummernoteEditboxToTextarea();
-		addDocRefFields();
+		//Do		
 	}
 
 	function setSummernoteEditboxToTextarea(){
@@ -2848,13 +2795,5 @@
 		});
 	}
 
-	function addDocRefFields(){
-		$('.add-doc-ref-fields').click(function(e){
-			e.preventDefault();
-			var docCount = parseInt($('#add_doc_ref_count').val(), 10)+1;
-			$('.doc-references').append('<div class="col-md-3 text-left"><img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;"><input type="text" name="doc_ref_title[]" class="form-control" placeholder="Title"><input type="text" name="doc_ref_link[]" class="form-control" placeholder="Document Link" @if(Auth::check()) value="" @endif></div>');
-			$('#add_doc_ref_count').val(docCount);
-		})
-	}
 </script>
 @stop

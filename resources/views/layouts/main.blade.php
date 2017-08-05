@@ -9,12 +9,17 @@
     <meta name="author" content="Estate Baron">
     {{-- <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors."> --}}
     <meta name="copyright" content="Estate Baron Crowdinvest Pty Ltd copyright (c) 2016">
-    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text != '')
-    <title>{!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->title_text !!}</title>
+
+    <?php
+    $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr();
+    ?>
+
+    @if($siteConfiguration->title_text != '')
+    <title>{!! $siteConfiguration->title_text !!}</title>
     @else
     <title>Best way to invest in Australian Real Estate Projects</title>
     @endif
-    @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+    @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
     @if($faviconImg=$siteConfigMedia->where('type', 'favicon_image_url')->first())
     <link rel="shortcut icon" href="{{asset($faviconImg->path)}}?v=<?php echo filemtime($faviconImg->path); ?>" type="image/x-icon">
     @else
@@ -51,8 +56,8 @@
     @yield('css-section')
 
     <!-- Google tag manager header script if set  -->
-    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header)
-    {!!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_header!!}
+    @if($siteConfiguration->tag_manager_header)
+    {!!$siteConfiguration->tag_manager_header!!}
     @endif
 
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
@@ -62,10 +67,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <?php
-    $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr();
-    ?>
-
+    
     @if($siteConfiguration->font_family != '')
     <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
     @endif
@@ -105,8 +107,8 @@
 </head>
 <body data-spy="scroll">
     <!-- Google tag manager body script if set  -->
-    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body)
-    {!!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->tag_manager_body!!}
+    @if($siteConfiguration->tag_manager_body)
+    {!!$siteConfiguration->tag_manager_body!!}
     @endif
 
     @if (Config::get('analytics.gtm.enable'))
@@ -125,7 +127,7 @@
         <div class="container">
             <div class="logo pull-left">
                 <a href="{{route('home')}}">
-                    @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+                    @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
                     @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
                     <span class="logo-title"><img src="{{asset($mainLogo->path)}}" alt="Brand logo" id="logo" style="margin-top:0.6em;margin-bottom:0.6em; height: 3.3em;"></span>
                     @else
@@ -151,7 +153,7 @@
                     <!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
                     <li class="nav-item"><a href="{{route('home')}}#how-it-works" class="scrollto">How it works</a></li>
                     <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects" class="scrollto">Investments</a></li>
-                    @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_funding_options != '')
+                    @if($siteConfiguration->show_funding_options != '')
                     <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding" class="scrollto">Funding</a></li>
                     @endif
                     <li class="nav-item"><a href="/pages/team">About us</a></li>
@@ -196,7 +198,7 @@
             <div class="row">
                 <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.2s">
                     <center>
-                        @if($siteConfigMedia=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia)
+                        @if($siteConfigMedia=$siteConfiguration->siteconfigmedia)
                         @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
                         <img class="img-responsive" src="{{asset($mainLogo->path)}}" alt="Logo" width="200">
                         @else
@@ -211,34 +213,34 @@
             <br>
             <div class="row">
                 <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.3s">
-                    <a href="{{ App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->facebook_link }}" target="_blank">
+                    <a href="{{ $siteConfiguration->facebook_link }}" target="_blank">
                         <span class="fa-stack fa">
                             <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                             <i class="fa fa-facebook fa-stack-1x fa-inverse" style="color:#21203a;"></i>
                         </span>
                     </a>
-                    <a href="{{ App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->twitter_link }}" class="footer-social-icon" target="_blank">
+                    <a href="{{ $siteConfiguration->twitter_link }}" class="footer-social-icon" target="_blank">
                         <span class="fa-stack fa">
                             <i class="fa fa-twitter fa-stack-2x fa-inverse"></i>
                         </span>
                     </a>
-                    <a href="{{ App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->youtube_link }}" class="footer-social-icon" target="_blank">
+                    <a href="{{ $siteConfiguration->youtube_link }}" class="footer-social-icon" target="_blank">
                         <span class="fa-stack fa">
                             <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                             <i class="fa fa-youtube fa-stack-1x fa-inverse" style="color:#21203a;"></i>
                         </span>
                     </a>
-                    <a href="{{ App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->linkedin_link }}" class="footer-social-icon" target="_blank">
+                    <a href="{{ $siteConfiguration->linkedin_link }}" class="footer-social-icon" target="_blank">
                         <span class="fa-stack fa">
                             <i class="fa fa-linkedin-square fa-stack-2x fa-inverse"></i>
                         </span>
                     </a>
-                    <a href="{{ App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->google_link }}" class="footer-social-icon" target="_blank">
+                    <a href="{{ $siteConfiguration->google_link }}" class="footer-social-icon" target="_blank">
                         <span class="fa-stack fa">
                             <i class="fa fa-google-plus fa-stack-2x fa-inverse" style="padding:4px; margin-left:-3px; font-size:24px !important;"></i>
                         </span>
                     </a>
-                    <a href="{{ App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->instagram_link }}" class="footer-social-icon" target="_blank">
+                    <a href="{{ $siteConfiguration->instagram_link }}" class="footer-social-icon" target="_blank">
                         <span class="fa-stack fa">
                             <i class="fa fa-instagram fa-stack-2x fa-inverse"></i>
                         </span>
@@ -251,14 +253,14 @@
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
                         <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
                         <li class="footer-list-item"><a href="https://estatebaron.com/blog/" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
-                        <!-- @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_funding_options != '')
-                        <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
+                        <!-- @if($siteConfiguration->show_funding_options != '')
+                        <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->
                         <li class="footer-list-item"><a href="{{route('site.termsConditions')}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
                         <li class="footer-list-item"><a href="https://estatebaron.com/pages/privacy" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
                         <li class="footer-list-item"><a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
-                        <!-- <li class="footer-list-item"><a href="{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
+                        <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
                         <a href="mailto:info@vestabyte.com" style="color:#fed405; font-size: 14px;" class="font-semibold second_color">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61398117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61398117015</a>
