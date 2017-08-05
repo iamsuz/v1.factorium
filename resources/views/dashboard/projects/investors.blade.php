@@ -30,119 +30,154 @@
 				<li style="width: 50%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">Share registry</h3></a></li>
 			</ul>
 			<div class="tab-content">
-				<div id="investors_tab" class="tab-pane fade in active">
+				<div id="investors_tab" class="tab-pane fade in active" style="overflow: scroll;">
 					<style type="text/css">
 						.edit-input{
 							display: none;
 						}
 					</style>
-					<ul class="list-group">
-						@foreach($investments as $investment)
-						<div class="col-md-12 text-center list-group-item" style="padding: 10px 0px;">
-							<div class="col-md-3 text-left">
-								<a href="{{route('dashboard.users.show', [$investment->user_id])}}" >
-									<b>{{$investment->user->first_name}} {{$investment->user->last_name}}</b>
-								</a>
-								<br>{{$investment->user->email}}<br>{{$investment->user->phone_number}}
-								<br>
-								@if($investment->userInvestmentDoc)
-								@if($investment->userInvestmentDoc->where('type','joint_investor')->last())
-								<a href="/{{$investment->userInvestmentDoc->where('type','joint_investor')->last()->path}}">{{$investment->investingJoint->joint_investor_first_name}} {{$investment->investingJoint->joint_investor_last_name}} Doc</a>
-								<br>
-								@endif
-								@if($investment->userInvestmentDoc->where('type','normal_name')->last())
-								<a href="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}">{{$investment->user->first_name}} {{$investment->user->last_name}} Doc</a>
-								@endif
-								@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
-								<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank"> 
-									{{$investment->investingJoint->investing_company}} Doc 
-								</a>
-								@endif
-								@else 
-								NA 
-								@endif
-							</div>
-							<div class="col-md-2 text-right">{{$investment->created_at->toFormattedDateString()}}</div>
-							<div class="col-md-1">
-								<form action="{{route('dashboard.investment.update', $investment->id)}}" method="POST">
-									{{method_field('PATCH')}}
-									{{csrf_field()}}
-									<a href="#" class="edit">${{number_format($investment->amount) }}</a>
+					<table class="table table-bordered table-striped" id="investorsTable" style="margin-top: 2em;">
+						<thead>
+							<tr>
+								<th>Investors Details</th>
+								<th>Investment Date</th>
+								<th>Amount</th>
+								<th>Is Money Received</th>
+								<th>Share Certificate</th>
+								<th>Send Remeinder Email</th>
+								<th>Investment Confirmation</th>
+								<th>Investor Document</th>
+								<th>Joint Investor</th>
+								<th>Company or Trust</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($investments as $investment)
+							<tr>
+								<td>
+									<div class="col-md-3 text-left">
+										<a href="{{route('dashboard.users.show', [$investment->user_id])}}" >
+											<b>{{$investment->user->first_name}} {{$investment->user->last_name}}</b>
+										</a>
+										<br>{{$investment->user->email}}<br>{{$investment->user->phone_number}}
+									</div>
+								</td>
+								<td>
+									<div class="col-md-2 text-right">{{$investment->created_at->toFormattedDateString()}}</div>
+								</td>
+								<td>
+									<div class="col-md-1">
+										<form action="{{route('dashboard.investment.update', $investment->id)}}" method="POST">
+											{{method_field('PATCH')}}
+											{{csrf_field()}}
+											<a href="#" class="edit">${{number_format($investment->amount) }}</a>
 
-									<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}">
-									<input type="hidden" name="investor" value="{{$investment->user->id}}">
-								</form>
-							</div>
-							<div class="col-md-2">
-								<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
-									{{method_field('PATCH')}}
-									{{csrf_field()}}
+											<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}">
+											<input type="hidden" name="investor" value="{{$investment->user->id}}">
+										</form>
+									</div>
+								</td>
+								<td>
+									<div class="col-md-2">
+										<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
+											{{method_field('PATCH')}}
+											{{csrf_field()}}
+											@if($investment->money_received || $investment->accepted)
+											<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
+											@else
+											<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
+											@endif
+										</form>
+									</div>
+								</td>
+								<td>
+									<div class="col-md-2">
+										<form action="{{route('dashboard.investment.accept', $investment->id)}}" method="POST">
+											{{method_field('PATCH')}}
+											{{csrf_field()}}
+
+											{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
+											@if($investment->accepted)
+											<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Share certificate issued</small></i>
+											@else
+											<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue share certificate">
+											@endif
+											<input type="hidden" name="investor" value="{{$investment->user->id}}">
+										</form>
+									</div>
+								</td>
+								<td>
 									@if($investment->money_received || $investment->accepted)
-									<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
 									@else
-									<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
+									<div class="col-md-1" style="text-align: right;">
+										@if(Session::has('action'))
+										@if(Session::get('action') == $investment->id)
+										<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
+										@else
+										<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+										@endif
+										@else
+										<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+										@endif
+									</div>
 									@endif
-								</form>
-							</div>
-							<div class="col-md-2">
-								<form action="{{route('dashboard.investment.accept', $investment->id)}}" method="POST">
-									{{method_field('PATCH')}}
-									{{csrf_field()}}
-
-									{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
-									@if($investment->accepted)
-									<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Share certificate issued</small></i>
+								</td>
+								<td>
+									@if($investment->money_received || $investment->accepted)
 									@else
-									<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue share certificate">
+									<div class="col-md-1" style="text-align: right;">
+										<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
+											{{method_field('PATCH')}}
+											{{csrf_field()}}
+											@if($investment->investment_confirmation == 1)
+											<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
+											@else
+											<a id="confirmation{{$investment->id}}" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
+											<input class="hidden" name="investment_confirmation" value="1">
+											@endif
+											<input type="hidden" name="investor" value="{{$investment->user->id}}">
+										</form>
+										<script>
+											$(document).ready(function() {
+												$('#confirmation{{$investment->id}}').click(function(e){
+													$('#confirmationForm{{$investment->id}}').submit();
+												});
+											});
+										</script>
+									</div>
 									@endif
-									<input type="hidden" name="investor" value="{{$investment->user->id}}">
-								</form>
-							</div>
-							@if($investment->money_received || $investment->accepted)
-							@else
-							<div class="col-md-1" style="text-align: right;">
-								@if(Session::has('action'))
-								@if(Session::get('action') == $investment->id)
-								<i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i>
-								@else
-								<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-								@endif
-								@else
-								<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-								@endif
-							</div>
-							<div class="col-md-1" style="text-align: right;">
-								{{-- @if(Session::has('action'))
-								@if(Session::get('action') == $investment->id)
-								<i class="fa fa-check fa-money" aria-hidden="true" style="color: #6db980;"></i>
-								@else
-								<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
-								@endif
-								@else
-								<a class="send-investment-confirmation" href="{{route('dashboard.investment.confirmation', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
-								@endif --}}
-								<form action="{{route('dashboard.investment.confirmation', $investment->id)}}" method="POST" id="confirmationForm{{$investment->id}}">
-									{{method_field('PATCH')}}
-									{{csrf_field()}}
-
-									{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
-									@if($investment->investment_confirmation == 1)
-									<span data-toggle="tooltip" title="Investment Confirmed"><i class="fa fa-check" aria-hidden="true" style="color: #6db980;"></i><i class="fa fa-money" aria-hidden="true" style="color: #6db980;"></i></span>
+								</td>
+								<td>
+									@if($investment->userInvestmentDoc->where('type','normal_name')->last())
+									<a href="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}" target="_blank">{{$investment->user->first_name}} {{$investment->user->last_name}} Doc</a>
 									@else
-									<a id="confirmation{{$investment->id}}" data-toggle="tooltip" title="Investment Confirmation"><i class="fa fa-money" aria-hidden="true"></i></a>
-									<input class="hidden" name="investment_confirmation" value="1">
+									NA
 									@endif
-									<input type="hidden" name="investor" value="{{$investment->user->id}}">
-								</form>
-								<script>
-									$(document).ready(function() {
-										$('#confirmation{{$investment->id}}').click(function(e){
-											$('#confirmationForm{{$investment->id}}').submit();
-										});
-									});
-								</script>
-							</div>
-							@endif
+								</td>
+								<td>
+									@if($investment->userInvestmentDoc)
+									@if($investment->userInvestmentDoc->where('type','joint_investor')->last())
+									<a href="/{{$investment->userInvestmentDoc->where('type','joint_investor')->last()->path}}" target="_blank">{{$investment->investingJoint->joint_investor_first_name}} {{$investment->investingJoint->joint_investor_last_name}} Doc</a>
+									<br>
+									@else
+									NA
+									@endif
+									@endif
+								</td>
+								<td>
+									@if($investment->userInvestmentDoc)
+										@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
+										<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank"> 
+											{{$investment->investingJoint->investing_company}} Doc 
+										</a>
+										@else
+										NA
+										@endif
+										@else 
+										NA 
+										@endif
+								</td>
+							</tr>
 							{{-- @if($project->projectconfiguration->payment_switch)
 							@else
 							<div class="col-md-1" style="text-align: right;">
@@ -166,9 +201,9 @@
 								</script>
 							</div>
 							@endif --}}
-						</div>
-						@endforeach
-					</ul>
+							@endforeach
+						</tbody>
+					</table>
 				</div>
 
 				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: scroll;">
@@ -271,6 +306,10 @@
 		});
 
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
+			"order": [[5, 'desc'], [0, 'desc']],
+			"iDisplayLength": 50
+		});
+		var investorsTable = $('#investorsTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 50
 		});

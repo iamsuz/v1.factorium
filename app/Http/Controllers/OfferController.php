@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Session;
-use Validator;
 use App\User;
+use Validator;
 use App\Project;
 use App\Http\Requests;
 use App\InvestingJoint;
@@ -54,6 +54,19 @@ class OfferController extends Controller
     
     public function store(Request $request)
     {
+        $validation_rules = array(
+            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
+            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+            'amount_to_invest'   => 'required|integer|min:5000',
+            );
+
+        $validator = Validator::make($request->all(), $validation_rules);
+
+        // Return back to form w/ validation errors & session data as input
+        if($validator->fails()) {
+            return  redirect()->back()->withErrors($validator);
+        }
         $project = Project::findOrFail($request->project_id);
         $user = Auth::user();
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));

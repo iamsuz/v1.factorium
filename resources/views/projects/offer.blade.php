@@ -27,7 +27,7 @@ Offer Doc
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your stockbroker or professional adviser without delay. You should read the entire prospectus carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the prospectus.
 												</p>
 												<label>I/We apply for *</label>
-												<input type="text" name="amount_to_invest" class="form-control" placeholder="$5000" style="width: 60%" id="apply_for" required>
+												<input type="text" name="amount_to_invest" class="form-control" placeholder="5000" style="width: 60%" id="apply_for" required>
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												<label>I/We lodge full Application Money</label>
 												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ 0.00" style="width: 60%" id="application_money">
@@ -61,7 +61,7 @@ Offer Doc
 												<label>Company of Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="First Name" required disabled="disabled">
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled">
 													</div>
 												</div><br>
 											</div>
@@ -106,16 +106,14 @@ Offer Doc
 												@if($user->investmentDoc->where('user_id', $user->id AND 'type','normal_name'))
 												<div class="row">
 													<div class="col-md-6">
-													<a href="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}" target="_blank">Check Your Previosly Uploaded DOC</a>
-														<img src="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}" width="50%" class="img-responsive">
 													</div>
 												</div>
 												<br>
 												@else
+												@endif
 												<label>ID DOCS</label>
 												<input type="file" name="user_id_doc" class="form-control" required><br>
 												<p>If you have not completed your verification process. Please upload a copy of your Driver License or Passport for AML/CTF purposes</p>
-												@endif
 											</div>
 											
 											<div id="joint_investor_docs" style="display: none;">
@@ -472,7 +470,7 @@ Offer Doc
 					$("input[name='investing_company_name']").attr('disabled','disabled');
 					$("input[name='joint_investor_id_doc']").removeAttr('disabled');
 					$("input[name='trust_or_company_docs']").attr('disabled','disabled');
-					$("input[name='id_docs']").removeAttr('disabled');
+					$("input[name='user_id_doc']").removeAttr('disabled');
 				}
 				else
 				{
@@ -486,7 +484,7 @@ Offer Doc
 					$("input[name='investing_company_name']").removeAttr('disabled');
 					$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
 					$("input[name='trust_or_company_docs']").removeAttr('disabled');
-					$("input[name='id_docs']").attr('disabled','disabled');
+					$("input[name='user_id_doc']").attr('disabled','disabled');
 				}
 
 			});
