@@ -75,7 +75,7 @@
 											{{csrf_field()}}
 											<a href="#" class="edit">${{number_format($investment->amount) }}</a>
 
-											<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}">
+											<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}" style="width: 100px;">
 											<input type="hidden" name="investor" value="{{$investment->user->id}}">
 										</form>
 									</div>
@@ -153,6 +153,27 @@
 								<td>
 									@if($investment->userInvestmentDoc->where('type','normal_name')->last())
 									<a href="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}" target="_blank">{{$investment->user->first_name}} {{$investment->user->last_name}} Doc</a>
+									<a href="#" class="pop">
+										<img src="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}" style="width: 300px;" class="img-responsive">
+									</a>
+									<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">              
+												<div class="modal-body">
+													<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+													<img src="" class="imagepreview" style="width: 100%;" >
+												</div>
+											</div>
+										</div>
+									</div>
+									<script>
+										$(function() {
+											$('.pop').on('click', function() {
+												$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+												$('#imagemodal').modal('show');   
+											});		
+										});
+									</script>
 									@else
 									NA
 									@endif
@@ -169,16 +190,16 @@
 								</td>
 								<td>
 									@if($investment->userInvestmentDoc)
-										@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
-										<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank"> 
-											{{$investment->investingJoint->investing_company}} Doc 
-										</a>
-										@else
-										NA
-										@endif
-										@else 
-										NA 
-										@endif
+									@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
+									<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank"> 
+										{{$investment->investingJoint->investing_company}} Doc 
+									</a>
+									@else
+									NA
+									@endif
+									@else 
+									NA 
+									@endif
 								</td>
 							</tr>
 							{{-- @if($project->projectconfiguration->payment_switch)

@@ -54,20 +54,24 @@ class OfferController extends Controller
     
     public function store(Request $request)
     {
+        $project = Project::findOrFail($request->project_id);
+        $min_amount_invest = $project->investment->minimum_accepted_amount;
+        if(!$min_amount_invest < $request->amount_to_invest)
+        {
+            return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
+        }
         $validation_rules = array(
             'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
             'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
             'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
-            'amount_to_invest'   => 'required|integer|min:5000',
+            'amount_to_invest'   => 'required|integer',
             );
-
         $validator = Validator::make($request->all(), $validation_rules);
 
         // Return back to form w/ validation errors & session data as input
         if($validator->fails()) {
             return  redirect()->back()->withErrors($validator);
         }
-        $project = Project::findOrFail($request->project_id);
         $user = Auth::user();
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
