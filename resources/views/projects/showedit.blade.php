@@ -68,7 +68,7 @@
 @if(Auth::guest())
 @else
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-<form method="POST" action="{{route('configuration.updateProjectDetails')}}">
+<form action="{{route('configuration.updateProjectDetails', [$project->id])}}" method="POST">
 	{{csrf_field()}}
 	<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button>
 	<div style="position: fixed;z-index: 100;top: 75%;right: 5%;">

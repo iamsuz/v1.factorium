@@ -654,14 +654,13 @@ class SiteConfigurationsController extends Controller
         return redirect()->back();
     }
 
-    public function updateProjectDetails(Request $request)
+    public function updateProjectDetails(Request $request, $projectId)
     {
         if (Auth::user()->roles->contains('role', 'superadmin')){
             $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
                 ));
-            $projectId = $request->current_project_id;
             Project::where('id', $projectId)->update([
                 'title' => $request->project_title_txt,
                 'description' => $request->project_description_txt,
