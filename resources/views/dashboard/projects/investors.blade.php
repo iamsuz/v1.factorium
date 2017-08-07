@@ -15,9 +15,6 @@
 			@include('dashboard.includes.sidebar', ['active'=>3])
 		</div>
 		<div class="col-md-10">
-			@if (Session::has('message'))
-			{!! Session::get('message') !!}
-			@endif
 			<div class="row">
 				<div class="col-md-12">
 					<h3 class="text-center">{{$project->title}}
@@ -73,7 +70,7 @@
 										<form action="{{route('dashboard.investment.update', $investment->id)}}" method="POST">
 											{{method_field('PATCH')}}
 											{{csrf_field()}}
-											<a href="#" class="edit">${{number_format($investment->amount) }}</a>
+											<a href="#edit" class="edit">${{number_format($investment->amount) }}</a>
 
 											<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}" style="width: 100px;">
 											<input type="hidden" name="investor" value="{{$investment->user->id}}">
@@ -246,12 +243,11 @@
 									<th>Link to share certificate</th>
 									<th>TFN</th>
 									<th>Investment Documents</th>
-									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
 								@foreach($shareInvestments as $shareInvestment)
-								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
+								<tr>
 									<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
 									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
 									<td>{{$shareInvestment->investing_as}}</td>
@@ -268,25 +264,14 @@
 									</td>
 									<td>{{$shareInvestment->amount}}</td>
 									<td>
-										@if($shareInvestment->is_cancelled)
-										<strong>Investment record is cancelled</strong>
-										@else
 										<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
 											Share Certificate
 										</a>
-										@endif
 									</td>
 									<td>
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
 									</td>
 									<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
-									<td>
-										@if($shareInvestment->is_cancelled)
-										<strong>Cancelled</strong>
-										@else
-										<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}">cancel</a>
-										@endif
-									</td>
 								</tr>
 								@endforeach
 							</tbody>
@@ -347,7 +332,7 @@
 		});
 		var investorsTable = $('#investorsTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
-			"iDisplayLength": 50
+			"iDisplayLength": 25
 		});
 
 	});
