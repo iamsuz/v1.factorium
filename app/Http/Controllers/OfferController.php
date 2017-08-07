@@ -56,7 +56,7 @@ class OfferController extends Controller
     {
         $project = Project::findOrFail($request->project_id);
         $min_amount_invest = $project->investment->minimum_accepted_amount;
-        if(!$min_amount_invest < $request->amount_to_invest)
+        if((int)$request->amount_to_invest < (int)$min_amount_invest)
         {
             return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
         }
