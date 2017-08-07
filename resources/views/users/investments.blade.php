@@ -42,7 +42,7 @@
 					<tbody>
 						@if($investments->count())
 						@foreach($investments as $investment)
-							<tr>
+							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
 								<td>{{$investment->amount}}</td>
 								<td>
@@ -57,10 +57,14 @@
 									@endif
 								</td>
 								<td>
+									@if($investment->is_cancelled)
+									<strong>Investment record is cancelled</strong>
+									@else
 									@if($investment->accepted)
 									<a href="{{route('user.view.share', [base64_encode($investment->id)])}}" target="_blank">Share Certificate</a>
 									@else
 									NA
+									@endif
 									@endif
 								</td>
 								<td></td>

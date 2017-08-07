@@ -22,6 +22,9 @@ class AddsColumnToInvestmentInvestorTable extends Migration
             if (!Schema::hasColumn('investment_investor', 'share_certificate_path')) {
                 $table->string('share_certificate_path')->nullable();
             }
+            if (!Schema::hasColumn('investment_investor', 'is_cancelled')) {
+                $table->boolean('is_cancelled')->default(0);
+            }
         });
     }
 
@@ -41,6 +44,9 @@ class AddsColumnToInvestmentInvestorTable extends Migration
             }
             if (Schema::hasColumn('investment_investor', 'share_certificate_path')) {
                 $table->dropColumn('share_certificate_path');
+            }
+            if (Schema::hasColumn('investment_investor', 'is_cancelled')) {
+                $table->dropColumn('is_cancelled');
             }
         });
     }

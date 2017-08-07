@@ -407,4 +407,12 @@ class DashboardController extends Controller
         }
         return redirect()->back();
     }
+
+    public function investmentCancel($investment_id)
+    {
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $investment->is_cancelled = 1;
+        $investment->save();
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Cancelled</p>');        
+    }
 }

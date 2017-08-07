@@ -239,3 +239,4 @@ Route::post('/configuration/updateConversionPixel', ['as'=> 'configuration.updat
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);
+Route::get('/dashboard/projects/{investment_id}/investments/cancel', ['as'=>'dashboard.investment.cancel', 'uses'=>'DashboardController@investmentCancel']);
