@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use App\SiteConfiguration;
 
 class UsersController extends Controller
 {
@@ -55,7 +56,9 @@ class UsersController extends Controller
     public function create()
     {
         $color = Color::where('project_site',url())->first();
-        return view('users.create',compact('color'));
+        $siteConfiguration = SiteConfiguration::all();
+        $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
+        return view('users.create',compact('color', 'siteConfiguration'));
     }
     
 

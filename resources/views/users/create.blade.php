@@ -63,7 +63,7 @@ Sign up for free Australia's top Venture Crowdfunding
 							<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s">
 								<div class="btn-group" data-toggle="buttons">
 									<input type="radio" name="role" id="investor_role" autocomplete="off" value="investor" checked tabindex="1"><span class="font-regular" style="font-size:0.875em; color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I am an Investor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-									<input type="radio" name="role" id="developer_role" autocomplete="off" value="developer" tabindex="2"><span class="font-regular" style="font-size:0.875em;color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I have a venture </span>
+									<div class="venture @if($siteConfiguration->show_funding_options == '') hide @endif" style="display: inline;"><input type="radio" name="role" id="developer_role" autocomplete="off" value="developer" tabindex="2"><span class="font-regular" style="font-size:0.875em;color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I have a venture </span></div>
 								</div>
 							</div>
 						</div><br>
