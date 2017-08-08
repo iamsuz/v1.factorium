@@ -157,8 +157,7 @@
 							<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
 								@if($project->investment)
 								${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">
-									<input type="text" name="project_goal_amount_txt" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}" style="padding-left: 2px; padding-right: 2px;">
-								</span>
+								<input type="text" name="project_goal_amount_txt" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}" style="padding-left: 2px; padding-right: 2px;"></span>
 								@endif
 							</span>
 						</div>
@@ -194,11 +193,11 @@
 					<div class="doc-references">
 						@if($project->documents)
 						@foreach($project->documents->where('type','reference_document')->where('project_site', url())->all() as $document)
-							<div class="col-md-3 text-left">
-								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-								<input type="text" name="doc_ref_title[]" class="form-control" placeholder="Title" value="{{$document->filename}}">
-								<input type="text" name="doc_ref_link[]" class="form-control" placeholder="Document Link" @if(Auth::check()) value="{{$document->path}}" @endif>
-							</div>
+						<div class="col-md-3 text-left">
+							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+							<input type="text" name="doc_ref_title[]" class="form-control" placeholder="Title" value="{{$document->filename}}">
+							<input type="text" name="doc_ref_link[]" class="form-control" placeholder="Document Link" @if(Auth::check()) value="{{$document->path}}" @endif>
+						</div>
 						@endforeach
 						@endif
 					</div>
@@ -327,7 +326,7 @@
 							<div class="address-update">
 								<section> <div class="row well"> <div class="col-md-12"> <fieldset> <div class="row"> <div class="form-group @if($errors->first('line_1') && $errors->first('line_2')){{'has-error'}} @endif"> {!!Form::label('line_1', 'Lines', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('line_1')){{'has-error'}} @endif"> {!! Form::text('line_1', $project->location->line_1, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'3')) !!} {!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif"> {!! Form::text('line_2', $project->location->line_2, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'4')) !!} {!! $errors->first('line_2', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> <div class="row"> <div class="form-group @if($errors->first('city') && $errors->first('state')){{'has-error'}} @endif"> {!!Form::label('city', 'City', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif"> {!! Form::text('city', $project->location->city, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'5')) !!} {!! $errors->first('city', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif"> {!! Form::text('state', $project->location->state, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'6')) !!} {!! $errors->first('state', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> <div class="row"> <div class="form-group @if($errors->first('postal_code') && $errors->first('country')){{'has-error'}} @endif"> {!!Form::label('postal_code', 'postal code', array('class'=>'col-sm-2 control-label'))!!} <div class="col-sm-9"> <div class="row"> <div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif"> {!! Form::text('postal_code', $project->location->postal_code, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'7')) !!} {!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!} </div> <div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif"> <select name="country" class="form-control" tabindex="8"> @foreach(\App\Http\Utilities\Country::aus() as $country => $code) <option value="{{$code}}" @if($project->location->country_code == $code) selected @endif>{{$country}}</option> @endforeach </select> {!! $errors->first('country', '<small class="text-danger">:message</small>') !!} </div> </div> </div> </div> </div> </fieldset> </div> </div> </section>
 							</div>
-							
+
 							<div class="row show_marketability_section" @if(!$project->projectconfiguration->show_marketability_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
 									<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/marketability.png')}}@endif" alt="for whom" style="width:50px; ">
@@ -547,17 +546,24 @@
 								{{$faq->id}}
 								<p class="text-justify">{{$faq->answer}}</p>
 							</div>
-							{{-- <div class="col-md-2"> 
-								{!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $faq->id, $project->id]]) !!}
-								{!! Form::submit('Delete this FAQ?', ['class' => 'btn btn-danger']) !!}
+							<div class="col-md-2"> 
+								{!! Form::open(['route' => ['projects.destroy', $faq->id, $project->id],'id'=>'faq_form_'.$faq->id]) !!}
+								<button class="btn btn-danger" id="delete_faq_{{$faq->id}}">Delete this FAQ?</button>
 								{!! Form::close() !!}
-							</div> --}}
+							</div>
+							<script>
+								$(document).ready(function() {
+									$('#delete_faq_{{$faq->id}}').click(function(){
+										$('#faq_form_{{$faq->id}}').submit();
+									});
+								});
+							</script>
 							@endforeach
 						</div>
 						<br>
-						{{-- <div class="row">
+						<div class="row">
 							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+								{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form','id'=>'add_new_faq')) !!}
 								<fieldset>
 									<div class="row">
 										<div class="form-group @if($errors->first('question')){{'has-error'}} @endif">
@@ -588,14 +594,22 @@
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-9">
-												{!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
+												{{-- {!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!} --}}
+												<button class="btn btn-danger" id="add_faq">Add New FAQ</button>
 											</div>
 										</div>
 									</div>
 								</fieldset>
 								{!! Form::close() !!}
+								<script>
+								$(document).ready(function() {
+									$('#add_faq').click(function(){
+										$('#add_new_faq').submit();
+									});
+								});
+							</script>
 							</div>
-						</div> --}}
+						</div>
 					</div>
 				</div>
 			</section>
@@ -795,31 +809,31 @@
 				</div>
 			</div>
 		</div>
-@if(Auth::guest())
-@else
-@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
-</form>
-@endif
-@endif
-<div id="menu1" class="tab-pane fade" style="color: #000;">
-	<div class="container">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th style="width: 140px;">Date of Progress</th>
-					<th>Description</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($project_prog as $project_progs)
-				<tr>
-					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
-					</td>
-					<td>{{$project_progs->progress_description}} </td>
-					<td>{{$project_progs->progress_details}}
-						<br>
-						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
+		@if(Auth::guest())
+		@else
+		@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
+	</form>
+	@endif
+	@endif
+	<div id="menu1" class="tab-pane fade" style="color: #000;">
+		<div class="container">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="width: 140px;">Date of Progress</th>
+						<th>Description</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($project_prog as $project_progs)
+					<tr>
+						<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
+						</td>
+						<td>{{$project_progs->progress_description}} </td>
+						<td>{{$project_progs->progress_details}}
+							<br>
+							<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
 							@if($project_progs->image_path != '')
 							<div class="row">
 								<div class="col-md-10 change_column">
@@ -837,19 +851,19 @@
 					@endforeach
 				</tbody>
 			</table>
-			{{-- @if(Auth::user())
-			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-			<h3 style="color: #000;">Upload a Images</h3>
-			<div class="row">
-				<div class="col-md-12">
-					{!! Form::open(array('route'=>['configuration.uploadprogress', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-					{!! Form::close() !!}
-				</div>
-			</div>
-			@endif
-			@endif--}}
-		</div>
-	</div>
+{{-- @if(Auth::user())
+@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+<h3 style="color: #000;">Upload a Images</h3>
+<div class="row">
+<div class="col-md-12">
+{!! Form::open(array('route'=>['configuration.uploadprogress', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+{!! Form::close() !!}
+</div>
+</div>
+@endif
+@endif--}}
+</div>
+</div>
 </div>
 <div class="row">
 	<div class="text-center">
@@ -921,8 +935,7 @@
 			var closeYear = fund_close_date.getFullYear();
 			var closeMonth = fund_close_date.getMonth()+1;
 			var closeDate = fund_close_date.getDate();
-			if((closeYear == now.getFullYear()) && (closeMonth == eval(now.getMonth()+1)) && (closeDate == now.getDate())){
-				// Variable to check whether the fund_close_date is passed. 
+			if((closeYear == now.getFullYear()) && (closeMonth == eval(now.getMonth()+1)) && (closeDate == now.getDate())){ 
 				daysPassedCheck = 0;
 			} else {
 				daysPassedCheck = 1;
@@ -1089,7 +1102,7 @@
 		var rgbaColor = 'rgba(45, 45, 75, {{$project->projectconfiguration->overlay_opacity}})';
 		$('.main-fold-overlay-color').css('background', rgbaColor);
 		@endif
-
+		
 		//Edit Project Page Details by Admin
 		editProjectPageDetailsByAdmin();
 		//Edit Project Page Background Image
@@ -1372,7 +1385,7 @@
 			});			
 		});
 	}
-	
+
 	function editProjectPageSubHeadings(){
 		$('.edit-sub-headings').click(function(){
 			$(this).attr('disabled', true);
@@ -1400,7 +1413,7 @@
 			$('.show-rationale-input').html('<input type="text" name="rationale_label" id="rationale_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->rationale_label))}}@endif"  placeholder="Rationale">');
 			$('.show-risk-input').html('<input type="text" name="investment_risk_label" id="investment_risk_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@endif"  placeholder="Risk">');
 		});
-		
+
 		$('.save-sub-headings').click(function(){
 			var project_details_tab_label = $('#project_details_tab_label').val();
 			var project_progress_tab_label = $('#project_progress_tab_label').val();
@@ -1786,8 +1799,8 @@
 		$('#project_progress_image').change(function(e){
 			var file = $('#project_progress_image')[0].files[0];
 			if (file){
-               	$('#progress_image_name').val(file.name);
-	       	}
+				$('#progress_image_name').val(file.name);
+			}
 		});
 		$('#project_progress_form').submit(function(e){
 			$('.loader-overlay').show();
