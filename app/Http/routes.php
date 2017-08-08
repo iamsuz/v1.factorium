@@ -136,7 +136,7 @@ Route::post('projects/{projects}/photos2', ['as'=>'projects.storePhotoInvestment
 Route::post('projects/{projects}/photos6', ['as'=>'projects.storePhotoExit', 'uses'=>'ProjectsController@storePhotoExit']);
 Route::post('projects/{projects}/investments', ['as'=>'projects.investments', 'uses'=>'ProjectsController@storeInvestmentInfo']);
 Route::post('projects/{projects}/faq', ['as'=>'projects.faq', 'uses'=>'ProjectsController@storeProjectFAQ']);
-Route::delete('projects/{projects}/faq/{faq_id}', ['as'=>'projects.destroy', 'uses'=>'ProjectsController@deleteProjectFAQ']);
+Route::post('projects/{projects}/faq/{faq_id}', ['as'=>'projects.destroy', 'uses'=>'ProjectsController@deleteProjectFAQ']);
 
 Route::get('projects/invite/users', ['as'=>'projects.invite.only', 'uses'=>'ProjectsController@showInvitation']);
 Route::post('projects/invite/users', ['as'=>'projects.invitation.store', 'uses'=>'ProjectsController@postInvitation']);
@@ -190,7 +190,7 @@ Route::post('/siteconfiguration/progress/{id}/images', ['as'=>'configuration.upl
 Route::post('/siteconfiguration/gallary/{id}/images1', ['as'=>'configuration.uploadGallaryImage','uses'=>'SiteConfigurationsController@uploadGallaryImage']);
 Route::post('/configuration/uploadHowItWorksImages', ['as'=>'configuration.uploadHowItWorksImages', 'uses'=>'SiteConfigurationsController@uploadHowItWorksImages']);
 Route::post('/siteconfiguration/progress/{id}/details', ['as'=>'configuration.addprogress','uses'=>'SiteConfigurationsController@addProgressDetails']);
-Route::post('/configuration/updateProjectDetails/{project_id}', ['as'=>'configuration.updateProjectDetails', 'uses'=>'SiteConfigurationsController@updateProjectDetails']);
+Route::POST('/configuration/updateProjectDetails/{project_id}', ['as'=>'configuration.updateProjectDetails', 'uses'=>'SiteConfigurationsController@updateProjectDetails']);
 Route::post('/configuration/uploadProjectPgBackImg', ['as'=>'configuration.uploadProjectPgBackImg', 'uses'=>'SiteConfigurationsController@uploadProjectPgBackImg']);
 Route::post('/configuration/editHomePgFundingSectionContent', ['as'=>'configuration.editHomePgFundingSectionContent', 'uses'=>'SiteConfigurationsController@editHomePgFundingSectionContent']);
 Route::post('/configuration/uploadprojectPgThumbnailImages', ['as'=>'configuration.uploadprojectPgThumbnailImages', 'uses'=>'SiteConfigurationsController@uploadprojectPgThumbnailImages']);
@@ -240,3 +240,9 @@ Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.change
 Route::resource('offer', 'OfferController');
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);
 Route::get('/dashboard/projects/{investment_id}/investments/cancel', ['as'=>'dashboard.investment.cancel', 'uses'=>'DashboardController@investmentCancel']);
+
+
+
+// Mail 
+Route::get('/dashboard/projects/{investment_id}/investors/imgdoc',['as'=>'dashboard.userdoc.upload','uses'=>'DashboardController@newUserDoc']);
+Route::get('/dashboard/projects/{investment_id}/investors/imgdoc/verify',['as'=>'dashboard.userdoc.verify','uses'=>'DashboardController@verifyUserDoc']);
