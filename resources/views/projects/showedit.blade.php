@@ -547,15 +547,15 @@
 								{{$faq->id}}
 								<p class="text-justify">{{$faq->answer}}</p>
 							</div>
-							<div class="col-md-2"> 
+							{{-- <div class="col-md-2"> 
 								{!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $faq->id, $project->id]]) !!}
 								{!! Form::submit('Delete this FAQ?', ['class' => 'btn btn-danger']) !!}
 								{!! Form::close() !!}
-							</div>
+							</div> --}}
 							@endforeach
 						</div>
 						<br>
-						<div class="row">
+						{{-- <div class="row">
 							<div class="col-md-12">
 								{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
 								<fieldset>
@@ -595,7 +595,7 @@
 								</fieldset>
 								{!! Form::close() !!}
 							</div>
-						</div>
+						</div> --}}
 					</div>
 				</div>
 			</section>
