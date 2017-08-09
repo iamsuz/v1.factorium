@@ -316,6 +316,24 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendInvestmentCancellationConfirmationToUser($investment, $shareInit, $investing, $shareStart, $shareEnd)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = [];
+        // $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $investment->user->email;
+        $this->bcc = $recipients;
+        $this->view = 'emails.investmentCancelNotification';
+        $this->subject = 'Your investment in '.$investment->project->title.' has been cancelled';
+        $this->data = compact('investment', 'shareInit', 'investing','shareStart', 'shareEnd');
+        $this->deliverWithBcc();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();

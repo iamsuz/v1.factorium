@@ -408,11 +408,31 @@ class DashboardController extends Controller
         return redirect()->back();
     }
 
-    public function investmentCancel($investment_id)
+    public function investmentCancel($investment_id, AppMailer $mailer)
     {
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investment->is_cancelled = 1;
         $investment->save();
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Cancelled</p>');        
+
+        $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
+                            ->where('accepted', 1)
+                            ->orderBy('share_certificate_issued_at','DESC')->get()
+                            ->first();
+        $shareInit = 0;
+        if($investmentShares){
+            if($investmentShares->share_number){
+                $shareNumber = explode('-', $investmentShares->share_number);
+                $shareInit = $shareNumber[1]; 
+            }
+        }
+        $shareStart = $shareInit+1;
+        $shareEnd = $shareInit+$investment->amount;
+        $shareCount = (string)($shareStart)."-".(string)($shareEnd);
+
+        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
+        
+        $mailer->sendInvestmentCancellationConfirmationToUser($investment, $shareInit, $investing, $shareStart, $shareEnd);
+
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Cancelled</p>');
     }
 }
