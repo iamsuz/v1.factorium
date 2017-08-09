@@ -20,7 +20,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.css">
 <!-- Summernote -->
 {!! Html::style('/assets/plugins/summernote/summernote.css') !!}
 @parent
@@ -657,7 +656,6 @@
 						<div class="text-center"><label><input type="checkbox" name="show_suburb_profile_map" id="show_suburb_profile_map" data-toggle="toggle" @if($project->projectconfiguration)@if($project->projectconfiguration->show_suburb_profile_map) checked @endif @endif>&nbsp;Show Map</label></div>
 						@endif
 						@endif
-						<div class="set_zoom"></div> <!-- Set Map Default Zoom Level -->
 						<br><br>
 						@if($project->projectconfiguration)
 						@if($project->projectconfiguration->show_suburb_profile_map)
@@ -1855,7 +1853,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script> -->
 <!-- Summernote editor -->
 {!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
 <script>
@@ -2104,7 +2102,7 @@
 		});
 	}
 
-	function setProjectDetailsEditable(){
+/*	function setProjectDetailsEditable(){
 		$('.set_zoom').html('<div class="form-group" style="width: 450px; float: left;"> <label for="demo2" class="col-md-4 control-label">Set Map Zoom Level (upto 22x):</label> <input id="demo2" type="number" value="{{nl2br(e($project->location->zoom_level))}}" name="zoom_level" class="col-md-8 form-control "> </div> </form>');
 	    $("input[name='zoom_level']").TouchSpin({
 	        min: 1,
@@ -2112,9 +2110,8 @@
 	        stepinterval: 50,
 	        maxboostedstep: 10000000,
 	        postfix: 'X',
-	    });
-		//Do		
-	}
+	    });		
+	}*/
 
 	function setSummernoteEditboxToTextarea(){
 		$('.rich-text-element').summernote({

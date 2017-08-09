@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.css">
 @parent
 <style>
 	#map {
@@ -44,10 +45,11 @@
 	function initMap() {
 		var lat = {{$project->location->latitude}}
 		var lng = {{$project->location->longitude}}
+		var map_zoom = {{$project->location->zoom_level}}
 		var mycenter = new google.maps.LatLng(lat,lng);
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: lat, lng: lng},
-			zoom: 10,
+			zoom: map_zoom,
 			scrollwheel: false,
 			navigationControl: false,
 			mapTypeControl: false,
@@ -312,6 +314,7 @@
 							<h2 class="text-center first_color show-suburb-profile-input" style="font-size:2.625em;color:#282a73;">@if($project->projectconfiguration){{$project->projectconfiguration->suburb_profile_label}}@else Suburb Profile @endif </h2>
 							<br>
 							<br><br>
+							<div class="set_zoom"></div> <!-- Set Map Default Zoom Level -->
 							@if($project->projectconfiguration)
 							@if($project->projectconfiguration->show_suburb_profile_map)
 							<div class="row">
@@ -903,6 +906,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script> <!-- Bootstrap Touchspin Plugin for Zoom feature for admin maps -->
 <!-- Summernote editor -->
 {!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
 <script>
@@ -1130,6 +1134,8 @@
 		togglePaymentSwitch();
 		projectProgress();
 		addDocRefFields();
+		//Map Zoom feature for admin 
+		mapZoomFeature();
 
 		$('#myCarousel').addClass('carousel slide');
 	});
@@ -1138,6 +1144,17 @@
 		$('.save-project-details-floating-btn').click(function(e){
 			$('.store-project-page-details-btn').trigger('click');
 		});
+	}
+
+	function mapZoomFeature(){
+		$('.set_zoom').html('<div class="form-group" style="width: 450px; float: left;"> <label for="demo2" class="col-md-4 control-label">Set Map Zoom Level (upto 22x):</label> <input id="demo2" type="number" value="{{nl2br(e($project->location->zoom_level))}}" name="zoom_level" class="col-md-8 form-control "> </div> </form>');
+	    $("input[name='zoom_level']").TouchSpin({
+	        min: 1,
+	        max: 22,
+	        stepinterval: 50,
+	        maxboostedstep: 10000000,
+	        postfix: 'X',
+	    });
 	}
 
 	function editProjectPageBackImg(){
