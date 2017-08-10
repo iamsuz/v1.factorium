@@ -237,15 +237,21 @@
 							<thead>
 								<tr>
 									<th>Share numbers</th>
+									<th>Project SPV Name</th>
 									<th>Investor Name</th>
 									<th>Investment type</th>
 									<th>Joint Investor Name</th>
 									<th>Entity details</th>
+									<th>Phone</th>
+									<th>Email</th>
 									<th>Address</th>
 									<th>Share face value</th>
 									<th>Link to share certificate</th>
 									<th>TFN</th>
 									<th>Investment Documents</th>
+									<th>Account Name</th>
+									<th>BSB</th>
+									<th>Account Number</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -253,10 +259,13 @@
 								@foreach($shareInvestments as $shareInvestment)
 								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
 									<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
+									<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
 									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
 									<td>{{$shareInvestment->investing_as}}</td>
 									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
 									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
+									<td>{{$shareInvestment->user->phone_number}}</td>
+									<td>{{$shareInvestment->user->email}}</td>
 									<td>
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
@@ -280,6 +289,9 @@
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
 									</td>
 									<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->withdraw_account_name}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->withdraw_bsb}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->withdraw_account_number}} @endif</td>
 									<td>
 										@if($shareInvestment->is_cancelled)
 										<strong>Cancelled</strong>

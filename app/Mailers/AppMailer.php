@@ -319,8 +319,7 @@ class AppMailer
     public function sendInvestmentCancellationConfirmationToUser($investment, $shareInit, $investing, $shareStart, $shareEnd)
     {
         $role = Role::findOrFail(1);
-        $recipients = [];
-        // $recipients = ['info@estatebaron.com'];
+        $recipients = ['info@estatebaron.com'];
         foreach ($role->users as $user) {
             if($user->registration_site == url()){
                 array_push($recipients, $user->email);
