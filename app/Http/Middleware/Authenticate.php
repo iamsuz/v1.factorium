@@ -38,7 +38,9 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('users/login')->withMessage('<p class="alert alert-warning text-center ">please login</p>');
+                $url_array = parse_url($request->url());
+                $path = ltrim($url_array['path'], '/');
+                return redirect()->guest('users/login?next='.$path)->withMessage('<p class="alert alert-warning text-center ">please login</p>');
             }
         }
         return $next($request);

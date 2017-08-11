@@ -80,7 +80,7 @@ class UserAuthController extends Controller
             if($request->next){
                 $this->redirectTo = "/".$request->next;
             }
-            if($request->redirectNotification){
+            elseif($request->redirectNotification){
                 $this->redirectTo = "/users/".Auth::User()->id."/notification";
             }
             else{
