@@ -623,16 +623,16 @@ Project Name: <b>{{$project['title']}}</b></span></span></span>
         <!--[if mso]>
         <td valign="top" width="600" style="width:600px;">
         <![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
 
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 
-<span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:info@estatebaron.com" target="_blank">info@estatebaron.com</a><!-- <br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br />Live Chat:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;<a title="Vestabyte.com" href="http://Vestabyte.com">Vestabyte.com --></span></span></span></div><br>
+<span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:info@estatebaron.com" target="_blank">info@estatebaron.com</a> --><!-- <br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br />Live Chat:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;<a title="Vestabyte.com" href="http://Vestabyte.com">Vestabyte.com --><!-- </span></span></span></div><br>
 
                         </td>
                     </tr>
-                </tbody></table>
+                </tbody></table> -->
         <!--[if mso]>
         </td>
         <![endif]-->

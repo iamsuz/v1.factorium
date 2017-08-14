@@ -776,6 +776,7 @@ class ProjectsController extends Controller
             'spv_contact_number' => $request->spv_contact_number,
             'spv_md_name' => $request->spv_md_name,
             'certificate_frame' => $request->certificate_frame,
+            'spv_email' => $request->spv_email,
             ]);
         if($spv_result)
         {

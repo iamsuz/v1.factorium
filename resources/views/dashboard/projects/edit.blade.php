@@ -1551,6 +1551,19 @@ Edit {{$project->title}} | Dashboard | @parent
 										</div>
 									</div>
 									<div class="row">
+										<div class="form-group @if($errors->first('spv_email')){{'has-error'}} @endif">
+											{!!Form::label('spv_email', 'Project SPV Email', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('spv_email')){{'has-error'}} @endif">
+														{!! Form::email('spv_email', $project->projectspvdetail?$project->projectspvdetail->spv_email:null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'29', 'id'=>'spv_email')) !!}
+														{!! $errors->first('spv_email', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
 										<div class="form-group @if($errors->first('spv_md_name')){{'has-error'}} @endif">
 											{!!Form::label('spv_md_name', 'Project SPV MD Name', array('class'=>'col-sm-2 control-label'))!!}
 											<div class="col-sm-9">
