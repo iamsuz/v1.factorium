@@ -58,12 +58,12 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendInterestNotificationInvestor(User $user, Project $project, $investment)
+    public function sendInterestNotificationInvestor(User $user, Project $project)
     {
         $this->to = $user->email;
         $this->view = 'emails.interest';
         $this->subject = 'Application Received for '.$project->title;
-        $this->data = compact('user', 'project', 'investment');
+        $this->data = compact('user', 'project');
 
         $this->deliver();
     }
@@ -114,7 +114,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendInterestNotificationAdmin(Project $project, User $investor, $investment)
+    public function sendInterestNotificationAdmin(Project $project, User $investor)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -127,7 +127,7 @@ class AppMailer
         $this->to = $recipients;
         $this->view = 'emails.admin';
         $this->subject = 'Application Received for '.$project->title;
-        $this->data = compact('project', 'investor', 'investment');
+        $this->data = compact('project', 'investor');
 
         $this->deliver();
     }
