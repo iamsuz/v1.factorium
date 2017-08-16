@@ -694,6 +694,22 @@
 					</div>
 				</div>
 			</section>
+			<br><br>
+			<div class="row" style="margin-left: 5em;">
+				<div class="form-group @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
+					{!!Form::label('investments_structure_video_url', 'Investment Structure Video URL', array('class'=>'col-sm-2 control-label'))!!}
+					<div class="col-sm-9">
+						<div class="row">
+							<div class="col-sm-5 @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
+								<div class="">
+									{!! Form::text('investments_structure_video_url', $project->investment?$project->investment->investments_structure_video_url:null, array('placeholder'=>'Investment Structure Video URL', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+									{!! $errors->first('investments_structure_video_url', '<small class="text-danger">:message</small>') !!}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<section class="chunk-box @if($project->investment->investments_structure_video_url == "") hide @endif">
 				<div class="container">
 					<div class="row">

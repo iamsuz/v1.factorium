@@ -694,6 +694,7 @@ class SiteConfigurationsController extends Controller
                 'bsb' => trim($request->bsb_name),
                 'bank_account_number' => trim($request->account_number),
                 'bank_reference' => trim($request->bank_reference),
+                'investments_structure_video_url' => $request->investments_structure_video_url,
                 ]);
                 $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
                 $response = \Geocoder::geocode('json', $param);
