@@ -486,6 +486,24 @@
 			@endif
 		</div>
 	</section>
+	<section class="chunk-box @if($project->investment->investments_structure_video_url == "") hide @endif">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-offset-1 col-md-10">
+					<h2 class="text-center" style="font-weight:100">EXPLAINER <span style="color:#1D92E8;">VIDEO</span></h2>
+					<br>
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1 text-center">
+							<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
+								<iframe class="embed-responsive-item" width="100%" height="100%" src="@if($project->investment){{$project->investment->investments_structure_video_url}}@endif" frameborder="0" allowfullscreen></iframe>
+								{{-- <h4 style="margin-top:0px;"><small>Video</small></h4> --}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 	<section>
 		<div class="container">
 			@if(Auth::guest())
@@ -1494,24 +1512,6 @@
 		</div>
 	</div>
 </section> -->
-<section class="chunk-box @if($project->investment->investments_structure_video_url == "") hide @endif">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
-				<h2 class="text-center" style="font-weight:100">EXPLAINER <span style="color:#1D92E8;">VIDEO</span></h2>
-				<br>
-				<div class="row">
-					<div class="col-md-10 col-md-offset-1 text-center">
-						<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
-							<iframe class="embed-responsive-item" width="100%" height="100%" src="@if($project->investment){{$project->investment->investments_structure_video_url}}@endif" frameborder="0" allowfullscreen></iframe>
-							{{-- <h4 style="margin-top:0px;"><small>Video</small></h4> --}}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
 <!-- <section class="chunk-box">
 	<div class="container">
 		<div class="row">

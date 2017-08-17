@@ -251,6 +251,40 @@
 					@endif
 				</div>
 			</section>
+			<br><br>
+			<div class="row" style="margin-left: 5em;">
+				<div class="form-group @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
+					{!!Form::label('investments_structure_video_url', 'Investment Structure Video URL', array('class'=>'col-sm-2 control-label'))!!}
+					<div class="col-sm-9">
+						<div class="row">
+							<div class="col-sm-5 @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
+								<div class="">
+									{!! Form::text('investments_structure_video_url', $project->investment?$project->investment->investments_structure_video_url:null, array('placeholder'=>'Investment Structure Video URL', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+									{!! $errors->first('investments_structure_video_url', '<small class="text-danger">:message</small>') !!}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<section class="chunk-box @if($project->investment->investments_structure_video_url == "") hide @endif">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-offset-1 col-md-10">
+							<h2 class="text-center" style="font-weight:100">EXPLAINER <span style="color:#1D92E8;">VIDEO</span></h2>
+							<br>
+							<div class="row">
+								<div class="col-md-10 col-md-offset-1 text-center">
+									<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
+										<iframe class="embed-responsive-item" width="100%" height="100%" src="@if($project->investment){{$project->investment->investments_structure_video_url}}@endif" frameborder="0" allowfullscreen></iframe>
+										{{-- <h4 style="margin-top:0px;"><small>Video</small></h4> --}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 			<section>
 				<div class="container">
 					<div class="row show_project_summary_whole_section" @if(!$project->projectconfiguration->show_project_summary_whole_section) style="display: none;" @endif>
@@ -688,40 +722,6 @@
 										</div>
 									</div>
 									@endforeach
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			<br><br>
-			<div class="row" style="margin-left: 5em;">
-				<div class="form-group @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
-					{!!Form::label('investments_structure_video_url', 'Investment Structure Video URL', array('class'=>'col-sm-2 control-label'))!!}
-					<div class="col-sm-9">
-						<div class="row">
-							<div class="col-sm-5 @if($errors->first('investments_structure_video_url')){{'has-error'}} @endif">
-								<div class="">
-									{!! Form::text('investments_structure_video_url', $project->investment?$project->investment->investments_structure_video_url:null, array('placeholder'=>'Investment Structure Video URL', 'class'=>'form-control', 'tabindex'=>'5')) !!}
-									{!! $errors->first('investments_structure_video_url', '<small class="text-danger">:message</small>') !!}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<section class="chunk-box @if($project->investment->investments_structure_video_url == "") hide @endif">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-offset-1 col-md-10">
-							<h2 class="text-center" style="font-weight:100">EXPLAINER <span style="color:#1D92E8;">VIDEO</span></h2>
-							<br>
-							<div class="row">
-								<div class="col-md-10 col-md-offset-1 text-center">
-									<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
-										<iframe class="embed-responsive-item" width="100%" height="100%" src="@if($project->investment){{$project->investment->investments_structure_video_url}}@endif" frameborder="0" allowfullscreen></iframe>
-										{{-- <h4 style="margin-top:0px;"><small>Video</small></h4> --}}
-									</div>
 								</div>
 							</div>
 						</div>
