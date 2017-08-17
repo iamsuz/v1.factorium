@@ -271,7 +271,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-offset-1 col-md-10">
-							<h2 class="text-center" style="font-weight:100">EXPLAINER <span style="color:#1D92E8;">VIDEO</span></h2>
+							<h2 class="text-center first_color" style="font-weight:100">EXPLAINER <span>VIDEO</span></h2>
 							<br>
 							<div class="row">
 								<div class="col-md-10 col-md-offset-1 text-center">
