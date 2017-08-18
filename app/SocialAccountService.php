@@ -15,7 +15,7 @@ class SocialAccountService
         $account = SocialAccount::whereProvider('facebook')
         ->whereProviderUserId($providerUser->getId())
         ->first();
-
+        $referrer = '';
         if ($account) {
             // dd($account->user);
             return $account->user;

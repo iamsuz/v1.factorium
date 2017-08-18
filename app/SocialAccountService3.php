@@ -15,6 +15,7 @@ class SocialAccountService3
         $account = SocialAccount::whereProvider('google')
         ->whereProviderUserId($providerUser->getId())
         ->first();
+        $referrer = '';
         if ($account) {
             // dd($account->user);
             return $account->user;
