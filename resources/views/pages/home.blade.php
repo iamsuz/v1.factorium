@@ -939,7 +939,7 @@
       <span class="show-add-testimonial-form" style="cursor: pointer;"><i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;Add Testimonials</span>
       <div class="add-testimonial-form col-md-12" style="display: none;">
         <div class="col-md-6 col-md-offset-3 " style="border:1px solid #eee; border-radius: 5px; padding: 3%; margin-bottom: 3%">
-          {!! Form::open(array('route'=>['pages.testimonial.store'], 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true)) !!}
+          {!! Form::open(array('route'=>['pages.testimonial.store'], 'class'=>'form-horizontal', 'role'=>'form', 'name' => 'testimonial_form', 'files'=>true)) !!}
             
             {!!Form::label('user_name', 'Name', array('class'=>'control-label'))!!}
             {!! Form::text('user_name', null, array('placeholder'=>'User Name', 'class'=>'form-control', 'tabindex'=>'1','required'=>'yes')) !!}
@@ -957,7 +957,7 @@
             <div class="input-group">
               <label class="input-group-btn">
                 <span class="btn btn-primary" style="padding: 10px 12px;">
-                  Browse&hellip; <input type="file" name="user_image_url" id="testimonial_img_thumbnail" class="form-control" required="yes" action="testimonial_image" style="display: none;">
+                  Browse&hellip; <input type="file" name="user_image_url" id="testimonial_img_thumbnail" class="form-control" action="testimonial_image" style="display: none;">
                 </span>
               </label>
               <input type="text" class="form-control" id="testimonial_image_name" readonly>
@@ -990,7 +990,7 @@
         @endif
         <div style="border-left: 5px solid #ddd;">
           <center>
-            <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
+            <img src="@if($testimonial->user_image_url != ''){{asset($testimonial->user_image_url)}}@else{{asset('assets/images/default-1.png')}}@endif" class="img-circle"  width="200" height="200">
           </center>
         </div>
         <span style="font-style: italic; float: left;"><b>{{$testimonial->user_name}}</b></span><br>
@@ -1024,7 +1024,7 @@
         @endif
         <div style="border-left: 5px solid #ddd;">
           <center>
-            <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
+            <img src="@if($testimonial->user_image_url != ''){{asset($testimonial->user_image_url)}}@else{{asset('assets/images/default-1.png')}}@endif" class="img-circle"  width="200" height="200">
           </center>
         </div>
         <span style="font-style: italic; float: left;"><b>{{$testimonial->user_name}}</b></span><br>

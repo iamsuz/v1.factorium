@@ -489,10 +489,13 @@ class PagesController extends Controller
             'user_name'=>'required',
             'user_summary'=>'required',
             'user_content'=>'required',
-            'user_image_url'=>'required|mimes:jpeg,bmp,png,jpg,JPG',
-            'testimonial_img_path' => 'required',
             ));
-
+        if($request->user_image_url){
+            $this->validate($request, array(
+                'user_image_url'=>'mimes:jpeg,bmp,png,jpg,JPG',
+                'testimonial_img_path' => 'required',
+                ));
+        }
         $testimonial = new Testimonial;
         $testimonial->user_name = $request->user_name;
         $testimonial->user_summary = $request->user_summary;
