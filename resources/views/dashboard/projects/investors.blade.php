@@ -232,10 +232,20 @@
 
 				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: scroll;">
 					<!-- <ul class="list-group">Hello</ul> -->
+					<div>
+						<button class="btn btn-primary issue-dividend-btn">Issue Dividend</button>
+						<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
+							{{csrf_field()}}
+							<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
+							<input type="hidden" id="investors_list" name="investors_list">
+						</form>
+						<br><br>
+					</div>
 					<div class="">
 						<table class="table table-bordered table-striped" id="shareRegistryTable">
 							<thead>
 								<tr>
+									<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
 									<th>Share numbers</th>
 									<th>Project SPV Name</th>
 									<th>Investor Name</th>
@@ -258,6 +268,7 @@
 							<tbody>
 								@foreach($shareInvestments as $shareInvestment)
 								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
+									<td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
 									<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
 									<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
 									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
@@ -289,9 +300,9 @@
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
 									</td>
 									<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
-									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->withdraw_account_name}} @endif</td>
-									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->withdraw_bsb}} @endif</td>
-									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->withdraw_account_number}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
 									<td>
 										@if($shareInvestment->is_cancelled)
 										<strong>Cancelled</strong>
@@ -363,13 +374,77 @@
 
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
-			"iDisplayLength": 50
+			"iDisplayLength": 50,
+			"aoColumnDefs": [
+			  {
+			     "bSortable": false,
+			     'aTargets': ['nosort']
+			  }
+			]
 		});
 		var investorsTable = $('#investorsTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 25
 		});
 
+		// show select checkbox for share registry
+		$('.issue-dividend-btn').click(function(e){
+			$('.select-check').removeClass('hide');
+			$(this).addClass('hide');
+			$('.declare-statement').removeClass('hide');
+
+			// Selector deselect all investors
+			$('.check-all').change(function(e){
+				var investors = [];
+				if($(this).is(":checked")){
+	                $('.investor-check').prop('checked', true);
+	                $('.investor-check').each(function() {
+		                investors.push($(this).val());
+		            });
+	            }
+	            else{
+	                $('.investor-check').prop('checked', false);
+	                investors = [];
+	            }
+	            $('#investors_list').val(investors.join(','));
+	        });
+
+			// Set selected investor ids in a hidden field
+			$('.investor-check, .check-all').click(function(e){
+	        	var investors = [];
+	            $('.investor-check').each(function() {
+	                if($(this).is(":checked")){
+	                    investors.push($(this).val());
+	                }
+	            });
+	            $('#investors_list').val(investors.join(','));
+	        });
+			
+			// Declare dividend
+			declareDividend();
+		});
 	});
+
+	// Declare dividend
+	function declareDividend(){
+		$('.declare-dividend-btn').click(function(e){
+			var dividendPercent = $('#dividend_percent').val();
+			dividendPercent = dividendPercent.toString();
+			var startDate = new Date($('#start_date').val());
+			var endDate = new Date ($('#end_date').val());
+			var investorsList = $('#investors_list').val();
+
+			if(dividendPercent == '' || startDate == '' || endDate == ''){
+				e.preventDefault();
+				alert('Before declaration enter dividend percent, start date and end date input fields.');
+			}
+			else {
+				if(investorsList == ''){
+					e.preventDefault();
+					alert('Please select atleast one share registry record.');
+				}
+			}
+		});
+	}
 </script>
 @endsection

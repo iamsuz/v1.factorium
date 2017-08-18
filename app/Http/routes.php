@@ -240,7 +240,7 @@ Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.change
 Route::resource('offer', 'OfferController');
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);
 Route::get('/dashboard/projects/{investment_id}/investments/cancel', ['as'=>'dashboard.investment.cancel', 'uses'=>'DashboardController@investmentCancel']);
-
+Route::post('/dashboard/projects/{project_id}/investment/declareDividend', ['as'=>'dashboard.investment.declareDividend', 'uses'=>'DashboardController@declareDividend']);
 
 
 // Mail 

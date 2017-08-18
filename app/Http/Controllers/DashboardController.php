@@ -435,4 +435,107 @@ class DashboardController extends Controller
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Cancelled</p>');
     }
+
+    public function declareDividend(Request $request, AppMailer $mailer, $projectId)
+    {
+        if(!$request->start_date || !$request->end_date){
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Provide valid start date and end date</p>');
+        }
+        $investorList = $request->investors_list;
+        $dividendPercent = $request->dividend_percent;
+        $strStartDate = (string)$request->start_date;
+        $startDate = date_create((string)$request->start_date);
+        $strEndDate = (string)$request->end_date;
+        $endDate = date_create((string)$request->end_date);
+        $dateDiff = date_diff($startDate, $endDate);
+        $dateDiff = (int)$dateDiff->format("%R%a");
+        $project = Project::findOrFail($projectId);
+        
+        if($investorList != ''){
+            if($dateDiff >=0){
+                $investors = explode(',', $investorList);
+                $investments = InvestmentInvestor::findMany($investors);
+
+                // send dividend email to admins
+                $csvPath = $this->exportCSV($investments, $dividendPercent, $dateDiff);
+                $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath);
+                
+                // send dividend emails to investors
+                $failedEmails = [];
+                $subject = 'Dividend declared for '.$project->title;
+                foreach ($investments as $investment) {
+                    $content = \View::make('emails.userDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'startDate' => $strStartDate, 'endDate' => $strEndDate, 'project' => $project));
+                    $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+                    if($result->http_response_code != 200){
+                        array_push($failedEmails, $investment->user->email);
+                    }
+                }
+                if(empty($failedEmails)){
+                    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Divident distribution have been mailed to Investors and admins</p>');
+                }
+                else{
+                    $emails = '';
+                    foreach ($failedEmails as $email) {
+                        $emails = $emails.", $email";
+                    }
+                    return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Dividend distribution email sending failed for investors - '.$emails.'.</p>'); 
+                }
+            }
+        }
+    }
+
+    public function exportCSV($investments, $dividendPercent, $dateDiff)
+    {
+        $csvPath = storage_path().'/app/dividend/dividend_distribution_'.time().'.csv';
+        
+        // create a file pointer connected to the output stream
+        $file = fopen($csvPath, 'w');
+
+        // Add column names to csv
+        fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Number of days", "Rate", "Investor Dividend amount"));
+        
+        // data to add to the csv file
+        foreach ($investments as $investment) {
+            fputcsv($file, array(
+                $investment->user->first_name.' '.$investment->user->last_name,
+                $investment->investingJoint ? $investment->investingJoint->account_name : $investment->user->account_name,
+                $investment->investingJoint ? $investment->investingJoint->bank_name : $investment->user->bank_name,
+                $investment->investingJoint ? $investment->investingJoint->bsb : $investment->user->bsb,
+                $investment->investingJoint ? $investment->investingJoint->account_number : $investment->user->account_number,
+                $investment->amount,
+                $dateDiff,
+                $dividendPercent,
+                round($investment->amount * ((int)$dividendPercent/(365*100)) * $dateDiff, 2)
+            ));
+        }
+
+        // Close the file
+        fclose($file);
+
+        return $csvPath;
+    }
+
+    public function queueEmailsUsingMailgun($emailStr, $subject, $content)
+    {
+        //Disable SSL Check
+        $client = new \GuzzleHttp\Client([
+            'verify' => false,
+        ]);
+        $adapter = new \Http\Adapter\Guzzle6\Client($client);
+
+        # Instantiate the client.
+        $mgClient = new Mailgun(env('MAILGUN_API_KEY'), $adapter);
+        $domain = env('MAILGUN_DOMAIN');
+
+        # Make the call to the client.
+        $result = $mgClient->sendMessage($domain, array(
+            'from'    => 'info@estatebaron.com',
+            'to'      => $emailStr,
+            'bcc'     => 'info@estatebaron.com',
+            'subject' => $subject,
+            'html'    => $content
+        ));
+
+        return $result;
+    }
 }

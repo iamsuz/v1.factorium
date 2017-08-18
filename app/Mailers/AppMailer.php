@@ -333,6 +333,24 @@ class AppMailer
         $this->deliverWithBcc();
     }
 
+    public function sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.adminDividendDistributioNotify';
+        $this->subject = 'Distribute dividend amount to investors';
+        $this->data = compact('investments', 'dividendPercent', 'dateDiff');
+        $this->pathToFile = $csvPath;
+
+        $this->deliverWithFile();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
