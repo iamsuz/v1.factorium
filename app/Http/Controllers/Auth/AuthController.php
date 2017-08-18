@@ -25,18 +25,26 @@ class AuthController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('facebook')->redirect()->setTargetUrl(url('/auth/facebook/callback'));
+        $redirect_url = url().'/auth/facebook/callback';
+        \Config::set('services.facebook.redirect',$redirect_url);
+        return Socialite::driver('facebook')->redirect();
     }
     public function redirectToProvider1()
     {
+        $redirect_url = url().'/auth/linkedin/callback';
+        \Config::set('services.linkedin.redirect',$redirect_url);
         return Socialite::driver('linkedin')->redirect();
     }
     public function redirectToProvider2()
     {
+        $redirect_url = url().'/auth/twitter/callback';
+        \Config::set('services.twitter.redirect',$redirect_url);
         return Socialite::driver('twitter')->redirect();
     }
     public function redirectToProvider3()
     {
+        $redirect_url = url().'/auth/google/callback';
+        \Config::set('services.google.redirect',$redirect_url);
         return Socialite::driver('google')->redirect();
     }
 
@@ -49,6 +57,8 @@ class AuthController extends Controller
     {
         // $user = Socialite::driver('facebook')->user();
         // $user->token;
+        $redirect_url = url().'/auth/facebook/callback';
+        \Config::set('services.facebook.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('facebook')->user(),$mailer);
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
@@ -72,6 +82,8 @@ class AuthController extends Controller
     {
         // $user = Socialite::driver('facebook')->user();
         // $user->token;
+        $redirect_url = url().'/auth/linkedin/callback';
+        \Config::set('services.linkedin.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('linkedin')->user(),$mailer);
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
@@ -82,16 +94,20 @@ class AuthController extends Controller
         // }
         // dd($user->phone_number);
         if($user->phone_number != ''){
-            return view('users.show',compact('user'));
+            $color = Color::where('project_site',url())->first();
+            return view('users.show',compact('user','color'));
         }
         else{
-            return view('users.fbedit', compact('user'));
+            $color = Color::where('project_site',url())->first();
+            return view('users.fbedit', compact('user','color'));
         }
     }
     public function handleProviderCallback2(SocialAccountService2 $service,AppMailer $mailer)
     {
         // $user = Socialite::driver('facebook')->user();
         // $user->token;
+        $redirect_url = url().'/auth/twitter/callback';
+        \Config::set('services.twitter.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('twitter')->user(),$mailer);
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
@@ -102,16 +118,20 @@ class AuthController extends Controller
         // }
         // dd($user->phone_number);
         if($user->phone_number != ''){
-            return view('users.show',compact('user'));
+            $color = Color::where('project_site',url())->first();
+            return view('users.show',compact('user','color'));
         }
         else{
-            return view('users.fbedit', compact('user'));
+            $color = Color::where('project_site',url())->first();
+            return view('users.fbedit', compact('user','color'));
         }
     }
     public function handleProviderCallback3(SocialAccountService3 $service,AppMailer $mailer)
     {
         // $user = Socialite::driver('facebook')->user();
         // $user->token;
+        $redirect_url = url().'/auth/google/callback';
+        \Config::set('services.google.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('google')->user(),$mailer);
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
@@ -121,11 +141,12 @@ class AuthController extends Controller
         //     return view('users.registrationFinish', compact('user'));
         // }
         // dd($user->phone_number);
+        $color = Color::where('project_site',url())->first();
         if($user->phone_number != ''){
-            return view('users.show',compact('user'));
+            return view('users.show',compact('user','color'));
         }
         else{
-            return view('users.fbedit', compact('user'));
+            return view('users.fbedit', compact('user','color'));
         }
     }
 // }

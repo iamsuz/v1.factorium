@@ -11,10 +11,10 @@ class SocialAccountService3
     public function createOrGetUser(ProviderUser $providerUser,AppMailer $mailer)
     {
         // $account = SocialAccount::whereProvider('google')
+        
         $account = SocialAccount::whereProvider('google')
         ->whereProviderUserId($providerUser->getId())
         ->first();
-
         if ($account) {
             // dd($account->user);
             return $account->user;
@@ -44,6 +44,7 @@ class SocialAccountService3
                     // 'gender' => $providerUser->user['gender'],
                     'activated_on' => Carbon::now(),
                     'active' => true,
+                    'registration_site' => url(),
                     ]);
                 $role = Role::whereRole('investor')->firstOrFail();
                 $roleText = 'investor';

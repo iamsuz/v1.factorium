@@ -46,6 +46,7 @@ class SocialAccountService
                     'gender' => $providerUser->user['gender'],
                     'activated_on' => Carbon::now(),
                     'active' => true,
+                    'registration_site' => url(),
                     ]);
                 $role = Role::whereRole('investor')->firstOrFail();
                 $roleText = 'investor';

@@ -15,7 +15,7 @@ class SocialAccountService1
         $account = SocialAccount::whereProvider('linkedin')
         ->whereProviderUserId($providerUser->getId())
         ->first();
-
+        $referrer = '';
         if ($account) {
             // dd($account->user);
             return $account->user;

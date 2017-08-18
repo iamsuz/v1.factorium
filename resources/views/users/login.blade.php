@@ -59,15 +59,15 @@ Login | @parent
 						</h4>
 					</section>
 				</div>
-				{{-- <div class="col-md-3" style="position:relative;">
+				<div class="col-md-3" style="position:relative;">
 					<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;margin-left:-25px;">
 						<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
 					</div>
 					<br><br>
 					<br><br>
 					<br>
-				</div> --}}
-				{{-- <div class="col-md-3">
+				</div>
+				<div class="col-md-3">
 					<div class="row" style="text-align:center;">
 						<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 							<!-- <a class='btn btn-lg btn-danger'><i class="fa fa-google-plus" style="width:16px;"></i></a> -->
@@ -83,7 +83,7 @@ Login | @parent
 							<a class='btn btn-lg btn-primary font-semibold facebook-btn' href='/auth/facebook' style="width:243px; background-color: #375599; border-color: #375599; font-size:1em; color:#fff; border-radius:0;"><img class="pull-left" src="{{asset('assets/images/fb_login.png')}}" style=" margin:-10px -12px; background-color: #fff; width:45px;"> Sign in with Facebook</a>
 						</div>	
 					</div>
-				</div> --}}
+				</div>
 			</div>
 		</div>
 	</div>
