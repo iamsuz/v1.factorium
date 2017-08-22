@@ -90,7 +90,7 @@
 	@endif
 	@endif
 	<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
-	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
+	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/default_background_project.jpg')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
 		<div class="color-overlay main-fold-overlay-color">
 			<div class="container">
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
@@ -421,7 +421,7 @@
 					<!-- Wrapper for slides -->
 					<div class="carousel-inner" role="listbox" style="height: 500px;">
 						{{-- <div class="item active">
-						<img src="@if($project->media->where('type', 'gallary_images')->first()) {{asset($project->media->where('type', 'gallary_images')->first()->path)}} @else {{asset('assets/images/bgimage_sample.png')}} @endif" alt="Flower" width="100%">
+						<img src="@if($project->media->where('type', 'gallary_images')->first()) {{asset($project->media->where('type', 'gallary_images')->first()->path)}} @else {{asset('assets/images/default_background_project.jpg')}} @endif" alt="Flower" width="100%">
 					</div>  --}}
 					@foreach($project->media->chunk(1) as $set)
 					@foreach($set as $photo)
