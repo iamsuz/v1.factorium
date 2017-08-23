@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Investment Dividend Email</title>
+  <title>Investment Repurchase Email</title>
 
   <style type="text/css">
     p{
@@ -558,13 +558,13 @@
                                 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi {{$investment->user->first_name}},</span></span></span></strong>
 
                                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-                                  <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Congratulations! A Dividend of {{$dividendPercent}}% annualized for the duration between {{$startDate}} and {{$endDate}} has just been declared for {{$project->title}}.</span><br><br>
-                                    <span style="color:#000">Since you are a shareholder, you will be receiving the Dividend amount in your nominated Bank account as follows. </span><br><br>
+                                  <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Your {{$investment->amount}} shares numbered {{$shareNumber[0]}} to {{$shareNumber[1]}} for @if($project->projectspvdetail){{$project->projectspvdetail->spv_name}}@else{{'Estate Baron'}}@endif have been issued a CALL to repurchase by the Company at ${{$repurchaseRate}} per share.</span><br><br>
+                                    <span style="color:#000">You will be receiving the Dividend amount in your nominated Bank account as follows. </span><br><br>
                                     <span style="color:#000"><b>User account Name: </b>@if($investment->investingJoint) {{$investment->investingJoint->account_name}} @else {{$investment->user->account_name}} @endif</span><br>
                                     <span style="color:#000"><b>User Bank name: </b>@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span><br>
                                     <span style="color:#000"><b>User BSB: </b>@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span><br>
                                     <span style="color:#000"><b>User Account Number: </b>@if($investment->investingJoint) {{$investment->investingJoint->account_number}} @else {{$investment->user->account_number}} @endif</span><br><br>
-                                    <span style="color:#000">If your details are incorrect, please let us know by sending an email to @if($project->projectspvdetail){{$project->projectspvdetail->spv_email}}@else{{'info@estatebaron.com'}}@endif</span><br><br><br>
+                                    <span style="color:#000">If your details are incorrect, please let us know by sending an email to @if($project->projectspvdetail){{$project->projectspvdetail->spv_email}}@else{{'info@estatebaron.com'}}@endif. This will complete your investment return in {{$project->title}}. Thank you for investing with us and we look forward to working with you in the future.</span><br><br><br>
                                     <span style="color:#000">Cheers,</span><br>
                                     <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">
                                     @if($project->projectspvdetail){{$project->projectspvdetail->spv_md_name}}<br>@endif

@@ -25,6 +25,9 @@ class AddsColumnToInvestmentInvestorTable extends Migration
             if (!Schema::hasColumn('investment_investor', 'is_cancelled')) {
                 $table->boolean('is_cancelled')->default(0);
             }
+            if (!Schema::hasColumn('investment_investor', 'is_repurchased')) {
+                $table->boolean('is_repurchased')->default(0);
+            }
         });
     }
 
@@ -47,6 +50,9 @@ class AddsColumnToInvestmentInvestorTable extends Migration
             }
             if (Schema::hasColumn('investment_investor', 'is_cancelled')) {
                 $table->dropColumn('is_cancelled');
+            }
+            if (Schema::hasColumn('investment_investor', 'is_repurchased')) {
+                $table->dropColumn('is_repurchased');
             }
         });
     }

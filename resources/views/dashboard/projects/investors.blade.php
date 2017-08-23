@@ -232,15 +232,21 @@
 
 				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: scroll;">
 					<!-- <ul class="list-group">Hello</ul> -->
-					<div>
-						<button class="btn btn-primary issue-dividend-btn">Issue Dividend</button>
-						<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
-							{{csrf_field()}}
-							<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
-							<input type="hidden" id="investors_list" name="investors_list">
-						</form>
-						<br><br>
+					<div class="share-registry-actions">
+						<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend</button>
+						<button class="btn btn-primary repurchase-shares-btn" action="repurchase">Repurchase</button>
 					</div>
+					<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
+						{{csrf_field()}}
+						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
+						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
+					</form>
+					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
+						{{csrf_field()}}
+						<span class="repurcahse-statement hide"><small>Repurchase shares at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per share : <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
+						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
+					</form>
+					<br><br>
 					<div class="">
 						<table class="table table-bordered table-striped" id="shareRegistryTable">
 							<thead>
@@ -288,12 +294,16 @@
 									</td>
 									<td>{{$shareInvestment->amount}}</td>
 									<td>
+										@if($shareInvestment->is_repurchased)
+										<strong>Investment is repurchased</strong>
+										@else
 										@if($shareInvestment->is_cancelled)
 -										<strong>Investment record is cancelled</strong>
 -										@else
 											<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
 												Share Certificate
 											</a>
+										@endif
 										@endif
 									</td>
 									<td>
@@ -304,10 +314,14 @@
 									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
 									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
 									<td>
+										@if($shareInvestment->is_repurchased)
+										<strong>Repurchased</strong>
+										@else
 										@if($shareInvestment->is_cancelled)
 										<strong>Cancelled</strong>
 										@else
 										<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a>
+										@endif
 										@endif
 									</td>
 								</tr>
@@ -388,10 +402,14 @@
 		});
 
 		// show select checkbox for share registry
-		$('.issue-dividend-btn').click(function(e){
+		$('.issue-dividend-btn, .repurchase-shares-btn').click(function(e){
 			$('.select-check').removeClass('hide');
-			$(this).addClass('hide');
-			$('.declare-statement').removeClass('hide');
+			$('.share-registry-actions').addClass('hide');
+			if($(this).attr('action') == "dividend"){
+				$('.declare-statement').removeClass('hide');
+			} else {
+				$('.repurcahse-statement').removeClass('hide');
+			}
 
 			// Selector deselect all investors
 			$('.check-all').change(function(e){
@@ -406,7 +424,7 @@
 	                $('.investor-check').prop('checked', false);
 	                investors = [];
 	            }
-	            $('#investors_list').val(investors.join(','));
+	            $('.investors-list').val(investors.join(','));
 	        });
 
 			// Set selected investor ids in a hidden field
@@ -417,11 +435,13 @@
 	                    investors.push($(this).val());
 	                }
 	            });
-	            $('#investors_list').val(investors.join(','));
+	            $('.investors-list').val(investors.join(','));
 	        });
 			
 			// Declare dividend
 			declareDividend();
+			// repurchase shares
+			repurchaseShares();
 		});
 	});
 
@@ -432,11 +452,31 @@
 			dividendPercent = dividendPercent.toString();
 			var startDate = new Date($('#start_date').val());
 			var endDate = new Date ($('#end_date').val());
-			var investorsList = $('#investors_list').val();
+			var investorsList = $('.investors-list').val();
 
 			if(dividendPercent == '' || startDate == '' || endDate == ''){
 				e.preventDefault();
 				alert('Before declaration enter dividend percent, start date and end date input fields.');
+			}
+			else {
+				if(investorsList == ''){
+					e.preventDefault();
+					alert('Please select atleast one share registry record.');
+				}
+			}
+		});
+	}
+
+	// repurchase shares
+	function repurchaseShares(){
+		$('.declare-repurchase-btn').click(function(e){
+			var repurchaseRate = $('#repurchase_rate').val();
+			repurchaseRate = repurchaseRate.toString();
+			var investorsList = $('.investors-list').val();
+
+			if(repurchaseRate == ''){
+				e.preventDefault();
+				alert('Before declaration please enter repurchase rate.');
 			}
 			else {
 				if(investorsList == ''){

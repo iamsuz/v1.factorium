@@ -57,6 +57,9 @@
 									@endif
 								</td>
 								<td>
+									@if($investment->is_repurchased)
+									<strong>Investment is repurchased</strong>
+									@else
 									@if($investment->is_cancelled)
 									<strong>Investment record is cancelled</strong>
 									@else
@@ -64,6 +67,7 @@
 									<a href="{{route('user.view.share', [base64_encode($investment->id)])}}" target="_blank">Share Certificate</a>
 									@else
 									NA
+									@endif
 									@endif
 									@endif
 								</td>

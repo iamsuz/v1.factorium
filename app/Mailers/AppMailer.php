@@ -351,6 +351,24 @@ class AppMailer
         $this->deliverWithFile();
     }
 
+    public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.adminRepurchaseNotify';
+        $this->subject = 'Shares Repurchase';
+        $this->data = compact('investments', 'repurchaseRate');
+        $this->pathToFile = $csvPath;
+
+        $this->deliverWithFile();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();

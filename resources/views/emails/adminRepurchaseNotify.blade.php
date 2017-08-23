@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Investment Dividend Email</title>
+  <title>Investment Repurchase Email</title>
 
   <style type="text/css">
     p{
@@ -555,21 +555,45 @@
                           <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                             <tbody><tr>
                               <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;"><br> <br>
-                                <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi {{$investment->user->first_name}},</span></span></span></strong>
+                                <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear Admin(s),</span></span></span></strong>
 
                                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-                                  <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Congratulations! A Dividend of {{$dividendPercent}}% annualized for the duration between {{$startDate}} and {{$endDate}} has just been declared for {{$project->title}}.</span><br><br>
-                                    <span style="color:#000">Since you are a shareholder, you will be receiving the Dividend amount in your nominated Bank account as follows. </span><br><br>
-                                    <span style="color:#000"><b>User account Name: </b>@if($investment->investingJoint) {{$investment->investingJoint->account_name}} @else {{$investment->user->account_name}} @endif</span><br>
-                                    <span style="color:#000"><b>User Bank name: </b>@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span><br>
-                                    <span style="color:#000"><b>User BSB: </b>@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span><br>
-                                    <span style="color:#000"><b>User Account Number: </b>@if($investment->investingJoint) {{$investment->investingJoint->account_number}} @else {{$investment->user->account_number}} @endif</span><br><br>
-                                    <span style="color:#000">If your details are incorrect, please let us know by sending an email to @if($project->projectspvdetail){{$project->projectspvdetail->spv_email}}@else{{'info@estatebaron.com'}}@endif</span><br><br><br>
-                                    <span style="color:#000">Cheers,</span><br>
+                                  <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Please distribute the following Repurchase to the following investors:<br><br>
+                                  <span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;"><b>Repurchase Rate: </b>${{$repurchaseRate}} per share<br><br>
+
+
+                                    <table align="left" border="1" cellpadding="4" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                                    <thead style=" font-size: 13px; text-align: center;"><tr>
+                                      <th>Investor Name</th>
+                                      <th>Investor Bank account name</th>
+                                      <th>Investor bank</th>
+                                      <th>Investor BSB</th>
+                                      <th>Investor Account</th>
+                                      <th>Share amount</th>
+                                      <th>Investor Repurchase amount</th>
+                                    </tr></thead>
+                                    <tbody>
+                                      @foreach($investments as $investment)
+                                      <tr>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{$investment->user->first_name}} {{$investment->user->last_name}}</span></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->account_name}} @else {{$investment->user->account_name}} @endif</span></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->account_number}} @else {{$investment->user->account_number}} @endif</span></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{$investment->amount}}</span><br></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{round($investment->amount * $repurchaseRate, 2)}}</span><br></td>
+                                      </tr>
+                                      @endforeach
+                                    </tbody>
+                                    </table>
+                                    <table align="left" border="0" cellpadding="2" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                                    <tbody>
+                                    <br>
+                                    </tbody>
+                                    </table>
+                                    <span style="color:#000;">Regards,</span><br>
                                     <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">
-                                    @if($project->projectspvdetail){{$project->projectspvdetail->spv_md_name}}<br>@endif
-                                    @if($project->projectspvdetail){{$project->projectspvdetail->spv_name}}@else {{'Estate Baron Team'}} @endif
-                                    </span></span></span><br><br>
+                                    @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Team<br><br>
                                     </div>
                                   </div>
                                 </td>

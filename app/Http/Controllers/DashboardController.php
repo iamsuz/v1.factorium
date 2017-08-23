@@ -457,7 +457,7 @@ class DashboardController extends Controller
                 $investments = InvestmentInvestor::findMany($investors);
 
                 // send dividend email to admins
-                $csvPath = $this->exportCSV($investments, $dividendPercent, $dateDiff);
+                $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff);
                 $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath);
                 
                 // send dividend emails to investors
@@ -484,7 +484,48 @@ class DashboardController extends Controller
         }
     }
 
-    public function exportCSV($investments, $dividendPercent, $dateDiff)
+    public function declareRepurchase(Request $request, AppMailer $mailer, $projectId){
+        $investorList = $request->investors_list;
+        $repurchaseRate = $request->repurchase_rate;
+        $project = Project::findOrFail($projectId);
+        
+        if($investorList != ''){
+            $investors = explode(',', $investorList);
+            $investments = InvestmentInvestor::findMany($investors);
+            
+            // send dividend email to admins
+            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate);
+            $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath);
+
+            // send dividend emails to investors
+            $failedEmails = [];
+            $subject = 'Shares for '.$project->title;
+            foreach ($investments as $investment) {
+                InvestmentInvestor::where('id', $investment->id)->update([
+                    'is_cancelled' => 1,
+                    'is_repurchased' => 1
+                    ]);
+                $shareNumber = explode('-', $investment->share_number);
+                $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
+                $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+                if($result->http_response_code != 200){
+                    array_push($failedEmails, $investment->user->email);
+                }
+            }
+            if(empty($failedEmails)){
+                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investors and admins</p>');
+            }
+            else{
+                $emails = '';
+                foreach ($failedEmails as $email) {
+                    $emails = $emails.", $email";
+                }
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Repurchase distribution email sending failed for investors - '.$emails.'.</p>'); 
+            }
+        }
+    }
+
+    public function exportDividendCSV($investments, $dividendPercent, $dateDiff)
     {
         $csvPath = storage_path().'/app/dividend/dividend_distribution_'.time().'.csv';
         
@@ -506,6 +547,35 @@ class DashboardController extends Controller
                 $dateDiff,
                 $dividendPercent,
                 round($investment->amount * ((int)$dividendPercent/(365*100)) * $dateDiff, 2)
+            ));
+        }
+
+        // Close the file
+        fclose($file);
+
+        return $csvPath;
+    }
+
+    public function exportRepurchaseCSV($investments, $repurchaseRate){
+        $csvPath = storage_path().'/app/repurchase/repurchase_distribution_'.time().'.csv';
+        
+        // create a file pointer connected to the output stream
+        $file = fopen($csvPath, 'w');
+
+        // Add column names to csv
+        fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Repurchase Rate", "Investor Repurchase amount"));
+        
+        // data to add to the csv file
+        foreach ($investments as $investment) {
+            fputcsv($file, array(
+                $investment->user->first_name.' '.$investment->user->last_name,
+                $investment->investingJoint ? $investment->investingJoint->account_name : $investment->user->account_name,
+                $investment->investingJoint ? $investment->investingJoint->bank_name : $investment->user->bank_name,
+                $investment->investingJoint ? $investment->investingJoint->bsb : $investment->user->bsb,
+                $investment->investingJoint ? $investment->investingJoint->account_number : $investment->user->account_number,
+                $investment->amount,
+                $repurchaseRate,
+                round($investment->amount * $repurchaseRate, 2)
             ));
         }
 
