@@ -235,6 +235,19 @@ class UsersController extends Controller
         $user = Auth::user();
         return view('users.registrationFinish', compact('user','color'));
     }
+
+    /**
+     * Changes role after Registration
+     * @return [type] [description]
+     */
+    public function changeRole(Request $request){
+        $user = Auth::user();
+        $user->roles()->detach();
+        $role = Role::whereRole($request->role)->firstOrFail();
+        $user->roles()->attach($role);
+        // $user->roles()->updateExistingPivot($userRole->id,$role);
+        return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));
+    }
     /**
      * Remove the specified resource from storage.
      *

@@ -201,28 +201,28 @@ class UserRegistrationsController extends Controller
         $userReg->delete();
 
         // intercom create user
-        // $intercom = IntercomBasicAuthClient::factory(array(
-        //     'app_id' => 'refan8ue',
-        //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
-        //     ));
-        // $intercom->createUser(array(
-        //     "id" => $user->id,
-        //     "user_id" => $user->id,
-        //     "email" => $user->email,
-        //     "name" => $user->first_name.' '.$user->last_name,
-        //     "custom_attributes" => array(
-        //         "last_name" => $user->last_name,
-        //         "active" => $user->active,
-        //         "phone_number" => $user->phone_number,
-        //         "activated_on_at" => $user->activated_on->timestamp,
-        //         "role" => $roleText
-        //         ),
-        //     ));
+        $intercom = IntercomBasicAuthClient::factory(array(
+            'app_id' => 'refan8ue',
+            'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
+            ));
+        $intercom->createUser(array(
+            "id" => $user->id,
+            "user_id" => $user->id,
+            "email" => $user->email,
+            "name" => $user->first_name.' '.$user->last_name,
+            "custom_attributes" => array(
+                "last_name" => $user->last_name,
+                "active" => $user->active,
+                "phone_number" => $user->phone_number,
+                "activated_on_at" => $user->activated_on->timestamp,
+                "role" => $roleText
+                ),
+            ));
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
-            // return view('users.registrationFinish', compact('user','color'));
-            return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));
+            return view('users.registrationFinish', compact('user','color'));
+            // return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));
         }
     }
 

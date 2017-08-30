@@ -14,27 +14,39 @@ Thank You | @parent
 		<div class="col-md-offset-2 col-md-8">
 			<div class="row" id="section-1">
 				<div class="col-md-12">
-					<div style="padding:10em 0;">
-						<h1 class="text-center wow fadeIn animated h1-faq">Welcome<br>
+					<div style="padding:5em 0;">
+						<h1 class="text-center wow fadeIn animated h1-faq">Welcome {{$user->first_name}}<br>
 							<small>Thank you for providing your details.</small>
 						</h1>
-						<br><br>
-						<div class="row">
-							<div class="text-center col-md-offset-5 col-md-2 wow fadeIn animated">
-								<button class="btn btn-primary btn-block" id="step-1">Next</button>
-							</div>
-						</div>
 						<br>
-						<div class="row">
-							<div class="text-center col-md-offset-3 col-md-6 wow fadeIn animated">
-								<a href="{{route('home')}}#projects" class="btn btn-default btn-block" role="button">Skip and go to the projects.</a>
+						<h3 class="text-center wow fadeIn animated h1-faq">You have Signed Up as {{$user->roles->first()->role}} <br> 
+						<small>Would you like to change your Role at Estate Baron</small></h3>
+						{!! Form::open(array('route'=>'registration.changeRole', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+							<div class="row text-center">
+								<div class="radio">
+									<label><input type="radio" name="role" value="investor" autocomplete="off" @if($user->roles->first()->role == 'investor') checked @endif>I am an Investor</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="role" value="developer" autocomplete="off" @if($user->roles->first()->role == 'developer') checked @endif>I have a venture </label>
+								</div>
 							</div>
-						</div>
+							{{-- <div class="row">
+								<div class="text-center col-md-offset-5 col-md-2 wow fadeIn animated">
+									<button class="btn btn-primary btn-block" id="step-1">Next</button>
+								</div>
+							</div> --}}
+							<br>
+							<div class="row">
+								<div class="text-center col-md-offset-3 col-md-6 wow fadeIn animated">
+									{!! Form::submit('Take me to Projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
+								</div>
+							</div>
+						{!! Form::close() !!}
 					</div>
-					
+
 				</div>
 			</div>
-			<div class="row hide" id="section-2">
+			{{-- <div class="row hide" id="section-2">
 				<div class="col-md-12">
 					<div style="padding:1.5em 0;">
 						<h1 class="text-center wow fadeIn animated h1-faq">
@@ -65,7 +77,7 @@ Thank You | @parent
 					</div>
 
 				</div>
-			</div>
+			</div> --}}
 			<!-- <div class="row hide" id="section-3">
 				<div class="col-md-12">
 					<div style="padding:10em 0;">

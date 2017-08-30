@@ -116,6 +116,7 @@ Route::get('/registrations/activation/{token}', ['as'=>'registration.activation'
 // Route::get('facebook/registration', ['as'=>'registration.activation1', 'uses'=>'UserRegistrationsController@fbactivate']);
 Route::post('/registrations/details', ['as'=>'registration.storeDetails', 'uses'=>'UserRegistrationsController@storeDetails']);
 Route::get('/finish',['as'=>'users.registrationFinish','uses'=>'UsersController@registrationFinish1']);
+Route::POST('/finish/addrole',['as'=>'registration.changeRole','uses'=>'UsersController@changeRole']);
 Route::pattern('projects', '[0-9]+');
 Route::resource('projects', 'ProjectsController');
 Route::pattern('comments', '[0-9]+');
