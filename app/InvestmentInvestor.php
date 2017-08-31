@@ -43,4 +43,8 @@ class InvestmentInvestor extends Model
     {
         return $this->hasMany('App\UserInvestmentDocument');
     }
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction');
+    }
 }
