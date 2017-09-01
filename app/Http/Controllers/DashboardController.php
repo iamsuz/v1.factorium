@@ -23,6 +23,7 @@ use Session;
 use Mailgun\Mailgun;
 use App\Transaction;
 use App\Position;
+use App\ProjectProg;
 
 class DashboardController extends Controller
 {
@@ -484,6 +485,14 @@ class DashboardController extends Controller
                 $investors = explode(',', $investorList);
                 $investments = InvestmentInvestor::findMany($investors);
 
+                // Add the records to project progress table
+                ProjectProg::create([
+                    'project_id' => $projectId,
+                    'updated_date' => Carbon::now(),
+                    'progress_description' => 'Dividend Declaration',
+                    'progress_details' => 'A Dividend of '.$dividendPercent.'% annualized for the duration between '.date('m-d-Y', strtotime($request->start_date)).' and '.date('m-d-Y', strtotime($request->end_date)).' has been declared.'
+                    ]);
+
                 // send dividend email to admins
                 $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff);
                 $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath);
@@ -524,6 +533,9 @@ class DashboardController extends Controller
                     return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Dividend distribution email sending failed for investors - '.$emails.'.</p>'); 
                 }
             }
+            else {
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">End date must be greater than start date.</p>');
+            }
         }
     }
 
@@ -536,6 +548,14 @@ class DashboardController extends Controller
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
             
+            // Add the records to project progress table
+            ProjectProg::create([
+                'project_id' => $projectId,
+                'updated_date' => Carbon::now(),
+                'progress_description' => 'Repurchase Declaration',
+                'progress_details' => 'Repurchase is declared by the Company at $'.$repurchaseRate.' per share.'
+                ]);
+
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate);
             $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath);

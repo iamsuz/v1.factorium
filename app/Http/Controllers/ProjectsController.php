@@ -194,7 +194,8 @@ class ProjectsController extends Controller
     {
         $user_id = Auth::user();
         $project = Project::findOrFail($id);
-        $project_prog = $project->project_progs;
+        // $project_prog = $project->project_progs;
+        $project_prog = ProjectProg::where('project_id', $id)->orderBy('updated_date', 'DESC')->get();
         $color = Color::where('project_site',url())->first();
         $completed_percent = 0;
         $pledged_amount = 0;
