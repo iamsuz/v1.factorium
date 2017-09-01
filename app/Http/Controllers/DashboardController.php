@@ -553,7 +553,7 @@ class DashboardController extends Controller
                 'project_id' => $projectId,
                 'updated_date' => Carbon::now(),
                 'progress_description' => 'Repurchase Declaration',
-                'progress_details' => 'Repurchase is declared by the Company at $'.$repurchaseRate.' per share.'
+                'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
                 ]);
 
             // send dividend email to admins

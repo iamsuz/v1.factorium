@@ -56,7 +56,7 @@
 				<tr>
 					<th style="width: 25%;">Date</th>
 					<th style="width: 25%;">Transaction Type</th>
-					<th style="width: 25%;">Amount of Shares</th>
+					<th style="width: 25%;">Amount</th>
 					<th style="width: 25%;">Rate</th>
 				</tr>
 			</thead>
