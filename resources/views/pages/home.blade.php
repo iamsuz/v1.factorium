@@ -2136,11 +2136,11 @@
 
     function editHowItWorksSectionContent(){
       $('.show-how-it-works-contents-edit-box').click(function(){
-        $('.how-it-works-title1-section').html('<input type="text" name="how_it_works_title1" class="form-control" value="{!!$siteConfiguration->how_it_works_title1!!}"></input>');
-        $('.how-it-works-title2-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title2!!}" name="how_it_works_title2" class="form-control"></input>');
-        $('.how-it-works-title3-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title3!!}" name="how_it_works_title3" class="form-control"></input>');
-        $('.how-it-works-title4-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title4!!}" name="how_it_works_title4" class="form-control"></input>');
-        $('.how-it-works-title5-section').html('<input type="text" value="{!!$siteConfiguration->how_it_works_title5!!}" name="how_it_works_title5" class="form-control"></input>');
+        $('.how-it-works-title1-section').html('<input type="text" name="how_it_works_title1" class="form-control" value="{{$siteConfiguration->how_it_works_title1}}"></input>');
+        $('.how-it-works-title2-section').html('<input type="text" value="{{$siteConfiguration->how_it_works_title2}}" name="how_it_works_title2" class="form-control"></input>');
+        $('.how-it-works-title3-section').html('<input type="text" value="{{$siteConfiguration->how_it_works_title3}}" name="how_it_works_title3" class="form-control"></input>');
+        $('.how-it-works-title4-section').html('<input type="text" value="{{$siteConfiguration->how_it_works_title4}}" name="how_it_works_title4" class="form-control"></input>');
+        $('.how-it-works-title5-section').html('<input type="text" value="{{$siteConfiguration->how_it_works_title5}}" name="how_it_works_title5" class="form-control"></input>');
         $('.how-it-works-desc1-section').replaceWith('<textarea name="how_it_works_desc1" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc1}}</textarea>');
         $('.how-it-works-desc2-section').replaceWith('<textarea name="how_it_works_desc2" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc2}}</textarea>');
         $('.how-it-works-desc3-section').replaceWith('<textarea name="how_it_works_desc3" class="form-control" rows="6">{{$siteConfiguration->how_it_works_desc3}}</textarea>');
