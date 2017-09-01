@@ -21,6 +21,9 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App\SiteConfiguration;
 use Session;
 use Mailgun\Mailgun;
+use App\Transaction;
+use App\Position;
+use App\ProjectProg;
 
 class DashboardController extends Controller
 {
@@ -118,8 +121,11 @@ class DashboardController extends Controller
                     ->where('accepted', 1)
                     ->orderBy('share_certificate_issued_at','ASC')
                     ->get();
+        $transactions = Transaction::where('project_id', $project_id)->get();
+        $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
+        // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions'));
     }
 
     public function editProject($project_id)
@@ -231,6 +237,20 @@ class DashboardController extends Controller
             $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
             $investment->save();
             // dd($investment);
+
+            // Save details to transaction table
+            $noOfShares = $shareEnd-$shareInit;
+            $transactionRate = $investment->amount/$noOfShares;
+            Transaction::create([
+                'user_id' => $investment->user_id,
+                'project_id' => $investment->project_id,
+                'investment_investor_id' => $investment->id,
+                'transaction_type' => 'BUY',
+                'transaction_date' => Carbon::now(),
+                'amount' => round($investment->amount,2),
+                'rate' => round($transactionRate,2),
+                'number_of_shares' => $noOfShares,
+                ]);
 
             $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
 
@@ -414,20 +434,29 @@ class DashboardController extends Controller
         $investment->is_cancelled = 1;
         $investment->save();
 
-        $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
-                            ->where('accepted', 1)
-                            ->orderBy('share_certificate_issued_at','DESC')->get()
-                            ->first();
         $shareInit = 0;
-        if($investmentShares){
-            if($investmentShares->share_number){
-                $shareNumber = explode('-', $investmentShares->share_number);
-                $shareInit = $shareNumber[1]; 
-            }
+        if($investment->share_number){
+            $shareNumber = explode('-', $investment->share_number);
+            $shareInit = $shareNumber[0]-1; 
         }
         $shareStart = $shareInit+1;
-        $shareEnd = $shareInit+$investment->amount;
+        $shareEnd = $shareInit+(int)$investment->amount;
         $shareCount = (string)($shareStart)."-".(string)($shareEnd);
+        
+        // Save details to transaction table
+        $noOfShares = $shareEnd-$shareInit;
+        $transactionRate = $investment->amount/$noOfShares;
+        // dd($transactionRate);
+        Transaction::create([
+            'user_id' => $investment->user_id,
+            'project_id' => $investment->project_id,
+            'investment_investor_id' => $investment->id,
+            'transaction_type' => 'CANCELLED',
+            'transaction_date' => Carbon::now(),
+            'amount' => round($investment->amount,2),
+            'rate' => round($transactionRate,2),
+            'number_of_shares' => $noOfShares,
+            ]);
 
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         
@@ -456,6 +485,14 @@ class DashboardController extends Controller
                 $investors = explode(',', $investorList);
                 $investments = InvestmentInvestor::findMany($investors);
 
+                // Add the records to project progress table
+                ProjectProg::create([
+                    'project_id' => $projectId,
+                    'updated_date' => Carbon::now(),
+                    'progress_description' => 'Dividend Declaration',
+                    'progress_details' => 'A Dividend of '.$dividendPercent.'% annualized for the duration between '.date('m-d-Y', strtotime($request->start_date)).' and '.date('m-d-Y', strtotime($request->end_date)).' has been declared.'
+                    ]);
+
                 // send dividend email to admins
                 $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff);
                 $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath);
@@ -464,6 +501,21 @@ class DashboardController extends Controller
                 $failedEmails = [];
                 $subject = 'Dividend declared for '.$project->title;
                 foreach ($investments as $investment) {
+                    // Save details to transaction table
+                    $dividendAmount = round($investment->amount * ((int)$dividendPercent/(365*100)) * $dateDiff, 2);
+                    $shareNumber = explode('-', $investment->share_number);
+                    $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                    Transaction::create([
+                        'user_id' => $investment->user_id,
+                        'project_id' => $investment->project_id,
+                        'investment_investor_id' => $investment->id,
+                        'transaction_type' => 'DIVIDEND',
+                        'transaction_date' => Carbon::now(),
+                        'amount' => $dividendAmount,
+                        'rate' => $dividendPercent,
+                        'number_of_shares' => $noOfShares,
+                        ]);
+
                     $content = \View::make('emails.userDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'startDate' => $strStartDate, 'endDate' => $strEndDate, 'project' => $project));
                     $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
                     if($result->http_response_code != 200){
@@ -481,6 +533,9 @@ class DashboardController extends Controller
                     return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Dividend distribution email sending failed for investors - '.$emails.'.</p>'); 
                 }
             }
+            else {
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">End date must be greater than start date.</p>');
+            }
         }
     }
 
@@ -493,6 +548,14 @@ class DashboardController extends Controller
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
             
+            // Add the records to project progress table
+            ProjectProg::create([
+                'project_id' => $projectId,
+                'updated_date' => Carbon::now(),
+                'progress_description' => 'Repurchase Declaration',
+                'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
+                ]);
+
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate);
             $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath);
@@ -505,6 +568,22 @@ class DashboardController extends Controller
                     'is_cancelled' => 1,
                     'is_repurchased' => 1
                     ]);
+
+                // Save details to transaction table
+                $repurchaseAmount = round(($investment->amount * $repurchaseRate), 2);
+                $shareNumber = explode('-', $investment->share_number);
+                $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                Transaction::create([
+                    'user_id' => $investment->user_id,
+                    'project_id' => $investment->project_id,
+                    'investment_investor_id' => $investment->id,
+                    'transaction_type' => 'REPURCHASE',
+                    'transaction_date' => Carbon::now(),
+                    'amount' => $repurchaseAmount,
+                    'rate' => $repurchaseRate,
+                    'number_of_shares' => $noOfShares,
+                    ]);
+
                 $shareNumber = explode('-', $investment->share_number);
                 $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
                 $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
@@ -585,7 +664,7 @@ class DashboardController extends Controller
         return $csvPath;
     }
 
-    public function queueEmailsUsingMailgun($emailStr, $subject, $content)
+    public function queueEmailsUsingMailgun($emailStr, $subject, $content, $attachments = [])
     {
         //Disable SSL Check
         $client = new \GuzzleHttp\Client([
@@ -598,14 +677,81 @@ class DashboardController extends Controller
         $domain = env('MAILGUN_DOMAIN');
 
         # Make the call to the client.
-        $result = $mgClient->sendMessage($domain, array(
-            'from'    => 'info@estatebaron.com',
-            'to'      => $emailStr,
-            'bcc'     => 'info@estatebaron.com',
-            'subject' => $subject,
-            'html'    => $content
-        ));
+        $result = $mgClient->sendMessage($domain, 
+            array(
+                'from'    => 'info@estatebaron.com',
+                'to'      => $emailStr,
+                // 'bcc'     => 'info@estatebaron.com',
+                'subject' => $subject,
+                'html'    => $content
+            ),
+            array(
+                'attachment' => $attachments
+            )
+        );
 
         return $result;
+    }
+
+    public function investmentStatement($projectId)
+    {
+        $investmentRecords = InvestmentInvestor::where('project_id', $projectId)
+            ->where('accepted', 1)
+            ->where(function ($query) { $query->where('is_cancelled', 0)->where('is_repurchased', 0); })
+            ->get()->groupby('user_id');
+        foreach ($investmentRecords as $userId => $investments) {
+            $UserShares = 0;
+            foreach ($investments as $key => $investment) {
+                $shareNumber = explode('-', $investment->share_number);
+                $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                $UserShares += $noOfShares;
+            }
+            // dd($UserShares);
+            Position::create([
+                'user_id' => $userId,
+                'project_id' => $projectId,
+                'effective_date' => Carbon::now(),
+                'number_of_shares' => $UserShares,
+                'current_value' => $UserShares * 1
+                ]);
+        }
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Latest Investor Statement is successfully generated.<br>You can view it in Position records tab.</p>');
+    }
+
+    public function sendInvestmentStatement($projectId)
+    {
+        $positions = Position::where('project_id', $projectId)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
+        $failedEmails = [];
+        foreach ($positions as $userId => $value) {
+            $position = $value->first();
+            $transactions = Transaction::where('project_id', $projectId)->where('user_id', $userId)->orderBy('transaction_date', 'ASC')->get();
+            $project = Project::where('id', $projectId)->first();
+
+            // Create PDF of Investor Statement
+            $pdfPath = storage_path().'/app/investorStatement/investor-statement-'.$userId.'-'.time().'.pdf';
+            $pdf = PDF::loadView('pdf.investorStatement', ['project' => $project, 'position' => $position, 'transactions' => $transactions]);
+            $pdf->setPaper('a4', 'portrait');
+            $pdf->save($pdfPath);
+
+            // Send Investor Statement mail to investors
+            $projectName = $project->projectspvdetail ? $project->projectspvdetail->spv_name : $project->title;
+            $subject = 'Investor statement for '.$position->user->first_name.' '.$position->user->last_name.' for '.$projectName;
+            $content = \View::make('emails.investorStatement', array('project' => $project, 'position' => $position));
+            $attachments = array($pdfPath);
+            $result = $this->queueEmailsUsingMailgun($position->user->email, $subject, $content->render(), $attachments);
+            if($result->http_response_code != 200){
+                array_push($failedEmails, $position->user->email);
+            }
+        }
+        if(empty($failedEmails)){
+            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investor Statement have been successfully mailed to Investors</p>');
+        }
+        else{
+            $emails = '';
+            foreach ($failedEmails as $email) {
+                $emails = $emails.", $email";
+            }
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Investor Statement email sending failed for investors - '.$emails.'.</p>'); 
+        }
     }
 }

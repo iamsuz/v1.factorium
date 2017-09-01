@@ -28,17 +28,20 @@
 					</h3>
 				</div>
 			</div>
-			<ul class="nav nav-tabs" style="margin-top: 2em;">
-				<li class="active" style="width: 50%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
-				<li style="width: 50%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">Share registry</h3></a></li>
+			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
+				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
+				<li style="width: 25%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">Share registry</h3></a></li>
+				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
+				<li style="width: 35%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
 			</ul>
 			<div class="tab-content">
-				<div id="investors_tab" class="tab-pane fade in active" style="overflow: scroll;">
+				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
 					<style type="text/css">
 						.edit-input{
 							display: none;
 						}
 					</style>
+					<br><br>
 					<table class="table table-bordered table-striped" id="investorsTable" style="margin-top: 2em;">
 						<thead>
 							<tr>
@@ -230,7 +233,7 @@
 					</table>
 				</div>
 
-				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: scroll;">
+				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
 					<!-- <ul class="list-group">Hello</ul> -->
 					<div class="share-registry-actions">
 						<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend</button>
@@ -238,13 +241,17 @@
 					</div>
 					<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
 						{{csrf_field()}}
-						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
+						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
 					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
 						{{csrf_field()}}
 						<span class="repurcahse-statement hide"><small>Repurchase shares at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per share : <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
+					</form>
+					<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right">
+						{{csrf_field()}}
+						<button type="submit" class="btn btn-default" id="generate_investor_statement"><b>Generate Investor Statement</b></button>
 					</form>
 					<br><br>
 					<div class="">
@@ -332,6 +339,65 @@
 
 				</div>
 
+				<div id="transactions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+					<div>
+						<table class="table table-bordered table-striped" id="transactionTable">
+							<thead>
+								<tr>
+									<th>Investor Name</th>
+									<th>Project SPV Name</th>
+									<th>Transaction type</th>
+									<th>Date</th>
+									<th>Amount($)</th>
+									<th>Rate</th>
+									<th>Number of shares</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($transactions as $transaction)
+								<tr>
+									<td>{{$transaction->user->first_name}} {{$transaction->user->last_name}}</td>
+									<td>@if($transaction->project->projectspvdetail){{$transaction->project->projectspvdetail->spv_name}}@endif</td>
+									<td class="text-center">{{$transaction->transaction_type}}</td>
+									<td>{{date('m-d-Y', strtotime($transaction->transaction_date))}}</td>
+									<td>{{$transaction->amount}}</td>
+									<td>{{$transaction->rate}}</td>
+									<td>{{$transaction->number_of_shares}}</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div id="positions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+					<div>
+						@if(!$positions->isempty())
+						<p class="text-center"><b>Effective Date:</b> {{date('m-d-Y', strtotime($positions->first()->first()->effective_date))}}</p>
+						<p class="text-center"><a href="{{route('dashboard.investment.statement.send', [$project->id])}}" class="btn btn-primary" id="confirm_and_send_btn">CONFIRM AND SEND</a></p>
+						@endif
+						<table class="table table-bordered table-striped" id="positionTable">
+							<thead>
+								<tr>
+									<th>Investor Name</th>
+									<th>Project SPV Name</th>
+									<th>Number of Shares</th>
+									<th>Current Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($positions as $userId=>$position)
+								<tr>
+									<td>{{$position->first()->user->first_name}} {{$position->first()->user->last_name}}</td>
+									<td>@if($position->first()->project->projectspvdetail){{$position->first()->project->projectspvdetail->spv_name}}@endif</td>
+									<td>{{$position->first()->number_of_shares}}</td>
+									<td>{{$position->first()->current_value}}</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -386,18 +452,41 @@
 			}
 		});
 
+		$('#generate_investor_statement').click(function(e){
+			if (confirm('Are you sure ?')) {
+				console.log('confirmed');
+			} else {
+				e.preventDefault();
+			}
+		});
+
+		$('#confirm_and_send_btn').click(function(e){
+			if (confirm('Are you sure ?')) {
+				console.log('confirmed');
+			} else {
+				e.preventDefault();
+			}
+		});
+
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 50,
 			"aoColumnDefs": [
-			  {
-			     "bSortable": false,
-			     'aTargets': ['nosort']
-			  }
+			  	{
+			     	"bSortable": false,
+			     	'aTargets': ['nosort']
+			  	}
 			]
 		});
 		var investorsTable = $('#investorsTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
+			"iDisplayLength": 25
+		});
+		var transactionTable = $('#transactionTable').DataTable({
+			"order": [[3, 'desc']],
+			"iDisplayLength": 25
+		});
+		var positionTable = $('#positionTable').DataTable({
 			"iDisplayLength": 25
 		});
 

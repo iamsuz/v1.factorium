@@ -178,4 +178,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\Member');
     }
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+    public function position()
+    {
+        return $this->hasMany('App\Position');
+    }
 }

@@ -158,5 +158,12 @@ class Project extends Model
     {
         return $this->hasMany('App\InvestingJoint');
     }
-
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+    public function position()
+    {
+        return $this->hasMany('App\Position');
+    }
 }
