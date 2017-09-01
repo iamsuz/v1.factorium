@@ -47,7 +47,7 @@
 								<th>Amount</th>
 								<th>Is Money Received</th>
 								<th>Share Certificate</th>
-								<th>Send Remeinder Email</th>
+								<th>Send Reminder Email</th>
 								<th>Investment Confirmation</th>
 								<th>Investor Document</th>
 								<th>Joint Investor</th>
