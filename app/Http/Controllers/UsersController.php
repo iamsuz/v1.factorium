@@ -40,7 +40,7 @@ class UsersController extends Controller
         $url = url();
         $user = Auth::user();
         $roles = $user->roles;
-        if ($roles->contains('role', 'admin')) {
+        if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $users = User::paginate(100)->where('registration_site',$url);
             return view('users.index', compact('users'));
         }
@@ -100,7 +100,7 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $roles = $user->roles;
-        if ($roles->contains('role', 'admin')) {
+        if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $user = User::findOrFail($id);
             return view('users.show', compact('user','color'));
         } else {
@@ -148,7 +148,7 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $roles = $user->roles;
-        if ($roles->contains('role', 'admin')) {
+        if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $user = User::findOrFail($id);
             return view('users.edit', compact('user','color'));
         } else {
@@ -163,7 +163,7 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $roles = $user->roles;
-        if ($roles->contains('role', 'admin')) {
+        if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $user = User::findOrFail($id);
             return view('users.edit', compact('user','color'));
         } else {
@@ -186,7 +186,7 @@ class UsersController extends Controller
         $user = Auth::user();
         $roles = $user->roles;
         $access = 0;
-        if ($roles->contains('role', 'admin')) {
+        if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $access = 1;
         } else {
             if($user->id == $id) {
@@ -209,7 +209,7 @@ class UsersController extends Controller
         $user = Auth::user();
         $roles = $user->roles;
         $access = 0;
-        if ($roles->contains('role', 'admin')) {
+        if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $access = 1;
         } else {
             if($user->id == $id) {

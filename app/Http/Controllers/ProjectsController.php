@@ -228,7 +228,7 @@ class ProjectsController extends Controller
             } else {
                 $user = Auth::user();
                 $roles = $user->roles;
-                if (!$roles->contains('role', 'admin')) {
+                if (!$roles->contains('role', 'admin') && !$roles->contains('role', 'master')) {
                     return response()->view('errors.404', [], 404);
                 }
             }
@@ -240,7 +240,7 @@ class ProjectsController extends Controller
             } else {
                 $user = Auth::user();
                 $roles = $user->roles;
-                if (!$roles->contains('role', 'admin')) {
+                if (!$roles->contains('role', 'admin') && !$roles->contains('role', 'master')) {
                     return response()->view('errors.404', [], 404);
                 }
             }
@@ -253,7 +253,7 @@ class ProjectsController extends Controller
             } else {
                 $user = Auth::user();
                 $roles = $user->roles;
-                if (!$roles->contains('role', 'admin')) {
+                if (!$roles->contains('role', 'admin') && !$roles->contains('role', 'master')) {
                     return response()->view('errors.404', [], 404);
                 }
             }
@@ -290,7 +290,7 @@ class ProjectsController extends Controller
         } else {
             $user = Auth::user();
             $roles = $user->roles;
-            if ($roles->contains('role', 'admin')) {
+            if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
                 return $this->show($id, true);
             } else {
                 return response()->view('errors.404', [], 404);

@@ -37,19 +37,23 @@ class Admin
         $user = $this->auth->user();
         if(!$this->auth->guest()) {
             if (!$user->roles->contains('role', 'admin')) {
-                if ($request->ajax()) {
-                    return response('Unauthorized.', 401);
-                } else {
-                    return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">Admin Only</p>');
+                if(!$user->roles->contains('role', 'master')){
+                    if ($request->ajax()) {
+                        return response('Unauthorized.', 401);
+                    } else {
+                        return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">Admin Only</p>');
+                    }
                 }
             }
             else{
-                if($user->email == "info@estatebaron.com"){
+                if(!$user->roles->contains('role', 'master')){
+                    if($user->email == "info@estatebaron.com"){
 
-                }
-                else{
-                    if($user->registration_site != url()){
-                        return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">You are not Admin for this site</p>');
+                    }
+                    else{
+                        if($user->registration_site != url()){
+                            return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-warning text-center ">You are not Admin for this site</p>');
+                        }
                     }
                 }
             }

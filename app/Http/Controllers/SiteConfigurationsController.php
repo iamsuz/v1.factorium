@@ -30,6 +30,7 @@ use App\Location;
 use App\Document;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Helpers\SiteConfigurationHelper;
 
 
 
@@ -38,8 +39,8 @@ class SiteConfigurationsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('superadmin');
-        $this->middleware('admin',['only'=>['addProgressDetails']]);
+        $this->middleware('admin');
+        // $this->middleware('admin',['only'=>['addProgressDetails']]);
     }
 
     /**
@@ -49,7 +50,7 @@ class SiteConfigurationsController extends Controller
      */
     public function uploadLogo(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'brand_logo'   => 'required|mimes:png',
                 );
@@ -80,7 +81,7 @@ class SiteConfigurationsController extends Controller
 
     public function cropUploadedImage(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin') || Auth::user()->roles->contains('role', 'admin'))
+        if (SiteConfigurationHelper::isSiteAdmin())
         {
 
             $type = [];
@@ -244,7 +245,7 @@ class SiteConfigurationsController extends Controller
 
     public function uploadHomePgBackImg1 (Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'homepg_back_img'   => 'required|mimes:jpeg,png,jpg',
                 );
@@ -283,7 +284,7 @@ class SiteConfigurationsController extends Controller
 
     public function updateFavicon(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'favicon_image_url'   => 'required|mimes:png',
                 );
@@ -308,32 +309,7 @@ class SiteConfigurationsController extends Controller
                     return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
-        }    if (Auth::user()->roles->contains('role', 'superadmin')){
-            $validation_rules = array(
-                'favicon_image_url'   => 'required|mimes:png',
-                );
-            $validator = Validator::make($request->all(), $validation_rules);
-            if($validator->fails()){
-                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
-            }
-            $destinationPath = '/';
-
-            if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
-                Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
-                    $constraint->aspectRatio();
-                })->save();
-                $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
-                $fileName = 'favicon'.'_'.time().'.'.$fileExt;
-                $uploadStatus = $request->file('favicon_image_url')->move(public_path($destinationPath), $fileName);
-                list($origWidth, $origHeight) = getimagesize(public_path($destinationPath).$fileName);
-                if($uploadStatus){
-                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                }
-                else {
-                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                }
-            }
-        }    
+        }
     }
 
     public function updateSiteTitle(Request $request)
@@ -457,7 +433,7 @@ class SiteConfigurationsController extends Controller
 
     public function uploadHomePgInvestmentImage(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'investment_page_image'   => 'required|mimes:jpeg,png,jpg',
                 );
@@ -487,7 +463,7 @@ class SiteConfigurationsController extends Controller
 
     public function storeShowFundingOptionsFlag(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $fundingFlag = $request->show_funding_options;
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
@@ -500,7 +476,7 @@ class SiteConfigurationsController extends Controller
 
     public function storeHowItWorksContent(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $this->validate($request, array(
                 'how_it_works_title1' => 'required',
                 'how_it_works_title2' => 'required',
@@ -572,7 +548,7 @@ class SiteConfigurationsController extends Controller
 
     public function uploadHowItWorksImages(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'how_it_works_image'   => 'required|mimes:jpeg,png,jpg',
                 'imgAction' => 'required',
@@ -656,7 +632,7 @@ class SiteConfigurationsController extends Controller
 
     public function updateProjectDetails(Request $request, $projectId)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
@@ -739,7 +715,7 @@ class SiteConfigurationsController extends Controller
     }
     public function uploadProjectPgBackImg(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'projectpg_back_img'   => 'required|mimes:jpeg,png,jpg',
                 );
@@ -786,7 +762,7 @@ class SiteConfigurationsController extends Controller
 
     public function uploadprojectPgThumbnailImages(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'superadmin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'projectpg_thumbnail_image'   => 'required|mimes:jpeg,png,jpg',
                 'imgAction' => 'required',
@@ -817,7 +793,7 @@ class SiteConfigurationsController extends Controller
 
     public function updateProjectSpvLogo(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'admin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'spv_logo'   => 'required|mimes:png,jpg,jpeg',
                 );
@@ -847,7 +823,7 @@ class SiteConfigurationsController extends Controller
 
     public function updateProjectSpvMDSign(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'admin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'spv_md_sign'   => 'required|mimes:png,jpg,jpeg',
                 );
@@ -898,7 +874,7 @@ class SiteConfigurationsController extends Controller
 
     public function uploadProjectThumbImage(Request $request)
     {
-        if (Auth::user()->roles->contains('role', 'admin')){
+        if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'project_thumb_image'   => 'required|mimes:jpeg,png,jpg',
                 'imgAction' => 'required',

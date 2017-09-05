@@ -89,7 +89,7 @@
                     <li class="dropdown nav-item last">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> My Account <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            @if(Auth::user()->roles->contains('role', 'admin'))
+                            @if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master'))
                             <li class="nav-item"><a href="{{route('dashboard.index')}}">Dashboard</a></li>
                             @endif
                             <li class="nav-item"><a href="{{route('users.show',[Auth::user()])}}">Profile</a></li>

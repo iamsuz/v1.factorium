@@ -223,7 +223,7 @@
 			@endif -->
 			@if(Auth::guest())
 			@else
-			@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<div class="col-md-12">
 				<div class="edit-img-button-style edit-projectpg-back-img"><a><i class="fa fa fa-edit fa-lg" style="vertical-align: -webkit-baseline-middle;color: #fff;"></i></a></div>
 				<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px; color: #fff;"><small>Edit Background</small></span>
@@ -398,7 +398,7 @@
 	<div id="home" class="tab-pane fade in active">
 		@if(Auth::guest())
 		@else
-		@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+		@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 		<div class="text-center">
 			<input type="button" name="edit_sub_headings" value="Edit sub headings" class="btn btn-primary btn-lg edit-sub-headings">
 			<input type="button" name="save_sub_headings" value="Save sub headings" class="btn btn-default btn-lg save-sub-headings" style="display: none;">
@@ -460,7 +460,7 @@
 			@endif
 			@endif
 			@if(Auth::user())
-			@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<h3>Upload a Images</h3>
 			<div class="row">
 				<div class="col-md-12">
@@ -533,7 +533,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="summary_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								<input class="hide" type="file" name="projectpg_thumbnail_image" id="projectpg_thumbnail_image">
 								<input type="hidden" name="projectpg_thumbnail_image_name" id="projectpg_thumbnail_image_name">
@@ -577,7 +577,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -619,7 +619,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investor_distribution_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -670,7 +670,7 @@
 						<br>
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="text-center"><label><input type="checkbox" name="show_suburb_profile_map" id="show_suburb_profile_map" data-toggle="toggle" @if($project->projectconfiguration)@if($project->projectconfiguration->show_suburb_profile_map) checked @endif @endif>&nbsp;Show Map</label></div>
 						@endif
 						@endif
@@ -702,7 +702,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="marketability_image"><a data-toggle="tooltip" title="Edit Marketability Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -745,7 +745,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="residents_image"><a data-toggle="tooltip" title="Edit Residents Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -807,7 +807,7 @@
 							<div class=" col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_type_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -849,7 +849,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="security_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -891,7 +891,7 @@
 							<div class="col-md-2 text-center" >
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="expected_returns_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -933,7 +933,7 @@
 							<div class="col-md-2 text-center" >
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="returns_paid_as_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -974,7 +974,7 @@
 							<div class="col-md-2 text-center" >
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="taxation_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -1034,7 +1034,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="developer_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -1080,7 +1080,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="duration_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -1122,7 +1122,7 @@
 							<div class="col-md-2 text-center">
 								@if(Auth::guest())
 								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 								<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="current_status_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 								@endif
 								@endif
@@ -1154,7 +1154,7 @@
 					<div class="col-md-4 text-center">
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="developer_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						@endif
 						@endif
@@ -1178,7 +1178,7 @@
 					<div class="col-md-4 text-center">
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="duration_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						@endif
 						@endif
@@ -1189,7 +1189,7 @@
 					<div class="col-md-4 text-center">
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="current_status_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						@endif
 						@endif
@@ -1212,7 +1212,7 @@
 					<div class="col-md-2 text-center">
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="rationale_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						@endif
 						@endif
@@ -1253,7 +1253,7 @@
 					<div class="col-md-2 text-center">
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="investment_risk_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						@endif
 						@endif
@@ -1373,7 +1373,7 @@
 					<div class="col-md-12 text-center">
 						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteSuperadmin())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="how_to_invest_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
 						@endif
 						@endif

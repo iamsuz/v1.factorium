@@ -14,22 +14,15 @@ class SiteConfigurationHelper
         return $siteConfiguration;
     }
 
-    public static function isSiteSuperadmin()
-    {
-    	$isSuperadmin = 0;
-    	if(Auth::user()->roles->contains('role','superadmin') && Auth::user()->registration_site==url()){
-    		$isSuperadmin = 1;
-    	}
-    	return $isSuperadmin;
-    }
-
     public static function isSiteAdmin()
     {
-    	$isAdmin = 0;
-    	if(Auth::user()->roles->contains('role','admin') && Auth::user()->registration_site==url()){
-    		$isAdmin = 1;
-    	}
-    	return $isAdmin;
+        if(Auth::user()->roles->contains('role','admin') && Auth::user()->registration_site==url()){
+            return 1;
+        }
+    	if(Auth::user()->roles->contains('role','master')){
+            return 1;
+        }
+    	return 0;
     }
 
     public static function getSiteThemeColors()

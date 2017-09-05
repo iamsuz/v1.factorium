@@ -14,7 +14,7 @@ class NoteRequest extends Request
      */
     public function authorize()
     {
-        if(Auth::user()->roles->contains('role', 'admin')) {
+        if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {
             return true;
         } else {
             return false;

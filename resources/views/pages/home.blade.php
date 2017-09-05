@@ -151,7 +151,7 @@
           <a id="brand" class="navbar-brand big-logo" href="{{route('home')}}"><img class="img-responsive brand-big-image" src="/assets/images/header_logo.png" alt="Logo" width="80%" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:50px; margin-top:-30px;"></a> -->
           @if(Auth::guest())
           @else
-          @if($superadmin_access == 1)
+          @if($admin_access == 1)
           <div class="edit-button-style edit-brand-img" style="margin-left: 15px; margin-top: 50px; display: none;"><a data-toggle="tooltip" title="Edit"><i class="fa fa fa-edit fa-lg"></i></a></div>
           <input class="hide" type="file" name="brand_logo" id="brand_logo">
           <input type="hidden" name="brand_logo_name" id="brand_logo_name">
@@ -177,7 +177,7 @@
            My Account <span class="caret"></span>
          </a>
          <ul class="dropdown-menu" role="menu">
-          @if(Auth::user()->roles->contains('role', 'admin'))
+          @if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master'))
           <li>
             {!! Html::linkRoute('dashboard.index', 'Dashboard', null, ['class'=>'anchor-color', 'style'=>'padding:5px 17px;']) !!}
           </li>
@@ -239,7 +239,7 @@
     <li class="dropdown nav-item last">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> My Account <span class="caret"></span></a>
       <ul class="dropdown-menu" role="menu">
-        @if(Auth::user()->roles->contains('role', 'admin'))
+        @if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master'))
         <li class="nav-item"><a href="{{route('dashboard.index')}}">Dashboard</a></li>
         @endif
         <li class="nav-item"><a href="{{route('users.show',[Auth::user()])}}">Profile</a></li>
@@ -282,7 +282,7 @@
           </h2>
           @if(Auth::guest())
           @else
-          @if($superadmin_access == 1)
+          @if($admin_access == 1)
           <div class="text-align" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style edit-homepg-text1" style="font-size: 20px;" data-toggle="tooltip" title="Edit Text" data-placement="right"></i></div>
           @endif
           @endif
@@ -305,7 +305,7 @@
         </a>
         @if(Auth::guest())
         @else
-        @if($superadmin_access == 1)
+        @if($admin_access == 1)
         <div class="text-center">
           <i class="fa fa-pencil edit-pencil-style edit-homepg-btn-text1" style="font-size: 20px; font-size: 20px; margin: 20px 0px 0px -20px; position: absolute;" data-toggle="tooltip" title="Edit Button Text" data-placement="right"></i>
         </div>
@@ -316,7 +316,7 @@
     </div>
     @if(Auth::guest())
     @else
-    @if($superadmin_access == 1)
+    @if($admin_access == 1)
     <div class="row">
       <div class="col-md-12">
         <div class="edit-button-style edit-homepg-back-img" style=""><a><i class="fa fa fa-edit fa-lg"></i></a></div>
@@ -344,7 +344,7 @@
     <div class="row how-it-works-section">
       @if(Auth::guest())
       @else
-      @if($superadmin_access == 1)
+      @if($admin_access == 1)
       <form action="{{route('configuration.storeHowItWorksContent')}}" method="POST">
         {{csrf_field()}}
         @endif
@@ -353,7 +353,7 @@
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
-            @if($superadmin_access == 1)
+            @if($admin_access == 1)
             <div class="edit-button-style edit-how-it-works-img1" style="z-index: 10; position: inherit;" action="hiw_img1"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             <input class="hide" type="file" name="how_it_works_image" id="how_it_works_image">
             <input type="hidden" name="how_it_works_image_name" id="how_it_works_image_name">
@@ -376,7 +376,7 @@
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
-            @if($superadmin_access == 1)
+            @if($admin_access == 1)
             <div class="edit-button-style edit-how-it-works-img2" style="z-index: 10; position: inherit;" action="hiw_img2"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
@@ -398,7 +398,7 @@
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
-            @if($superadmin_access == 1)
+            @if($admin_access == 1)
             <div class="edit-button-style edit-how-it-works-img3" style="z-index: 10; position: inherit;" action="hiw_img3"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
@@ -420,7 +420,7 @@
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
-            @if($superadmin_access == 1)
+            @if($admin_access == 1)
             <div class="edit-button-style edit-how-it-works-img4" style="z-index: 10; position: inherit;" action="hiw_img4"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
@@ -442,7 +442,7 @@
           <div class="" style="color:#6B798F;">
             @if(Auth::guest())
             @else
-            @if($superadmin_access == 1)
+            @if($admin_access == 1)
             <div class="edit-button-style edit-how-it-works-img5" style="z-index: 10; position: inherit;" action="hiw_img5"><a data-toggle="tooltip" title="Edit Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
             @endif
             @endif
@@ -462,7 +462,7 @@
         </div>
         @if(Auth::guest())
         @else
-        @if($superadmin_access == 1)
+        @if($admin_access == 1)
         <div class="col-md-10 col-md-offset-1">
           <i class="fa fa-pencil edit-pencil-style show-how-it-works-contents-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000;" data-toggle="tooltip" title="Edit How it works Content" data-placement="right"></i>
         </div>
@@ -811,7 +811,7 @@
             <div class="row">
               @if(Auth::guest())
               @else
-              @if($superadmin_access == 1)
+              @if($admin_access == 1)
               <div class="edit-button-style edit-homepg-investment-img" style="margin-left: 15px; margin-top: 50px; z-index: 10"><a data-toggle="tooltip" title="Edit Investment Image"><i class="fa fa fa-edit fa-lg"></i></a></div>
               <input class="hide" type="file" name="investment_page_image" id="investment_page_image">
               <input type="hidden" name="investment_page_image_name" id="investment_page_image_name">
@@ -840,7 +840,7 @@
               @endif -->
               <!-- @if(Auth::guest())
               @else
-              @if($superadmin_access == 1)
+              @if($admin_access == 1)
               <i class="fa fa-pencil edit-pencil-style show-investment-title1-edit-box" style="font-size: 20px; color: #000;" data-toggle="tooltip" title="Edit Title" data-placement="right"></i>
               @endif
               @endif -->
@@ -852,7 +852,7 @@
               @endif -->
               <!-- @if(Auth::guest())
               @else
-              @if($superadmin_access == 1)
+              @if($admin_access == 1)
               <i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000;" data-toggle="tooltip" title="Edit Description" data-placement="right"></i>
               @endif
               @endif -->
@@ -867,7 +867,7 @@
 <br><br>
 @if(Auth::guest())
 @else
-@if($superadmin_access == 1)
+@if($admin_access == 1)
 <form action="{{route('configuration.storeShowFundingOptionsFlag')}}" method="POST">
   {{csrf_field()}}x
   <div class="text-center"><label><input type="checkbox" name="show_funding_options" data-toggle="toggle" @if($siteConfiguration->show_funding_options != '') checked @endif>Show Funding Options</label></div>
@@ -882,7 +882,7 @@
   <div class="container">
     @if(Auth::guest())
     @else
-    @if($superadmin_access == 1)
+    @if($admin_access == 1)
     <form action="{{route('configuration.editHomePgFundingSectionContent')}}" method="POST">
     {{csrf_field()}}
     @endif
@@ -918,7 +918,7 @@
     </div>
     @if(Auth::guest())
     @else
-    @if($superadmin_access == 1)
+    @if($admin_access == 1)
     </form>
     <div class="row text-center">
         <i class="fa fa-pencil edit-pencil-style show-funding-section-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000" data-toggle="tooltip" title="Edit section content and button text" data-placement="right"></i>
@@ -1076,7 +1076,7 @@
 <footer id="footer" class="chunk-box" @if($color) style="background-color: #{{$color->nav_footer_color}}" @endif>
   @if(Auth::guest())
   @else
-  @if($superadmin_access == 1)
+  @if($admin_access == 1)
   <input id="footer_color" class="jscolor {onFineChange:'update(this)'}" value="@if($color){{$color->nav_footer_color}}@endif">
   <input id="second_color" class="jscolor {onFineChange:'update1(this)'}" value="@if($color){{$color->heading_color}}@endif">
   <button id="footer_color_btn">Apply Color</button>
@@ -1174,7 +1174,7 @@
       </div>
       @if(Auth::guest())
       @else
-      @if($superadmin_access == 1)
+      @if($admin_access == 1)
       <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-social-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Social Links" data-placement="right"></i></div>
       @endif
       @endif
@@ -1214,7 +1214,7 @@
       </div>
       {{--@if(Auth::guest())
       @else
-      @if($superadmin_access == 1)
+      @if($admin_access == 1)
       <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Sitemap Links" data-placement="right"></i></div>
       @endif
       @endif--}}
@@ -1613,7 +1613,7 @@
 
       @if(Auth::guest())
       @else
-      @if($superadmin_access == 1)
+      @if($admin_access == 1)
         $('.brand-big-image').on('mouseenter', function(event){
           $('.edit-brand-img').show('fade', {}, 500);
         });
@@ -1721,7 +1721,7 @@
       $('.main-fold-overlay-color').css('background', rgbaColor);
       @endif
       //Functionality to Edit Text 1 of Home Page. 
-      //This can be actioned by only superadmin 
+      //This can be actioned by only admin 
       editHomePageText1();
       //Functionality to change Home Page Main Back Image
       editHomePageBackImg1();
@@ -1863,7 +1863,7 @@
       });
 
     //Functionality to Edit Text 1 of Home Page. 
-    //This can be actioned by only superadmin
+    //This can be actioned by only admin
     function editHomePageText1(){
       $('.edit-homepg-text1').click(function(){
         var str1 = $.trim($('.homepg-text1 h2').html()).replace(/\r?\n|\r/g, "");

@@ -12,9 +12,10 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['role'=>'admin', 'description'=>'Administrator']);
-        Role::create(['role'=>'developer', 'description'=>'Person who has project']);
-        Role::create(['role'=>'investor', 'description'=>'Almost Every user is investor']);
-        Role::create(['role'=>'superadmin', 'description'=>'Superadmin for wensite Configuration']);        
+        Role::updateOrCreate(['role'=>'admin'],['role'=>'admin', 'description'=>'Administrator']);
+        Role::updateOrCreate(['role'=>'developer'],['role'=>'developer', 'description'=>'Person who has project']);
+        Role::updateOrCreate(['role'=>'investor'],['role'=>'investor', 'description'=>'Almost Every user is investor']);
+        Role::updateOrCreate(['role'=>'superadmin'],['role'=>'superadmin', 'description'=>'Superadmin for wensite Configuration']);        
+        Role::updateOrCreate(['role'=>'master'],['role'=>'master', 'description'=>'This user will be admin for all the sub domains']);
     }
 }

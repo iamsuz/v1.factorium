@@ -28,6 +28,7 @@ use Intervention\Image\Facades\Image;
 use File;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Testimonial;
+use App\Helpers\SiteConfigurationHelper;
 
 class PagesController extends Controller
 {
@@ -35,7 +36,7 @@ class PagesController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
-        $this->middleware('superadmin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
+        $this->middleware('admin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
     }
     /**
     * returns home page
@@ -56,7 +57,6 @@ class PagesController extends Controller
         $color = Color::all();
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
-        $superadmin_access = 0;
         $admin_access = 0;
         if(Auth::guest()) {
             $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
@@ -64,17 +64,18 @@ class PagesController extends Controller
         } else {
             $user = Auth::user();
             $roles = $user->roles;
-            if ($roles->contains('role', 'admin')) {
+            if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
                 $projects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
                 // dd($projects);
-                if($user->registration_site == url())
-                $admin_access = 1;
+                if($user->registration_site == url()){
+                    $admin_access = 1;
+                }
+                else {
+                    if($roles->contains('role', 'master'))
+                        $admin_access = 1;
+                }
             } else {
                 $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
-            }
-            if(Auth::user()->roles->contains('role','superadmin')){
-                if($user->registration_site == url())
-                $superadmin_access = 1;
             }
         }
         $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
@@ -94,7 +95,7 @@ class PagesController extends Controller
             // dd($siteConfiguration);
         }
         $testimonials = Testimonial::where('project_site', url())->get();
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color','superadmin_access', 'admin_access', 'testimonials'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials'));
     }
 
     /**
@@ -111,7 +112,7 @@ class PagesController extends Controller
             $user = Auth::user();
             $role = Role::findOrFail(3);
             $roles = $user->roles;
-            if($roles->contains('role','superadmin')) {
+            if($roles->contains('role','admin') || $roles->contains('role','master')) {
                 $adminedit = 1;
             }
         }
@@ -142,10 +143,8 @@ class PagesController extends Controller
 
         $isAdmin = false;
         if(Auth::user()){
-            if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'superadmin')){
-                if(Auth::user()->registration_site == url()){
-                    $isAdmin = true;
-                }
+            if(SiteConfigurationHelper::isSiteAdmin()){
+                $isAdmin = true;
             }
         }
 
@@ -212,7 +211,7 @@ class PagesController extends Controller
 
     public function deleteFaq(Request $request, $faq_id){
         if(Auth::user()){
-            if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'superadmin')){
+            if(SiteConfigurationHelper::isSiteAdmin()){
                 Faq::where('id', $faq_id)
                 ->update(['show'=>0]);
                 Session::flash('message', 'Successfully Deleted FAQ.');
@@ -224,7 +223,7 @@ class PagesController extends Controller
     public function createFaq(){
         $color = Color::where('project_site',url())->first();
         if(Auth::user()){
-            if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'superadmin')){
+            if(SiteConfigurationHelper::isSiteAdmin()){
                 $categories = array('General' => array('Basics', 'Regulatory', 'Legal Structure', 'Fees', 'Website'), 'Investor' => array('Investing Basics', 'Investment Type', 'Investment Specific', 'Investment Support', 'Investment Risks'), 'Property Development & Venture' => '');
                 // dd($categories);
                 return view('pages.createFaq', compact('categories','color'));
@@ -239,7 +238,7 @@ class PagesController extends Controller
 
     public function storeFaq(Request $request){
         if(Auth::user()){
-            if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'superadmin')){
+            if(SiteConfigurationHelper::isSiteAdmin()){
                 //Validate the requested form
                 $this->validate($request, array(
                     'category'=>'required',

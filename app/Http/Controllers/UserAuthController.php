@@ -37,7 +37,7 @@ class UserAuthController extends Controller
      */
     public function redirectPath()
     {
-        if (Auth::user()->roles->contains('role', 'admin')) {
+        if (Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {
             return 'dashboard.index';
         }
         return 'users.index';
@@ -74,7 +74,7 @@ class UserAuthController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
-            if (Auth::user()->roles->contains('role', 'admin')) {
+            if (Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {
                 $this->redirectTo = "/dashboard";
             }
             if($request->next){
