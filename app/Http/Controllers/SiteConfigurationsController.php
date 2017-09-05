@@ -630,6 +630,12 @@ class SiteConfigurationsController extends Controller
         return redirect()->back();
     }
 
+    public function deleteProgressDetails(Request $request,$id)     
+    {
+        $proj_prog = ProjectProg::findOrFail($id);
+        $proj_prog->delete();
+        return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Deleted Successfully</p>');
+    }
     public function updateProjectDetails(Request $request, $projectId)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){

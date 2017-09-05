@@ -203,7 +203,7 @@
 					</div>
 				</div>
 			</div>
-<!-- 			<div class="offer-doclink"></div> -->
+			<!-- 			<div class="offer-doclink"></div> -->
 <!-- 			@if(Auth::guest())
 			@else
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -286,24 +286,24 @@
 				<hr>
 				
 				<div class="reference_docs" style="@if(!$project->projectconfiguration->show_reference_docs) display: none; @endif">
-				<h3 class="download-text first_color">Reference Documents</h3><br>
-				<div class="add-doc-ref-section"></div>
-				<div class="doc-references">
-					@if($project->documents)
-					@foreach($project->documents->where('type','reference_document')->where('project_site', url())->chunk(4) as $documents)
-					<div class="row">
-						@foreach($documents as $document)
-						<div class="col-md-3 text-left" style="padding-bottom: 10px;">
-							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-							<span style="font-size:1em;">
-								<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
-							</span>
+					<h3 class="download-text first_color">Reference Documents</h3><br>
+					<div class="add-doc-ref-section"></div>
+					<div class="doc-references">
+						@if($project->documents)
+						@foreach($project->documents->where('type','reference_document')->where('project_site', url())->chunk(4) as $documents)
+						<div class="row">
+							@foreach($documents as $document)
+							<div class="col-md-3 text-left" style="padding-bottom: 10px;">
+								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+								<span style="font-size:1em;">
+									<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
+								</span>
+							</div>
+							@endforeach
 						</div>
 						@endforeach
+						@endif
 					</div>
-					@endforeach
-					@endif
-				</div>
 				</div>
 
 				@if(Auth::guest())
@@ -1708,99 +1708,106 @@
 					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 					</td>
 					<td>{{$project_progs->progress_description}} </td>
-					<td>{{$project_progs->progress_details}}
+					<td>
+						@if(Auth::user())
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<a href="{{route('configuration.deleteProgress', [$project_progs->id])}}" class="pull-right" data-method="delete"> <i class="fa fa-times" aria-hidden="true" style="margin: 0 5px;" data-toggle="tooltip" title="Delete"></i></a>
+						{{-- <span class="pull-right"><i class="fa fa-pencil" aria-hidden="true" data-toggle="tooltip" title="Edit"></i> </span> --}}
+						@endif
+						@endif
+						{{$project_progs->progress_details}}
 						<br>
 						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
-							@if($project_progs->image_path != '')
+						@if($project_progs->image_path != '')
+						<div class="row">
+							<div class="col-md-10 change_column">
+								<div class="thumbnail">
+									<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
+								</div>
+							</div>
+						</div>
+						@endif
+						@if($project_progs->video_url != '')
+						<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
+						@endif
+					</td>
+				</tr>
+				@endforeach
+				<tr>
+					@if(Auth::user())
+					@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+					<h3 style="color: #000;">Add new Update</h3>
+					{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'id'=>'project_progress_form', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
+					<div class="row">
+						<td>
+							<div class="form-group <?php if($errors->first('updated_date')){echo 'has-error';}?>">
+								<div class="col-sm-12 <?php if($errors->first('updated_date')){echo 'has-error';}?>">
+									{!! Form::text('updated_date', null, array('placeholder'=>'Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker')) !!}
+									{!! $errors->first('updated_date', '<small class="text-danger">:message</small>') !!}
+								</div>
+							</div>
+						</td>
+						<td>
+							<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
+								<div class="col-sm-12 <?php if($errors->first('progress_description')){echo 'has-error';}?>">
+									{!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+									{!! $errors->first('progress_description', '<small class="text-danger">:message</small>') !!}
+								</div>
+							</div>
+						</td>
+						<td>
 							<div class="row">
-								<div class="col-md-10 change_column">
-									<div class="thumbnail">
-										<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
+								<div class="form-group <?php if($errors->first('progress_details')){echo 'has-error';}?>">
+									<div class="col-sm-12 <?php if($errors->first('progress_details')){echo 'has-error';}?>">
+										{!! Form::textarea('progress_details', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+										{!! $errors->first('progress_details', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
 							</div>
-							@endif
-							@if($project_progs->video_url != '')
-							<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
-							@endif
+							<br>
+							<div class="row">
+								<div class="form-group <?php if($errors->first('video_url')){echo 'has-error';}?>">
+									<div class="col-sm-12 <?php if($errors->first('video_url')){echo 'has-error';}?>">
+										{!! Form::text('video_url', null, array('placeholder'=>'Video url', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+										{!! $errors->first('video_url', '<small class="text-danger">:message</small>') !!}
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="form-group <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
+									<div class="col-sm-12 <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
+
+										<div class="input-group">
+											<label class="input-group-btn">
+												<span class="btn btn-primary" style="padding: 10px 12px;">Browse&hellip;
+													<input type="file" name="project_progress_image" id="project_progress_image" class="form-control" style="display: none;">
+												</span>
+											</label>
+											<input type="text" class="form-control" id="progress_image_name" name="progress_image_name" readonly placeholder="Select Image">
+										</div>
+										{!! $errors->first('project_progress_image', '<small class="text-danger">:message</small>') !!}
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="form-group">
+										<div class="col-sm-6">
+											{!! Form::submit('Add new Update', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
+										</div>
+									</div>
+								</div>
+							</div>
 						</td>
-					</tr>
-					@endforeach
-					<tr>
-						@if(Auth::user())
-						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<h3 style="color: #000;">Add new Update</h3>
-						{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'id'=>'project_progress_form', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
-						<div class="row">
-							<td>
-								<div class="form-group <?php if($errors->first('updated_date')){echo 'has-error';}?>">
-									<div class="col-sm-12 <?php if($errors->first('updated_date')){echo 'has-error';}?>">
-										{!! Form::text('updated_date', null, array('placeholder'=>'Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker')) !!}
-										{!! $errors->first('updated_date', '<small class="text-danger">:message</small>') !!}
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
-									<div class="col-sm-12 <?php if($errors->first('progress_description')){echo 'has-error';}?>">
-										{!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
-										{!! $errors->first('progress_description', '<small class="text-danger">:message</small>') !!}
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="row">
-									<div class="form-group <?php if($errors->first('progress_details')){echo 'has-error';}?>">
-										<div class="col-sm-12 <?php if($errors->first('progress_details')){echo 'has-error';}?>">
-											{!! Form::textarea('progress_details', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
-											{!! $errors->first('progress_details', '<small class="text-danger">:message</small>') !!}
-										</div>
-									</div>
-								</div>
-								<br>
-								<div class="row">
-									<div class="form-group <?php if($errors->first('video_url')){echo 'has-error';}?>">
-										<div class="col-sm-12 <?php if($errors->first('video_url')){echo 'has-error';}?>">
-											{!! Form::text('video_url', null, array('placeholder'=>'Video url', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
-											{!! $errors->first('video_url', '<small class="text-danger">:message</small>') !!}
-										</div>
-									</div>
-								</div>
-								<br>
-								<div class="row">
-									<div class="form-group <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
-										<div class="col-sm-12 <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
-											
-											<div class="input-group">
-				                              	<label class="input-group-btn">
-				                                 	<span class="btn btn-primary" style="padding: 10px 12px;">Browse&hellip;
-				                                 	<input type="file" name="project_progress_image" id="project_progress_image" class="form-control" style="display: none;">
-				                                	</span>
-				                            	</label>
-				                            	<input type="text" class="form-control" id="progress_image_name" name="progress_image_name" readonly placeholder="Select Image">
-				                        	</div>
-			                            	{!! $errors->first('project_progress_image', '<small class="text-danger">:message</small>') !!}
-										</div>
-									</div>
-								</div>
-								<br>
-								<div class="col-md-12">
-									<div class="row">
-										<div class="form-group">
-											<div class="col-sm-6">
-												{!! Form::submit('Add new Update', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</td>
-							{!! Form::close() !!}
-							@endif
-							@endif
-						</div>
-					</tr>
-				</tbody>
-			</table>
+						{!! Form::close() !!}
+						@endif
+						@endif
+					</div>
+				</tr>
+			</tbody>
+		</table>
 			{{-- @if(Auth::user())
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<h3 style="color: #000;">Upload a Images</h3>
@@ -2102,27 +2109,27 @@
 		});
 	}
 
-/*	function setProjectDetailsEditable(){
+	/*	function setProjectDetailsEditable(){
 		$('.set_zoom').html('<div class="form-group" style="width: 450px; float: left;"> <label for="demo2" class="col-md-4 control-label">Set Map Zoom Level (upto 22x):</label> <input id="demo2" type="number" value="{{nl2br(e($project->location->zoom_level))}}" name="zoom_level" class="col-md-8 form-control "> </div> </form>');
-	    $("input[name='zoom_level']").TouchSpin({
-	        min: 1,
-	        max: 22,
-	        stepinterval: 50,
-	        maxboostedstep: 10000000,
-	        postfix: 'X',
-	    });		
+		$("input[name='zoom_level']").TouchSpin({
+			min: 1,
+			max: 22,
+			stepinterval: 50,
+			maxboostedstep: 10000000,
+			postfix: 'X',
+		});		
 	}*/
 
 	function setSummernoteEditboxToTextarea(){
 		$('.rich-text-element').summernote({
-            height:100,
-            toolbar: [
-			    ['style', ['bold', 'italic', 'underline', 'clear']],
-			    ['fontsize', ['fontsize']],
-			    ['color', ['color']],
-			    ['para', ['paragraph']],
+			height:100,
+			toolbar: [
+			['style', ['bold', 'italic', 'underline', 'clear']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['paragraph']],
 			]
-        });
+		});
 	}
 
 	function editProjectPageBackImg(){
@@ -2784,8 +2791,8 @@
 		$('#project_progress_image').change(function(e){
 			var file = $('#project_progress_image')[0].files[0];
 			if (file){
-               	$('#progress_image_name').val(file.name);
-	       	}
+				$('#progress_image_name').val(file.name);
+			}
 		});
 		$('#project_progress_form').submit(function(e){
 			$('.loader-overlay').show();
