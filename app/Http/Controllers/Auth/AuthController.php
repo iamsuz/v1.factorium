@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Mailers\AppMailer;
+use Illuminate\Http\Request;
 // use Laravel\Socialite\Facades\Socialite;
 use App\SocialAccountService;
 use App\SocialAccountService1;
@@ -78,14 +79,18 @@ class AuthController extends Controller
             return view('users.fbedit', compact('user','color'));
         }
     }
-    public function handleProviderCallback1(SocialAccountService1 $service,AppMailer $mailer)
+    public function handleProviderCallback1(SocialAccountService1 $service,AppMailer $mailer, Request $request)
     {
         // $user = Socialite::driver('facebook')->user();
         // $user->token;
+        if(! $request->input('code')){
+            return redirect('users/login')->withMessage('<p class="alert alert-danger text-center"> Login failed: '.$request->input('error').'</p>');
+        }
+        dd('not errors');
         $redirect_url = url().'/auth/linkedin/callback';
         \Config::set('services.linkedin.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('linkedin')->user(),$mailer);
-        // dd($user);
+        dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
         auth()->loginUsingId($user->id);
         // if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
