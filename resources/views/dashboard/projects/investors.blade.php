@@ -45,6 +45,7 @@
 					<table class="table table-bordered table-striped" id="investorsTable" style="margin-top: 2em;">
 						<thead>
 							<tr>
+								<th>Unique ID</th>
 								<th>Investors Details</th>
 								<th>Investment Date</th>
 								<th>Amount</th>
@@ -60,6 +61,7 @@
 						<tbody>
 							@foreach($investments as $investment)
 							<tr>
+								<td>INV{{$investment->id}}</td>
 								<td>
 									<div class="col-md-3 text-left">
 										<a href="{{route('dashboard.users.show', [$investment->user_id])}}" >
@@ -259,6 +261,7 @@
 							<thead>
 								<tr>
 									<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
+									<th>Unique ID</th>
 									<th>Share numbers</th>
 									<th>Project SPV Name</th>
 									<th>Investor Name</th>
@@ -281,6 +284,7 @@
 							<tbody>
 								@foreach($shareInvestments as $shareInvestment)
 								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
+									<td>INV{{$shareInvestment->id}}</td>
 									<td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
 									<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
 									<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
