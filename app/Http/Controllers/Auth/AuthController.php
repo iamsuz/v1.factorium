@@ -54,10 +54,13 @@ class AuthController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback(SocialAccountService $service,AppMailer $mailer)
+    public function handleProviderCallback(SocialAccountService $service,AppMailer $mailer,Request $request)
     {
         // $user = Socialite::driver('facebook')->user();
         // $user->token;
+        if(! $request->input('code')){
+            return redirect('users/login')->withMessage('<p class="alert alert-danger text-center"> Login failed: '.$request->input('error').'</p>');
+        }
         $redirect_url = url().'/auth/facebook/callback';
         \Config::set('services.facebook.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('facebook')->user(),$mailer);
@@ -86,7 +89,6 @@ class AuthController extends Controller
         if(! $request->input('code')){
             return redirect('users/login')->withMessage('<p class="alert alert-danger text-center"> Login failed: '.$request->input('error').'</p>');
         }
-        dd('not errors');
         $redirect_url = url().'/auth/linkedin/callback';
         \Config::set('services.linkedin.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('linkedin')->user(),$mailer);
