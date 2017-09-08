@@ -869,7 +869,7 @@
 @else
 @if($admin_access == 1)
 <form action="{{route('configuration.storeShowFundingOptionsFlag')}}" method="POST">
-  {{csrf_field()}}x
+  {{csrf_field()}}
   <div class="text-center"><label><input type="checkbox" name="show_funding_options" data-toggle="toggle" @if($siteConfiguration->show_funding_options != '') checked @endif>Show Funding Options</label></div>
   <div class="text-center"><button type="Submit" class="btn btn-sm btn-primary">Save</button></div>
 </form>
@@ -1140,7 +1140,7 @@
       @else
       @if($admin_access == 1)
       <form action="{{route('configuration.storeShowSocialLinksFlag')}}" method="POST">
-        {{csrf_field()}}x
+        {{csrf_field()}}
         <div class="text-center" style="color: white;"><label><input type="checkbox" name="show_social_icons" data-toggle="toggle" @if($siteConfiguration->show_social_icons != '') checked @endif>Show Social Icons</label></div>
         <div class="text-center" style="margin-bottom: 1em;"><button type="Submit" class="btn btn-sm btn-primary">Save</button></div>
       </form>
