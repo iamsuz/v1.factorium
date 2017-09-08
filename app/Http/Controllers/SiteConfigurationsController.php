@@ -474,6 +474,20 @@ class SiteConfigurationsController extends Controller
         }
     }
 
+
+    public function storeShowSocialLinksFlag(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $socialicons = $request->show_social_icons;
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
+                'show_social_icons' => $request->show_social_icons,
+                ]);
+            return redirect()->back();
+        }
+    }
+
     public function storeHowItWorksContent(Request $request)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){

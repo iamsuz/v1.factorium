@@ -186,6 +186,7 @@ Route::post('/configuration/editHomePgInvestmentTitle1', ['as'=>'configuration.e
 Route::post('/configuration/editHomePgInvestmentTitle1Description', ['as'=>'configuration.editHomePgInvestmentTitle1Description', 'uses'=>'SiteConfigurationsController@editHomePgInvestmentTitle1Description']);
 Route::post('/configuration/uploadHomePgInvestmentImage', ['as'=>'configuration.uploadHomePgInvestmentImage', 'uses'=>'SiteConfigurationsController@uploadHomePgInvestmentImage']);
 Route::post('/configuration/storeShowFundingOptionsFlag', ['as'=>'configuration.storeShowFundingOptionsFlag', 'uses'=>'SiteConfigurationsController@storeShowFundingOptionsFlag']);
+Route::post('/configuration/storeShowSocialLinksFlag', ['as'=>'configuration.storeShowSocialLinksFlag', 'uses'=>'SiteConfigurationsController@storeShowSocialLinksFlag']);
 Route::post('/configuration/storeHowItWorksContent', ['as'=>'configuration.storeHowItWorksContent', 'uses'=>'SiteConfigurationsController@storeHowItWorksContent']);
 Route::post('/siteconfiguration/progress/{id}/images', ['as'=>'configuration.uploadprogress','uses'=>'SiteConfigurationsController@uploadProgressImage']);
 Route::post('/siteconfiguration/gallary/{id}/images1', ['as'=>'configuration.uploadGallaryImage','uses'=>'SiteConfigurationsController@uploadGallaryImage']);

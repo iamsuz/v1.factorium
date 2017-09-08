@@ -1136,7 +1136,17 @@
         </div>
       </div>
       <br>
-      <div class="row">
+      @if(Auth::guest())
+      @else
+      @if($admin_access == 1)
+      <form action="{{route('configuration.storeShowSocialLinksFlag')}}" method="POST">
+        {{csrf_field()}}x
+        <div class="text-center" style="color: white;"><label><input type="checkbox" name="show_social_icons" data-toggle="toggle" @if($siteConfiguration->show_social_icons != '') checked @endif>Show Social Icons</label></div>
+        <div class="text-center" style="margin-bottom: 1em;"><button type="Submit" class="btn btn-sm btn-primary">Save</button></div>
+      </form>
+      @endif
+      @endif
+      <div class="row @if(!$siteConfiguration->show_social_icons) hide @endif">
         <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.3s">
           <a href="{{$siteConfiguration->facebook_link}}" class="footer-social-icon" target="_blank">
             <span class="fa-stack fa">
@@ -1175,7 +1185,7 @@
       @if(Auth::guest())
       @else
       @if($admin_access == 1)
-      <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-social-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Social Links" data-placement="right"></i></div>
+      <div class="text-center @if(!$siteConfiguration->show_social_icons) hide @endif" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-social-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Social Links" data-placement="right"></i></div>
       @endif
       @endif
       <br>
