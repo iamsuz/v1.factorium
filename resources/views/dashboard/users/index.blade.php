@@ -74,12 +74,25 @@ Users | Dashboard | @parent
 
 @section('js-section')
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function(){
+		onChangeMsg();
 		var usersTable = $('#usersTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 50
 		});
+
+		function onChangeMsg() {
+			$('.note-content').change(function() {
+				swal("User Note Added Successfully!", {
+				  icon: "success",
+				  buttons: false,
+				  timer: 1350,
+				});
+			})
+		}
 
 		$('.note-content').blur(function () {
 			var form = $(this).parent();
@@ -89,6 +102,7 @@ Users | Dashboard | @parent
 				dataType: 'json',
 				data    : form.serialize(),
 				success : function( data ) {
+					onChangeMsg();
 				},
 				error   : function( xhr, err ) {
 					alert('Error');
