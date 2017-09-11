@@ -150,7 +150,7 @@ Offer Doc
 																	{!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif">
-																	{!! Form::text('line_2', null, array('placeholder'=>'line 2', 'class'=>'form-control','required', 'Value'=> $user->line_2)) !!}
+																	{!! Form::text('line_2', null, array('placeholder'=>'line 2', 'class'=>'form-control', 'Value'=> $user->line_2)) !!}
 																	{!! $errors->first('line_2', '<small class="text-danger">:message</small>') !!}
 																</div>
 															</div>

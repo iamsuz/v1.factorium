@@ -69,6 +69,9 @@ class OfferController extends Controller
             'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
             'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
             'amount_to_invest'   => 'required|integer',
+            'line_1' => 'required',
+            'state' => 'required',
+            'postal_code' => 'required'
             );
         $validator = Validator::make($request->all(), $validation_rules);
 
