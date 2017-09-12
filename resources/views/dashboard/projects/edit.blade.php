@@ -291,7 +291,7 @@ Edit {{$project->title}} | Dashboard | @parent
 				</div>
 			</section>
 			@if($project->investment)
-			<section>
+			<section style="display: none;">
 				<div class="row well">
 					<div class="col-md-12">
 						<fieldset>
@@ -597,7 +597,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row hide">
 								<div class="form-group @if($errors->first('bank_reference') && $errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
 <!-- 									{!!Form::label('bank_reference', 'Reference', array('class'=>'col-sm-2 control-label'))!!} -->
 									<div class="col-sm-9">
