@@ -292,7 +292,7 @@
       <br><br><br>
       <div class="row">
         <div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
-         <span class="btn btn-red btn-lg font-regular red-btn-style second_color_btn anchor" role="button" style="font-size:22px; border-color: transparent;" data-target="#projects">
+         <a href="/#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" class="btn btn-red btn-lg font-regular scrollto red-btn-style second_color_btn" role="button" style="font-size:22px; border-color: transparent;">
           @if(!empty($siteConfiguration))
           @if($siteConfiguration->homepg_btn1_text != '')
           {!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
@@ -302,7 +302,7 @@
           @else
           View Live Ventures
           @endif
-        </span>
+        </a>
         @if(Auth::guest())
         @else
         @if($admin_access == 1)
@@ -1349,7 +1349,6 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
   {!! Html::script('plugins/wow.min.js') !!}
   {!! Html::script('assets/plugins/owl-carousel/owl.carousel.js') !!}
-  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.1.0/velocity.min.js"></script>
   <script type="text/javascript" src="js/circle-progress.js"></script>
   <!-- <script src="https://youcanbook.me/resources/scripts/ycbm.modal.js"></script> -->
   {!! Html::script('js/typed.min.js') !!}
@@ -2598,14 +2597,6 @@
       });
     }
 
-    $(document).ready(function(){
-      $(".anchor").on("click",function(e) {
-        $($(this).data("target")).velocity("scroll",{
-          duration: 1000,
-          mobileHA: false
-        });
-      });
-    });
   </script>
 </body>
 </Html>
