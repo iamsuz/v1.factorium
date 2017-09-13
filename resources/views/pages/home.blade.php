@@ -160,11 +160,11 @@
         </div>
       <div id="navbar" class="collapse navbar-collapse navbar-right" style="margin-top:10px;">
         <ul class="nav navbar-nav">
-         <li class="active nav-item"><a href="{{route('home')}}/#promo" class="scrollto hide" id="nav_home">Home</a></li>
-         <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto">How it works</a></li>
-         <li class="nav-item"><a href="{{route('home')}}/#projects" class="scrollto">Investments</a></li>
+         <li class="active nav-item"><a href="{{route('home')}}/#promo" class="scrollto hide scroll-links" id="nav_home">Home</a></li>
+         <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto scroll-links">How it works</a></li>
+         <li class="nav-item"><a href="{{route('home')}}/#projects" class="scrollto scroll-links">Investments</a></li>
          @if($siteConfiguration->show_funding_options != '')
-         <li class="nav-item"><a href="{{route('home')}}/#funding" class="scrollto">Funding</a></li>
+         <li class="nav-item"><a href="{{route('home')}}/#funding" class="scrollto scroll-links">Funding</a></li>
          @endif
          <li class="nav-item"><a href="/pages/team">About us</a></li>
          <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
@@ -223,12 +223,12 @@
 
  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
   <ul class="nav navbar-nav navbar-right">
-    <li class="nav-item"><a href="{{route('home')}}" class="scrollto hide" id="nav_home">Home</a></li>
+    <li class="nav-item"><a href="{{route('home')}}" class="scrollto hide scroll-links" id="nav_home">Home</a></li>
     <!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
-    <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto">How it works</a></li>
-    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#projects" class="scrollto">Investments</a></li>
+    <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto scroll-links">How it works</a></li>
+    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#projects" class="scrollto scroll-links">Investments</a></li>
     @if($siteConfiguration->show_funding_options != '')
-    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" class="scrollto">Funding</a></li>
+    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" class="scrollto scroll-links">Funding</a></li>
     @endif
     <li class="nav-item"><a href="/pages/team">About us</a></li>
     <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
@@ -292,7 +292,7 @@
       <br><br><br>
       <div class="row">
         <div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
-         <a href="/#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" class="btn btn-red btn-lg font-regular scrollto red-btn-style second_color_btn" role="button" style="font-size:22px; border-color: transparent;">
+         <a href="/#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" class="btn btn-red btn-lg font-regular scrollto red-btn-style second_color_btn scroll-links" role="button" style="font-size:22px; border-color: transparent;">
           @if(!empty($siteConfiguration))
           @if($siteConfiguration->homepg_btn1_text != '')
           {!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
@@ -471,7 +471,7 @@
       @endif
     </div>
   </div>
-  <a class="scrollto" href="#projects">
+  <a class="scrollto scroll-links" href="#projects">
     <svg class="arrows">
       <path class="a1" d="M0 0 L15 16 L30 0"></path>
       <path class="a2" d="M0 10 L15 26 L30 10"></path>
@@ -908,7 +908,7 @@
             <input type="hidden" id="hidden_funding_section_title2" value="@if($siteConfiguration->funding_section_title2 != '') {!! nl2br(e($siteConfiguration->funding_section_title2)) !!} @endif">
             <br>
             <div class="text-center funding-section-btn2-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px; background-color:#fed405; border-radius:50px; letter-spacing:1px; color: #fff !important">
+                <a href="#projects" class="btn btn-default text-center scrollto font-regular second_color_btn btn-hover-default-color scroll-links" style="padding: 8px 24px;font-size:22px; background-color:#fed405; border-radius:50px; letter-spacing:1px; color: #fff !important">
                 @if($siteConfiguration->funding_section_btn2_text != ''){!!$siteConfiguration->funding_section_btn2_text!!}@endif
                 </a>
             </div>
@@ -1194,7 +1194,7 @@
         <div class="col-md-4 col-md-offset-4 text-center">
           <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
             <li class="footer-list-item">
-              <a href="#promo" class="scrollto a-link"><span class="font-semibold" style="font-size: 16px;">Home</span></a>
+              <a href="#promo" class="scrollto a-link scroll-links"><span class="font-semibold" style="font-size: 16px;">Home</span></a>
             </li>
             <li class="footer-list-item">
               <a href="https://estatebaron.com/blog/" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
@@ -1608,6 +1608,11 @@
     });
   </script>
   <script type="text/javascript">
+
+    // Remove Scroll effect of reference anchor links
+    if ($(window).width() < 768) {
+      $('.scroll-links').removeClass('scrollto');
+    }
     
     @if (Session::has('loginaction'))
     $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
