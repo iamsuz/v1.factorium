@@ -50,6 +50,7 @@ class DashboardController extends Controller
         $notes = Note::all();
         $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
         $pledged_investments = InvestmentInvestor::all()->where('project_site',url());
+
         return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color'));
     }
 
@@ -66,6 +67,7 @@ class DashboardController extends Controller
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
         $pledged_investments = InvestmentInvestor::all();
+
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }
 
@@ -133,6 +135,15 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
+        if($project->is_coming_soon == '1'){
+            $project->active = 1;
+            $project->save();
+        }
+        if($project->is_coming_soon == '0' && !$project->projectspvdetail) {
+            $project->active = 0;
+            $project->save();
+        }
+
         return view('dashboard.projects.edit', compact('project', 'investments','color'));
     }
 

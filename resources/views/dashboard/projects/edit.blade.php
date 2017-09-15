@@ -36,9 +36,12 @@ Edit {{$project->title}} | Dashboard | @parent
 			{!! Form::model($project, array('route'=>['projects.update', $project], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'PATCH', 'files'=>true)) !!}
 			<section>
 				<div class="row well">
+				@if(!$project->projectspvdetail)
+				<div class="alert alert-danger text-center">Please add the Project SPV Details to make the project live. You can still make the status of the project as Coming Soon.</div>
+				@endif
 					<fieldset>
 						<div class="col-md-12 center-block">
-							<h3 class="text-center"><small><a href="{{route('dashboard.projects.show', [$project])}}" class="pull-left"><i class="fa fa-chevron-left"></i>  BACK</a></small> Edit <i>{{$project->title}}</i></h3>
+							<h3 class="text-center"><small><a href="{{route('dashboard.projects.show', [$project])}}" class="pull-left hide"><i class="fa fa-chevron-left"></i>  BACK</a></small> Edit <i>{{$project->title}}</i></h3>
 							<br>
 							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('title')){{'has-error'}} @endif">
@@ -74,7 +77,7 @@ Edit {{$project->title}} | Dashboard | @parent
 							</div>
 							<div class="row text-center">
 								<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s">
-									<input type="checkbox" name="active-checkbox" id="active-checkbox" autocomplete="off" data-label-text="Active" @if($project->active) checked value="1" @else value="0" @endif>
+									<input type="checkbox" name="active-checkbox" id="active-checkbox" autocomplete="off" data-label-text="Active" @if(!$project->projectspvdetail && $project->is_coming_soon == '0') disabled @endif @if($project->active) checked value="1" @else value="0" @endif>
 									<input type="hidden" name="active" id="active" @if($project->active) value="1" @else value="0" @endif>
 
 									<input type="checkbox" name="is_coming_soon_checkbox" id="is_coming_soon_checkbox" data-label-text="upcoming" @if($project->is_coming_soon) value="1" checked @else value="0" @endif>
@@ -95,6 +98,13 @@ Edit {{$project->title}} | Dashboard | @parent
 									<input type="hidden" name="show_download_pdf_page" id="show_download_pdf_page" @if($project->show_download_pdf_page) value="1" @else value="0" @endif>
 
 									<br><br>
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-9">
+												{!! Form::submit('Update', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
+											</div>
+										</div>
+									</div>
 									<div class="hide" id="invite-developer">s
 										<br>
 										<br>
@@ -814,7 +824,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 								<div class="form-group">
 									<div class="col-sm-offset-2 col-sm-9">
 										{!! Form::submit('Update', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
@@ -1972,9 +1982,9 @@ Edit {{$project->title}} | Dashboard | @parent
 		});
 		$("#active-checkbox").bootstrapSwitch();
 		$('#active-checkbox').on('switchChange.bootstrapSwitch', function () {
-			var setVal = $(this).val() == 1? 0 : 1;
-			$(this).val(setVal);
-			$('#active').val(setVal);
+		var setVal = $(this).val() == 1? 0 : 1;
+		$(this).val(setVal);
+		$('#active').val(setVal);
 		});
 		$("#venture-checkbox").bootstrapSwitch();
 		$('#venture-checkbox').on('switchChange.bootstrapSwitch', function () {
@@ -1989,11 +1999,11 @@ Edit {{$project->title}} | Dashboard | @parent
 			$('#show_invest_now_button').val(setVal);
 		});
 		$(".property_type").bootstrapSwitch();
-		// $('#property_type').on('switchChange.bootstrapSwitch', function () {
-			// var setVal = $(this).val() == 1? 0 : 1;
-			// $(this).val(setVal);
-			// $('#venture').val(setVal);
-		// });
+		$('#property_type').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			$('#venture').val(setVal);
+		});
 		$("[name='property_type']").bootstrapSwitch();
 		$('input[name="property_type"]').on('change', function(){
 			if ($(this).val()=='1') {
