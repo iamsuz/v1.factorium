@@ -284,8 +284,8 @@
 							<tbody>
 								@foreach($shareInvestments as $shareInvestment)
 								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
-									<td>INV{{$shareInvestment->id}}</td>
 									<td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
+									<td>INV{{$shareInvestment->id}}</td>
 									<td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td>
 									<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
 									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
