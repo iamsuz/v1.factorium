@@ -2611,7 +2611,6 @@
         });
         $('.reference-link-with-js').click(function(e){
           $selfLocation = $(this).attr('data-href');
-          alert($selfLocation);
           self.location.href = $selfLocation;
         });
       @endif
