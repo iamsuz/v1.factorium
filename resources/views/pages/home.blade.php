@@ -160,11 +160,11 @@
         </div>
       <div id="navbar" class="collapse navbar-collapse navbar-right" style="margin-top:10px;">
         <ul class="nav navbar-nav">
-         <li class="active nav-item"><a href="{{route('home')}}/#promo" class="scrollto hide scroll-links" id="nav_home">Home</a></li>
-         <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto scroll-links">How it works</a></li>
-         <li class="nav-item"><a href="{{route('home')}}/#projects" class="scrollto scroll-links">Investments</a></li>
+         <li class="active nav-item"><a href="{{route('home')}}/#promo" data-href="{{route('home')}}/#promo" class="scrollto hide scroll-links reference-link-with-js" id="nav_home">Home</a></li>
+         <li class="nav-item"><a href="{{route('home')}}/#how-it-works" data-href="{{route('home')}}/#how-it-works" class="scrollto scroll-links reference-link-with-js">How it works</a></li>
+         <li class="nav-item"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js">Investments</a></li>
          @if($siteConfiguration->show_funding_options != '')
-         <li class="nav-item"><a href="{{route('home')}}/#funding" class="scrollto scroll-links">Funding</a></li>
+         <li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
          @endif
          <li class="nav-item"><a href="/pages/team">About us</a></li>
          <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
@@ -223,12 +223,12 @@
 
  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
   <ul class="nav navbar-nav navbar-right">
-    <li class="nav-item"><a href="{{route('home')}}" class="scrollto hide scroll-links" id="nav_home">Home</a></li>
+    <li class="nav-item"><a href="{{route('home')}}" data-href="{{route('home')}}" class="scrollto hide scroll-links reference-link-with-js" id="nav_home">Home</a></li>
     <!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
-    <li class="nav-item"><a href="{{route('home')}}/#how-it-works" class="scrollto scroll-links">How it works</a></li>
-    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#projects" class="scrollto scroll-links">Investments</a></li>
+    <li class="nav-item"><a href="{{route('home')}}/#how-it-works" data-href="{{route('home')}}/#how-it-works" class="scrollto scroll-links reference-link-with-js">How it works</a></li>
+    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js">Investments</a></li>
     @if($siteConfiguration->show_funding_options != '')
-    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" class="scrollto scroll-links">Funding</a></li>
+    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
     @endif
     <li class="nav-item"><a href="/pages/team">About us</a></li>
     <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
@@ -1194,7 +1194,7 @@
         <div class="col-md-4 col-md-offset-4 text-center">
           <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
             <li class="footer-list-item">
-              <a href="#promo" class="scrollto a-link scroll-links"><span class="font-semibold" style="font-size: 16px;">Home</span></a>
+              <a href="/#promo" data-href="/#promo" class="scrollto a-link scroll-links  "><span class="font-semibold" style="font-size: 16px;">Home</span></a>
             </li>
             <li class="footer-list-item">
               <a href="https://estatebaron.com/blog/" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
