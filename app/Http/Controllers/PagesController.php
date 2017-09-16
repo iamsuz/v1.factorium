@@ -95,7 +95,8 @@ class PagesController extends Controller
             // dd($siteConfiguration);
         }
         $testimonials = Testimonial::where('project_site', url())->get();
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials'));
+        $isiosDevice = stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'iphone');
+        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice'));
     }
 
     /**
