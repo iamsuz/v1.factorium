@@ -92,7 +92,7 @@ class AuthController extends Controller
         $redirect_url = url().'/auth/linkedin/callback';
         \Config::set('services.linkedin.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('linkedin')->user(),$mailer);
-        dd($user);
+        // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
         auth()->loginUsingId($user->id);
         // if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
