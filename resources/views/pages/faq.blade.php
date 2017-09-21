@@ -411,7 +411,7 @@ What is Property or Real Estate Crowdfunding?
 				</div>
 				<div id="collapse10" class="panel-collapse collapse">
 					<div class="panel-body" style="padding-left:45px;">
-						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">We cannot give you Tax advise, please consult your Tax adviser. You should also review the Prospectus which may have details about the tax impact of that particular investment.</p>
+						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">We cannot give you Tax advice, please consult your Tax adviser. You should also review the Prospectus which may have details about the tax impact of that particular investment.</p>
 					</div>
 				</div>
 			</div>
