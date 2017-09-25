@@ -747,97 +747,97 @@
 					</div>
 				</div>
 			</div>
-		</div>
 		@if(Auth::guest())
 		@else
 		@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
-	</form>
-	@endif
-	@endif
-	@if(Auth::guest())
-	@else
-	@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-	<section class="project-faq">
-		<div class="container">
-			<div class="row well">
-				<div class="col-md-12">
-					<div class="row">
-						@foreach($project->projectFAQs as $faq)
-						<div class="col-md-offset-2 col-md-7">
-							<b>{{$faq->question}}</b>
-							{{$faq->id}}
-							<p class="text-justify">{{$faq->answer}}</p>
-						</div>
-						<div class="col-md-2"> 
-							{!! Form::open(['route' => ['projects.destroy', $faq->id, $project->id],'id'=>'faq_form_'.$faq->id]) !!}
-							<button class="btn btn-danger" id="delete_faq_{{$faq->id}}">Delete this FAQ?</button>
-							{!! Form::close() !!}
-						</div>
-						<script>
-							$(document).ready(function() {
-								$('#delete_faq_{{$faq->id}}').click(function(){
-									$('#faq_form_{{$faq->id}}').submit();
-								});
-							});
-						</script>
-						@endforeach
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-md-12">
-							{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form','id'=>'add_new_faq')) !!}
-							<fieldset>
-								<div class="row">
-									<div class="form-group @if($errors->first('question')){{'has-error'}} @endif">
-										{!!Form::label('question', 'Question', array('class'=>'col-sm-2 control-label'))!!}
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-12 @if($errors->first('question')){{'has-error'}} @endif">
-													{!! Form::text('question', null, array('placeholder'=>'Question', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-													{!! $errors->first('question', '<small class="text-danger">:message</small>') !!}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="form-group @if($errors->first('answer')){{'has-error'}} @endif">
-										{!!Form::label('answer', 'Answer', array('class'=>'col-sm-2 control-label'))!!}
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-12 @if($errors->first('answer')){{'has-error'}} @endif">
-													{!! Form::textarea('answer', null, array('placeholder'=>'Answer', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-													{!! $errors->first('answer', '<small class="text-danger">:message</small>') !!}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="form-group">
-										<div class="col-sm-offset-2 col-sm-9">
-											{{-- {!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!} --}}
-											<button class="btn btn-danger" id="add_faq">Add New FAQ</button>
-										</div>
-									</div>
-								</div>
-							</fieldset>
-							{!! Form::close() !!}
+		</form>
+		@endif
+		@endif
+		@if(Auth::guest())
+		@else
+		@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+		<div class="project-faq">
+			<div class="container">
+				<div class="row well">
+					<div class="col-md-12">
+						<div class="row">
+							@foreach($project->projectFAQs as $faq)
+							<div class="col-md-offset-2 col-md-7">
+								<b>{{$faq->question}}</b>
+								{{$faq->id}}
+								<p class="text-justify">{{$faq->answer}}</p>
+							</div>
+							<div class="col-md-2"> 
+								{!! Form::open(['route' => ['projects.destroy', $faq->id, $project->id],'id'=>'faq_form_'.$faq->id]) !!}
+								<button class="btn btn-danger" id="delete_faq_{{$faq->id}}">Delete this FAQ?</button>
+								{!! Form::close() !!}
+							</div>
 							<script>
-							$(document).ready(function() {
-								$('#add_faq').click(function(){
-									$('#add_new_faq').submit();
+								$(document).ready(function() {
+									$('#delete_faq_{{$faq->id}}').click(function(){
+										$('#faq_form_{{$faq->id}}').submit();
+									});
 								});
-							});
-						</script>
+							</script>
+							@endforeach
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-12">
+								{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form','id'=>'add_new_faq')) !!}
+								<fieldset>
+									<div class="row">
+										<div class="form-group @if($errors->first('question')){{'has-error'}} @endif">
+											{!!Form::label('question', 'Question', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('question')){{'has-error'}} @endif">
+														{!! Form::text('question', null, array('placeholder'=>'Question', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
+														{!! $errors->first('question', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('answer')){{'has-error'}} @endif">
+											{!!Form::label('answer', 'Answer', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('answer')){{'has-error'}} @endif">
+														{!! Form::textarea('answer', null, array('placeholder'=>'Answer', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
+														{!! $errors->first('answer', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-9">
+												{{-- {!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!} --}}
+												<button class="btn btn-danger" id="add_faq">Add New FAQ</button>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+								{!! Form::close() !!}
+								<script>
+								$(document).ready(function() {
+									$('#add_faq').click(function(){
+										$('#add_new_faq').submit();
+									});
+								});
+							</script>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
-	@endif
-	@endif
+		@endif
+		@endif
+	</div>
 	<div id="menu1" class="tab-pane fade" style="color: #000;">
 		<div class="container">
 			<table class="table table-striped">
