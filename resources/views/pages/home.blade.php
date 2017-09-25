@@ -552,7 +552,7 @@
                 </div>
                 <br>
                 <div class="caption">
-                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
                   <div class="row text-left">
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -658,7 +658,7 @@
                 </div>
                 <br>
                 <div class="caption">
-                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
                   <div class="row text-left">
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -762,7 +762,7 @@
                </div>
                <br>
                <div class="caption">
-                <p><small><small>@if($project->projectspvdetail)Securities are being offered in a Prospectus for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                <p><small><small>@if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
                 <div class="row text-left">
                   <div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
                     <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -798,7 +798,7 @@
   </div>
   <br><br>
     <div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
-      <p class="col-md-12 text-justify"><small style="color: #888;">You can download the Prospectus for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the Prospectus. You should carefully review the Prospectus in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the Prospectus.</small></p>
+      <p class="col-md-12 text-justify"><small style="color: #888;">You can download the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. You should carefully review the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.</small></p>
     </div>
 </div>
 </section>
@@ -846,7 +846,7 @@
               @endif -->
             </h3><br>
             <p class="investment-title1-description-section text-justify" style="font-size:16px;">
-              The advice provided on this website, is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Prospectus relevant to that offer and consider whether they are right for you. The Prospectus is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
+              The advice provided on this website, is general advice only and has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif relevant to that offer and consider whether they are right for you. The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
               <!-- @if($siteConfiguration->investment_title1_description != '')
               {!! nl2br(e($siteConfiguration->investment_title1_description)) !!}
               @endif -->
@@ -1214,7 +1214,7 @@
               <a href="https://estatebaron.com/pages/privacy" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a>
             </li><br>
             <li class="footer-list-item">
-              <a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a>
+              <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a>
             </li>
             <!-- <li class="footer-list-item">
               <a href="{{$siteConfiguration->media_kit_link}}" download class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a>

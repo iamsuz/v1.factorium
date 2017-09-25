@@ -259,7 +259,7 @@
                         <li class="footer-list-item"><a href="{{route('site.termsConditions')}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
                         <li class="footer-list-item"><a href="https://estatebaron.com/pages/privacy" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
-                        <li class="footer-list-item"><a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
+                        <li class="footer-list-item"><a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
                         <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                     </ul>
 <!--                     <span style="margin:0 0 1px;">

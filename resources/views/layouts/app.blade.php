@@ -112,7 +112,7 @@
 
                     <!-- <li class="footer-list-item"><a href="{{asset('media_kit/EB_Media_Kit.zip')}}" download><h3>Media Kit</h3></a></li> -->
                     <!-- <li class="footer-list-item"><a href="{{route('pages.financial')}}"><h3>Financial Service Guide</h3></a></li> -->
-                    <li class="footer-list-item"><a href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0"><h3>Financial Service Guide</h3></a></li>
+                    <li class="footer-list-item"><a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0"><h3>Financial Service Guide</h3></a></li>
 
                 </ul>
                 <address style="margin:0px;"><h3 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.8s" style="margin:0px;"><small>350 Collins st, Melbourne 3000. <i class="fa fa-phone"></i> 1 300 033 221</small></h3></address>

@@ -31,9 +31,9 @@ Offer Doc
 											<div>
 												<label class="form-label">Project SPV Name</label><br>
 												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" @endif >
-												<h5>Name of the Company established as a special puropose Vehicle for this project that you are investing in</h5>
+												<h5>Name of the Company established as a Special Purpose Vehicle for this project that you are investing in</h5>
 												<p>
-													This Application Form is important. If you are in doubt as to how to deal with it, please contact your stockbroker or professional adviser without delay. You should read the entire prospectus carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the prospectus.
+													This Application Form is important. If you are in doubt as to how to deal with it, please contact your stockbroker or professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 												</p>
 												<label>I/We apply for *</label>
 												<input type="text" name="amount_to_invest" class="form-control" placeholder="5000" style="width: 60%" id="apply_for" required>
@@ -229,7 +229,7 @@ Offer Doc
 									<div class="row " id="section-7">
 										<div class="col-md-12">
 											<h3>Nominated Bank Account</h3>
-											<h5 style="color: #000">Please enter your bank account details where you would like to receive any Divident or other payments related to this investment</h5>
+											<h5 style="color: #000">Please enter your bank account details where you would like to receive any Dividend or other payments related to this investment</h5>
 											<hr>
 											<div>
 												<div class="row">
@@ -260,7 +260,7 @@ Offer Doc
 									<div class="row " id="section-8">
 										<div class="col-md-12">
 											<div>
-												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advise by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this Prospectus in deciding to invest and will seek independent adviser from my financial adviser if needed.
+												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
 												{{-- <div class="row">
 													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
 														<button class="btn btn-primary btn-block" id="step-8">Next</button>
@@ -347,11 +347,11 @@ Offer Doc
 							<tr >
 								<td class="font-regular">
 									<!-- Read this Document for the fund structure and other technical/legal details -->
-									This Prospectus contains forward looking statements. Those statements are based upon the Directors’ current expectations in regard to future events or results. All forecasts in this Prospectus are based upon the assumptions described in Section 10.1. Actual results may be materially affected by changes in circumstances, some of which may be outside the control of the Company. The reliance that investors place on the forecasts is a matter for their own commercial judgment. No representation or warranty is made that any forecast, assumption or estimate contained in this Prospectus will be achieved.
+									This @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif contains forward looking statements. Those statements are based upon the Directors’ current expectations in regard to future events or results. All forecasts in this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif are based upon the assumptions described in Section 10.1. Actual results may be materially affected by changes in circumstances, some of which may be outside the control of the Company. The reliance that investors place on the forecasts is a matter for their own commercial judgment. No representation or warranty is made that any forecast, assumption or estimate contained in this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif will be achieved.
 									<br><br>
-									Seek professional advice from your accountant, stockbroker, lawyer or other professional adviser before deciding whether to invest. The information provided in this Prospectus does not constitute personal financial product advice and has been prepared without taking into account your investment objectives, financial situation or particular needs. It is important that you read this Prospectus in its entirety before deciding to invest and consider the risk factors that could affect the Company’s performance.
+									Seek professional advice from your accountant, stockbroker, lawyer or other professional adviser before deciding whether to invest. The information provided in this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif does not constitute personal financial product advice and has been prepared without taking into account your investment objectives, financial situation or particular needs. It is important that you read this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in its entirety before deciding to invest and consider the risk factors that could affect the Company’s performance.
 									<br>
-									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{$project->investment->PDS_part_1_link}}" target="_blank">Download Prospectus</a>
+									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{$project->investment->PDS_part_1_link}}" target="_blank">Download @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif</a>
 								</td>
 							</tr>
 							<tr >
@@ -359,7 +359,7 @@ Offer Doc
 									<b>Tech Baron PTY LTD Declaration</b><br>
 									We have to provide this document to you along with the application form, it defines the services we are providing as an authorized Representative of our license holding partner
 									<br>
-									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="https://www.dropbox.com/s/420na4su10wgt85/RSec%20FSG%20Ver%207.0%20201702.pdf?dl=0" target="_blank">Download Financial Services Guide</a>
+									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank">Download Financial Services Guide</a>
 								</td>
 							</tr>
 						</table>

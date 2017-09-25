@@ -188,7 +188,7 @@
 							Invest Now
 							@endif
 						</b></a>
-						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif before making any decisions</small></h6>
+						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
 						@else
 						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 						@endif
@@ -237,17 +237,17 @@
 			</div>
 			@endif
 			@endif
-			@if(Auth::guest())
+			{{-- @if(Auth::guest())
 			@else
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<div class="row text-center col-md-6">
 				<input type="checkbox" class="prospectus-text-switch" autocomplete="off" data-label-text="Set Text" data-size="mini" @if($project->projectconfiguration->show_prospectus_text) checked value="1" @else value="0" @endif>
 			</div>
 			@endif
-			@endif
+			@endif --}}
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button.</h6>
+	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button.</h6>
 	<section>
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
@@ -257,7 +257,7 @@
 						<div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
 							<span style="font-size:1.7em;" class="project-pds1-link-field">
-								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif</a>
+								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
 							</span>
 						</div>
 						
@@ -1387,7 +1387,7 @@
 								<h5>
 									@if($project->projectconfiguration->payment_switch)
 									<h5 class="text-center">
-										Please read the Prospectus and complete and submit the online Application Form by clicking the SUBMIT APPLICATION button. Please make payment via EFT within 48 hours of completing the Application Form. Alternatively please contact us should you wish to make payment using Cheque.
+										Please read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif and complete and submit the online Application Form by clicking the SUBMIT APPLICATION button. Please make payment via EFT within 48 hours of completing the Application Form. Alternatively please contact us should you wish to make payment using Cheque.
 									</h5>
 									@else
 									<table class="table table-responsive font-bold" style="color:#2d2d4b;">
@@ -1412,7 +1412,7 @@
 								Invest Now
 								@endif
 							</b></a>
-							<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->projectconfiguration->show_prospectus_text) Prospectus @else Information Memorandum @endif before making any decisions</small></h6>
+							<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
 							@else
 							<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
 							@endif
@@ -2082,7 +2082,7 @@
 		deleteSubSectionImages();
 		//Delete Carousel Image
 		deleteCarouselImage();
-		toggleProspectusText();
+		//toggleProspectusText();
 		toggleProjectProgress();
 		toggleProjectElementsVisibiity();
 		editProjectPageLabelText();
@@ -2622,7 +2622,7 @@
 		});
 	}
 
-	function toggleProspectusText(){
+/*	function toggleProspectusText(){
 		$('.prospectus-text-switch').bootstrapSwitch({
 			onText: "Prospectus",
 			onColor: 'primary',
@@ -2652,7 +2652,7 @@
 				}
 			});
 		});
-	}
+	}*/
 
 	function toggleProjectProgress(){
 		$('.project-progress-switch').bootstrapSwitch({

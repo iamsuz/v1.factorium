@@ -661,6 +661,7 @@ class SiteConfigurationsController extends Controller
                 'title' => $request->project_title_txt,
                 'description' => $request->project_description_txt,
                 'button_label'=>$request->project_button_invest_txt,
+                'project_prospectus_text'=>$request->project_prospectus_txt,
                 ]);
             Investment::where('project_id', $projectId)->first()->update([
                 'fund_raising_close_date'=>$request->fund_raising_close_date,
@@ -892,6 +893,25 @@ class SiteConfigurationsController extends Controller
         }
     }
 
+    public function updateProspectusText(Request $request)
+    {
+        $prospectusText = $request->prospectus_text_input;
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            if(!$siteconfiguration)
+            {
+                $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
+                $siteconfiguration->save();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            }
+            $siteconfiguration->update(['prospectus_text'=>$prospectusText]);
+            Session::flash('message', 'Prospectus Text Updated Successfully');
+            Session::flash('action', 'change_prospectus');
+            return redirect()->back();
+    }
+
     public function uploadProjectThumbImage(Request $request)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){
@@ -1113,7 +1133,7 @@ class SiteConfigurationsController extends Controller
             $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
         }
         $projectConfigurationPartial->update(['show_prospectus_text'=>$request->checkValue]);
-        return $resultArray = array('status' => 1);
+        return redirect()->back();
     }
 
     public function toggleProjectProgress(Request $request)

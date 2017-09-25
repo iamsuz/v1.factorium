@@ -213,6 +213,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'change_prospectus')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Prospectus Text</b></h3>
+                                    <p><small>This will replace all the instances of prospectus with entered word.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-prospectus-text-btn" style="cursor: pointer;">
+                                                <strong>Change Prospectus Text</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -566,6 +589,32 @@ Configuration | Dashboard | @parent
         </div>      
     </div>
 </div>
+<!-- Modal for Changing Prospectus Text on all pages -->
+<div class="modal fade" id="change_prospectus_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Prospectus Text</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateProspectusText'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to display new client name for the website.</small></i></h5>
+                        <br>
+                        <div class="row prospectus-text-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::text('prospectus_text_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text, array('placeholder'=>'Enter Prospectus Text', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'prospectus_text_input')) !!}
+                        <br>
+                        {!! Form::submit('Save Prospectus Text', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
 
 </div>
 </div>
@@ -734,6 +783,7 @@ Configuration | Dashboard | @parent
         performCropOnImage();
     });
         // Additional functionality functions
+        editProspectusText();
         editClientName();
         editVisibilityOfSiteConfigItems();
         editProjectInterestEmbedLink();
@@ -821,6 +871,16 @@ function updateCoords(coords, w, h, origWidth, origHeight){
              }
 
          });
+        });
+    }
+
+    function editProspectusText(){
+        $('.change-prospectus-text-btn').click(function(){
+            $('#change_prospectus_edit_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#prospectus_text_input').select();
         });
     }
 

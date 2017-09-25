@@ -239,6 +239,7 @@ Route::post('/pages/testimonial/delete', ['as'=>'pages.testimonial.delete', 'use
 Route::post('/configuration/updateTagManager', ['as'=> 'configuration.updateTagManager', 'uses'=>'SiteConfigurationsController@updateTagManager']);
 Route::post('/pages/home/expressProjectInterest', ['as'=>'pages.home.expressProjectInterest', 'uses'=>'PagesController@expressProjectInterest']);
 Route::post('/configuration/updateConversionPixel', ['as'=> 'configuration.updateConversionPixel', 'uses'=>'SiteConfigurationsController@updateConversionPixel']);
+Route::post('/configuration/updateProspectusText', ['as'=> 'configuration.updateProspectusText', 'uses'=>'SiteConfigurationsController@updateProspectusText']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);

@@ -32,6 +32,7 @@ use Intervention\Image\Facades\Image;
 use App\Http\Requests\InvestmentRequest;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
+use App\SiteConfiguration;
 
 class ProjectsController extends Controller
 {
@@ -199,6 +200,9 @@ class ProjectsController extends Controller
         $color = Color::where('project_site',url())->first();
         $completed_percent = 0;
         $pledged_amount = 0;
+        $siteConfiguration = SiteConfiguration::all();
+        $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
+
         if($project->investment) {
             $pledged_amount = InvestmentInvestor::where('project_id', $project->id)->sum('amount');
             $number_of_investors = InvestmentInvestor::where('project_id', $project->id)->count();
@@ -266,17 +270,17 @@ class ProjectsController extends Controller
             if($project->invited_users->contains(Auth::user())) 
             {
                 if($editFlag){
-                    return view('projects.showedit', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));    
+                    return view('projects.showedit', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));    
                 }
-                return view('projects.show', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
+                return view('projects.show', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
             } else {
                 return redirect()->route('users.show', Auth::user())->withMessage('<p class="alert alert-warning text-center">This is an Invite Only Project, You do not have access to this project.<br>Please click <a href="/#projects">here</a> to see other projects.</p>');
             }
         }
         if($editFlag){
-            return view('projects.showedit', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
+            return view('projects.showedit', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
         }
-        return view('projects.show', compact('project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
+        return view('projects.show', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
     }
     /**
      * Display the specified resource.

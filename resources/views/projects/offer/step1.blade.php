@@ -5,11 +5,11 @@
 	<div>
 		<div class="row">
 			<div class="col-md-6 col-md-offset-2" data-wow-duration="1.5s" data-wow-delay="0.4s">
-				<label class="form-label">Peoject SPV Name</label><br>
+				<label class="form-label">Project SPV Name</label><br>
 				<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" @endif >
-				<h5>Name of the Company established as a special puropose Vehicle for this project that you are investing in</h5>
+				<h5>Name of the Company established as a Special Puropose Vehicle for this project that you are investing in</h5>
 				<p>
-					This Application Form is important. If you are in doubt as to how to deal with it, please contact your stockbroker or professional adviser without delay. You should read the entire prospectus carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the prospectus.
+					This Application Form is important. If you are in doubt as to how to deal with it, please contact your stockbroker or professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 				</p>
 				<label>I/We apply for *</label>
 				<input type="text" name="amount_to_invest" class="form-control" placeholder="$5000" style="width: 60%" id="apply_for" required>
