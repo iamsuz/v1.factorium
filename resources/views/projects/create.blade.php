@@ -71,7 +71,7 @@ Create New Project | @parent
 							<div class="col-sm-12">
 								<h4 id="location" class="first_color">Development Location</h4>
 								<div class="@if($errors->first('line_1')){{'has-error'}} @endif">
-									{!! Form::text('line_1', null, array('placeholder'=>'Street Address', 'class'=>'form-control', 'tabindex'=>'3')) !!}
+									{!! Form::text('line_1', null, array('placeholder'=>'Street Address', 'class'=>'form-control', 'tabindex'=>'2')) !!}
 									{!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!}
 								</div>
 									<!-- <div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif">
@@ -87,11 +87,11 @@ Create New Project | @parent
 								<div class=" col-sm-12">
 									<div class="row">
 										<div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif">
-											{!! Form::text('city', null, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+											{!! Form::text('city', null, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'3')) !!}
 											{!! $errors->first('city', '<small class="text-danger">:message</small>') !!}
 										</div>
 										<div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif">
-											{!! Form::text('state', null, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'6')) !!}
+											{!! Form::text('state', null, array('placeholder'=>'State', 'class'=>'form-control', 'tabindex'=>'4')) !!}
 											{!! $errors->first('state', '<small class="text-danger">:message</small>') !!}
 										</div>
 									</div>
@@ -104,11 +104,11 @@ Create New Project | @parent
 								<div class=" col-sm-12">
 									<div class="row">
 										<div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif">
-											{!! Form::text('postal_code', null, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'7')) !!}
+											{!! Form::text('postal_code', null, array('placeholder'=>'Postal code', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 											{!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!}
 										</div>
 										<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
-											<select name="country" class="form-control" tabindex="8">
+											<select name="country" class="form-control" tabindex="6">
 												@foreach(\App\Http\Utilities\Country::aus() as $country => $code)
 												<option value="{{$code}}">{{$country}}</option>
 												@endforeach
@@ -125,7 +125,7 @@ Create New Project | @parent
 						<div class="row">
 							<div class="form-group @if($errors->first('description')){{'has-error'}} @endif">
 								<div class=" col-sm-12">
-									{!! Form::textarea('description', null, array('placeholder'=>'Please describe the details of your Development', 'class'=>'form-control', 'tabindex'=>'2', 'rows'=>'5')) !!}
+									{!! Form::textarea('description', null, array('placeholder'=>'Please describe the details of your Development', 'class'=>'form-control', 'tabindex'=>'7', 'rows'=>'5')) !!}
 									{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 								</div>
 							</div>
@@ -135,7 +135,7 @@ Create New Project | @parent
 						<div class="row">
 							<div class="form-group @if($errors->first('additional_info')){{'has-error'}} @endif">
 								<div class="col-sm-12">
-									{!! Form::textarea('additional_info', null, array('placeholder'=>'Please provide any additional information', 'class'=>'form-control', 'tabindex'=>'12', 'rows'=>'10')) !!}
+									{!! Form::textarea('additional_info', null, array('placeholder'=>'Please provide any additional information', 'class'=>'form-control', 'tabindex'=>'8', 'rows'=>'10')) !!}
 									{!! $errors->first('additional_info', '<small class="text-danger">:message</small>') !!}
 								</div>
 							</div>
@@ -143,7 +143,7 @@ Create New Project | @parent
 					</fieldset>
 				</div>
 			</div>
-			<div class="row ">
+			<div class="row hide">
 				<div class="col-md-6 col-md-offset-3 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
 					<br>
 					<fieldset>
@@ -236,12 +236,13 @@ Create New Project | @parent
 					</fieldset>
 				</div>
 			</div>
-			<hr style="height:1px;border:none;color:#333;background-color:#333; width:60%; " />
-			<div class="row ">
+			<!-- <hr style="height:1px;border:none;color:#333;background-color:#333; width:60%; " /> -->
+			<br><br>
+			<div class="row text-center" style="border-radius:80px !important;">
 				<fieldset>
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-6">
-							{!! Form::submit('Submit a Project', array('class'=>'btn btn-n3 h1-faq second_color_btn', 'tabindex'=>'15','style'=>'color:#fff;font-size:1em;')) !!}
+							{!! Form::submit('Submit a Project', array('class'=>'btn btn-n3 h1-faq second_color_btn', 'tabindex'=>'15','style'=>'color:#fff;font-size:1em;border-radius:6px !important;')) !!}
 						</div>
 					</div>
 				</fieldset>
