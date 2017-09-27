@@ -461,6 +461,20 @@ class SiteConfigurationsController extends Controller
         }
     }
 
+
+    public function uploadVideo(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $video_url = $request->explainer_video_url;
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
+                'explainer_video_url' => $request->explainer_video_url,
+                ]);
+            return redirect()->back();
+        }
+    }
+
     public function storeShowFundingOptionsFlag(Request $request)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){

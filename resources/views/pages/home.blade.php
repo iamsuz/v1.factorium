@@ -339,6 +339,37 @@
   </div>
 </div>
 </section>
+@if(Auth::guest())
+@else
+@if($admin_access == 1)
+<br><br>
+<form action="{{route('configuration.uploadVideo')}}" method="POST">
+  {{csrf_field()}}
+  <span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Explainer Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
+  <button class="btn btn-primary btn-sm" type="submit" style="margin-left: 1.5em;">Save</button>
+</form>
+@endif
+@endif
+<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-1 col-md-10">
+        <h2 class="text-center first_color" style="font-weight:100">EXPLAINER VIDEO</h2>
+        <br>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 text-center">
+            <div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
+              <iframe class="embed-responsive-item" width="100%" height="100%" src="{{$siteConfiguration->explainer_video_url}}" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <div class="container @if($siteConfiguration->explainer_video_url == '') hide @endif">
+    <hr class="first_color" style="height:2px;border:none;color:#282a73;background-color:#282a73;" />
+  </div>
 <section id="how-it-works" class="chunk-box" style="padding: 2em 0;">
   <div class="container-fluid">
     <div class="row how-it-works-section">
