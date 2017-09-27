@@ -350,12 +350,11 @@
 </form>
 @endif
 @endif
+<br><br>
 <section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif">
   <div class="container">
     <div class="row">
       <div class="col-md-offset-1 col-md-10">
-        <h2 class="text-center first_color" style="font-weight:100">VIDEO</h2>
-        <br>
         <div class="row">
           <div class="col-md-10 col-md-offset-1 text-center">
             <div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
