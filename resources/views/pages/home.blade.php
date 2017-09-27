@@ -345,7 +345,7 @@
 <br><br>
 <form action="{{route('configuration.uploadVideo')}}" method="POST">
   {{csrf_field()}}
-  <span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Explainer Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
+  <span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
   <button class="btn btn-primary btn-sm" type="submit" style="margin-left: 1.5em;">Save</button>
 </form>
 @endif
@@ -354,7 +354,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-offset-1 col-md-10">
-        <h2 class="text-center first_color" style="font-weight:100">EXPLAINER VIDEO</h2>
+        <h2 class="text-center first_color" style="font-weight:100">VIDEO</h2>
         <br>
         <div class="row">
           <div class="col-md-10 col-md-offset-1 text-center">
