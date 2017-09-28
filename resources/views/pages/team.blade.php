@@ -31,7 +31,7 @@ Australia's Top Real Estate Equity Crowdfunding team
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h1 class="heading-font-semibold second_color" style=" font-size:2.625em; color:#fed405; letter-spacing:3px;">Founders</h1>
+					<h1 class="heading-font-semibold second_color" style=" font-size:2.625em; color:#fed405; letter-spacing:3px;">{{$aboutus->founder_label}}</h1>
 					<br>
 					@if($aboutus)
 					<!-- <h2 class="second_color">Founders</h2> -->

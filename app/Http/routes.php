@@ -16,6 +16,7 @@ Route::post('/pages/cropUploadedImage', ['as'=>'pages.cropUploadedImage', 'uses'
 Route::post('/pages/team/{aboutus}/members/',['as'=>'team.members.create','uses'=>'PagesController@createTeamMember']);
 Route::patch('/pages/team/members/{id}', ['as'=>'team.members.update', 'uses'=>'PagesController@updateTeamMember']);
 Route::delete('pages/{aboutus_id}/members/{member_id}', ['as'=>'team.member.destroy', 'uses'=>'PagesController@deleteTeamMember']);
+Route::post('/pages/updateFounderLabel', ['as'=>'pages.updateFounderLabel', 'uses'=>'PagesController@updateFounderLabel']);
 Route::get('/pages/users/sort', ['as'=>'pages.team', 'uses'=>'PagesController@sortusers']);
 Route::get('/pages/privacy', ['as'=>'pages.privacy', 'uses'=>'PagesController@privacy']);
 // Route::get('/pages/financialserviceguide', ['as'=>'pages.financial', 'uses'=>'PagesController@financial']);

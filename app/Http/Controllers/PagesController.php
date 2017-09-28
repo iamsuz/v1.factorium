@@ -343,7 +343,17 @@ class PagesController extends Controller
         $member->delete();
         return redirect()->back()->withMessage('Deleted Successfully');
     }
-
+    public function updateFounderLabel(Request $request){
+            if (SiteConfigurationHelper::isSiteAdmin()){
+            $founderLabel = $request->founder_label;
+            $aboutus = Aboutus::all();
+            $aboutus = $aboutus->where('project_site',url())->first();
+            $aboutus->update([
+                'founder_label' => $request->founder_label,
+                ]);
+            return redirect()->back();
+        }
+    }
     public function uploadMemberImgThumbnail(Request $request){
         $validation_rules = array(
             'founder_image_url'=>'required|mimes:jpeg,png,jpg,JPG'

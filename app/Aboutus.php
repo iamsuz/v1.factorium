@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Aboutus extends Model
 {
 	public $table = "aboutus";
-    protected $fillable = ['user_id','main_heading','sub_heading','content'];
+    protected $fillable = ['user_id','main_heading','sub_heading','content', 'founder_label'];
 
     public function user()
     {
