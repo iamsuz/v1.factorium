@@ -69,10 +69,10 @@ Edit | @parent
 		@if($aboutus)
 		<form action="{{route('pages.updateFounderLabel')}}" method="POST">
 			{{csrf_field()}}
-				<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Edit Founder Label:</span><input type="text" name="founder_label" value="" data-toggle="tooltip" title="This will replace the below label (Founders)" size="30">
+				<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Edit Founder Label:</span><input type="text" name="founder_label" value="{{$aboutus->founder_label}}" data-toggle="tooltip" title="This will replace the below label (Founders)" size="30">
 				<button type="submit" class="btn btn-warning">Save</button>
 		</form>
-		<h2>{{$aboutus->founder_label}}</h2>
+		<h2>@if($aboutus->founder_label) {{$aboutus->founder_label}} @else Founders @endif</h2>
 		@if($member)
 		<div class="row">
 			@foreach($member->chunk(3) as $sets)
