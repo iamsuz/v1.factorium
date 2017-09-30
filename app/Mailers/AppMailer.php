@@ -219,9 +219,21 @@ class AppMailer
     {
         $this->to = $investment->user->email;
         $this->view = 'emails.invoice';
-        $this->subject = 'Share certificate for '.$investment->project->title;
+
+        if($investment->project->share_vs_unit) {
+            $this->subject = 'Share certificate for '.$investment->project->title;
+        }else {
+            $this->subject = 'Unit certificate for '.$investment->project->title;
+
+        }
         $this->data = compact('investment');
-        $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
+
+        if($investment->project->share_vs_unit) {
+            $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
+        }else {
+            $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
+
+        }
 
         $this->deliverWithFile();
     }
@@ -238,10 +250,18 @@ class AppMailer
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.adminInvoice';
-        $this->subject = 'Share certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
+        if($investment->project->share_vs_unit) {
+            $this->subject = 'Share certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
+        }else {
+            $this->subject = 'Unit certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
+        }
         $this->data = compact('investment');
-        $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
+        if($investment->project->share_vs_unit) {
+            $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
+        }else {
+            $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
 
+        }
         $this->deliverWithFile();
     }
 
@@ -351,7 +371,7 @@ class AppMailer
         $this->deliverWithFile();
     }
 
-    public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath)
+    public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, Project $project)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -362,8 +382,13 @@ class AppMailer
         }
         $this->to = $recipients;
         $this->view = 'emails.adminRepurchaseNotify';
-        $this->subject = 'Shares Repurchase';
-        $this->data = compact('investments', 'repurchaseRate');
+        if($project->share_vs_unit) {
+            $this->subject = 'Shares Repurchase';
+        } else {
+            $this->subject = 'Units Repurchase';
+
+        }
+        $this->data = compact('investments', 'repurchaseRate', 'project');
         $this->pathToFile = $csvPath;
 
         $this->deliverWithFile();

@@ -572,7 +572,7 @@
 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi Admin(s),</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">The following share certificate has now been sent.<br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">The following @if($investment->project->share_vs_unit) share @else unit @endif certificate has now been sent.<br>
 <br>
 Name:  <b>{{$investment->user->first_name}} {{$investment->user->last_name}}</b>
 <br>

@@ -30,7 +30,7 @@
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
 				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
-				<li style="width: 25%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">Share registry</h3></a></li>
+				<li style="width: 25%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h3></a></li>
 				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
 				<li style="width: 35%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
 			</ul>
@@ -50,7 +50,7 @@
 								<th>Investment Date</th>
 								<th>Amount</th>
 								<th>Is Money Received</th>
-								<th>Share Certificate</th>
+								<th>@if($project->share_vs_unit) Share @else Unit @endif Certificate</th>
 								<th>Send Reminder Email</th>
 								<th>Investment Confirmation</th>
 								<th>Investor Document</th>
@@ -106,9 +106,9 @@
 
 											{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
 											@if($investment->accepted)
-											<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Share certificate issued</small></i>
+											<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">@if($project->share_vs_unit) Share @else Unit @endif certificate issued</small></i>
 											@else
-											<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue share certificate">
+											<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit) share @else unit @endif certificate">
 											@endif
 											<input type="hidden" name="investor" value="{{$investment->user->id}}">
 										</form>
@@ -248,7 +248,7 @@
 					</form>
 					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
 						{{csrf_field()}}
-						<span class="repurcahse-statement hide"><small>Repurchase shares at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per share : <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
+						<span class="repurcahse-statement hide"><small>Repurchase @if($project->share_vs_unit) shares @else units @endif at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per @if($project->share_vs_unit) share @else unit @endif: <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
 					<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right">
@@ -262,7 +262,7 @@
 								<tr>
 									<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
 									<th>Unique ID</th>
-									<th>Share numbers</th>
+									<th>@if($project->share_vs_unit) Share @else Unit @endif numbers</th>
 									<th>Project SPV Name</th>
 									<th>Investor Name</th>
 									<th>Investment type</th>
@@ -271,8 +271,8 @@
 									<th>Phone</th>
 									<th>Email</th>
 									<th>Address</th>
-									<th>Share face value</th>
-									<th>Link to share certificate</th>
+									<th>@if($project->share_vs_unit) Share @else Unit @endif face value</th>
+									<th>Link to @if($project->share_vs_unit) share @else unit @endif certificate</th>
 									<th>TFN</th>
 									<th>Investment Documents</th>
 									<th>Account Name</th>
@@ -311,9 +311,15 @@
 										@if($shareInvestment->is_cancelled)
 -										<strong>Investment record is cancelled</strong>
 -										@else
-											<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
-												Share Certificate
-											</a>
+											@if($project->share_vs_unit)
+												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Share Certificate
+												</a>
+											@else 
+												<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Unit Certificate
+												</a>
+											@endif
 										@endif
 										@endif
 									</td>
@@ -354,7 +360,7 @@
 									<th>Date</th>
 									<th>Amount($)</th>
 									<th>Rate</th>
-									<th>Number of shares</th>
+									<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -384,7 +390,7 @@
 								<tr>
 									<th>Investor Name</th>
 									<th>Project SPV Name</th>
-									<th>Number of Shares</th>
+									<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
 									<th>Current Value</th>
 								</tr>
 							</thead>
@@ -554,7 +560,7 @@
 			else {
 				if(investorsList == ''){
 					e.preventDefault();
-					alert('Please select atleast one share registry record.');
+					alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
 				}
 			}
 		});
@@ -574,7 +580,7 @@
 			else {
 				if(investorsList == ''){
 					e.preventDefault();
-					alert('Please select atleast one share registry record.');
+					alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
 				}
 			}
 		});

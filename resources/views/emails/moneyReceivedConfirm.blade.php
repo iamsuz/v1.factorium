@@ -551,7 +551,7 @@
                                           <p style="text-align: center;">{{$investment->updated_at->format('F j, Y')}}</p></td>
                                           <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Funds received</p>
                                             <p style="text-align: center;">${{$investment->amount}}</p></td>
-                                            <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Shares not issued</p>
+                                            <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">@if($investment->project->share_vs_unit) Shares @else Units @endif not issued</p>
                                               <p style="text-align: center;"><i>in progress</i></p></td>
                                             </tr>
                                           </tbody>
@@ -588,7 +588,7 @@
 
                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                   <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Thank you for applying to invest ${{$investment->amount}} in the {{$investment->project->title}}. I wish to let you know that we have received your funds.<br><br>
-                    <span style="color:#">Once the fund raising process is complete and if your application is accepted we will issue you a share certificate denoting your investment in the Project. After that as the project progresses you will receive regular updates regarding the project in form of emails, pictures and videos as well as Account and Tax statements.</span><br><br><span style="color:#">I will be in touch over the next few weeks.</span><br><br><span style="color:#">Thanks Again.</span>
+                    <span style="color:#">Once the fund raising process is complete and if your application is accepted we will issue you a @if($investment->project->share_vs_unit) share @else unit @endif certificate denoting your investment in the Project. After that as the project progresses you will receive regular updates regarding the project in form of emails, pictures and videos as well as Account and Tax statements.</span><br><br><span style="color:#">I will be in touch over the next few weeks.</span><br><br><span style="color:#">Thanks Again.</span>
                     &nbsp;
 
                   </div>

@@ -551,7 +551,7 @@
                                           <p style="text-align: center;"><i>in progress</i></p></td>
                                           <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Funds received</p>
                                             <p style="text-align: center;"></p></td>
-                                            <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Shares issued</p>
+                                            <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">@if($project->share_vs_unit) Shares @else Units @endif issued</p>
                                               <p style="text-align: center;"></p></td>
                                             </tr>
                                           </tbody>

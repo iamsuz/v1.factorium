@@ -472,6 +472,17 @@ class UsersController extends Controller
         ]);
     }
 
+        public function viewUnitCertificate($investment_id)
+    {
+        $filename = '/app/invoices/Unit-Certificate-'.base64_decode($investment_id).'.pdf';
+        $path = storage_path($filename);
+
+        return \Response::make(file_get_contents($path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        ]);
+    }
+
     public function usersNotifications($user_id)
     {
         $color = Color::where('project_site',url())->first();

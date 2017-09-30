@@ -559,7 +559,7 @@
 
                                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                                   <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Congratulations! A Dividend of {{$dividendPercent}}% annualized for the duration between {{$startDate}} and {{$endDate}} has just been declared for {{$project->title}}.</span><br><br>
-                                    <span style="color:#000">Since you are a shareholder, you will be receiving the Dividend amount in your nominated Bank account as follows. </span><br><br>
+                                    <span style="color:#000">Since you are a @if($project->share_vs_unit) shareholder @else unitholder @endif, you will be receiving the Dividend amount in your nominated Bank account as follows. </span><br><br>
                                     <span style="color:#000"><b>User account Name: </b>@if($investment->investingJoint) {{$investment->investingJoint->account_name}} @else {{$investment->user->account_name}} @endif</span><br>
                                     <span style="color:#000"><b>User Bank name: </b>@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span><br>
                                     <span style="color:#000"><b>User BSB: </b>@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span><br>

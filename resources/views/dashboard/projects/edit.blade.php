@@ -98,6 +98,16 @@ Edit {{$project->title}} | Dashboard | @parent
 									<input type="hidden" name="show_download_pdf_page" id="show_download_pdf_page" @if($project->show_download_pdf_page) value="1" @else value="0" @endif>
 
 									<br><br>
+									<h3>Share vs Unit</h3>
+									<input type="checkbox" name="share_vs_unit_checkbox" id="share_vs_unit_checkbox" autocomplete="off" data-label-text="Show" @if($project->share_vs_unit) value="1" checked @else value="0" @endif >
+									<input type="hidden" name="share_vs_unit" id="share_vs_unit" @if($project->share_vs_unit) value="1" @else value="0" @endif>
+
+									<br><br>
+									<h3>MD vs Trustee</h3>
+									<input type="checkbox" name="md_vs_trustee_checkbox" id="md_vs_trustee_checkbox" autocomplete="off" data-label-text="Show" @if($project->md_vs_trustee) value="1" checked @else value="0" @endif >
+									<input type="hidden" name="md_vs_trustee" id="md_vs_trustee" @if($project->md_vs_trustee) value="1" @else value="0" @endif>
+
+									<br><br>
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-9">
@@ -160,7 +170,7 @@ Edit {{$project->title}} | Dashboard | @parent
 												{!! $errors->first('city', '<small class="text-danger">:message</small>') !!}
 											</div>
 											<div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif">
-												{!! Form::text('state', $project->location->state, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'6')) !!}
+												{!! Form::text('state', $project->location->state, array('placeholder'=>'State', 'class'=>'form-control', 'tabindex'=>'6')) !!}
 												{!! $errors->first('state', '<small class="text-danger">:message</small>') !!}
 											</div>
 										</div>
@@ -169,11 +179,11 @@ Edit {{$project->title}} | Dashboard | @parent
 							</div>
 							<div class="row">
 								<div class="form-group @if($errors->first('postal_code') && $errors->first('country')){{'has-error'}} @endif">
-									{!!Form::label('postal_code', 'postal code', array('class'=>'col-sm-2 control-label'))!!}
+									{!!Form::label('postal_code', 'Postal Code', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
 										<div class="row">
 											<div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif">
-												{!! Form::text('postal_code', $project->location->postal_code, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'7')) !!}
+												{!! Form::text('postal_code', $project->location->postal_code, array('placeholder'=>'Postal Code', 'class'=>'form-control', 'tabindex'=>'7')) !!}
 												{!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!}
 											</div>
 											<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
@@ -1519,7 +1529,7 @@ Edit {{$project->title}} | Dashboard | @parent
 														{!! $errors->first('spv_city', '<small class="text-danger">:message</small>') !!}
 													</div>
 													<div class="col-sm-6 @if($errors->first('spv_state')){{'has-error'}} @endif">
-														{!! Form::text('spv_state', $project->projectspvdetail?$project->projectspvdetail->spv_state:null, array('placeholder'=>'state', 'class'=>'form-control', 'tabindex'=>'25', 'id'=>'spv_state')) !!}
+														{!! Form::text('spv_state', $project->projectspvdetail?$project->projectspvdetail->spv_state:null, array('placeholder'=>'State', 'class'=>'form-control', 'tabindex'=>'25', 'id'=>'spv_state')) !!}
 														{!! $errors->first('spv_state', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1528,11 +1538,11 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<div class="row">
 										<div class="form-group @if($errors->first('spv_postal_code') || $errors->first('spv_country')){{'has-error'}} @endif">
-											{!!Form::label('spv_postal_code', 'postal code', array('class'=>'col-sm-2 control-label'))!!}
+											{!!Form::label('spv_postal_code', 'Postal Code', array('class'=>'col-sm-2 control-label'))!!}
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-6 @if($errors->first('spv_postal_code')){{'has-error'}} @endif">
-														{!! Form::text('spv_postal_code', $project->projectspvdetail?$project->projectspvdetail->spv_postal_code:null, array('placeholder'=>'postal code', 'class'=>'form-control', 'tabindex'=>'26', 'id'=>'spv_postal_code')) !!}
+														{!! Form::text('spv_postal_code', $project->projectspvdetail?$project->projectspvdetail->spv_postal_code:null, array('placeholder'=>'Postal Code', 'class'=>'form-control', 'tabindex'=>'26', 'id'=>'spv_postal_code')) !!}
 														{!! $errors->first('spv_postal_code', '<small class="text-danger">:message</small>') !!}
 													</div>
 													<div class="col-sm-6 @if($errors->first('spv_country')){{'has-error'}} @endif">
@@ -1575,11 +1585,15 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<div class="row">
 										<div class="form-group @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-											{!!Form::label('spv_md_name', 'Project SPV MD Name', array('class'=>'col-sm-2 control-label'))!!}
+											@if($project->md_vs_trustee)
+											{!!Form::label('spv_md_name', 'Project MD Name', array('class'=>'col-sm-2 control-label'))!!}
+											@else
+											{!!Form::label('spv_md_name', 'Project Trustee Name', array('class'=>'col-sm-2 control-label'))!!}
+											@endif
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'28', 'id'=>'spv_md_name')) !!}
+														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'30', 'id'=>'spv_md_name')) !!}
 														{!! $errors->first('spv_md_name', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -1611,7 +1625,11 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<div class="row">
 										<div class="form-group @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
+											@if($project->md_vs_trustee)
 											{!!Form::label('spv_md_sign', 'Project SPV MD Signature', array('class'=>'col-sm-2 control-label'))!!}
+											@else
+											{!!Form::label('spv_md_sign', 'Project Trustee Signature', array('class'=>'col-sm-2 control-label'))!!}
+											@endif
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
@@ -2031,6 +2049,26 @@ Edit {{$project->title}} | Dashboard | @parent
 			$(this).val(setVal);
 			$('#show_download_pdf_page').val(setVal);
 		});
+		$("#share_vs_unit_checkbox").bootstrapSwitch({
+			onText: "Share",
+			offText: "Unit",
+			offColor: 'primary',
+		});
+		$('#share_vs_unit_checkbox').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			$('#share_vs_unit').val(setVal);
+		})
+		$("#md_vs_trustee_checkbox").bootstrapSwitch({
+			onText: "MD",
+			offText: "Trustee",
+			offColor: 'primary',
+		});
+		$('#md_vs_trustee_checkbox').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			$('#md_vs_trustee').val(setVal);
+		})
 
 		$('#modal_close_btn').click(function(){
 			$('#spv_logo, #spv_md_sign').val('');
@@ -2312,7 +2350,7 @@ Edit {{$project->title}} | Dashboard | @parent
     			$('.certificate-preview').css('background','url(../../../assets/images/certificate_frames/'+frame+') no-repeat');
     			$('.certificate-preview').css('background-size', '100% 100%');
     		}
-    		$('.certificate-preview').html('<div class="text-center" style="top: 20%;width: 100%;position: absolute;opacity: 0.05;"><img src="../../../'+logo+'" width="700"></div><div style="text-align: center; margin:8em 6em;"><h1>Share Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 redeemable preference shares of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>Managing Director<br>'+name+'</div>').toggle();
+    		$('.certificate-preview').html('<div class="text-center" style="top: 20%;width: 100%;position: absolute;opacity: 0.05;"><img src="../../../'+logo+'" width="700"></div><div style="text-align: center; margin:8em 6em;"><h1>@if($project->share_vs_unit)Share @else Unit @endif Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br>'+name+'<br>'+line1+', '+line2+', '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 @if($project->share_vs_unit) redeemable preference shares @else units @endif of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>@if($project->md_vs_trustee)Managing Director @else Trustee @endif<br>'+name+'</div>').toggle();
 
 
     	});

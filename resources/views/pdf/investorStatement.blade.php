@@ -38,11 +38,11 @@
 		<table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
 			<tbody>
 				<tr>
-					<td style="width: 50%;"><b>Shares held as of {{date('d-m-Y', strtotime($position->effective_date))}}</b></td>
+					<td style="width: 50%;"><b>@if($project->share_vs_unit) Shares @else Units @endif held as of {{date('d-m-Y', strtotime($position->effective_date))}}</b></td>
 					<td style="width: 50%;">{{$position->number_of_shares}}</td>
 				</tr>
 				<tr>
-					<td><b>Share face value</b></td>
+					<td><b>@if($project->share_vs_unit) Share @else Unit @endif face value</b></td>
 					<td>{{$position->current_value}}</td>
 				</tr>
 			</tbody>

@@ -245,7 +245,11 @@ class DashboardController extends Controller
             $investment->money_received = 1;
             $investment->share_certificate_issued_at = Carbon::now();
             $investment->share_number = $shareCount;
-            $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
+            if($investment->project->share_vs_unit){
+                $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
+            }else{
+                $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
+            }
             $investment->save();
             // dd($investment);
 
@@ -268,7 +272,11 @@ class DashboardController extends Controller
             if($investment->accepted) {
                 $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                 $pdf->setPaper('a4', 'landscape');
-                $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
+                if($investment->project->share_vs_unit) {
+                    $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
+                }else {
+                    $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
+                }
                 $mailer->sendInvoiceToUser($investment);
                 $mailer->sendInvoiceToAdmin($investment);
             }
@@ -564,7 +572,7 @@ class DashboardController extends Controller
                 'project_id' => $projectId,
                 'updated_date' => Carbon::now(),
                 'progress_description' => 'Repurchase Declaration',
-                'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
+                'progress_details' => '@if($project->share_vs_unit) Shares @else Units @endif Repurchased by company at $'.$repurchaseRate.' per @if($project->share_vs_unit) share @else unit @endif.'
                 ]);
 
             // send dividend email to admins
@@ -573,7 +581,7 @@ class DashboardController extends Controller
 
             // send dividend emails to investors
             $failedEmails = [];
-            $subject = 'Shares for '.$project->title;
+            $subject = '@if($project->share_vs_unit) Shares @else Units @endif for '.$project->title;
             foreach ($investments as $investment) {
                 InvestmentInvestor::where('id', $investment->id)->update([
                     'is_cancelled' => 1,
