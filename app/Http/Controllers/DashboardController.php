@@ -513,8 +513,8 @@ class DashboardController extends Controller
                     ]);
 
                 // send dividend email to admins
-                $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff);
-                $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath);
+                $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff, $project);
+                $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath, $project);
                 
                 // send dividend emails to investors
                 $failedEmails = [];
@@ -585,7 +585,7 @@ class DashboardController extends Controller
             }
 
             // send dividend email to admins
-            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate);
+            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
             $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
 
             // send dividend emails to investors
@@ -636,7 +636,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function exportDividendCSV($investments, $dividendPercent, $dateDiff)
+    public function exportDividendCSV($investments, $dividendPercent, $dateDiff, $project)
     {
         $csvPath = storage_path().'/app/dividend/dividend_distribution_'.time().'.csv';
         
@@ -644,7 +644,11 @@ class DashboardController extends Controller
         $file = fopen($csvPath, 'w');
 
         // Add column names to csv
-        fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Number of days", "Rate", "Investor Dividend amount"));
+        if($project->share_vs_unit) {
+            fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Number of days", "Rate", "Investor Dividend amount"));
+        }else {
+            fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Unit amount", "Number of days", "Rate", "Investor Dividend amount"));
+        }
         
         // data to add to the csv file
         foreach ($investments as $investment) {
@@ -667,14 +671,18 @@ class DashboardController extends Controller
         return $csvPath;
     }
 
-    public function exportRepurchaseCSV($investments, $repurchaseRate){
+    public function exportRepurchaseCSV($investments, $repurchaseRate, $project){
         $csvPath = storage_path().'/app/repurchase/repurchase_distribution_'.time().'.csv';
         
         // create a file pointer connected to the output stream
         $file = fopen($csvPath, 'w');
 
         // Add column names to csv
-        fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Repurchase Rate", "Investor Repurchase amount"));
+        if($project->share_vs_unit) {
+            fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Repurchase Rate", "Investor Repurchase amount"));
+        }else {
+            fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Unit amount", "Repurchase Rate", "Investor Repurchase amount"));
+        }
         
         // data to add to the csv file
         foreach ($investments as $investment) {

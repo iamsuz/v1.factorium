@@ -353,7 +353,7 @@ class AppMailer
         $this->deliverWithBcc();
     }
 
-    public function sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath)
+    public function sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath, $project)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -365,7 +365,7 @@ class AppMailer
         $this->to = $recipients;
         $this->view = 'emails.adminDividendDistributioNotify';
         $this->subject = 'Distribute dividend amount to investors';
-        $this->data = compact('investments', 'dividendPercent', 'dateDiff');
+        $this->data = compact('investments', 'dividendPercent', 'dateDiff', 'project');
         $this->pathToFile = $csvPath;
 
         $this->deliverWithFile();
