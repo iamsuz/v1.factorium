@@ -371,7 +371,7 @@ class AppMailer
         $this->deliverWithFile();
     }
 
-    public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, Project $project)
+    public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -382,13 +382,13 @@ class AppMailer
         }
         $this->to = $recipients;
         $this->view = 'emails.adminRepurchaseNotify';
-        if($project->share_vs_unit) {
+        if($investments->project->share_vs_unit) {
             $this->subject = 'Shares Repurchase';
         } else {
             $this->subject = 'Units Repurchase';
 
         }
-        $this->data = compact('investments', 'repurchaseRate', 'project');
+        $this->data = compact('investments', 'repurchaseRate');
         $this->pathToFile = $csvPath;
 
         $this->deliverWithFile();
