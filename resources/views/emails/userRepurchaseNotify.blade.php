@@ -559,7 +559,7 @@
 
                                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                                   <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Your {{$investment->amount}} shares numbered {{$shareNumber[0]}} to {{$shareNumber[1]}} for @if($project->projectspvdetail){{$project->projectspvdetail->spv_name}}@else{{'Estate Baron'}}@endif have been issued a CALL to repurchase by the Company at ${{$repurchaseRate}} per share.</span><br><br>
-                                    <span style="color:#000">You will be receiving the Dividend amount in your nominated Bank account as follows. </span><br><br>
+                                    <span style="color:#000">You will be receiving the Repurchase amount in your nominated Bank account as follows. </span><br><br>
                                     <span style="color:#000"><b>User account Name: </b>@if($investment->investingJoint) {{$investment->investingJoint->account_name}} @else {{$investment->user->account_name}} @endif</span><br>
                                     <span style="color:#000"><b>User Bank name: </b>@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span><br>
                                     <span style="color:#000"><b>User BSB: </b>@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span><br>
