@@ -542,7 +542,7 @@ class DashboardController extends Controller
                     }
                 }
                 if(empty($failedEmails)){
-                    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Divident distribution have been mailed to Investors and admins</p>');
+                    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Dividend distribution have been mailed to Investors and admins</p>');
                 }
                 else{
                     $emails = '';
@@ -568,12 +568,21 @@ class DashboardController extends Controller
             $investments = InvestmentInvestor::findMany($investors);
             
             // Add the records to project progress table
-            ProjectProg::create([
+            if($project->share_vs_unit) {
+                ProjectProg::create([
                 'project_id' => $projectId,
                 'updated_date' => Carbon::now(),
                 'progress_description' => 'Repurchase Declaration',
-                'progress_details' => '@if($project->share_vs_unit) Shares @else Units @endif Repurchased by company at $'.$repurchaseRate.' per @if($project->share_vs_unit) share @else unit @endif.'
+                'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
                 ]);
+            }else {
+                ProjectProg::create([
+                'project_id' => $projectId,
+                'updated_date' => Carbon::now(),
+                'progress_description' => 'Repurchase Declaration',
+                'progress_details' => 'Units Repurchased by company at $'.$repurchaseRate.' per unit.'
+                ]);
+            }
 
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate);
@@ -581,7 +590,11 @@ class DashboardController extends Controller
 
             // send dividend emails to investors
             $failedEmails = [];
-            $subject = '@if($project->share_vs_unit) Shares @else Units @endif for '.$project->title;
+            if($project->share_vs_unit) {
+                $subject = 'Shares for '.$project->title;
+            }else {
+                $subject = 'Units for '.$project->title;
+            }
             foreach ($investments as $investment) {
                 InvestmentInvestor::where('id', $investment->id)->update([
                     'is_cancelled' => 1,
