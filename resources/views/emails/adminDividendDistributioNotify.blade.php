@@ -569,7 +569,7 @@
                                       <th>Investor bank</th>
                                       <th>Investor BSB</th>
                                       <th>Investor Account</th>
-                                      <th>Share amount</th>
+                                      <th>@if($project->share_vs_unit) Share @else Unit @endif amount</th>
                                       <th>Investor Dividend amount</th>
                                     </tr></thead>
                                     <tbody>
