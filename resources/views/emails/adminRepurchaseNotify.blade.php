@@ -559,7 +559,7 @@
 
                                 <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                                   <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Please distribute the following Repurchase to the following investors:<br><br>
-                                  <span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;"><b>Repurchase Rate: </b>${{$repurchaseRate}} per @if($project_share_vs_unit)share @else unit @endif<br><br>
+                                  <span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;"><b>Repurchase Rate: </b>${{$repurchaseRate}} per @if($project->share_vs_unit)share @else unit @endif<br><br>
 
 
                                     <table align="left" border="1" cellpadding="4" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
@@ -569,7 +569,7 @@
                                       <th>Investor bank</th>
                                       <th>Investor BSB</th>
                                       <th>Investor Account</th>
-                                      <th>@if($project_share_vs_unit)Share @else Unit @endif amount</th>
+                                      <th>@if($project->share_vs_unit)Share @else Unit @endif amount</th>
                                       <th>Investor Repurchase amount</th>
                                     </tr></thead>
                                     <tbody>
