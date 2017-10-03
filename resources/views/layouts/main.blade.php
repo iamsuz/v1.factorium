@@ -151,13 +151,13 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item"><a href="{{route('home')}}" class="scrollto hide" id="nav_home">Home</a></li>
                     <!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
-                    <li class="nav-item"><a href="{{route('home')}}#how-it-works" class="scrollto">How it works</a></li>
-                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects" class="scrollto">Investments</a></li>
+                    <li class="nav-item"><a href="{{route('home')}}#how-it-works">How it works</a></li>
+                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects">Investments</a></li>
                     @if($siteConfiguration->show_funding_options != '')
-                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding" class="scrollto">Funding</a></li>
+                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding">Funding</a></li>
                     @endif
                     <li class="nav-item"><a href="/pages/team">About us</a></li>
-                    <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
+                    <!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
                     @if (Auth::guest())
                     <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
                     <li class="nav-item"><a href="{{route('users.login')}}">Sign in</a></li>
@@ -252,7 +252,7 @@
                 <div class="col-md-4 col-md-offset-4 text-center">
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
                         <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
-                        <li class="footer-list-item"><a href="https://estatebaron.com/blog/" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
+                        <li class="footer-list-item"><a href="{{$siteConfiguration->blog_link_new}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
                         <!-- @if($siteConfiguration->show_funding_options != '')
                         <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->
@@ -260,6 +260,7 @@
                         <span style="color:#fff;"> </span>
                         <li class="footer-list-item"><a href="https://estatebaron.com/pages/privacy" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
                         <li class="footer-list-item"><a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
+                        <li class="footer-list-item"><a href="/pages/faq" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a></li>
                         <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                     </ul>
 <!--                     <span style="margin:0 0 1px;">

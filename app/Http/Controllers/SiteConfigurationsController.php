@@ -384,7 +384,7 @@ class SiteConfigurationsController extends Controller
     public function updateSitemapLinks(Request $request)
     {
         $this->validate($request, array(
-            'blog_link' => 'url|required',
+            'blog_link_new' => 'url|required',
             // 'terms_conditions_link' => 'url|required',
             // 'privacy_link' => 'url|required',
             // 'financial_service_guide_link' => 'url|required',
@@ -393,7 +393,7 @@ class SiteConfigurationsController extends Controller
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         $result = $siteconfiguration->update([
-            'blog_link' => $request->blog_link,
+            'blog_link_new' => $request->blog_link_new,
             // 'terms_conditions_link' => $request->terms_conditions_link,
             // 'privacy_link' => $request->privacy_link,
             // 'financial_service_guide_link' => $request->financial_service_guide_link,

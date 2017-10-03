@@ -167,7 +167,7 @@
          <li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
          @endif
          <li class="nav-item"><a href="/pages/team">About us</a></li>
-         <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
+         <!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
          @if (Auth::guest())
          <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
          <li class="nav-item">{!! Html::linkRoute('users.login', 'Sign in') !!}</li>
@@ -231,7 +231,7 @@
     <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
     @endif
     <li class="nav-item"><a href="/pages/team">About us</a></li>
-    <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
+    <!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
     @if (Auth::guest())
     <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
     <li class="nav-item"><a href="{{route('users.login')}}">Sign in</a></li>
@@ -1227,7 +1227,7 @@
               <a href="/#promo" data-href="/#promo" class="scrollto a-link scroll-links  "><span class="font-semibold" style="font-size: 16px;">Home</span></a>
             </li>
             <li class="footer-list-item">
-              <a href="https://estatebaron.com/blog/" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
+              <a href="{{$siteConfiguration->blog_link_new}}" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
             </li>
             {{-- @if($siteConfiguration->show_funding_options != '')
             <li class="footer-list-item">
@@ -1246,18 +1246,21 @@
             <li class="footer-list-item">
               <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a>
             </li>
+            <li class="footer-list-item">
+              <a href="/pages/faq" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a>
+            </li>
             <!-- <li class="footer-list-item">
               <a href="{{$siteConfiguration->media_kit_link}}" download class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a>
             </li> -->
           </ul>
         </div>
       </div>
-      {{--@if(Auth::guest())
+      @if(Auth::guest())
       @else
       @if($admin_access == 1)
-      <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Sitemap Links" data-placement="right"></i></div>
+      <div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit Blog Link" data-placement="right"></i></div>
       @endif
-      @endif--}}
+      @endif
       <div class="row text-center" style="padding-top: 20px;">
         <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo_white.png')}}">
         <p>
@@ -1342,7 +1345,7 @@
               {{csrf_field()}}
               <div class="modal-header">
                 <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Sitemap Links</h4>
+                <h4 class="modal-title">Edit Blog Link</h4>
               </div>
               <div class="modal-body">
                 <table style="text-align: left; width: 100%">
@@ -1354,7 +1357,7 @@
                     </div>
                     @endif
                   </td></tr>
-                  <tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="text" name="blog_link" value="{{$siteConfiguration->blog_link}}"></td></tr>
+                  <tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="text" name="blog_link_new" value="{{$siteConfiguration->blog_link_new}}"></td></tr>
                   <!-- <tr><td>Terms & Conditions:</td><td><input class="form-control" type="text" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr> -->
                   <!-- <tr><td>Privacy:</td><td><input class="form-control" type="text" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr> -->
                   <!-- <tr><td>Financial Service Guide:</td><td><input class="form-control" type="text" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr> -->
@@ -1362,7 +1365,7 @@
                 </table>
               </div>
               <div class="modal-footer">
-                <button type="Submit" class="btn btn-default">Save Links</button>
+                <button type="Submit" class="btn btn-default">Save Blog Link</button>
               </div>
             </form>
           </div>      

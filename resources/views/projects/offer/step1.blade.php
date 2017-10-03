@@ -13,7 +13,11 @@
 				</p>
 				<label>I/We apply for *</label>
 				<input type="text" name="amount_to_invest" class="form-control" placeholder="$5000" style="width: 60%" id="apply_for" required>
-				<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+				@if($project->share_vs_unit)
+					<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+				@else
+					<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
+				@endif
 				<label>I/We lodge full Application Money</label>
 				<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ 0.00" style="width: 60%" id="application_money">
 				<input type="text" name="project_id" value="{{$projects_spv->project_id}}" hidden >
