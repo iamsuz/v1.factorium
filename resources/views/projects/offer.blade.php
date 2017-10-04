@@ -54,6 +54,72 @@ Offer Doc
 											</div>
 										</div>
 									</div>
+									<br><br>
+									<div class="row">
+										<div class="col-md-12">
+											<div>
+												<h4 class="aml-requirements-link cursor-pointer">AML/CTF requirements &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></h4>
+												<small>** Expand to read the Requirements</small>
+												<div class="row aml-requirements-section">
+													<div class="col-md-12">
+														<div class="aml-requirements-content text-justify">
+															<small class="text-dark-grey">
+																If investing via a Financial Adviser they will provide the Trustee the necessary verification otherwise you need to lodge the following information.
+																<br>
+																<h4><small><b>Individuals</b></small></h4>
+																Original or Certified Copy of <b>one</b> of the following :
+																<ul>
+																	<li>Australian or Foreign Drivers License (containing photograph).</li>
+																	<li>Australian or Foreign Passport.</li>
+																</ul>
+																<b>OR</b><br>
+																Original or Certified Copy of <b>one</b> of the following :
+																<ul>
+																	<li>Australian or Foreign Birth Certificate</li>
+																	<li>Australian or Foreign Citizenship Certificate <b>plus</b> an Original of one of the following that are not more than 12 months old</li>
+																	<li>a notice from the Australian Taxation Office containing your name and address</li>
+																	<li>a rates notice from local government or utilities provider</li>
+																</ul>
+																<i>Foreign documents must be accompanied by Accredited Translation into English</i>
+																<h4><small><b>Partnerships</b></small></h4>
+																Original or Certified Copy of
+																<ul>
+																	<li>the Partnership Agreement</li>
+																	<li>minutes of a Partnership Meeting</li>
+																	<li>for one of the Partners, the Individual documents (see above)</li>
+																</ul>
+																<h4><small><b>Company</b></small></h4>
+																A Full ASIC Extract i.e. including Director and Shareholder details
+																<h4><small><b>Trust</b></small></h4>
+																Original or Certified Copy of
+																<ul>
+																	<li>the Trust Deed</li>
+																	<li>list of Beneficiaries</li>
+																	<li>Individual or Company details for the Trustee (see above)</li>
+																</ul>
+																<h4><small><b>Document Certification</b></small></h4>
+																People that can certify documents include the following
+																<ul style="list-style: none;">
+																	<li>Lawyer</li>
+																	<li>Judge</li>
+																	<li>Magistrate</li>
+																	<li>Registrar or Deputy Registrar of a Court</li>
+																	<li>Justice of the Peace</li>
+																	<li>Notary</li>
+																	<li>Police Officer</li>
+																	<li>Postmaster</li>
+																	<li>Australian Consular or Diplomatic Officer</li>
+																	<li>Financial Services Licensee or Authorised Representative with at least two years of continuous service</li>
+																	<li>Accountant - CA, CPA or NIA with at least two years of continuous membership</li>
+																</ul>
+															</small>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br><br>
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
@@ -265,6 +331,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
+												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif has been used, that I/we obtained the entire @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
 												{{-- <div class="row">
 													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
 														<button class="btn btn-primary btn-block" id="step-8">Next</button>
@@ -388,6 +455,8 @@ Offer Doc
 </section> -->
 @stop
 @section('js-section')
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
+{!! Html::script('plugins/wow.min.js') !!}
 <script>
 	$(function () {
 		// Function that runs with interval for side panel
@@ -433,75 +502,80 @@ Offer Doc
 			$('#section-colors-left').addClass('hide');
 		}
 	});
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
-	{!! Html::script('plugins/wow.min.js') !!}
-	<script type="text/javascript">
-		$(function () {
-			$('.scrollto').click(function(e) {
-				e.preventDefault();
-				$(window).stop(true).scrollTo(this.hash, {duration:1000, interrupt:true});
-			});
+</script>
+<script type="text/javascript">
+	$(function () {
+		$('.scrollto').click(function(e) {
+			e.preventDefault();
+			$(window).stop(true).scrollTo(this.hash, {duration:1000, interrupt:true});
 		});
-		new WOW().init({
-			boxClass:     'wow',
-			animateClass: 'animated',
-			mobile:       true,
-			live:         true
+	});
+	new WOW().init({
+		boxClass:     'wow',
+		animateClass: 'animated',
+		mobile:       true,
+		live:         true
+	});
+	$(document).ready(function(){
+		var qty=$("#apply_for");
+		qty.keyup(function(){
+			var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			$("#application_money").val(total);
 		});
-		$(document).ready(function(){
-			var qty=$("#apply_for");
-			qty.keyup(function(){
-				var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-				$("#application_money").val(total);
-			});
-		});
-		$(document).ready( function() {
-			$("input[name='investing_as']").on('change',function() {
-				if($(this).is(':checked') && $(this).val() == 'Individual Investor')
-				{
-					$('#normal_id_docs').removeAttr('style');
-					$('#joint_investor_docs').attr('style','display:none;');
-					$('#trust_doc').attr('style','display:none;');
-					$('#company_trust').attr('style','display:none;');
-					$('#joint_investor').attr('style','display:none;');
-					$("input[name='joint_investor_first']").attr('disabled','disabled');
-					$("input[name='joint_investor_last']").attr('disabled','disabled');
-					$("input[name='investing_company_name']").attr('disabled','disabled');
-					$("input[name='id_docs']").removeAttr('disabled');
-					$("input[name='trust_or_company_docs']").attr('disabled','disabled');
-					$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
-				}
-				else if($(this).is(':checked') && $(this).val() == 'Joint Investor')
-				{
-					$('#joint_investor_docs').removeAttr('style');
-					$('#normal_id_docs').removeAttr('style');
-					$('#trust_doc').attr('style','display:none;');
-					$('#company_trust').attr('style','display:none;');
-					$('#joint_investor').removeAttr('style');
-					$("input[name='joint_investor_first']").removeAttr('disabled');
-					$("input[name='joint_investor_last']").removeAttr('disabled');
-					$("input[name='investing_company_name']").attr('disabled','disabled');
-					$("input[name='joint_investor_id_doc']").removeAttr('disabled');
-					$("input[name='trust_or_company_docs']").attr('disabled','disabled');
-					$("input[name='user_id_doc']").removeAttr('disabled');
-				}
-				else
-				{
-					$('#trust_doc').removeAttr('style');
-					$('#normal_id_docs').attr('style','display:none;');
-					$('#joint_investor_docs').attr('style','display:none;');
-					$('#joint_investor').attr('style','display:none;');
-					$('#company_trust').removeAttr('style');
-					$("input[name='joint_investor_first']").attr('disabled','disabled');
-					$("input[name='joint_investor_last']").attr('disabled','disabled');
-					$("input[name='investing_company_name']").removeAttr('disabled');
-					$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
-					$("input[name='trust_or_company_docs']").removeAttr('disabled');
-					$("input[name='user_id_doc']").attr('disabled','disabled');
-				}
+	});
+	$(document).ready( function() {
+		$("input[name='investing_as']").on('change',function() {
+			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
+			{
+				$('#normal_id_docs').removeAttr('style');
+				$('#joint_investor_docs').attr('style','display:none;');
+				$('#trust_doc').attr('style','display:none;');
+				$('#company_trust').attr('style','display:none;');
+				$('#joint_investor').attr('style','display:none;');
+				$("input[name='joint_investor_first']").attr('disabled','disabled');
+				$("input[name='joint_investor_last']").attr('disabled','disabled');
+				$("input[name='investing_company_name']").attr('disabled','disabled');
+				$("input[name='id_docs']").removeAttr('disabled');
+				$("input[name='trust_or_company_docs']").attr('disabled','disabled');
+				$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
+			}
+			else if($(this).is(':checked') && $(this).val() == 'Joint Investor')
+			{
+				$('#joint_investor_docs').removeAttr('style');
+				$('#normal_id_docs').removeAttr('style');
+				$('#trust_doc').attr('style','display:none;');
+				$('#company_trust').attr('style','display:none;');
+				$('#joint_investor').removeAttr('style');
+				$("input[name='joint_investor_first']").removeAttr('disabled');
+				$("input[name='joint_investor_last']").removeAttr('disabled');
+				$("input[name='investing_company_name']").attr('disabled','disabled');
+				$("input[name='joint_investor_id_doc']").removeAttr('disabled');
+				$("input[name='trust_or_company_docs']").attr('disabled','disabled');
+				$("input[name='user_id_doc']").removeAttr('disabled');
+			}
+			else
+			{
+				$('#trust_doc').removeAttr('style');
+				$('#normal_id_docs').attr('style','display:none;');
+				$('#joint_investor_docs').attr('style','display:none;');
+				$('#joint_investor').attr('style','display:none;');
+				$('#company_trust').removeAttr('style');
+				$("input[name='joint_investor_first']").attr('disabled','disabled');
+				$("input[name='joint_investor_last']").attr('disabled','disabled');
+				$("input[name='investing_company_name']").removeAttr('disabled');
+				$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
+				$("input[name='trust_or_company_docs']").removeAttr('disabled');
+				$("input[name='user_id_doc']").attr('disabled','disabled');
+			}
 
-			});
-		});  
-	</script>
+		});
+
+		// Slide and show the aml requirements section
+		$('.aml-requirements-link').click(function(e){
+			$('.aml-requirements-section').slideDown();
+			$('.aml-requirements-link i').remove();
+		});
+	});  
+
 </script>
 @stop

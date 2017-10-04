@@ -1019,3 +1019,6 @@ a:hover {
 .project-details:hover .project-thumb-overflow {
   opacity: 1;
 }
+.cursor-pointer{
+	cursor: pointer;
+}
