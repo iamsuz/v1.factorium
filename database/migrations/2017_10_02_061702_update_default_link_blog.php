@@ -13,7 +13,7 @@ class UpdateDefaultLinkBlog extends Migration
     public function up()
     {
         Schema::table('site_configurations', function (Blueprint $table) {
-            if (!Schema::hasColumn('site_configurations', 'blog_link')) {
+            if (!Schema::hasColumn('site_configurations', 'blog_link_new')) {
                 $table->string('blog_link_new')->default('https://blog.estatebaron.com');
             }
         });
@@ -27,7 +27,7 @@ class UpdateDefaultLinkBlog extends Migration
     public function down()
     {
         Schema::table('site_configurations', function (Blueprint $table) {
-            if (Schema::hasColumn('site_configurations', 'blog_link')) {
+            if (Schema::hasColumn('site_configurations', 'blog_link_new')) {
                 $table->dropColumn('blog_link_new');
             }
         });
