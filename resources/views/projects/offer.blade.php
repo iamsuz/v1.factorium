@@ -331,7 +331,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
-												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif has been used, that I/we obtained the entire @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text){{$project->project_prospectus_text}}@else{{'prospectus'}}@endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
+												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
 												{{-- <div class="row">
 													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
 														<button class="btn btn-primary btn-block" id="step-8">Next</button>
@@ -572,8 +572,15 @@ Offer Doc
 
 		// Slide and show the aml requirements section
 		$('.aml-requirements-link').click(function(e){
-			$('.aml-requirements-section').slideDown();
-			$('.aml-requirements-link i').remove();
+			$('.aml-requirements-section').slideToggle();
+			if($('.aml-requirements-link i').hasClass('fa-plus')){
+				$('.aml-requirements-link i').removeClass('fa-plus');
+				$('.aml-requirements-link i').addClass('fa-minus');
+			}
+			else{
+				$('.aml-requirements-link i').removeClass('fa-minus');
+				$('.aml-requirements-link i').addClass('fa-plus');	
+			}
 		});
 	});  
 
