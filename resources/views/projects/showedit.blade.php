@@ -605,7 +605,7 @@
 									<br>
 									<div class="col-md-10 col-md-offset-1">
 										@if($project->investment)
-										<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+										<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 											@if($project->button_label)
 											<?php echo $project->button_label; ?>
 											@else
@@ -764,7 +764,7 @@
 							@foreach($project->projectFAQs as $faq)
 							<div class="col-md-offset-2 col-md-7">
 								<b>{{$faq->question}}</b>
-								{{$faq->id}}
+<!-- 								{{$faq->id}} -->
 								<p class="text-justify">{{$faq->answer}}</p>
 							</div>
 							<div class="col-md-2"> 
