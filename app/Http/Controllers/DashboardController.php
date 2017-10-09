@@ -24,6 +24,9 @@ use Mailgun\Mailgun;
 use App\Transaction;
 use App\Position;
 use App\ProjectProg;
+use App\Helpers\SiteConfigurationHelper;
+use Illuminate\Mail\TransportManager;
+
 
 class DashboardController extends Controller
 {
@@ -706,6 +709,13 @@ class DashboardController extends Controller
 
     public function queueEmailsUsingMailgun($emailStr, $subject, $content, $attachments = [])
     {
+        $this->overrideMailerConfig();
+        if(filter_var(\Config::get('mail.sendmail'), FILTER_VALIDATE_EMAIL)){
+            $fromMail = \Config::get('mail.sendmail');
+        } else{
+            $fromMail = 'info@estatebaron.com';
+        }
+
         //Disable SSL Check
         $client = new \GuzzleHttp\Client([
             'verify' => false,
@@ -719,7 +729,7 @@ class DashboardController extends Controller
         # Make the call to the client.
         $result = $mgClient->sendMessage($domain, 
             array(
-                'from'    => 'info@estatebaron.com',
+                'from'    => $fromMail,
                 'to'      => $emailStr,
                 // 'bcc'     => 'info@estatebaron.com',
                 'subject' => $subject,
@@ -792,6 +802,27 @@ class DashboardController extends Controller
                 $emails = $emails.", $email";
             }
             return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Investor Statement email sending failed for investors - '.$emails.'.</p>'); 
+        }
+    }
+
+    public function overrideMailerConfig()
+    {
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $config = $siteconfig->mailSetting()->first();
+        if($config){
+            // Config::set('mail.driver',$configs['driver']);
+            \Config::set('mail.host',$config->host);
+            \Config::set('mail.port',$config->port);
+            \Config::set('mail.username',$config->username);
+            \Config::set('mail.password',$config->password);
+            \Config::set('mail.sendmail',$config->from);
+            $app = \App::getInstance();
+            $app['swift.transport'] = $app->share(function ($app) {
+               return new TransportManager($app);
+            });
+
+            $mailer = new \Swift_Mailer($app['swift.transport']->driver());
+            \Mail::setSwiftMailer($mailer);
         }
     }
 }
