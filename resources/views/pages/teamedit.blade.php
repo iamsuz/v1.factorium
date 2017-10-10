@@ -72,7 +72,7 @@ Edit | @parent
 				<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Edit Founder Label:</span><input type="text" name="founder_label" value="{{$aboutus->founder_label}}" data-toggle="tooltip" title="This will replace the below label (Founders)" size="30">
 				<button type="submit" class="btn btn-warning">Save</button>
 		</form>
-		<h2>@if($aboutus->founder_label) {{$aboutus->founder_label}} @else Founders @endif</h2>
+		<h2 class="second_color">@if($aboutus->founder_label) {{$aboutus->founder_label}} @else Founders @endif</h2>
 		@if($member)
 		<div class="row">
 			@foreach($member->chunk(3) as $sets)
@@ -86,7 +86,7 @@ Edit | @parent
 					</div>
 					<img class="img-responsive img-circle" width="70%" height="70%" style="margin: 0 auto;" src="{{asset($members->founder_image_url)}}" alt="{{$members->founder_image_url}}" style="max-height: 100%; max-width: 100%;" />
 					<div class="caption text-left text-justify">
-						<h3 class="font-regular" style=" font-size:1.375em; color:#fed405;">
+						<h3 class="font-regular second_color" style=" font-size:1.375em; color:#fed405;">
 							<b>{{$members->founder_name}}</b>
 						</h3>
 						<p class="font-regular text-justify" style="font-size:1em;color:#282a73; margin-top:-10px;">
