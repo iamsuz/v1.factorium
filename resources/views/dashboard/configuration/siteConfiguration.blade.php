@@ -121,7 +121,7 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{--<div class="col-md-4">
                             <div class="thumbnail text-center">
                                 @if (Session::has('message'))
                                 @if(Session::get('action') == 'mail_setting')
@@ -143,7 +143,7 @@ Configuration | Dashboard | @parent
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div>--}}
                         <div class="col-md-4" style="display: none;">
                             <div class="thumbnail text-center">
                                 @if (Session::has('message'))
