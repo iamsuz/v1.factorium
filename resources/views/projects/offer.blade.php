@@ -31,7 +31,7 @@ Offer Doc
 											<div>
 												<label class="form-label">Project SPV Name</label><br>
 												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" @endif >
-												<h5>Name of the Company established as a Special Purpose Vehicle for this project that you are investing in</h5>
+												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5>
 												<p>
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 												</p>
@@ -64,7 +64,7 @@ Offer Doc
 													<div class="col-md-12">
 														<div class="aml-requirements-content text-justify">
 															<small class="text-dark-grey">
-																If investing via a Financial Adviser they will provide the Trustee the necessary verification otherwise you need to lodge the following information.
+																If investing via a Financial Adviser they will provide the @if($project->md_vs_trustee)Managing Director @else Trustee @endif the necessary verification otherwise you need to lodge the following information.
 																<br>
 																<h4><small><b>Individuals</b></small></h4>
 																Original or Certified Copy of <b>one</b> of the following :
