@@ -572,7 +572,7 @@ Offer Doc
 			$("#application_money").val(total);
 		});
 	});
-
+	$(document).ready( function() {
 		$("input[name='investing_as']").on('change',function() {
 			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
 			{
