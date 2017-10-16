@@ -24,6 +24,9 @@ Offer Doc
 								</div>
 								<br>
 								@endif
+								@if (Session::has('message'))
+   								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
+								@endif
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
@@ -332,6 +335,10 @@ Offer Doc
 											<div>
 												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
 												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
+
+												@if($project->add_additional_form_content)
+													<p style="margin-top: 0.3em;">{{$project->add_additional_form_content}}</p>
+												@endif
 												{{-- <div class="row">
 													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
 														<button class="btn btn-primary btn-block" id="step-8">Next</button>
@@ -341,7 +348,17 @@ Offer Doc
 
 										</div>
 									</div>
-									<br>
+									@if(Auth::guest())
+									@else
+									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+									    <div class="row text-left">
+									        <a href="#myModal" class="fa fa-pencil edit-pencil-style show-content-edit-modal-btn" style="font-size: 20px; color: #000; border: 1.5px solid #000; border-radius: 50px; padding: 5px; margin-right: 3px; margin-top: 5px;" data-toggle="modal" title="Add additional content" data-placement="top"></a>
+									        <b>Add Additional Content Here</b>
+									    </div>
+								    @endif
+									@endif
+          							<br>
+
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
@@ -437,11 +454,38 @@ Offer Doc
 						<!-- <a class="btn btn-primary btn-block" href="{{asset('offer_doc_pdf/Mount_Waverley_PDS_Bank_acct_FSG.pdf')}}" target="_blank">PDF Download</a> -->
 					</div>
 					@endif
+
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+			<!-- Modal For Additional Form Content -->
+<div class="bs-example">
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+        	<form method="POST" action="{{route('AdditionalFormContent', $project->id)}}">
+        		{{csrf_field()}}
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                    <h4 class="modal-title">Add Content</h4>
+	                </div>
+	                <div class="modal-body">
+	                        <div class="form-group">
+	                            <input type="text" class="form-control" name="add_additional_form_content" value="{{$project->add_additional_form_content}}">
+	                        </div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                    <button type="submit" class="btn btn-primary">Save</button>
+	                </div>
+	            </div>
+        	</form>
+        </div>
+    </div>
+</div>
+
 <!-- <section id="section-colors-right" class="color-panel-right panel-close-right left" style="opacity: .8;">
 	<div class="color-wrap-right">
 		<h3>Updates</h3>
@@ -458,6 +502,11 @@ Offer Doc
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
+	$(document).ready(function(){
+    $("#myModal").on('shown.bs.modal', function(){
+        $(this).find('input[type="text"]').focus();
+    });
+});
 	$(function () {
 		// Function that runs with interval for side panel
 		var x = Math.floor((Math.random() * 20000) + 10000);
@@ -523,7 +572,7 @@ Offer Doc
 			$("#application_money").val(total);
 		});
 	});
-	$(document).ready( function() {
+
 		$("input[name='investing_as']").on('change',function() {
 			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
 			{
