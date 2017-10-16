@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 class OfferController extends Controller
@@ -82,7 +83,7 @@ class OfferController extends Controller
         $user = Auth::user();
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data]);
         $investor = InvestmentInvestor::get()->last();
         if($request->investing_as != 'Individual Investor'){
             $investing_joint = new InvestingJoint;
@@ -138,7 +139,16 @@ class OfferController extends Controller
             $project->investmentDocuments()->save($user_investment_doc);
 
         }
-        $this->dispatch(new SendInvestorNotificationEmail($user,$project));
+
+        // Create PDF of Application form
+        $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
+        $pdfPath = storage_path().$pdfBasePath;
+        $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
+        $pdf->save($pdfPath);
+        $investor->application_path = $pdfBasePath;
+        $investor->save();
+
+        $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
         $this->dispatch(new SendReminderEmail($user,$project));
 
         return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));

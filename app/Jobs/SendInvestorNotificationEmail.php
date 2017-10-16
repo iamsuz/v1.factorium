@@ -16,6 +16,7 @@ use Swift_MailTransport as MailTransport;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\InvestmentInvestor;
 
 class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQueue
 {
@@ -29,16 +30,18 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
     protected $data = [];
     protected $investor;
     protected $project;
+    protected $investment;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, Project $project)
+    public function __construct(User $user, Project $project, InvestmentInvestor $investor)
     {
         //
         $this->investor = $user;
         $this->project = $project;
+        $this->investment = $investor;
     }
 
     public function overrideMailerConfig()
@@ -81,7 +84,7 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
         $this->data = compact('user', 'project','amount','investment');
 
         $mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach(storage_path().$this->investment->application_path, ['as' => 'Application_Form']);
         });
 
     }

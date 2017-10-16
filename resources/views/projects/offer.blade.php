@@ -292,7 +292,7 @@ Offer Doc
 													</div>
 													<div class="col-md-6">
 														<label>Email</label>
-														<input type="text" name="email" class="form-control" placeholder="Email" required @if($user->email) value="{{$user->email}}" @endif>
+														<input type="text" class="form-control" placeholder="Email" required disabled @if($user->email) value="{{$user->email}}" @endif style="background:transparent;">
 													</div>
 												</div>
 											</div>
@@ -362,10 +362,15 @@ Offer Doc
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
-									<h4 class="text-center">Please Sign Here</h4 class="text-center">
+									<h4 class="text-center">Please Sign Here</h4>
+									<input type="hidden" name="signature_data" id="signature_data" value="">
 										<script>
 											$(document).ready(function() {
-												$("#signature").jSignature()
+												$("#signature").jSignature();
+												$("#signature").bind('change', function(e){
+													var svgData = $(this).jSignature("getData", "image");
+													$('#signature_data').val(svgData[1]);
+												});
 											})
 										</script>
 										<br>

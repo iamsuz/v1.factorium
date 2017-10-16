@@ -56,6 +56,7 @@
 								<th>Investor Document</th>
 								<th>Joint Investor</th>
 								<th>Company or Trust</th>
+								<th>Application Form</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -205,6 +206,11 @@
 									@else 
 									NA 
 									@endif
+								</td>
+								<td>
+									<a href="{{route('dashboard.project.application', [$investment->id])}}" target="_blank">
+										View Application Form
+									</a>
 								</td>
 							</tr>
 							{{-- @if($project->projectconfiguration->payment_switch)
