@@ -825,4 +825,36 @@ class DashboardController extends Controller
             \Mail::setSwiftMailer($mailer);
         }
     }
+
+    public function applicationForm($investment_id)
+    {
+        $investment = InvestmentInvestor::find($investment_id);
+        // dd($investment);
+        if($investment->application_path){
+            $filename = $investment->application_path;
+            $path = storage_path($filename);
+
+            return \Response::make(file_get_contents($path), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$filename.'"'
+            ]);
+        }
+        else {
+            $project = Project::find($investment->project_id);
+            $user = \Auth::user();
+
+            // Create PDF of Application form
+            $pdfBasePath = '/app/application/application-'.$investment->id.'-'.time().'.pdf';
+            $pdfPath = storage_path().$pdfBasePath;
+            $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investment, 'user' => $user]);
+            $pdf->save($pdfPath);
+            $investment->application_path = $pdfBasePath;
+            $investment->save();
+
+            return \Response::make(file_get_contents($pdfPath), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$pdfBasePath.'"'
+            ]);
+        }
+    }
 }
