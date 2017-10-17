@@ -405,6 +405,20 @@ class SiteConfigurationsController extends Controller
         return redirect()->back();
     }
 
+    public function updateGreyBoxNote(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        // dd($siteconfiguration);
+        $result = $siteconfiguration->update([
+            'grey_box_note' => $request->grey_box_note,
+            ]);
+        if($result){
+            Session::flash('greyBoxNoteUpdateMessage', 'Saved Successfully');
+        }
+        return redirect()->back();
+    }
+
     public function editHomePgInvestmentTitle1(Request $request)
     {
         $this->validate($request, array(

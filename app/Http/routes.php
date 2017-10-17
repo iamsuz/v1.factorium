@@ -183,6 +183,7 @@ Route::post('/configuration/uploadHomePgBackImg1', ['as'=>'configuration.uploadH
 Route::post('/configuration/updateSiteTitle', ['as'=>'configuration.updateSiteTitle', 'uses'=>'SiteConfigurationsController@updateSiteTitle']);
 Route::post('/configuration/updateFavicon', ['as'=>'configuration.updateFavicon', 'uses'=>'SiteConfigurationsController@updateFavicon']);
 Route::post('/configuration/updateSocialSiteLinks', ['as'=>'configuration.updateSocialSiteLinks', 'uses'=>'SiteConfigurationsController@updateSocialSiteLinks']);
+Route::post('/configuration/updateGreyBoxNote', ['as'=>'configuration.updateGreyBoxNote', 'uses'=>'SiteConfigurationsController@updateGreyBoxNote']);
 Route::post('/configuration/updateSitemapLinks', ['as'=>'configuration.updateSitemapLinks', 'uses'=>'SiteConfigurationsController@updateSitemapLinks']);
 Route::post('/configuration/editHomePgInvestmentTitle1', ['as'=>'configuration.editHomePgInvestmentTitle1', 'uses'=>'SiteConfigurationsController@editHomePgInvestmentTitle1']);
 Route::post('/configuration/editHomePgInvestmentTitle1Description', ['as'=>'configuration.editHomePgInvestmentTitle1Description', 'uses'=>'SiteConfigurationsController@editHomePgInvestmentTitle1Description']);

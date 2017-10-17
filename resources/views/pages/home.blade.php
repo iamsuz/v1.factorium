@@ -827,8 +827,16 @@
     </div>
   </div>
   <br><br>
+        @if(Auth::guest())
+        @else
+        @if($admin_access == 1)
+        <div class="row text-left">
+          <i class="fa fa-pencil edit-pencil-style show-grey-box-note-edit-modal-btn" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the below content" data-placement="right"></i>
+        </div>
+      @endif
+      @endif
     <div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
-      <p class="col-md-12 text-justify"><small style="color: #888;">You can download the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. You should carefully review the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.</small></p>
+      <p class="col-md-12 text-justify"><small style="color: #888;">@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. You should carefully review the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. @endif</small></p>
     </div>
 </div>
 </section>
@@ -1371,6 +1379,37 @@
           </div>      
         </div>
       </div>
+            <!-- Modal for Grey Box Note Edit -->
+      <div class="modal fade" id="grey_box_note_edit_modal" role="dialog">
+        <div class="modal-dialog" style="width: 400px;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <form method="POST" action="{{ route('configuration.updateGreyBoxNote') }}">
+              {{csrf_field()}}
+              <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit the Content</h4>
+              </div>
+              <div class="modal-body">
+                <table style="text-align: left; width: 100%">
+                  <tr><td colspan="2">
+                    <!-- {!! $errors->first(null, '<small class="text-danger">:message</small>') !!} -->
+                    @if (Session::has('greyBoxNoteUpdateMessage'))
+                    <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px; margin-bottom: 5px; text-align: center;">
+                      <h5>{!! Session::get('greyBoxNoteUpdateMessage') !!}</h5>
+                    </div>
+                    @endif
+                  </td></tr>
+                  <textarea rows="9" class="form-control" type="text" name="grey_box_note" value="{{$siteConfiguration->grey_box_note}}"></textarea>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="Submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>      
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1749,6 +1788,12 @@
       });
       $('.show-sitemap-link-edit-modal-btn').click(function(){
         $('#sitemap_link_edit_modal').modal({
+          'show': true,
+          'backdrop': false,
+        });
+      });
+      $('.show-grey-box-note-edit-modal-btn').click(function(){
+        $('#grey_box_note_edit_modal').modal({
           'show': true,
           'backdrop': false,
         });
