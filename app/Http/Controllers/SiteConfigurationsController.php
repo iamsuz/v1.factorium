@@ -409,13 +409,9 @@ class SiteConfigurationsController extends Controller
     {
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-        // dd($siteconfiguration);
         $result = $siteconfiguration->update([
-            'grey_box_note' => $request->grey_box_note,
+            'grey_box_note' => trim(preg_replace('/\s+/', ' ', $request->grey_box_note)),
             ]);
-        if($result){
-            Session::flash('greyBoxNoteUpdateMessage', 'Saved Successfully');
-        }
         return redirect()->back();
     }
 
