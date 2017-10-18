@@ -589,7 +589,7 @@ Offer Doc
 				$("input[name='joint_investor_first']").attr('disabled','disabled');
 				$("input[name='joint_investor_last']").attr('disabled','disabled');
 				$("input[name='investing_company_name']").attr('disabled','disabled');
-				$("input[name='id_docs']").removeAttr('disabled');
+				$("input[name='user_id_doc']").removeAttr('disabled');
 				$("input[name='trust_or_company_docs']").attr('disabled','disabled');
 				$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
 			}
