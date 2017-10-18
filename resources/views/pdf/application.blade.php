@@ -5,6 +5,7 @@
 	}
 	input[type="text"]{
 		width: 100% !important;
+		min-height: 32px !important;
 		padding: 0.5em 1em;
 		/*border-radius: 5px;*/
 	}
@@ -32,10 +33,23 @@
 	<h4><b>I/we lodge full Application Money</b></h4>
 	<input type="text" name="" class="form-control" placeholder="$5000" value="A$ {{$investment->amount}}"><br>
 	<p>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</p><br>
-	<h4><b>Are you investing as</b></h4>
-	<input type="checkbox" name="" @if(!$investment->investing_as) checked @else @if($investment->investing_as == 'Individual Investor') checked @endif @endif> Individual Investor<br>
-	<input type="checkbox" name="" @if($investment->investing_as) @if($investment->investing_as == 'Joint Investor') checked @endif @endif> Joint Investor<br>
-	<input type="checkbox" name="" @if($investment->investing_as) @if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor') checked @endif @endif> Trust or Company<br><br>
+	<h4><b>You are investing as</b></h4>
+	@if(!$investment->investing_as)
+		Individual Investor <br>
+	@endif
+	@if($investment->investing_as) 
+		@if($investment->investing_as == 'Individual Investor') Individual Investor <br>
+		@else 
+		@if($investment->investing_as == 'Joint Investor') Joint Investor <br> 
+		@else
+		@if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor') Trust or Company <br>
+		@else
+		{{$investment->investing_as}}
+		@endif 
+		@endif
+		@endif
+	@endif
+	<br>
 	@if($investment->investing_as)
 	@if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor')
 	<h4><b>Company or Trust Name</b></h4>
@@ -138,10 +152,19 @@
 	<p>Account Number</p>
 	<input type="text" class="form-control" name="" placeholder="Account Number" value="@if($investment->investing_as)@if($investment->investing_as != 'Individual Investor'){{$investment->investingJoint->account_number}}@else{{$user->account_number}}@endif @else{{$user->account_number}}@endif"><br><br>
 	<h4><b>ID DOCS</b></h4>
-	<a href="{{$investment->project_site}}/@if($investment->userInvestmentDoc->count() > 0){{$investment->userInvestmentDoc()->get()->last()->path}}@endif" target="_blank">@if($investment->userInvestmentDoc->count() > 0){{$investment->userInvestmentDoc()->get()->last()->filename}}@else{{'ID Document'}}@endif</a><br><br>
+	@if($investment->userInvestmentDoc->count() > 0)
+	@foreach($investment->userInvestmentDoc as $doc)
+	<a href="{{$investment->project_site}}/{{$doc->path}}" target="_blank">
+	{{$doc->filename}}
+	</a><br>
+	@endforeach
+	@else
+	No Document Available
+	@endif
+	<br>
 	<p>If you have not completed your verification process, please upload a copy of your Driver’s License or Passport for AML/CTF purposes</p><br>
 
-	<input type="checkbox" checked name=""> I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed. I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
+	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed. I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif (($siteConfiguration->prospectus_text)) {{($siteConfiguration->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
 	@if($project->add_additional_form_content)
 	<br>
 	{{$project->add_additional_form_content}}

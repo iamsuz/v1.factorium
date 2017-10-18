@@ -841,20 +841,25 @@ class DashboardController extends Controller
         }
         else {
             $project = Project::find($investment->project_id);
-            $user = \Auth::user();
+            $user = User::findOrFail($investment->user_id);
+            // dd($user);
 
             // Create PDF of Application form
             $pdfBasePath = '/app/application/application-'.$investment->id.'-'.time().'.pdf';
             $pdfPath = storage_path().$pdfBasePath;
             $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investment, 'user' => $user]);
-            $pdf->save($pdfPath);
+            $pdf->setPaper('a4', 'portrait');
+            $pdf->setWarnings(false);
+            $saveResult = $pdf->save($pdfPath);
             $investment->application_path = $pdfBasePath;
             $investment->save();
 
-            return \Response::make(file_get_contents($pdfPath), 200, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="'.$pdfBasePath.'"'
-            ]);
+            if($saveResult){
+                return \Response::make(file_get_contents($pdfPath), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="'.$pdfBasePath.'"'
+                ]);
+            }
         }
     }
 }
