@@ -5,6 +5,7 @@
 
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @stop
 
 @section('content-section')
@@ -250,7 +251,7 @@
 					</div>
 					<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
 						{{csrf_field()}}
-						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
+						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="text" name="start_date" id="start_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> and <input type="text" name="end_date" id="end_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
 					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
@@ -445,6 +446,7 @@
 
 @section('js-section')
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('a.edit').click(function () {
@@ -568,12 +570,17 @@
 	            });
 	            $('.investors-list').val(investors.join(','));
 	        });
-			
+
 			// Declare dividend
 			declareDividend();
 			// repurchase shares
 			repurchaseShares();
 		});
+
+		// Apply date picker to html elements to select date
+        $( ".datepicker" ).datepicker({
+        	'format': 'dd/mm/yy'
+        });
 	});
 
 	// Declare dividend
