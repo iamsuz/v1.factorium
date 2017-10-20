@@ -26,6 +26,7 @@ use App\Position;
 use App\ProjectProg;
 use App\Helpers\SiteConfigurationHelper;
 use Illuminate\Mail\TransportManager;
+use App\ProjectInterest;
 
 
 class DashboardController extends Controller
@@ -128,9 +129,10 @@ class DashboardController extends Controller
                     ->get();
         $transactions = Transaction::where('project_id', $project_id)->get();
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
+        $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests'));
     }
 
     public function editProject($project_id)
