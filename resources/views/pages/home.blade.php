@@ -580,9 +580,27 @@
                     </div>
                   </div>
                 </div>
+              </a>
                 <br>
+                @if(Auth::guest())
+                @else
+                @if($admin_access == 1)
+                  <i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
+                @endif
+                @endif
                 <div class="caption">
-                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                  <form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
+                    {{csrf_field()}}
+                  <div class="project-thumbnail-txt"></div>
+                  </form>
+                  <a @if($project->is_coming_soon) @if(Auth::user())
+                  @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+                  @else
+                  href="javascript:void(0);"
+                  @endif 
+                  @else href="{{route('projects.show', [$project])}}" 
+                  @endif>
+                  <p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
                   <div class="row text-left">
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -686,9 +704,27 @@
                     </div>
                   </div>
                 </div>
+              </a>
                 <br>
+                @if(Auth::guest())
+                @else
+                @if($admin_access == 1)
+                  <i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
+                @endif
+                @endif
                 <div class="caption">
-                  <p><small><small>@if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                  <form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
+                    {{csrf_field()}}
+                      <div class="project-thumbnail-txt"></div>
+                  </form>
+                  <a @if($project->is_coming_soon) @if(Auth::user())
+                  @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+                  @else
+                  href="javascript:void(0);"
+                  @endif 
+                  @else href="{{route('projects.show', [$project])}}" 
+                  @endif>
+                  <p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
                   <div class="row text-left">
                     <div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
                       <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -790,9 +826,27 @@
                    </div>
                  </div>
                </div>
+             </a>
                <br>
+              @if(Auth::guest())
+              @else
+              @if($admin_access == 1)
+                <i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
+              @endif
+              @endif
                <div class="caption">
-                <p><small><small>@if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif</small></small></p>
+                <form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
+                  {{csrf_field()}}
+                  <div class="project-thumbnail-txt"></div>
+                </form>
+                <a @if($project->is_coming_soon) @if(Auth::user())
+                @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+                @else
+                href="javascript:void(0);"
+                @endif 
+                @else href="{{route('projects.show', [$project])}}" 
+                @endif>
+                <p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
                 <div class="row text-left">
                   <div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
                     <h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
@@ -1812,6 +1866,8 @@
       iphoneDeviceConfigurations();
       //Edit Grey Box Note Content
       editGreyBoxNoteContent();
+      //Edit the text below project thumbnail image
+      editProjectThumbnailText();
 
     });
 
@@ -2210,9 +2266,15 @@
       });
     }
 
-        function editGreyBoxNoteContent(){
-      $('.show-grey-box-note-edit-box').click(function(){
+      function editGreyBoxNoteContent(){
+        $('.show-grey-box-note-edit-box').click(function(){
         $('.grey-box-note-content').replaceWith('<textarea name="grey_box_note" class="form-control" rows="6" required>@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. You should carefully review the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. @endif</textarea><br><button type="Submit" class="btn-default col-md-offset-11">Save</button>');
+      });
+    }
+
+    function editProjectThumbnailText(){
+      $('.show-project-thumbnail-text-edit-box').click(function(){
+        $('.project-thumbnail-txt').replaceWith('<input type="text" name="project_thumbnail_text" class="form-control" placeholder="Enter the text here" required><br><button type="Submit" class="btn btn-primary col-md-offset-10">Save</button>');
       });
     }
 

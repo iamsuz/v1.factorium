@@ -646,6 +646,15 @@ class ProjectsController extends Controller
         return redirect()->back()->withMessage('Successfully Added Additional Form Content.');
     }
 
+    public function storeProjectThumbnailText(Request $request, $id)
+    {
+        $project = Project::where('id', $id);
+        $result = $project->update([
+            'project_thumbnail_text' => $request->project_thumbnail_text,
+            ]);
+        return redirect()->back();
+    }
+
     public function storeProjectFAQ(FAQRequest $request, $project_id)
     {
         $project = Project::findOrFail($project_id);

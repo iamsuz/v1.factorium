@@ -148,6 +148,7 @@ Route::get('projects/{project_id}/interest', ['as'=>'projects.interest', 'uses'=
 Route::get('projects/{project_id}/offerdoc', ['as'=>'projects.offer', 'uses'=>'ProjectsController@showInterestOffer']);
 Route::get('projects/{project_id}/completed', ['as'=>'projects.complete', 'uses'=>'ProjectsController@interestCompleted']);
 Route::post('/FormContent/{id}', ['as'=>'AdditionalFormContent', 'uses'=>'ProjectsController@storeAdditionalFormContent']);
+Route::post('/ProjectThumbnailText/{id}', ['as'=>'ProjectThumbnailText', 'uses'=>'ProjectsController@storeProjectThumbnailText']);
 Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redirectingfromproject']);
 
 // Route::get('/news/financialreview', ['as'=>'news.financialreview', 'uses'=>'NewsController@financialreview']);
