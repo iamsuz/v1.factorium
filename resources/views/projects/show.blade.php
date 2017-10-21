@@ -39,6 +39,13 @@
 	.btn-hover-default-color:hover{
 		color: #fff !important;
 	}
+	.edit-pencil-style{
+	    padding: 6px 7px;
+	    border: 2px solid #fff;
+	    border-radius: 50px;
+	    color: #fff;
+	    cursor: pointer;
+	}
 </style>
 @stop
 @section('content-section')
@@ -247,7 +254,7 @@
 			@endif --}}
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button.</h6>
+	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif</h6>
 	<section>
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
@@ -1859,10 +1866,16 @@
 @section('js-section')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{!! Html::script('js/bootstrap.min.js') !!}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script> -->
 <!-- Summernote editor -->
 {!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
+<script type="text/javascript">
+	$(document).ready(function() {
+    	$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>
 <script>
 	$(function () {
 		var minimized_elements = $('p.minimize');

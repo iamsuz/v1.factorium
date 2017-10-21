@@ -686,6 +686,7 @@ class SiteConfigurationsController extends Controller
                 'description' => $request->project_description_txt,
                 'button_label'=>$request->project_button_invest_txt,
                 'project_prospectus_text'=>$request->project_prospectus_txt,
+                'add_additional_disclaimer'=>$request->additional_disclaimer_txt,
                 ]);
             Investment::where('project_id', $projectId)->first()->update([
                 'fund_raising_close_date'=>$request->fund_raising_close_date,

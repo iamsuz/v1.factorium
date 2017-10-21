@@ -172,7 +172,13 @@
 			</div>
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button.</h6>
+	<h6 style="color: #707070; font-size: 14px; margin-bottom: 1.2em;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif</h6>
+	<div class="container-fluid">
+		<div class="col-md-12">
+			<textarea class="form-control text-textarea" name="additional_disclaimer_txt" rows="3" placeholder="You Can Add Additional Content for the above Disclaimer here" title="Additional Content for Disclaimer">{{$project->add_additional_disclaimer}}</textarea>
+			<br>
+		</div>
+	</div>
 	<section>
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
