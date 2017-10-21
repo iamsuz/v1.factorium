@@ -102,7 +102,7 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field">
-						<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}">
+						<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}" placeholder="DD/MM/YYYY">
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
 						<div id="circle" class="project_progress_circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">

@@ -548,7 +548,7 @@
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
                   <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
-                    <span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
+                    <span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
                     <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
                     <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
                     <br>
@@ -672,7 +672,7 @@
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
                   <div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
-                    <span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
+                    <span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
                     <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
                     <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
                     <br>
@@ -795,7 +795,7 @@
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
                   <img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
                   <div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
-                    <span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
+                    <span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
                     <input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
                     <input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
                     <br>
