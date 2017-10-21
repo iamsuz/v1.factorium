@@ -124,7 +124,7 @@ $_SESSION['code'] = md5(microtime(true));
 <body data-spy="scroll">
     <?php
   if(isset($_SESSION['code'])){
-    echo 'code:'.$_SESSION['code'];
+    // echo 'code:'.$_SESSION['code'];
   }
   ?>
     <!-- Google tag manager body script if set  -->

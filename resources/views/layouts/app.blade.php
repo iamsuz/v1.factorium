@@ -92,7 +92,7 @@ $_SESSION['code'] = md5(microtime(true));
     @endif
 <?php
   if(isset($_SESSION['code'])){
-    echo 'code:'.$_SESSION['code'];
+    // echo 'code:'.$_SESSION['code'];
   }
   ?>
    <!-- topbar nav content here -->
