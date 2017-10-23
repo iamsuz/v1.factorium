@@ -290,34 +290,35 @@
 						<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->debt_details_url}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Master PDS" style="text-decoration:underline;" class="download-links">Debt Details</a></p>
 					</div> -->
 				</div>
-				<hr>
-				
-				<div class="reference_docs" style="@if(!$project->projectconfiguration->show_reference_docs) display: none; @endif">
-					<h3 class="download-text first_color">Reference Documents</h3><br>
-					<div class="add-doc-ref-section"></div>
-					<div class="doc-references">
-						@if($project->documents)
-						@foreach($project->documents->where('type','reference_document')->where('project_site', url())->chunk(4) as $documents)
-						<div class="row">
-							@foreach($documents as $document)
-							<div class="col-md-3 text-left" style="padding-bottom: 10px;">
-								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-								<span style="font-size:1em;">
-									<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
-								</span>
+				<div class="@if(count($project->documents->where('type','reference_document')->where('project_site', url()))==0 || !$project->projectconfiguration->show_reference_docs) hide @endif">
+					<hr>
+					<div class="reference_docs">
+						<h3 class="download-text first_color">Reference Documents</h3><br>
+						<div class="add-doc-ref-section"></div>
+						<div class="doc-references">
+							@if($project->documents)
+							@foreach($project->documents->where('type','reference_document')->where('project_site', url())->chunk(4) as $documents)
+							<div class="row">
+								@foreach($documents as $document)
+								<div class="col-md-3 text-left" style="padding-bottom: 10px;">
+									<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+									<span style="font-size:1em;">
+										<a @if(Auth::check()) href="{{$document->path}}" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="{{$document->filename}}" style="text-decoration:underline;" class="download-links">{{$document->filename}}</a>
+									</span>
+								</div>
+								@endforeach
 							</div>
 							@endforeach
+							@endif
 						</div>
-						@endforeach
-						@endif
 					</div>
 				</div>
 
 				@if(Auth::guest())
 				@else
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-				<div class="text-center">
-					<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowReferenceDocs" action="reference_docs" data-size="mini" @if($project->projectconfiguration->show_reference_docs) checked value="1" @else value="0" @endif>
+				<div class="text-center" @if(count($project->documents->where('type','reference_document')->where('project_site', url()))==0) data-toggle="tooltip" data-placement="top" title="Please add atleast one reference document" @endif disabled="">
+					<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowReferenceDocs" action="reference_docs" data-size="mini" @if($project->projectconfiguration->show_reference_docs) checked value="1" @else value="0" @endif @if(count($project->documents->where('type','reference_document')->where('project_site', url()))==0) disabled="" @endif>
 				</div>
 				@endif
 				@endif
