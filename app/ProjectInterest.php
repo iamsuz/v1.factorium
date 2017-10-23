@@ -19,7 +19,7 @@ class ProjectInterest extends Model
      *
      * @var array
      */
-    protected $fillable = ['project_id','email', 'phone_number'];
+    protected $fillable = ['project_id','email', 'phone_number', 'action_site'];
 
     /**
      * belongs to relationship with projects
