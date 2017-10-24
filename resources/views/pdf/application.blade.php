@@ -23,7 +23,7 @@
 <div>
 	<h2 align="center"><b>Prospectus Application – {{$siteConfiguration->website_name}}</b></h2><br>
 	<h4><b>Project SPV Name</b></h4>
-	<input type="text" name="" class="form-control" placeholder="Project SPV Name" value="{{$investment->project->projectspvdetail->spv_name}}" style="width: 100%;"><br>
+	<input type="text" name="" class="form-control" placeholder="Project SPV Name" @if($investment->project->projectspvdetail) value="{{$investment->project->projectspvdetail->spv_name}}" @endif style="width: 100%;"><br>
 	<p>( Name of the Company established as a Special Purpose Vehicle for this project that you are investing in )</p>
 	<p>This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire prospectus carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must not be distributed unless included in, or accompanied by, the prospectus.</p>
 	<br>
