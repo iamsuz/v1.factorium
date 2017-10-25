@@ -373,11 +373,11 @@ Offer Doc
 												});
 											})
 										</script>
-										<br>
+										<br><br>
 										<div class="row " id="11">
 											<div class="col-md-12">
 												<div>
-													<input type="submit" name="submit" class="btn btn-primary" value="Submit">
+													<input type="submit" name="submit" class="btn btn-primary btn-block" value="Submit">
 												</div>
 											</div>
 										</div>
