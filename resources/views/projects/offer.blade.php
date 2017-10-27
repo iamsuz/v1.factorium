@@ -7,6 +7,11 @@ Offer Doc
 @parent
 @stop
 @section('content-section')
+<div class="loader-overlay hide" style="display: none;">
+	<div class="overlay-loader-image">
+	   <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
+	</div>
+</div>
 <div class="container-fluid">
 	<div class="row" id="forScroll">
 		<div class="col-md-12">
@@ -27,7 +32,7 @@ Offer Doc
 								@if (Session::has('message'))
    								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
-								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data">
+								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
 										<div class="col-md-12">
@@ -511,6 +516,10 @@ Offer Doc
     $("#myModal").on('shown.bs.modal', function(){
         $(this).find('input[type="text"]').focus();
     });
+    $('#myform').submit(function() {
+    $('.loader-overlay').show(); // show animation
+    return true; // allow regular form submission
+});
 });
 	$(function () {
 		// Function that runs with interval for side panel
