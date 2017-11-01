@@ -748,15 +748,16 @@ class DashboardController extends Controller
     public function investmentStatement($projectId)
     {
         $investmentRecords = InvestmentInvestor::where('project_id', $projectId)
-            ->where('accepted', 1)
             ->where(function ($query) { $query->where('is_cancelled', 0)->where('is_repurchased', 0); })
             ->get()->groupby('user_id');
         foreach ($investmentRecords as $userId => $investments) {
             $UserShares = 0;
             foreach ($investments as $key => $investment) {
-                $shareNumber = explode('-', $investment->share_number);
-                $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
-                $UserShares += $noOfShares;
+                if($investment->accepted && $investment->share_number){
+                    $shareNumber = explode('-', $investment->share_number);
+                    $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                    $UserShares += $noOfShares;
+                }
             }
             // dd($UserShares);
             Position::create([
