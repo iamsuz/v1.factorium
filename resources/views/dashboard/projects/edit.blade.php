@@ -108,9 +108,14 @@ Edit {{$project->title}} | Dashboard | @parent
 									<input type="hidden" name="md_vs_trustee" id="md_vs_trustee" @if($project->md_vs_trustee) value="1" @else value="0" @endif>
 
 									<br><br>
+									<h3>Retail project vs Wholesale project</h3>
+									<input type="checkbox" name="retail_vs_wholesale_checkbox" id="retail_vs_wholesale_checkbox" autocomplete="off" data-label-text="Show" @if($project->retail_vs_wholesale) value="1" checked @else value="0" @endif >
+									<input type="hidden" name="retail_vs_wholesale" id="retail_vs_wholesale" @if($project->retail_vs_wholesale) value="1" @else value="0" @endif>
+
+									<br><br><br>
 									<div class="row">
 										<div class="form-group">
-											<div class="col-sm-offset-2 col-sm-9">
+											<div class="col-sm-offset-2 col-sm-8">
 												{!! Form::submit('Update', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
 											</div>
 										</div>
@@ -2068,6 +2073,16 @@ Edit {{$project->title}} | Dashboard | @parent
 			var setVal = $(this).val() == 1? 0 : 1;
 			$(this).val(setVal);
 			$('#md_vs_trustee').val(setVal);
+		})
+		$("#retail_vs_wholesale_checkbox").bootstrapSwitch({
+			onText: "Retail",
+			offText: "Wholesale",
+			offColor: 'primary',
+		});
+		$('#retail_vs_wholesale_checkbox').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			$('#retail_vs_wholesale').val(setVal);
 		})
 
 		$('#modal_close_btn').click(function(){
