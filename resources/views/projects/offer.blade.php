@@ -38,7 +38,7 @@ Offer Doc
 									<h3>Your request is submitted</h3>
 									<h5>We will contact you soon</h5>
 									@else
-									<h5>Need Help Filling Form? Click the below button to request for form fillup. Our executive will contact you once your request is recieved.</h5>
+									<h5>Need Help Filling Form? Click the below button to request for form fillup. Our executive will contact you once your request is received.</h5>
 									<a href="{{route('projects.interest.request', [$project->id])}}"><button type="button" class="btn btn-primary send-form-filling-request"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i> &nbsp;&nbsp;Send Request</button></a>
 									@endif
 								</div>

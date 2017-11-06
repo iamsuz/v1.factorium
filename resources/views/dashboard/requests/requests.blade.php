@@ -29,8 +29,8 @@ Projects | Dashboard | @parent
 					<tbody>
 						@foreach($investmentRequests as $investmentRequest)
 						<tr>
+							<td><a href="{{route('dashboard.users.show', [$investmentRequest->user_id])}}">{{$investmentRequest->user->first_name}} {{$investmentRequest->user->last_name}}</a></td>
 							<td>{{$investmentRequest->project->title}}</td>
-							<td>{{$investmentRequest->user->first_name}} {{$investmentRequest->user->last_name}}</td>
 							<td>{{$investmentRequest->created_at}}</td>
 							<td class="text-center"><a target="_blank" href="{{route('project.interest.fill', [$investmentRequest->id])}}">Investment Form</a></td>
 						</tr>
