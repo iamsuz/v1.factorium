@@ -262,3 +262,4 @@ Route::get('/dashboard/project/application/{investment_id}', ['as'=>'dashboard.p
 Route::get('/projects/{project_id}/interest/request', ['as'=>'projects.interest.request', 'uses'=>'OfferController@requestFormFilling']);
 Route::get('/project/{request_id}/interest/fill', ['as'=>'project.interest.fill', 'uses'=>'OfferController@requestForm']);
 Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.cancel', 'uses'=>'OfferController@cancelRequestForm']);
+Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);

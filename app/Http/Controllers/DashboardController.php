@@ -27,6 +27,7 @@ use App\ProjectProg;
 use App\Helpers\SiteConfigurationHelper;
 use Illuminate\Mail\TransportManager;
 use App\ProjectInterest;
+use App\InvestmentRequest;
 
 
 class DashboardController extends Controller
@@ -864,5 +865,15 @@ class DashboardController extends Controller
                 ]);
             }
         }
+    }
+
+    /**
+     * Show list of all Investment form filling requests which are pending
+     */
+    public function investmentRequests()
+    {
+        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)->get();
+        $color = Color::where('project_site',url())->first();
+        return view('dashboard.requests.requests', compact('investmentRequests', 'color'));
     }
 }
