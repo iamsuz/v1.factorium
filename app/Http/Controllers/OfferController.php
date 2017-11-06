@@ -12,6 +12,8 @@ use App\ProjectSpvDetail;
 use App\Mailers\AppMailer;
 use App\InvestmentInvestor;
 use App\UserInvestmentDocument;
+use App\InvestmentRequest;
+use App\Color;
 use Illuminate\Http\Request;
 use App\Jobs\SendReminderEmail;
 use App\Http\Controllers\Controller;
@@ -25,6 +27,16 @@ use Barryvdh\DomPDF\Facade as PDF;
 class OfferController extends Controller
 {
     protected $form_session = 'submit_form';
+
+    /**
+     * constructor for OfferController
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin', ['only' => ['requestForm', 'cancelRequestForm']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -81,6 +93,30 @@ class OfferController extends Controller
             return  redirect()->back()->withErrors($validator);
         }
         $user = Auth::user();
+
+        // If application store request received from request form
+        if($request->investment_request_id)
+        {
+            $investmentRequest = InvestmentRequest::find($request->investment_request_id);
+            if($investmentRequest) {
+                if(\App\Helpers\SiteConfigurationHelper::isSiteAdmin()){
+                    if($investmentRequest->project->project_site == url()) {
+                        $user = User::find($investmentRequest->user_id);
+                        $project = Project::find($investmentRequest->project_id);
+                    }
+                    else{
+                        return redirect()->back()->withErrors('Not Project Admin');
+                    }
+                }
+                else{
+                    return redirect()->back()->withErrors('Not Site Admin');
+                }
+            }
+            else {
+                return redirect()->back()->withErrors('Something went wrong');
+            }
+        }
+
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data]);
@@ -140,6 +176,13 @@ class OfferController extends Controller
 
         }
 
+        // Mark request form link expired
+        if($request->investment_request_id){
+            InvestmentRequest::find($request->investment_request_id)->update([
+                'is_link_expired' => 1
+                ]);
+        }
+
         // Create PDF of Application form
         $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
         $pdfPath = storage_path().$pdfBasePath;
@@ -197,5 +240,86 @@ class OfferController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Create a request with the relevant investment link and stores in database.
+     *
+     * @param int $project_id
+     * @return view
+     */
+    public function requestFormFilling($project_id, AppMailer $mailer)
+    {
+        $project = Project::find($project_id);
+        if(!$project){
+            return redirect()->back();
+        }
+        else{
+            if(!$project->url != url()){
+                return redirect()->back();
+            }
+            else{
+                $user = Auth::user();
+                $investmentRequest = InvestmentRequest::create([
+                    'user_id' => $user->id,
+                    'project_id' => $project->id,
+                    ]);
+                $formLink = url().'/project/'.$investmentRequest->id.'/interest/fill';
+                $mailer->sendInvestmentRequestToAdmin($user, $project, $formLink);
+                return redirect()->back()->with('requestStatus', 1);
+            }
+        }
+    }
+
+    /**
+     * Show Investment form requested by user
+     * 
+     * @param int $request_id
+     * @return view
+     */
+    public function requestForm($request_id)
+    {
+        $investmentRequest = InvestmentRequest::find($request_id);
+        if($investmentRequest){
+            if(\App\Helpers\SiteConfigurationHelper::isSiteAdmin()){
+                if($investmentRequest->project->project_site == url()) {
+                    $user = User::find($investmentRequest->user_id);
+                    $project = $investmentRequest->project;
+                    $color = Color::where('project_site',url())->first();
+                    $projects_spv = ProjectSpvDetail::where('project_id',$investmentRequest->project_id)->first();
+                    return view('projects.requestForm', compact('investmentRequest', 'project', 'projects_spv', 'user', 'color'));
+                }
+            }
+        }
+    }
+
+    /**
+     * Cancel Investment form request
+     * 
+     * @param int $request_id
+     * @return view
+     */
+    public function cancelRequestForm($request_id)
+    {
+        $investmentRequest = InvestmentRequest::find($request_id);
+        if($investmentRequest){
+            if(\App\Helpers\SiteConfigurationHelper::isSiteAdmin()){
+                if($investmentRequest->project->project_site == url()) {
+                    $investmentRequest->update([
+                        'is_link_expired' => 1
+                        ]);
+                    return redirect()->route('home');
+                }
+                else {
+                    return redirect()->back()->withErrors('Not Project Admin');
+                }
+            }
+            else {
+                return redirect()->back()->withErrors('Not Site Admin');
+            }
+        }
+        else {
+            return redirect()->back()->withErrors('Something went wrong');
+        }
     }
 }

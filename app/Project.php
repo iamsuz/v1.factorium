@@ -166,4 +166,8 @@ class Project extends Model
     {
         return $this->hasMany('App\Position');
     }
+    public function investment_request()
+    {
+        return $this->hasMany('App\InvestmentRequest');
+    }
 }
