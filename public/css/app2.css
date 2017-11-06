@@ -788,3 +788,6 @@ input[type="radio"] {
 .aml-requirements-section{
 	display: none;
 }
+.help-filling-form{
+	display: none;
+}
