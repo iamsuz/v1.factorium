@@ -397,9 +397,9 @@ class AppMailer
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
-        foreach ($role->users as $user) {
-            if($user->registration_site == url()){
-                array_push($recipients, $user->email);
+        foreach ($role->users as $adminUser) {
+            if($adminUser->registration_site == url()){
+                array_push($recipients, $adminUser->email);
             }
         }
         $this->to = $recipients;
