@@ -144,11 +144,11 @@ Offer Doc
 												<p>An issue of securities to the public usually requires a disclosure document (like a prospectus) to ensure participants are fully informed about a range of issues including the characteristics of the offer and the present position and future prospects of the entity offering the securities.</p>
 												<p>However an issue of securities can be made to particular kind of investors, in the categories described below, without the need for a registered disclosure document. Please tell us which category of investors applies:</p>
 												<hr>
-												<b style="font-size: 1.1em;">Which option closely describes you?<span style="color: red;">*</span></b><br>
+												<b style="font-size: 1.1em;">Which option closely describes you?</b><br>
 												<div style="margin-left: 1.3em; margin-top: 5px;">
-													<input type="radio" name="wholesale_investing_as" value="Wholesale Investor" style="margin-right: 6px;">I have net assets of at least $2,500,000 or a gross income for each of the last 2 financial investors of at lease $2,50,000 a year.<br>
-													<input type="radio" name="wholesale_investing_as" value="Knowledgeable Investor" style="margin-right: 6px;">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information proivded.<br>
-													<input type="radio" name="wholesale_investing_as" value="No Experience Investor" style="margin-right: 6px;" checked="checked"><b>I have no experienced in property, securities or similar</b><br>
+													<input type="checkbox" name="wholesale_investing_as" value="Wholesale Investor (Net Asset $2,500,000 plus)" style="margin-right: 6px;" class="wholesale_invest_checkbox">I have net assets of at least $2,500,000 or a gross income for each of the last 2 financial investors of at lease $2,50,000 a year.<br>
+													<input type="checkbox" name="wholesale_investing_as" value="Sophisticated Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.<br>
+													<input type="checkbox" name="wholesale_investing_as" value="Inexperienced Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox"><b>I have no experience in property, securities or similar</b><br>
 												</div>
 											</div>
 										</div>
@@ -159,14 +159,14 @@ Offer Doc
 												<h4>Accountant's details</h4>
 												<p>Please provide the details of your accountant for verification of income and/or net asset position.</p>
 												<hr>
-													<label for="asd" class="form-label"><b>Name and firm of qualified accountant<span style="color: red;"> *</span></b></label>
-														<input type="text" name="first" id="asd" class="form-control"><br />
-													<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation<span style="color: red;"> *</span></b></label>
-														<input type="text" name="last" id="asda" class="form-control"><br />
-													<label for="asds" class="form-label"><b>Email<span style="color: red;"> *</span></b></label>
-														<input type="email" name="email" id="asds" class="form-control"><br />
-													<label for="asdd" class="form-label"><b>Phone<span style="color: red;"> *</span></b></label>
-														<input type="text" name="test" id="asdd" class="form-control"><br />
+													<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
+														<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
+													<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
+														<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
+													<label for="asds" class="form-label"><b>Email</b></label>
+														<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
+													<label for="asdd" class="form-label"><b>Phone</b></label>
+														<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
 											</div>
 										</div>
 
@@ -178,22 +178,22 @@ Offer Doc
 											<hr>
 
 											<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
-											<textarea class="form-control" rows="5"></textarea><br>
+											<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
 											
 											<b>How much investment experience do you have? (tick appropriate)</b>
 											<div style="margin-left: 1.3em; margin-top: 5px;">
-												<input type="radio" name="test" style="margin-right: 6px;" checked="checked">Very little knowledge or experience<br>
-												<input type="radio" name="test" style="margin-right: 6px;">Some investment knowledge and understanding<br>
-												<input type="radio" name="test" style="margin-right: 6px;">Experienced private investor with good investment knowledge<br>
-												<input type="radio" name="test" style="margin-right: 6px;">Business Investor<br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked="">Very little knowledge or experience<br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding">Some investment knowledge and understanding<br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge">Experienced private investor with good investment knowledge<br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor">Business Investor<br>
 											</div>
 											<br>
 
 											<label>What experience do you have with unlisted invesments ?</label><br>
-											<textarea class="form-control" rows="5"></textarea><br>
+											<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
 
 											<label>Do you clearly understand the risks of investing with this offer ?</label><br>
-											<textarea class="form-control" rows="5"></textarea><br>
+											<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
 
 										</div>
 										</div>
@@ -567,12 +567,12 @@ Offer Doc
 		});
 		$(document).ready( function() {
 			$("input[name='wholesale_investing_as']").on('change',function() {
-				if($(this).is(':checked') && $(this).val() == 'Wholesale Investor')
+				if($(this).is(':checked') && $(this).val() == 'Wholesale Investor (Net Asset $2,500,000 plus)')
 				{
 					$('#accountant_details_section').show();
 					$('#experienced_investor_information_section').hide();
 				}
-				else if($(this).is(':checked') && $(this).val() == 'Knowledgeable Investor')
+				else if($(this).is(':checked') && $(this).val() == 'Sophisticated Investor')
 				{
 					$('#experienced_investor_information_section').show();
 					$('#accountant_details_section').hide();
@@ -582,6 +582,14 @@ Offer Doc
 					$('#experienced_investor_information_section').hide();
 					$('#accountant_details_section').hide();
 				}
+			});
+
+			$(".wholesale_invest_checkbox").change(function() {
+			    var checked = $(this).is(':checked');
+			    $(".wholesale_invest_checkbox").prop('checked',false);
+			    if(checked) {
+			        $(this).prop('checked',true);
+			    }
 			});
 		});  
 	</script>

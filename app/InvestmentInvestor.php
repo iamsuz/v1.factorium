@@ -47,4 +47,8 @@ class InvestmentInvestor extends Model
     {
         return $this->hasMany('App\Transaction');
     }
+    public function wholesaleInvestment()
+    {
+        return $this->hasOne('App\WholesaleInvestment');
+    }
 }

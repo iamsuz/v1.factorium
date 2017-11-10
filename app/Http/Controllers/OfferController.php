@@ -12,6 +12,7 @@ use App\ProjectSpvDetail;
 use App\Mailers\AppMailer;
 use App\InvestmentInvestor;
 use App\UserInvestmentDocument;
+use App\WholesaleInvestment;
 use Illuminate\Http\Request;
 use App\Jobs\SendReminderEmail;
 use App\Http\Controllers\Controller;
@@ -138,6 +139,28 @@ class OfferController extends Controller
             $project->investmentDocuments()->save($user_investment_doc);
 
         }
+        if(!$project->retail_vs_wholesale) {
+	        $wholesale_investor = WholesaleInvestment::get()->last();{
+	            $wholesale_investing = new WholesaleInvestment;
+	            $wholesale_investing->project_id = $project->id;
+	            $wholesale_investing->investment_investor_id = $investor->id;
+	            $wholesale_investing->wholesale_investing_as = $request->wholesale_investing_as;
+	            if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
+		            $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
+		            $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
+		            $wholesale_investing->accountant_email = $request->accountant_email_txt;
+		            $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+	        	}
+	        	elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+		            $wholesale_investing->experience_period = $request->experience_period_txt;
+		            $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
+		            $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
+		            $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+	        	}
+	            $wholesale_investing->save();
+	        }
+    	}
+
         $this->dispatch(new SendInvestorNotificationEmail($user,$project));
         $this->dispatch(new SendReminderEmail($user,$project));
 
@@ -189,3 +212,5 @@ class OfferController extends Controller
         //
     }
 }
+
+
