@@ -228,26 +228,32 @@
 											<textarea class="form-control" disabled="" style="cursor: default;">I have net assets of at least $2,500,000 or a gross income for each of the last 2 financial investors of at lease $2,50,000 a year.</textarea><br />	
 											<h4>Accountant's details:</h4><hr>										
 												<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
-													<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control" value="{{$investment->wholesaleInvestment->accountant_name_and_firm}}" disabled="" style="cursor: default;"><br />
+													<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control" value="@if($investment->wholesaleInvestment->accountant_name_and_firm){{$investment->wholesaleInvestment->accountant_name_and_firm}} @else No user input @endif" disabled="" style="cursor: default;"><br />
 												<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
-													<input type="text" name="accountant_designation_txt" id="asda" class="form-control" value="{{$investment->wholesaleInvestment->accountant_professional_body_designation}}" disabled="" style="cursor: default;"><br />
+													<input type="text" name="accountant_designation_txt" id="asda" class="form-control" value="@if($investment->wholesaleInvestment->accountant_professional_body_designation){{$investment->wholesaleInvestment->accountant_professional_body_designation}} @else No user input @endif" disabled="" style="cursor: default;"><br />
 												<label for="asds" class="form-label"><b>Email</b></label>
-													<input type="email" name="accountant_email_txt" id="asds" class="form-control" value="{{$investment->wholesaleInvestment->accountant_email}}" disabled="" style="cursor: default;"><br />
+													<input type="email" name="accountant_email_txt" id="asds" class="form-control" value="@if($investment->wholesaleInvestment->accountant_email){{$investment->wholesaleInvestment->accountant_email}} @else No user input @endif" disabled="" style="cursor: default;"><br />
 												<label for="asdd" class="form-label"><b>Phone</b></label>
+													@if($investment->wholesaleInvestment->accountant_phone)
 													<input type="number" name="accountant_phone_txt" id="asdd" class="form-control" value="{{$investment->wholesaleInvestment->accountant_phone}}" disabled="" style="cursor: default;"><br />
+													@else
+													<input type="text" name="accountant_phone_txt" id="asdd" class="form-control" value="No user input" disabled="" style="cursor: default;"><br />
+													@endif
 												@elseif($investment->wholesaleInvestment->wholesale_investing_as == 'Sophisticated Investor')
 												<textarea rows="3" type="text" class="form-control" disabled="" style="cursor: default;">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.</textarea><br />	
 												<h4>Experienced Investor Information:</h4><hr>
 												<label for="asd" class="form-label"><b>Equity investment experience:</b></label>
 													<textarea rows="4" id="asd" class="form-control" disabled="" style="cursor: default;">@if($investment->wholesaleInvestment->equity_investment_experience_text){{$investment->wholesaleInvestment->equity_investment_experience_text}} @else No user input @endif</textarea> <br />
 													<label for="qwe" class="form-label"><b>How much investment experience do you have?</b></label>
-													<input type="text" id="qwe" class="form-control" value="{{$investment->wholesaleInvestment->experience_period}}" disabled="" style="cursor: default;"><br />
+													<input type="text" id="qwe" class="form-control" value="@if($investment->wholesaleInvestment->experience_period){{$investment->wholesaleInvestment->experience_period}} @else No user input @endif" disabled="" style="cursor: default;"><br />
 													<label for="fgh" class="form-label"><b>What experience do you have with unlisted invesments ?</b></label>
 													<textarea rows="4" id="fgh" class="form-control" disabled="" style="cursor: default;">@if($investment->wholesaleInvestment->unlisted_investment_experience_text){{$investment->wholesaleInvestment->unlisted_investment_experience_text}} @else No user input @endif</textarea> <br />
 													<label for="zxc" class="form-label" style="cursor: default;"><b>Do you clearly understand the risks of investing with this offer ?</b></label>
 													<textarea rows="4" id="zxc" class="form-control" disabled="" style="cursor: default;">@if($investment->wholesaleInvestment->understand_risk_text){{$investment->wholesaleInvestment->understand_risk_text}} @else No user input @endif</textarea> <br />
+												@elseif($investment->wholesaleInvestment->wholesale_investing_as == 'Inexperienced Investor')
+												<input type="text" class="form-control" value="I have no experience in property, securities or similar" disabled="" style="cursor: default;"><br />
 												@else
-												<input type="text" class="form-control" value="I have no experience in property, securities or similar" disabled="" style="cursor: default;"><br />		
+												<input type="text" class="form-control" value="No user input" disabled="" style="cursor: default;"><br />	
 												@endif
 											</div>
 										</div>
