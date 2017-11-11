@@ -107,10 +107,29 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div>
-					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
-						<div id="circle" class="project_progress_circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
+					<div class="col-md-4 col-md-offset-4 col-sm-6">
+						@if(Auth::guest())
+			            @else
+			            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			            <div class="edit-button-style edit-project-progress-circle-img" style="z-index: 10; position: absolute;" action="project_progress_circle_image" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Upload Project Progress Circle Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+			            <input class="hide" type="file" name="project_progress_circle_image" id="project_progress_circle_image">
+        				<input type="hidden" name="project_progress_circle_image_name" id="project_progress_circle_image_name">
+        				@if($project->media->where('type', 'project_progress_circle_image')->count())
+        				<div  style="position: absolute;top: 3em;z-index: 10;">
+        					<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="Image" action="project_progress_image" data-size="mini" @if($project->projectconfiguration->show_project_progress_image) checked value="1" @else value="0" @endif>
+        				</div>
+        				@endif
+			            @endif
+			            @endif
+
+						@if($project->projectconfiguration->show_project_progress_image)
+			            <div>
+							<center><img src="{{asset($project->media->where('type', 'project_progress_circle_image')->last()->path)}}" style="position:relative;max-height: 140px; max-width: 200px;"></center>
+			            </div>
+						@elseif($project->projectconfiguration->show_project_progress_circle)
+			            <div id="circle" class="project_progress_circle days-left-circle">
 							<div class="text-center" style="color:#fff">
-								<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
+								<div class="circle" data-size="140" data-thickness="15" data-reverse="true" style="max-height: 140px;">
 									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
 										<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
 											<span id="daysremained" style="color: #fff;"></span>
@@ -120,15 +139,18 @@
 									</div>
 								</div>
 							</div>
+							@if(Auth::guest())
+							@else
+							@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+							<div class="text-center">
+								<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowCircle" action="project_progress_circle" data-size="mini" @if($project->projectconfiguration->show_project_progress_circle) checked value="1" @else value="0" @endif>
+							</div>
+							@endif
+							@endif
 						</div>
-						@if(Auth::guest())
 						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<div class="text-center" style="margin-top: -10%;">
-							<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowCircle" action="project_progress_circle" data-size="mini" @if($project->projectconfiguration->show_project_progress_circle) checked value="1" @else value="0" @endif>
-						</div>
 						@endif
-						@endif
+
 					</div>
 				</div><br>
 				<div class="row">
@@ -1833,7 +1855,7 @@
 <div class="row">
 	<div class="text-center">
 		<!-- Edit Project Background Modal -->
-		<div class="modal fade" id="edit_project_back_img_modal" role="dialog">
+		<div class="modal fade" id="image_crop_modal" role="dialog">
 			<div class="modal-dialog" style="min-width: 800px;">
 				<!-- Modal content-->
 				<div class="modal-content">
@@ -1856,7 +1878,7 @@
 						<input type="hidden" name="h_target" id="h_target" value="">
 						<input type="hidden" name="orig_width" id="orig_width" value="">
 						<input type="hidden" name="orig_height" id="orig_height" value="">
-						<input type="hidden" name="project_id" id="project_i" value="{{$project->id}}">
+						<input type="hidden" name="project_id" id="project_id" value="{{$project->id}}">
 					</div>
 				</div>      
 			</div>
@@ -2105,6 +2127,7 @@
 		@endif
 		togglePaymentSwitch();
 		projectProgress();
+		editProjectProgressImage();
 
 		$('#myCarousel').addClass('carousel slide');
 	});
@@ -2171,7 +2194,7 @@
 						var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_project_back_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
 
 						$('#image_cropbox_container').html(str1);
-						$('#edit_project_back_img_modal').modal({
+						$('#image_crop_modal').modal({
 							'show': true,
 							'backdrop': false,
 						});
@@ -2290,7 +2313,7 @@
 			else{
 				$('.loader-overlay').hide();
 				if(imgAction == 'projectPg back image'){
-					$('#edit_project_back_img_modal').modal('toggle');
+					$('#image_crop_modal').modal('toggle');
 					$('#projectpg_back_img, #projectpg_back_img_name').val('');
 				}
 				else {}
@@ -2330,7 +2353,7 @@
 						var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_project_thumb_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
 
 						$('#image_cropbox_container').html(str1);
-						$('#edit_project_back_img_modal').modal({
+						$('#image_crop_modal').modal({
 							'show': true,
 							'backdrop': false,
 						});
@@ -2756,7 +2779,12 @@
 				console.log(data);
 				$('.loader-overlay').hide();
 				if(data.status){
-					$('.'+toggleAction).slideToggle();
+					if(toggleAction="project_progress_circle"){
+						location.reload();
+					}
+					else{
+						$('.'+toggleAction).slideToggle();						
+					}
 				}
 			});
 		});
@@ -2812,6 +2840,77 @@
 			$('.loader-overlay').show();
 		});
 	}
+
+	function editProjectProgressImage(){
+		var imgAction = '';
+		$('.edit-project-progress-circle-img').click(function(){
+			$('#project_progress_circle_image').trigger('click');
+			imgAction = $(this).attr('action');
+			$('#project_progress_circle_image, #project_progress_circle_image_name').val('');
+		});
+      	$('#project_progress_circle_image').change(function(e){
+			if($('#project_progress_circle_image').val() != ''){
+				var formData = new FormData();
+				formData.append('project_progress_circle_image', $('#project_progress_circle_image')[0].files[0]);
+				formData.append('imgAction', imgAction);
+				$('.loader-overlay').show();
+				$.ajax({
+					url: '/configuration/uploadprojectProgressCircleImages',
+					type: 'POST',
+					dataType: 'JSON',
+					data: formData,
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+					contentType: false,
+					processData: false
+				}).done(function(data){
+					if(data.status == 1){
+						var imgPath = data.destPath+data.fileName;
+						var str1 = $('<div class="col-sm-9"><img src="../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_project_progress_circle_img" style="float: right;"><img width="530" src="../../'+imgPath+'" id="preview_image"></div>');
+
+						$('#image_cropbox_container').html(str1);
+						$('#image_crop_modal').modal({
+							'show': true,
+							'backdrop': false,
+						});
+
+						$('#image_crop').val(imgPath); //set hidden image value
+						$('#image_crop').attr('action', 'project_progress_circle_image');
+						$('#image_action').val(imgAction);
+						var target_width = 150;
+						var target_height = 150;
+						var origWidth = data.origWidth;
+						var origHeight = data.origHeight;
+						$('#image_cropbox').Jcrop({
+							boxWidth: 530,
+							// aspectRatio: 1,
+							keySupport: false,
+							setSelect: [0, 0, target_width, target_height],
+							bgColor: '',
+							onSelect: function(c) {
+								updateCoords(c, target_width, target_height, origWidth, origHeight);
+							},
+							onChange: function(c) {
+								updateCoords(c, target_width, target_height, origWidth, origHeight);
+							},
+							onRelease: setSelect,
+							minSize: [target_width, target_height],
+						});
+						$('.loader-overlay').hide();
+					}
+					else{
+						$('.loader-overlay').hide();
+						$('#project_progress_circle_image, #project_progress_circle_image_name').val('');
+						alert(data.message);
+					}
+				});
+			}
+		});
+		$('#modal_close_btn').click(function(e){
+			$('#project_progress_circle_image, #project_progress_circle_image_name').val('');
+		});
+    }
 
 </script>
 @stop
