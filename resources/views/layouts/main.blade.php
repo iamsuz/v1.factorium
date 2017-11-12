@@ -1,3 +1,19 @@
+<?php
+header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
+session_start();
+
+$ua = $_SERVER['HTTP_USER_AGENT'];
+// 如果是safari
+if(strstr($ua, 'Safari')!='' && strstr($ua, 'Chrome')==''){
+    // 如果未设置第一方cookie
+    if(!isset($_SESSION['safari'])){
+        echo '<script type="text/javascript"> window.top.location="/setSession.php"; </script>';
+        exit();
+    }
+}
+
+$_SESSION['code'] = md5(microtime(true));
+?>
 <!DOCTYPE Html>
 <!--[if IE 8]> <Html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <Html lang="en" class="ie9"> <![endif]-->
@@ -29,14 +45,14 @@
     <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
     @endif
     <!-- Open Graphic -->
-    
+
     <!-- META DATA -->
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
     {!! Html::script('/js/jquery-1.11.3.min.js') !!}
     @section('meta-section')
     @show
-    
-    @yield('meta')    
+
+    @yield('meta')
 
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-script')
@@ -67,7 +83,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    
+
     @if($siteConfiguration->font_family != '')
     <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
     @endif
@@ -106,6 +122,11 @@
     </script>
 </head>
 <body data-spy="scroll">
+    <?php
+  if(isset($_SESSION['code'])){
+    // echo 'code:'.$_SESSION['code'];
+  }
+  ?>
     <!-- Google tag manager body script if set  -->
     @if($siteConfiguration->tag_manager_body)
     {!!$siteConfiguration->tag_manager_body!!}
@@ -114,6 +135,7 @@
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')
     @endif
+
     <!-- Loader for jquery Ajax calls. -->
     <div class="loader-overlay" style="display: none;">
         <div class="overlay-loader-image">
@@ -312,14 +334,14 @@
         $('#session_flash_message').fadeOut(500);
     }, 2500);
     @endif
-    
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
         $('a[data-disabled]').click(function (e) {
             e.preventDefault();
         });
-        
+
         function toggleChevron(e) {
             $(e.target)
             .prev('.panel-heading')

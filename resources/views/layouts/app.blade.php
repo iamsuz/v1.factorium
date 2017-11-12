@@ -1,3 +1,19 @@
+<?php
+header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
+session_start();
+
+$ua = $_SERVER['HTTP_USER_AGENT'];
+// 如果是safari
+if(strstr($ua, 'Safari')!='' && strstr($ua, 'Chrome')==''){
+    // 如果未设置第一方cookie
+    if(!isset($_SESSION['safari'])){
+        echo '<script type="text/javascript"> window.top.location="/setSession.php"; </script>';
+        exit();
+    }
+}
+
+$_SESSION['code'] = md5(microtime(true));
+?>
 <!DOCTYPE Html>
 <!--[if IE 8]> <Html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <Html lang="en" class="ie9"> <![endif]-->
@@ -39,7 +55,7 @@
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-script')
     @endif
-    
+
     <!-- Bootstrap -->
     {!! Html::style('/css/bootstrap.min.css') !!}
     {!! Html::style('/plugins/font-awesome-4.6.3/css/font-awesome.min.css') !!}
@@ -74,7 +90,11 @@
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')
     @endif
-
+<?php
+  if(isset($_SESSION['code'])){
+    // echo 'code:'.$_SESSION['code'];
+  }
+  ?>
    <!-- topbar nav content here -->
 <!-- header content here -->
 <!-- body content here -->

@@ -147,6 +147,8 @@ Route::post('projects/invite/users', ['as'=>'projects.invitation.store', 'uses'=
 Route::get('projects/{project_id}/interest', ['as'=>'projects.interest', 'uses'=>'ProjectsController@showInterest']);
 Route::get('projects/{project_id}/offerdoc', ['as'=>'projects.offer', 'uses'=>'ProjectsController@showInterestOffer']);
 Route::get('projects/{project_id}/completed', ['as'=>'projects.complete', 'uses'=>'ProjectsController@interestCompleted']);
+Route::post('/FormContent/{id}', ['as'=>'AdditionalFormContent', 'uses'=>'ProjectsController@storeAdditionalFormContent']);
+Route::post('/ProjectThumbnailText/{id}', ['as'=>'ProjectThumbnailText', 'uses'=>'ProjectsController@storeProjectThumbnailText']);
 Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redirectingfromproject']);
 
 // Route::get('/news/financialreview', ['as'=>'news.financialreview', 'uses'=>'NewsController@financialreview']);
@@ -182,6 +184,7 @@ Route::post('/configuration/uploadHomePgBackImg1', ['as'=>'configuration.uploadH
 Route::post('/configuration/updateSiteTitle', ['as'=>'configuration.updateSiteTitle', 'uses'=>'SiteConfigurationsController@updateSiteTitle']);
 Route::post('/configuration/updateFavicon', ['as'=>'configuration.updateFavicon', 'uses'=>'SiteConfigurationsController@updateFavicon']);
 Route::post('/configuration/updateSocialSiteLinks', ['as'=>'configuration.updateSocialSiteLinks', 'uses'=>'SiteConfigurationsController@updateSocialSiteLinks']);
+Route::post('/configuration/updateGreyBoxNote', ['as'=>'configuration.updateGreyBoxNote', 'uses'=>'SiteConfigurationsController@updateGreyBoxNote']);
 Route::post('/configuration/updateSitemapLinks', ['as'=>'configuration.updateSitemapLinks', 'uses'=>'SiteConfigurationsController@updateSitemapLinks']);
 Route::post('/configuration/editHomePgInvestmentTitle1', ['as'=>'configuration.editHomePgInvestmentTitle1', 'uses'=>'SiteConfigurationsController@editHomePgInvestmentTitle1']);
 Route::post('/configuration/editHomePgInvestmentTitle1Description', ['as'=>'configuration.editHomePgInvestmentTitle1Description', 'uses'=>'SiteConfigurationsController@editHomePgInvestmentTitle1Description']);
@@ -255,3 +258,4 @@ Route::get('/dashboard/projects/{project_id}/investment/statement/send', ['as'=>
 // Mail 
 Route::get('/dashboard/projects/{investment_id}/investors/imgdoc',['as'=>'dashboard.userdoc.upload','uses'=>'DashboardController@newUserDoc']);
 Route::get('/dashboard/projects/{investment_id}/investors/imgdoc/verify',['as'=>'dashboard.userdoc.verify','uses'=>'DashboardController@verifyUserDoc']);
+Route::get('/dashboard/project/application/{investment_id}', ['as'=>'dashboard.project.application', 'uses'=>'DashboardController@applicationForm']);

@@ -102,7 +102,7 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field">
-						<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}">
+						<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}" placeholder="DD/MM/YYYY">
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
 						<div id="circle" class="project_progress_circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
@@ -172,7 +172,13 @@
 			</div>
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button.</h6>
+	<h6 style="color: #707070; font-size: 14px; margin-bottom: 1.2em;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif</h6>
+	<div class="container-fluid">
+		<div class="col-md-12">
+			<textarea class="form-control text-textarea" name="additional_disclaimer_txt" rows="3" placeholder="You Can Add Additional Content for the above Disclaimer here" title="Additional Content for Disclaimer">{{$project->add_additional_disclaimer}}</textarea>
+			<br>
+		</div>
+	</div>
 	<section>
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
@@ -293,7 +299,7 @@
 							<br>
 							<div class="row show_summary_section" @if(!$project->projectconfiguration->show_summary_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/summary.png')}}@endif" alt="for whom" style="width:50px;" >
+									<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_summary.png')}}@endif" alt="for whom" style="width:50px;" >
 									<h4 class="second_color show-summary-input" style="margin-top:30px; color:#fed405; font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->summary_label}}@else Summary @endif</h4>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -308,7 +314,7 @@
 							<br>
 							<div class="row show_project_security_section" @if(!$project->projectconfiguration->show_project_security_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security_long" style="width:50px;">
+									<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_security.png')}}@endif" alt="security_long" style="width:50px;">
 									<h4 class="second_color show-security-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->security_label}}@else Security @endif</h4>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -323,7 +329,7 @@
 							<br>
 							<div class="row show_investor_distribution_section" @if(!$project->projectconfiguration->show_investor_distribution_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
+									<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
 									<h4 class="second_color show-investor-distribution-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->investor_distribution_label}}@else Investor<br> Distribution @endif</h4>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -366,7 +372,7 @@
 
 							<div class="row show_marketability_section" @if(!$project->projectconfiguration->show_marketability_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/marketability.png')}}@endif" alt="for whom" style="width:50px; ">
+									<img src="@if($projMedia=$project->media->where('type', 'marketability_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_marketability.png')}}@endif" alt="for whom" style="width:50px; ">
 									<br><br>
 									<h4 class="second_color show-marketability-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->marketability_label}}@else Marketability @endif</h4>
 								</div>
@@ -382,7 +388,7 @@
 							<br>
 							<div class="row show_residents_section" @if(!$project->projectconfiguration->show_residents_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'residents_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/residents.png')}}@endif" alt="residents" style="width:50px; ">
+									<img src="@if($projMedia=$project->media->where('type', 'residents_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_residents.png')}}@endif" alt="residents" style="width:50px; ">
 									<br><br>
 									<h4 class="second_color show-residents-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->residents_label}}@else Residents @endif</h4>
 								</div>
@@ -408,7 +414,7 @@
 							<br>
 							<div class="row show_investment_type_section" @if(!$project->projectconfiguration->show_investment_type_section) style="display: none;" @endif>
 								<div class=" col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
+									<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
 									<h4 class="second_color show-investment-type-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->investment_type_label}}@else Type @endif</h4><br>
 								</div>
 								<div class="col-md-10"> 
@@ -423,7 +429,7 @@
 							</div>
 							<div class="row show_investment_security_section" @if(!$project->projectconfiguration->show_investment_security_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/securityp.png')}}@endif" alt="security" style="width:50px;"><br><br>
+									<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_security.png')}}@endif" alt="security" style="width:50px;"><br><br>
 									<h4 class="second_color show-investment-security-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->investment_security_label}}@else Security @endif</h4><br>
 								</div>
 								<div class="col-md-10"> 
@@ -438,7 +444,7 @@
 							</div>
 							<div class="row show_expected_return_section" @if(!$project->projectconfiguration->show_expected_return_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center" >
-									<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/expected_returns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
+									<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_ExpectedReturns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
 									<h4 class="second_color show-expected-returns-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->expected_returns_label}}@else Expected<br> Returns @endif</h4>
 								</div>
 								<div class="col-md-10"> 
@@ -452,7 +458,7 @@
 							</div>
 							<div class="row show_return_paid_as_section" @if(!$project->projectconfiguration->show_return_paid_as_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center" >
-									<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/returns_paid_as.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
+									<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_ReturnPaidAs.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
 									<h4 class="second_color show-return-paid-as-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->return_paid_as_label}}@else Returns<br> Paid As @endif</h4>
 								</div>
 								<div class="col-md-10"> 
@@ -466,7 +472,7 @@
 							</div>
 							<div class="row show_taxation_section" @if(!$project->projectconfiguration->show_taxation_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center" >
-									<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
+									<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
 									<h4 class="second_color show-taxation-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->taxation_label}}@else Taxation @endif</h4><br>
 								</div>
 								<div class="col-md-10"> 
@@ -490,7 +496,7 @@
 							<br>
 							<div class="row show_developer_section" @if(!$project->projectconfiguration->show_developer_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
+									<img src="@if($projMedia=$project->media->where('type', 'developer_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_developer.png')}}@endif" alt="proposer" style="width:50px;"> <br>
 									@if($project->property_type == "1")
 									<h4 class="second_color show-developer-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->developer_label}}@else Developer @endif</h4><br>
 									@else
@@ -509,7 +515,7 @@
 							<br>
 							<div class="row show_duration_section" @if(!$project->projectconfiguration->show_duration_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/duration.png')}}@endif" alt="duration" style="width:50px;">
+									<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Duration.png')}}@endif" alt="duration" style="width:50px;">
 									<h4 class="second_color show-duration-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->duration_label}}@else Duration @endif</h4><br>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -524,7 +530,7 @@
 							<br>
 							<div class="row show_current_status_section" @if(!$project->projectconfiguration->show_current_status_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/current_status.png')}}@endif" alt="current_status" style="width:50px;">
+									<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Current_status.png')}}@endif" alt="current_status" style="width:50px;">
 									<h4 class="second_color show-current-status-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->current_status_label}}@else Current Status @endif</h4><br>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -538,7 +544,7 @@
 							</div>
 							<div class="row show_rationale_section" @if(!$project->projectconfiguration->show_rationale_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/rationale.png')}}@endif" alt="rationale" style="width:50px;">
+									<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Rationale.png')}}@endif" alt="rationale" style="width:50px;">
 									<h4 class="second_color show-rationale-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->rationale_label}}@else Rationale @endif</h4><br>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -552,7 +558,7 @@
 							</div>
 							<div class="row show_risk_section" @if(!$project->projectconfiguration->show_risk_section) style="display: none;" @endif>
 								<div class="col-md-2 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/risk.png')}}@endif" alt="risk" style="width:50px;">
+									<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_risk.png')}}@endif" alt="risk" style="width:50px;">
 									<h4 class="second_color show-risk-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{$project->projectconfiguration->investment_risk_label}}@else Risk @endif</h4><br>
 								</div>
 								<div class="col-md-10 text-left"> 
@@ -577,7 +583,7 @@
 						<div class="col-md-6">
 							<div class="row show_how_to_invest_whole_section" @if(!$project->projectconfiguration->show_how_to_invest_whole_section) style="display: none;" @endif>
 								<div class="col-md-12 text-center">
-									<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
+									<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
 									<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:42px;">How To Invest</h4><br>
 									@if($project->investment)<p class="project-how-to-invest-field"><textarea name="project_how_to_invest_txt" class="form-control" rows="3" placeholder="How to invest">{{$project->investment->how_to_invest}}</textarea></p> @endif
 
@@ -605,7 +611,7 @@
 									<br>
 									<div class="col-md-10 col-md-offset-1">
 										@if($project->investment)
-										<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+										<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 											@if($project->button_label)
 											<?php echo $project->button_label; ?>
 											@else
@@ -764,7 +770,7 @@
 							@foreach($project->projectFAQs as $faq)
 							<div class="col-md-offset-2 col-md-7">
 								<b>{{$faq->question}}</b>
-								{{$faq->id}}
+<!-- 								{{$faq->id}} -->
 								<p class="text-justify">{{$faq->answer}}</p>
 							</div>
 							<div class="col-md-2"> 

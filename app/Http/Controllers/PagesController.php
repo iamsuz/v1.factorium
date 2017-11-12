@@ -29,6 +29,8 @@ use File;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Testimonial;
 use App\Helpers\SiteConfigurationHelper;
+use App\ProjectInterest;
+
 
 class PagesController extends Controller
 {
@@ -573,6 +575,12 @@ class PagesController extends Controller
         $project = Project::find($projectId);
         if($project){
             if($project->is_coming_soon){
+                ProjectInterest::create([
+                    'project_id' => $projectId,
+                    'email' => $email,
+                    'phone_number' => $phone,
+                    'action_site' => url()
+                    ]);
                 $mailer->sendUpcomingProjectInterestMailToAdmins($project, $email, $phone);
                 return $resultArray = array('status' => 1);   
             }

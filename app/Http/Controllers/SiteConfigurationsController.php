@@ -405,6 +405,16 @@ class SiteConfigurationsController extends Controller
         return redirect()->back();
     }
 
+    public function updateGreyBoxNote(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $result = $siteconfiguration->update([
+            'grey_box_note' => trim(preg_replace('/\s+/', ' ', $request->grey_box_note)),
+            ]);
+        return redirect()->back();
+    }
+
     public function editHomePgInvestmentTitle1(Request $request)
     {
         $this->validate($request, array(
@@ -676,6 +686,7 @@ class SiteConfigurationsController extends Controller
                 'description' => $request->project_description_txt,
                 'button_label'=>$request->project_button_invest_txt,
                 'project_prospectus_text'=>$request->project_prospectus_txt,
+                'add_additional_disclaimer'=>$request->additional_disclaimer_txt,
                 ]);
             Investment::where('project_id', $projectId)->first()->update([
                 'fund_raising_close_date'=>$request->fund_raising_close_date,

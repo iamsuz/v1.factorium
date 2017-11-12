@@ -13,7 +13,8 @@ class Project extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id','title', 'slug', 'description', 'type', 'additional_info', 'button_label', 'active', 'activated_on', 'start_date', 'completion_date', 'invite_only', 'developer_id','property_type', 'is_coming_soon', 'show_invest_now_button', 'show_download_pdf_page','project_site', 'project_rank', 'project_prospectus_text', 'share_vs_unit', 'md_vs_trustee', 'retail_vs_wholesale'];
+    
+    protected $fillable = ['user_id','title', 'slug', 'description', 'type', 'additional_info', 'button_label', 'active', 'activated_on', 'start_date', 'completion_date', 'invite_only', 'developer_id','property_type', 'is_coming_soon', 'show_invest_now_button', 'show_download_pdf_page','project_site', 'project_rank', 'project_prospectus_text', 'share_vs_unit', 'md_vs_trustee', 'add_additional_form_content', 'project_thumbnail_text', 'additional_disclaimer', 'retail_vs_wholesale'];
 
     /**
      * dates fields

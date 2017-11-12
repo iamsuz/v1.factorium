@@ -24,6 +24,10 @@ use Mailgun\Mailgun;
 use App\Transaction;
 use App\Position;
 use App\ProjectProg;
+use App\Helpers\SiteConfigurationHelper;
+use Illuminate\Mail\TransportManager;
+use App\ProjectInterest;
+
 
 class DashboardController extends Controller
 {
@@ -125,9 +129,10 @@ class DashboardController extends Controller
                     ->get();
         $transactions = Transaction::where('project_id', $project_id)->get();
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
+        $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests'));
     }
 
     public function editProject($project_id)
@@ -706,6 +711,13 @@ class DashboardController extends Controller
 
     public function queueEmailsUsingMailgun($emailStr, $subject, $content, $attachments = [])
     {
+        $this->overrideMailerConfig();
+        if(filter_var(\Config::get('mail.sendmail'), FILTER_VALIDATE_EMAIL)){
+            $fromMail = \Config::get('mail.sendmail');
+        } else{
+            $fromMail = 'info@estatebaron.com';
+        }
+
         //Disable SSL Check
         $client = new \GuzzleHttp\Client([
             'verify' => false,
@@ -719,7 +731,7 @@ class DashboardController extends Controller
         # Make the call to the client.
         $result = $mgClient->sendMessage($domain, 
             array(
-                'from'    => 'info@estatebaron.com',
+                'from'    => $fromMail,
                 'to'      => $emailStr,
                 // 'bcc'     => 'info@estatebaron.com',
                 'subject' => $subject,
@@ -792,6 +804,64 @@ class DashboardController extends Controller
                 $emails = $emails.", $email";
             }
             return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Investor Statement email sending failed for investors - '.$emails.'.</p>'); 
+        }
+    }
+
+    public function overrideMailerConfig()
+    {
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $config = $siteconfig->mailSetting()->first();
+        if($config){
+            // Config::set('mail.driver',$configs['driver']);
+            \Config::set('mail.host',$config->host);
+            \Config::set('mail.port',$config->port);
+            \Config::set('mail.username',$config->username);
+            \Config::set('mail.password',$config->password);
+            \Config::set('mail.sendmail',$config->from);
+            $app = \App::getInstance();
+            $app['swift.transport'] = $app->share(function ($app) {
+               return new TransportManager($app);
+            });
+
+            $mailer = new \Swift_Mailer($app['swift.transport']->driver());
+            \Mail::setSwiftMailer($mailer);
+        }
+    }
+
+    public function applicationForm($investment_id)
+    {
+        $investment = InvestmentInvestor::find($investment_id);
+        // dd($investment);
+        if($investment->application_path){
+            $filename = $investment->application_path;
+            $path = storage_path($filename);
+
+            return \Response::make(file_get_contents($path), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$filename.'"'
+            ]);
+        }
+        else {
+            $project = Project::find($investment->project_id);
+            $user = User::findOrFail($investment->user_id);
+            // dd($user);
+
+            // Create PDF of Application form
+            $pdfBasePath = '/app/application/application-'.$investment->id.'-'.time().'.pdf';
+            $pdfPath = storage_path().$pdfBasePath;
+            $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investment, 'user' => $user]);
+            $pdf->setPaper('a4', 'portrait');
+            $pdf->setWarnings(false);
+            $saveResult = $pdf->save($pdfPath);
+            $investment->application_path = $pdfBasePath;
+            $investment->save();
+
+            if($saveResult){
+                return \Response::make(file_get_contents($pdfPath), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="'.$pdfBasePath.'"'
+                ]);
+            }
         }
     }
 }

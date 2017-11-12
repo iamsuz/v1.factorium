@@ -775,3 +775,16 @@ input[type="radio"] {
 	cursor: pointer;
 	border: 1px solid #ccc;
 }
+.cursor-pointer{
+	cursor: pointer;
+}
+.text-dark-grey{
+	color: #555;
+}
+.aml-requirements-content{
+	padding: 1.5em;
+	background-color: #fffaf0;
+}
+.aml-requirements-section{
+	display: none;
+}

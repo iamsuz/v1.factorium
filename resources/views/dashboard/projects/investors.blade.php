@@ -5,6 +5,7 @@
 
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @stop
 
 @section('content-section')
@@ -29,10 +30,11 @@
 				</div>
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
-				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
-				<li style="width: 25%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h3></a></li>
-				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
-				<li style="width: 35%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
+				<li class="active"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Investors</h3></a></li>
+				<li><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h3></a></li>
+				<li><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
+				<li><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
+				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI</h3></a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
@@ -57,6 +59,7 @@
 								<th>Joint Investor</th>
 								<th>Company or Trust</th>
 								@if(!$project->retail_vs_wholesale)<th>Wholesale Investment</th>@endif
+								<th>Application Form</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -210,6 +213,11 @@
 								@if(!$project->retail_vs_wholesale)
 								<td>@if($investment->wholesaleInvestment)<a href="#" data-toggle="modal" data-target="#trigger{{$investment->wholesaleInvestment->investment_investor_id}}">Investment Info</a> @else NA @endif</td>
 								@endif
+								<td>
+									<a href="{{route('dashboard.project.application', [$investment->id])}}" target="_blank">
+										View Application Form
+									</a>
+								</td>
 							</tr>
 
 						<!-- Modal for wholesale investments-->
@@ -302,7 +310,7 @@
 					</div>
 					<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
 						{{csrf_field()}}
-						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="Date" name="start_date" id="start_date"> and <input type="Date" name="end_date" id="end_date"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
+						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="text" name="start_date" id="start_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> and <input type="text" name="end_date" id="end_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
 					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
@@ -368,8 +376,8 @@
 										<strong>Investment is repurchased</strong>
 										@else
 										@if($shareInvestment->is_cancelled)
--										<strong>Investment record is cancelled</strong>
--										@else
+										<strong>Investment record is cancelled</strong>
+										@else
 											@if($project->share_vs_unit)
 												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
 													Share Certificate
@@ -466,6 +474,28 @@
 						</table>
 					</div>
 				</div>
+				<div id="eoi_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+					<div>
+						<table class="table table-bordered table-striped" id="eoiTable">
+							<thead>
+								<tr>
+									<th>User Email</th>
+									<th>User Phone Number</th>
+									<th>EOI Timestamp</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($projectsInterests as $projectsInterest)
+								<tr>
+									<td>{{$projectsInterest->email}}</td>
+									<td>{{$projectsInterest->phone_number}}</td>
+									<td>{{date('Y-m-d h:m:s', strtotime($projectsInterest->created_at))}}</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+				</div>
 
 			</div>
 		</div>
@@ -475,6 +505,7 @@
 
 @section('js-section')
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('a.edit').click(function () {
@@ -558,6 +589,9 @@
 		var positionTable = $('#positionTable').DataTable({
 			"iDisplayLength": 25
 		});
+		var eoiTable = $('#eoiTable').DataTable({
+			"iDisplayLength": 25
+		});
 
 		// show select checkbox for share registry
 		$('.issue-dividend-btn, .repurchase-shares-btn').click(function(e){
@@ -595,13 +629,16 @@
 	            });
 	            $('.investors-list').val(investors.join(','));
 	        });
-
-			
 			// Declare dividend
 			declareDividend();
 			// repurchase shares
 			repurchaseShares();
 		});
+
+		// Apply date picker to html elements to select date
+        $( ".datepicker" ).datepicker({
+        	'format': 'dd/mm/yy'
+        });
 	});
 
 	// Declare dividend
