@@ -198,8 +198,6 @@ class OfferController extends Controller
 	        }
     	}
 
-        $this->dispatch(new SendInvestorNotificationEmail($user,$project));
-
         // Mark request form link expired
         if($request->investment_request_id){
             InvestmentRequest::find($request->investment_request_id)->update([
