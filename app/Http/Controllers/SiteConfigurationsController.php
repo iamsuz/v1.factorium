@@ -83,7 +83,6 @@ class SiteConfigurationsController extends Controller
     {
         if (SiteConfigurationHelper::isSiteAdmin())
         {
-
             $type = [];
             $type['brand logo'] = 'brand_logo';
             $type['back image'] = 'homepg_back_img';
@@ -95,6 +94,7 @@ class SiteConfigurationsController extends Controller
             $type['spv_md_sign_image'] = 'spv_md_sign_image';
             $type['projectPg back image'] = 'projectpg_back_img';
             $type['projectPg thumbnail image'] = $request->projectThumbAction;
+            $type['project_progress_circle_image'] = 'project_progress_circle_image';
 
             if($request->imageName) {
                 $src  = $request->imageName;
@@ -1307,5 +1307,40 @@ class SiteConfigurationsController extends Controller
             'font_family'=>$fontFamily
         ]);
         return $resultArray = array('status' => 1); 
+    }
+
+    /**
+     * Uploads the selected image for project progress. 
+     * This image will be shown in place of progress circle on admin's selection
+     */
+    public function uploadprojectProgressCircleImages(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'project_progress_circle_image'   => 'required|mimes:jpeg,png,jpg',
+                'imgAction' => 'required',
+                );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('project_progress_circle_image') && $request->file('project_progress_circle_image')->isValid()){
+                Image::make($request->project_progress_circle_image)->resize(530, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('project_progress_circle_image')->getClientOriginalExtension();
+                $fileName = 'project_progress_circle_image'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('project_progress_circle_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
+        }
     }
 }

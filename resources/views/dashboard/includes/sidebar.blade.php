@@ -5,4 +5,5 @@
 	<a href="{{route('dashboard.projects')}}" class="list-group-item @if($active == 3) active @endif">Projects <i class="fa fa-paperclip pull-right"></i></a>
 	<a href="{{route('dashboard.configurations')}}" class="list-group-item @if($active == 4) active @endif">Configurations <i class="fa fa-edit pull-right"></i></a>
 	<a href="{{route('dashboard.broadcastMail')}}" class="list-group-item @if($active == 5) active @endif hide">Broadcast <i class="fa fa-envelope pull-right"></i></a>
+	<a href="{{route('dashboard.investmentRequests')}}" class="list-group-item @if($active == 6) active @endif">Requests<i class="fa fa-comments-o pull-right"></i></a>
 </div>

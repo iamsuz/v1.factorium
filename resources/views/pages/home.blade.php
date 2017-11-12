@@ -1083,11 +1083,13 @@
           {!! Form::close() !!}
         @endif
         @endif
+        @if($testimonial->user_image_url != '')
         <div style="border-left: 5px solid #ddd;">
           <center>
-            <img src="@if($testimonial->user_image_url != ''){{asset($testimonial->user_image_url)}}@else{{asset('assets/images/default-1.png')}}@endif" class="img-circle"  width="200" height="200">
+            <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
           </center>
         </div>
+        @endif
         <span style="font-style: italic; float: left;"><b>{{$testimonial->user_name}}</b></span><br>
         <span style="font-style: italic; float: left;">{{$testimonial->user_summary}}</span><br>
         <div style="clear: both; padding-bottom: 5px;"></div>
@@ -1117,11 +1119,13 @@
           {!! Form::close() !!}
         @endif
         @endif
+        @if($testimonial->user_image_url != '')
         <div style="border-left: 5px solid #ddd;">
           <center>
-            <img src="@if($testimonial->user_image_url != ''){{asset($testimonial->user_image_url)}}@else{{asset('assets/images/default-1.png')}}@endif" class="img-circle"  width="200" height="200">
+            <img src="{{asset($testimonial->user_image_url)}}" class="img-circle"  width="200" height="200">
           </center>
         </div>
+        @endif
         <span style="font-style: italic; float: left;"><b>{{$testimonial->user_name}}</b></span><br>
         <span style="font-style: italic; float: left;">{{$testimonial->user_summary}}</span><br>
         <div style="clear: both; padding-bottom: 5px;"></div>

@@ -393,6 +393,22 @@ class AppMailer
         $this->deliverWithFile();
     }
 
+    public function sendInvestmentRequestToAdmin($user, $project, $formLink)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $adminUser) {
+            if($adminUser->registration_site == url()){
+                array_push($recipients, $adminUser->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.adminInvestmentRequestNotify';
+        $this->subject = 'User Requested Form Fill up';
+        $this->data = compact('user', 'project', 'formLink');
+        $this->deliver();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();

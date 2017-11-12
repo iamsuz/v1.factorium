@@ -27,6 +27,7 @@ use App\ProjectProg;
 use App\Helpers\SiteConfigurationHelper;
 use Illuminate\Mail\TransportManager;
 use App\ProjectInterest;
+use App\InvestmentRequest;
 
 
 class DashboardController extends Controller
@@ -748,15 +749,16 @@ class DashboardController extends Controller
     public function investmentStatement($projectId)
     {
         $investmentRecords = InvestmentInvestor::where('project_id', $projectId)
-            ->where('accepted', 1)
             ->where(function ($query) { $query->where('is_cancelled', 0)->where('is_repurchased', 0); })
             ->get()->groupby('user_id');
         foreach ($investmentRecords as $userId => $investments) {
             $UserShares = 0;
             foreach ($investments as $key => $investment) {
-                $shareNumber = explode('-', $investment->share_number);
-                $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
-                $UserShares += $noOfShares;
+                if($investment->accepted && $investment->share_number){
+                    $shareNumber = explode('-', $investment->share_number);
+                    $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                    $UserShares += $noOfShares;
+                }
             }
             // dd($UserShares);
             Position::create([
@@ -863,5 +865,15 @@ class DashboardController extends Controller
                 ]);
             }
         }
+    }
+
+    /**
+     * Show list of all Investment form filling requests which are pending
+     */
+    public function investmentRequests()
+    {
+        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)->get();
+        $color = Color::where('project_site',url())->first();
+        return view('dashboard.requests.requests', compact('investmentRequests', 'color'));
     }
 }

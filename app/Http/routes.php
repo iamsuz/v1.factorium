@@ -259,3 +259,10 @@ Route::get('/dashboard/projects/{project_id}/investment/statement/send', ['as'=>
 Route::get('/dashboard/projects/{investment_id}/investors/imgdoc',['as'=>'dashboard.userdoc.upload','uses'=>'DashboardController@newUserDoc']);
 Route::get('/dashboard/projects/{investment_id}/investors/imgdoc/verify',['as'=>'dashboard.userdoc.verify','uses'=>'DashboardController@verifyUserDoc']);
 Route::get('/dashboard/project/application/{investment_id}', ['as'=>'dashboard.project.application', 'uses'=>'DashboardController@applicationForm']);
+Route::get('/projects/{project_id}/interest/request', ['as'=>'projects.interest.request', 'uses'=>'OfferController@requestFormFilling']);
+Route::get('/project/{request_id}/interest/fill', ['as'=>'project.interest.fill', 'uses'=>'OfferController@requestForm']);
+Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.cancel', 'uses'=>'OfferController@cancelRequestForm']);
+Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
+Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.cancel', 'uses'=>'OfferController@cancelRequestForm']);
+Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
+Route::post('/configuration/uploadprojectProgressCircleImages', ['as'=>'configuration.uploadprojectProgressCircleImages', 'uses'=>'SiteConfigurationsController@uploadprojectProgressCircleImages']);

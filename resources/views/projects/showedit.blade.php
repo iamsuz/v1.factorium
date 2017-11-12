@@ -104,10 +104,15 @@
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field">
 						<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}" placeholder="DD/MM/YYYY">
 					</div>
-					<div class="col-md-4 col-md-offset-4 col-sm-6 days-left-circle">
-						<div id="circle" class="project_progress_circle" style="@if(!$project->projectconfiguration->show_project_progress_circle) display: none; @endif">
+					<div class="col-md-4 col-md-offset-4 col-sm-6">
+						@if($project->projectconfiguration->show_project_progress_image)
+			            <div>
+							<center><img src="{{asset($project->media->where('type', 'project_progress_circle_image')->last()->path)}}" style="position:relative;max-height: 140px; max-width: 200px;"></center>
+			            </div>
+						@elseif($project->projectconfiguration->show_project_progress_circle)
+						<div id="circle" class="project_progress_circle days-left-circle"">
 							<div class="text-center" style="color:#fff">
-								<div class="circle" data-size="140" data-thickness="15" data-reverse="true">
+								<div class="circle" data-size="140" data-thickness="15" data-reverse="true" style="max-height: 140px;">
 									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
 										<p style="color: #fff; font-size: 1.6em; margin: 0 0 -5px;">
 											<span id="daysremained" style="color: #fff;"></span>
@@ -118,6 +123,8 @@
 								</div>
 							</div>
 						</div>
+						@else
+						@endif
 					</div>
 				</div><br>
 				<div class="row">

@@ -32,6 +32,17 @@ Offer Doc
 								@if (Session::has('message'))
    								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
+								<div class="well text-center cursor-pointer fill-form-request-container">
+									@if (Session::has('requestStatus'))
+									<i class="fa fa-check-circle-o fa-3x" aria-hidden="true" style="color: green;"></i><br>
+									<h3>Your request is submitted</h3>
+									<h5>We will contact you soon</h5>
+									@else
+									<h5>Need Help Filling Form? Click the below button to request for form fillup. Our executive will contact you once your request is received.</h5>
+									<a href="{{route('projects.interest.request', [$project->id])}}"><button type="button" class="btn btn-primary send-form-filling-request"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i> &nbsp;&nbsp;Send Request</button></a>
+									@endif
+								</div>
+								<hr>
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
@@ -707,6 +718,15 @@ Offer Doc
 			else{
 				$('.aml-requirements-link i').removeClass('fa-minus');
 				$('.aml-requirements-link i').addClass('fa-plus');	
+			}
+		});
+
+		// Submit Request for Form Filling
+		$('.send-form-filling-request').click(function(e){
+			if (confirm('This will raise a request for form filling. Do you want to continue ?')) {
+				console.log('confirmed');
+			} else {
+				e.preventDefault();
 			}
 		});
 	});  
