@@ -872,7 +872,10 @@ class DashboardController extends Controller
      */
     public function investmentRequests()
     {
-        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)->get();
+        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)
+                            ->whereRaw('investment_requests.project_id IN (select id from projects where project_site="'.url().'")')
+                            ->get();
+
         $color = Color::where('project_site',url())->first();
         return view('dashboard.requests.requests', compact('investmentRequests', 'color'));
     }
