@@ -1218,8 +1218,31 @@ class SiteConfigurationsController extends Controller
                 $projectConfigurationPartial = ProjectConfigurationPartial::all();
                 $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
-            $projectConfigurationPartial->update(['show_'.$toggleAction=>$request->checkValue]);
-            return $resultArray = array('status' => 1);
+            if($toggleAction != 'off'){
+                if($toggleAction == 'project_progress_image'){
+                    $projectConfigurationPartial->update([
+                        'show_project_progress_image'=>1,
+                        'show_project_progress_circle'=>0
+                        ]);
+                }
+                elseif($toggleAction == 'project_progress_circle'){
+                    $projectConfigurationPartial->update([
+                        'show_project_progress_image'=>0,
+                        'show_project_progress_circle'=>1
+                        ]);
+                }
+                else{
+                    $projectConfigurationPartial->update(['show_'.$toggleAction=>$request->checkValue]);
+                }
+                return $resultArray = array('status' => 1);
+            } 
+            else{
+                $projectConfigurationPartial->update([
+                    'show_project_progress_image'=>0,
+                    'show_project_progress_circle'=>0
+                    ]);
+                return $resultArray = array('status' => 1);
+            }
         }
     }
 

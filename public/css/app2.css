@@ -823,3 +823,7 @@ input[type="radio"] {
 	font-size: 14px;
 	color: #fff;
 }
+.project-progress-3way-switch .active{
+	background-color: #428BCA !important;
+	color: #fff !important;
+}
