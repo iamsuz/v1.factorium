@@ -114,20 +114,17 @@
 			            <div class="edit-button-style edit-project-progress-circle-img" style="z-index: 10; position: absolute;" action="project_progress_circle_image" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Upload Project Progress Circle Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
 			            <input class="hide" type="file" name="project_progress_circle_image" id="project_progress_circle_image">
         				<input type="hidden" name="project_progress_circle_image_name" id="project_progress_circle_image_name">
-        				@if($project->media->where('type', 'project_progress_circle_image')->count())
-        				<div  style="position: absolute;top: 3em;z-index: 10;">
-        					<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="Image" action="project_progress_image" data-size="mini" @if($project->projectconfiguration->show_project_progress_image) checked value="1" @else value="0" @endif>
-        				</div>
         				@endif
 			            @endif
-			            @endif
 
-						@if($project->projectconfiguration->show_project_progress_image)
+			            @if($project->projectconfiguration->show_project_progress_image)
+			            @if($project->media->where('type', 'project_progress_circle_image')->count())
 			            <div>
 							<center><img src="{{asset($project->media->where('type', 'project_progress_circle_image')->last()->path)}}" style="position:relative;max-height: 140px; max-width: 200px;"></center>
 			            </div>
-						@elseif($project->projectconfiguration->show_project_progress_circle)
-			            <div id="circle" class="project_progress_circle days-left-circle">
+			            @endif
+			            @elseif($project->projectconfiguration->show_project_progress_circle)
+			            <div id="circle" class="days-left-circle">
 							<div class="text-center" style="color:#fff">
 								<div class="circle" data-size="140" data-thickness="15" data-reverse="true" style="max-height: 140px;">
 									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
@@ -139,16 +136,21 @@
 									</div>
 								</div>
 							</div>
-							@if(Auth::guest())
-							@else
-							@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-							<div class="text-center">
-								<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowCircle" action="project_progress_circle" data-size="mini" @if($project->projectconfiguration->show_project_progress_circle) checked value="1" @else value="0" @endif>
-							</div>
-							@endif
-							@endif
 						</div>
+			            @else
+			            @endif
+			            
+						@if(Auth::guest())
 						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<div class="text-center">
+							<div class="btn-group btn-radio project-progress-3way-switch">
+							    <button type="button" class="btn btn-default btn-sm @if($project->projectconfiguration->show_project_progress_image) active @endif" action="project_progress_image">Image</button>
+							    <button type="button" class="btn btn-default btn-sm @if(!$project->projectconfiguration->show_project_progress_image && !$project->projectconfiguration->show_project_progress_circle) active @endif" action="off">OFF</button>
+							    <button type="button" class="btn btn-default btn-sm @if(!$project->projectconfiguration->show_project_progress_image && $project->projectconfiguration->show_project_progress_circle) active @endif" action="project_progress_circle">Circle</button>
+						  	</div>
+						</div>
+						@endif
 						@endif
 
 					</div>
@@ -2128,6 +2130,7 @@
 		togglePaymentSwitch();
 		projectProgress();
 		editProjectProgressImage();
+		projectProgressImageSwitching();
 
 		$('#myCarousel').addClass('carousel slide');
 	});
@@ -2779,12 +2782,7 @@
 				console.log(data);
 				$('.loader-overlay').hide();
 				if(data.status){
-					if(toggleAction="project_progress_circle"){
-						location.reload();
-					}
-					else{
-						$('.'+toggleAction).slideToggle();						
-					}
+					$('.'+toggleAction).slideToggle();						
 				}
 			});
 		});
@@ -2910,6 +2908,33 @@
 		$('#modal_close_btn').click(function(e){
 			$('#project_progress_circle_image, #project_progress_circle_image_name').val('');
 		});
+    }
+
+    function projectProgressImageSwitching(){
+    	$(document).on('click.bs.radio', '.project-progress-3way-switch > .btn', function(e) {
+		  	$(this).siblings().removeClass('active');
+		  	$(this).addClass('active');
+
+	  		var toggleAction = $(this).attr('action');
+	  		var checkValue = 1;
+			var projectId = '{{$project->id}}';
+			$('.loader-overlay').show();
+			$.ajax({
+				url: '/configuration/project/toggleProjectElementVisibility',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {checkValue, projectId, toggleAction},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				$('.loader-overlay').hide();
+				if(data.status){
+					location.reload();
+				}
+			});
+	  	});
     }
 
 </script>
