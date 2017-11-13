@@ -176,6 +176,8 @@ class OfferController extends Controller
             $project->investmentDocuments()->save($user_investment_doc);
 
         }
+
+        //Save wholesale project input fields
         if(!$project->retail_vs_wholesale) {
 	        $wholesale_investor = WholesaleInvestment::get()->last();{
 	            $wholesale_investing = new WholesaleInvestment;

@@ -147,6 +147,67 @@ Offer Doc
 											</div>
 										</div>
 									</div>
+									<div class="@if($project->retail_vs_wholesale) hide @endif">
+										<div class="row" id="wholesale_project">
+											<div class="col-md-12"><br>
+												<h4>Investor Qualification</h4>
+												<p>An issue of securities to the public usually requires a disclosure document (like a prospectus) to ensure participants are fully informed about a range of issues including the characteristics of the offer and the present position and future prospects of the entity offering the securities.</p>
+												<p>However an issue of securities can be made to particular kind of investors, in the categories described below, without the need for a registered disclosure document. Please tell us which category of investors applies:</p>
+												<hr>
+												<b style="font-size: 1.1em;">Which option closely describes you?</b><br>
+												<div style="margin-left: 1.3em; margin-top: 5px;">
+													<input type="checkbox" name="wholesale_investing_as" value="Wholesale Investor (Net Asset $2,500,000 plus)" style="margin-right: 6px;" class="wholesale_invest_checkbox"><span class="check1">I have net assets of at least $2,500,000 or a gross income for each of the last 2 financial investors of at lease $2,50,000 a year.</span><br>
+													<input type="checkbox" name="wholesale_investing_as" value="Sophisticated Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox"><span class="check1">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.</span><br>
+													<input type="checkbox" name="wholesale_investing_as" value="Inexperienced Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox"><b><span class="check1">I have no experience in property, securities or similar</span></b><br>
+												</div>
+											</div>
+										</div>
+
+										<div class="row" id="accountant_details_section" style="display: none;">
+											<br>
+											<div class="col-md-12">
+												<h4>Accountant's details</h4>
+												<p>Please provide the details of your accountant for verification of income and/or net asset position.</p>
+												<hr>
+													<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
+														<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
+													<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
+														<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
+													<label for="asds" class="form-label"><b>Email</b></label>
+														<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
+													<label for="asdd" class="form-label"><b>Phone</b></label>
+														<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
+											</div>
+										</div>
+
+										<div class="row" id="experienced_investor_information_section" style="display: none;">
+											<div class="col-md-12">
+											<br>
+											<h4>Experienced investor information</h4>
+											<p>Please complete all of the questions below:</p>
+											<hr>
+
+											<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
+											<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
+											
+											<b>How much investment experience do you have? (tick appropriate)</b>
+											<div style="margin-left: 1.3em; margin-top: 5px;">
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding"><span class="check1">Some investment knowledge and understanding</span><br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge"><span class="check1">Experienced private investor with good investment knowledge</span><br>
+												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor"><span class="check1">Business Investor</span><br>
+											</div>
+											<br>
+
+											<label>What experience do you have with unlisted invesments ?</label><br>
+											<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
+
+											<label>Do you clearly understand the risks of investing with this offer ?</label><br>
+											<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
+
+										</div>
+										</div>
+									</div>
 									<div class="row" >
 										<div class="col-md-12">
 											<div style="">
@@ -470,6 +531,34 @@ Offer Doc
 			}
 		});
 	});  
+	
+	$(document).ready( function() {
+		$("input[name='wholesale_investing_as']").on('change',function() {
+			if($(this).is(':checked') && $(this).val() == 'Wholesale Investor (Net Asset $2,500,000 plus)')
+			{
+				$('#accountant_details_section').show();
+				$('#experienced_investor_information_section').hide();
+			}
+			else if($(this).is(':checked') && $(this).val() == 'Sophisticated Investor')
+			{
+				$('#experienced_investor_information_section').show();
+				$('#accountant_details_section').hide();
+			}
+			else
+			{
+				$('#experienced_investor_information_section').hide();
+				$('#accountant_details_section').hide();
+			}
+		});
+
+		$(".wholesale_invest_checkbox").change(function() {
+		    var checked = $(this).is(':checked');
+		    $(".wholesale_invest_checkbox").prop('checked',false);
+		    if(checked) {
+		        $(this).prop('checked',true);
+		    }
+		});
+	}); 
 
 </script>
 @stop
