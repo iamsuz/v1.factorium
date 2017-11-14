@@ -107,7 +107,7 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div>
-					<div class="col-md-4 col-md-offset-4 col-sm-6">
+					<div class="col-md-5 col-md-offset-3 col-sm-6">
 						@if(Auth::guest())
 			            @else
 			            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -120,7 +120,7 @@
 			            @if($project->projectconfiguration->show_project_progress_image)
 			            @if($project->media->where('type', 'project_progress_circle_image')->count())
 			            <div>
-							<center><img src="{{asset($project->media->where('type', 'project_progress_circle_image')->last()->path)}}" style="position:relative;max-height: 140px; max-width: 200px;"></center>
+							<center><img src="{{asset($project->media->where('type', 'project_progress_circle_image')->last()->path)}}" style="position:relative;max-height: 200px; max-width: 100%;"></center>
 			            </div>
 			            @endif
 			            @elseif($project->projectconfiguration->show_project_progress_circle)
