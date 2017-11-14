@@ -26,7 +26,7 @@
 					</div>
 				</li>
 			</ul>
-			<h3 class="text-center">Notification</h3>
+			<h3 class="text-center">Notifications</h3>
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped" id="notificationTable">
 					<thead>

@@ -21,7 +21,7 @@
 					<dt></dt>
 					<dd>{{$user->phone_number}}</dd>
 					<hr>
-					<dt>active</dt>
+					<dt>Active</dt>
 					<dd>@if($user->active) YES @else NO @endif</dd>
 
 					@if($user->gender)
@@ -50,7 +50,7 @@
 					</dd>
 					@endif
 
-					<dt>ID Verification</dt>
+					<!-- <dt>ID Verification</dt>
 					<dd>
 						@if($user->verify_id == '2') Id docs have been verified <i class="fa fa-check" style="color:green" data-toggle="tooltip" title="Verified User"></i> 
 						@elseif($user->verify_id == '1') Id docs have been submitted for verification <i class="fa fa-hourglass-start" style="color:pink" data-toggle="tooltip" title="Submitted"></i> 
@@ -64,17 +64,23 @@
 						@if($user->investmentDoc->where('user_id',$user->id)->last())
 						<a href="/{{$user->investmentDoc->where('user_id',$user->id)->last()->path}}">verify ID documents</a>
 						@endif
-					</dd>
-					<dt>change status</dt>
+					</dd> -->
+					<dt>Change status</dt>
 					<dd>
 						@if($user->active && $user->activated_on) <a href="{{route('dashboard.users.deactivate', [$user])}}">Deactivate</a>
 						@else Not Active <br> <a href="{{route('dashboard.users.activate', [$user])}}">Activate</a>@endif
 					</dd>
+					<hr>
+					<dd>
+						<?php 
+							$user_id = $user->id;
+		 				?>
+						<a href="{{route('dashboard.users.investments', [$user_id])}}" style="font-size: 1.3em;">User Investments</a>
+					</dd>
 				</dl>
 			</li>
 		</ul>
-		<h3 class="text-center">Investments</h3>
-		<ul class="list-group">
+<!-- 		<ul class="list-group">
 			@if($user->investments->count())
 			@foreach($user->investments as $project)
 			<a href="{{route('dashboard.projects.show', [$project])}}" class="list-group-item">{{$project->title}} <i class="fa fa-angle-right pull-right"></i></a>
@@ -82,7 +88,7 @@
 			@else
 			<li class="list-group-item text-center alert alert-warning">Not Shown any Interest </li>
 			@endif
-		</ul>
+		</ul> -->
 	</div>
 </div>
 @stop

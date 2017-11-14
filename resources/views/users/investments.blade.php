@@ -33,6 +33,7 @@
 						<tr>
 							<th>Project Name</th>
 							<th>Investment Amount</th>
+							<th>Investment Date</th>
 							<th>Investment status</th>
 							<th>Link to share certificate</th>
 							<th>Returns received</th>
@@ -45,6 +46,7 @@
 							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
 								<td>{{$investment->amount}}</td>
+								<td>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
 									@if($investment->accepted)
 									Shares issued

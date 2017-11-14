@@ -108,16 +108,19 @@ class DashboardController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
-        return view('dashboard.users.investments', compact('user','color'));
+        $investments = InvestmentInvestor::where('user_id', $user->id)
+                        ->where('project_site', url())->get();
+        return view('dashboard.users.investments', compact('user','color', 'investments'));
     }
 
-    public function showProject($project_id)
+//Disabled in routes as well due to no usage
+/*    public function showProject($project_id)
     {
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         return view('dashboard.projects.show', compact('project', 'investments','color'));
-    }
+    }*/
 
     public function projectInvestors($project_id)
     {
