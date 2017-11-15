@@ -37,11 +37,11 @@ Dashboard | @parent
 						</div>
 						<div class="col-md-4">
 							<div class="thumbnail text-center">
-								<div class="caption">
+								<div class="caption" style="margin-bottom: 2.475em;">
 									<h3><b>${{number_format($pledged_investments->sum('amount')) }}</b></h3>
 									<h4><small>Funds Raised</small> </h4>
 									<p><small>(${{ number_format($total_goal - $pledged_investments->sum('amount')) }} amount remaining)</small></p>
-									<p><a href="#" class="btn btn-default btn-sm" role="button">Investors</a></p>
+									{{-- <p><a href="#" class="btn btn-default btn-sm" role="button">Investors</a></p> --}}
 								</div>
 							</div>
 						</div>
