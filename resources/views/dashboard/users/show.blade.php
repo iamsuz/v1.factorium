@@ -80,7 +80,7 @@
 				</dl>
 			</li>
 		</ul>
-<!-- 		<ul class="list-group">
+{{--  		<ul class="list-group">
 			@if($user->investments->count())
 			@foreach($user->investments as $project)
 			<a href="{{route('dashboard.projects.show', [$project])}}" class="list-group-item">{{$project->title}} <i class="fa fa-angle-right pull-right"></i></a>
@@ -88,7 +88,7 @@
 			@else
 			<li class="list-group-item text-center alert alert-warning">Not Shown any Interest </li>
 			@endif
-		</ul> -->
+		</ul> --}}
 	</div>
 </div>
 @stop
