@@ -41,7 +41,7 @@ Edit {{$project->title}} | Dashboard | @parent
 				@endif
 					<fieldset>
 						<div class="col-md-12 center-block">
-							<h3 class="text-center"><small><a href="{{route('dashboard.projects.show', [$project])}}" class="pull-left hide"><i class="fa fa-chevron-left"></i>  BACK</a></small> Edit <i>{{$project->title}}</i></h3>
+							<h3 class="text-center"><small>{{-- <a href="{{route('dashboard.projects.show', [$project])}}" class="pull-left hide"><i class="fa fa-chevron-left"></i>  BACK</a> --}}</small> Edit <i>{{$project->title}}</i></h3>
 							<br>
 							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('title')){{'has-error'}} @endif">
