@@ -198,7 +198,7 @@ class UsersController extends Controller
             $user = User::findOrFail($id);
             $status = $user->update($request->all());
             if ($status) {
-                return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-success text-center">updated Successfully</p>');
+                return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-success text-center">Updated Successfully</p>');
             }
         }
         return redirect()->route('users.edit', [$user])->withMessage('<p class="alert alert-danger text-center">Not updated Successfully</p>'); 
