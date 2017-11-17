@@ -168,7 +168,7 @@ Edit {!! $user->first_name !!} | Dashboard | @parent
 							</div>
 							<div class="row">
 								<div class="form-group <?php if($errors->first('tfn')){echo 'has-error';}?>">
-									{!!Form::label('tfn', 'tfn', array('class'=>'col-sm-2 control-label'))!!}
+									{!!Form::label('tfn', 'TFN', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
 										{!! Form::text('tfn', null, array('placeholder'=>'tfn', 'class'=>'form-control', 'tabindex'=>'16')) !!}
 										{!! $errors->first('tfn', '<small class="text-danger">:message</small>') !!}
