@@ -417,9 +417,6 @@ class SiteConfigurationsController extends Controller
 
     public function editHomePgInvestmentTitle1(Request $request)
     {
-        $this->validate($request, array(
-            'investment_title_text1' => 'required',
-            ));
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         $siteconfiguration->update([
@@ -430,9 +427,6 @@ class SiteConfigurationsController extends Controller
 
     public function editHomePgInvestmentTitle1Description(Request $request)
     {
-        $this->validate($request, array(
-            'investment_title1_description' => 'required',
-            ));
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         $siteconfiguration->update([
