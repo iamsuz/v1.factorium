@@ -929,8 +929,8 @@
           </div>
           <div class="col-md-6" data-wow-duration="1.5s">
             <h3 class="text-left first_color investment-title1-section" style="font-weight:600 !important; color:#282a73; font-size:32px;">      
-              @if($siteConfiguration->investment_title_text1 != '')
-              {!!html_entity_decode($siteConfiguration->investment_title_text1)!!}
+              @if($siteConfiguration->compliance_title != '')
+              {!!html_entity_decode($siteConfiguration->compliance_title)!!}
               @else
               Compliance
               @endif
@@ -941,8 +941,8 @@
               @endif
               @endif
             </h3><br>
-            <p class="investment-title1-description-section text-justify" style="font-size:16px;">@if($siteConfiguration->investment_title1_description != '')
-              {!!html_entity_decode($siteConfiguration->investment_title1_description)!!} @else 
+            <p class="investment-title1-description-section text-justify" style="font-size:16px;">@if($siteConfiguration->compliance_description != '')
+              {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
               The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
               @endif
             </p>
@@ -952,7 +952,7 @@
               <i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit Description" data-placement="right"></i>
               @endif
               @endif
-            <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->investment_title1_description != '') {!! html_entity_decode($siteConfiguration->investment_title1_description) !!} @endif">
+            <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @endif">
           </div>
         </div>
       </div>
@@ -2162,8 +2162,8 @@
 
     function editInvestmentTitleText1(){
       $('.show-investment-title1-edit-box').click(function(){
-        $('.investment-title1-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1') }}" method="POST">{{csrf_field()}}<input type="text" class="form-control" name="investment_title_text1" id="investment_title_text1" placeholder="Enter Title" style="width: 60%; float: left;">&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-text" style="padding: 10px;">Save</button></form></div>');
-        $('#investment_title_text1').val('@if($siteConfiguration->investment_title_text1 != '') {!! nl2br(e($siteConfiguration->investment_title_text1)) !!} @endif').select();
+        $('.investment-title1-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1') }}" method="POST">{{csrf_field()}}<input type="text" class="form-control" name="investment_title_text1" value="{{$siteConfiguration->compliance_title}}" id="investment_title_text1" placeholder="Enter Title" style="width: 60%; float: left;">&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-text" style="padding: 10px;">Save</button></form></div>');
+        /**/
 /*        $('.submit-investment-title1-text').click(function(e){
           if($('#investment_title_text1').val()==''){
             e.preventDefault();

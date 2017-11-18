@@ -419,8 +419,12 @@ class SiteConfigurationsController extends Controller
     {
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        //Created new field due to default value issue
+        //$siteconfiguration->update([
+          //  'investment_title_text1' => $request->investment_title_text1,
+            //]);
         $siteconfiguration->update([
-            'investment_title_text1' => $request->investment_title_text1,
+            'compliance_title' => $request->investment_title_text1,
             ]);
         return redirect()->back();
     }
@@ -429,8 +433,12 @@ class SiteConfigurationsController extends Controller
     {
         $siteconfiguration = SiteConfiguration::all();
         $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        //Created new field due to default value issue
+        //$siteconfiguration->update([
+            //'investment_title1_description' => $request->investment_title1_description,
+            //]);
         $siteconfiguration->update([
-            'investment_title1_description' => $request->investment_title1_description,
+            'compliance_description' => $request->investment_title1_description,
             ]);
         return redirect()->back();
     }
