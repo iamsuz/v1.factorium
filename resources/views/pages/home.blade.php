@@ -87,7 +87,7 @@
 
     /*Color for compliance description*/
     .compliance_description_color{
-      color: @if($color->nav_footer_color) #{{$color->nav_footer_color}} @else #282a73 @endif;
+      color: @if($color) @if($color->nav_footer_color) #{{$color->nav_footer_color}} @else #282a73 @else #282a73 @endif @endif;
     }
 
   </style>
@@ -951,14 +951,6 @@
               The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
               @endif
             </p>
-            <?php
-              if($color->nav_footer_color != '') {
-                $span_color = "#{$color->nav_footer_color}";
-              }
-              else {
-                $span_color = "#282a73";
-              }
-            ?> 
             @if(Auth::guest())
               @else
               @if($admin_access == 1)
