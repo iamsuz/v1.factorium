@@ -2364,8 +2364,8 @@
           var str2 = $.trim($('#hidden_funding_section_title2').val()).replace(/\r?\n|\r/g, "");
           $('#funding_section_title2').val(str2.replace(/<br ?\/?>/g, "\n"));
 
-          $('.funding-section-btn1-field').html('<small>Funding Type1 Button text</small><input type="text" name="funding_section_btn1_text" id="funding_section_btn1_text" class="form-control" placeholder="Funding type 1 button text" value="{!!$siteConfiguration->funding_section_btn1_text!!}">');
-          $('.funding-section-btn2-field').html('<small>Funding Type2 Button text</small><input type="text" name="funding_section_btn2_text" id="funding_section_btn2_text" class="form-control" placeholder="Funding type 2 button text" value="{!!$siteConfiguration->funding_section_btn2_text!!}"><br><small class="funding-section-error" style="font-size:11px;color:#d30000;"></small><br><button type="Submit" class="btn btn-primary" id="save_funding_section_details">Save Details</button>');
+          $('.funding-section-btn1-field').html('<small>Funding Type1 Button text</small><input type="text" name="funding_section_btn1_text" id="funding_section_btn1_text" class="form-control" placeholder="Funding type 1 button text" value="{{$siteConfiguration->funding_section_btn1_text}}">');
+          $('.funding-section-btn2-field').html('<small>Funding Type2 Button text</small><input type="text" name="funding_section_btn2_text" id="funding_section_btn2_text" class="form-control" placeholder="Funding type 2 button text" value="{{$siteConfiguration->funding_section_btn2_text}}"><br><small class="funding-section-error" style="font-size:11px;color:#d30000;"></small><br><button type="Submit" class="btn btn-primary" id="save_funding_section_details">Save Details</button>');
           $('#save_funding_section_details').click(function(e){
               if(($('#funding_section_title1').val()=='') || ($('#funding_section_title2').val()=='') || ($('#funding_section_btn1_text').val()=='') || ($('#funding_section_btn2_text').val()=='')){
                   e.preventDefault();
