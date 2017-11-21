@@ -87,7 +87,7 @@
 
     /*Color for compliance description*/
     .compliance_description_color{
-      color: @if($color) @if($color->nav_footer_color) #{{$color->nav_footer_color}} @else #282a73 @else #282a73 @endif @endif;
+      color: @if($color) @if($color->nav_footer_color) #{{$color->nav_footer_color}} @else #282a73 @endif @else #282a73 @endif;
     }
 
   </style>
