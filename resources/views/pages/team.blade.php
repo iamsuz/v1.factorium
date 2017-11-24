@@ -17,8 +17,8 @@ Australia's Top Real Estate Equity Crowdfunding team
 		<div class="row text-justify">
 			<div class="col-md-6 col-md-offset-3">
 				@if($adminedit != 0) <a href="/pages/team/edit" class="pull-right">Edit</a> @endif
-				<h2 class="font-regular first_color text-justify" style=" font-size:2.625em; color:#282a73;"><b>{{$aboutus->main_heading}}</b></h2>
-				<h3 class="h1-faq first_color text-justify" style="font-size:1.375em;">{{$aboutus->sub_heading}}</h3>
+				<h2 class="font-regular first_color text-justify" style=" font-size:2.625em; color:#282a73;"><b>{!! $aboutus->main_heading !!}</b></h2>
+				<h3 class="h1-faq first_color text-justify" style="font-size:1.375em;">{!! $aboutus->sub_heading !!}</h3>
 				<p style="font-size:0.875em;" class="text-justify">
 					{!! $aboutus->content !!}
 				</p>
