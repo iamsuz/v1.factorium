@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnsToSiteConfigurationsTable extends Migration
+class AddColumnsFixToSiteConfigurationsTable extends Migration
 {
     /**
      * Run the migrations.
