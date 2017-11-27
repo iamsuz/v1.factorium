@@ -939,6 +939,30 @@ class SiteConfigurationsController extends Controller
             return redirect()->back();
     }
 
+    public function updateLegalDetails(Request $request)
+    {
+        $licensee_name = $request->licensee_name_input;
+        $afsl_no = $request->afsl_no_input;
+        $car_no = $request->car_no_input;
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            if(!$siteconfiguration)
+            {
+                $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
+                $siteconfiguration->save();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            }
+            $siteconfiguration->update(['licensee_name'=>$licensee_name,
+                                        'afsl_no'=>$afsl_no,
+                                        'car_no'=>$car_no,
+                                        ]);
+            Session::flash('message', 'Details Updated Successfully');
+            Session::flash('action', 'change_legal_details');
+            return redirect()->back();
+    }
+
     public function uploadProjectThumbImage(Request $request)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){

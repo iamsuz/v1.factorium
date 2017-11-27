@@ -352,7 +352,7 @@ What is Property or Real Estate Crowdfunding?
 				</div>
 				<div id="collapse5" class="panel-collapse collapse">
 					<div class="panel-body" style="padding-left:45px;">
-						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Tech Baron PTY LTD (ABN 67617252909) (TB) provides technology infrastructure and support services to operate this site. TB is a Corporate Authorised Representative 001251881 of AFSL 299812 and is authorized to deal in securities. TB is however not responsible for the content of this website which is the responsibility of {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!}. The responsibility of the specific offers made on this website is that of the specific Project principals whose details can be found on the Prospectus or the Offer document.</p>
+						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Tech Baron PTY LTD (ABN 67617252909) (TB) provides technology infrastructure and support services to operate this site. TB is a Corporate Authorised Representative {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->car_no !!} of AFSL {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->afsl_no !!} and is authorized to deal in securities. TB is however not responsible for the content of this website which is the responsibility of {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!}. The responsibility of the specific offers made on this website is that of the specific Project principals whose details can be found on the Prospectus or the Offer document.</p>
 					</div>
 				</div>
 			</div>

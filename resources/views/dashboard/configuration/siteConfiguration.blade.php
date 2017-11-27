@@ -236,6 +236,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'change_legal_details')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Legal Details</b></h3>
+                                    <p><small>Edit Licensee name, AFSL and CAR number.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-legal-details-btn" style="cursor: pointer;">
+                                                <strong>Change Legal Details</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -602,12 +625,42 @@ Configuration | Dashboard | @parent
                 <div class="row text-center" id="modal_body_container">
                     <div class="col-md-10 col-md-offset-1">
                         {!! Form::open(array('route'=>['configuration.updateProspectusText'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-                        <h5><i><small>Enter the text in below text field and save to display new client name for the website.</small></i></h5>
+                        <h5><i><small>Enter the text in below text field and save to update the prospectus text for the website.</small></i></h5>
                         <br>
                         <div class="row prospectus-text-error" style="text-align: -webkit-center;"></div>
                         {!! Form::text('prospectus_text_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text, array('placeholder'=>'Enter Prospectus Text', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'prospectus_text_input')) !!}
                         <br>
                         {!! Form::submit('Save Prospectus Text', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+<!-- Modal for Changing AFSL, licensee name, CAR number -->
+<div class="modal fade" id="change_legal_details_edit_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Legal Details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateLegalDetails'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to update the legal details for the website.</small></i></h5>
+                        <br>
+                        <div class="row " style="text-align: -webkit-center;"></div>
+                        {!! Form::text('licensee_name_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->licensee_name, array('placeholder'=>'Enter Licensee Name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'licensee_name_input', 'required' => 'required')) !!}
+                        <br>
+                        {!! Form::text('afsl_no_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->afsl_no, array('placeholder'=>'Enter AFSL Number', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'afsl_no', 'required' => 'required')) !!}
+                        <br>
+                        {!! Form::text('car_no_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->car_no, array('placeholder'=>'Enter CAR Number', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'car_no', 'required' => 'required')) !!}
+                        <br>
+                        {!! Form::submit('Save Details', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'4', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'required' => 'required')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>
@@ -787,6 +840,7 @@ Configuration | Dashboard | @parent
         editClientName();
         editVisibilityOfSiteConfigItems();
         editProjectInterestEmbedLink();
+        editLegalDetails();
     });
 
 function updateCoords(coords, w, h, origWidth, origHeight){
@@ -881,6 +935,16 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 'backdrop': false,
             });
             $('#prospectus_text_input').select();
+        });
+    }
+
+    function editLegalDetails(){
+        $('.change-legal-details-btn').click(function(){
+            $('#change_legal_details_edit_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#licensee_name_input').select();
         });
     }
 
