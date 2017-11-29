@@ -26,7 +26,7 @@ Offer Doc
 		<div class="col-md-12">
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
 				<div class="row">
-					<div class="col-md-7 investment-gform" id="offer_frame" style="overflow-y: scroll;height: 600px;">
+					<div class="col-md-7 investment-gform" id="offer_frame" style="border-right: 11px solid #F1F1F1;">
 						<div class="row">
 							<div class="col-md-offset-1 col-md-10" ><br>
 								@if ($errors->has())
@@ -92,7 +92,7 @@ Offer Doc
 													<div class="col-md-12">
 														<div class="aml-requirements-content text-justify">
 															<small class="text-dark-grey">
-																If investing via a Financial Adviser they will provide the @if($project->md_vs_trustee)Managing Director @else Trustee @endif the necessary verification otherwise you need to lodge the following information.
+																If investing via a Financial Adviser please provide the @if($project->md_vs_trustee)Managing Director @else Trustee @endif the necessary verification otherwise you need to lodge the following information.
 																<br>
 																<h4><small><b>Individuals</b></small></h4>
 																Original or Certified Copy of <b>one</b> of the following :
