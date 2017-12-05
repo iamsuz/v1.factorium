@@ -212,7 +212,7 @@
 					<div class="col-md-4 col-md-offset-4 project-invest-button-field" style="margin-top:0%;" id="express_interest">
 						<br>
 						@if($project->investment)
-						<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 							@if($project->button_label)
 							<?php echo $project->button_label; ?>
 							@else
@@ -278,8 +278,8 @@
 			@endif --}}
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif</h6>
-	<section>
+	<h6 style="color: #707070; font-size: 14px;">@if($project->edit_disclaimer) {{$project->edit_disclaimer}}@else ** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif @endif</h6>
+	<section @if($project->eoi_button) style="display: none;" @endif>
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
 				<div class="col-md-10 col-md-offset-1">
@@ -1389,9 +1389,7 @@
 @endif
 <section>
 	<div class="container">
-		<div class="row">
-			<br>
-			<div class="col-md-6">
+					<div class="col-md-6 @if($project->eoi_button) hide @endif">
 				@if(Auth::guest())
 				@else
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -1437,7 +1435,7 @@
 						<br>
 						<div class="col-md-10 col-md-offset-1">
 							@if($project->investment)
-							<a href="{{route('projects.interest', $project)}}" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+							<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 								@if($project->button_label)
 								<?php echo $project->button_label; ?>
 								@else
@@ -1491,7 +1489,7 @@
 				</div>
 			</div>
 			
-		</div>
+		
 	</div>
 </div>
 </section>
@@ -1891,7 +1889,6 @@
 @section('js-section')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-{!! Html::script('js/bootstrap.min.js') !!}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script> -->
 <!-- Summernote editor -->

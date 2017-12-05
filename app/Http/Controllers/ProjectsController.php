@@ -33,6 +33,7 @@ use App\Http\Requests\InvestmentRequest;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use App\SiteConfiguration;
+use App\ProjectEOI;
 
 class ProjectsController extends Controller
 {
@@ -445,10 +446,61 @@ class ProjectsController extends Controller
             // $this->dispatch(new SendInvestorNotificationEmail($user,$project));
             // $this->dispatch(new SendReminderEmail($user,$project));
             // $this->dispatch(new SendDeveloperNotificationEmail($user,$project));
-            return view('projects.offer', compact('project','color','action','projects_spv','user'));
+            if(!$project->eoi_button){
+                return view('projects.offer', compact('project','color','action','projects_spv','user'));
+            } else{
+                return response()->view('errors.404', [], 404);
+            }
         } else {
             return redirect()->back()->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Warning!</strong>Project investment plan is not yet done</p>');
         }
+    }
+
+    public function showEoiInterest($project_id)
+    {
+        $projects_spv = ProjectSpvDetail::where('project_id',$project_id)->first();
+        $color = Color::where('project_site',url())->first();
+        $project = Project::findOrFail($project_id);
+        if($project->investment){
+            $user = Auth::user();
+        }
+        if($project->eoi_button) {
+            return view('projects.eoiForm', compact('project', 'color', 'projects_spv', 'user'));
+        }else {
+            return response()->view('errors.404', [], 404);
+        }
+    }
+
+    public function storeProjectEOI(Request $request, AppMailer $mailer)
+    {
+        $color = Color::where('project_site',url())->first();
+        $project = Project::findOrFail($request->project_id);
+        $user = Auth::user();
+        $user_info = Auth::user();
+        $this->validate($request, [
+            'name' => 'required',
+            'email_address' => 'required',
+            'phone_number' => 'required|numeric',
+            'investment_amount' => 'required|numeric',
+            'investment_period' => 'required',
+            ]);
+        if($project){
+            if($project->eoi_button){
+                $eoi_data = ProjectEOI::create([
+                    'project_id' => $request->project_id,
+                    'user_id' => $user->id,
+                    'user_name' => $request->name,
+                    'user_email' => $request->email_address,
+                    'phone_number' => $request->phone_number,
+                    'investment_amount' => $request->investment_amount,
+                    'invesment_period' => $request->investment_period,
+                    'project_site' => url(),
+                    ]);
+                $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
+                $mailer->sendProjectEoiEmailToUser($project, $user_info);
+            }
+        }
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
     }
 
     public function showInterestOffer($project_id, AppMailer $mailer)

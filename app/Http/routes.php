@@ -145,8 +145,10 @@ Route::post('projects/invite/users', ['as'=>'projects.invitation.store', 'uses'=
 
 
 Route::get('projects/{project_id}/interest', ['as'=>'projects.interest', 'uses'=>'ProjectsController@showInterest']);
+Route::get('projects/{project_id}/eoi', ['as'=>'projects.eoi', 'uses'=>'ProjectsController@showEoiInterest']);
 Route::get('projects/{project_id}/offerdoc', ['as'=>'projects.offer', 'uses'=>'ProjectsController@showInterestOffer']);
 Route::get('projects/{project_id}/completed', ['as'=>'projects.complete', 'uses'=>'ProjectsController@interestCompleted']);
+Route::post('projects/storeEOI', ['as'=>'projects.eoiStore', 'uses'=>'ProjectsController@storeProjectEOI']);
 Route::post('/FormContent/{id}', ['as'=>'AdditionalFormContent', 'uses'=>'ProjectsController@storeAdditionalFormContent']);
 Route::post('/ProjectThumbnailText/{id}', ['as'=>'ProjectThumbnailText', 'uses'=>'ProjectsController@storeProjectThumbnailText']);
 Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redirectingfromproject']);

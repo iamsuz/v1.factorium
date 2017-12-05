@@ -181,14 +181,14 @@
 			</div>
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px; margin-bottom: 1.2em;">** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif</h6>
+	<h6 style="color: #707070; font-size: 14px; margin-bottom: 1.2em;">@if($project->edit_disclaimer) {{$project->edit_disclaimer}} @else ** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif @endif</h6>
 	<div class="container-fluid">
 		<div class="col-md-12">
-			<textarea class="form-control text-textarea" name="additional_disclaimer_txt" rows="3" placeholder="You Can Add Additional Content for the above Disclaimer here" title="Additional Content for Disclaimer">{{$project->add_additional_disclaimer}}</textarea>
+			<textarea class="form-control text-textarea" name="add_disclaimer_txt" rows="3" placeholder="Edit Disclaimer" title="Edit Disclaimer" required="required">@if($project->edit_disclaimer) {{$project->edit_disclaimer}} @else ** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif @endif</textarea>
 			<br>
 		</div>
 	</div>
-	<section>
+	<section @if($project->eoi_button) style="display: none;" @endif>
 		<div class="container-fluid">
 			<div class="row" style="background-color:#E6E6E6;">
 				<div class="col-md-10 col-md-offset-1">
@@ -589,7 +589,7 @@
 				<div class="container">
 					<div class="row">
 						<br>
-						<div class="col-md-6">
+						<div class="col-md-6 @if($project->eoi_button) hide @endif">
 							<div class="row show_how_to_invest_whole_section" @if(!$project->projectconfiguration->show_how_to_invest_whole_section) style="display: none;" @endif>
 								<div class="col-md-12 text-center">
 									<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>

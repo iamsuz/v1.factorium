@@ -336,6 +336,34 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendProjectEoiEmailToAdmins($project, $eoi_data)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.projectEoiAdminNotification';
+        $this->subject = 'User Expressed Interest in '.$project->title;
+        $this->data = compact('project', 'eoi_data');
+        
+        $this->deliver();
+    }
+
+    public function sendProjectEoiEmailToUser($project, $user_info)
+    {
+        $recipients = ['info@estatebaron.com'];
+        $this->to = $user_info->email;
+        $this->view = 'emails.projectEoiUserNotification';
+        $this->subject = 'Thank you for expressing Interest in '.$project->title;
+        $this->data = compact('project', 'user_info');
+        
+        $this->deliver();
+    }
+
     public function sendInvestmentCancellationConfirmationToUser($investment, $shareInit, $investing, $shareStart, $shareEnd)
     {
         $role = Role::findOrFail(1);

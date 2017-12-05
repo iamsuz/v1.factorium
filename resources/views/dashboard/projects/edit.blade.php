@@ -86,6 +86,9 @@ Edit {{$project->title}} | Dashboard | @parent
 									<input type="checkbox" name="show_invest_now_button_checkbox" id="show_invest_now_button_checkbox" data-label-text="Invest Now" @if($project->show_invest_now_button) value="1" checked @else value="0" @endif>
 									<input type="hidden" name="show_invest_now_button" id="show_invest_now_button" @if($project->show_invest_now_button) value="1" @else value="0" @endif>
 
+									<input type="checkbox" name="eoi_button_checkbox" id="eoi_button_checkbox" data-label-text="EOI" @if($project->eoi_button) value="1" checked @else value="0" @endif>
+									<input type="hidden" name="eoi_button" id="eoi_button" @if($project->eoi_button) value="1" @else value="0" @endif>
+
 									<br><br>
 									<h3>Venture</h3>
 									<input type="radio" name="property_type" data-label-text="Prop-Dev" value="1" @if($project->property_type == '1') checked @endif class="switch-radio1">
@@ -2020,6 +2023,12 @@ Edit {{$project->title}} | Dashboard | @parent
 			var setVal = $(this).val() == 1? 0 : 1;
 			$(this).val(setVal);
 			$('#show_invest_now_button').val(setVal);
+		});
+		$("#eoi_button_checkbox").bootstrapSwitch();
+		$('#eoi_button_checkbox').on('switchChange.bootstrapSwitch', function () {
+			var setVal = $(this).val() == 1? 0 : 1;
+			$(this).val(setVal);
+			$('#eoi_button').val(setVal);
 		});
 		$(".property_type").bootstrapSwitch();
 		$('#property_type').on('switchChange.bootstrapSwitch', function () {
