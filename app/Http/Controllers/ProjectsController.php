@@ -477,6 +477,15 @@ class ProjectsController extends Controller
         $project = Project::findOrFail($request->project_id);
         $user = Auth::user();
         $user_info = Auth::user();
+        $min_amount_invest = $project->investment->minimum_accepted_amount;
+        if((int)$request->investment_amount < (int)$min_amount_invest)
+        {
+            return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
+        }
+        if((int)$request->investment_amount % 1000 != 0)
+        {
+            return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only']);
+        }
         $this->validate($request, [
             'name' => 'required',
             'email_address' => 'required',

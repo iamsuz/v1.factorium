@@ -15,16 +15,18 @@ EOI Doc
 <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
+        @if ($errors->has())
+        <div class="alert alert-danger text-center" style="margin-top: 30px;">
+            @foreach ($errors->all() as $error)
+            {{ $error }}<br>
+            @endforeach
+        </div>
+        @endif
         @if (Session::has('message'))
             {!! Session::get('message') !!}
         @endif
         <h1 class="text-center">Expression of Interest</h1>
         <h5 style="color: #767676;">** This is a no obligation expression of interest which allows us to determine how much money is likely to come in when the offer is made.</h5>
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
 
         {!! Form::open(array('route' => ['projects.eoiStore'], 'class' => 'form', 'id'=>'eoiFormButton')) !!}
 
@@ -53,7 +55,7 @@ EOI Doc
 
         <div class="form-group">
             {!! Form::label(null, 'When will you be ready to invest : ', array('style' => 'margin-right: 8px;')) !!}
-            {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 month', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months']) !!}
+            {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months']) !!}
         </div>
         <br>
 
