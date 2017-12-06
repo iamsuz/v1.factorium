@@ -590,7 +590,7 @@
                     <br><br>
                     Amount to be invested: <b>{{$eoi_data->investment_amount}}</b>
                     <br><br>
-                    When the user is ready to invest: <b>{{$eoi_data->invesment_period}} months</b>
+                    When the user is ready to invest: <b>{{$eoi_data->invesment_period}}</b>
                     <br>
                     </span></span></span>
                     &nbsp;</div>
