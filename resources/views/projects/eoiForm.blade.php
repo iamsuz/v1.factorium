@@ -39,12 +39,12 @@ EOI Doc
         </div>
 
         <div class="form-group">
-            {!! Form::label('Phone Number') !!}
+            {!! Form::label(null, 'Phone number') !!}
             {!! Form::input('number', 'phone_number', $user->phone_number, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number')) !!}
         </div>
 
         <div class="form-group">
-            {!! Form::label('Amount to be invested') !!}
+            {!! Form::label(null, 'Amount you would be interested in investing') !!}
             <div class="input-group">
             <span class="input-group-addon">A$</span>
                 {!! Form::input('number', 'investment_amount', 5000, array('required', 'class'=>'form-control', 'placeholder'=>'Enter Invesment Amount')) !!}
@@ -52,9 +52,8 @@ EOI Doc
         </div>
 
         <div class="form-group">
-            {!! Form::label('When are you ready to invest :') !!}
-            {!! Form::select('investment_period', ['0', '1', '2', '3', '4', '5', '6']) !!}
-            {!!'<b>months</b>'!!}
+            {!! Form::label(null, 'When will you be ready to invest : ', array('style' => 'margin-right: 8px;')) !!}
+            {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 month', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months']) !!}
         </div>
         <br>
 

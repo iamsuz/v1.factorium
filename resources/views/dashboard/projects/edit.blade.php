@@ -89,16 +89,16 @@ Edit {{$project->title}} | Dashboard | @parent
 									<input type="checkbox" name="eoi_button_checkbox" id="eoi_button_checkbox" data-label-text="EOI" @if($project->eoi_button) value="1" checked @else value="0" @endif>
 									<input type="hidden" name="eoi_button" id="eoi_button" @if($project->eoi_button) value="1" @else value="0" @endif>
 
-									<br><br>
+									{{-- <br><br>
 									<h3>Venture</h3>
 									<input type="radio" name="property_type" data-label-text="Prop-Dev" value="1" @if($project->property_type == '1') checked @endif class="switch-radio1">
-									<input type="radio" name="property_type" data-label-text="Business" value="2" @if($project->property_type == '2') checked @endif class="switch-radio1">
+									<input type="radio" name="property_type" data-label-text="Business" value="2" @if($project->property_type == '2') checked @endif class="switch-radio1"> --}}
 									
 									<!-- <input type="checkbox" name="venture-checkbox" id="venture-checkbox" autocomplete="off" data-label-text="Venture" data-on-text="Prop-Dev" data-off-text="Business" data-off-color="warning" @if($project->property_type == '1') checked value="1" @else value="0" @endif> -->
-									<br><br>
+									{{-- <br><br>
 									<h3>Download PDF Page</h3>
 									<input type="checkbox" name="show_download_pdf_page_checkbox" id="show_download_pdf_page_checkbox" autocomplete="off" data-label-text="Show" @if($project->show_download_pdf_page) value="1" checked @else value="0" @endif >
-									<input type="hidden" name="show_download_pdf_page" id="show_download_pdf_page" @if($project->show_download_pdf_page) value="1" @else value="0" @endif>
+									<input type="hidden" name="show_download_pdf_page" id="show_download_pdf_page" @if($project->show_download_pdf_page) value="1" @else value="0" @endif> --}}
 
 									<br><br>
 									<h3>Share vs Unit</h3>
