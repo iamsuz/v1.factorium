@@ -28,6 +28,7 @@ use App\Helpers\SiteConfigurationHelper;
 use Illuminate\Mail\TransportManager;
 use App\ProjectInterest;
 use App\InvestmentRequest;
+use App\ProjectEOI;
 
 
 class DashboardController extends Controller
@@ -134,9 +135,10 @@ class DashboardController extends Controller
         $transactions = Transaction::where('project_id', $project_id)->get();
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
         $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
+        $projectsEois = ProjectEOI::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois'));
     }
 
     public function editProject($project_id)

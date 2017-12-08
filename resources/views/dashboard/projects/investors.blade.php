@@ -34,7 +34,8 @@
 				<li><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h3></a></li>
 				<li><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
 				<li><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
-				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI</h3></a></li>
+				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
+				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
@@ -496,6 +497,34 @@
 						</table>
 					</div>
 				</div>
+				<div id="expression_of_interest_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+					<div>
+						<table class="table table-bordered table-striped" id="expression_of_interest_table">
+							<thead>
+								<tr>
+									<th class="text-center">User Name</th>
+									<th class="text-center">User Email</th>
+									<th class="text-center">User Phone Number</th>
+									<th class="text-center">Amount</th>
+									<th class="text-center">Investment Expected</th>
+									<th class="text-center">EOI Timestamp</th>
+								</tr>
+							</thead>
+							<tbody class="text-center">
+								@foreach($projectsEois as $projectsEoi)
+								<tr>
+									<td>{{$projectsEoi->user_name}}</td>
+									<td>{{$projectsEoi->user_email}}</td>
+									<td>{{$projectsEoi->phone_number}}</td>
+									<td>{{$projectsEoi->investment_amount}}</td>
+									<td>{{$projectsEoi->invesment_period}}</td>
+									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+				</div>
 
 			</div>
 		</div>
@@ -590,6 +619,9 @@
 			"iDisplayLength": 25
 		});
 		var eoiTable = $('#eoiTable').DataTable({
+			"iDisplayLength": 25
+		});
+		var expression_of_interest_table = $('#expression_of_interest_table').DataTable({
 			"iDisplayLength": 25
 		});
 
