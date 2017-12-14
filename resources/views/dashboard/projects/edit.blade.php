@@ -37,7 +37,7 @@ Edit {{$project->title}} | Dashboard | @parent
 			<section>
 				<div class="row well">
 				@if(!$project->projectspvdetail)
-				<div class="alert alert-danger text-center">Please add the Project SPV Details to make the project live. You can still make the status of the project as Coming Soon.</div>
+				<div class="alert alert-danger text-center">Please add the <b>Project SPV Details</b> to make the project <b>Live</b>. You can still make the status of the project as <b>Upcoming</b> or <b>EOI</b>.</div>
 				@endif
 					<fieldset>
 						<div class="col-md-12 center-block">
@@ -71,13 +71,13 @@ Edit {{$project->title}} | Dashboard | @parent
 								</div>
 							</div>
 							<div class="text-center">
-								<h3 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s">Change the Status of project! <br>
-									<small class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:.5em">Activate or Deactivate | Deactivated projects are only seen by admins</small>
+								<h3 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s">Change the Status of Project <br>
+									{{-- <small class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:.5em">Activate or Deactivate | Deactivated projects are only seen by admins</small> --}}
 								</h3>
 							</div>
 							<div class="row text-center">
 								<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s">
-									<input type="checkbox" name="active-checkbox" id="active-checkbox" autocomplete="off" data-label-text="Active" @if(!$project->projectspvdetail && $project->is_coming_soon == '0') disabled @endif @if($project->active) checked value="1" @else value="0" @endif>
+									{{-- <input type="checkbox" name="active-checkbox" id="active-checkbox" autocomplete="off" data-label-text="Active" @if(!$project->projectspvdetail && $project->is_coming_soon == '0') disabled @endif @if($project->active) checked value="1" @else value="0" @endif>
 									<input type="hidden" name="active" id="active" @if($project->active) value="1" @else value="0" @endif>
 
 									<input type="checkbox" name="is_coming_soon_checkbox" id="is_coming_soon_checkbox" data-label-text="upcoming" @if($project->is_coming_soon) value="1" checked @else value="0" @endif>
@@ -87,7 +87,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									<input type="hidden" name="show_invest_now_button" id="show_invest_now_button" @if($project->show_invest_now_button) value="1" @else value="0" @endif>
 
 									<input type="checkbox" name="eoi_button_checkbox" id="eoi_button_checkbox" data-label-text="EOI" @if($project->eoi_button) value="1" checked @else value="0" @endif>
-									<input type="hidden" name="eoi_button" id="eoi_button" @if($project->eoi_button) value="1" @else value="0" @endif>
+									<input type="hidden" name="eoi_button" id="eoi_button" @if($project->eoi_button) value="1" @else value="0" @endif> --}}
 
 									{{-- <br><br>
 									<h3>Venture</h3>
@@ -99,8 +99,23 @@ Edit {{$project->title}} | Dashboard | @parent
 									<h3>Download PDF Page</h3>
 									<input type="checkbox" name="show_download_pdf_page_checkbox" id="show_download_pdf_page_checkbox" autocomplete="off" data-label-text="Show" @if($project->show_download_pdf_page) value="1" checked @else value="0" @endif >
 									<input type="hidden" name="show_download_pdf_page" id="show_download_pdf_page" @if($project->show_download_pdf_page) value="1" @else value="0" @endif> --}}
+									<br>
 
-									<br><br>
+									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+									      <label class="btn btn-default @if(!$project->active) active @endif">
+									        <input type="radio" name="project_status" value="inactive"> Inactive
+									      </label>
+									      <label class="btn btn-default @if($project->active && !$project->is_coming_soon && !$project->eoi_button) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+									        <input type="radio" name="project_status" value="active"> Live
+									      </label>
+									      <label class="btn btn-default @if($project->is_coming_soon && !$project->eoi_button && $project->active) active @endif">
+									        <input type="radio" name="project_status" value="upcoming"> Upcoming
+									      </label>
+									      <label class="btn btn-default @if(!$project->is_coming_soon && $project->eoi_button && $project->active) active @endif">
+									        <input type="radio" name="project_status" value="eoi"> EOI
+									      </label>
+									</div>
+									<br>
 									<h3>Share vs Unit</h3>
 									<input type="checkbox" name="share_vs_unit_checkbox" id="share_vs_unit_checkbox" autocomplete="off" data-label-text="Show" @if($project->share_vs_unit) value="1" checked @else value="0" @endif >
 									<input type="hidden" name="share_vs_unit" id="share_vs_unit" @if($project->share_vs_unit) value="1" @else value="0" @endif>
@@ -2000,7 +2015,10 @@ Edit {{$project->title}} | Dashboard | @parent
 		$('#invite-only-label').click(function() {
 			$('#invite-developer').removeClass('hide');
 		});
-		$("#is_coming_soon_checkbox").bootstrapSwitch();
+
+		//Bootstrap switch to change project status
+
+		/*$("#is_coming_soon_checkbox").bootstrapSwitch();
 		$('#is_coming_soon_checkbox').on('switchChange.bootstrapSwitch', function () {
 			var setVal = $(this).val() == 1? 0 : 1;
 			$(this).val(setVal);
@@ -2011,8 +2029,9 @@ Edit {{$project->title}} | Dashboard | @parent
 		var setVal = $(this).val() == 1? 0 : 1;
 		$(this).val(setVal);
 		$('#active').val(setVal);
-		});
-		$("#venture-checkbox").bootstrapSwitch();
+		});*/
+
+		/*$("#venture-checkbox").bootstrapSwitch();
 		$('#venture-checkbox').on('switchChange.bootstrapSwitch', function () {
 			var setVal = $(this).val() == 1? 0 : 1;
 			$(this).val(setVal);
@@ -2035,7 +2054,7 @@ Edit {{$project->title}} | Dashboard | @parent
 			var setVal = $(this).val() == 1? 0 : 1;
 			$(this).val(setVal);
 			$('#venture').val(setVal);
-		});
+		});*/
 		$("[name='property_type']").bootstrapSwitch();
 		$('input[name="property_type"]').on('change', function(){
 			if ($(this).val()=='1') {
@@ -2379,5 +2398,6 @@ Edit {{$project->title}} | Dashboard | @parent
 
     	});
     }
+
 </script>
 @stop

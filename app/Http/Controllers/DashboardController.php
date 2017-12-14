@@ -146,11 +146,11 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
-        if($project->is_coming_soon == '1'){
+        if($project->is_coming_soon || $project->eoi_button == '1'){
             $project->active = 1;
             $project->save();
         }
-        if($project->is_coming_soon == '0' && !$project->projectspvdetail) {
+        if($project->is_coming_soon && $project->is_coming_soon == '0' && !$project->projectspvdetail) {
             $project->active = 0;
             $project->save();
         }
