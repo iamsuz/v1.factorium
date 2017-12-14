@@ -95,6 +95,7 @@ class ProjectsController extends Controller
         }
         $project = Project::create($request->all());
         $project->project_rank = $project->id;
+        $project->eb_project_rank = $project->id;
         $project->save();
 
         $location = new \App\Location($request->all());
