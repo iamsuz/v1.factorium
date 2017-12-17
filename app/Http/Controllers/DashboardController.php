@@ -475,7 +475,12 @@ class DashboardController extends Controller
         
         // Save details to transaction table
         $noOfShares = $shareEnd-$shareInit;
-        $transactionRate = $investment->amount/$noOfShares;
+        if($noOfShares == 0){
+            $transactionRate = $investment->amount/1;    
+        }
+        else{
+            $transactionRate = $investment->amount/$noOfShares;
+        }
         // dd($transactionRate);
         Transaction::create([
             'user_id' => $investment->user_id,
