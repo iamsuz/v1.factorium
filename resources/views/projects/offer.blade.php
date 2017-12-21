@@ -3,6 +3,10 @@
 Offer Doc
 @stop
 
+@section('meta-section')
+<meta name="csrf-token" content="{{csrf_token()}}" />
+@stop
+
 @section('css-section')
 @parent
 @stop
@@ -531,7 +535,7 @@ Offer Doc
 									<br><br>
 									Seek professional advice from your accountant, lawyer or other professional adviser before deciding whether to invest. The information provided in this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif does not constitute personal financial product advice and has been prepared without taking into account your investment objectives, financial situation or particular needs. It is important that you read this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in its entirety before deciding to invest and consider the risk factors that could affect the Company’s performance.
 									<br>
-									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="{{$project->investment->PDS_part_1_link}}" target="_blank">Download @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif</a>
+									<a class="btn btn-primary btn-block font-bold download-prospectus-btn" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank">Download @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif</a>
 								</td>
 							</tr>
 							<tr >
@@ -765,6 +769,23 @@ Offer Doc
 		    if(checked) {
 		        $(this).prop('checked',true);
 		    }
+		});
+
+		// Track users downloading prospectus
+		$('.download-prospectus-btn').click(function(){
+			var projectId = {{$project->id}};
+			$.ajax({
+				url: '/projects/prospectus',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {projectId},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				location.reload('/');
+			});
 		});
 	});  
 	</script>

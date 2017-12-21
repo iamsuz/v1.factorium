@@ -175,4 +175,8 @@ class Project extends Model
     {
         return $this->hasMany('App\ProjectEOI');
     }
+    public function prospectus_download()
+    {
+        return $this->hasMany('App\ProspectusDownload');
+    }
 }
