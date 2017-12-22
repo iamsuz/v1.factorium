@@ -269,3 +269,6 @@ Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequest
 Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.cancel', 'uses'=>'OfferController@cancelRequestForm']);
 Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
 Route::post('/configuration/uploadprojectProgressCircleImages', ['as'=>'configuration.uploadprojectProgressCircleImages', 'uses'=>'SiteConfigurationsController@uploadprojectProgressCircleImages']);
+
+Route::post('/projects/prospectus', ['as'=>'projects.prospectus', 'uses'=>'ProjectsController@prospectusDownload']);
+Route::get('/dashboard/prospectus/downloads', ['as'=>'dashboard.prospectus.downloads', 'uses'=>'DashboardController@prospectusDownloads']);

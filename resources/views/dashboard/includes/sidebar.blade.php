@@ -6,4 +6,5 @@
 	<a href="{{route('dashboard.configurations')}}" class="list-group-item @if($active == 4) active @endif">Configurations <i class="fa fa-edit pull-right"></i></a>
 	<a href="{{route('dashboard.broadcastMail')}}" class="list-group-item @if($active == 5) active @endif hide">Broadcast <i class="fa fa-envelope pull-right"></i></a>
 	<a href="{{route('dashboard.investmentRequests')}}" class="list-group-item @if($active == 6) active @endif">Requests<i class="fa fa-comments-o pull-right"></i></a>
+	<a href="{{route('dashboard.prospectus.downloads')}}" class="list-group-item @if($active == 7) active @endif">Prospectus Downloads<i class="fa fa-download pull-right"></i></a>
 </div>

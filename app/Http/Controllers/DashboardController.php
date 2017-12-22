@@ -29,6 +29,7 @@ use Illuminate\Mail\TransportManager;
 use App\ProjectInterest;
 use App\InvestmentRequest;
 use App\ProjectEOI;
+use App\ProspectusDownload;
 
 
 class DashboardController extends Controller
@@ -888,5 +889,17 @@ class DashboardController extends Controller
 
         $color = Color::where('project_site',url())->first();
         return view('dashboard.requests.requests', compact('investmentRequests', 'color'));
+    }
+
+    /**
+     * Returns the list of all the users downloaded prospectus
+     */
+    public function prospectusDownloads()
+    {
+        $prospectusDownloads = ProspectusDownload::where('project_site', url())
+                            ->orderBy('created_at','DESC')
+                            ->get();
+        $color = Color::where('project_site',url())->first();
+        return view('dashboard.prospectusDownloads', compact('prospectusDownloads', 'color'));
     }
 }

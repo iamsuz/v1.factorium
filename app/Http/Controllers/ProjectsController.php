@@ -34,6 +34,7 @@ use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use App\SiteConfiguration;
 use App\ProjectEOI;
+use App\ProspectusDownload;
 
 class ProjectsController extends Controller
 {
@@ -1001,6 +1002,20 @@ class ProjectsController extends Controller
                     $projectMedia->delete();
                     return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
                 }
+            }
+        }
+    }
+
+    public function prospectusDownload(Request $request)
+    {
+        $project = Project::find($request->projectId);
+        if($project){
+            if($project->project_site == url()){
+                ProspectusDownload::create([
+                    'user_id' => Auth::user()->id,
+                    'project_id' => $project->id,
+                    'project_site' => url()
+                ]);
             }
         }
     }
