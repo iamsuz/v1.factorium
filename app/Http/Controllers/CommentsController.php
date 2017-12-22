@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Mailers\AppMailer;
 
 class CommentsController extends Controller
 {
@@ -49,7 +50,7 @@ class CommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $projects)
+    public function store(Request $request, $projects, AppMailer $mailer)
     {
         $project = Project::findOrFail($projects);
 
@@ -57,8 +58,15 @@ class CommentsController extends Controller
         $request['user_id']= Auth::id();
 
         $comment = Comment::create($request->all());
+        $comment->project_site = url();
+        $comment->save();
+        $user = Auth::user();
 
-        return redirect()->to('/projects/'.$projects.'#comments-form');
+        $mailer->sendUserFeedbackEmailToAdmins($project, $user, $comment);
+
+        return redirect()->back();
+
+        /*return redirect()->to('/projects/'.$projects.'#comments-form');*/
     }
 
     public function storeVote(Request $request, $projects, $comments)

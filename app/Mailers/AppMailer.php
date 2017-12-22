@@ -364,6 +364,23 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendUserFeedbackEmailToAdmins($project, $user, $comment)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.userFeedbackAdminEmail';
+        $this->subject = 'User gave feedback on '.$project->title;
+        $this->data = compact('project', 'user', 'comment');
+        
+        $this->deliver();
+    }
+
     public function sendInvestmentCancellationConfirmationToUser($investment, $shareInit, $investing, $shareStart, $shareEnd)
     {
         $role = Role::findOrFail(1);

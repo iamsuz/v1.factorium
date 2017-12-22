@@ -1570,18 +1570,21 @@
 	</div>
 </section> -->
 <!-- <h4 class="text-center">More questions/comments/concerns? You can post them here or chat with us</h4> -->
-<!-- <section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
-			<div class="col-md-8"></div>
-		</div>
-		<div class="row">
+<br><br>
+<div class="row">
 			<div class="col-md-offset-1 col-md-10">
 				<hr style="margin-top:0px;">
 			</div>
 		</div>
-		{!! Form::open(array('route'=>['projects.{projects}.comments.store', $project], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+<h4 class="text-center" style="font-size: 1.6em;">More questions/comments/concerns? You can post them here</h4>
+<section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
+	<div class="container">
+		{{-- <div class="row">
+			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
+			<div class="col-md-8"></div>
+		</div> --}}
+		
+		{!! Form::open(array('route'=>['projects.{projects}.comments.store', $project], 'class'=>'form-horizontal', 'role'=>'form', 'id'=>'feedback_form')) !!}
 		<div class="row">
 			<div class="col-md-offset-1 col-md-10 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
 				<fieldset>
@@ -1591,7 +1594,7 @@
 						</div>
 						<div class="col-md-11">
 							<div class="form-group @if($errors->first('text')){{'has-error'}} @endif">
-								{!! Form::textarea('text', null, array('placeholder'=>'Write a comment', 'class'=>'form-control', 'rows'=>'2')) !!}
+								{!! Form::textarea('text', null, array('placeholder'=>'Write Feedback', 'class'=>'form-control', 'rows'=>'4', 'id'=>'feedback_input', 'required')) !!}
 								{!! $errors->first('text', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
@@ -1599,7 +1602,7 @@
 					<div class="row">
 						<div class="form-group">
 							<div class="col-md-offset-10 col-md-2">
-								{!! Form::submit('Post', array('class'=>'btn btn-danger btn-block comment-submit-button', 'tabindex'=>'15')) !!}
+								{!! Form::submit('Post', array('class'=>'btn btn-danger btn-block comment-submit-button', 'tabindex'=>'15', 'id'=>'feedbackForm')) !!}
 							</div>
 						</div>
 					</div>
@@ -1608,7 +1611,7 @@
 		</div>
 		{!! Form::close() !!}
 	</div>
-</section> -->
+</section>
 <style type="text/css">
 	.vote-input {
 		visibility:hidden;
@@ -1893,9 +1896,31 @@
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script> -->
 <!-- Summernote editor -->
 {!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
+<script src="https://unpkg.com/sweetalert2@7.1.2/dist/sweetalert2.all.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-    	$('[data-toggle="tooltip"]').tooltip();
+	$(document).ready(function(e){
+		$('#feedback_form').submit(function(e) {
+			e.preventDefault();
+			$('.loader-overlay').show();
+			var form = $('#feedback_form');
+
+			function onChangeMsg() {
+				swal("Thank you for your feedback!", "", "success");
+			}
+
+			var formData = $(form).serialize();
+			// Submit the form using AJAX.
+			$.ajax({
+			    type: 'POST',
+			    url: $(form).attr('action'),
+			    data: formData
+			})
+			.done(function() {
+				$('.loader-overlay').hide();
+				onChangeMsg();
+				$("#feedback_input").val('');
+			})
+		});
 	});
 </script>
 <script>
