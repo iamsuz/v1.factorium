@@ -1626,7 +1626,7 @@
 		display:inline;
 	}
 </style>
-<section id="comments-list" class="chunk-box " style="padding-top:0px;">
+{{-- <section id="comments-list" class="chunk-box " style="padding-top:0px;">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-offset-1 col-md-10">
@@ -1702,7 +1702,7 @@
 			</div>
 		</div>
 	</div>
-</section>
+</section> --}}
 <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:46em; padding-top:3em;">
 		<div class="modal-content">
