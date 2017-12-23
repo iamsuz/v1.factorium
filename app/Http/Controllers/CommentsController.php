@@ -31,7 +31,7 @@ class CommentsController extends Controller
     {
         $project = Project::findOrFail($projects);
         $comments = $project->comments();
-        dd($comments);
+        /*dd($comments);*/
     }
 
     /**
