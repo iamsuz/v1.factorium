@@ -364,7 +364,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendUserFeedbackEmailToAdmins($project, $user, $comment)
+    public function sendUserFeedbackEmailToAdmins($project, $user_info, $comment)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -376,7 +376,7 @@ class AppMailer
         $this->to = $recipients;
         $this->view = 'emails.userFeedbackAdminEmail';
         $this->subject = 'User gave feedback on '.$project->title;
-        $this->data = compact('project', 'user', 'comment');
+        $this->data = compact('project', 'user_info', 'comment');
         
         $this->deliver();
     }

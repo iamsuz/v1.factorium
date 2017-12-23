@@ -582,11 +582,11 @@
                 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                   <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Below user gave feedback on <b>{{$project->title}}</b> project<br>
                     <br>
-                    Name: <b>{{$user->first_name . ' ' . $user->last_name}}</b>
+                    Name: <b>{{$user_info->first_name . ' ' . $user_info->last_name}}</b>
                     <br>
-                    Email:  <b>{{$user->email}}</b>
+                    Email:  <b>{{$user_info->email}}</b>
                     <br> 
-                    Phone Number: <b>{{$user->phone_number}}</b>
+                    Phone Number: <b>{{$user_info->phone_number}}</b>
                     <br>
                     Feedback: <b>{{$comment->text}}</b>
                     </span></span></span>

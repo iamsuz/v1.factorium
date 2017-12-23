@@ -61,9 +61,9 @@ class CommentsController extends Controller
         $comment = Comment::create($request->all());
         $comment->project_site = url();
         $comment->save();
-        $user = User::find($comment->user_id);
+        $user_info = User::findOrFail($request['user_id']);
 
-        $mailer->sendUserFeedbackEmailToAdmins($project, $user, $comment);
+        $mailer->sendUserFeedbackEmailToAdmins($project, $user_info, $comment);
 
         return redirect()->back();
 
