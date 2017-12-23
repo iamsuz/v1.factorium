@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Mailers\AppMailer;
+use App\User;
 
 class CommentsController extends Controller
 {
@@ -60,7 +61,7 @@ class CommentsController extends Controller
         $comment = Comment::create($request->all());
         $comment->project_site = url();
         $comment->save();
-        $user = Auth::user();
+        $user = $request['user_id'];
 
         $mailer->sendUserFeedbackEmailToAdmins($project, $user, $comment);
 
