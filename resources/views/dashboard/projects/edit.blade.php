@@ -105,14 +105,17 @@ Edit {{$project->title}} | Dashboard | @parent
 									      <label class="btn btn-default @if(!$project->active) active @endif">
 									        <input type="radio" name="project_status" value="inactive"> Inactive
 									      </label>
-									      <label class="btn btn-default @if($project->active && !$project->is_coming_soon && !$project->eoi_button) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+									      <label class="btn btn-default @if($project->active && !$project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
 									        <input type="radio" name="project_status" value="active"> Live
 									      </label>
-									      <label class="btn btn-default @if($project->is_coming_soon && !$project->eoi_button && $project->active) active @endif">
+									      <label class="btn btn-default @if($project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button && $project->active) active @endif">
 									        <input type="radio" name="project_status" value="upcoming"> Upcoming
 									      </label>
-									      <label class="btn btn-default @if(!$project->is_coming_soon && $project->eoi_button && $project->active) active @endif">
+									      <label class="btn btn-default @if(!$project->is_coming_soon && $project->eoi_button && !$project->is_funding_closed && $project->active) active @endif">
 									        <input type="radio" name="project_status" value="eoi"> EOI
+									      </label>
+									      <label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && $project->is_funding_closed && $project->active) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+									        <input type="radio" name="project_status" value="funding_closed"> Close Funding
 									      </label>
 									</div>
 									<br>

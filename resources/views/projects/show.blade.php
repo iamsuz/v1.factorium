@@ -212,8 +212,10 @@
 					<div class="col-md-4 col-md-offset-4 project-invest-button-field" style="margin-top:0%;" id="express_interest">
 						<br>
 						@if($project->investment)
-						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
-							@if($project->button_label)
+						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+							@if($project->is_funding_closed)
+							Funding Closed
+							@elseif($project->button_label)
 							<?php echo $project->button_label; ?>
 							@else
 							Invest Now

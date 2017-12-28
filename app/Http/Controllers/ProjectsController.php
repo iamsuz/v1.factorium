@@ -341,21 +341,31 @@ class ProjectsController extends Controller
             $project->active = 1;
             $project->is_coming_soon = 0;
             $project->eoi_button = 1;
+            $project->is_funding_closed = 0;
             $project->save();
         }elseif($request->project_status == 'upcoming') {
             $project->active = 1;
             $project->is_coming_soon = 1;
             $project->eoi_button = 0;
+            $project->is_funding_closed = 0;
             $project->save();
         }elseif($request->project_status == 'active') {
             $project->active = 1;
             $project->is_coming_soon = 0;
             $project->eoi_button = 0;
+            $project->is_funding_closed = 0;
+            $project->save();
+        }elseif($request->project_status == 'funding_closed') {
+            $project->active = 1;
+            $project->is_coming_soon = 0;
+            $project->eoi_button = 0;
+            $project->is_funding_closed = 1;
             $project->save();
         }else {
             $project->active = 0;
             $project->is_coming_soon = 0;
             $project->eoi_button = 0;
+            $project->is_funding_closed = 0;
             $project->save();
         }
 
