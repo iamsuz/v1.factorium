@@ -85,11 +85,9 @@
     }
     @endif
 
-    /*Color for compliance description*/
-    .compliance_description_color{
-      color: @if($color) @if($color->nav_footer_color) #{{$color->nav_footer_color}} @else #282a73 @endif @else #282a73 @endif;
+    .investment-title1-description-section, .csef-text{
+      color: #fff !important;
     }
-
   </style>
 
   <!-- Google tag manager header script if set  -->
@@ -902,7 +900,7 @@
     </form>
 </div>
 </section>
-<section id="security" class="chunk-box bottom-padding-zero" style="padding:2em 0;">
+{{--<section id="security" class="chunk-box bottom-padding-zero" style="padding:2em 0;">
   <div class="container">
     <div class="row" id="pick">
       <div class="col-md-12">
@@ -964,7 +962,7 @@
     </div>
   </div>
 </section>
-<br><br>
+<br><br>--}}
 @if(Auth::guest())
 @else
 @if($admin_access == 1)
@@ -1341,6 +1339,21 @@
           <span style="color: #fff;">Powered by </span><a href="https://estatebaron.com/whitelabel-property-crowdfunding" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>
         </p>
       </div>
+      <br>
+      <p class="investment-title1-description-section text-justify" style="font-size:16px;">
+        <small><small>@if($siteConfiguration->compliance_description != '')
+        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
+        The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative @if($siteConfiguration->car_no != '') {{$siteConfiguration->car_no}} @else 001251881 @endif of AFSL @if($siteConfiguration->afsl_no != '') {{$siteConfiguration->afsl_no}} @else 299812 @endif provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="text-decoration: none;">Financial Services Guide</span></a>.
+        @endif</small></small>
+      </p>
+      <p class="csef-text text-justify"><small><small>In particular note that this website does not rely on the Crowd Sourced Equity Funding (CSEF) regulation (RG261) and does not have an ASIC authorization to act as a Crowdfunding intermediary platform. Any use of the term crowdfunding anywhere on this site should not be be construed to mean that such an authorization exists. Investment offers listed here typically rely on RG228 to provide effective disclosure to Retail investors using a Prospectus. We believe the CSEF regulation is unsuited for Property development investment opportunities and have hence relied on providing a full prospectus to provide clear concise and effective disclosure.</small></small></p>
+      @if(Auth::guest())
+      @else
+      @if($admin_access == 1)
+      <i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit Description" data-placement="right"></i>
+      @endif
+      @endif
+      <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @else {!!  "The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href='https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0' target='_blank'><span style='text-decoration: none;'>Financial Services Guide<span></a>." !!} @endif">
     </div>
   </footer>
   <div class="row">
