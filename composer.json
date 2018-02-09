@@ -21,7 +21,8 @@
         "barryvdh/laravel-dompdf": "^0.7.0",
         "mailgun/mailgun-php": "^2.3",
         "php-http/guzzle6-adapter": "^1.1",
-        "doctrine/dbal": "v2.5.13"
+        "doctrine/dbal": "v2.5.13",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

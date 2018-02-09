@@ -198,4 +198,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\ProspectusDownload');
     }
+
+    /**
+     * Get refettal and link to user
+     * @return string ramsey
+     */
+    public function getReferrals()
+    {
+        return ReferralProgram::all()->map(function ($program) {
+            return ReferralLink::getReferral($this, $program);
+        });
+    }
 }
