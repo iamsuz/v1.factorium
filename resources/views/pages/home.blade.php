@@ -884,6 +884,14 @@
     </div>
   </div>
   <br><br>
+  <?php 
+
+    if($siteConfiguration->prospectus_text != '') {
+                    $prospectus = $siteConfiguration->prospectus_text;
+                  } else {
+                    $prospectus = "Prospectus";
+                  }
+  ?>
         @if(Auth::guest())
         @else
         @if($admin_access == 1)
@@ -892,10 +900,11 @@
         </div>
       @endif
       @endif
+      <div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
     <form action="{{ route('configuration.updateGreyBoxNote') }}" method="POST">
       {{csrf_field()}}
-      <div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
-        <p class="col-md-12 text-justify grey-box-note-content"><small style="color: #888;">@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. You should carefully review the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. @endif</small></p>
+        <p class="col-md-12 text-justify grey-box-note-content"><small style="color: #888;">@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the {{$prospectus}} for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the {{$prospectus}}. You should carefully review the {{$prospectus}} in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the {{$prospectus}}. @endif</small></p>
+    </form>
         <p class="col-md-12  investment-title1-description-section text-justify" style="font-size:16px;">
           <small>@if($siteConfiguration->compliance_description != '')
           {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
@@ -909,9 +918,8 @@
         @endif
         @endif
         <p class="col-md-12  csef-text text-justify"><small>In particular note that this website does not rely on the Crowd Sourced Equity Funding (CSEF) regulation (RG261) and does not have an ASIC authorization to act as a Crowdfunding intermediary platform. Any use of the term crowdfunding anywhere on this site should not be be construed to mean that such an authorization exists. Investment offers listed here typically rely on RG228 to provide effective disclosure to Retail investors using a Prospectus. We believe the CSEF regulation is unsuited for Property development investment opportunities and have hence relied on providing a full prospectus to provide clear concise and effective disclosure.</small></p>
-        <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @else {!!  "The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href='https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0' target='_blank'><span style='text-decoration: none;'>Financial Services Guide<span></a>." !!} @endif">
+        <input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @else {!!  "The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001251881 of AFSL 299812) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href='https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0' target='_blank'><span style='text-decoration: none; color: #888;'>Financial Services Guide<span></a>." !!} @endif">
       </div>
-    </form>
 </div>
 </section>
 {{--<section id="security" class="chunk-box bottom-padding-zero" style="padding:2em 0;">
@@ -2289,7 +2297,7 @@
 
       function editGreyBoxNoteContent(){
         $('.show-grey-box-note-edit-box').click(function(){
-        $('.grey-box-note-content').replaceWith('<textarea name="grey_box_note" class="form-control" rows="6" required>@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. You should carefully review the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. @endif</textarea><br><button type="Submit" class="btn-default col-md-offset-11">Save</button>');
+        $('.grey-box-note-content').replaceWith('<textarea name="grey_box_note" class="form-control" rows="6" required>@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the {{$prospectus}} for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the {{$prospectus}}. You should carefully review the {{$prospectus}} in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the {{$prospectus}}. @endif</textarea><br><button type="Submit" class="btn-default col-md-offset-11">Save</button>');
       });
     }
 
