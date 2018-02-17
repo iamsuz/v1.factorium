@@ -337,36 +337,38 @@ class ProjectsController extends Controller
 
         $project->update($request->all());
 
-        if($request->project_status == 'eoi') {
-            $project->active = 1;
-            $project->is_coming_soon = 0;
-            $project->eoi_button = 1;
-            $project->is_funding_closed = 0;
-            $project->save();
-        }elseif($request->project_status == 'upcoming') {
-            $project->active = 1;
-            $project->is_coming_soon = 1;
-            $project->eoi_button = 0;
-            $project->is_funding_closed = 0;
-            $project->save();
-        }elseif($request->project_status == 'active') {
-            $project->active = 1;
-            $project->is_coming_soon = 0;
-            $project->eoi_button = 0;
-            $project->is_funding_closed = 0;
-            $project->save();
-        }elseif($request->project_status == 'funding_closed') {
-            $project->active = 1;
-            $project->is_coming_soon = 0;
-            $project->eoi_button = 0;
-            $project->is_funding_closed = 1;
-            $project->save();
-        }else {
-            $project->active = 0;
-            $project->is_coming_soon = 0;
-            $project->eoi_button = 0;
-            $project->is_funding_closed = 0;
-            $project->save();
+        if($request->project_status) {
+            if($request->project_status == 'eoi') {
+                $project->active = 1;
+                $project->is_coming_soon = 0;
+                $project->eoi_button = 1;
+                $project->is_funding_closed = 0;
+                $project->save();
+            }elseif($request->project_status == 'upcoming') {
+                $project->active = 1;
+                $project->is_coming_soon = 1;
+                $project->eoi_button = 0;
+                $project->is_funding_closed = 0;
+                $project->save();
+            }elseif($request->project_status == 'active') {
+                $project->active = 1;
+                $project->is_coming_soon = 0;
+                $project->eoi_button = 0;
+                $project->is_funding_closed = 0;
+                $project->save();
+            }elseif($request->project_status == 'funding_closed') {
+                $project->active = 1;
+                $project->is_coming_soon = 0;
+                $project->eoi_button = 0;
+                $project->is_funding_closed = 1;
+                $project->save();
+            }else {
+                $project->active = 0;
+                $project->is_coming_soon = 0;
+                $project->eoi_button = 0;
+                $project->is_funding_closed = 0;
+                $project->save();
+            }
         }
 
         $project->invited_users()->attach(User::whereEmail($request->developerEmail)->first());
