@@ -454,6 +454,29 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendEoiApplicationLinkToUser($project, $eoi)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $adminUser) {
+            if($adminUser->registration_site == url()){
+                array_push($recipients, $adminUser->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.eoiFormLink';
+        $this->subject = 'Your expression of interest in '.$project->title.' has been accepted';
+        $this->data = compact('project', 'eoi');
+        
+        if($eoi->offer_doc_path){
+            $this->pathToFile = public_path().$eoi->offer_doc_path;
+            $this->deliverWithFile();
+        }
+        else{
+           $this->deliver();
+        }
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
