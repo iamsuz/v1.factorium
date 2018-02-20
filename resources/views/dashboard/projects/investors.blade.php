@@ -525,7 +525,13 @@
 									<td>{{$projectsEoi->investment_amount}}</td>
 									<td>{{$projectsEoi->invesment_period}}</td>
 									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
-									<td><a class="send-app-form-link" href="javascript:void();" data="{{$projectsEoi->id}}"><b>Send link</b></a></td>
+									<td>
+										@if($projectsEoi->offer_doc_path)
+											<a class="send-app-form-link" href="javascript:void();" data="{{$projectsEoi->id}}"><b>Send link</b></a>
+										@else
+											<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
+										@endif
+									</td>
 									<td>
 										@if($projectsEoi->offer_doc_path)
 										<a href="{{$projectsEoi->offer_doc_path}}" target="_blank" download>
