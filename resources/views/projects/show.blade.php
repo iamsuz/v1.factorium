@@ -8,7 +8,7 @@
 <meta property="og:title" content="Invest in {{$project->title}} with just ${{(int)$project->investment->minimum_accepted_amount}}" />
 <meta property="og:description" content="{{$project->description}}" />
 <meta property="og:site_name" content="" />
-<meta property="og:url" content="{{$project->project_site}}" />
+<meta property="og:url" content="{{$project->project_site}}/projects/{{$project->id}}" />
 <meta property="og:type" content="website" />
 
 <meta name="description" content="{{$project->description}}">
@@ -86,8 +86,8 @@
 		<a href="{{route('projects.showedit', [$project->id])}}" type="button" class="btn btn-primary btn-lg edit-project-page-details-btn">Edit Project Details</a>
 		<div style="display: none;"><button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button><br></div>
 		<a href="" status="{{$project->active}}" style="color: #fff;"><u>
-			@if($project->active == '1') 
-			<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a> 
+			@if($project->active == '1')
+			<a href="{{route('dashboard.projects.deactivate', [$project->id])}}">Deactivate</a>
 			@elseif($project->active == '2')
 			Private
 			@elseif($project->active == '0')
@@ -140,7 +140,7 @@
 						</div>
 			            @else
 			            @endif
-			            
+
 						@if(Auth::guest())
 						@else
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -294,7 +294,7 @@
 								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
 							</span>
 						</div>
-						
+
 							<!-- <div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
 							<span style="font-size:1em;" class="project-pds2-link-field">
@@ -546,7 +546,7 @@
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<div class="text-center row">
 				<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_summary_label))}}@else Project Summary @endif</small></small><br>
-				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_summary_whole_section" @if($project->projectconfiguration->show_project_summary_whole_section) checked value="1" @else value="0" @endif> 
+				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_summary_whole_section" @if($project->projectconfiguration->show_project_summary_whole_section) checked value="1" @else value="0" @endif>
 			</div>
 			@endif
 			@endif
@@ -577,7 +577,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'summary_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_summary.png')}}@endif" alt="for whom" style="width:50px;" >
 								<h4 class="second_color show-summary-input" style="margin-top:30px; color:#fed405; font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->summary_label))}}@else Summary @endif</h4>
 							</div>
-							<div class="col-md-10 text-left"> 
+							<div class="col-md-10 text-left">
 								@if($project->investment) <p style="font-size:0.875em;" class="project-summary-field text-justify">{!!nl2br($project->investment->summary)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','summary')->last())
@@ -619,7 +619,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_security.png')}}@endif" alt="security_long" style="width:50px;">
 								<h4 class="second_color show-security-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->security_label))}}@else Security @endif</h4>
 							</div>
-							<div class="col-md-10 text-left"> 
+							<div class="col-md-10 text-left">
 								@if($project->investment) <p style="margin-top:0px;font-size:0.875em;" class="project-security-long-field text-justify">{!!nl2br($project->investment->security_long)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','security')->last())
@@ -661,7 +661,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'investor_distribution_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_investor_distribution.png')}}@endif" alt="exit" style="width: 50px; ">
 								<h4 class="second_color show-investor-distribution-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investor_distribution_label))}}@else Investor<br> Distribution @endif</h4>
 							</div>
-							<div class="col-md-10 text-left"> 
+							<div class="col-md-10 text-left">
 								@if($project->investment) <p style="font-size:0.875em;" class="project-investor-distribution-field text-justify">{!!nl2br($project->investment->exit_d)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','exit_image')->last())
@@ -695,7 +695,7 @@
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="text-center row">
 					<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->suburb_profile_label))}}@else Suburb Profile @endif</small></small><br>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_suburb_whole_section" @if($project->projectconfiguration->show_suburb_whole_section) checked value="1" @else value="0" @endif> 
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_suburb_whole_section" @if($project->projectconfiguration->show_suburb_whole_section) checked value="1" @else value="0" @endif>
 				</div>
 				@endif
 				@endif
@@ -725,7 +725,7 @@
 						@else
 
 						<div class="address-update"></div>
-						
+
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="row text-center">
 							<h5><b>{{nl2br(e($project->projectconfiguration->marketability_label))}}</b></h5>
@@ -745,7 +745,7 @@
 								<br><br>
 								<h4 class="second_color show-marketability-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->marketability_label))}}@else Marketability @endif</h4>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class="text-left project-marketability-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->marketability)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','marketability')->last())
@@ -788,7 +788,7 @@
 								<br><br>
 								<h4 class="second_color show-residents-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->residents_label))}}@else Residents @endif</h4>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class="text-left project-residents-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->residents)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','residents')->last())
@@ -821,7 +821,7 @@
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="text-center row">
 					<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_profile_label))}}@else Investment Profile @endif</small></small><br>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_whole_section" @if($project->projectconfiguration->show_investment_whole_section) checked value="1" @else value="0" @endif> 
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_investment_whole_section" @if($project->projectconfiguration->show_investment_whole_section) checked value="1" @else value="0" @endif>
 				</div>
 				@endif
 				@endif
@@ -849,7 +849,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'investment_type_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_type.png')}}@endif" alt="type" style="width:50px;"> <br><br>
 								<h4 class="second_color show-investment-type-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_type_label))}}@else Type @endif</h4><br>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class="project-investment-type-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->investment_type)!!}</p>@endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','investment_type')->last())
@@ -891,7 +891,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'security_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_security.png')}}@endif" alt="security" style="width:50px;"><br><br>
 								<h4 class="second_color show-investment-security-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_security_label))}}@else Security @endif</h4><br>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class=" project-security-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->security)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','investment_security')->last())
@@ -933,7 +933,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'expected_returns_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_ExpectedReturns.png')}}@endif" alt="expected returns" style="width:50px;"><br><br>
 								<h4 class="second_color show-expected-returns-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->expected_returns_label))}}@else Expected<br> Returns @endif</h4>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class=" project-expected-returns-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->expected_returns_long)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','expected_returns')->last())
@@ -975,7 +975,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'returns_paid_as_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_ReturnPaidAs.png')}}@endif" alt="returns paid as" style="width:50px;"><br><br>
 								<h4 class="second_color show-return-paid-as-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->return_paid_as_label))}}@else Returns<br> Paid As @endif</h4>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class=" project-return-paid-as-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->returns_paid_as)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','return_paid_as')->last())
@@ -1016,7 +1016,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'taxation_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Taxation.png')}}@endif" alt="Taxation" style="width:50px;"><br><br>
 								<h4 class="second_color show-taxation-input" style="margin-top:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->taxation_label))}}@else Taxation @endif</h4><br>
 							</div>
-							<div class="col-md-10"> 
+							<div class="col-md-10">
 								@if($project->investment) <p class=" project-taxation-field text-justify" style="font-size:0.875em;">{!!nl2br($project->investment->taxation)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','taxation')->last())
@@ -1048,7 +1048,7 @@
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="text-center row">
 					<small><small>@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->project_profile_label))}}@else Project Profile @endif</small></small><br>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_profile_whole_section" @if($project->projectconfiguration->show_project_profile_whole_section) checked value="1" @else value="0" @endif> 
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_profile_whole_section" @if($project->projectconfiguration->show_project_profile_whole_section) checked value="1" @else value="0" @endif>
 				</div>
 				@endif
 				@endif
@@ -1080,7 +1080,7 @@
 								<h4 class="second_color show-venture-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->venture_label))}}@else Venture @endif</h4><br>
 								@endif
 							</div>
-							<div class="col-md-10 text-left"> 
+							<div class="col-md-10 text-left">
 								@if($project->investment) <p style="font-size:0.875em;" class="project-developer-field text-justify">{!!nl2br($project->investment->proposer)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','project_developer')->last())
@@ -1122,7 +1122,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'duration_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Duration.png')}}@endif" alt="duration" style="width:50px;">
 								<h4 class="second_color show-duration-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->duration_label))}}@else Duration @endif</h4><br>
 							</div>
-							<div class="col-md-10 text-left"> 
+							<div class="col-md-10 text-left">
 								@if($project->investment) <p style="font-size:0.875em;">{!!nl2br($project->investment->hold_period)!!} Months</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','project_duration')->last())
@@ -1164,7 +1164,7 @@
 								<img src="@if($projMedia=$project->media->where('type', 'current_status_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Current_status.png')}}@endif" alt="current_status" style="width:50px;">
 								<h4 class="second_color show-current-status-input" style="margin-bottom:0px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->current_status_label))}}@else Current Status @endif</h4><br>
 							</div>
-							<div class="col-md-10 text-left"> 
+							<div class="col-md-10 text-left">
 								@if($project->investment) <p style="font-size:0.875em;" class="project-current-status-field text-justify">{!!nl2br($project->investment->current_status)!!}</p> @endif
 								<div>
 									@if($projectMediaImage=$project->media->where('type','current_status')->last())
@@ -1207,7 +1207,7 @@
 									<img src="{{asset($project->media->where('type', 'project_developer')->last()->path)}}" width="30%" alt="Developer" style="padding:1em;" style="width:40px;">
 									@endif
 								</center>
-							</div>	
+							</div>
 						</div>
 					</div>
 					<div class="col-md-4 text-center">
@@ -1254,7 +1254,7 @@
 						<img src="@if($projMedia=$project->media->where('type', 'rationale_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_Rationale.png')}}@endif" alt="rationale" style="width:50px;">
 						<h4 class="second_color show-rationale-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->rationale_label))}}@else Rationale @endif</h4><br>
 					</div>
-					<div class="col-md-10 text-left"> 
+					<div class="col-md-10 text-left">
 						@if($project->investment) <p style="font-size:0.875em;" class="project-rationale-field text-justify">{!!nl2br($project->investment->rationale)!!}</p> @endif
 						<div>
 							@if($projectMediaImage=$project->media->where('type','rationale')->last())
@@ -1295,7 +1295,7 @@
 						<img src="@if($projMedia=$project->media->where('type', 'investment_risk_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_risk.png')}}@endif" alt="risk" style="width:50px;">
 						<h4 class="second_color show-risk-input" style="margin-top:30px; color:#fed405;font-size:1.375em;">@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@else Risk @endif</h4><br>
 					</div>
-					<div class="col-md-10 text-left"> 
+					<div class="col-md-10 text-left">
 						@if($project->investment) <p style="font-size:0.875em;" class="project-risk-field text-justify">{!!nl2br($project->investment->risk)!!}</p> @endif
 						<div>
 							@if($projectMediaImage=$project->media->where('type','investment_risk')->last())
@@ -1336,7 +1336,7 @@
 					{{$faq->id}}
 					<p class="text-justify">{{$faq->answer}}</p>
 				</div>
-				<div class="col-md-2"> 
+				<div class="col-md-2">
 					{!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $faq->id, $project->id]]) !!}
 					{!! Form::submit('Delete this FAQ?', ['class' => 'btn btn-danger']) !!}
 					{!! Form::close() !!}
@@ -1398,7 +1398,7 @@
 				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="text-center row">
 					<small><small>How To Invest</small></small><br>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_how_to_invest_whole_section" @if($project->projectconfiguration->show_how_to_invest_whole_section) checked value="1" @else value="0" @endif> 
+					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_how_to_invest_whole_section" @if($project->projectconfiguration->show_how_to_invest_whole_section) checked value="1" @else value="0" @endif>
 				</div>
 				@endif
 				@endif
@@ -1468,7 +1468,7 @@
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<div class="row text-center">
 				<small><small>Project FAQs</small></small><br>
-				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_faqs_whole_section" @if($project->projectconfiguration->show_project_faqs_whole_section) checked value="1" @else value="0" @endif> 
+				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_project_faqs_whole_section" @if($project->projectconfiguration->show_project_faqs_whole_section) checked value="1" @else value="0" @endif>
 			</div>
 			@endif
 			@endif
@@ -1493,8 +1493,8 @@
 					@endforeach
 				</div>
 			</div>
-			
-		
+
+
 	</div>
 </div>
 </section>
@@ -1588,7 +1588,7 @@
 			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
 			<div class="col-md-8"></div>
 		</div> --}}
-		
+
 		{!! Form::open(array('route'=>['projects.{projects}.comments.store', $project], 'class'=>'form-horizontal', 'role'=>'form', 'id'=>'feedback_form')) !!}
 		<div class="row">
 			<div class="col-md-offset-1 col-md-10 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
@@ -1726,7 +1726,7 @@
 	</div>
 	@if(Auth::guest())
 	@else
-	@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) 
+	@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 </form>
 @endif
 @endif
@@ -1888,7 +1888,7 @@
 						<input type="hidden" name="orig_height" id="orig_height" value="">
 						<input type="hidden" name="project_id" id="project_id" value="{{$project->id}}">
 					</div>
-				</div>      
+				</div>
 			</div>
 		</div>
 	</div>
@@ -1950,7 +1950,7 @@
 		$('.item').first().addClass('active');
 		$('.carousel-indicators > li').first().addClass('active');
 		var daysPassedCheck=0;
-		@if($project->investment && $project->investment->fund_raising_close_date) 
+		@if($project->investment && $project->investment->fund_raising_close_date)
 		fund_close_date = new Date({{date('Y,m-1,d', strtotime($project->investment->fund_raising_close_date))}});
 		var now = new Date();
 		totalDays = {{$project->investment->fund_raising_close_date->diffInDays()}} + {{$project->investment->fund_raising_start_date->diffInDays()}};
@@ -1959,7 +1959,7 @@
 			var closeMonth = fund_close_date.getMonth()+1;
 			var closeDate = fund_close_date.getDate();
 			if((closeYear == now.getFullYear()) && (closeMonth == eval(now.getMonth()+1)) && (closeDate == now.getDate())){
-				// Variable to check whether the fund_close_date is passed. 
+				// Variable to check whether the fund_close_date is passed.
 				daysPassedCheck = 0;
 			} else {
 				daysPassedCheck = 1;
@@ -2107,7 +2107,7 @@
 		@else
 		window.setInterval(function(){
 			window.location = "/welcome?next=projects/{{$project->id}}"
-		},5000); 
+		},5000);
 		@endif
 		@endif
 
@@ -2166,7 +2166,7 @@
 		$('.edit-project-page-details-btn').click(function(e){
 			setProjectDetailsEditable();
 		});
-		
+
 		$('.save-project-details-floating-btn').click(function(e){
 			$('.store-project-page-details-btn').trigger('click');
 		});
@@ -2184,7 +2184,7 @@
 			stepinterval: 50,
 			maxboostedstep: 10000000,
 			postfix: 'X',
-		});		
+		});
 	}*/
 
 	function setSummernoteEditboxToTextarea(){
@@ -2441,10 +2441,10 @@
 			}).done(function(data){
 				console.log(data);
 				location.reload('/');
-			});			
+			});
 		});
 	}
-	
+
 	function editProjectPageSubHeadings(){
 		$('.edit-sub-headings').click(function(){
 			$(this).attr('disabled', true);
@@ -2472,7 +2472,7 @@
 			$('.show-rationale-input').html('<input type="text" name="rationale_label" id="rationale_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->rationale_label))}}@endif"  placeholder="Rationale">');
 			$('.show-risk-input').html('<input type="text" name="investment_risk_label" id="investment_risk_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@endif"  placeholder="Risk">');
 		});
-		
+
 		$('.save-sub-headings').click(function(){
 			var project_details_tab_label = $('#project_details_tab_label').val();
 			var project_progress_tab_label = $('#project_progress_tab_label').val();
@@ -2592,7 +2592,7 @@
 					$('.main-fold-overlay-color').css('background', rgbaColor);
 					@endif
 				}
-			});        
+			});
 		});
 	}
 
@@ -2809,7 +2809,7 @@
 				console.log(data);
 				$('.loader-overlay').hide();
 				if(data.status){
-					$('.'+toggleAction).slideToggle();						
+					$('.'+toggleAction).slideToggle();
 				}
 			});
 		});
