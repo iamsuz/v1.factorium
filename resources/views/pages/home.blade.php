@@ -632,7 +632,7 @@
         </div>
         @endforeach
         @else
-        @if(count($projects)==3)
+        @if(count($projects)>2)
         @if(Auth::guest())
         @else
         @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
