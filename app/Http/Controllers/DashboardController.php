@@ -30,6 +30,7 @@ use App\ProjectInterest;
 use App\InvestmentRequest;
 use App\ProjectEOI;
 use App\ProspectusDownload;
+use Illuminate\Support\Facades\File;
 
 
 class DashboardController extends Controller
@@ -901,5 +902,41 @@ class DashboardController extends Controller
                             ->get();
         $color = Color::where('project_site',url())->first();
         return view('dashboard.prospectusDownloads', compact('prospectusDownloads', 'color'));
+    }
+
+    public function sendEoiLink(Request $request, AppMailer $mailer)
+    {
+        if ($request->ajax()) {
+            $project = Project::find($request->project_id);
+            $eoi = ProjectEOI::find($request->eoi_id);
+            $mailer->sendEoiApplicationLinkToUser($project, $eoi);
+            return 1;
+        }
+    }
+
+    public function uploadOfferDoc(Request $request)
+    {
+        $this->validate($request, [
+            'offer_doc' => 'required|mimes:pdf',
+            'eoi_id' => 'required'
+        ]);        
+        $projectEoi = ProjectEOI::find($request->eoi_id);
+        
+        if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
+            File::makeDirectory(public_path().'/assets/documents/eoi/'.$projectEoi->id, 0775, true);
+        }
+        if($projectEoi->offer_doc_path){
+            File::delete(public_path().$projectEoi->offer_doc_path);
+        }
+        $destinationPath = '/assets/documents/eoi/'.$projectEoi->id;
+        $uniqueFileName = uniqid() . '-' . $request->file('offer_doc')->getClientOriginalName();
+        $request->file('offer_doc')->move(public_path().$destinationPath, $uniqueFileName);
+
+        $projectEoi->update([
+            'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
+            'offer_doc_name' => $uniqueFileName
+            ]);
+
+        return redirect()->back()->with('success', 'File uploaded successfully.');
     }
 }

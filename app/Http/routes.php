@@ -272,3 +272,5 @@ Route::post('/configuration/uploadprojectProgressCircleImages', ['as'=>'configur
 
 Route::post('/projects/prospectus', ['as'=>'projects.prospectus', 'uses'=>'ProjectsController@prospectusDownload']);
 Route::get('/dashboard/prospectus/downloads', ['as'=>'dashboard.prospectus.downloads', 'uses'=>'DashboardController@prospectusDownloads']);
+Route::post('/dashboard/project/interest/link', ['as'=>'dashboard.project.interest.link', 'uses'=>'DashboardController@sendEoiLink']);
+Route::post('/dashboard/project/upload/offerdoc', ['as' => 'dashboard.upload.offerDoc', 'uses' => 'DashboardController@uploadOfferDoc']);
