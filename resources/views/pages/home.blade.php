@@ -258,12 +258,12 @@
 <!-- header content here -->
 @if($siteConfiguration->siteconfigmedia)
 @if($mainImg = $siteConfiguration->siteconfigmedia->where('type', 'homepg_back_img')->first())
-<section id="promo" style="background: url({{$mainImg->path}}) 50% 0px repeat fixed; background-size:cover; top: 0; left: 0; right: 0; bottom: 0; height: 100%; width: auto; max-height: none;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
+<section id="promo" style="background: url({{$mainImg->path}}); background-size: cover; background-repeat: no-repeat; background-position: center center;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
 @else
-<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}) 50% 0px repeat fixed; background-size:cover;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
+<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}); background-size: cover; background-repeat: no-repeat; background-position: center center;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
 @endif
 @else
-<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}) 50% 0px repeat fixed; background-size:cover;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
+<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}); background-size: cover; background-repeat: no-repeat; background-position: center center;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
 @endif
   <div class="color-overlay main-fold-overlay-color">
     <div class="content container" id="promo-content" style="padding-top:10%;">
@@ -1008,7 +1008,7 @@
     @endif
     @endif
     <div class="row">
-        <div class="col-md-5 col-md-offset-1">
+        <div class="col-md-12">
             <h3 class="text-center heading-font-semibold first_color funding-section-title1-field" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" font-size: 26px; line-height:1.3em;">
             @if($siteConfiguration->funding_section_title1 != ''){!!nl2br(e($siteConfiguration->funding_section_title1))!!}@endif
             </h3>
@@ -1021,7 +1021,7 @@
             </div>
             <br><br>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 hide">
             <h3 class="text-center heading-font-semibold first_color funding-section-title2-field" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" font-size: 26px; line-height:1.3em;">
             @if($siteConfiguration->funding_section_title2 != ''){!!nl2br(e($siteConfiguration->funding_section_title2))!!}@endif
             </h3>
@@ -1868,7 +1868,7 @@
       //functionality to edit the investment title1
       editInvestmentTitleText1();
       //functionality to edit the investment title1 Description
-      /*editInvestmentTitle1Description();*/
+      editInvestmentTitle1Description();
       // Edit home page Invesrment Image
       editHomePageInvestmentSectionImg();
       //Edit how it works section content
@@ -2199,12 +2199,12 @@
       });
     }
 
-    /*function editInvestmentTitle1Description(){
+    function editInvestmentTitle1Description(){
       $('.show-investment-title1-desc-edit-box').click(function(){
         $('.investment-title1-description-section').html('<div style="margin-bottom: 20px;"><small class="investment-title1-desc-error" style="font-size:11px;color:#d30000;"></small><br><form action="{{ route('configuration.editHomePgInvestmentTitle1Description') }}" method="POST">{{csrf_field()}}<textarea class="form-control" name="investment_title1_description" id="investment_title1_description" rows="5" placeholder="You Can Add Description Here" style="width: 80%; float: left;"></textarea>&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-desc" style="padding: 10px;">Save</button></form></div>');
         var str1 = $.trim($('#hiddent_investment_title1_description').val()).replace(/\r?\n|\r/g, "");
         console.log(str1);
-        $('#investment_title1_description').val(str1.replace(/<br ?\/?>/g, "\n"));*/
+        $('#investment_title1_description').val(str1.replace(/<br ?\/?>/g, "\n"));
 /*        $('.submit-investment-title1-desc').click(function(e){
           if($('#investment_title1_description').val()==''){
             e.preventDefault();
@@ -2212,8 +2212,8 @@
             
           }
         });*/
-      /*});
-    }*/
+      });
+    }
 
     function editHomePageInvestmentSectionImg(){
       $('.edit-homepg-investment-img').click(function(e){
@@ -2384,7 +2384,7 @@
           var str2 = $.trim($('#hidden_funding_section_title2').val()).replace(/\r?\n|\r/g, "");
           $('#funding_section_title2').val(str2.replace(/<br ?\/?>/g, "\n"));
 
-          $('.funding-section-btn1-field').html('<small>Funding Type1 Button text</small><input type="text" name="funding_section_btn1_text" id="funding_section_btn1_text" class="form-control" placeholder="Funding type 1 button text" value="{{$siteConfiguration->funding_section_btn1_text}}">');
+          $('.funding-section-btn1-field').html('<small>Funding Type1 Button text</small><input type="text" name="funding_section_btn1_text" id="funding_section_btn1_text" class="form-control" placeholder="Funding type 1 button text" value="{{$siteConfiguration->funding_section_btn1_text}}"><br><small class="funding-section-error" style="font-size:11px;color:#d30000;"></small><br><button type="Submit" class="btn btn-primary" id="save_funding_section_details">Save Details</button>');
           $('.funding-section-btn2-field').html('<small>Funding Type2 Button text</small><input type="text" name="funding_section_btn2_text" id="funding_section_btn2_text" class="form-control" placeholder="Funding type 2 button text" value="{{$siteConfiguration->funding_section_btn2_text}}"><br><small class="funding-section-error" style="font-size:11px;color:#d30000;"></small><br><button type="Submit" class="btn btn-primary" id="save_funding_section_details">Save Details</button>');
           $('#save_funding_section_details').click(function(e){
               if(($('#funding_section_title1').val()=='') || ($('#funding_section_title2').val()=='') || ($('#funding_section_btn1_text').val()=='') || ($('#funding_section_btn2_text').val()=='')){
