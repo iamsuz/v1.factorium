@@ -679,19 +679,74 @@ class SiteConfigurationsController extends Controller
             return redirect()->back();
         }
 
-        public function deleteProgressDetails(Request $request,$id)
-        {
-            $proj_prog = ProjectProg::findOrFail($id);
-            $proj_prog->delete();
-            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Deleted Successfully</p>');
+    public function deleteProgressDetails(Request $request,$id)     
+    {
+        $proj_prog = ProjectProg::findOrFail($id);
+        $proj_prog->delete();
+        return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Deleted Successfully</p>');
+    }
+
+    public function updateCoInvestDetails(Request $request, $projectId) 
+    {
+        $this->validate($request, array(
+                'project_title_txt' => 'required',
+                'project_description_txt' => 'required',
+                ));
+
+        Project::where('id', $projectId)->update([
+                'title' => $request->project_title_txt,
+                'description' => $request->project_description_txt,
+                'button_label'=>$request->project_button_invest_txt,
+                'project_prospectus_text'=>$request->project_prospectus_txt,
+                'edit_disclaimer'=>$request->add_disclaimer_txt,
+                ]);
+
+        Investment::where('project_id', $projectId)->first()->update([
+                'fund_raising_close_date'=>$request->fund_raising_close_date,
+                'minimum_accepted_amount' => $request->project_min_investment_txt,
+                'hold_period' => $request->project_hold_period_txt,
+                'projected_returns' => $request->project_returns_txt,
+                'goal_amount' => $request->project_goal_amount_txt,
+                'summary' => $request->project_summary_txt,
+                'security_long' => $request->project_security_long_txt,
+                'exit_d' => $request->project_investor_distribution_txt,
+                'marketability' => $request->project_marketability_txt,
+                'residents' => $request->project_residents_txt,
+                'investment_type' => $request->project_investment_type_txt,
+                'security' => $request->project_security_txt,
+            ]);
+
+        $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
+        $response = \Geocoder::geocode('json', $param);
+        if(json_decode($response)->status != 'ZERO_RESULTS') {
+            $latitude =json_decode(($response))->results[0]->geometry->location->lat;
+            $longitude =json_decode(($response))->results[0]->geometry->location->lng;
+        } else {
+            return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
         }
-        public function updateProjectDetails(Request $request, $projectId)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $this->validate($request, array(
-                    'project_title_txt' => 'required',
-                    'project_description_txt' => 'required',
-                    'project_goal_amount'=>'required|integer|min:1',
+        Location::where('id', $projectId)->update([
+            'line_1'=>$request->line_1,
+            'line_2'=>$request->line_2,
+            'city'=>$request->city,
+            'state'=>$request->state,
+            'postal_code'=>$request->postal_code,
+            'country_code'=>$request->country,
+            'country'=>array_search($request->country, \App\Http\Utilities\Country::aus()),
+            'latitude'=>$latitude,
+            'longitude'=>$longitude,
+            'zoom_level'=>$request->zoom_level,
+        ]);
+        Session::flash('message', 'Project Details Updated');
+            Session::flash('editable', 'true');
+            return redirect()->back();
+    }
+
+    public function updateProjectDetails(Request $request, $projectId)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $this->validate($request, array(
+                'project_title_txt' => 'required',
+                'project_description_txt' => 'required',
                 ));
                 Project::where('id', $projectId)->update([
                     'title' => $request->project_title_txt,
@@ -771,11 +826,13 @@ class SiteConfigurationsController extends Controller
                 return redirect()->back();
             }
         }
-        public function uploadProjectPgBackImg(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'projectpg_back_img'   => 'required|mimes:jpeg,png,jpg',
+    }
+
+    public function uploadProjectPgBackImg(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'projectpg_back_img'   => 'required|mimes:jpeg,png,jpg',
                 );
                 $validator = Validator::make($request->all(), $validation_rules);
                 if($validator->fails()){
