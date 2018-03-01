@@ -3,6 +3,10 @@
 {{$project->title}} | Dashboard | @parent
 @stop
 
+@section('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@stop
+
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -508,6 +512,8 @@
 									<th class="text-center">Amount</th>
 									<th class="text-center">Investment Expected</th>
 									<th class="text-center">EOI Timestamp</th>
+									<th>Application Link</th>
+									<th>Offer Document</th>
 								</tr>
 							</thead>
 							<tbody class="text-center">
@@ -519,6 +525,27 @@
 									<td>{{$projectsEoi->investment_amount}}</td>
 									<td>{{$projectsEoi->invesment_period}}</td>
 									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
+									<td>
+										@if($projectsEoi->offer_doc_path)
+											<a class="send-app-form-link" href="javascript:void();" data="{{$projectsEoi->id}}"><b>Send link</b></a>
+										@else
+											<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
+										@endif
+									</td>
+									<td>
+										@if($projectsEoi->offer_doc_path)
+										<a href="{{$projectsEoi->offer_doc_path}}" target="_blank" download>
+											{{$projectsEoi->offer_doc_name}}
+										</a>
+										@endif
+										<form action="{{route('dashboard.upload.offerDoc')}}" rel="form" method="POST" enctype="multipart/form-data">
+											{!! csrf_field() !!}
+											<input type="file" name="offer_doc" id="offer_doc"  required>
+											{!! $errors->first('offer_doc', '<small class="text-danger">:message</small>') !!}
+											<input type="hidden" name="eoi_id" value="{{$projectsEoi->id}}">
+											<input type="submit" name="upload_offer_doc" value="Upload" class="btn btn-primary">
+										</form>
+									</td>
 								</tr>
 								@endforeach
 							</tbody>
@@ -671,6 +698,7 @@
         $( ".datepicker" ).datepicker({
         	'format': 'dd/mm/yy'
         });
+        sendEOIAppFormLink();
 	});
 
 	// Declare dividend
@@ -712,6 +740,29 @@
 					alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
 				}
 			}
+		});
+	}
+
+	function sendEOIAppFormLink(){
+		$('.send-app-form-link').click(function(e){
+			e.preventDefault();
+			var project_id = {{$project->id}};
+			var eoi_id = $(this).attr('data');
+			$('.loader-overlay').show();
+			$.ajax({
+	          	url: '/dashboard/project/interest/link',
+	          	type: 'POST',
+	          	dataType: 'JSON',
+	          	data: {project_id, eoi_id},
+	          	headers: {
+	            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	          	},
+	        }).done(function(data){
+	        	if(data){
+	        		$('.send-app-form-link').parent().html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
+	        		$('.loader-overlay').hide();
+	        	}
+	        });
 		});
 	}
 </script>

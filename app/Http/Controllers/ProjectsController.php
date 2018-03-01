@@ -460,7 +460,7 @@ class ProjectsController extends Controller
         //
     }
 
-    public function showInterest($project_id, AppMailer $mailer)
+    public function showInterest($project_id, AppMailer $mailer, Request $request)
     {
         $action = '/offer/submit/'.$project_id.'/step1';
         $projects_spv = ProjectSpvDetail::where('project_id',$project_id)->first();
@@ -482,6 +482,10 @@ class ProjectsController extends Controller
             // $this->dispatch(new SendInvestorNotificationEmail($user,$project));
             // $this->dispatch(new SendReminderEmail($user,$project));
             // $this->dispatch(new SendDeveloperNotificationEmail($user,$project));
+            if($request->source == 'eoi'){
+                $eoi = ProjectEOI::find($request->id);
+                return view('projects.offer', compact('project','color','action','projects_spv','user', 'eoi'));
+            }
             if(!$project->eoi_button){
                 return view('projects.offer', compact('project','color','action','projects_spv','user'));
             } else{

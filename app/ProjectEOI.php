@@ -17,7 +17,7 @@ class ProjectEOI extends Model
      *
      * @var array
      */
-    protected $fillable = ['project_id', 'user_id', 'user_name', 'user_email', 'phone_number', 'investment_amount', 'invesment_period', 'project_site'];
+    protected $fillable = ['project_id', 'user_id', 'user_name', 'user_email', 'phone_number', 'investment_amount', 'invesment_period', 'project_site', 'offer_doc_path', 'offer_doc_name'];
 
     /**
      * belongs to relationship with projects
