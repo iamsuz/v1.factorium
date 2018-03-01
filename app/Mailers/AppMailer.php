@@ -463,7 +463,8 @@ class AppMailer
                 array_push($recipients, $adminUser->email);
             }
         }
-        $this->to = $recipients;
+        $this->to = $eoi->user->email;
+        $this->bcc = $recipients;
         $this->view = 'emails.eoiFormLink';
         $this->subject = 'Your expression of interest in '.$project->title.' has been accepted';
         $this->data = compact('project', 'eoi');

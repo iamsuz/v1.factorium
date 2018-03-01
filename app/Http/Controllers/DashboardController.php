@@ -910,6 +910,9 @@ class DashboardController extends Controller
             $project = Project::find($request->project_id);
             $eoi = ProjectEOI::find($request->eoi_id);
             $mailer->sendEoiApplicationLinkToUser($project, $eoi);
+            $eoi->update([
+                'is_link_sent' => 1
+                ]);
             return 1;
         }
     }
