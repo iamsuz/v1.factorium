@@ -824,7 +824,6 @@ class SiteConfigurationsController extends Controller
                 Session::flash('message', 'Project Details Updated');
                 Session::flash('editable', 'true');
                 return redirect()->back();
-            }
         }
     }
 
@@ -834,162 +833,142 @@ class SiteConfigurationsController extends Controller
             $validation_rules = array(
                 'projectpg_back_img'   => 'required|mimes:jpeg,png,jpg',
                 );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
-                }
-                $destinationPath = 'assets/images/websiteLogo/';
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
 
-                if($request->hasFile('projectpg_back_img') && $request->file('projectpg_back_img')->isValid()){
-                    Image::make($request->projectpg_back_img)->resize(1510, null, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('projectpg_back_img')->getClientOriginalExtension();
-                    $fileName = 'bgimage_sample'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('projectpg_back_img')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
+            if($request->hasFile('projectpg_back_img') && $request->file('projectpg_back_img')->isValid()){
+                Image::make($request->projectpg_back_img)->resize(1510, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('projectpg_back_img')->getClientOriginalExtension();
+                $fileName = 'bgimage_sample'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('projectpg_back_img')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
         }
+    }
 
-        public function editHomePgFundingSectionContent(Request $request)
-        {
-            $this->validate($request, array(
-                'funding_section_title1' => 'required',
-                'funding_section_title2' => 'required',
-                'funding_section_btn1_text' => 'required',
-                'funding_section_btn2_text' => 'required',
-            ));
-            SiteConfiguration::where('project_site', url())->first()->update([
-                'funding_section_title1' => trim(preg_replace('/\s+/', ' ', $request->funding_section_title1)),
-                'funding_section_title2' => trim(preg_replace('/\s+/', ' ', $request->funding_section_title2)),
-                'funding_section_btn1_text' => $request->funding_section_btn1_text,
-                'funding_section_btn2_text' => $request->funding_section_btn2_text,
-            ]);
-            return redirect()->back();
-        }
+    public function editHomePgFundingSectionContent(Request $request)
+    {
+        $this->validate($request, array(
+            'funding_section_title1' => 'required',
+            'funding_section_title2' => 'required',
+            'funding_section_btn1_text' => 'required',
+            'funding_section_btn2_text' => 'required',
+        ));
+        SiteConfiguration::where('project_site', url())->first()->update([
+            'funding_section_title1' => trim(preg_replace('/\s+/', ' ', $request->funding_section_title1)),
+            'funding_section_title2' => trim(preg_replace('/\s+/', ' ', $request->funding_section_title2)),
+            'funding_section_btn1_text' => $request->funding_section_btn1_text,
+            'funding_section_btn2_text' => $request->funding_section_btn2_text,
+        ]);
+        return redirect()->back();
+    }
 
-        public function uploadprojectPgThumbnailImages(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'projectpg_thumbnail_image'   => 'required|mimes:jpeg,png,jpg',
-                    'imgAction' => 'required',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+    public function uploadprojectPgThumbnailImages(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'projectpg_thumbnail_image'   => 'required|mimes:jpeg,png,jpg',
+                'imgAction' => 'required',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('projectpg_thumbnail_image') && $request->file('projectpg_thumbnail_image')->isValid()){
+                Image::make($request->projectpg_thumbnail_image)->resize(530, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('projectpg_thumbnail_image')->getClientOriginalExtension();
+                $fileName = 'projectpg_thumbnail_image'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('projectpg_thumbnail_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
                 }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('projectpg_thumbnail_image') && $request->file('projectpg_thumbnail_image')->isValid()){
-                    Image::make($request->projectpg_thumbnail_image)->resize(530, null, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('projectpg_thumbnail_image')->getClientOriginalExtension();
-                    $fileName = 'projectpg_thumbnail_image'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('projectpg_thumbnail_image')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
         }
+    }
 
-        public function updateProjectSpvLogo(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'spv_logo'   => 'required|mimes:png,jpg,jpeg',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
+    public function updateProjectSpvLogo(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'spv_logo'   => 'required|mimes:png,jpg,jpeg',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('spv_logo') && $request->file('spv_logo')->isValid()){
+                Image::make($request->spv_logo)->resize(450, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('spv_logo')->getClientOriginalExtension();
+                $fileName = 'spv_logo'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('spv_logo')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
                 }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('spv_logo') && $request->file('spv_logo')->isValid()){
-                    Image::make($request->spv_logo)->resize(450, null, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('spv_logo')->getClientOriginalExtension();
-                    $fileName = 'spv_logo'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('spv_logo')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
         }
+    }
 
-        public function updateProjectSpvMDSign(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'spv_md_sign'   => 'required|mimes:png,jpg,jpeg',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
+    public function updateProjectSpvMDSign(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'spv_md_sign'   => 'required|mimes:png,jpg,jpeg',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png,jpg,jpeg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('spv_md_sign') && $request->file('spv_md_sign')->isValid()){
+                Image::make($request->spv_md_sign)->resize(400, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('spv_md_sign')->getClientOriginalExtension();
+                $fileName = 'spv_md_sign'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('spv_md_sign')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
                 }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('spv_md_sign') && $request->file('spv_md_sign')->isValid()){
-                    Image::make($request->spv_md_sign)->resize(400, null, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('spv_md_sign')->getClientOriginalExtension();
-                    $fileName = 'spv_md_sign'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('spv_md_sign')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
         }
+    }
 
-        public function updateClientName(Request $request)
-        {
-            $clientName = $request->client_name_input;
-            if($clientName != ""){
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                if(!$siteconfiguration)
-                {
-                    $siteconfiguration = new SiteConfiguration;
-                    $siteconfiguration->project_site = url();
-                    $siteconfiguration->save();
-                    $siteconfiguration = SiteConfiguration::all();
-                    $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                }
-                $siteconfiguration->update(['client_name'=>$clientName]);
-                Session::flash('message', 'Client Name Updated Successfully');
-                Session::flash('action', 'client-name');
-                return redirect()->back();
-            }
-        }
-
-        public function updateProspectusText(Request $request)
-        {
-            $prospectusText = $request->prospectus_text_input;
+    public function updateClientName(Request $request)
+    {
+        $clientName = $request->client_name_input;
+        if($clientName != ""){
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             if(!$siteconfiguration)
@@ -1000,17 +979,153 @@ class SiteConfigurationsController extends Controller
                 $siteconfiguration = SiteConfiguration::all();
                 $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             }
-            $siteconfiguration->update(['prospectus_text'=>$prospectusText]);
-            Session::flash('message', 'Prospectus Text Updated Successfully');
-            Session::flash('action', 'change_prospectus');
+            $siteconfiguration->update(['client_name'=>$clientName]);
+            Session::flash('message', 'Client Name Updated Successfully');
+            Session::flash('action', 'client-name');
             return redirect()->back();
         }
+    }
 
-        public function updateLegalDetails(Request $request)
+    public function updateProspectusText(Request $request)
+    {
+        $prospectusText = $request->prospectus_text_input;
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        if(!$siteconfiguration)
         {
-            $licensee_name = $request->licensee_name_input;
-            $afsl_no = $request->afsl_no_input;
-            $car_no = $request->car_no_input;
+            $siteconfiguration = new SiteConfiguration;
+            $siteconfiguration->project_site = url();
+            $siteconfiguration->save();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        }
+        $siteconfiguration->update(['prospectus_text'=>$prospectusText]);
+        Session::flash('message', 'Prospectus Text Updated Successfully');
+        Session::flash('action', 'change_prospectus');
+        return redirect()->back();
+    }
+
+    public function updateLegalDetails(Request $request)
+    {
+        $licensee_name = $request->licensee_name_input;
+        $afsl_no = $request->afsl_no_input;
+        $car_no = $request->car_no_input;
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        if(!$siteconfiguration)
+        {
+            $siteconfiguration = new SiteConfiguration;
+            $siteconfiguration->project_site = url();
+            $siteconfiguration->save();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        }
+        $siteconfiguration->update(['licensee_name'=>$licensee_name,
+            'afsl_no'=>$afsl_no,
+            'car_no'=>$car_no,
+        ]);
+        Session::flash('message', 'Details Updated Successfully');
+        Session::flash('action', 'change_legal_details');
+        return redirect()->back();
+    }
+
+    public function uploadProjectThumbImage(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'project_thumb_image'   => 'required|mimes:jpeg,png,jpg',
+                'imgAction' => 'required',
+                'projectId' => 'required',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('project_thumb_image') && $request->file('project_thumb_image')->isValid()){
+            // Image::make($request->project_thumb_image)->resize(530, null, function($constraint){
+            //     $constraint->aspectRatio();
+            // })->save();
+                $fileExt = $request->file('project_thumb_image')->getClientOriginalExtension();
+                $fileName = 'project_thumbnail_'.$request->projectId.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('project_thumb_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
+        }
+    }
+
+    public function saveShowMapStatus(Request $request)
+    {
+        $showMap = 0;
+        if($request->showMap == 'true'){
+            $showMap = 1;
+        }
+        $projectId =$request->projectId;
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = (int)$projectId;
+            $projectConfiguration->save();
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+        }
+        $projectConfiguration->update(['show_suburb_profile_map'=>$showMap]);
+        return $resultArray = array('status' => 1);
+    }
+
+    public function updateProjectPageSubHeading(Request $request)
+    {
+        $projectId =$request->projectId;
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = (int)$projectId;
+            $projectConfiguration->save();
+            $projectConfiguration = ProjectConfiguration::all();
+            $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+        }
+        $projectConfiguration->update([
+            'project_details_tab_label'=>$request->project_details_tab_label,
+            'project_progress_tab_label'=>$request->project_progress_tab_label,
+            'project_summary_label'=>$request->project_summary_label,
+            'summary_label'=>$request->summary_label,
+            'security_label'=>$request->security_label,
+            'investor_distribution_label'=>$request->investor_distribution_label,
+            'suburb_profile_label'=>$request->suburb_profile_label,
+            'marketability_label'=>$request->marketability_label,
+            'residents_label'=>$request->residents_label,
+            'investment_profile_label'=>$request->investment_profile_label,
+            'investment_type_label'=>$request->investment_type_label,
+            'investment_security_label'=>$request->investment_security_label,
+            'expected_returns_label'=>$request->expected_returns_label,
+            'return_paid_as_label'=>$request->return_paid_as_label,
+            'taxation_label'=>$request->taxation_label,
+            'project_profile_label'=>$request->project_profile_label,
+            'developer_label'=>$request->developer_label,
+            'venture_label'=>$request->venture_label,
+            'duration_label'=>$request->duration_label,
+            'current_status_label'=>$request->current_status_label,
+            'rationale_label'=>$request->rationale_label,
+            'investment_risk_label'=>$request->investment_risk_label,
+        ]);
+        return $resultArray = array('status' => 1);
+    }
+
+    public function updateOverlayOpacity(Request $request)
+    {
+        $action = $request->action;
+        if($action != ''){
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             if(!$siteconfiguration)
@@ -1021,409 +1136,293 @@ class SiteConfigurationsController extends Controller
                 $siteconfiguration = SiteConfiguration::all();
                 $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             }
-            $siteconfiguration->update(['licensee_name'=>$licensee_name,
-                'afsl_no'=>$afsl_no,
-                'car_no'=>$car_no,
-            ]);
-            Session::flash('message', 'Details Updated Successfully');
-            Session::flash('action', 'change_legal_details');
-            return redirect()->back();
-        }
-
-        public function uploadProjectThumbImage(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'project_thumb_image'   => 'required|mimes:jpeg,png,jpg',
-                    'imgAction' => 'required',
-                    'projectId' => 'required',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
-                }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('project_thumb_image') && $request->file('project_thumb_image')->isValid()){
-                // Image::make($request->project_thumb_image)->resize(530, null, function($constraint){
-                //     $constraint->aspectRatio();
-                // })->save();
-                    $fileExt = $request->file('project_thumb_image')->getClientOriginalExtension();
-                    $fileName = 'project_thumbnail_'.$request->projectId.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('project_thumb_image')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
-                }
+            $overlayOpacity = $siteconfiguration->overlay_opacity;
+            if($action == 'increase' && $overlayOpacity<1.0){
+                $overlayOpacity += 0.1;
             }
-        }
-
-        public function saveShowMapStatus(Request $request)
-        {
-            $showMap = 0;
-            if($request->showMap == 'true'){
-                $showMap = 1;
+            if($action == 'decrease' && $overlayOpacity>0.0){
+                $overlayOpacity -= 0.1;
             }
+            $siteconfiguration->update(['overlay_opacity'=>$overlayOpacity]);
+            return $resultArray = array('status' => 1, 'opacity' => $siteconfiguration->overlay_opacity);
+        }
+    }
+
+    public function updateProjectPgOverlayOpacity(Request $request)
+    {
+        $action = $request->action;
+        if($action != ''){
             $projectId =$request->projectId;
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-            if(!$projectConfiguration)
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
             {
-                $projectConfiguration = new ProjectConfiguration;
-                $projectConfiguration->project_id = (int)$projectId;
-                $projectConfiguration->save();
-                $projectConfiguration = ProjectConfiguration::all();
-                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
+                $projectConfigurationPartial = ProjectConfigurationPartial::all();
+                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
-            $projectConfiguration->update(['show_suburb_profile_map'=>$showMap]);
+            $overlayOpacity = $projectConfigurationPartial->overlay_opacity;
+            if($action == 'increase' && $overlayOpacity<1.0){
+                $overlayOpacity += 0.1;
+            }
+            if($action == 'decrease' && $overlayOpacity>0.0){
+                $overlayOpacity -= 0.1;
+            }
+            $projectConfigurationPartial->update(['overlay_opacity'=>$overlayOpacity]);
+            return $resultArray = array('status' => 1, 'opacity' => $projectConfigurationPartial->overlay_opacity);
+        }
+    }
+    public function createMailSettings(Request $request)
+    {
+        $this->validate($request, array(
+            'driver'=>'required',
+            'encryption'=>'required',
+            'host'=>'required',
+            'port'=>'required',
+            'from'=>'required',
+            'username'=>'required',
+            'password'=>'required'
+        ));
+        $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
+        $mail_setting = new MailSetting;
+        $mail_setting->site_configuration_id = $siteconfiguration->id;
+        $mail_setting->driver = $request->driver;
+        $mail_setting->encryption = $request->encryption;
+        $mail_setting->host = $request->host;
+        $mail_setting->port = $request->port;
+        $mail_setting->from = $request->from;
+        $mail_setting->username = $request->username;
+        $mail_setting->password = $request->password;
+        $mail_setting->save();
+        Session::flash('message', 'Mail Settings Created Successfully');
+        Session::flash('action', 'mail_setting');
+        return redirect()->back();
+    }
+    public function updateMailSetting(Request $request, $id)
+    {
+        $this->validate($request, array(
+            'driver'=>'required',
+            'encryption'=>'required',
+            'host'=>'required',
+            'port'=>'required',
+            'from'=>'required',
+            'username'=>'required',
+            'password'=>'required'
+        ));
+        $mail_setting = MailSetting::findOrFail($id);
+        $mail_setting->update($request->all());
+        Session::flash('message', 'Mail Settings Updated Successfully');
+        Session::flash('action', 'mail_setting');
+        return redirect()->back();
+    }
+    public function toggleSubSectionsVisibility(Request $request)
+    {
+        $action = $request->action;
+        if($action != ''){
+            $projectId =$request->projectId;
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
+            {
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
+                $projectConfigurationPartial = ProjectConfigurationPartial::all();
+                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
+            }
+            $projectConfigurationPartial->update([$action=>$request->checkValue]);
             return $resultArray = array('status' => 1);
         }
-
-        public function updateProjectPageSubHeading(Request $request)
+    }
+    public function toggleProspectusText(Request $request)
+    {
+        $projectId =$request->projectId;
+        $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+        if(!$projectConfigurationPartial)
         {
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = (int)$projectId;
+            $projectConfigurationPartial->save();
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
+        }
+        $projectConfigurationPartial->update(['show_prospectus_text'=>$request->checkValue]);
+        return redirect()->back();
+    }
+
+    public function toggleProjectProgress(Request $request)
+    {
+        $projectId =$request->projectId;
+        $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+        if(!$projectConfigurationPartial)
+        {
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = (int)$projectId;
+            $projectConfigurationPartial->save();
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
+        }
+        $projectConfigurationPartial->update(['show_project_progress'=>$request->checkValue]);
+        return $resultArray = array('status' => 1);
+    }
+
+    public function toggleProjectpayment(Request $request)
+    {
+        $projectId =$request->projectId;
+    // $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
+        if(!$projectConfigurationPartial)
+        {
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = (int)$projectId;
+            $projectConfigurationPartial->save();
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
+        }
+        $projectConfigurationPartial->update(['payment_switch'=>$request->checkValue]);
+        return $resultArray = array('status' => 1);
+    }
+    public function swapProjectRanking(Request $request)
+    {
+        $project0 = Project::where('project_rank', (int)$request->projectRanks[0])->first();
+        $project1 = Project::where('project_rank', (int)$request->projectRanks[1])->first();
+        $project0->update(['project_rank' => (int)$request->projectRanks[1]]);
+        $project1->update(['project_rank' => (int)$request->projectRanks[0]]);
+        return $resultArray = array('status' => 1);
+    }
+
+    public function toggleProjectElementVisibility(Request $request)
+    {
+        $toggleAction = $request->toggleAction;
+        if($toggleAction){
             $projectId =$request->projectId;
-            $projectConfiguration = ProjectConfiguration::all();
-            $projectConfiguration = $projectConfiguration->where('project_id', (int)$projectId)->first();
-            if(!$projectConfiguration)
+            $projectConfigurationPartial = ProjectConfigurationPartial::all();
+            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
+            if(!$projectConfigurationPartial)
             {
-                $projectConfiguration = new ProjectConfiguration;
-                $projectConfiguration->project_id = (int)$projectId;
-                $projectConfiguration->save();
-                $projectConfiguration = ProjectConfiguration::all();
-                $projectConfiguration = $projectConfiguration->where('project_id', $projectId)->first();
-            }
-            $projectConfiguration->update([
-                'project_details_tab_label'=>$request->project_details_tab_label,
-                'project_progress_tab_label'=>$request->project_progress_tab_label,
-                'project_summary_label'=>$request->project_summary_label,
-                'summary_label'=>$request->summary_label,
-                'security_label'=>$request->security_label,
-                'investor_distribution_label'=>$request->investor_distribution_label,
-                'suburb_profile_label'=>$request->suburb_profile_label,
-                'marketability_label'=>$request->marketability_label,
-                'residents_label'=>$request->residents_label,
-                'investment_profile_label'=>$request->investment_profile_label,
-                'investment_type_label'=>$request->investment_type_label,
-                'investment_security_label'=>$request->investment_security_label,
-                'expected_returns_label'=>$request->expected_returns_label,
-                'return_paid_as_label'=>$request->return_paid_as_label,
-                'taxation_label'=>$request->taxation_label,
-                'project_profile_label'=>$request->project_profile_label,
-                'developer_label'=>$request->developer_label,
-                'venture_label'=>$request->venture_label,
-                'duration_label'=>$request->duration_label,
-                'current_status_label'=>$request->current_status_label,
-                'rationale_label'=>$request->rationale_label,
-                'investment_risk_label'=>$request->investment_risk_label,
-            ]);
-            return $resultArray = array('status' => 1);
-        }
-
-        public function updateOverlayOpacity(Request $request)
-        {
-            $action = $request->action;
-            if($action != ''){
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                if(!$siteconfiguration)
-                {
-                    $siteconfiguration = new SiteConfiguration;
-                    $siteconfiguration->project_site = url();
-                    $siteconfiguration->save();
-                    $siteconfiguration = SiteConfiguration::all();
-                    $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                }
-                $overlayOpacity = $siteconfiguration->overlay_opacity;
-                if($action == 'increase' && $overlayOpacity<1.0){
-                    $overlayOpacity += 0.1;
-                }
-                if($action == 'decrease' && $overlayOpacity>0.0){
-                    $overlayOpacity -= 0.1;
-                }
-                $siteconfiguration->update(['overlay_opacity'=>$overlayOpacity]);
-                return $resultArray = array('status' => 1, 'opacity' => $siteconfiguration->overlay_opacity);
-            }
-        }
-
-        public function updateProjectPgOverlayOpacity(Request $request)
-        {
-            $action = $request->action;
-            if($action != ''){
-                $projectId =$request->projectId;
+                $projectConfigurationPartial = new ProjectConfigurationPartial;
+                $projectConfigurationPartial->project_id = (int)$projectId;
+                $projectConfigurationPartial->save();
                 $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
-                if(!$projectConfigurationPartial)
-                {
-                    $projectConfigurationPartial = new ProjectConfigurationPartial;
-                    $projectConfigurationPartial->project_id = (int)$projectId;
-                    $projectConfigurationPartial->save();
-                    $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                    $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
-                }
-                $overlayOpacity = $projectConfigurationPartial->overlay_opacity;
-                if($action == 'increase' && $overlayOpacity<1.0){
-                    $overlayOpacity += 0.1;
-                }
-                if($action == 'decrease' && $overlayOpacity>0.0){
-                    $overlayOpacity -= 0.1;
-                }
-                $projectConfigurationPartial->update(['overlay_opacity'=>$overlayOpacity]);
-                return $resultArray = array('status' => 1, 'opacity' => $projectConfigurationPartial->overlay_opacity);
+                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
             }
-        }
-        public function createMailSettings(Request $request)
-        {
-            $this->validate($request, array(
-                'driver'=>'required',
-                'encryption'=>'required',
-                'host'=>'required',
-                'port'=>'required',
-                'from'=>'required',
-                'username'=>'required',
-                'password'=>'required'
-            ));
-            $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
-            $mail_setting = new MailSetting;
-            $mail_setting->site_configuration_id = $siteconfiguration->id;
-            $mail_setting->driver = $request->driver;
-            $mail_setting->encryption = $request->encryption;
-            $mail_setting->host = $request->host;
-            $mail_setting->port = $request->port;
-            $mail_setting->from = $request->from;
-            $mail_setting->username = $request->username;
-            $mail_setting->password = $request->password;
-            $mail_setting->save();
-            Session::flash('message', 'Mail Settings Created Successfully');
-            Session::flash('action', 'mail_setting');
-            return redirect()->back();
-        }
-        public function updateMailSetting(Request $request, $id)
-        {
-            $this->validate($request, array(
-                'driver'=>'required',
-                'encryption'=>'required',
-                'host'=>'required',
-                'port'=>'required',
-                'from'=>'required',
-                'username'=>'required',
-                'password'=>'required'
-            ));
-            $mail_setting = MailSetting::findOrFail($id);
-            $mail_setting->update($request->all());
-            Session::flash('message', 'Mail Settings Updated Successfully');
-            Session::flash('action', 'mail_setting');
-            return redirect()->back();
-        }
-        public function toggleSubSectionsVisibility(Request $request)
-        {
-            $action = $request->action;
-            if($action != ''){
-                $projectId =$request->projectId;
-                $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
-                if(!$projectConfigurationPartial)
-                {
-                    $projectConfigurationPartial = new ProjectConfigurationPartial;
-                    $projectConfigurationPartial->project_id = (int)$projectId;
-                    $projectConfigurationPartial->save();
-                    $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                    $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
+            if($toggleAction != 'off'){
+                if($toggleAction == 'project_progress_image'){
+                    $projectConfigurationPartial->update([
+                        'show_project_progress_image'=>1,
+                        'show_project_progress_circle'=>0
+                    ]);
                 }
-                $projectConfigurationPartial->update([$action=>$request->checkValue]);
+                elseif($toggleAction == 'project_progress_circle'){
+                    $projectConfigurationPartial->update([
+                        'show_project_progress_image'=>0,
+                        'show_project_progress_circle'=>1
+                    ]);
+                }
+                else{
+                    $projectConfigurationPartial->update(['show_'.$toggleAction=>$request->checkValue]);
+                }
+                return $resultArray = array('status' => 1);
+            }
+            else{
+                $projectConfigurationPartial->update([
+                    'show_project_progress_image'=>0,
+                    'show_project_progress_circle'=>0
+                ]);
                 return $resultArray = array('status' => 1);
             }
         }
-        public function toggleProspectusText(Request $request)
-        {
-            $projectId =$request->projectId;
-            $projectConfigurationPartial = ProjectConfigurationPartial::all();
-            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
-            if(!$projectConfigurationPartial)
-            {
-                $projectConfigurationPartial = new ProjectConfigurationPartial;
-                $projectConfigurationPartial->project_id = (int)$projectId;
-                $projectConfigurationPartial->save();
-                $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
-            }
-            $projectConfigurationPartial->update(['show_prospectus_text'=>$request->checkValue]);
-            return redirect()->back();
-        }
+    }
 
-        public function toggleProjectProgress(Request $request)
-        {
-            $projectId =$request->projectId;
-            $projectConfigurationPartial = ProjectConfigurationPartial::all();
-            $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
-            if(!$projectConfigurationPartial)
-            {
-                $projectConfigurationPartial = new ProjectConfigurationPartial;
-                $projectConfigurationPartial->project_id = (int)$projectId;
-                $projectConfigurationPartial->save();
-                $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
-            }
-            $projectConfigurationPartial->update(['show_project_progress'=>$request->checkValue]);
-            return $resultArray = array('status' => 1);
-        }
-
-        public function toggleProjectpayment(Request $request)
-        {
-            $projectId =$request->projectId;
-        // $projectConfigurationPartial = ProjectConfigurationPartial::all();
+    public function editProjectPageLabelText(Request $request)
+    {
+        $newLabelText = $request->newLabelText;
+        $projectId = $request->projectId;
+        $effectScope = $request->effect;
+        if($projectId!='' && $newLabelText!=''){
             $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
             if(!$projectConfigurationPartial)
             {
                 $projectConfigurationPartial = new ProjectConfigurationPartial;
                 $projectConfigurationPartial->project_id = (int)$projectId;
                 $projectConfigurationPartial->save();
-                $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
-            }
-            $projectConfigurationPartial->update(['payment_switch'=>$request->checkValue]);
-            return $resultArray = array('status' => 1);
-        }
-        public function swapProjectRanking(Request $request)
-        {
-            $project0 = Project::where('project_rank', (int)$request->projectRanks[0])->first();
-            $project1 = Project::where('project_rank', (int)$request->projectRanks[1])->first();
-            $project0->update(['project_rank' => (int)$request->projectRanks[1]]);
-            $project1->update(['project_rank' => (int)$request->projectRanks[0]]);
-            return $resultArray = array('status' => 1);
-        }
-
-        public function toggleProjectElementVisibility(Request $request)
-        {
-            $toggleAction = $request->toggleAction;
-            if($toggleAction){
-                $projectId =$request->projectId;
-                $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', (int)$projectId)->first();
-                if(!$projectConfigurationPartial)
-                {
-                    $projectConfigurationPartial = new ProjectConfigurationPartial;
-                    $projectConfigurationPartial->project_id = (int)$projectId;
-                    $projectConfigurationPartial->save();
-                    $projectConfigurationPartial = ProjectConfigurationPartial::all();
-                    $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $projectId)->first();
-                }
-                if($toggleAction != 'off'){
-                    if($toggleAction == 'project_progress_image'){
-                        $projectConfigurationPartial->update([
-                            'show_project_progress_image'=>1,
-                            'show_project_progress_circle'=>0
-                        ]);
-                    }
-                    elseif($toggleAction == 'project_progress_circle'){
-                        $projectConfigurationPartial->update([
-                            'show_project_progress_image'=>0,
-                            'show_project_progress_circle'=>1
-                        ]);
-                    }
-                    else{
-                        $projectConfigurationPartial->update(['show_'.$toggleAction=>$request->checkValue]);
-                    }
-                    return $resultArray = array('status' => 1);
-                }
-                else{
-                    $projectConfigurationPartial->update([
-                        'show_project_progress_image'=>0,
-                        'show_project_progress_circle'=>0
-                    ]);
-                    return $resultArray = array('status' => 1);
-                }
-            }
-        }
-
-        public function editProjectPageLabelText(Request $request)
-        {
-            $newLabelText = $request->newLabelText;
-            $projectId = $request->projectId;
-            $effectScope = $request->effect;
-            if($projectId!='' && $newLabelText!=''){
                 $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
-                if(!$projectConfigurationPartial)
-                {
-                    $projectConfigurationPartial = new ProjectConfigurationPartial;
-                    $projectConfigurationPartial->project_id = (int)$projectId;
-                    $projectConfigurationPartial->save();
-                    $projectConfigurationPartial = ProjectConfigurationPartial::where('project_id', (int)$projectId)->first();
-                }
-                $projectConfigurationPartial->update([$effectScope => $newLabelText]);
-                return array('status' => 1, 'newLabelText' => $newLabelText);
             }
+            $projectConfigurationPartial->update([$effectScope => $newLabelText]);
+            return array('status' => 1, 'newLabelText' => $newLabelText);
         }
+    }
 
-        public function editVisibilityOfSiteConfigItems(Request $request)
-        {
-            $checkValue = $request->checkValue;
-            $action = $request->action;
-            if($action != ''){
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                $siteconfiguration->update([$action=>$request->checkValue]);
-                return $resultArray = array('status' => 1);
-            }
-        }
-
-        public function updateInterestFormLink(Request $request)
-        {
-            $interestLink = $request->interest_link_input;
-            if($interestLink != ""){
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                $siteconfiguration->update(['embedded_offer_doc_link'=>$interestLink]);
-                Session::flash('message', 'Interest Link Updated Successfully');
-                Session::flash('action', 'embedded_link');
-                return redirect()->back();
-            }
-        }
-
-        public function updateTagManager(Request $request)
-        {
-            $tagHeader = $request->tag_manager_header_input;
-            $tagBody = $request->tag_manager_body_input;
-
+    public function editVisibilityOfSiteConfigItems(Request $request)
+    {
+        $checkValue = $request->checkValue;
+        $action = $request->action;
+        if($action != ''){
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-            $siteconfiguration->update([
-                'tag_manager_header'=>$tagHeader,
-                'tag_manager_body'=>$tagBody
-            ]);
-            Session::flash('message', 'Tag Manager Updated Successfully');
-            Session::flash('action', 'tag_manager');
-            return redirect()->back();
-        }
-
-        public function updateConversionPixel(Request $request)
-        {
-            $tag = $request->conversion_pixel_input;
-
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-            $siteconfiguration->update([
-                'conversion_pixel'=>$tag
-            ]);
-            Session::flash('message', 'Conversion Pixel Updated Successfully');
-            Session::flash('action', 'conversion_pixel');
-            return redirect()->back();
-        }
-
-        public function changeFontFamily(Request $request)
-        {
-            $fontFamily = trim($request->fontFamily);
-        // $fontFamily = preg_replace('/\s+/', '+', $fontFamily);
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-            $siteconfiguration->update([
-                'font_family'=>$fontFamily
-            ]);
+            $siteconfiguration->update([$action=>$request->checkValue]);
             return $resultArray = array('status' => 1);
         }
+    }
+
+    public function updateInterestFormLink(Request $request)
+    {
+        $interestLink = $request->interest_link_input;
+        if($interestLink != ""){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update(['embedded_offer_doc_link'=>$interestLink]);
+            Session::flash('message', 'Interest Link Updated Successfully');
+            Session::flash('action', 'embedded_link');
+            return redirect()->back();
+        }
+    }
+
+    public function updateTagManager(Request $request)
+    {
+        $tagHeader = $request->tag_manager_header_input;
+        $tagBody = $request->tag_manager_body_input;
+
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'tag_manager_header'=>$tagHeader,
+            'tag_manager_body'=>$tagBody
+        ]);
+        Session::flash('message', 'Tag Manager Updated Successfully');
+        Session::flash('action', 'tag_manager');
+        return redirect()->back();
+    }
+
+    public function updateConversionPixel(Request $request)
+    {
+        $tag = $request->conversion_pixel_input;
+
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'conversion_pixel'=>$tag
+        ]);
+        Session::flash('message', 'Conversion Pixel Updated Successfully');
+        Session::flash('action', 'conversion_pixel');
+        return redirect()->back();
+    }
+
+    public function changeFontFamily(Request $request)
+    {
+        $fontFamily = trim($request->fontFamily);
+    // $fontFamily = preg_replace('/\s+/', '+', $fontFamily);
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'font_family'=>$fontFamily
+        ]);
+        return $resultArray = array('status' => 1);
+    }
 
     /**
      * Uploads the selected image for project progress.
