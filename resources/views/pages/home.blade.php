@@ -269,7 +269,7 @@
     <div class="content container" id="promo-content" style="padding-top:10%;">
       <!-- <img class="img-responsive" src="/assets/images/main_logo.png" alt="Vestabyte" width="250px" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:20px; margin-top:20px;"> -->
       <!-- <h2 class="text-center " data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size: 3.5em; line-height: 1.3em; ">Property Investment starting $2000</h2> -->
-      <br><br><br><br><br><br><br>
+      <br><br><br><br>
       <div class="row">
         <div class="homepg-text1 text-center form-group col-md-6 col-md-offset-3">
           <h2 class="text-center font-regular" style="color: white; font-size:32px;">
@@ -293,7 +293,7 @@
         </div>
       </div>
       <br><br><br>
-      <div class="row hide">
+      <div class="row">
         <div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
          <a href="/#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else projects @endif" data-href="/#@if($siteConfiguration->homepg_btn1_gotoid!=''){!!$siteConfiguration->homepg_btn1_gotoid!!}@else{{'projects'}}@endif" class="btn btn-red btn-lg font-regular scrollto red-btn-style second_color_btn scroll-links reference-link-with-js" role="button" style="font-size:22px; border-color: transparent;">
           @if(!empty($siteConfiguration))
