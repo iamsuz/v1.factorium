@@ -26,16 +26,16 @@
   @endif
   <!-- <link rel="shortcut icon" href="/favicon.png" type="image/x-icon"> -->
   <!-- Open Graphic -->
-  <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg" />
-  <meta property="og:site_name" content="Estate Baron" />
-  <meta property="og:url" content="https://www.estatebaron.com" />
+  <meta property="og:image" content="@if($siteConfiguration->siteconfigmedia)@if($mainImg = $siteConfiguration->siteconfigmedia->where('type', 'homepg_back_img')->first()){{$siteConfiguration->project_site}}/{{$mainImg->path}}@endif @else https://www.estatebaron.com/images/hero-image-1.jpg @endif" />
+  <meta property="og:site_name" content="@if($siteConfiguration->website_name != '') {{$siteConfiguration->website_name}} @else Estate Baron @endif" />
+  <meta property="og:url" content="@if($siteConfiguration->project_site != '') {{$siteConfiguration->project_site}} @else https://estatebaron.com @endif" />
   <meta property="og:type" content="website" />
   <!-- META DATA -->
   <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 
   @section('meta-section')
-  <meta property="og:title" content="Best way to invest in Australian Real Estate Projects" />
-  <meta property="og:description" content="Invest in Melbourne Real Estate Developments from $100. View listing now. " />
+  <meta property="og:title" content="@if($siteConfiguration->title_text != '') {{$siteConfiguration->title_text}} @else Estate Baron @endif" />
+  <meta property="og:description" content="@if($siteConfiguration->homepg_text1 != '') {{$siteConfiguration->homepg_text1}} @else Invest in Melbourne Real Estate Developments from $100. View listing now. @endif " />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   @show
 
@@ -119,7 +119,7 @@
     @if($siteConfiguration->tag_manager_body)
     {!!$siteConfiguration->tag_manager_body!!}
     @endif
-    
+
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')
     @endif
@@ -277,11 +277,11 @@
             @if($siteConfiguration->homepg_text1 != '')
             {!! nl2br(e($siteConfiguration->homepg_text1)) !!}
             @else
-            Join Australia's 1st Venture<br> Crowdfunding platform 
+            Join Australia's 1st Venture<br> Crowdfunding platform
             @endif
             @else
-            Join Australia's 1st Venture<br> Crowdfunding platform 
-            @endif                        
+            Join Australia's 1st Venture<br> Crowdfunding platform
+            @endif
           </h2>
           @if(Auth::guest())
           @else
@@ -515,7 +515,7 @@
 <section class="chunk-box" id="projects" name="projects">
   <div class="container">
     <div class="row">
-      <div class="col-md-12"> 
+      <div class="col-md-12">
         <input class="hide" type="file" name="
         project_thumb_image" id="project_thumb_image">
         <input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
@@ -541,11 +541,11 @@
             @endif
             @endif
             <a @if($project->is_coming_soon) @if(Auth::user())
-            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
             @else
             href="javascript:void(0);"
-            @endif 
-            @else href="{{route('projects.show', [$project])}}" 
+            @endif
+            @else href="{{route('projects.show', [$project])}}"
             @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -567,7 +567,7 @@
                             <h3>
                               Invite Only Project
                             </h3>
-                            @else 
+                            @else
                             <h3>
                               <a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
                               <small style="color:white;">
@@ -597,11 +597,11 @@
                   <div class="project-thumbnail-txt"></div>
                   </form>
                   <a @if($project->is_coming_soon) @if(Auth::user())
-                  @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+                  @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
                   @else
                   href="javascript:void(0);"
-                  @endif 
-                  @else href="{{route('projects.show', [$project])}}" 
+                  @endif
+                  @else href="{{route('projects.show', [$project])}}"
                   @endif>
                   <p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
                   <div class="row text-left">
@@ -665,11 +665,11 @@
             @endif
             @endif
             <a @if($project->is_coming_soon) @if(Auth::user())
-            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
             @else
             href="javascript:void(0);"
-            @endif 
-            @else href="{{route('projects.show', [$project])}}" 
+            @endif
+            @else href="{{route('projects.show', [$project])}}"
             @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -691,7 +691,7 @@
                             <h3>
                               Invite Only Project
                             </h3>
-                            @else 
+                            @else
                             <h3>
                               <a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
                               <small style="color:white;">
@@ -721,11 +721,11 @@
                       <div class="project-thumbnail-txt"></div>
                   </form>
                   <a @if($project->is_coming_soon) @if(Auth::user())
-                  @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+                  @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
                   @else
                   href="javascript:void(0);"
-                  @endif 
-                  @else href="{{route('projects.show', [$project])}}" 
+                  @endif
+                  @else href="{{route('projects.show', [$project])}}"
                   @endif>
                   <p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
                   <div class="row text-left">
@@ -788,11 +788,11 @@
             @endif
             @endif
             <a @if($project->is_coming_soon) @if(Auth::user())
-            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
             @else
             href="javascript:void(0);"
-            @endif 
-            @else href="{{route('projects.show', [$project])}}" 
+            @endif
+            @else href="{{route('projects.show', [$project])}}"
             @endif>
               <div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;box-shadow: 3px 3px 5px #ccc;">
                 <div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -814,7 +814,7 @@
                             <h3>
                               Invite Only Project
                             </h3>
-                            @else 
+                            @else
                             <h3>
                               <a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
                               <small style="color:white;">
@@ -843,11 +843,11 @@
                   <div class="project-thumbnail-txt"></div>
                 </form>
                 <a @if($project->is_coming_soon) @if(Auth::user())
-                @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif 
+                @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
                 @else
                 href="javascript:void(0);"
-                @endif 
-                @else href="{{route('projects.show', [$project])}}" 
+                @endif
+                @else href="{{route('projects.show', [$project])}}"
                 @endif>
                 <p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
                 <div class="row text-left">
@@ -884,7 +884,7 @@
     </div>
   </div>
   <br><br>
-  <?php 
+  <?php
 
     if($siteConfiguration->prospectus_text != '') {
                     $prospectus = $siteConfiguration->prospectus_text;
@@ -907,7 +907,7 @@
     </form>
         <p class="col-md-12  investment-title1-description-section text-justify" style="font-size:16px;">
           <small>@if($siteConfiguration->compliance_description != '')
-          {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
+          {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
           The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative @if($siteConfiguration->car_no != '') {{$siteConfiguration->car_no}} @else 001251881 @endif of AFSL @if($siteConfiguration->afsl_no != '') {{$siteConfiguration->afsl_no}} @else 299812 @endif provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="text-decoration: none; color: #888;">Financial Services Guide</span></a>.
           @endif</small>
         </p>
@@ -953,7 +953,7 @@
             </div>
           </div>
           <div class="col-md-6" data-wow-duration="1.5s">
-            <h3 class="text-left first_color investment-title1-section" style="font-weight:600 !important; color:#282a73; font-size:32px;">      
+            <h3 class="text-left first_color investment-title1-section" style="font-weight:600 !important; color:#282a73; font-size:32px;">
               @if($siteConfiguration->compliance_title != '')
               {!!html_entity_decode($siteConfiguration->compliance_title)!!}
               @else
@@ -967,7 +967,7 @@
               @endif
             </h3><br>
             <p class="investment-title1-description-section text-justify" style="font-size:16px;">@if($siteConfiguration->compliance_description != '')
-              {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
+              {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
               The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative @if($siteConfiguration->car_no != '') {{$siteConfiguration->car_no}} @else 001251881 @endif of AFSL @if($siteConfiguration->afsl_no != '') {{$siteConfiguration->afsl_no}} @else 299812 @endif provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="color: @if($color) @if($color->nav_footer_color)#{{$color->nav_footer_color}}@else #282a73 @endif @else #282a73 @endif; text-decoration: none;">Financial Services Guide<span></a>.
               @endif
             </p>
@@ -1060,7 +1060,7 @@
       <div class="add-testimonial-form col-md-12" style="display: none;">
         <div class="col-md-6 col-md-offset-3 " style="border:1px solid #eee; border-radius: 5px; padding: 3%; margin-bottom: 3%">
           {!! Form::open(array('route'=>['pages.testimonial.store'], 'class'=>'form-horizontal', 'role'=>'form', 'name' => 'testimonial_form', 'files'=>true)) !!}
-            
+
             {!!Form::label('user_name', 'Name', array('class'=>'control-label'))!!}
             {!! Form::text('user_name', null, array('placeholder'=>'User Name', 'class'=>'form-control', 'tabindex'=>'1','required'=>'yes')) !!}
             {!! $errors->first('user_name', '<small class="text-danger">:message</small>') !!}
@@ -1087,7 +1087,7 @@
             <br>
             {!! Form::submit('Add Testimonial', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'5')) !!}
           {!! Form::close() !!}
-          
+
         </div>
       </div>
       <br><br>
@@ -1168,7 +1168,7 @@
     @endif
 
 
-  </div>  
+  </div>
 </section>
 <br>
 <h4 class="text-center h1-faq hide">As seen in</h4>
@@ -1391,7 +1391,7 @@
               <input type="hidden" name="orig_height" id="orig_height" value="">
               <input type="hidden" name="project_id" id="project_id" value="">
             </div>
-          </div>      
+          </div>
         </div>
       </div>
       <!-- Modal for Social Links Edit -->
@@ -1427,7 +1427,7 @@
                 <button type="Submit" class="btn btn-default">Save Links</button>
               </div>
             </form>
-          </div>      
+          </div>
         </div>
       </div>
       <!-- Modal for Sitemap Links Edit -->
@@ -1462,11 +1462,11 @@
                 <button type="Submit" class="btn btn-default">Save Blog Link</button>
               </div>
             </form>
-          </div>      
+          </div>
         </div>
       </div>
   {!! Html::script('js/jquery-1.11.3.min.js') !!}
-  <script type = "text/javascript" 
+  <script type = "text/javascript"
   src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
   {!! Html::script('js/bootstrap.min.js') !!}
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
@@ -1736,7 +1736,7 @@
     if ($(window).width() < 768) {
       $('.scroll-links').removeClass('scrollto');
     }
-    
+
     @if (Session::has('loginaction'))
     $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
     $('#session_flash_message').show()
@@ -1744,7 +1744,7 @@
       $('#session_flash_message').fadeOut(500);
     }, 2500);
     @endif
-    
+
     $(document).ready(function(e){
 
       $('[data-toggle="tooltip"]').tooltip();
@@ -1858,8 +1858,8 @@
       var rgbaColor = 'rgba(45, 45, 75, {{$siteConfiguration->overlay_opacity}})';
       $('.main-fold-overlay-color').css('background', rgbaColor);
       @endif
-      //Functionality to Edit Text 1 of Home Page. 
-      //This can be actioned by only admin 
+      //Functionality to Edit Text 1 of Home Page.
+      //This can be actioned by only admin
       editHomePageText1();
       //Functionality to change Home Page Main Back Image
       editHomePageBackImg1();
@@ -1921,7 +1921,7 @@
 
         var newWidth = 530;
         var newHeight = (realHeight/realWidth)*newWidth;
-        
+
         $('#preview_image').css({
           width: Math.round(rx*newWidth)+'px',
           height: Math.round(ry*newHeight)+'px',
@@ -2003,11 +2003,11 @@
             else {}
               alert(data.message);
           }
-          
+
         });
       });
 
-    //Functionality to Edit Text 1 of Home Page. 
+    //Functionality to Edit Text 1 of Home Page.
     //This can be actioned by only admin
     function editHomePageText1(){
       $('.edit-homepg-text1').click(function(){
@@ -2193,7 +2193,7 @@
           if($('#investment_title_text1').val()==''){
             e.preventDefault();
             $('.investment-title1-error').html('Title Text cant be empty.');
-            
+
           }
         });*/
       });
@@ -2209,7 +2209,7 @@
           if($('#investment_title1_description').val()==''){
             e.preventDefault();
             $('.investment-title1-desc-error').html('Description cant be empty.');
-            
+
           }
         });*/
       });
@@ -2371,7 +2371,7 @@
             alert(data.message);
           }
         });
-        }            
+        }
       });
     }
     function editFundingSectionContent(){
@@ -2379,7 +2379,7 @@
           $('.funding-section-title1-field').html('<textarea class="form-control" rows="3" name="funding_section_title1" id="funding_section_title1" placeholder="Funding type 1 text"></textarea>');
           var str1 = $.trim($('#hidden_funding_section_title1').val()).replace(/\r?\n|\r/g, "");
           $('#funding_section_title1').val(str1.replace(/<br ?\/?>/g, "\n"));
-          
+
           $('.funding-section-title2-field').html('<textarea class="form-control" rows="3" name="funding_section_title2" id="funding_section_title2" placeholder="Funding type 2 text"></textarea>');
           var str2 = $.trim($('#hidden_funding_section_title2').val()).replace(/\r?\n|\r/g, "");
           $('#funding_section_title2').val(str2.replace(/<br ?\/?>/g, "\n"));
@@ -2463,7 +2463,7 @@
             alert(data.message);
           }
         });
-        }            
+        }
       });
     }
 
@@ -2504,7 +2504,7 @@
             $('.main-fold-overlay-color').css('background', rgbaColor);
             @endif
           }
-        });        
+        });
       });
     }
 
@@ -2704,7 +2704,7 @@
     function getGoogleWebDeveloperFonts(){
       var webFontAPI = 'AIzaSyBpa6-SZTPSFiyS7cmGqjfQlH2GwCLmAYY';
       $.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key="+webFontAPI, function(fonts){
-          for (var i = 0; i < fonts.items.length; i++) {      
+          for (var i = 0; i < fonts.items.length; i++) {
             $('#font_style_select')
              .append($("<option></option>")
              .attr("value", fonts.items[i].family)
@@ -2735,7 +2735,7 @@
         if(fontFamily != ''){
           var fontConcat = fontFamily.replace(/ /g,"+");
           $('<link>').appendTo('head').attr({
-            type: 'text/css', 
+            type: 'text/css',
             rel: 'stylesheet',
             href: 'https://fonts.googleapis.com/css?family='+fontConcat
           });
