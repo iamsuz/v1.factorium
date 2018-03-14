@@ -116,7 +116,7 @@ h1>small>small,h2>small>small,h3>small>small,h4>small>small{
 	/*max-height: 550px !important;*/
 	background-size:cover;
 	/*padding-top: 40px;*/
-	/*height: 730px;*/
+	height: 100vh;
 	/*margin: 0 auto;*/
 	width: 100%;
 	/*max-width: 1920px;*/
@@ -126,7 +126,8 @@ h1>small>small,h2>small>small,h3>small>small,h4>small>small{
 }
 
 #promo .color-overlay {
-	min-height: 44em;
+	/*min-height: 44em;*/
+	height: 100vh;
 	background:  url('/assets/images/header_color.png')center no-repeat;
 	background-size: cover;
 	opacity: 1.0;
@@ -553,7 +554,7 @@ a:hover {
 	-ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
 	animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
 }
-.pulse-button:hover 
+.pulse-button:hover
 {
 	-webkit-animation: none;-moz-animation: none;-ms-animation: none;animation: none;
 }
@@ -954,7 +955,7 @@ a:hover {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 
 #preview_project_thumb_img{
@@ -969,7 +970,7 @@ a:hover {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 .swap-select-overlay-style{
 	border: 2px solid #ce1e1e;
