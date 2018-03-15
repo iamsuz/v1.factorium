@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 
 class Authenticate
 {
@@ -38,8 +39,13 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                $url_array = parse_url($request->url());
-                $path = ltrim($url_array['path'], '/');
+                $url_array = parse_url($request->fullUrl());
+                if(isset($url_array['query'])){
+                    $newPath = $url_array['path'] .'?'. $url_array['query'];
+                } else{
+                    $newPath = $url_array['path'];
+                }
+                $path = ltrim($newPath, '/');
                 return redirect()->guest('users/login?next='.$path)->withMessage('<p class="alert alert-warning text-center ">please login</p>');
             }
         }

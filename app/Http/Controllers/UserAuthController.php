@@ -49,6 +49,10 @@ class UserAuthController extends Controller
      */
     public function login(Request $request)
     {
+        if($request->next)
+        {
+            $request->source ? $request->attributes->add(['next'=>$request->next."&source=".$request->source]) : $request->next;
+        }
         $color = Color::where('project_site',url())->first();
         $redirectNotification = $request->has('redirectNotification')?$request->redirectNotification:0;
         return view('users.login',compact('color', 'redirectNotification'));
@@ -78,13 +82,17 @@ class UserAuthController extends Controller
                 $this->redirectTo = "/dashboard";
             }
             if($request->next){
-                $this->redirectTo = "/".$request->next;
+                if( strpos( $request->next, '?id=' ) !== false ){
+                    $this->redirectTo = "/".$request->next."&source=eoi";
+                }else{
+                    $this->redirectTo = "/".$request->next;
+                }
             }
             elseif($request->redirectNotification){
                 $this->redirectTo = "/users/".Auth::User()->id."/notification";
             }
             else{
-                $this->redirectTo = "/#projects";    
+                $this->redirectTo = "/#projects";
             }
             Session::flash('loginaction', 'success.');
             return redirect($this->redirectTo);
