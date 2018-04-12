@@ -246,7 +246,7 @@ class DashboardController extends Controller
             if($investmentShares){
                 if($investmentShares->share_number){
                     $shareNumber = explode('-', $investmentShares->share_number);
-                    $shareInit = $shareNumber[1]; 
+                    $shareInit = $shareNumber[1];
                 }
             }
             $shareStart = $shareInit+1;
@@ -405,7 +405,7 @@ class DashboardController extends Controller
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $mailer->sendInvestmentReminderToUser($investment);
         Session::flash('action', $investment->id);
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Reminder sent</p>');        
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Reminder sent</p>');
     }
 
     public function investmentConfirmation(Request $request, AppMailer $mailer, $investment_id){
@@ -413,9 +413,9 @@ class DashboardController extends Controller
         $investment->investment_confirmation = $request->investment_confirmation;
         $investment->save();
         $mailer->sendInvestmentConfirmationToUser($investment);
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Confirmed</p>');        
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Confirmed</p>');
     }
-    
+
     public function createBroadcastMailForm(){
         $color = Color::where('project_site',url())->first();
         $siteUsers = User::where('registration_site', url())->get();
@@ -432,7 +432,7 @@ class DashboardController extends Controller
         $subject = $request->mail_subject;
         $content = $request->mail_content;
         $emailStr = $request->email_string;
-        
+
         //Disable SSL Check
         $client = new \GuzzleHttp\Client([
             'verify' => false,
@@ -469,16 +469,16 @@ class DashboardController extends Controller
         $shareInit = 0;
         if($investment->share_number){
             $shareNumber = explode('-', $investment->share_number);
-            $shareInit = $shareNumber[0]-1; 
+            $shareInit = $shareNumber[0]-1;
         }
         $shareStart = $shareInit+1;
         $shareEnd = $shareInit+(int)$investment->amount;
         $shareCount = (string)($shareStart)."-".(string)($shareEnd);
-        
+
         // Save details to transaction table
         $noOfShares = $shareEnd-$shareInit;
         if($noOfShares == 0){
-            $transactionRate = $investment->amount/1;    
+            $transactionRate = $investment->amount/1;
         }
         else{
             $transactionRate = $investment->amount/$noOfShares;
@@ -496,7 +496,7 @@ class DashboardController extends Controller
             ]);
 
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
-        
+
         $mailer->sendInvestmentCancellationConfirmationToUser($investment, $shareInit, $investing, $shareStart, $shareEnd);
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investment Successfully Cancelled</p>');
@@ -516,7 +516,7 @@ class DashboardController extends Controller
         $dateDiff = date_diff($startDate, $endDate);
         $dateDiff = (int)$dateDiff->format("%R%a");
         $project = Project::findOrFail($projectId);
-        
+
         if($investorList != ''){
             if($dateDiff >=0){
                 $investors = explode(',', $investorList);
@@ -533,7 +533,7 @@ class DashboardController extends Controller
                 // send dividend email to admins
                 $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff, $project);
                 $mailer->sendDividendDistributionNotificationToAdmin($investments, $dividendPercent, $dateDiff, $csvPath, $project);
-                
+
                 // send dividend emails to investors
                 $failedEmails = [];
                 $subject = 'Dividend declared for '.$project->title;
@@ -567,7 +567,7 @@ class DashboardController extends Controller
                     foreach ($failedEmails as $email) {
                         $emails = $emails.", $email";
                     }
-                    return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Dividend distribution email sending failed for investors - '.$emails.'.</p>'); 
+                    return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Dividend distribution email sending failed for investors - '.$emails.'.</p>');
                 }
             }
             else {
@@ -580,11 +580,11 @@ class DashboardController extends Controller
         $investorList = $request->investors_list;
         $repurchaseRate = $request->repurchase_rate;
         $project = Project::findOrFail($projectId);
-        
+
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
-            
+
             // Add the records to project progress table
             if($project->share_vs_unit) {
                 ProjectProg::create([
@@ -649,7 +649,7 @@ class DashboardController extends Controller
                 foreach ($failedEmails as $email) {
                     $emails = $emails.", $email";
                 }
-                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Repurchase distribution email sending failed for investors - '.$emails.'.</p>'); 
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Repurchase distribution email sending failed for investors - '.$emails.'.</p>');
             }
         }
     }
@@ -657,7 +657,7 @@ class DashboardController extends Controller
     public function exportDividendCSV($investments, $dividendPercent, $dateDiff, $project)
     {
         $csvPath = storage_path().'/app/dividend/dividend_distribution_'.time().'.csv';
-        
+
         // create a file pointer connected to the output stream
         $file = fopen($csvPath, 'w');
 
@@ -667,7 +667,7 @@ class DashboardController extends Controller
         }else {
             fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Unit amount", "Number of days", "Rate", "Investor Dividend amount"));
         }
-        
+
         // data to add to the csv file
         foreach ($investments as $investment) {
             fputcsv($file, array(
@@ -691,7 +691,7 @@ class DashboardController extends Controller
 
     public function exportRepurchaseCSV($investments, $repurchaseRate, $project){
         $csvPath = storage_path().'/app/repurchase/repurchase_distribution_'.time().'.csv';
-        
+
         // create a file pointer connected to the output stream
         $file = fopen($csvPath, 'w');
 
@@ -701,7 +701,7 @@ class DashboardController extends Controller
         }else {
             fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Unit amount", "Repurchase Rate", "Investor Repurchase amount"));
         }
-        
+
         // data to add to the csv file
         foreach ($investments as $investment) {
             fputcsv($file, array(
@@ -742,7 +742,7 @@ class DashboardController extends Controller
         $domain = env('MAILGUN_DOMAIN');
 
         # Make the call to the client.
-        $result = $mgClient->sendMessage($domain, 
+        $result = $mgClient->sendMessage($domain,
             array(
                 'from'    => $fromMail,
                 'to'      => $emailStr,
@@ -817,7 +817,7 @@ class DashboardController extends Controller
             foreach ($failedEmails as $email) {
                 $emails = $emails.", $email";
             }
-            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Investor Statement email sending failed for investors - '.$emails.'.</p>'); 
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Investor Statement email sending failed for investors - '.$emails.'.</p>');
         }
     }
 
@@ -922,9 +922,9 @@ class DashboardController extends Controller
         $this->validate($request, [
             'offer_doc' => 'required|mimes:pdf',
             'eoi_id' => 'required'
-        ]);        
+        ]);
         $projectEoi = ProjectEOI::find($request->eoi_id);
-        
+
         if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
             File::makeDirectory(public_path().'/assets/documents/eoi/'.$projectEoi->id, 0775, true);
         }
