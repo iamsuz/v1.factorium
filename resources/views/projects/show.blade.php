@@ -102,13 +102,13 @@
 		<div class="color-overlay main-fold-overlay-color">
 			<div class="container">
 				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
-					<div class="col-md-4 col-sm-6">
+					<div class="col-md-5 col-sm-6">
 						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">{{$project->title}}</h2>
 						<span class="text-left project-description-field text-justify" style="color:#fff; font-size:0.875em;">{!!nl2br($project->description)!!}</span>
 						<br>
 					</div>
-					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div>
-					<div class="col-md-5 col-md-offset-3 col-sm-6">
+					{{-- <div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div> --}}
+					<div class="col-md-4 col-md-offset-3 col-sm-6">
 						@if(Auth::guest())
 			            @else
 			            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -157,7 +157,7 @@
 					</div>
 				</div><br>
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="" style="color:#fff;">
 							@if($project->investment)
 							<div class="row text-left">
@@ -210,7 +210,7 @@
 						@endif
 						@endif
 					</div>
-					<div class="col-md-4 col-md-offset-4 project-invest-button-field" style="margin-top:0%;" id="express_interest">
+					<div class="col-md-4 col-md-offset-3 project-invest-button-field" style="margin-top:0%;" id="express_interest">
 						<br>
 						@if($project->investment)
 						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
