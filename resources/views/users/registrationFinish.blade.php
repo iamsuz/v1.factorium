@@ -15,14 +15,14 @@ Thank You | @parent
 			<div class="row" id="section-1">
 				<div class="col-md-12">
 					<div style="padding:5em 0;">
-						<h1 class="text-center wow fadeIn animated h1-faq">Welcome {{$user->first_name}}<br>
+						<h1 class="text-center wow fadeIn animated h1-faq" style="font-weight: bold;">Welcome {{$user->first_name}}<br>
 							<small>Thank you for providing your details.</small>
 						</h1>
 						<br>
-						<h3 class="text-center wow fadeIn animated h1-faq">You have Signed Up as {{$user->roles->first()->role}} <br> 
-						<small>Would you like to change your Role at Estate Baron</small></h3>
+						<h3 class="text-center wow fadeIn animated h1-fa hide">You have Signed Up as {{$user->roles->first()->role}} <br> 
+						<small class="hide">Would you like to change your Role at Estate Baron</small></h3>
 						{!! Form::open(array('route'=>'registration.changeRole', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-							<div class="row text-center">
+							<div class="row text-center hide">
 								<div class="radio">
 									<label><input type="radio" name="role" value="investor" autocomplete="off" @if($user->roles->first()->role == 'investor') checked @endif>I am an Investor</label>
 								</div>
@@ -38,7 +38,7 @@ Thank You | @parent
 							<br>
 							<div class="row">
 								<div class="text-center col-md-offset-3 col-md-6 wow fadeIn animated">
-									{!! Form::submit('Take me to Projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
+									{!! Form::submit('Take me to Projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'style'=>'font-weight: bold; font-size: 1.6rem;')) !!}
 								</div>
 							</div>
 						{!! Form::close() !!}
