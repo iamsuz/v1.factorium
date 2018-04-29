@@ -219,7 +219,7 @@
 					<div class="col-md-4 col-md-offset-3 project-invest-button-field" style="margin-top:0%;" id="express_interest">
 						<br>
 						@if($project->investment)
-						<button href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 							@if($project->is_funding_closed)
 							Funding Closed
 							@elseif($project->button_label)
@@ -227,7 +227,7 @@
 							@else
 							Invest Now
 							@endif
-						</b></button>
+						</b></a>
 						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
 						@else
 						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
@@ -1444,7 +1444,7 @@
 						<br>
 						<div class="col-md-10 col-md-offset-1">
 							@if($project->investment)
-							<button href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+							<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
 								@if($project->is_funding_closed)
 								Funding Closed
 								@elseif($project->button_label)
@@ -1452,7 +1452,7 @@
 								@else
 								Invest Now
 								@endif
-							</b></button>
+							</b></a>
 							<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
 							@else
 							<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
