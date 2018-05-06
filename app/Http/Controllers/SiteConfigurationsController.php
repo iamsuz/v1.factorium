@@ -691,14 +691,16 @@ class SiteConfigurationsController extends Controller
         $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
+                'project_goal_amount_txt'=>'required|integer|min:1',
                 ));
 
         Project::where('id', $projectId)->update([
                 'title' => $request->project_title_txt,
                 'description' => $request->project_description_txt,
-                'button_label'=>$request->project_button_invest_txt,
                 'project_prospectus_text'=>$request->project_prospectus_txt,
                 'edit_disclaimer'=>$request->add_disclaimer_txt,
+                'coinvest_project_completion_date'=>$request->coinvest_project_completion_date,
+                'coinvest_carousel_text'=>$request->coinvest_carousel_text,
                 ]);
 
         Investment::where('project_id', $projectId)->first()->update([
@@ -747,6 +749,7 @@ class SiteConfigurationsController extends Controller
             $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
+                'project_goal_amount'=>'required|integer|min:1',
                 ));
                 Project::where('id', $projectId)->update([
                     'title' => $request->project_title_txt,
@@ -754,6 +757,7 @@ class SiteConfigurationsController extends Controller
                     'button_label'=>$request->project_button_invest_txt,
                     'project_prospectus_text'=>$request->project_prospectus_txt,
                     'edit_disclaimer'=>$request->add_disclaimer_txt,
+                    'custom_project_page_link'=>$request->custom_project_page_link,
                 ]);
                 Investment::where('project_id', $projectId)->first()->update([
                     'fund_raising_close_date'=>$request->fund_raising_close_date,

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.project')
 @section('title-section')
 {{$project->title}} crowdfunding with just ${{(int)$project->investment->minimum_accepted_amount}}
 @stop
@@ -100,7 +100,12 @@
 	<section style="background: @if($project->media->where('type', 'projectpg_back_img')->last()) url({{asset($project->media->where('type', 'projectpg_back_img')->last()->path)}}) @else url({{asset('assets/images/bgimage_sample.png')}}) @endif;background-repeat: no-repeat; background-size:100% 100%;" class="project-back img-responsive" id="project-title-section">
 		<div class="color-overlay main-fold-overlay-color">
 			<div class="container">
-				<div class="row" id="main-context" style="margin-top:10px; padding-top: 2em;">
+				<div class="row">
+					<div class="col-md-4">
+						<input type="url" id="custom_project_page_link" name="custom_project_page_link" class="form-control" value="{{$project->custom_project_page_link}}" style="margin-top: 25px;" placeholder="Custom project page url" data-toggle="tooltip" title="Custom project page url.">
+					</div>
+				</div>
+				<div class="row" id="main-context" style=" padding-top: 1.1em;">
 					<div class="col-md-4 col-sm-6">
 						<h2 class="text-left second_color project-title-name" style="font-size:2.625em; color:#fed405;">
 							<input type="text" name="project_title_txt" class="form-control" value="{{$project->title}}" style="font-size: 25px;">
