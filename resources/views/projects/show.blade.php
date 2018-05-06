@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.project')
 @section('title-section')
 {{$project->title}} crowdfunding with just ${{(int)$project->investment->minimum_accepted_amount}}
 @stop
