@@ -111,7 +111,7 @@
 							<input type="text" name="project_title_txt" class="form-control" value="{{$project->title}}" style="font-size: 25px;">
 						</h2>
 						<span class="text-left project-description-field" style="color:#fff; font-size:0.875em;">
-							<textarea type="text" name="project_description_txt" class="form-control">{{$project->description}}</textarea>
+							<textarea type="text" name="project_description_txt" id="project_description_txt" class="form-control" required="required">{{$project->description}}</textarea>
 						</span>
 						<br>
 					</div>
@@ -183,7 +183,7 @@
 							<div class="alert alert-danger" style="border: 0;">
 								<ul>
 									@foreach ($errors->all() as $error)
-									<li ><?php echo $errors->first('project_goal_amount'); ?></li>
+									<li ><?php echo $error; ?></li>
 									@endforeach
 								</ul>
 							</div>
@@ -191,7 +191,7 @@
 							<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
 								@if($project->investment)
 								${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">
-									<input type="text" name="project_goal_amount" class="form-control" style="width:30%" value="{{$project->investment->goal_amount}}" style="padding-left: 2px; padding-right: 2px;"></span>
+									<input type="text" name="project_goal_amount" class="form-control" style="width:30%" value="{{number_format($project->investment->goal_amount)}}" style="padding-left: 2px; padding-right: 2px;" required="required"></span>
 									@endif
 								</span>
 							</div>
