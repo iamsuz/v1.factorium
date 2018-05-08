@@ -650,6 +650,12 @@ a:hover {
 	}
 }
 @media (max-width: 768px) {
+	#promo .color-overlay{
+		height: 120vw !important;
+	}
+	#promo{
+		height: 120vw !important;
+	}
 	h2{
 		font-size: 2.1em !important;
 	}
