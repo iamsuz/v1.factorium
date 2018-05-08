@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.project')
 @section('title-section')
 Offer Doc
 @stop
