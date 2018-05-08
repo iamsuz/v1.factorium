@@ -581,7 +581,7 @@ a:hover {
     	background-attachment: fixed !important;
   	}
 }
-@media (max-width: 1225px) and (min-width: 991px){
+@media screen and (max-width: 1225px) and (min-width: 991px){
 	/*.h3, h3{
 		font-size: 17px !important;
 	}*/
@@ -621,7 +621,7 @@ a:hover {
 		padding: 0 3%;
 	}
 }
-@media (max-width: 990px) and (min-width: 768px){
+@media screen and (max-width: 990px) and (min-width: 768px){
 	/*.container{
 		max-width: 800px !important;
 	}
@@ -649,7 +649,13 @@ a:hover {
 		padding: 0 3% !important;
 	}
 }
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
+	#promo .color-overlay{
+		height: 120vw !important;
+	}
+	#promo{
+		height: 120vw !important;
+	}
 	h2{
 		font-size: 2.1em !important;
 	}
@@ -695,7 +701,7 @@ a:hover {
 		padding: 0 6%;
 	}
 }
-@media (max-width: 320px) {
+@media screen and (max-width: 320px) {
 	h2{
 		font-size: 1.3em !important;
 		line-height: 1.3em;
@@ -730,7 +736,7 @@ a:hover {
 			padding: 0 20px !important;
 			}*/
 		}
-		@media (max-width: 480px) {
+		@media screen and (max-width: 480px) {
 			h2{
 				font-size: 1.5em !important;
 				/*line-height: 1.3em;*/
