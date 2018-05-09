@@ -578,7 +578,11 @@ a:hover {
 }
 @media only screen and (max-device-width: 1024px) {
   	#promo {
-    	background-attachment: fixed !important;
+    	/*background-attachment: fixed !important;*/
+    	height: 60vw;
+  	}
+  	#promo .color-overlay{
+  		height: 60vw;
   	}
 }
 @media screen and (max-width: 1225px) and (min-width: 991px){
