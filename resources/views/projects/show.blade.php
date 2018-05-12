@@ -1436,6 +1436,13 @@
 										<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
 										<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
 									</table>
+									@if($project->investment->bitcoin_wallet_address)
+									<h3 class="text-center second_color">Or pay using Bitcoin</h3><br>
+									<table class="table table-responsive font-bold" style="color:#2d2d4b;">
+										<tr><td>Bitcoin Wallet Address</td><td class="bitcoin-wallet-address-field">{!!$project->investment->bitcoin_wallet_address!!}</td></tr>
+									</table>
+									<div class="btcwdgt-price" bw-theme="light" bw-cur="aud" style="margin: auto !important;"></div>
+									@endif
 									@endif
 								</h5>
 							</div>
@@ -1933,6 +1940,16 @@
 			})
 		});
 	});
+</script>
+{{-- Code for Bitcoin Widget --}}
+<script>
+  (function(b,i,t,C,O,I,N) {
+    window.addEventListener('load',function() {
+      if(b.getElementById(C))return;
+      I=b.createElement(i),N=b.getElementsByTagName(i)[0];
+      I.src=t;I.id=C;N.parentNode.insertBefore(I, N);
+    },false)
+  })(document,'script','https://widgets.bitcoin.com/widget.js','btcwdgt');
 </script>
 <script>
 	$(function () {
