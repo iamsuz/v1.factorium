@@ -21,14 +21,14 @@
 							@if($project->projectconfiguration->payment_switch)
 							Thank you
 							@else
-							Thank you <br> Please deposit ${{number_format($amount)}} to
+							Thank you <br><div style="margin-top: 1.2rem;"> Please deposit ${{number_format($amount)}} to</div>
 							@endif
 						</h2>
 					</div>
 				</div>
 				<br>
 				@if($project->investment)
-				@if($project->investment->bank)
+				{{-- @if($project->investment->bank) --}}
 				<div class="row">
 					<div class="col-md-offset-3 col-md-8 text-justify">
 
@@ -43,16 +43,18 @@
 							<tr><td>Reference</td><td>{!!$project->investment->bank_reference!!}</td></tr>
 						</table>
 
-						<h3>Or pay using Bitcoin</h3>
+						@if($project->investment->bitcoin_wallet_address)
+						<h3 class="text-center" style="font-size: 1.2em; text-decoration: none;">Or pay using Bitcoin</h3>
 						<table class="table table-bordered">
 							<tr><td>Bitcoin wallet address</td><td>{!!$project->investment->bitcoin_wallet_address!!}</td></tr>
 						</table>
+						@endif
 
 						@endif
 					</div>
 				</div>
 				<br>
-				@endif
+				{{-- @endif --}}
 				@endif
 			</div>
 		</section>
