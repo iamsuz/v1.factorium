@@ -44,7 +44,7 @@
 						</table>
 
 						@if($project->investment->bitcoin_wallet_address)
-						<h3 class="text-center" style="font-size: 1.2em; text-decoration: none;">Or pay using Bitcoin</h3>
+						<h3 class="text-center" style="font-size: 1.4em; font-weight: 600; text-decoration: none;">Or pay using Bitcoin</h3>
 						<table class="table table-bordered">
 							<tr><td>Bitcoin wallet address</td><td>{!!$project->investment->bitcoin_wallet_address!!}</td></tr>
 						</table>
