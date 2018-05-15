@@ -30,7 +30,7 @@
 				@if($project->investment)
 				{{-- @if($project->investment->bank) --}}
 				<div class="row">
-					<div class="col-md-offset-3 col-md-8 text-justify">
+					<div class="col-md-offset-2 col-md-8 text-justify">
 
 						@if($project->projectconfiguration->payment_switch)
 						@else
@@ -44,7 +44,7 @@
 						</table>
 
 						@if($project->investment->bitcoin_wallet_address)
-						<h3 class="text-center" style="font-size: 1.4em; font-weight: 600; text-decoration: none;">Or pay using Bitcoin</h3>
+						<h2 class="text-center" style="font-size: 1.4em; font-weight: 600; margin-bottom: 1.5rem;">Or pay using Bitcoin</h2>
 						<table class="table table-bordered">
 							<tr><td>Bitcoin wallet address</td><td>{!!$project->investment->bitcoin_wallet_address!!}</td></tr>
 						</table>
