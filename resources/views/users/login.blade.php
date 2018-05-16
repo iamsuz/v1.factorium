@@ -9,6 +9,9 @@ Login | @parent
 	.navbar-default {
 		border-color: #fff ;
 	}
+	#or {
+		color: white !important;
+	}
 </style>
 @stop
 
@@ -47,8 +50,8 @@ Login | @parent
 							</div>
 							<input type="hidden" value="" id="next" name="next">
 							<div class="form-group" style="width:75%;">
-								{!! Form::submit('Login with Estate Baron account', array('class'=>'btn btn-block second_color_btn hide', 'tabindex'=>'4', 'style'=>'border-radius:50px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
-								<button type="submit" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform" href='#' style="width:300px; background-color: #fed405; font-size:1em; color:#000;border-radius:50px; border: 0px;" data-toggle="tooltip" title="If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Login with Estate Baron account</button>
+								{!! Form::submit('Login with Estate Baron account', array('class'=>'btn btn-block second_color_btn hide', 'tabindex'=>'4', 'style'=>'border-radius:50px; background-color:#fed405;font-size:1.125em;color:#fff;')) !!}
+								<button type="submit" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform" href='#' style="width:300px; background-color: #fed405; font-size:1em; color:#fff;border-radius:50px; border: 0px;" data-toggle="tooltip" title="If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Login with Estate Baron account</button>
 							</div>
 							<p class="text-left" style="margin-left: -25px"> <a class="btn btn-link" href="{{ url('/password/email') }}"> Forgot Your Password?</a></p>
 						</fieldset>
@@ -61,7 +64,7 @@ Login | @parent
 				</div>
 				<div class="col-md-3" style="position:relative;">
 					<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;margin-left:-25px;">
-						<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:#F7C228;">OR</p>
+						<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:white !important;" id="or">OR</p>
 					</div>
 					<br><br>
 					<br><br>
