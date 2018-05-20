@@ -9,8 +9,8 @@ EOI Doc
 @section('content-section')
 <div class="loader-overlay hide" style="display: none;">
 	<div class="overlay-loader-image">
-	   <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
-	</div>
+        <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
+    </div>
 </div>
 <div class="container">
     <div class="row">
@@ -23,7 +23,7 @@ EOI Doc
         </div>
         @endif
         @if (Session::has('message'))
-            {!! Session::get('message') !!}
+        {!! Session::get('message') !!}
         @endif
         <h1 class="text-center">Expression of Interest</h1>
         <h5 style="color: #767676;">** This is a no obligation expression of interest which allows us to determine how much money is likely to come in when the offer is made.</h5>
@@ -32,24 +32,24 @@ EOI Doc
 
         <div class="form-group">
             {!! Form::label('Name') !!}
-            {!! Form::text('name', $user->first_name. ' '. $user->last_name, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your name')) !!}
+            {!! Form::text('name', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your name','id'=>'eoi_name')) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('Email') !!}
-            {!! Form::input('email', 'email_address', $user->email, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email')) !!}
+            {!! Form::input('email', 'email_address', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email','id'=>'eoi_email')) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label(null, 'Phone number') !!}
-            {!! Form::input('number', 'phone_number', $user->phone_number, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number')) !!}
+            {!! Form::input('number', 'phone_number', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label(null, 'Amount you would be interested in investing') !!}
             <div class="input-group">
-            <span class="input-group-addon">A$</span>
-                {!! Form::input('number', 'investment_amount', 5000, array('required', 'class'=>'form-control', 'placeholder'=>'Enter Invesment Amount')) !!}
+                <span class="input-group-addon">A$</span>
+                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
             </div>
         </div>
 
@@ -64,19 +64,33 @@ EOI Doc
         </div>
         <input type="text" name="project_id" @if($project) value="{{$project->id}}" @endif hidden >
         {!! Form::close() !!}
-      </div>
     </div>
 </div>
-
+</div>
+@include('partials.loginModal');
+@include('partials.registerModal');
 @stop
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
 	$(document).ready(function(){
-        $('#eoiFormButton').submit(function() {
+        $('#eoiFormButton').submit(function(e) {
+            @if(Auth::guest())
+            e.preventDefault();
+            console.log('Sujit');
+            $("#loginModal").modal()
+            var name = $('eoi_name').val();
+            var email = $('eoi_email').val();
+            var phone = $('eoi_phone').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            $.post('/users/login',{name,email,phone,_token},function(data){
+                console.log(data);
+            });
+            @else
             $('.loader-overlay').show(); // show animation
             return true; // allow regular form submission
+            @endif
         });
     });
 </script>

@@ -25,7 +25,7 @@ $_SESSION['code'] = md5(microtime(true));
     <meta name="author" content="Estate Baron">
     {{-- <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors."> --}}
     <meta name="copyright" content="Estate Baron Crowdinvest Pty Ltd copyright (c) 2016">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <?php
     $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr();
     ?>
@@ -311,7 +311,7 @@ $_SESSION['code'] = md5(microtime(true));
         <br>
         <p class="investment-title1-description-section text-justify" style="font-size:16px;">
         <small><small>@if($siteConfiguration->compliance_description != '')
-        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
+        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
         The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative @if($siteConfiguration->car_no != '') {{$siteConfiguration->car_no}} @else 001251881 @endif of AFSL @if($siteConfiguration->afsl_no != '') {{$siteConfiguration->afsl_no}} @else 299812 @endif provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank"><span style="text-decoration: none; color: #fff;">Financial Services Guide</span></a>.
         @endif</small></small>
         </p>

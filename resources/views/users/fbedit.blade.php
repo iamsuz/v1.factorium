@@ -1,4 +1,4 @@
-<!-- @extends('layouts.main') -->
+@extends('layouts.main')
 @section('title-section')
 Edit {!! $user->first_name !!} | @parent
 @stop

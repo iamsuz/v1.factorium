@@ -21,7 +21,7 @@ class UserAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['only' => ['login']]);
+        $this->middleware('guest', ['only' => ['login','authenticate']]);
     }
 
     /**
@@ -76,6 +76,7 @@ class UserAuthController extends Controller
      */
     public function authenticate(UserAuthRequest $request)
     {
+        dd($request);
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
             if (Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {

@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects']]);
+        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest']]);
     }
 
     /**
@@ -270,10 +270,10 @@ class ProjectsController extends Controller
             if(Auth::guest()) {
                 return redirect()->to('/users/login?next=projects/'.$project->id)->withMessage('<p class="alert alert-warning text-center">Please log in to access the project</p>');
             }
-            if($project->invited_users->contains(Auth::user())) 
+            if($project->invited_users->contains(Auth::user()))
             {
                 if($editFlag){
-                    return view('projects.showedit', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));    
+                    return view('projects.showedit', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
                 }
                 return view('projects.show', compact('siteConfiguration', 'project', 'pledged_amount', 'completed_percent', 'number_of_investors','color','project_prog'));
             } else {
@@ -472,7 +472,7 @@ class ProjectsController extends Controller
         // if(Auth::user()->verify_id != 2){
         //     return redirect()->route('users.verification', Auth::user())->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> As part of our commitment to meeting Australian Securities Law we are required to do some additional user verification to meet Anti Money Laundering and Counter Terror Financing requirements.<br> This wont take long, promise!</p>');
         // }
-        
+
         if($project->investment){
             $user = Auth::user();
             // $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>'0']);
@@ -873,7 +873,7 @@ class ProjectsController extends Controller
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_logo' => 'required',
-                ]);    
+                ]);
         }
         //Validate SPV MD Signature
         $projectMedia = Media::where('project_id', $project_id)
@@ -883,7 +883,7 @@ class ProjectsController extends Controller
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_md_sign' => 'required',
-                ]);    
+                ]);
         }
         $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
         if(!$projectSpv)
@@ -914,13 +914,13 @@ class ProjectsController extends Controller
                 $finalpath = $saveLoc.$finalFile;
                 Image::make($request->spv_logo_image_path)->save(public_path($finalpath));
                 File::delete($request->spv_logo_image_path);
-                
+
                 $projectMedia = Media::where('project_id', $project_id)
                 ->where('project_site', url())
                 ->where('type', 'spv_logo_image')
                 ->first();
                 if($projectMedia){
-                    File::delete(public_path($projectMedia->path));    
+                    File::delete(public_path($projectMedia->path));
                 }
                 else{
                     $projectMedia = new Media;
@@ -944,7 +944,7 @@ class ProjectsController extends Controller
                 ->where('type', 'spv_md_sign_image')
                 ->first();
                 if($projectMedia){
-                    File::delete(public_path($projectMedia->path));    
+                    File::delete(public_path($projectMedia->path));
                 }
                 else{
                     $projectMedia = new Media;
