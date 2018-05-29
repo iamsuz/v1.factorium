@@ -82,7 +82,11 @@ class UserAuthController extends Controller
             return 'fail';
         }
     }
-
+    public function successEoi(Request $request)
+    {
+        $color = Color::where('project_site',url())->first();
+        return view('users.successEoi',compact('color'));
+    }
     public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
@@ -125,7 +129,7 @@ class UserAuthController extends Controller
                     $mailer->sendProjectEoiEmailToUser($project, $user_info);
                 }
             }
-            return redirect()->back()->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
+            return redirect()->route('users.success.eoi');
         }
     }
     /**
