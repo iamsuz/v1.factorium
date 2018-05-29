@@ -112,6 +112,13 @@ EOI Doc
                     $('#eoiProjectId').val(project_id);
                     $("#loginModal").modal();
                 }else{
+                    $('#eoiREmail').val(email);
+                    $('#eoiRFName').val(fname);
+                    $('#eoiRLName').val(lname);
+                    $('#eoiRPhone').val(phone);
+                    $('#eoiRInvestmentPeriod').val(investment_period);
+                    $('#eoiRInvestmentAmount').val(investment_amount);
+                    $('#eoiRProjectId').val(project_id);
                     $('#registerModal').modal();
                 }
             });

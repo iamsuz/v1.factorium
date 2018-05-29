@@ -10,6 +10,8 @@ use App\Color;
 use Validator;
 use App\Invite;
 use App\Credit;
+use App\Project;
+use App\ProjectEOI;
 use Carbon\Carbon;
 use App\Http\Requests;
 use App\UserRegistration;
@@ -18,6 +20,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Intercom\IntercomBasicAuthClient;
 use App\Http\Requests\UserAuthRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class UserRegistrationsController extends Controller
@@ -83,8 +86,12 @@ class UserRegistrationsController extends Controller
                 return redirect('/users/create')->withErrors(['email'=> $errorMessage])->withInput();
             }
             else{
+                $errorMessage = 'This email is already registered but seems its not activated please activate email';
                 if($request->eoiReg == 'eoiReg'){
-                    return redirect($request->next)->withErrors($validator1)->withInput();
+                    if(!$request->next){
+                        return redirect()->back()->withMessage('<p>This email is already registered but seems its not activated please activate email</p>');
+                    }
+                    return redirect($request->next)->withMessage('<p>This email is already registered but seems its not activated please activate email</p>');
                 }
                 return redirect('/users/create')
                     ->withErrors($validator1)
@@ -93,10 +100,11 @@ class UserRegistrationsController extends Controller
         }
         // dd($request);
         if($request->eoiReg == 'eoiReg'){
+            $color = Color::where('project_site',url())->first();
             $eoi_token = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token'=>$eoi_token]);
             $mailer->sendRegistrationConfirmationTo($user);
-            return redirect()->back()->with('success_code', 6);
+            return view('users.registerCode',compact('color'));
         }
         else{
             dd('outside');
@@ -241,6 +249,77 @@ class UserRegistrationsController extends Controller
             // return view('users.registrationFinish', compact('user','color'));
             return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));
         }
+    }
+
+    public function registrationCode(Request $request,AppMailer $mailer)
+    {
+        $color = Color::where('project_site',url())->first();
+        $userR = UserRegistration::where('eoi_token',$request->eoiCode)->firstOrFail();
+        $userR->active = true;
+        $userR->activated_on = Carbon::now();
+        $userR->save();
+        $cookies = \Cookie::get();
+        $referrer = isset($cookies['referrer']) ? $cookies['referrer'] : "";
+        $userReg = $userR;
+        $color = Color::where('project_site',url())->first();
+        $request['first_name'] = $userReg->first_name;
+        $request['last_name'] = $userReg->last_name;
+        if (!$request['username']) {
+            $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
+        }
+        $request['phone_number'] = $userReg->phone_number;
+        $request['email'] = $userReg->email;
+        $request['password'] = bcrypt($userReg->password);
+        $request['active'] = true;
+        $request['activated_on'] = $userReg->activated_on;
+        $request['registration_site'] = $userReg->registration_site;
+        $request['project_id'] = $userReg->eoi_project;
+        $request['investment_amount'] = $userReg->investment_amount;
+        $request['investment_period'] = $userReg->investment_period;
+        // dd($userReg);
+        $role = Role::whereRole($userReg->role)->firstOrFail();
+        $roleText = $userReg->role;
+
+        $user = User::create($request->all());
+        $time_now = Carbon::now();
+        $user->roles()->attach($role);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'sign up']);
+        $password = $userReg->password;
+        $userReg->delete();
+        $mailer->sendRegistrationNotificationAdmin($user,$referrer);
+        if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
+            Auth::user()->update(['last_login'=> Carbon::now()]);
+            $project = Project::findOrFail($request->project_id);
+            $user = Auth::user();
+            $user_info = Auth::user();
+            $min_amount_invest = $project->investment->minimum_accepted_amount;
+            if((int)$request->investment_amount < (int)$min_amount_invest)
+            {
+                return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
+            }
+            if((int)$request->investment_amount % 1000 != 0)
+            {
+                return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
+            }
+            if($project){
+                if($project->eoi_button){
+                    $eoi_data = ProjectEOI::create([
+                        'project_id' => $request->project_id,
+                        'user_id' => $user->id,
+                        'user_name' => $request->first_name.' '.$request->last_name,
+                        'user_email' => $request->email,
+                        'phone_number' => $request->phone_number,
+                        'investment_amount' => $request->investment_amount,
+                        'invesment_period' => $request->investment_period,
+                        'project_site' => url(),
+                    ]);
+                    $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
+                    $mailer->sendProjectEoiEmailToUser($project, $user_info);
+                }
+            }
+            return redirect()->route('users.success.eoi');
+        }
+        return view('users.details', compact('user','color'))->withMessage('Successfully Activated, please fill the details');
     }
 
     public function acceptedInvitation($token)

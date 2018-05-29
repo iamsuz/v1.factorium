@@ -28,7 +28,7 @@
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'email', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
+													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 													{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
 												</div>
 												<!-- </div> -->
@@ -46,6 +46,14 @@
 														<input type="text" name="eoiReg" class="form-control" value="eoiReg">
 													</div>
 													<input type="hidden" value="projects/{{$project->id}}/eoi" id="regnext" name="regnext">
+													<input type="hidden" value="eoiLogin" id="eoiLogin" name="eoiLogin">
+													<input type="text" class="hidden" name="first_name" id="eoiRFName">
+													<input type="text" class="hidden" name="last_name" id="eoiRLName">
+													{{-- <input type="text" class="hidden" name="lname" id="eoiLName"> --}}
+													<input type="text" class="hidden" name="phone_number" id="eoiRPhone">
+													<input type="text" class="hidden" name="investment_period" id="eoiRInvestmentPeriod">
+													<input type="text" class="hidden" name="investment_amount" id="eoiRInvestmentAmount">
+													<input type="text" class="hidden" name="eoi_project" id="eoiRProjectId">
 													<!-- </div> -->
 												</div>
 												<p class="font-bold" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>

@@ -84,8 +84,12 @@ class UserAuthController extends Controller
     }
     public function successEoi(Request $request)
     {
-        $color = Color::where('project_site',url())->first();
-        return view('users.successEoi',compact('color'));
+        if(Auth::check())
+        {
+            $color = Color::where('project_site',url())->first();
+            return view('users.successEoi',compact('color'));
+        }
+        return redirect()->route('users.login')->withMessage('<p class="alert alert-danger text-center">Please Login</p>');
     }
     public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
     {

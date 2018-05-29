@@ -18,6 +18,8 @@ class AddColumnsFirstLastNameToUserRegistrationsTable extends Migration
             $table->string('phone_number')->nullable();
             $table->string('eoi_project')->nullable();
             $table->string('eoi_token')->nullable();
+            $table->string('investment_period')->nullable();
+            $table->string('investment_amount')->nullable();
         });
     }
 
@@ -34,6 +36,8 @@ class AddColumnsFirstLastNameToUserRegistrationsTable extends Migration
             $table->dropColumn('phone_number');
             $table->dropColumn('eoi_project');
             $table->dropColumn('eoi_token');
+            $table->dropColumn('investment_period');
+            $table->dropColumn('investment_amount');
         });
     }
 }
