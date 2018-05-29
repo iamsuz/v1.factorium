@@ -15,15 +15,15 @@
 									<br>
 									<div class="text-left">
 										<h3 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">You are almost there!</h3>
-										<h4 class="wow fadeIn animated font-regular first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;"><br>Sign up for free, to see the current opportunities and receive updates.</h4>
+										<h4 class="wow fadeIn animated font-regular first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;"><br>Sign up for free, to complete your Expression of Interest.</h4>
 										<br>
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-12">
 									<section id="registerForm" style="padding:0 10px;">
-										<h4 class="font-bold first_color" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
+										<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
 										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'form'))!!}
 										<div class="row form-group">
 											<!-- <div> -->
@@ -56,8 +56,8 @@
 													<input type="text" class="hidden" name="eoi_project" id="eoiRProjectId">
 													<!-- </div> -->
 												</div>
-												<p class="font-bold" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
-												<div class="row text-left">
+												<p class="font-bold hide" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
+												<div class="row text-left hide">
 													<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s">
 														<div class="btn-group" data-toggle="buttons">
 															<input type="radio" name="role" id="investor_role" autocomplete="off" value="investor" checked tabindex="1"><span class="font-regular" style="font-size:0.875em; color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I am an Investor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -76,7 +76,7 @@
 												</div>
 												{!! Form::close() !!}
 												<br>
-												<h4 class="text-left font-regular first_color" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b>{!! Html::linkRoute('users.login', 'Sign In Here') !!}</b>
+												<h4 class="text-left font-regular first_color hide" style="font-size:1.375em;color:#2d2a6e;">If you have an account. <b>{!! Html::linkRoute('users.login', 'Sign In Here') !!}</b>
 												</section>
 											</div>
 											{{-- <div class="col-md-3" style="position:relative;">
