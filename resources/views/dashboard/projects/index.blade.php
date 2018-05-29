@@ -16,6 +16,9 @@ Projects | Dashboard | @parent
 			@include('dashboard.includes.sidebar', ['active'=>3])
 		</div>
 		<div class="col-md-10">
+			@if (Session::has('message'))
+			{!! Session::get('message') !!}
+			@endif
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped" id="projectsTable">
 					<thead>

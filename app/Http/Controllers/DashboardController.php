@@ -147,6 +147,9 @@ class DashboardController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
+        if($project->project_site != url()){
+            return redirect()->route('dashboard.projects')->withMessage('<p class="alert alert-warning text-center">Access Denied</p>');
+        }
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         if($project->is_coming_soon || $project->eoi_button == '1' || $project->is_funding_closed == '1'){
             $project->active = 1;
