@@ -7,6 +7,9 @@ use App\User;
 use App\Color;
 use Carbon\Carbon;
 use App\UserRegistration;
+use App\Project;
+use App\ProjectEOI;
+use App\Mailers\AppMailer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +24,7 @@ class UserAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['only' => ['login','authenticate']]);
+        $this->middleware('guest', ['only' => ['login','authenticate','authenticateCheck']]);
     }
 
     /**
@@ -69,6 +72,62 @@ class UserAuthController extends Controller
         return redirect()->route('users.login')->withMessage('<p class="alert alert-success text-center"> Successfully Logged out!</p>');
     }
 
+
+    public function authenticateCheck(Request $request)
+    {
+        $user = User::where('email',$request->email)->first();
+        if($user){
+            return $request->email;
+        }else{
+            return 'fail';
+        }
+    }
+
+    public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            Auth::user()->update(['last_login'=> Carbon::now()]);
+            Session::flash('loginaction', 'success.');
+            $color = Color::where('project_site',url())->first();
+            $project = Project::findOrFail($request->project_id);
+            $user = Auth::user();
+            $user_info = Auth::user();
+            $min_amount_invest = $project->investment->minimum_accepted_amount;
+            if((int)$request->investment_amount < (int)$min_amount_invest)
+            {
+                return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
+            }
+            if((int)$request->investment_amount % 1000 != 0)
+            {
+                return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
+            }
+            $this->validate($request, [
+                'first_name' => 'required',
+                'last_name' =>'required',
+                'email' => 'required',
+                'phone_number' => 'required|numeric',
+                'investment_amount' => 'required|numeric',
+                'investment_period' => 'required',
+            ]);
+            if($project){
+                if($project->eoi_button){
+                    $eoi_data = ProjectEOI::create([
+                        'project_id' => $request->project_id,
+                        'user_id' => $user->id,
+                        'user_name' => $request->first_name.' '.$request->last_name,
+                        'user_email' => $request->email,
+                        'phone_number' => $request->phone_number,
+                        'investment_amount' => $request->investment_amount,
+                        'invesment_period' => $request->investment_period,
+                        'project_site' => url(),
+                    ]);
+                    $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
+                    $mailer->sendProjectEoiEmailToUser($project, $user_info);
+                }
+            }
+            return redirect()->back()->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
+        }
+    }
     /**
      * authenticate user
      * @param  UserAuthRequest $request
@@ -116,6 +175,9 @@ class UserAuthController extends Controller
             } else {
                 return redirect()->route('users.login')->withInput($request->only('email', 'remember'))->withMessage('<p class="alert alert-danger text-center">This email is registered but you dont seem to have activated yourself.<br> We have sent an activation link to this email, please click on the link to activate yourself and then you will be able to access the site <br><br> or <a href="/registrations/resend?email='.$request->email.'">click here to resend activation link</a></p>');
             }
+        }
+        if($request->eoiLogin == 'eoiLogin'){
+            return redirect()->back()->withInput($request->only('email', 'remember'))->withMessage('<p class="alert alert-warning text-center">This email is not registered, please sign up.</p>')->with('error_code', 5);
         }
         return redirect()->route('users.login')->withInput($request->only('email', 'remember'))->withMessage('<p class="alert alert-warning text-center">This email is not registered, please sign up.</p>');
     }

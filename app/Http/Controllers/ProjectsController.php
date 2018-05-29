@@ -527,7 +527,8 @@ class ProjectsController extends Controller
             return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only']);
         }
         $this->validate($request, [
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' =>'required',
             'email_address' => 'required',
             'phone_number' => 'required|numeric',
             'investment_amount' => 'required|numeric',
@@ -538,7 +539,7 @@ class ProjectsController extends Controller
                 $eoi_data = ProjectEOI::create([
                     'project_id' => $request->project_id,
                     'user_id' => $user->id,
-                    'user_name' => $request->name,
+                    'user_name' => $request->first_name.' '.$request->last_name,
                     'user_email' => $request->email_address,
                     'phone_number' => $request->phone_number,
                     'investment_amount' => $request->investment_amount,

@@ -17,6 +17,7 @@ class AddColumnsFirstLastNameToUserRegistrationsTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('eoi_project')->nullable();
+            $table->string('eoi_token')->nullable();
         });
     }
 
@@ -27,9 +28,12 @@ class AddColumnsFirstLastNameToUserRegistrationsTable extends Migration
      */
     public function down()
     {
-        $table->dropColumn('first_name');
-        $table->dropColumn('last_name');
-        $table->dropColumn('phone_number');
-        $table->dropColumn('eoi_project');
+        Schema::table('user_registrations', function (Blueprint $table) {
+            $table->dropColumn('first_name');
+            $table->dropColumn('last_name');
+            $table->dropColumn('phone_number');
+            $table->dropColumn('eoi_project');
+            $table->dropColumn('eoi_token');
+        });
     }
 }

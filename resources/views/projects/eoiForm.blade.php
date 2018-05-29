@@ -29,15 +29,19 @@ EOI Doc
         <h5 style="color: #767676;">** This is a no obligation expression of interest which allows us to determine how much money is likely to come in when the offer is made.</h5>
 
         {!! Form::open(array('route' => ['projects.eoiStore'], 'class' => 'form', 'id'=>'eoiFormButton')) !!}
-
-        <div class="form-group">
-            {!! Form::label('Name') !!}
-            {!! Form::text('name', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your name','id'=>'eoi_name')) !!}
+        <div class="row">
+            <div class="form-group col-md-6">
+                {!! Form::label('First Name') !!}
+                {!! Form::text('first_name', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your first name','id'=>'eoi_fname')) !!}
+            </div>
+            <div class="form-group col-md-6">
+                {!! Form::label('Last Name') !!}
+                {!! Form::text('last_name', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your last name','id'=>'eoi_lname')) !!}
+            </div>
         </div>
-
         <div class="form-group">
             {!! Form::label('Email') !!}
-            {!! Form::input('email', 'email_address', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email','id'=>'eoi_email')) !!}
+            {!! Form::input('email', 'email', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email','id'=>'eoi_email')) !!}
         </div>
 
         <div class="form-group">
@@ -49,20 +53,20 @@ EOI Doc
             {!! Form::label(null, 'Amount you would be interested in investing') !!}
             <div class="input-group">
                 <span class="input-group-addon">A$</span>
-                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
+                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' ,'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
             </div>
         </div>
 
         <div class="form-group">
             {!! Form::label(null, 'When will you be ready to invest : ', array('style' => 'margin-right: 8px;')) !!}
-            {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months']) !!}
+            {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months'],null,array('id'=>'periodEoi')) !!}
         </div>
         <br>
 
         <div class="form-group text-center show-eoi-form-btn">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
         </div>
-        <input type="text" name="project_id" @if($project) value="{{$project->id}}" @endif hidden >
+        <input type="text" name="project_id" @if($project) value="{{$project->id}}" @endif hidden id="projIdEoi">
         {!! Form::close() !!}
     </div>
 </div>
@@ -75,17 +79,41 @@ EOI Doc
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
 	$(document).ready(function(){
+        @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
+        $('#registerModal').modal();
+        @endif
+        @if(!empty(Session::get('success_code')) && Session::get('success_code') == 6)
+        $('#registerModal').modal();
+        @endif
+        $('#submitform').click(function(){
+            $('#submit1').trigger('click');
+        });
         $('#eoiFormButton').submit(function(e) {
             @if(Auth::guest())
             e.preventDefault();
-            console.log('Sujit');
-            $("#loginModal").modal()
-            var name = $('eoi_name').val();
-            var email = $('eoi_email').val();
-            var phone = $('eoi_phone').val();
+            var fname = $('#eoi_fname').val();
+            var lname = $('#eoi_lname').val();
+            var email = $('#eoi_email').val();
+            var phone = $('#eoi_phone').val();
+            var password = $('#loginPwdEoi').val();
+            var investment_period = $('#periodEoi').find(':selected').text();
+            var investment_amount = $('#amountEoi').val();
+            var project_id = $('#projIdEoi').val();
+            console.log(investment_period);
             var _token = $('meta[name="csrf-token"]').attr('content');
-            $.post('/users/login',{name,email,phone,_token},function(data){
-                console.log(data);
+            $.post('/users/login/check',{email,_token},function (data) {
+                if(data == email){
+                    $('#loginEmailEoi').val(email);
+                    $('#eoiFName').val(fname);
+                    $('#eoiLName').val(lname);
+                    $('#eoiPhone').val(phone);
+                    $('#eoiInvestmentPeriod').val(investment_period);
+                    $('#eoiInvestmentAmount').val(investment_amount);
+                    $('#eoiProjectId').val(project_id);
+                    $("#loginModal").modal();
+                }else{
+                    $('#registerModal').modal();
+                }
             });
             @else
             $('.loader-overlay').show(); // show animation

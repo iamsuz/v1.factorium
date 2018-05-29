@@ -77,16 +77,33 @@ class UserRegistrationsController extends Controller
                     $originSite = $userReg->registration_site;
                 }
                 $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
+                if($request->eoiReg == 'eoiReg'){
+                    return redirect($request->next)->withErrors(['email'=> $errorMessage])->withInput();
+                }
                 return redirect('/users/create')->withErrors(['email'=> $errorMessage])->withInput();
             }
             else{
+                if($request->eoiReg == 'eoiReg'){
+                    return redirect($request->next)->withErrors($validator1)->withInput();
+                }
                 return redirect('/users/create')
                     ->withErrors($validator1)
                     ->withInput();
             }
         }
-        $user = UserRegistration::create($request->all());
-        $mailer->sendRegistrationConfirmationTo($user);
+        // dd($request);
+        if($request->eoiReg == 'eoiReg'){
+            $eoi_token = mt_rand(100000, 999999);
+            $user = UserRegistration::create($request->all()+['eoi_token'=>$eoi_token]);
+            $mailer->sendRegistrationConfirmationTo($user);
+            return redirect()->back()->with('success_code', 6);
+        }
+        else{
+            dd('outside');
+            $user = UserRegistration::create($request->all());
+            $mailer->sendRegistrationConfirmationTo($user);
+        }
+
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
         //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',

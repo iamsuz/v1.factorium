@@ -75,6 +75,8 @@ Route::resource('notes', 'NotesController');
 Route::get('/users/login', ['as'=>'users.login', 'uses'=>'UserAuthController@login']);
 Route::get('/users/logout', ['as'=>'users.logout', 'uses'=>'UserAuthController@logout']);
 Route::post('/users/login', ['as'=>'users.auth', 'uses'=>'UserAuthController@authenticate']);
+Route::post('/users/login/eoi', ['as'=>'users.auth.eoi', 'uses'=>'UserAuthController@authenticateEoi']);
+Route::post('/users/login/check', ['as'=>'users.auth.check', 'uses'=>'UserAuthController@authenticateCheck']);
 Route::get('/users/activation/{token}', ['as'=>'users.activation', 'uses'=>'UserAuthController@activate']);
 
 // Password reset link request routes...
@@ -258,7 +260,7 @@ Route::post('/dashboard/projects/{project_id}/investment/declareRepurchase', ['a
 Route::post('/dashboard/projects/{project_id}/investment/statement', ['as'=>'dashboard.investment.statement', 'uses'=>'DashboardController@investmentStatement']);
 Route::get('/dashboard/projects/{project_id}/investment/statement/send', ['as'=>'dashboard.investment.statement.send', 'uses'=>'DashboardController@sendInvestmentStatement']);
 
-// Mail 
+// Mail
 Route::get('/dashboard/projects/{investment_id}/investors/imgdoc',['as'=>'dashboard.userdoc.upload','uses'=>'DashboardController@newUserDoc']);
 Route::get('/dashboard/projects/{investment_id}/investors/imgdoc/verify',['as'=>'dashboard.userdoc.verify','uses'=>'DashboardController@verifyUserDoc']);
 Route::get('/dashboard/project/application/{investment_id}', ['as'=>'dashboard.project.application', 'uses'=>'DashboardController@applicationForm']);

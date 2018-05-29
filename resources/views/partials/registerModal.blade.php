@@ -42,6 +42,10 @@
 													<div class="col-md-12 <?php if($errors->first('registration_site')){echo 'has-error';}?>" data-wow-delay="0.2s" hidden >
 														<input type="text" name="registration_site" class="form-control" value="<?php echo url(); ?>">
 													</div>
+													<div class="col-md-12 <?php if($errors->first('eoiReg')){echo 'has-error';}?>" data-wow-delay="0.2s" hidden >
+														<input type="text" name="eoiReg" class="form-control" value="eoiReg">
+													</div>
+													<input type="hidden" value="projects/{{$project->id}}/eoi" id="regnext" name="regnext">
 													<!-- </div> -->
 												</div>
 												<p class="font-bold" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
