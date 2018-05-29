@@ -56,7 +56,6 @@ class UserRegistrationsController extends Controller
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|min:6|max:60',
             'role'=>'required',
             'registration_site'=>'required'
             ]);
@@ -107,7 +106,6 @@ class UserRegistrationsController extends Controller
             return view('users.registerCode',compact('color'));
         }
         else{
-            dd('outside');
             $user = UserRegistration::create($request->all());
             $mailer->sendRegistrationConfirmationTo($user);
         }
@@ -201,6 +199,7 @@ class UserRegistrationsController extends Controller
             'first_name' => 'required|min:1|max:50',
             'last_name' => 'required|min:1|max:50',
             'phone_number' => 'required|numeric',
+            'password' => 'required|min:6|max:60',
             'token'=>'required',
             ]);
 
@@ -209,8 +208,9 @@ class UserRegistrationsController extends Controller
         if (!$request['username']) {
             $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
         }
+        $oldPassword = $request->password;
         $request['email'] = $userReg->email;
-        $request['password'] = bcrypt($userReg->password);
+        $request['password'] = bcrypt($request->password);
         $request['active'] = true;
         $request['activated_on'] = $userReg->activated_on;
         $request['registration_site'] = $userReg->registration_site;
@@ -222,27 +222,8 @@ class UserRegistrationsController extends Controller
         $time_now = Carbon::now();
         $user->roles()->attach($role);
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'sign up']);
-        $password = $userReg->password;
+        $password = $oldPassword;
         $userReg->delete();
-
-        // intercom create user
-        // $intercom = IntercomBasicAuthClient::factory(array(
-        //     'app_id' => 'refan8ue',
-        //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
-        //     ));
-        // $intercom->createUser(array(
-        //     "id" => $user->id,
-        //     "user_id" => $user->id,
-        //     "email" => $user->email,
-        //     "name" => $user->first_name.' '.$user->last_name,
-        //     "custom_attributes" => array(
-        //         "last_name" => $user->last_name,
-        //         "active" => $user->active,
-        //         "phone_number" => $user->phone_number,
-        //         "activated_on_at" => $user->activated_on->timestamp,
-        //         "role" => $roleText
-        //         ),
-        //     ));
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);

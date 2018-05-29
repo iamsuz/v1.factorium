@@ -41,12 +41,20 @@ Fill the user details | @parent
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="form-group <?php if($errors->first('phone_number')){echo 'has-error';}?>">
 									<div class="col-sm-offset-1 col-sm-10">
 										{!! Form::input('tel', 'phone_number', null, array('placeholder'=>'Phone Number', 'class'=>'form-control', 'tabindex'=>'3', 'required'=>'true')) !!}
 										{!! $errors->first('phone_number', '<small class="text-danger">:message</small>') !!}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group">
+									<div class="col-sm-10 col-md-offset-1 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
+										{!! Form::password('password', array('placeholder'=>'Set a password for your account', 'class'=>'form-control input-box','name'=>'password', 'id'=>'password', 'tabindex'=>'3')) !!}
+										{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
 							</div>

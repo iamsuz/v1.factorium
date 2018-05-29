@@ -49,10 +49,10 @@ Sign up for free Australia's top Venture Crowdfunding
 						</div>
 						<div class="row form-group">
 							<!-- <div> -->
-								<div class="col-md-12 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
+								<!--<div class="col-md-12 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
 									{!! Form::password('password', array('placeholder'=>'Password', 'class'=>'form-control input-box','name'=>'password', 'Value'=>'', 'id'=>'password', 'tabindex'=>'3')) !!}
 									{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
-								</div>
+								</div> -->
 								<div class="col-md-12 <?php if($errors->first('registration_site')){echo 'has-error';}?>" data-wow-delay="0.2s" hidden >
 									<input type="text" name="registration_site" class="form-control" value="<?php echo url(); ?>">
 								</div>
@@ -99,11 +99,11 @@ Sign up for free Australia's top Venture Crowdfunding
 						<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 							<!-- <a class='btn btn-lg btn-info disabled' style="background: #4875b4;border-color: #4875b4;"><i class="fa fa-linkedin" style="width:16px;"></i></a> -->
 							<a class='btn btn-lg btn-info  font-semibold' href='/auth/linkedin' style="width:243px; background-color: #127AB6; border-color: #127AB6; font-size:1em; color:#fff; border-radius:0;"><img class="pull-left" src="{{asset('assets/images/linkedin_login.png')}}" style="width:25px; background-color:#fff;"> Sign in with Linkedin</a>
-						</div>	
+						</div>
 						<br><br>
 						<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 							<a class='btn btn-lg btn-primary font-semibold' href='/auth/facebook' style="width:243px; background-color: #375599; border-color: #375599; font-size:1em; color:#fff; border-radius:0;"><img class="pull-left" src="{{asset('assets/images/fb_login.png')}}" style=" margin:-10px -12px; background-color: #fff; width:45px;"> Sign in with Facebook</a>
-						</div>	
+						</div>
 						<br><br>
 					</div>
 				</div> --}}
