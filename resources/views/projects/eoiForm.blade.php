@@ -53,7 +53,7 @@ EOI Doc
             {!! Form::label(null, 'Amount you would be interested in investing') !!}
             <div class="input-group">
                 <span class="input-group-addon">A$</span>
-                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' ,'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
+                {!! Form::input('number', 'investment_amount', 5000, array('required', 'class'=>'form-control','id'=>'amountEoi' ,'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
             </div>
         </div>
 
