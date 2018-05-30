@@ -16,7 +16,7 @@
 									<br>
 									<div class="text-left">
 										<h1 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">Login</h1>
-										<h3 class="font-regular first_color" style="font-size:1.375em;">Enter a password to continue the Investment</h3>
+										<h3 class="font-regular first_color" style="font-size:1.375em;">It seems you are an existing user please enter your password to continue</h3>
 									</div>
 								</div>
 							</div>

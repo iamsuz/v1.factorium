@@ -19,10 +19,14 @@ Thank You | @parent
 							<small>
 								<form action="{{route('users.registration.code')}}" method="POST">
 									{{csrf_field()}}
-									<div class="form-group">
-										<input type="text" name="eoiCode" required="required" class="form-control" id="eoiCode">
+									<div class="row">
+										<div class="col-md-6 col-md-offset-3">
+											<div class="form-group ">
+												<input type="text" name="eoiCode" required="required" class="form-control" id="eoiCode">
+											</div>
+										</div>
 									</div>
-									<button type="submit" class="btn btn-primary">Confirm</button>
+									<button type="submit" class="btn btn-lg btn-danger font-semibold text-right second_color_btn">Confirm</button>
 								</form>
 							</small>
 						</h1>
@@ -46,10 +50,10 @@ Thank You | @parent
 		live:         true
 	});
 	$(function() {
-    $('#eoiCode').on('keypress', function(e) {
-        if (e.which == 32)
-            return false;
-    });
-})
+		$('#eoiCode').on('keypress', function(e) {
+			if (e.which == 32)
+				return false;
+		});
+	})
 </script>
 @stop

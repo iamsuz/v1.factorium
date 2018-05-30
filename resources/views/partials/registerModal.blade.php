@@ -15,7 +15,7 @@
 									<br>
 									<div class="text-left">
 										<h3 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">You are almost there!</h3>
-										<h4 class="wow fadeIn animated font-regular first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;"><br>Sign up for free, to complete your Expression of Interest.</h4>
+										<h4 class="wow fadeIn animated font-regular first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;"><br>Please set a password for your account to complete the process</h4>
 										<br>
 									</div>
 								</div>
@@ -28,7 +28,7 @@
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
+													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control hide', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 													{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
 												</div>
 												<!-- </div> -->
