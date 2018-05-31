@@ -15,7 +15,7 @@ Thank You | @parent
 			<div class="row" id="section-1">
 				<div class="col-md-12">
 					<div style="padding:10em 0;">
-						<h1 class="text-center wow fadeIn animated h1-faq">To Continue your Expression of Interest <br><small>Please confirm your email address by entering a code which is sent by an entered Email address.</small><br><br><br>
+						<h1 class="text-center wow fadeIn animated h1-faq">To Continue your Expression of Interest <br><small>We have sent a 6 digit code to your email address. Please enter that over here to confirm your email id and complete the registration process.</small><br><br><br>
 							<small>
 								<form action="{{route('users.registration.code')}}" method="POST">
 									{{csrf_field()}}
