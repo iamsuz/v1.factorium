@@ -71,8 +71,10 @@ EOI Doc
     </div>
 </div>
 </div>
+@if(Auth::guest())
 @include('partials.loginModal');
 @include('partials.registerModal');
+@endif
 @stop
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>

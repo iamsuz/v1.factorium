@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest']]);
+        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest','showInterest']]);
     }
 
     /**
@@ -526,10 +526,11 @@ class ProjectsController extends Controller
         {
             return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only']);
         }
+
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' =>'required',
-            'email_address' => 'required',
+            'email' => 'required',
             'phone_number' => 'required|numeric',
             'investment_amount' => 'required|numeric',
             'investment_period' => 'required',
@@ -540,7 +541,7 @@ class ProjectsController extends Controller
                     'project_id' => $request->project_id,
                     'user_id' => $user->id,
                     'user_name' => $request->first_name.' '.$request->last_name,
-                    'user_email' => $request->email_address,
+                    'user_email' => $request->email,
                     'phone_number' => $request->phone_number,
                     'investment_amount' => $request->investment_amount,
                     'invesment_period' => $request->investment_period,
@@ -550,7 +551,7 @@ class ProjectsController extends Controller
                 $mailer->sendProjectEoiEmailToUser($project, $user_info);
             }
         }
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
+        return redirect()->route('users.success.eoi')->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
     }
 
     public function showInterestOffer($project_id, AppMailer $mailer)
