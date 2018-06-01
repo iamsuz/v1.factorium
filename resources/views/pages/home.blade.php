@@ -114,24 +114,6 @@
    ga('create', 'UA-73934803-1', 'auto');
    ga('send', 'pageview');
  </script>
- <script>
-  $(document).ready(function () {
-    if ( top !== self ) { // we are in the iframe
-      console.log(parent.parent.head);
-
-      var iframe = $('frame').attr('src');
-      console.log(iframe);
-      // $('frame', window.parent.document).html('sujit');
-      console.log($('frame').contents().find('frame').html('<div> blah </div>'));
-      $('head').append('<meta http-equiv="Content-Type" content="text/html/sujit; charset=UTF-8">');
-      $('head').append('<meta http-equiv="Cache-Control" content="no-cache">');
-      $('head').append('<meta name="viewport" content="width=device-width,initial-scale=1">">');
-} else { // not an iframe
-  console.log('Not In frames');
-}
-    // driver.switchTo().frame(driver.findElement(By.cssSelector("iframe[title='Fill Quote']")));
-  });
-</script>
 </head>
 <body data-spy="scroll" >
   <!-- Google tag manager body script if set  -->
