@@ -93,7 +93,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									<h3>Venture</h3>
 									<input type="radio" name="property_type" data-label-text="Prop-Dev" value="1" @if($project->property_type == '1') checked @endif class="switch-radio1">
 									<input type="radio" name="property_type" data-label-text="Business" value="2" @if($project->property_type == '2') checked @endif class="switch-radio1"> --}}
-									
+
 									<!-- <input type="checkbox" name="venture-checkbox" id="venture-checkbox" autocomplete="off" data-label-text="Venture" data-on-text="Prop-Dev" data-off-text="Business" data-off-color="warning" @if($project->property_type == '1') checked value="1" @else value="0" @endif> -->
 									{{-- <br><br>
 									<h3>Download PDF Page</h3>
@@ -1456,7 +1456,7 @@ Edit {{$project->title}} | Dashboard | @parent
 								{{$faq->id}}
 								<p class="text-justify">{{$faq->answer}}</p>
 							</div>
-							<div class="col-md-2"> 
+							<div class="col-md-2">
 								{!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $faq->id, $project->id]]) !!}
 								{!! Form::submit('Delete this FAQ?', ['class' => 'btn btn-danger']) !!}
 								{!! Form::close() !!}
@@ -1589,7 +1589,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-9">
 												<div class="row">
 													<div class="col-sm-12 @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
-														{!! Form::input('number', 'spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28', 'id'=>'spv_contact_number')) !!}
+														{!! Form::input('text', 'spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28', 'id'=>'spv_contact_number')) !!}
 														{!! $errors->first('spv_contact_number', '<small class="text-danger">:message</small>') !!}
 													</div>
 												</div>
@@ -2003,7 +2003,7 @@ Edit {{$project->title}} | Dashboard | @parent
                         <input type="hidden" name="orig_width" id="orig_width" value="">
                         <input type="hidden" name="orig_height" id="orig_height" value="">
                     </div>
-                </div>      
+                </div>
             </div>
         </div>
     </div>
@@ -2229,7 +2229,7 @@ Edit {{$project->title}} | Dashboard | @parent
 
             var newWidth = 530;
             var newHeight = (realHeight/realWidth)*newWidth;
-            
+
             $('#preview_image').css({
                 width: Math.round(rx*newWidth)+'px',
                 height: Math.round(ry*newHeight)+'px',

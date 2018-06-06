@@ -863,7 +863,7 @@ class ProjectsController extends Controller
             'spv_state' => 'required',
             'spv_postal_code' => 'required',
             'spv_country' => 'required',
-            'spv_contact_number' => 'required|numeric',
+            'spv_contact_number' => 'required',
             'spv_md_name' => 'required',
             // 'spv_logo_image_path' => 'required',
             ]);

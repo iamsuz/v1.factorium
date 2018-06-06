@@ -239,7 +239,6 @@ class DashboardController extends Controller
             ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
-
         if($investment){
             $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
                             ->where('accepted', 1)
@@ -255,7 +254,6 @@ class DashboardController extends Controller
             $shareStart = $shareInit+1;
             $shareEnd = $shareInit+$investment->amount;
             $shareCount = (string)($shareStart)."-".(string)($shareEnd);
-
             //Update current investment and with the share certificate details
             $investment->accepted = 1;
             $investment->money_received = 1;
@@ -284,7 +282,6 @@ class DashboardController extends Controller
                 ]);
 
             $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
-
             if($investment->accepted) {
                 $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                 $pdf->setPaper('a4', 'landscape');
