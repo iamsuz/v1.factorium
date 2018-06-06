@@ -120,9 +120,14 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<br>
 									<h3>Share vs Unit</h3>
-									<input type="checkbox" name="share_vs_unit_checkbox" id="share_vs_unit_checkbox" autocomplete="off" data-label-text="Show" @if($project->share_vs_unit) value="1" checked @else value="0" @endif >
-									<input type="hidden" name="share_vs_unit" id="share_vs_unit" @if($project->share_vs_unit) value="1" @else value="0" @endif>
-
+									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+										<label class="btn btn-default @if($project->share_vs_unit == 1) active @endif">
+									        <input type="radio" name="share_vs_unit" value="1"> Share
+									      </label>
+									      <label class="btn btn-default @if($project->share_vs_unit == 0) active @endif" >
+									        <input type="radio" name="share_vs_unit" value="0"> Unit
+									      </label>
+									</div>
 									<br><br>
 									<h3>MD vs Trustee</h3>
 									<input type="checkbox" name="md_vs_trustee_checkbox" id="md_vs_trustee_checkbox" autocomplete="off" data-label-text="Show" @if($project->md_vs_trustee) value="1" checked @else value="0" @endif >
