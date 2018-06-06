@@ -31,7 +31,7 @@
 		@endif
 		<br>
 		@if($spv=$investment->project->projectspvdetail)
-		{{$spv->spv_line_1}},@if($spv->first()->spv_line_2) {{$spv->spv_line_2}},@endif {{$spv->spv_city}}, {{$spv->spv_state}}, {{array_search($spv->spv_country, \App\Http\Utilities\Country::aus())}}, {{$spv->spv_postal_code}}
+		{{$spv->spv_line_1}},@if(isset($spv->first()->spv_line_2)) {{$spv->spv_line_2}},@endif {{$spv->spv_city}}, {{$spv->spv_state}}, {{$spv->spv_postal_code}}
 		@endif
 		<br>
 		@if($investment->project->projectspvdetail)
@@ -43,7 +43,7 @@
 		Date: {{ Carbon\Carbon::today()->toFormattedDateString()}}
 		<br><br>
 		<p>
-			This is to certify @if($investment->investing_as=='Individual Investor'){{$investment->user->first_name}} {{$investment->user->last_name}}@elseif($investment->investing_as == 'Joint Investor'){{$investment->user->first_name}} {{$investment->user->last_name}} and {{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}@elseif($investment->investing_as=='Trust or Company'){{$investing->investing_company}}@else{{$investment->user->first_name}} {{$investment->user->last_name}}@endif @if($investment->user->line_1) of {{$investment->user->line_1}}, @if($investment->user->line_2){{$investment->user->line_2}},@endif {{$investment->user->city}}, {{$investment->user->state}}, {{$investment->user->postal_code}}@endif owns {{$investment->amount}} @if($investment->project->share_vs_unit) redeemable preference shares @else units @endif of @if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif numbered {{$shareStart}} to {{$shareEnd}}.
+			This is to certify @if($investment->investing_as=='Individual Investor'){{$investment->user->first_name}} {{$investment->user->last_name}}@elseif($investment->investing_as == 'Joint Investor'){{$investment->user->first_name}} {{$investment->user->last_name}} and {{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}@elseif($investment->investing_as=='Trust or Company'){{$investing->investing_company}}@else{{$investment->user->first_name}} {{$investment->user->last_name}}@endif @if($investment->user->line_1) of {{$investment->user->line_1}}, @if(isset($investment->user->line_2)){{$investment->user->line_2}}, @endif {{$investment->user->city}}, {{$investment->user->state}}, {{$investment->user->postal_code}}@endif owns {{$investment->amount}} @if($investment->project->share_vs_unit) redeemable preference shares @else units @endif of @if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif numbered {{$shareStart}} to {{$shareEnd}}.
 		</p>
 		<br><br>
 		@if($investment->project->media->where('type', 'spv_md_sign_image')->first())
