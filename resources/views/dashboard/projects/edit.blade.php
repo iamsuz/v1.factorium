@@ -130,13 +130,25 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									<br><br>
 									<h3>MD vs Trustee</h3>
-									<input type="checkbox" name="md_vs_trustee_checkbox" id="md_vs_trustee_checkbox" autocomplete="off" data-label-text="Show" @if($project->md_vs_trustee) value="1" checked @else value="0" @endif >
-									<input type="hidden" name="md_vs_trustee" id="md_vs_trustee" @if($project->md_vs_trustee) value="1" @else value="0" @endif>
+									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+										<label class="btn btn-default @if($project->md_vs_trustee == 1) active @endif">
+									        <input type="radio" name="md_vs_trustee" value="1"> MD
+									      </label>
+									      <label class="btn btn-default @if($project->md_vs_trustee == 0) active @endif" >
+									        <input type="radio" name="md_vs_trustee" value="0"> Trustee
+									      </label>
+									</div>
 
 									<br><br>
 									<h3>Retail project vs Wholesale project</h3>
-									<input type="checkbox" name="retail_vs_wholesale_checkbox" id="retail_vs_wholesale_checkbox" autocomplete="off" data-label-text="Show" @if($project->retail_vs_wholesale) value="1" checked @else value="0" @endif >
-									<input type="hidden" name="retail_vs_wholesale" id="retail_vs_wholesale" @if($project->retail_vs_wholesale) value="1" @else value="0" @endif>
+									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+										<label class="btn btn-default @if($project->retail_vs_wholesale == 1) active @endif">
+									        <input type="radio" name="retail_vs_wholesale" value="1"> Retail
+									      </label>
+									      <label class="btn btn-default @if($project->retail_vs_wholesale == 0) active @endif" >
+									        <input type="radio" name="retail_vs_wholesale" value="0"> Wholesale
+									      </label>
+									</div>
 
 									<br><br><br>
 									<div class="row">
