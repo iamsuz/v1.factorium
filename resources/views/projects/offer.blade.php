@@ -12,17 +12,17 @@ Offer Doc
 @stop
 @section('content-section')
 <style type="text/css">
-	.check1{
-		padding: 2px !important;
-	}
-	.check1, .wholesale_invest_checkbox {
-		display: inline;
-	    vertical-align: middle;
-	}
+.check1{
+	padding: 2px !important;
+}
+.check1, .wholesale_invest_checkbox {
+	display: inline;
+	vertical-align: middle;
+}
 </style>
 <div class="loader-overlay hide" style="display: none;">
 	<div class="overlay-loader-image">
-	   <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
+		<img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
 	</div>
 </div>
 <div class="container-fluid">
@@ -43,7 +43,7 @@ Offer Doc
 								<br>
 								@endif
 								@if (Session::has('message'))
-   								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
+								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
 								<div class="well text-center cursor-pointer fill-form-request-container">
 									@if (Session::has('requestStatus'))
@@ -68,16 +68,16 @@ Offer Doc
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 												</p>
 												<label>I/We apply for *</label>
-												<input type="text" name="amount_to_invest" class="form-control" placeholder="5000" style="width: 60%" id="apply_for" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
+												<input type="text" name="amount_to_invest" class="form-control" placeholder="Minumum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
 												@if($project->share_vs_unit)
-													<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@else
-													<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
+												<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
 												@endif
 												<label>I/We lodge full Application Money</label>
 												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ @if(isset($eoi)) {{number_format(round($eoi->investment_amount, 2))}} @else 0.00 @endif" style="width: 60%" id="application_money">
 												<input type="text" name="project_id" @if($projects_spv) value="{{$projects_spv->project_id}}" @endif hidden >
-												
+
 												{{-- <div class="row">
 													<div class="text-left col-md-3 wow fadeIn animated">
 														<button class="btn btn-primary btn-block" id="step-1">Next</button>
@@ -180,13 +180,13 @@ Offer Doc
 												<label>Given Name(s)</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="first_name" class="form-control" placeholder="First Name" required @if($user->first_name) value="{{$user->first_name}}" @endif>
+														<input type="text" name="first_name" class="form-control" placeholder="First Name" required @if(!Auth::guest() && $user->first_name) value="{{$user->first_name}}" @endif>
 													</div>
 												</div><br>
 												<label>Surname</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="last_name" class="form-control" placeholder="Last Name" required @if($user->last_name) value="{{$user->last_name}}" @endif>
+														<input type="text" name="last_name" class="form-control" placeholder="Last Name" required @if(!Auth::guest() && $user->last_name) value="{{$user->last_name}}" @endif>
 													</div>
 												</div><br>
 											</div>
@@ -214,7 +214,7 @@ Offer Doc
 												<p>Please upload the first and last pages of your trust deed or Company incorporation papers</p>
 											</div>
 											<div id="normal_id_docs">
-												@if($user->investmentDoc->where('user_id', $user->id AND 'type','normal_name'))
+												@if(!Auth::guest() && $user->investmentDoc->where('user_id', $user->id AND 'type','normal_name'))
 												<div class="row">
 													<div class="col-md-6">
 													</div>
@@ -226,7 +226,7 @@ Offer Doc
 												<input type="file" name="user_id_doc" class="form-control" required><br>
 												<p>If you have not completed your verification process. Please upload a copy of your Driver License or Passport for AML/CTF purposes</p>
 											</div>
-											
+
 											<div id="joint_investor_docs" style="display: none;">
 												<label>Joint Investor ID DOCS</label>
 												<input type="file" name="joint_investor_id_doc" class="form-control" disabled="disabled" required><br>
@@ -257,43 +257,43 @@ Offer Doc
 												<h4>Accountant's details</h4>
 												<p>Please provide the details of your accountant for verification of income and/or net asset position.</p>
 												<hr>
-													<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
-														<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
-													<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
-														<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
-													<label for="asds" class="form-label"><b>Email</b></label>
-														<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
-													<label for="asdd" class="form-label"><b>Phone</b></label>
-														<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
+												<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
+												<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
+												<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
+												<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
+												<label for="asds" class="form-label"><b>Email</b></label>
+												<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
+												<label for="asdd" class="form-label"><b>Phone</b></label>
+												<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
 											</div>
 										</div>
 
 										<div class="row" id="experienced_investor_information_section" style="display: none;">
 											<div class="col-md-12">
-											<br>
-											<h4>Experienced investor information</h4>
-											<p>Please complete all of the questions below:</p>
-											<hr>
+												<br>
+												<h4>Experienced investor information</h4>
+												<p>Please complete all of the questions below:</p>
+												<hr>
 
-											<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
-											<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
-											
-											<b>How much investment experience do you have? (tick appropriate)</b>
-											<div style="margin-left: 1.3em; margin-top: 5px;">
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding"><span class="check1">Some investment knowledge and understanding</span><br>
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge"><span class="check1">Experienced private investor with good investment knowledge</span><br>
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor"><span class="check1">Business Investor</span><br>
+												<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
+												<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
+
+												<b>How much investment experience do you have? (tick appropriate)</b>
+												<div style="margin-left: 1.3em; margin-top: 5px;">
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding"><span class="check1">Some investment knowledge and understanding</span><br>
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge"><span class="check1">Experienced private investor with good investment knowledge</span><br>
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor"><span class="check1">Business Investor</span><br>
+												</div>
+												<br>
+
+												<label>What experience do you have with unlisted invesments ?</label><br>
+												<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
+
+												<label>Do you clearly understand the risks of investing with this offer ?</label><br>
+												<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
+
 											</div>
-											<br>
-
-											<label>What experience do you have with unlisted invesments ?</label><br>
-											<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
-
-											<label>Do you clearly understand the risks of investing with this offer ?</label><br>
-											<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
-
-										</div>
 										</div>
 									</div>
 
@@ -310,11 +310,11 @@ Offer Doc
 														<div class="col-sm-12">
 															<div class="row">
 																<div class="col-sm-6 @if($errors->first('line_1')){{'has-error'}} @endif">
-																	{!! Form::text('line_1', null, array('placeholder'=>'line 1', 'class'=>'form-control','required', 'Value'=> $user->line_1)) !!}
+																	{!! Form::text('line_1', isset($user->line_1) ? $user->line_1 : null, array('placeholder'=>'line 1', 'class'=>'form-control','required')) !!}
 																	{!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif">
-																	{!! Form::text('line_2', null, array('placeholder'=>'line 2', 'class'=>'form-control', 'Value'=> $user->line_2)) !!}
+																	{!! Form::text('line_2', isset($user->line_2) ? $user->line_2 : null, array('placeholder'=>'line 2', 'class'=>'form-control')) !!}
 																	{!! $errors->first('line_2', '<small class="text-danger">:message</small>') !!}
 																</div>
 															</div>
@@ -327,11 +327,11 @@ Offer Doc
 														<div class="col-sm-12">
 															<div class="row">
 																<div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif">
-																	{!! Form::text('city', null, array('placeholder'=>'City', 'class'=>'form-control','required', 'Value'=> $user->city)) !!}
+																	{!! Form::text('city', isset($user->city) ? $user->city :null, array('placeholder'=>'City', 'class'=>'form-control','required')) !!}
 																	{!! $errors->first('city', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif">
-																	{!! Form::text('state', null, array('placeholder'=>'state', 'class'=>'form-control','required', 'Value'=> $user->state)) !!}
+																	{!! Form::text('state', isset($user->state) ? $user->state : null, array('placeholder'=>'state', 'class'=>'form-control','required')) !!}
 																	{!! $errors->first('state', '<small class="text-danger">:message</small>') !!}
 																</div>
 															</div>
@@ -344,13 +344,13 @@ Offer Doc
 														<div class="col-sm-12">
 															<div class="row">
 																<div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif">
-																	{!! Form::text('postal_code', null, array('placeholder'=>'postal code', 'class'=>'form-control','required', 'Value'=> $user->postal_code)) !!}
+																	{!! Form::text('postal_code', isset($user->postal_code) ? $user->postal_code :null, array('placeholder'=>'postal code', 'class'=>'form-control','required')) !!}
 																	{!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
 																	<select name="country" class="form-control">
 																		@foreach(\App\Http\Utilities\Country::all() as $country => $code)
-																		<option @if($user->country == $country) value="{{$country}}" selected="selected" @else value="{{$country}}" @endif>{{$country}}</option>
+																		<option @if(!Auth::guest() && $user->country == $country) value="{{$country}}" selected="selected" @else value="{{$country}}" @endif>{{$country}}</option>
 																		@endforeach
 																	</select>
 																	{!! $errors->first('country', '<small class="text-danger">:message</small>') !!}
@@ -374,16 +374,16 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<label>Tax File Number</label>
-												<input type="text" class="form-control" name="tfn" placeholder="Tax File Number" @if($user->tfn) value="{{$user->tfn}}" @endif>
+												<input type="text" class="form-control" name="tfn" placeholder="Tax File Number" @if(!Auth::guest() && $user->tfn) value="{{$user->tfn}}" @endif>
 												<p><small>You are not required to provide your TFN, but in it being unavailable we will be required to withhold tax at the highest marginal rate of 49.5% </small></p><br>
 												<div class="row">
 													<div class="col-md-6">
 														<label>Phone</label>
-														<input type="text" name="phone" class="form-control" placeholder="Phone" required @if($user->phone_number) value="{{$user->phone_number}}" @endif>
+														<input type="text" name="phone" class="form-control" placeholder="Phone" required @if(!Auth::guest() && $user->phone_number) value="{{$user->phone_number}}" @endif>
 													</div>
 													<div class="col-md-6">
 														<label>Email</label>
-														<input type="text" class="form-control" placeholder="Email" required disabled @if($user->email) value="{{$user->email}}" @endif style="background:transparent;">
+														<input type="text" id="offerEmail" class="form-control" placeholder="Email" required @if(!Auth::guest() && $user->email)disabled value="{{$user->email}}" @endif style="background:transparent;">
 													</div>
 												</div>
 											</div>
@@ -399,18 +399,18 @@ Offer Doc
 												<div class="row">
 													<div class="col-md-4">
 														<label>Account Name</label>
-														<input type="text" name="account_name" class="form-control" placeholder="Account Name" required @if($user->account_name) value="{{$user->account_name}}" @endif>
+														<input type="text" name="account_name" class="form-control" placeholder="Account Name" required @if(!Auth::guest() && $user->account_name) value="{{$user->account_name}}" @endif>
 													</div>
 													<div class="col-md-4">
 														<label>BSB</label>
-														<input type="text" name="bsb" class="form-control" placeholder="BSB" required @if($user->bsb) value="{{$user->bsb}}" @endif>
+														<input type="text" name="bsb" class="form-control" placeholder="BSB" required @if(!Auth::guest() && $user->bsb) value="{{$user->bsb}}" @endif>
 													</div>
 													<div class="col-md-4">
 														<label>Account Number</label>
-														<input type="text" name="account_number" class="form-control" placeholder="Account Number" required @if($user->account_number) value="{{$user->account_number}}" @endif>
+														<input type="text" name="account_number" class="form-control" placeholder="Account Number" required @if(!Auth::guest() && $user->account_number) value="{{$user->account_number}}" @endif>
 													</div>
 												</div>
-												
+
 												{{-- <div class="row">
 													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
 														<button class="btn btn-primary btn-block" id="step-7">Next</button>
@@ -428,7 +428,7 @@ Offer Doc
 												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
 
 												@if($project->add_additional_form_content)
-													<p style="margin-top: 0.3em;">{{$project->add_additional_form_content}}</p>
+												<p style="margin-top: 0.3em;">{{$project->add_additional_form_content}}</p>
 												@endif
 												{{-- <div class="row">
 													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
@@ -442,49 +442,49 @@ Offer Doc
 									@if(Auth::guest())
 									@else
 									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-									    <div class="row text-left">
-									        <a href="#myModal" class="fa fa-pencil edit-pencil-style show-content-edit-modal-btn" style="font-size: 20px; color: #000; border: 1.5px solid #000; border-radius: 50px; padding: 5px; margin-right: 3px; margin-top: 5px;" data-toggle="modal" title="Add additional content" data-placement="top"></a>
-									        <b>Add Additional Content Here</b>
-									    </div>
-								    @endif
+									<div class="row text-left">
+										<a href="#myModal" class="fa fa-pencil edit-pencil-style show-content-edit-modal-btn" style="font-size: 20px; color: #000; border: 1.5px solid #000; border-radius: 50px; padding: 5px; margin-right: 3px; margin-top: 5px;" data-toggle="modal" title="Add additional content" data-placement="top"></a>
+										<b>Add Additional Content Here</b>
+									</div>
 									@endif
-          							<br>
+									@endif
+									<br>
 
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
 									<h4 class="text-center">Please Sign Here</h4>
 									<input type="hidden" name="signature_data" id="signature_data" value="">
-										<script>
-											$(document).ready(function() {
-												$("#signature").jSignature();
-												$("#signature").bind('change', function(e){
-													var svgData = $(this).jSignature("getData", "image");
-													$('#signature_data').val(svgData[1]);
-												});
-											})
-										</script>
-										<br><br>
-										<div class="row " id="11">
-											<div class="col-md-12">
-												<div>
-													<input type="submit" name="submit" class="btn btn-primary btn-block" value="Submit">
-												</div>
+									<script>
+										$(document).ready(function() {
+											$("#signature").jSignature();
+											$("#signature").bind('change', function(e){
+												var svgData = $(this).jSignature("getData", "image");
+												$('#signature_data').val(svgData[1]);
+											});
+										})
+									</script>
+									<br><br>
+									<div class="row " id="11">
+										<div class="col-md-12">
+											<div>
+												<input type="submit" name="submit" class="btn btn-primary btn-block" value="Submit" id="offerSubmit">
 											</div>
 										</div>
-									</form>
-									<br><br>
-								</div>
-								<div class="col-md-2">
-									<img src="{{asset('assets/images/estate_baron_hat1.png')}}" alt="Estate Baron Masoct" class="pull-right img-responsive" style="padding-top:23em;position: fixed;width: 150px;">
-								</div>
+									</div>
+								</form>
+								<br><br>
+							</div>
+							<div class="col-md-2">
+								<img src="{{asset('assets/images/estate_baron_hat1.png')}}" alt="Estate Baron Masoct" class="pull-right img-responsive" style="padding-top:23em;position: fixed;width: 150px;">
 							</div>
 						</div>
-						
-						@if ($project->show_download_pdf_page)
-						<div class="col-md-5">
-							<br>
-						<!-- <p class="" style="font-size:1em;color:#282a73;">Please read the following PDS and Financial Services 
+					</div>
+
+					@if ($project->show_download_pdf_page)
+					<div class="col-md-5">
+						<br>
+						<!-- <p class="" style="font-size:1em;color:#282a73;">Please read the following PDS and Financial Services
 							Guide carefully and when you are ready to invest, fill the application form electronically and transfer your funds to the following account
 						</p> -->
 						<!-- <table class="table table-bordered" width="100%">
@@ -556,30 +556,30 @@ Offer Doc
 		</div>
 	</div>
 </div>
-			<!-- Modal For Additional Form Content -->
+<!-- Modal For Additional Form Content -->
 <div class="bs-example">
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog">
-        	<form method="POST" action="{{route('AdditionalFormContent', $project->id)}}">
-        		{{csrf_field()}}
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                    <h4 class="modal-title">Add Content</h4>
-	                </div>
-	                <div class="modal-body">
-	                        <div class="form-group">
-	                            <input type="text" class="form-control" name="add_additional_form_content" value="{{$project->add_additional_form_content}}">
-	                        </div>
-	                </div>
-	                <div class="modal-footer">
-	                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	                    <button type="submit" class="btn btn-primary">Save</button>
-	                </div>
-	            </div>
-        	</form>
-        </div>
-    </div>
+	<div id="myModal" class="modal fade">
+		<div class="modal-dialog">
+			<form method="POST" action="{{route('AdditionalFormContent', $project->id)}}">
+				{{csrf_field()}}
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Add Content</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<input type="text" class="form-control" name="add_additional_form_content" value="{{$project->add_additional_form_content}}">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-primary">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <!-- <section id="section-colors-right" class="color-panel-right panel-close-right left" style="opacity: .8;">
@@ -593,20 +593,39 @@ Offer Doc
 		<p style="color:#000;"><b><span id="numberofpeople"></span></b> people reading this offer document right now!</p>
 	</div>
 </section> -->
+@if(Auth::guest())
+@include('partials.loginModal');
+@include('partials.registerModal');
+@endif
 @stop
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
 	$(document).ready(function(){
-    $("#myModal").on('shown.bs.modal', function(){
-        $(this).find('input[type="text"]').focus();
-    });
-    $('#myform').submit(function() {
-    $('.loader-overlay').show(); // show animation
-    return true; // allow regular form submission
-});
-});
+		$("#myModal").on('shown.bs.modal', function(){
+			$(this).find('input[type="text"]').focus();
+		});
+		$('#myform').submit(function(e) {
+			@if(Auth::guest())
+			e.preventDefault();
+			var email = $('#offerEmail').val();
+			var _token = $('meta[name="csrf-token"]').attr('content');
+			var offerData = $('#myform').serialize();
+            $.post('/users/login/check',{email,_token,offerData},function (data) {
+            	if(data == email){
+            		$('#loginEmailEoi').val(email);
+            		$("#loginModal").modal();
+            	}else{
+
+            	}
+            });
+			@else
+    		$('.loader-overlay').show(); // show animation
+    		return true; // allow regular form submission
+    		@endif
+    	});
+	});
 	$(function () {
 		// Function that runs with interval for side panel
 		var x = Math.floor((Math.random() * 20000) + 10000);
@@ -652,9 +671,9 @@ Offer Doc
 		}
 	});
 </script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
-	{!! Html::script('plugins/wow.min.js') !!}
-	<script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
+{!! Html::script('plugins/wow.min.js') !!}
+<script type="text/javascript">
 	$(function () {
 		$('.scrollto').click(function(e) {
 			e.preventDefault();
@@ -730,7 +749,7 @@ Offer Doc
 			}
 			else{
 				$('.aml-requirements-link i').removeClass('fa-minus');
-				$('.aml-requirements-link i').addClass('fa-plus');	
+				$('.aml-requirements-link i').addClass('fa-plus');
 			}
 		});
 
@@ -742,7 +761,7 @@ Offer Doc
 				e.preventDefault();
 			}
 		});
-	});  
+	});
 
 	$(document).ready( function() {
 		$("input[name='wholesale_investing_as']").on('change',function() {
@@ -764,13 +783,12 @@ Offer Doc
 		});
 
 		$(".wholesale_invest_checkbox").change(function() {
-		    var checked = $(this).is(':checked');
-		    $(".wholesale_invest_checkbox").prop('checked',false);
-		    if(checked) {
-		        $(this).prop('checked',true);
-		    }
+			var checked = $(this).is(':checked');
+			$(".wholesale_invest_checkbox").prop('checked',false);
+			if(checked) {
+				$(this).prop('checked',true);
+			}
 		});
-
 		// Track users downloading prospectus
 		$('.download-prospectus-btn').click(function(){
 			var projectId = {{$project->id}};
@@ -787,7 +805,7 @@ Offer Doc
 				location.reload('/');
 			});
 		});
-	});  
-	</script>
+	});
+</script>
 </script>
 @stop
