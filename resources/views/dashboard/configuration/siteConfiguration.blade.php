@@ -652,12 +652,14 @@ Configuration | Dashboard | @parent
                     <div class="col-md-10 col-md-offset-1">
                         {!! Form::open(array('route'=>['configuration.updateLegalDetails'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
                         <h5><i><small>Enter the text in below text field and save to update the legal details for the website.</small></i></h5>
-                        <br>
                         <div class="row " style="text-align: -webkit-center;"></div>
+                        <label for="licensee_name_input" style="text-align: left;" class="pull-left">Licensee Name:</label>
                         {!! Form::text('licensee_name_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->licensee_name, array('placeholder'=>'Enter Licensee Name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'licensee_name_input', 'required' => 'required')) !!}
                         <br>
+                        <label for="licensee_name_input" style="text-align: left;" class="pull-left">AFSL Number:</label>
                         {!! Form::text('afsl_no_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->afsl_no, array('placeholder'=>'Enter AFSL Number', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'afsl_no', 'required' => 'required')) !!}
                         <br>
+                        <label for="licensee_name_input" style="text-align: left;" class="pull-left">CAR Number:</label>
                         {!! Form::text('car_no_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->car_no, array('placeholder'=>'Enter CAR Number', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'car_no', 'required' => 'required')) !!}
                         <br>
                         {!! Form::submit('Save Details', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'4', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'required' => 'required')) !!}

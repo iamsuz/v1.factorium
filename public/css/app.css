@@ -576,6 +576,9 @@ a:hover {
 	margin: 0 1%;
 	padding: 0 5%;
 }
+#sitemap_link_edit_modal td, th {
+	padding: 2px !important;
+}
 @media only screen and (max-device-width: 1024px) {
   	#promo {
     	/*background-attachment: fixed !important;*/

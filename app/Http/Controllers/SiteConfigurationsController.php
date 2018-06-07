@@ -394,9 +394,9 @@ class SiteConfigurationsController extends Controller
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             $result = $siteconfiguration->update([
                 'blog_link_new' => $request->blog_link_new,
-            // 'terms_conditions_link' => $request->terms_conditions_link,
-            // 'privacy_link' => $request->privacy_link,
-            // 'financial_service_guide_link' => $request->financial_service_guide_link,
+                'terms_conditions_link' => $request->terms_conditions_link,
+                'privacy_link' => $request->privacy_link,
+                'financial_service_guide_link' => $request->financial_service_guide_link,
             // 'media_kit_link' => $request->media_kit_link,
             ]);
             if($result){
