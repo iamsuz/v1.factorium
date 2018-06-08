@@ -297,7 +297,7 @@
 						<div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
 							<span style="font-size:1.7em;" class="project-pds1-link-field">
-								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
+								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
 							</span>
 						</div>
 
@@ -1917,6 +1917,22 @@
 <script src="https://unpkg.com/sweetalert2@7.1.2/dist/sweetalert2.all.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(e){
+		// Track users downloading prospectus
+		$('.download-prospectus-btn').click(function(){
+			var projectId = {{$project->id}};
+			$.ajax({
+				url: '/projects/prospectus',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {projectId},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				console.log(data);
+				location.reload('/');
+			});
+		});
 		$('#feedback_form').submit(function(e) {
 			e.preventDefault();
 			$('.loader-overlay').show();
@@ -1953,6 +1969,7 @@
 </script>
 <script>
 	$(function () {
+
 		var minimized_elements = $('p.minimize');
 		minimized_elements.each(function(){
 			var t = $(this).text();
