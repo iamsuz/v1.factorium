@@ -529,6 +529,9 @@ a:hover {
 	/*position: relative;*/
 	transition: 1.6s ease-in-out 0s;
 }
+.smsf-reference-txt {
+	margin-top: -0.8em, !important;
+}
 /*Pulse-Button*/
 /*
 .container {

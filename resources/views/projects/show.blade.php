@@ -290,42 +290,60 @@
 	<h6 style="color: #707070; font-size: 14px;">@if($project->edit_disclaimer) {{$project->edit_disclaimer}}@else ** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif @endif</h6>
 	<section @if($project->eoi_button) style="display: none;" @endif>
 		<div class="container-fluid">
-			<div class="row" style="background-color:#E6E6E6;">
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="text-center">
+				<input type="checkbox" class="toggle-elements" autocomplete="off" data-label-text="ShowDownloadsSection" action="downloads_section" data-size="mini" @if($project->projectconfiguration->show_downloads_section) checked value="1" @else value="0" @endif>
+			</div>
+			@endif
+			@endif
+			@if(Auth::guest())
+				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs) display: none; @endif">
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="row" style="background-color:#E6E6E6;">
+			@else
+				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs) display: none; @endif">
+			@endif
+			@endif
 				<div class="col-md-10 col-md-offset-1">
-					<h2 class="download-text first_color">Downloads</h2><br>
-					<div class="row">
-						<div class="col-md-3 text-left">
-							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
-							<span style="font-size:1.7em;" class="project-pds1-link-field">
-								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
-							</span>
-						</div>
+					<div class="downloads_section" @if(!$project->projectconfiguration->show_downloads_section) style="display: none;" @endif>
+						<h2 class="download-text first_color">Downloads</h2><br>
+						<div class="row">
+							<div class="col-md-3 text-left">
+								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
+								<span style="font-size:1.7em;" class="project-pds1-link-field">
+									<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
+								</span>
+							</div>
 
-							<!-- <div class="col-md-3 text-left">
-							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
-							<span style="font-size:1em;" class="project-pds2-link-field">
-								<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_2_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 2 PDS" style="text-decoration:underline;" class="download-links">Part 2 PDS</a></span>
+								<!-- <div class="col-md-3 text-left">
+								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
+								<span style="font-size:1em;" class="project-pds2-link-field">
+									<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_2_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 2 PDS" style="text-decoration:underline;" class="download-links">Part 2 PDS</a></span>
+								</div> -->
+								<!-- <div class="col-md-3 text-left">
+								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
+								<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Part 1 PDS</a></p>
 							</div> -->
 							<!-- <div class="col-md-3 text-left">
 							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
-							<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Part 1 PDS</a></p>
+							<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_2_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Part 2 PDS</a></p>
+						</div>
+						<div class="col-md-3 text-left">
+							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
+							<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->construction_contract_url}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Master PDS" style="text-decoration:underline;" class="download-links">Construction Contract</a></p>
+						</div>
+						<div class="col-md-3 text-left">
+							<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
+							<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->debt_details_url}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Master PDS" style="text-decoration:underline;" class="download-links">Debt Details</a></p>
 						</div> -->
-						<!-- <div class="col-md-3 text-left">
-						<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
-						<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_2_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links">Part 2 PDS</a></p>
 					</div>
-					<div class="col-md-3 text-left">
-						<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
-						<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->construction_contract_url}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Master PDS" style="text-decoration:underline;" class="download-links">Construction Contract</a></p>
-					</div>
-					<div class="col-md-3 text-left">
-						<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30">
-						<p style="font-size:0.875em; margin-left:50px;"><a @if(Auth::check()) href="@if($project->investment){{$project->investment->debt_details_url}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Master PDS" style="text-decoration:underline;" class="download-links">Debt Details</a></p>
-					</div> -->
 				</div>
-				<div class="@if(count($project->documents->where('type','reference_document')->where('project_site', url()))==0 || !$project->projectconfiguration->show_reference_docs) hide @endif">
-					<hr>
-					<div class="reference_docs">
+				<div class="reference_docs" @if(count($project->documents->where('type','reference_document')->where('project_site', url()))==0 || !$project->projectconfiguration->show_reference_docs) style="display: none;" @endif>
+					<hr @if(!$project->projectconfiguration->show_downloads_section) style="display: none;" @endif>
+					<div>
 						<h3 class="download-text first_color">Reference Documents</h3><br>
 						<div class="add-doc-ref-section"></div>
 						<div class="doc-references">
@@ -430,7 +448,15 @@
 	</div>
 </div>
 </section> -->
-<br>
+@if(Auth::guest())
+	@if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs)<br>@endif
+@else
+@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+	<br>
+@else
+    @if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs)<br>@endif
+@endif
+@endif
 <ul class="nav nav-tabs text-center">
 	<li class="active " style="width: 50%; font-size: 1.5em;"><a class="show-project-details-tab-input" data-toggle="tab" href="#home" style="padding: 15px 15px;">@if($project->projectconfiguration){{$project->projectconfiguration->project_details_tab_label}} @else Project Details @endif</a></li>
 	<li style="width: 49%; font-size: 1.5em;" ><a class="show-project-progress-tab-input" data-toggle="tab" href="#menu1" style="padding: 15px 15px;">@if($project->projectconfiguration){{$project->projectconfiguration->project_progress_tab_label}} @else Project Progress @endif</a></li>

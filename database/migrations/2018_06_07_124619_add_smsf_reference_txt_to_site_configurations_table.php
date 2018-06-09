@@ -13,7 +13,7 @@ class AddSmsfReferenceTxtToSiteConfigurationsTable extends Migration
     public function up()
     {
         Schema::table('site_configurations', function (Blueprint $table) {
-            //
+            $table->string('smsf_reference_txt')->default("How is your SMSF performing compared to the opportunities here?");
         });
     }
 
@@ -25,7 +25,7 @@ class AddSmsfReferenceTxtToSiteConfigurationsTable extends Migration
     public function down()
     {
         Schema::table('site_configurations', function (Blueprint $table) {
-            //
+            $table->dropColumn('site_configurations');
         });
     }
 }

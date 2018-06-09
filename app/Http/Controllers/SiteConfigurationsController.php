@@ -452,6 +452,16 @@ class SiteConfigurationsController extends Controller
             return redirect()->back();
         }
 
+        public function editSmsfReferenceText(Request $request)
+        {
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
+                'smsf_reference_txt' => $request->smsf_reference_text,
+            ]);
+            return redirect()->back();
+        }
+
         public function uploadHomePgInvestmentImage(Request $request)
         {
             if (SiteConfigurationHelper::isSiteAdmin()){
