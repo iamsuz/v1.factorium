@@ -287,7 +287,7 @@
 			@endif --}}
 		</div>
 	</section>
-	<h6 style="color: #707070; font-size: 14px;">@if($project->edit_disclaimer) {{$project->edit_disclaimer}}@else ** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif @endif</h6>
+	<h6 style="color: #707070; font-size: 14px; @if($project->eoi_button || !$project->projectconfiguration->show_downloads_section) display: none; @endif" class="downloads_section">@if($project->edit_disclaimer) {{$project->edit_disclaimer}}@else ** The information provided on this webpage is only a summary of the offer and may not contain all the information needed to determine if this offer is right for you. You should read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif in its entirety which can be downloaded in the Downloads section below as well as on the Project application page once you press the @if($project->button_label){{$project->button_label}}@else{{'Interest'}}@endif button. @if($project->add_additional_disclaimer){{$project->add_additional_disclaimer}} @endif @endif</h6>
 	<section @if($project->eoi_button) style="display: none;" @endif>
 		<div class="container-fluid">
 			@if(Auth::guest())
@@ -299,12 +299,12 @@
 			@endif
 			@endif
 			@if(Auth::guest())
-				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs) display: none; @endif">
+				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs || !$project->projectconfiguration->show_downloads_section && count($project->documents->where('type','reference_document')->where('project_site', url()))==0) display: none; @endif">
 			@else
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="row" style="background-color:#E6E6E6;">
 			@else
-				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs) display: none; @endif">
+				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs || !$project->projectconfiguration->show_downloads_section && count($project->documents->where('type','reference_document')->where('project_site', url()))==0) display: none; @endif">
 			@endif
 			@endif
 				<div class="col-md-10 col-md-offset-1">
@@ -449,12 +449,12 @@
 </div>
 </section> -->
 @if(Auth::guest())
-	@if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs)<br>@endif
+	@if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs && count($project->documents->where('type','reference_document')->where('project_site', url()))!==0)@if(!$project->eoi_button)<br>@endif @endif
 @else
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-	<br>
+	@if(!$project->eoi_button)<br>@endif
 @else
-    @if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs)<br>@endif
+    @if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs && count($project->documents->where('type','reference_document')->where('project_site', url()))!==0)@if(!$project->eoi_button)<br>@endif @endif
 @endif
 @endif
 <ul class="nav nav-tabs text-center">
