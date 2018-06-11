@@ -517,6 +517,14 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
+						@if(Auth::guest())
+						@else
+						@if($admin_access == 1)
+						<i class="fa fa-pencil edit-pencil-style show-smsf-reference-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
+						@endif
+						@endif
+						<h2 class="text-center first_color smsf-reference-txt" style="font-weight: 100 !important;">{{$siteConfiguration->smsf_reference_txt}}</h2>
+						<br><br>
 						<input class="hide" type="file" name="
 						project_thumb_image" id="project_thumb_image">
 						<input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
@@ -1897,6 +1905,8 @@
 			editGreyBoxNoteContent();
 			//Edit the text below project thumbnail image
 			editProjectThumbnailText();
+			//Edit the smsf reference text above the listed projects 
+			editSmsfReferenceText();
 
 		});
 
@@ -2304,6 +2314,12 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 		function editProjectThumbnailText(){
 			$('.show-project-thumbnail-text-edit-box').click(function(){
 				$('.project-thumbnail-txt').replaceWith('<input type="text" name="project_thumbnail_text" class="form-control" placeholder="Enter the text here" required><br><button type="Submit" class="btn btn-primary col-md-offset-10">Save</button>');
+			});
+		}
+
+		function editSmsfReferenceText(){
+			$('.show-smsf-reference-text-edit-box').click(function(){
+				$('.smsf-reference-txt').html('<form action="{{ route('configuration.editSmsfReferenceText') }}" method="POST">{{csrf_field()}}<input type="text" class="form-control" name="smsf_reference_text" placeholder="Enter text here" value="{{$siteConfiguration->smsf_reference_txt}}" style="float: left;" required>&nbsp;&nbsp;<button type="Submit" class="btn btn-primary submit-investment-title1-text" style="padding: 10px; width: 80px;">Save</button></form>');
 			});
 		}
 
