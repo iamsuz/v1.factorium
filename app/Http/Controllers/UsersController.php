@@ -408,16 +408,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-           $role = Role::whereRole('investor')->firstOrFail();
+         $role = Role::whereRole('investor')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * delete Developer role from user
@@ -433,16 +433,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-           $role = Role::whereRole('developer')->firstOrFail();
+         $role = Role::whereRole('developer')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * get user investments
@@ -465,11 +465,7 @@ class UsersController extends Controller
     {
         $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
         $path = storage_path($filename);
-        $file = \File::get($path);
-        $response = \Response::make($file, 200);
-        // using this will allow you to do some checks on it (if pdf/docx/doc/xls/xlsx)
-        $response->header('Content-Type', 'application/pdf');
-        return $response;
+        return response()->download($path);
         // return \Response::make(file_get_contents($path), 200, [
         //     'Content-Type' => 'application/pdf',
         //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
