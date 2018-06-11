@@ -646,7 +646,7 @@ Australia’s leading venture crowdfunding investment platform --></span></span>
 
               <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 
-                <span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:info@estatebaron.com" target="_blank">info@estatebaron.com</a><!-- <br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br />Live Chat:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;<a title="Vestabyte.com" href="http://Vestabyte.com">Vestabyte.com --></span></span></span></div><br>
+                {{-- <span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:info@estatebaron.com" target="_blank">info@estatebaron.com</a><br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br />Live Chat:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;<a title="Vestabyte.com" href="http://Vestabyte.com">Vestabyte.com</span></span></span></div><br> --}}
 
               </td>
             </tr>
@@ -727,12 +727,12 @@ Australia’s leading venture crowdfunding investment platform --></span></span>
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://www.facebook.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/facebook.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -760,12 +760,12 @@ Australia’s leading venture crowdfunding investment platform --></span></span>
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://twitter.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/twitter.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -792,12 +792,12 @@ Australia’s leading venture crowdfunding investment platform --></span></span>
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://www.linkedin.com/company/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/linkedin.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>

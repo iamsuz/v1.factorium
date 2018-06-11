@@ -60,7 +60,7 @@ class UsersController extends Controller
         $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
         return view('users.create',compact('color', 'siteConfiguration'));
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -201,10 +201,10 @@ class UsersController extends Controller
                 return redirect()->route('users.show', [$user])->withMessage('<p class="alert alert-success text-center">Updated Successfully</p>');
             }
         }
-        return redirect()->route('users.edit', [$user])->withMessage('<p class="alert alert-danger text-center">Not updated Successfully</p>'); 
+        return redirect()->route('users.edit', [$user])->withMessage('<p class="alert alert-danger text-center">Not updated Successfully</p>');
     }
     public function fbupdate(Request $request, $id)
-    {   
+    {
         $this->validate($request, ['first_name'=>'required','last_name'=>'required','phone_number'=>'required']);
         $user = Auth::user();
         $roles = $user->roles;
@@ -226,10 +226,10 @@ class UsersController extends Controller
                 return redirect()->route('users.registrationFinish')->withMessage('<p class="alert alert-success text-center"> Successfully</p>');
             }
         }
-        return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Not updated Successfully</p>'); 
+        return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Not updated Successfully</p>');
         // return view('users.registrationFinish', compact('user'));
     }
-    
+
     public function registrationFinish1(){
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
@@ -371,7 +371,7 @@ class UsersController extends Controller
 
     /**
      * add Developer role to user
-     * @param User $users 
+     * @param User $users
      */
     public function addDeveloper($users)
     {
@@ -385,7 +385,7 @@ class UsersController extends Controller
         if ($user->roles->contains('role', 'developer')) {
             return back()->withMessage('<p class="alert alert-warning text-center">Already Developer</p>');
         }
-        
+
         $role = Role::whereRole('developer')->firstOrFail();
 
         $user->roles()->attach($role);
@@ -401,59 +401,59 @@ class UsersController extends Controller
     public function destroyInvestor($users)
     {
         $user = User::findOrFail($users);
-        
+
         if(!$user->id == Auth::user()->id)
         {
             return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-           $role = Role::whereRole('investor')->firstOrFail();
+         $role = Role::whereRole('investor')->firstOrFail();
 
-            $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-            return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-        }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+     }
 
-        return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-    }
+ }
 
     /**
      * delete Developer role from user
-     * @param  User $users 
+     * @param  User $users
      */
     public function destroyDeveloper($users)
     {
         $user = User::findOrFail($users);
-        
+
         if(!$user->id == Auth::user()->id)
         {
             return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-           $role = Role::whereRole('developer')->firstOrFail();
+         $role = Role::whereRole('developer')->firstOrFail();
 
-            $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-            return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-        }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+     }
 
-        return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-    }
+ }
 
     /**
      * get user investments
-     * @param  User $user_id 
+     * @param  User $user_id
      */
     public function usersInvestments($user_id)
     {
         $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         $investments = InvestmentInvestor::where('user_id', $user->id)
-                        ->where('project_site', url())->get();
+        ->where('project_site', url())->get();
         return view('users.investments', compact('user','color', 'investments'));
     }
 
@@ -463,16 +463,16 @@ class UsersController extends Controller
      */
     public function viewShareCertificate($investment_id)
     {
-        $filename = '/app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
+        $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
         $path = storage_path($filename);
-
-        return \Response::make(file_get_contents($path), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        ]);
+        return response()->download($path);
+        // return \Response::make(file_get_contents($path), 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        // ]);
     }
 
-        public function viewUnitCertificate($investment_id)
+    public function viewUnitCertificate($investment_id)
     {
         $filename = '/app/invoices/Unit-Certificate-'.base64_decode($investment_id).'.pdf';
         $path = storage_path($filename);
@@ -488,7 +488,7 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         $investments = InvestmentInvestor::where('user_id', $user->id)
-                        ->where('project_site', url())->get()->groupBy('project_id');
+        ->where('project_site', url())->get()->groupBy('project_id');
         $project_prog = array();
         if($investments->count()){
             foreach ($investments as $projectId => $investment) {
