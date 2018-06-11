@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $notes = Note::all();
         // $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
         // $pledged_investments = InvestmentInvestor::all()->where('project_site',url());
-        $activeP = $projects->where('project_site',url())->where('active',1);
+        $activeP = $projects->where('project_site',url())->where('active','1');
         $goal_amount = [];
         $amount = [];
         foreach ($activeP as $proj) {
