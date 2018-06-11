@@ -28,7 +28,7 @@ Configuration | Dashboard | @parent
 		<div class="col-md-10">
 			<div class="row">
 				<div class="col-md-offset-1 col-md-10">
-					<div class="row" style="padding-top:1.2em;">						
+					<div class="row" style="padding-top:1.2em;">
 						<div class="col-md-4">
 							<div class="thumbnail text-center">
 								@if (Session::has('message'))
@@ -121,7 +121,7 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
-                        {{--<div class="col-md-4">
+                        <div class="col-md-4">
                             <div class="thumbnail text-center">
                                 @if (Session::has('message'))
                                 @if(Session::get('action') == 'mail_setting')
@@ -143,7 +143,7 @@ Configuration | Dashboard | @parent
                                     </p>
                                 </div>
                             </div>
-                        </div>--}}
+                        </div>
                         <div class="col-md-4" style="display: none;">
                             <div class="thumbnail text-center">
                                 @if (Session::has('message'))
@@ -276,7 +276,7 @@ Configuration | Dashboard | @parent
                         <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class splash-page-switch" autocomplete="off" data-label-text="Show" action="show_splash_message" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_splash_message) value="1" checked @else value="0" @endif></div>
                     </div>
                     <hr> -->
-                    
+
                 </div>
             </section>
         </div>
@@ -315,7 +315,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Site Title edit-->
@@ -342,7 +342,7 @@ Configuration | Dashboard | @parent
                   </div>
               </div>
           </div>
-      </div>      
+      </div>
   </div>
 </div>
 <!-- Mailer Modal -->
@@ -366,7 +366,7 @@ Configuration | Dashboard | @parent
                         <br>
                         <div class="row title-text-error" style="text-align: -webkit-center;">
                             {!!Form::label('driver', 'Driver', array('class'=>'col-sm-2 control-label'))!!}
-                            <div class="col-md-4"> 
+                            <div class="col-md-4">
                                 {!! Form::text('driver', null, array('placeholder'=>'Enter MAIL_Driver (smtp)', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'mail_driver','required' => 'required')) !!}
                                 {!! $errors->first('driver', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -376,7 +376,7 @@ Configuration | Dashboard | @parent
                                     <h4 class="text-center">Encryption</h4>
                                 </label>
                             </div>
-                            <div class="col-md-4"> 
+                            <div class="col-md-4">
                                 {!! Form::text('encryption', null, array('placeholder'=>'Enter EMAIL_ENCRYPTION (tls)', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'mail_ecryption','required' => 'required')) !!}
                                 {!! $errors->first('encryption', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -388,7 +388,7 @@ Configuration | Dashboard | @parent
                                     <h4 class="text-center">Host</h4>
                                 </label>
                             </div>
-                            <div class="col-md-4"> 
+                            <div class="col-md-4">
                                 {!! Form::text('host', null, array('placeholder'=>'Enter MAIL_HOST (smtp.gmail.com)', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'mail_host', 'required' => 'required')) !!}
                                 {!! $errors->first('host', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -398,7 +398,7 @@ Configuration | Dashboard | @parent
                                     <h4 class="text-center">PORT</h4>
                                 </label>
                             </div>
-                            <div class="col-md-4"> 
+                            <div class="col-md-4">
                                 {!! Form::text('port', null, array('placeholder'=>'Enter EMAIL_PORT (587)', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'mail_port','required' => 'required')) !!}
                                 {!! $errors->first('port', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -410,7 +410,7 @@ Configuration | Dashboard | @parent
                                     <h4 class="text-center">From</h4>
                                 </label>
                             </div>
-                            <div class="col-md-10"> 
+                            <div class="col-md-10">
                                 {!! Form::text('from', null, array('placeholder'=>'Enter MAIL_FROM (info@estatebaron.com)', 'class'=>'form-control ', 'tabindex'=>'5', 'id'=>'mail_from','required' => 'required')) !!}
                                 {!! $errors->first('from', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -422,7 +422,7 @@ Configuration | Dashboard | @parent
                                     <h4 class="text-center">Username</h4>
                                 </label>
                             </div>
-                            <div class="col-md-4"> 
+                            <div class="col-md-4">
                                 {!! Form::text('username', null, array('placeholder'=>'Enter email (info@estatebaron.com)', 'class'=>'form-control ', 'tabindex'=>'6', 'id'=>'mail_username','required' => 'required')) !!}
                                 {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -432,7 +432,7 @@ Configuration | Dashboard | @parent
                                     <h4 class="text-center">Password</h4>
                                 </label>
                             </div>
-                            <div class="col-md-4"> 
+                            <div class="col-md-4">
                                 {!! Form::text('password',null, array('placeholder'=>'Enter MAIL_PASSWORD', 'class'=>'form-control ', 'tabindex'=>'7', 'id'=>'mail_password','required' => 'required')) !!}
                                 {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
                                 <br>
@@ -443,7 +443,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Favicon Crop modal -->
@@ -471,7 +471,7 @@ Configuration | Dashboard | @parent
                 <input type="hidden" name="orig_width" id="orig_width" value="">
                 <input type="hidden" name="orig_height" id="orig_height" value="">
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Site Name edit-->
@@ -498,7 +498,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Client Name edit-->
@@ -525,7 +525,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Emedd link edit-->
@@ -552,7 +552,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Tag Manager edit-->
@@ -582,7 +582,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Conversion pixel edit-->
@@ -609,7 +609,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Changing Prospectus Text on all pages -->
@@ -635,7 +635,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 <!-- Modal for Changing AFSL, licensee name, CAR number -->
@@ -667,7 +667,7 @@ Configuration | Dashboard | @parent
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 
@@ -866,7 +866,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
             var newWidth = 530;
             var newHeight = (realHeight/realWidth)*newWidth;
-            
+
             $('#preview_image').css({
                 width: Math.round(rx*newWidth)+'px',
                 height: Math.round(ry*newHeight)+'px',
@@ -1004,7 +1004,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 e.preventDefault();
                 $('.interest-link-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Interest Link field is empty</h6></div>')
             }
-        });    
+        });
     }
 </script>
 @stop
