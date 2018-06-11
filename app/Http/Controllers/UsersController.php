@@ -410,14 +410,14 @@ class UsersController extends Controller
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
            $role = Role::whereRole('investor')->firstOrFail();
 
-            $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-            return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-        }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+       }
 
-        return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-    }
+   }
 
     /**
      * delete Developer role from user
@@ -435,14 +435,14 @@ class UsersController extends Controller
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
            $role = Role::whereRole('developer')->firstOrFail();
 
-            $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-            return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-        }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+       }
 
-        return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-    }
+   }
 
     /**
      * get user investments
@@ -453,7 +453,7 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         $investments = InvestmentInvestor::where('user_id', $user->id)
-                        ->where('project_site', url())->get();
+        ->where('project_site', url())->get();
         return view('users.investments', compact('user','color', 'investments'));
     }
 
@@ -465,13 +465,18 @@ class UsersController extends Controller
     {
         $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
         $path = storage_path($filename);
-        return \Response::make(file_get_contents($path), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        ]);
+        $file = \File::get($path);
+        $response = \Response::make($file, 200);
+        // using this will allow you to do some checks on it (if pdf/docx/doc/xls/xlsx)
+        $response->header('Content-Type', 'application/pdf');
+        return $response;
+        // return \Response::make(file_get_contents($path), 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        // ]);
     }
 
-        public function viewUnitCertificate($investment_id)
+    public function viewUnitCertificate($investment_id)
     {
         $filename = '/app/invoices/Unit-Certificate-'.base64_decode($investment_id).'.pdf';
         $path = storage_path($filename);
@@ -487,7 +492,7 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         $investments = InvestmentInvestor::where('user_id', $user->id)
-                        ->where('project_site', url())->get()->groupBy('project_id');
+        ->where('project_site', url())->get()->groupBy('project_id');
         $project_prog = array();
         if($investments->count()){
             foreach ($investments as $projectId => $investment) {
