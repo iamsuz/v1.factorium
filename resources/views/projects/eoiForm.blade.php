@@ -32,21 +32,21 @@ EOI Doc
         <div class="row">
             <div class="form-group col-md-6">
                 {!! Form::label('First Name') !!}
-                {!! Form::text('first_name', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your first name','id'=>'eoi_fname')) !!}
+                {!! Form::text('first_name', !Auth::guest() ? Auth::user()->first_name : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your first name','id'=>'eoi_fname')) !!}
             </div>
             <div class="form-group col-md-6">
                 {!! Form::label('Last Name') !!}
-                {!! Form::text('last_name', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your last name','id'=>'eoi_lname')) !!}
+                {!! Form::text('last_name', !Auth::guest() ? Auth::user()->last_name : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your last name','id'=>'eoi_lname')) !!}
             </div>
         </div>
         <div class="form-group">
             {!! Form::label('Email') !!}
-            {!! Form::input('email', 'email', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email','id'=>'eoi_email')) !!}
+            {!! Form::input('email', 'email', !Auth::guest() ? Auth::user()->email : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email','id'=>'eoi_email')) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label(null, 'Phone number') !!}
-            {!! Form::input('number', 'phone_number', null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
+            {!! Form::input('number', 'phone_number', !Auth::guest() ? Auth::user()->phone_number : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
         </div>
 
         <div class="form-group">
