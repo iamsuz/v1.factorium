@@ -55,7 +55,7 @@ Sign Up | @parent
 									</div>
 									<!-- </div> -->
 								</div>
-								<div class="row form-group">
+								<div class="row"> <!-- Removed class form-group -->
 									<!-- <div> -->
 									<div class="col-md-12 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
 										{!! Form::password('password', array('placeholder'=>'Password', 'class'=>'form-control input-box','name'=>'password', 'Value'=>'', 'id'=>'password', 'tabindex'=>'3')) !!}
@@ -63,8 +63,8 @@ Sign Up | @parent
 									</div>
 									<!-- </div> -->
 								</div>
-								<p class="font-bold" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
-								<div class="row text-left">
+								<p class="font-bold hide" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
+								<div class="row text-left hide">
 									<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.4s">
 										<div class="btn-group" data-toggle="buttons">
 											<input type="radio" name="role" id="investor_role" autocomplete="off" value="investor" checked tabindex="1"><span class="font-regular first_color" style="font-size:0.875em; color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I am an Investor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
