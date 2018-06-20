@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Session;
+use Validator;
 use App\User;
 use App\Color;
 use Carbon\Carbon;
@@ -14,8 +15,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserAuthRequest;
+use App\Http\Requests;
+use App\InvestingJoint;
+use App\ProjectSpvDetail;
+use App\InvestmentInvestor;
+use App\UserInvestmentDocument;
+use App\WholesaleInvestment;
+use App\InvestmentRequest;
+use App\Jobs\SendReminderEmail;
+use Intervention\Image\Facades\Image;
+use App\Jobs\SendInvestorNotificationEmail;
+use App\Jobs\SendDeveloperNotificationEmail;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-
 
 class UserAuthController extends Controller
 {
@@ -132,10 +144,178 @@ class UserAuthController extends Controller
                     $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
                     $mailer->sendProjectEoiEmailToUser($project, $user_info);
                 }
+                else{
+
+                }
             }
             return redirect()->route('users.success.eoi');
         }
     }
+
+    public function authenticateOffer(UserAuthRequest $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            echo 'sujit';
+            Auth::user()->update(['last_login'=> Carbon::now()]);
+            Session::flash('loginaction', 'success.');
+            $color = Color::where('project_site',url())->first();
+            $project = Project::findOrFail($request->project_id);
+            $user = Auth::user();
+            $user_info = Auth::user();
+            $project = Project::findOrFail($request->project_id);
+            $min_amount_invest = $project->investment->minimum_accepted_amount;
+            if((int)$request->amount_to_invest < (int)$min_amount_invest)
+            {
+                return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
+            }
+            if((int)$request->amount_to_invest % 1000 != 0)
+            {
+                return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only']);
+            }
+            $validation_rules = array(
+                'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+                'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
+                'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+                'amount_to_invest'   => 'required|integer',
+                'line_1' => 'required',
+                'state' => 'required',
+                'postal_code' => 'required'
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+
+        // Return back to form w/ validation errors & session data as input
+            if($validator->fails()) {
+                return  redirect()->back()->withErrors($validator);
+            }
+            $user = Auth::user();
+
+        // If application store request received from request form
+            if($request->investment_request_id)
+            {
+                $investmentRequest = InvestmentRequest::find($request->investment_request_id);
+                if($investmentRequest) {
+                    if(\App\Helpers\SiteConfigurationHelper::isSiteAdmin()){
+                        if($investmentRequest->project->project_site == url()) {
+                            $user = User::find($investmentRequest->user_id);
+                            $project = Project::find($investmentRequest->project_id);
+                        }
+                        else{
+                            return redirect()->back()->withErrors('Not Project Admin');
+                        }
+                    }
+                    else{
+                        return redirect()->back()->withErrors('Not Site Admin');
+                    }
+                }
+                else {
+                    return redirect()->back()->withErrors('Something went wrong');
+                }
+            }
+
+            $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
+        $amount_5 = $amount*0.05; //5 percent of investment
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data]);
+        $investor = InvestmentInvestor::get()->last();
+        if($request->investing_as != 'Individual Investor'){
+            $investing_joint = new InvestingJoint;
+            $investing_joint->project_id = $project->id;
+            $investing_joint->investment_investor_id = $investor->id;
+            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+            $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->account_name = $request->account_name;
+            $investing_joint->bsb = $request->bsb;
+            $investing_joint->account_number = $request->account_number;
+            $investing_joint->line_1 = $request->line_1;
+            $investing_joint->line_2 = $request->line_2;
+            $investing_joint->city = $request->city;
+            $investing_joint->state = $request->state;
+            $investing_joint->postal_code = $request->postal_code;
+            $investing_joint->country = $request->country;
+            $investing_joint->country_code = $request->country_code;
+            $investing_joint->tfn = $request->tfn;
+            $investing_joint->save();
+        }
+        else{
+            $user->update($request->all());
+        }
+        $investor_joint = InvestingJoint::get()->last();
+        if($request->hasFile('joint_investor_id_doc'))
+        {
+            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
+            $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
+            $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
+            $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+
+        }
+        if($request->hasFile('trust_or_company_docs'))
+        {
+            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->investing_company_name.'/';
+            $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
+            $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
+            $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+
+        }
+        if($request->hasFile('user_id_doc'))
+        {
+            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/normal_name/';
+            $filename = $request->file('user_id_doc')->getClientOriginalName();
+            $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
+            $request->file('user_id_doc')->move($destinationPath, $filename);
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+
+        }
+
+        //Save wholesale project input fields
+        if(!$project->retail_vs_wholesale) {
+            $wholesale_investor = WholesaleInvestment::get()->last();{
+                $wholesale_investing = new WholesaleInvestment;
+                $wholesale_investing->project_id = $project->id;
+                $wholesale_investing->investment_investor_id = $investor->id;
+                $wholesale_investing->wholesale_investing_as = $request->wholesale_investing_as;
+                if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
+                    $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
+                    $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
+                    $wholesale_investing->accountant_email = $request->accountant_email_txt;
+                    $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+                }
+                elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+                    $wholesale_investing->experience_period = $request->experience_period_txt;
+                    $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
+                    $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
+                    $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+                }
+                $wholesale_investing->save();
+            }
+        }
+
+        // Mark request form link expired
+        if($request->investment_request_id){
+            InvestmentRequest::find($request->investment_request_id)->update([
+                'is_link_expired' => 1
+            ]);
+        }
+
+        // Create PDF of Application form
+        $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
+        $pdfPath = storage_path().$pdfBasePath;
+        $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
+        $pdf->save($pdfPath);
+        $investor->application_path = $pdfBasePath;
+        $investor->save();
+
+        $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+        $this->dispatch(new SendReminderEmail($user,$project));
+
+        return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+    }
+}
+
     /**
      * authenticate user
      * @param  UserAuthRequest $request

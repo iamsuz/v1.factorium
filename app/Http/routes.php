@@ -76,6 +76,7 @@ Route::get('/users/login', ['as'=>'users.login', 'uses'=>'UserAuthController@log
 Route::get('/users/logout', ['as'=>'users.logout', 'uses'=>'UserAuthController@logout']);
 Route::post('/users/login', ['as'=>'users.auth', 'uses'=>'UserAuthController@authenticate']);
 Route::post('/users/login/eoi', ['as'=>'users.auth.eoi', 'uses'=>'UserAuthController@authenticateEoi']);
+Route::post('/users/login/offer', ['as'=>'users.auth.offer', 'uses'=>'UserAuthController@authenticateOffer']);
 Route::get('/users/successfull/eoi', ['as'=>'users.success.eoi', 'uses'=>'UserAuthController@successEoi']);
 Route::POST('/users/registration/code', ['as'=>'users.registration.code', 'uses'=>'UserRegistrationsController@registrationCode']);
 Route::post('/users/login/check', ['as'=>'users.auth.check', 'uses'=>'UserAuthController@authenticateCheck']);

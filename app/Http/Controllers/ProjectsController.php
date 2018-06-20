@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest']]);
+        $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest','showInterest']]);
     }
 
     /**
@@ -328,7 +328,6 @@ class ProjectsController extends Controller
     {
                 //TODO::add transation
         $project = Project::findOrFail($id);
-
         if($request->invite_only)
         {
             $this->validate($request, ['developerEmail' => 'required|email|exists:users,email']);

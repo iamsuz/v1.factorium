@@ -34,6 +34,7 @@
 												{!! Form::password('password', array('placeholder'=>'password', 'class'=>'form-control', 'tabindex'=>'2','id'=>'loginPwdEoi')) !!}
 												{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 											</div>
+											@if($project->eoi_button)
 											<input type="hidden" value="projects/{{$project->id}}/eoi" id="next" name="next">
 											<input type="hidden" value="eoiLogin" id="eoiLogin" name="eoiLogin">
 											<input type="text" class="hidden" name="first_name" id="eoiFName">
@@ -43,6 +44,7 @@
 											<input type="text" class="hidden" name="investment_period" id="eoiInvestmentPeriod">
 											<input type="text" class="hidden" name="investment_amount" id="eoiInvestmentAmount">
 											<input type="text" class="hidden" name="project_id" id="eoiProjectId">
+											@endif
 											<div class="form-group" style="width:75%;">
 												{!! Form::submit('Continue with Estate Baron account', array('class'=>'btn btn-block second_color_btn hide', 'tabindex'=>'4', 'style'=>'border-radius:50px; background-color:#fed405;font-size:1.125em;color:#2d2d4b;')) !!}
 												<button type="submit" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitformlogin" href='#' style="width:300px; background-color: #fed405; font-size:1em; color:#000;border-radius:50px; border: 0px;" data-toggle="tooltip" title="If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Login with Estate Baron account</button>

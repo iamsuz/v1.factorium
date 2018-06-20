@@ -383,7 +383,7 @@ Offer Doc
 													</div>
 													<div class="col-md-6">
 														<label>Email</label>
-														<input type="text" id="offerEmail" class="form-control" placeholder="Email" required @if(!Auth::guest() && $user->email)disabled value="{{$user->email}}" @endif style="background:transparent;">
+														<input type="text" name="email" id="offerEmail" class="form-control" placeholder="Email" required @if(!Auth::guest() && $user->email)disabled value="{{$user->email}}" @endif style="background:transparent;">
 													</div>
 												</div>
 											</div>
@@ -420,6 +420,7 @@ Offer Doc
 
 										</div>
 									</div>
+									<input type="password" name="password" class="hidden" id="passwordOffer">
 									<br>
 									<div class="row " id="section-8">
 										<div class="col-md-12">
@@ -468,7 +469,7 @@ Offer Doc
 									<div class="row " id="11">
 										<div class="col-md-12">
 											<div>
-												<input type="submit" name="submit" class="btn btn-primary btn-block" value="Submit" id="offerSubmit">
+												<input type="submit" name="submitoffer" class="btn btn-primary btn-block" value="Submit" id="offerSubmit">
 											</div>
 										</div>
 									</div>
@@ -606,24 +607,34 @@ Offer Doc
 		$("#myModal").on('shown.bs.modal', function(){
 			$(this).find('input[type="text"]').focus();
 		});
-		$('#myform').submit(function(e) {
+		$('#offerSubmit').click(function(event) {
 			@if(Auth::guest())
-			e.preventDefault();
 			var email = $('#offerEmail').val();
 			var _token = $('meta[name="csrf-token"]').attr('content');
 			var offerData = $('#myform').serialize();
-            $.post('/users/login/check',{email,_token,offerData},function (data) {
+            $.post('/users/login/check',{email,_token},function (data) {
             	if(data == email){
             		$('#loginEmailEoi').val(email);
             		$("#loginModal").modal();
+            		$('#submitformlogin').click(function (e) {
+            			var password = $('#loginPwdEoi').val();
+            			$('#passwordOffer').val(password);
+            			$('#myform').attr('action','/users/login/offer');
+            			$('#myform').submit();
+            			// $.post('/users/login/offer',{email,password,_token,offerData},function (offerData) {
+            			// 	console.log(offerData);
+            			// });
+            			e.preventDefault();
+            		});
             	}else{
-
+            		location.reload('/users/create');
             	}
             });
 			@else
     		$('.loader-overlay').show(); // show animation
     		return true; // allow regular form submission
     		@endif
+    		event.preventDefault();
     	});
 	});
 	$(function () {
