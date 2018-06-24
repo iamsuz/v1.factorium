@@ -545,13 +545,13 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
                                   <tbody>
                                     <tr>
-                                      <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Application received</p>
-                                        <p style="text-align: center;">{{$investment->created_at->format('F j, Y')}}</p> </td>
+                                      <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;">Application received</p>
+                                        <p style="text-align: center; color: #959595;">{{$investment->created_at->format('F j, Y')}}</p> </td>
                                         <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Application approval</p>
-                                          <p style="text-align: center;"><i>in progress</i></p></td>
+                                          <p style="text-align: center; color: #959595;"><i>in progress</i></p></td>
                                           <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Funds received</p>
                                             <p style="text-align: center;"></p></td>
-                                            <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">@if($project->share_vs_unit) Shares @else Units @endif issued</p>
+                                            <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;">@if($project->share_vs_unit) Shares @else Units @endif issued</p>
                                               <p style="text-align: center;"></p></td>
                                             </tr>
                                           </tbody>
