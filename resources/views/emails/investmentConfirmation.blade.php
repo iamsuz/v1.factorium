@@ -543,11 +543,11 @@
                                 <tbody>
                                   <tr>
                                     <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Application received</p>
-                                    <p style="text-align: center;">{{$investment->created_at->format('F j, Y')}}</p> </td>
+                                    <p style="text-align: center; color: #959595;">{{$investment->created_at->format('F j, Y')}}</p> </td>
                                     <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Application approved</p>
-                                    <p style="text-align: center;">{{$investment->updated_at->format('F j, Y')}}</p></td>
+                                    <p style="text-align: center; color: #959595;">{{$investment->updated_at->format('F j, Y')}}</p></td>
                                     <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Funds received</p>
-                                    <p style="text-align: center;"><i>in progress</i></p></td>
+                                    <p style="text-align: center; color: #959595;"><i>in progress</i></p></td>
                                     <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">@if($investment->project->share_vs_unit) Shares @else Units @endif issued</p>
                                     <p style="text-align: center;"></p></td>
                                   </tr>
