@@ -482,6 +482,7 @@ class ProjectsController extends Controller
             // $this->dispatch(new SendReminderEmail($user,$project));
             // $this->dispatch(new SendDeveloperNotificationEmail($user,$project));
             if($request->source == 'eoi'){
+                $user = User::find($request->uid);
                 $eoi = ProjectEOI::find($request->id);
                 return view('projects.offer', compact('project','color','action','projects_spv','user', 'eoi'));
             }
