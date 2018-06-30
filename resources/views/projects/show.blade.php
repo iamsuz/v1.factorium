@@ -1784,7 +1784,7 @@
 				<tr>
 					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 					</td>
-					<td>{{$project_progs->progress_description}} </td>
+					<td>{!!$project_progs->progress_description!!} </td>
 					<td>
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -1792,7 +1792,7 @@
 						{{-- <span class="pull-right"><i class="fa fa-pencil" aria-hidden="true" data-toggle="tooltip" title="Edit"></i> </span> --}}
 						@endif
 						@endif
-						{{$project_progs->progress_details}}
+						{!!$project_progs->progress_details!!}
 						<br>
 						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
 						@if($project_progs->image_path != '')
@@ -1827,7 +1827,7 @@
 						<td>
 							<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
 								<div class="col-sm-12 <?php if($errors->first('progress_description')){echo 'has-error';}?>">
-									{!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+									{!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!}
 									{!! $errors->first('progress_description', '<small class="text-danger">:message</small>') !!}
 								</div>
 							</div>
@@ -1836,7 +1836,7 @@
 							<div class="row">
 								<div class="form-group <?php if($errors->first('progress_details')){echo 'has-error';}?>">
 									<div class="col-sm-12 <?php if($errors->first('progress_details')){echo 'has-error';}?>">
-										{!! Form::textarea('progress_details', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+										{!! Form::textarea('progress_details', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!}
 										{!! $errors->first('progress_details', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>

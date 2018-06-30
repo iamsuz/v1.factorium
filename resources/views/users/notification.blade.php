@@ -15,8 +15,8 @@
 		<div class="col-md-2">
 			@include('partials.sidebar', ['active'=>9])
 		</div>
-		<div class="col-md-10">
-			@if (Session::has('message'))
+		<div class="col-md-10"
+>			@if (Session::has('message'))
 			{!! Session::get('message') !!}
 			@endif
 			<ul class="list-group">
@@ -41,11 +41,11 @@
 						@if($project_prog->count())
 						@foreach($project_prog as $project_progs)
 						<tr>
-							<td>{{$project_progs->project->title}}</td>
+							<td>{!!$project_progs->project->title!!}</td>
 							<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 							</td>
-							<td>{{$project_progs->progress_description}} </td>
-							<td>{{$project_progs->progress_details}}
+							<td>{!!$project_progs->progress_description!!} </td>
+							<td>{!!$project_progs->progress_details!!}
 								<br>
 								<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
 								@if($project_progs->image_path != '')
