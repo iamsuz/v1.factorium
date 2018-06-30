@@ -62,7 +62,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<label class="form-label">Project SPV Name</label><br>
-												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" @endif >
+												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" disabled @endif >
 												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5>
 												<p>
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
@@ -383,7 +383,7 @@ Offer Doc
 													</div>
 													<div class="col-md-6">
 														<label>Email</label>
-														<input type="text" name="email" id="offerEmail" class="form-control" placeholder="Email" required @if(!Auth::guest() && $user->email)disabled value="{{$user->email}}" @endif style="background:transparent;">
+														<input type="text" name="email" id="offerEmail" class="form-control" placeholder="Email" required @if(!Auth::guest() && $user->email)disabled value="{{$user->email}}" @endif @if(isset($eoi))disabled value="{{$user->email}}" @endif style="background:transparent;">
 													</div>
 												</div>
 											</div>

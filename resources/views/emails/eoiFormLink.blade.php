@@ -572,7 +572,7 @@
 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi {{$eoi->user->first_name}},</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Your expression of interest to invest {{$eoi->investment_amount}} in {{$project->title}} has been accepted. Please follow this <a href="{{route('projects.interest', $project)}}?source=eoi&id={{$eoi->id}}">link</a> to complete your application to this project. Attached in this email is the offer document related to this offer.<br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Your expression of interest to invest {{$eoi->investment_amount}} in {{$project->title}} has been accepted. Please follow this <a href="{{route('projects.interest', $project)}}?source=eoi&id={{$eoi->id}}&uid={{$eoi->user->id}}">link</a> to complete your application to this project. Attached in this email is the offer document related to this offer.<br>
 </span></span></span>
 &nbsp;</div>
 
@@ -705,12 +705,12 @@
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://www.facebook.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/facebook.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -719,17 +719,17 @@
                                                     </td>
                                                 </tr>
                                             </tbody></table> -->
-                                        
+
                                         <!--[if mso]>
                                         </td>
                                         <![endif]-->
-                                    
+
                                         <!--[if mso]>
                                         <td align="center" valign="top">
                                         <![endif]-->
-                                        
-                                        
-                                            
+
+
+
                       <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
@@ -738,12 +738,12 @@
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://twitter.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/twitter.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -752,16 +752,16 @@
                                                     </td>
                                                 </tr>
                                             </tbody></table> -->
-                                        
+
                                         <!--[if mso]>
                                         </td>
                                         <![endif]-->
-                                    
+
                                         <!--[if mso]>
                                         <td align="center" valign="top">
                                         <![endif]-->
-                                        
-                                        
+
+
                                             <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 0;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
@@ -770,12 +770,12 @@
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://www.linkedin.com/company/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/linkedin.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -784,11 +784,11 @@
                                                     </td>
                                                 </tr>
                                             </tbody></table> -->
-                                        
+
                                         <!--[if mso]>
                                         </td>
                                         <![endif]-->
-                                    
+
                                     <!--[if mso]>
                                     </tr>
                                     </table>
@@ -838,8 +838,8 @@ The advice provided in relation to the @if($siteTitle=App\Helpers\SiteConfigurat
 including on the @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Platform website,
 is general advice only and has been prepared without taking into account your financial situation, objectives
 and needs.
-Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and consider whether they are right for you. 
-The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages. 
+Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and consider whether they are right for you.
+The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages.
 This email and any attachment is confidential and may be protected by copyright.
 If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.

@@ -155,7 +155,6 @@ class UserAuthController extends Controller
     public function authenticateOffer(UserAuthRequest $request)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
-            echo 'sujit';
             Auth::user()->update(['last_login'=> Carbon::now()]);
             Session::flash('loginaction', 'success.');
             $color = Color::where('project_site',url())->first();
