@@ -531,7 +531,7 @@ class ProjectsController extends Controller
             'first_name' => 'required',
             'last_name' =>'required',
             'email' => 'required',
-            'phone_number' => 'required|numeric',
+            'phone_number' => 'required',
             'investment_amount' => 'required|numeric',
             'investment_period' => 'required',
             ]);

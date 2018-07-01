@@ -46,7 +46,7 @@ EOI Doc
 
         <div class="form-group">
             {!! Form::label(null, 'Phone number') !!}
-            {!! Form::input('number', 'phone_number', !Auth::guest() ? Auth::user()->phone_number : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
+            {!! Form::text('phone_number', !Auth::guest() ? Auth::user()->phone_number : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
         </div>
 
         <div class="form-group">
