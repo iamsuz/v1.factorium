@@ -6,6 +6,11 @@
 
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+<style type="text/css">
+	#investmentsTable th {
+		text-align: center;
+	}
+</style>
 @stop
 
 @section('content-section')
@@ -27,7 +32,7 @@
 				</li>
 			</ul>
 			<h3 class="text-center">My Investments</h3>
-			<div class="table-responsive">
+			<div class="table-responsive text-center">
 				<table class="table table-bordered table-striped" id="investmentsTable">
 					<thead>
 						<tr>
@@ -45,7 +50,7 @@
 						@foreach($investments as $investment)
 							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
-								<td>{{$investment->amount}}</td>
+								<td>${{number_format($investment->amount)}}</td>
 								<td>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
 									@if($investment->accepted)

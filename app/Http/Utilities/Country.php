@@ -6,6 +6,7 @@ class Country
 {
 
 	protected static $countries = [
+		"Australia"                                    => "au",
 		"United States"                                => "us",
 		"Afghanistan"                                  => "af",
 		"Albania"                                      => "al",
@@ -19,7 +20,6 @@ class Country
 		"Argentina"                                    => "ar",
 		"Armenia"                                      => "am",
 		"Aruba"                                        => "aw",
-		"Australia"                                    => "au",
 		"Austria"                                      => "at",
 		"Azerbaijan"                                   => "az",
 		"Bahamas"                                      => "bs",
