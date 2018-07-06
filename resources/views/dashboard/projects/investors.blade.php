@@ -423,14 +423,14 @@
 
 				<div id="transactions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
 					<div>
-						<table class="table table-bordered table-striped" id="transactionTable">
+						<table class="table table-bordered table-striped text-center" id="transactionTable">
 							<thead>
 								<tr>
 									<th>Investor Name</th>
 									<th>Project SPV Name</th>
 									<th>Transaction type</th>
 									<th>Date</th>
-									<th>Amount($)</th>
+									<th>Amount</th>
 									<th>Rate</th>
 									<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
 								</tr>
@@ -442,7 +442,7 @@
 									<td>@if($transaction->project->projectspvdetail){{$transaction->project->projectspvdetail->spv_name}}@endif</td>
 									<td class="text-center">{{$transaction->transaction_type}}</td>
 									<td>{{date('m-d-Y', strtotime($transaction->transaction_date))}}</td>
-									<td>{{$transaction->amount}}</td>
+									<td>${{number_format($transaction->amount)}}</td>
 									<td>{{$transaction->rate}}</td>
 									<td>{{$transaction->number_of_shares}}</td>
 								</tr>
@@ -522,7 +522,7 @@
 									<td>{{$projectsEoi->user_name}}</td>
 									<td>{{$projectsEoi->user_email}}</td>
 									<td>{{$projectsEoi->phone_number}}</td>
-									<td>{{$projectsEoi->investment_amount}}</td>
+									<td>${{number_format($projectsEoi->investment_amount)}}</td>
 									<td>{{$projectsEoi->invesment_period}}</td>
 									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
 									<td>
