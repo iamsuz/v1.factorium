@@ -624,6 +624,11 @@ input[type="radio"] {
 		margin-top: 0em !important; 
 	}
 }
+@media (max-width: 320px) {
+	h3 {
+	    font-size: 20px !important;
+	}
+}
 #preview_img_container{
 	overflow: hidden;
     text-align: right;

@@ -1614,15 +1614,16 @@
 	</div>
 </section> -->
 <!-- <h4 class="text-center">More questions/comments/concerns? You can post them here or chat with us</h4> -->
-<br><br>
-<div class="row">
+<br>
+{{-- <div class="row">
 			<div class="col-md-offset-1 col-md-10">
 				<hr style="margin-top:0px;">
 			</div>
-		</div>
-<h4 class="text-center" style="font-size: 1.6em;">More questions/comments/concerns? You can post them here</h4>
+		</div> --}}
 <section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
 	<div class="container">
+		<h3 class="text-center">More questions/comments/concerns? You can post them here</h3>
+		<br>
 		{{-- <div class="row">
 			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
 			<div class="col-md-8"></div>
@@ -1632,7 +1633,7 @@
 		<div class="row">
 			<div class="col-md-offset-1 col-md-10 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
 				<fieldset>
-					<div class="row">
+					{{-- <div class="row"> --}}
 						<div class="col-md-1">
 							<img src="{{asset('assets/images/default-male.png')}}" width="50" style="width:40px; height:50px;">
 						</div>
@@ -1642,18 +1643,19 @@
 								{!! $errors->first('text', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
+					{{-- </div> --}}
+					{{-- <div class="row"> --}}
+						<div class=""> {{-- Removed form-group class --}}
 							<div class="col-md-offset-10 col-md-2">
 								{!! Form::submit('Post', array('class'=>'btn btn-danger btn-block comment-submit-button', 'tabindex'=>'15', 'id'=>'feedbackForm')) !!}
 							</div>
 						</div>
-					</div>
+					{{-- </div> --}}
 				</fieldset>
 			</div>
 		</div>
 		{!! Form::close() !!}
+		<br>
 	</div>
 </section>
 <style type="text/css">
