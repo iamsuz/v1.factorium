@@ -671,8 +671,8 @@ class SiteConfigurationsController extends Controller
             $project_prog = new ProjectProg;
             $project_prog->project_id = $project_id;
             $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
-            $project_prog->progress_description = $request->progress_description;
-            $project_prog->progress_details = $request->progress_details;
+            $project_prog->progress_description = trim(preg_replace('/\s+/', ' ', $request->progress_description));
+            $project_prog->progress_details = trim(preg_replace('/\s+/', ' ', $request->progress_details));
             $project_prog->video_url = $request->video_url;
             $project_prog->image_path = $imagePath;
             $project_prog->save();

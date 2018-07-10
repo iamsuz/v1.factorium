@@ -65,6 +65,7 @@
 								<th>Company or Trust</th>
 								@if(!$project->retail_vs_wholesale)<th>Wholesale Investment</th>@endif
 								<th>Application Form</th>
+								<th>Interested to Buy</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -222,6 +223,9 @@
 									<a href="{{route('dashboard.project.application', [$investment->id])}}" target="_blank">
 										View Application Form
 									</a>
+								</td>
+								<td>
+									@if($investment->interested_to_buy) Yes @else No @endif
 								</td>
 							</tr>
 
@@ -514,6 +518,7 @@
 									<th class="text-center">EOI Timestamp</th>
 									<th>Application Link</th>
 									<th>Offer Document</th>
+									<th>Interested to buy</th>
 								</tr>
 							</thead>
 							<tbody class="text-center">
@@ -549,6 +554,9 @@
 											<input type="hidden" name="eoi_id" value="{{$projectsEoi->id}}">
 											<input type="submit" name="upload_offer_doc" value="Upload" class="btn btn-primary">
 										</form>
+									</td>
+									<td>
+										@if($projectsEoi->interested_to_buy) Yes @else No @endif 
 									</td>
 								</tr>
 								@endforeach

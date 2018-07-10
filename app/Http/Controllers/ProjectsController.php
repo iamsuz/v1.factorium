@@ -545,6 +545,7 @@ class ProjectsController extends Controller
                     'phone_number' => $request->phone_number,
                     'investment_amount' => $request->investment_amount,
                     'invesment_period' => $request->investment_period,
+                    'interested_to_buy' => $request->interested_to_buy,
                     'project_site' => url(),
                     ]);
                 $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);

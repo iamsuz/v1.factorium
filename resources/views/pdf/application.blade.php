@@ -170,6 +170,13 @@
 	{{$project->add_additional_form_content}}
 	@endif
 	<br><br>
+	@if($investment->interested_to_buy)
+	<p>
+		I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
+	</p>
+	<br>
+	@endif
+	<br><br>
 	<div align="right">
 		<h4 align="right"><b>Signature &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></h4>
 		@if($investment->signature_data)

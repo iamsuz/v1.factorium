@@ -61,11 +61,21 @@ EOI Doc
             {!! Form::label(null, 'When will you be ready to invest : ', array('style' => 'margin-right: 8px;')) !!}
             {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months'],null,array('id'=>'periodEoi')) !!}
         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <input type="hidden" name="interested_to_buy" value="0">
+                    <input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
+                </div>
+            </div>
+        </div>
         <br>
 
         <div class="form-group text-center show-eoi-form-btn">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
         </div>
+        <br>
         <input type="text" name="project_id" @if($project) value="{{$project->id}}" @endif hidden id="projIdEoi">
         {!! Form::close() !!}
     </div>
