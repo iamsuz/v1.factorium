@@ -420,7 +420,9 @@ Offer Doc
 
 										</div>
 									</div>
+									@if(Auth::guest())
 									<input type="password" name="password" class="hidden" id="passwordOffer">
+									@endif
 									<br>
 									<div class="row " id="section-8">
 										<div class="col-md-12">
