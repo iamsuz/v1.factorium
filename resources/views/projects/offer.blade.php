@@ -420,7 +420,9 @@ Offer Doc
 
 										</div>
 									</div>
+									@if(Auth::guest())
 									<input type="password" name="password" class="hidden" id="passwordOffer">
+									@endif
 									<br>
 									<div class="row " id="section-8">
 										<div class="col-md-12">
@@ -617,7 +619,7 @@ Offer Doc
 		$("#myModal").on('shown.bs.modal', function(){
 			$(this).find('input[type="text"]').focus();
 		});
-		$('#offerSubmit').click(function(event) {
+		$('#myform').submit(function(event) {
 			@if(Auth::guest())
 			var email = $('#offerEmail').val();
 			var _token = $('meta[name="csrf-token"]').attr('content');
