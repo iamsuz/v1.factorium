@@ -553,7 +553,8 @@ Offer Doc
 									<b>Tech Baron PTY LTD Declaration</b><br>
 									We have to provide this document to you along with the application form, it defines the services we are providing as an authorized Representative of our license holding partner
 									<br>
-									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0" target="_blank">Download Financial Services Guide</a>
+									<a class="btn btn-primary btn-block font-bold" style="background-color:#2d2d4b;font-size:1em;color:#ffffff;border-color: #2d2d4b;" href="@if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link}}@else https:www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0 @endif" target="_blank">Download Financial Services Guide
+									</a>
 								</td>
 							</tr>
 						</table>
