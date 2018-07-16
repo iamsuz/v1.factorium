@@ -1460,10 +1460,10 @@
 										</div>
 										@endif
 									</td></tr>
-									<tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="text" name="blog_link_new" value="{{$siteConfiguration->blog_link_new}}" required="required"></td></tr>
-									<tr><td>Terms & Conditions:</td><td><input class="form-control" type="text" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr>
-									<tr><td>Privacy:</td><td><input class="form-control" type="text" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr>
-									<tr><td>Financial Service Guide:</td><td><input class="form-control" type="text" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr>
+									<tr><td style="width: 150px">Blog:</td><td><input class="form-control" type="url" name="blog_link_new" value="{{$siteConfiguration->blog_link_new}}" required="required"></td></tr>
+									<tr><td>Terms & Conditions:</td><td><input class="form-control" placeholder="http://example.com" type="url" name="terms_conditions_link" value="{{$siteConfiguration->terms_conditions_link}}"></td></tr>
+									<tr><td>Privacy:</td><td><input class="form-control" placeholder="http://example.com" type="url" name="privacy_link" value="{{$siteConfiguration->privacy_link}}"></td></tr>
+									<tr><td>Financial Service Guide:</td><td><input class="form-control" placeholder="http://example.com" type="url" name="financial_service_guide_link" value="{{$siteConfiguration->financial_service_guide_link}}"></td></tr>
 									{{-- <tr><td>Media Kit:</td><td><input class="form-control" type="text" name="media_kit_link" value="{{$siteConfiguration->media_kit_link}}"></td></tr> --}}
 								</table>
 							</div>

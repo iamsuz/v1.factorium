@@ -845,7 +845,7 @@ This email and any attachment is confidential and may be protected by copyright.
 If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif does not guarantee that this email and any attachment is secure, free of viruses or error-free.
-The @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif platform is operated by Tech Baron PTY LTD (ABN 67617252909) which is a Corporate Authorised Representative 001251881 of AFSL 299812). <a href="https://www.dropbox.com/s/koxscf3j3zw078c/TB%20FSG%20Ver%201.0.pdf?dl=0">Financial Services Guide</a>.<br>
+The @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif platform is operated by Tech Baron PTY LTD (ABN 67617252909) which is a Corporate Authorised Representative 001264952 of AFSL 275444). <a href="https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0">Financial Services Guide</a>.<br>
 
 &nbsp;
 </html>
