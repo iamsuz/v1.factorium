@@ -50,7 +50,7 @@ Offer Doc
 												<i class="text-dark-grey">@if($projects_spv){{$projects_spv->spv_name}} @else - @endif</i>
 												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5><br>
 												<label>User apply for *</label>
-												<input type="text" name="amount_to_invest" class="form-control" placeholder="5000" style="width: 60%" id="apply_for" required>
+												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" step="1000" min="{{$project->investment->minimum_accepted_amount}}" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
 												@if($project->share_vs_unit)
 													<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@else
@@ -58,7 +58,7 @@ Offer Doc
 												@endif
 												<br>
 												<label>User lodge full Application Money</label>
-												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ 0.00" style="width: 60%" id="application_money">
+												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ @if(isset($eoi)) {{number_format(round($eoi->investment_amount, 2))}} @else 0.00 @endif" disabled="" style="width: 60%; background-color: #fff" id="application_money">
 												<input type="text" name="project_id" @if($projects_spv) value="{{$projects_spv->project_id}}" @endif hidden >
 											</div>
 										</div>
@@ -382,6 +382,14 @@ Offer Doc
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
+	function isNumber(evt) {
+	    evt = (evt) ? evt : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+	        return false;
+	    }
+	    return true;
+	}
 	$(document).ready(function(){
 	    $('#myform').submit(function() {
 		    $('.loader-overlay').show(); // show animation
