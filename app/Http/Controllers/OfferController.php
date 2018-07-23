@@ -79,9 +79,9 @@ class OfferController extends Controller
             return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only']);
         }
         $validation_rules = array(
-            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
-            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
-            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
+            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
+            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
             'amount_to_invest'   => 'required|integer',
             'line_1' => 'required',
             'state' => 'required',
