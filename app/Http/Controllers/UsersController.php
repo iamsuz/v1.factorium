@@ -489,13 +489,18 @@ class UsersController extends Controller
 
     public function viewUnitCertificate($investment_id)
     {
-        $filename = '/app/invoices/Unit-Certificate-'.base64_decode($investment_id).'.pdf';
-        $path = storage_path($filename);
-
-        return \Response::make(file_get_contents($path), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        ]);
+        $investment_id = base64_decode($investment_id);
+        $color = Color::where('project_site',url())->first();
+        $investment = InvestmentInvestor::find($investment_id);
+        // dd($investment->project);
+        $shareStart = $investment->share_number;
+        $shareStart =  explode('-',$shareStart);
+        $shareEnd = $shareStart[1];
+        $shareStart = $shareStart[0];
+        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
+        $project = $investment->project;
+        $user = $investment->user;
+        return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
     }
 
     public function usersNotifications($user_id)
