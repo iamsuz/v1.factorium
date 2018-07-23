@@ -5,10 +5,13 @@
 .text-center{
 	text-align: center;
 }
+.body{
+
+}
 </style>
 @if($investment->project->projectspvdetail)
 @if($investment->project->projectspvdetail->certificate_frame)
-<div style="padding-top:100px;padding-left:100px;padding-right:100px;margin:-50px;background:url('/assets/images/certificate_frames/{{$investment->project->projectspvdetail->certificate_frame}}');background-position: top center;background-repeat: no-repeat;background-size: 100%;width:100%;height:100%;">
+<div style="padding-top:100px;background:url('/assets/images/certificate_frames/{{$investment->project->projectspvdetail->certificate_frame}}');background-position: center;background-repeat: no-repeat;background-size: 100%;width:100%;height:100%;">
 @else
 <div style="padding-top:100px;padding-left:100px;padding-right:100px;margin:-50px;">
 @endif
@@ -16,13 +19,13 @@
 <div style="padding-top:100px;padding-left:100px;padding-right:100px;margin:-50px;">
 @endif
 	@if($investment->project->media->where('type', 'spv_logo_image')->first())
-	<div class="text-center" style="top:15%;width:100%;position:absolute;z-index:-1;opacity:0.05;"><img src="{{$investment->project->media->where('type', 'spv_logo_image')->first()->path}}" width="700"></div>
+	<div class="text-center" style="top:15%;width:100%;position:absolute;z-index:-1;opacity:0.05;"><img src="/{{$investment->project->media->where('type', 'spv_logo_image')->first()->path}}" width="700"></div>
 	@endif
 	<div class="text-center">
 		<h1>@if($investment->project->share_vs_unit){{'Share'}}@else{{'Unit'}}@endif Certificate</h1>
 		<br>
 		@if($investment->project->media->where('type','spv_logo_image')->first())
-		<center><img src="{{$investment->project->media->where('type','spv_logo_image')->first()->path}}" height="100"></center><br>
+		<center><img src="/{{$investment->project->media->where('type','spv_logo_image')->first()->path}}" height="100"></center><br>
 		@endif
 		@if($investment->project->projectspvdetail)
 		{{$investment->project->projectspvdetail->spv_name}}
@@ -47,7 +50,7 @@
 		</p>
 		<br><br>
 		@if($investment->project->media->where('type', 'spv_md_sign_image')->first())
-		<img src="{{$investment->project->media->where('type', 'spv_md_sign_image')->first()->path}}" height="50">
+		<img src="/{{$investment->project->media->where('type', 'spv_md_sign_image')->first()->path}}" height="50">
 		<br>
 		@endif
 		@if($investment->project->projectspvdetail)
