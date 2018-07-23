@@ -339,6 +339,18 @@ Offer Doc
 
 										</div>
 									</div>
+
+									<br>
+									<div class="row">
+										<div class="col-md-12">
+											<div>
+												<input type="hidden" name="interested_to_buy" value="0">
+											    <input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
+											</div>
+										</div>
+									</div>
+									<br>
+
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
