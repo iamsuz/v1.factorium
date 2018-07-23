@@ -14,6 +14,9 @@ use App\Role;
 use App\User;
 use App\Project;
 use Carbon\Carbon;
+use App\IdDocument;
+use App\Investment;
+use App\InvestingJoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -463,9 +466,21 @@ class UsersController extends Controller
      */
     public function viewShareCertificate($investment_id)
     {
-        $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
-        $path = storage_path($filename);
-        return response()->download($path);
+        $investment_id = base64_decode($investment_id);
+        $color = Color::where('project_site',url())->first();
+        $investment = InvestmentInvestor::find($investment_id);
+        // dd($investment->project);
+        $shareStart = $investment->share_number;
+        $shareStart =  explode('-',$shareStart);
+        $shareEnd = $shareStart[1];
+        $shareStart = $shareStart[0];
+        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
+        $project = $investment->project;
+        $user = $investment->user;
+        return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+        // $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
+        // $path = storage_path($filename);
+        // return response()->download($path);
         // return \Response::make(file_get_contents($path), 200, [
         //     'Content-Type' => 'application/pdf',
         //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
@@ -474,13 +489,18 @@ class UsersController extends Controller
 
     public function viewUnitCertificate($investment_id)
     {
-        $filename = '/app/invoices/Unit-Certificate-'.base64_decode($investment_id).'.pdf';
-        $path = storage_path($filename);
-
-        return \Response::make(file_get_contents($path), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        ]);
+        $investment_id = base64_decode($investment_id);
+        $color = Color::where('project_site',url())->first();
+        $investment = InvestmentInvestor::find($investment_id);
+        // dd($investment->project);
+        $shareStart = $investment->share_number;
+        $shareStart =  explode('-',$shareStart);
+        $shareEnd = $shareStart[1];
+        $shareStart = $shareStart[0];
+        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
+        $project = $investment->project;
+        $user = $investment->user;
+        return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
     }
 
     public function usersNotifications($user_id)
@@ -504,4 +524,53 @@ class UsersController extends Controller
         return view('users.notification', compact('user','project_prog', 'color'));
     }
 
+    public function documents(Request $request,$id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = User::find($id);
+        return view('users.idDoc',compact('color','user'));
+    }
+    public function uploadDocuments(Request $request,$id)
+    {
+        $validation_rules = array(
+            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
+            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf'
+            );
+        $validator = Validator::make($request->all(), $validation_rules);
+        $color = Color::where('project_site',url())->first();
+        $user = User::find($id);
+        if($request->hasFile('joint_investor_id_doc'))
+        {
+            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
+            $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
+            $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
+            $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+
+        }
+        if($request->hasFile('trust_or_company_docs'))
+        {
+            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->investing_company_name.'/';
+            $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
+            $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
+            $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+
+        }
+        if($request->hasFile('user_id_doc'))
+        {
+            $destinationPath = 'assets/users/'.$user->id.'/normal_name/';
+            $filename = $request->file('user_id_doc')->getClientOriginalName();
+            $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
+            $request->file('user_id_doc')->move($destinationPath, $filename);
+            // dd($request);
+            $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as]);
+            $user->idDoc()->save($user_doc);
+
+        }
+        return redirect()->back()->withMessage('Successfully Uploaded documents');
+    }
 }

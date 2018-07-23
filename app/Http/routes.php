@@ -55,8 +55,8 @@ Route::patch('/users/{user_id}/edit1', ['as'=>'users.fbupdate', 'uses'=>'UsersCo
 Route::get('/dashboard/users/{user_id}/investments', ['as'=>'dashboard.users.investments', 'uses'=>'DashboardController@usersInvestments']);
 Route::get('/dashboard/users/{user_id}/activate', ['as'=>'dashboard.users.activate', 'uses'=>'DashboardController@activateUser']);
 Route::get('/dashboard/users/{user_id}/deactivate', ['as'=>'dashboard.users.deactivate', 'uses'=>'DashboardController@deactivateUser']);
-/*Route::get('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verification', 'uses'=>'DashboardController@verification']);
-Route::post('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verify', 'uses'=>'DashboardController@verifyId']);*/
+Route::get('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verification', 'uses'=>'DashboardController@verification']);
+Route::post('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verify', 'uses'=>'DashboardController@verifyId']);
 
 Route::pattern('project_id', '[0-9]+');
 /*Route::get('/dashboard/projects/{project_id}', ['as'=>'dashboard.projects.show', 'uses'=>'DashboardController@showProject']);*/
@@ -81,7 +81,8 @@ Route::get('/users/successfull/eoi', ['as'=>'users.success.eoi', 'uses'=>'UserAu
 Route::POST('/users/registration/code', ['as'=>'users.registration.code', 'uses'=>'UserRegistrationsController@registrationCode']);
 Route::post('/users/login/check', ['as'=>'users.auth.check', 'uses'=>'UserAuthController@authenticateCheck']);
 Route::get('/users/activation/{token}', ['as'=>'users.activation', 'uses'=>'UserAuthController@activate']);
-
+Route::get('/users/{id}/documents',['as'=>'users.document','uses'=>'UsersController@documents']);
+Route::post('/users/{id}/documents',['as'=>'users.document.upload','uses'=>'UsersController@uploadDocuments']);
 // Password reset link request routes...
 Route::get('/password/email', 'Auth\PasswordController@getEmail');
 Route::post('/password/email', 'Auth\PasswordController@postEmail');
