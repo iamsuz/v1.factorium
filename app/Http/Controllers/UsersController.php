@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use App\SiteConfiguration;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class UsersController extends Controller
 {
@@ -411,16 +412,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-         $role = Role::whereRole('investor')->firstOrFail();
+           $role = Role::whereRole('investor')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * delete Developer role from user
@@ -436,16 +437,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-         $role = Role::whereRole('developer')->firstOrFail();
+           $role = Role::whereRole('developer')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * get user investments
@@ -477,7 +478,22 @@ class UsersController extends Controller
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         $project = $investment->project;
         $user = $investment->user;
-        return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+        $pdf = PDF::loadView('pdf.invoice',['investment' => $investment,'color'=>$color,'user'=>$user,'project'=>$project,'investing'=>$investing,'shareEnd'=>$shareEnd,'shareStart'=>$shareStart]);
+        // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
+        $pdf->setPaper('a4', 'landscape');
+        // $pdf->save(storage_path().'/app/invoices/Sujit-'.$investment->id.'.pdf');
+        // $pdf = \PDF::loadView('pdf.invoice',['investment' => $investment,'color'=>$color,'user'=>$user,'project'=>$project,'investing'=>$investing,'shareEnd'=>$shareEnd,'shareStart'=>$shareStart]);
+        // $pdf->setOptions(['isRemoteEnabled'=> TRUE,'defaultMediaType'=> "screen",'dpi'=> 96,'isPhpEnabled'=> true]);
+
+        // $pdf->render();
+        // dd($pdf);
+        return $pdf->stream();
+        // return \Response::make($pdf->xml, 200, array('content-type'=>'application/pdf', 'Content-Disposition' => 'inline; Invoice'));
+        // return \Response::make($pdf, 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="invoice"'
+        // ]);
+        // return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
         // $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
         // $path = storage_path($filename);
         // return response()->download($path);
@@ -536,7 +552,7 @@ class UsersController extends Controller
             'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
             'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
             'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf'
-            );
+        );
         $validator = Validator::make($request->all(), $validation_rules);
         $color = Color::where('project_site',url())->first();
         $user = User::find($id);
