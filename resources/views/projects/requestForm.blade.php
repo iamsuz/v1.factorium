@@ -50,7 +50,7 @@ Offer Doc
 												<i class="text-dark-grey">@if($projects_spv){{$projects_spv->spv_name}} @else - @endif</i>
 												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5><br>
 												<label>User apply for *</label>
-												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" step="1000" min="{{$project->investment->minimum_accepted_amount}}" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
+												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" step="100" min="{{$project->investment->minimum_accepted_amount}}" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
 												@if($project->share_vs_unit)
 													<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@else

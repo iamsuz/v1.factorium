@@ -150,7 +150,7 @@
 							<div class="row text-left">
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff;">
 									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff; display: -webkit-box;">
-										$<input type="number" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}" style="width: 60px; padding-left: 2px; padding-right: 2px;" min="100">
+										$<input type="number" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}" step="100" style="width: 60px; padding-left: 2px; padding-right: 2px;" min="100">
 									</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff;">
