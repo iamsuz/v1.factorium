@@ -478,25 +478,22 @@ class UsersController extends Controller
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         $project = $investment->project;
         $user = $investment->user;
-        $pdf = PDF::loadView('pdf.invoice',['investment' => $investment,'color'=>$color,'user'=>$user,'project'=>$project,'investing'=>$investing,'shareEnd'=>$shareEnd,'shareStart'=>$shareStart]);
-        // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
-        $pdf->setPaper('a4', 'landscape');
-        // $pdf->save(storage_path().'/app/invoices/Sujit-'.$investment->id.'.pdf');
-        // $pdf = \PDF::loadView('pdf.invoice',['investment' => $investment,'color'=>$color,'user'=>$user,'project'=>$project,'investing'=>$investing,'shareEnd'=>$shareEnd,'shareStart'=>$shareStart]);
-        // $pdf->setOptions(['isRemoteEnabled'=> TRUE,'defaultMediaType'=> "screen",'dpi'=> 96,'isPhpEnabled'=> true]);
+        return view('pdf.invoiceHtml',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+        // $pdf->setPaper('a4', 'landscape');
+        // $pdf->setOptions(['Content-Type' => 'application/pdf','images' => true]);
+        // return $pdf->stream('invoice.pdf',200,['Content-Type' => 'application/pdf','Content-Disposition' => 'inline']);
 
-        // $pdf->render();
-        // dd($pdf);
-        return $pdf->stream();
-        // return \Response::make($pdf->xml, 200, array('content-type'=>'application/pdf', 'Content-Disposition' => 'inline; Invoice'));
-        // return \Response::make($pdf, 200, [
-        //     'Content-Type' => 'application/pdf',
-        //     'Content-Disposition' => 'inline; filename="invoice"'
-        // ]);
-        // return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+
         // $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
         // $path = storage_path($filename);
         // return response()->download($path);
+        // return \Response::make(file_get_contents($path), 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        // ]);
+        // $filename = 'app/invoices/Share-Certificate-'.base64_decode($investment_id).'.pdf';
+        // $path = storage_path($filename);
+        // // return response()->download($path);
         // return \Response::make(file_get_contents($path), 200, [
         //     'Content-Type' => 'application/pdf',
         //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
@@ -516,7 +513,8 @@ class UsersController extends Controller
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         $project = $investment->project;
         $user = $investment->user;
-        return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+        return view('pdf.invoiceHtml',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+        // return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
     }
 
     public function usersNotifications($user_id)
