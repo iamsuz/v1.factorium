@@ -760,7 +760,13 @@ class SiteConfigurationsController extends Controller
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
                 'project_goal_amount'=>'required|integer|min:1',
+                'project_min_investment_txt'=>'required|integer|min:100'
                 ));
+                //Check for minimum investment amount
+                if((int)$request->project_min_investment_txt % 100 != 0)
+                {
+                    return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center" style="color="white;">Please enter amount in increments of $100 only</p>');
+                }
                 Project::where('id', $projectId)->update([
                     'title' => $request->project_title_txt,
                     'description' => $request->project_description_txt,

@@ -116,7 +116,7 @@
 						<br>
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field">
-						<p>Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}" placeholder="DD/MM/YYYY">
+						<p style="color: white !important;">Close Date</p><input name="fund_raising_close_date" type="date" style="color: #000;" value="{{$project->investment->fund_raising_close_date->toDateString()}}" placeholder="DD/MM/YYYY">
 					</div>
 					<div class="col-md-5 col-md-offset-3 col-sm-6">
 						@if($project->projectconfiguration->show_project_progress_image)
@@ -150,16 +150,16 @@
 							<div class="row text-left">
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff;">
 									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff; display: -webkit-box;">
-										$<input type="text" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}" style="width: 50px; padding-left: 2px; padding-right: 2px;">
+										$<input type="number" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}" style="width: 60px; padding-left: 2px; padding-right: 2px;" min="100">
 									</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff; width: 23%;">
+								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff;">
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">
 										<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}" style="padding-left: 2px; padding-right: 2px;">
 									</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3" style="@if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif width:27%;">
-									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff; display: -webkit-box;">
+								<div class="col-md-3 col-sm-3 col-xs-3" style="@if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif">
+									<h4 class="font-bold project-returns-field" style="width: 55px; font-size:1.375em;color:#fff; display: -webkit-box;">
 										<input type="text" name="project_returns_txt" class="form-control" value="{{$project->investment->projected_returns}}" style="padding-left: 2px; padding-right: 2px;">%
 									</h4>
 									<h6 class="font-regular @if(Auth::guest()) @else @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) edit-project-page-labels @endif @endif" style="font-size: 0.875em;color: #fff" effect="expected_return_label_text">{{$project->projectconfiguration->expected_return_label_text}}</h6>
@@ -197,7 +197,7 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-md-offset-4 project-invest-button-field" style="margin-top:0%;" id="express_interest">
-							Invest Now Button Label
+							<span style="color: white;">Invest Now Button Label</span>
 							<input type="text" name="project_button_invest_txt" class="form-control" value="{{$project->button_label}}" style="font-size: 25px;" placeholder="Button text">
 						</div>
 					</div>

@@ -334,6 +334,12 @@ class ProjectsController extends Controller
             $request['developer_id'] = User::whereEmail($request->developerEmail)->firstOrFail()->id;
         }
 
+        //Check for minimum investment amount
+        if((int)$request->project_min_investment_txt % 100 != 0)
+        {
+            return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
+        }
+
         $project->update($request->all());
 
         if($request->project_status) {
@@ -522,9 +528,9 @@ class ProjectsController extends Controller
         {
             return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
         }
-        if((int)$request->investment_amount % 1000 != 0)
+        if((int)$request->investment_amount % 100 != 0)
         {
-            return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only']);
+            return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
         }
 
         $this->validate($request, [

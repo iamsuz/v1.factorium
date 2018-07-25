@@ -230,7 +230,6 @@ class Country
 		"Ukraine"                                      => "ua",
 		"United Arab Emirates"                         => "ae",
 		"United Kingdom"                               => "gb",
-		"United States"                                => "us",
 		"United States Minor Outlying Islands"         => "um",
 		"Uruguay"                                      => "uy",
 		"Uzbekistan"                                   => "uz",
