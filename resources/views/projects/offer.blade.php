@@ -719,7 +719,7 @@ Offer Doc
 	});
 	$(document).ready(function(){
 		var qty=$("#apply_for");
-		qty.keyup(function(){
+		qty.bind('keyup mouseup', function (){
 			var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			$("#application_money").val(total);
 		});
