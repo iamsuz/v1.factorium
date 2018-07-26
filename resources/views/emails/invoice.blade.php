@@ -572,8 +572,8 @@
 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi {{$investment->user->first_name}},</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Thank you for investing in <b>{{$investment->project->title}}.</b><br>
-Attached is a copy of your @if($investment->project->share_vs_unit) share @else unit @endif certificate.
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Thank you for investing in <b>{{$investment->project->title}}.</b><br><br><br>
+<a href="{{$formLink}}" style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#fff;text-decoration:none;padding:15px;cursor:pointer; background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><b>View your @if($investment->project->share_vs_unit) share @else unit @endif certificate.</b></a>
 </span></span></span>
 &nbsp;
 
@@ -627,11 +627,11 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
 
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 
-<span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_email}}@else info@estatebaron.com @endif" target="_blank">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_email}}@else info@estatebaron.com @endif</a><br><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Phone no:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +61398117015 @endif" target="_blank">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +61398117015 @endif</a><!-- <br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br /> --></span></span></span></span></div><br>
+{{-- <span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_email}}@else info@estatebaron.com @endif" target="_blank">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_email}}@else info@estatebaron.com @endif</a><br><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Phone no:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +61398117015 @endif" target="_blank">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +61398117015 @endif</a><!-- <br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br /> --></span></span></span></span></div><br> --}}
 
                         </td>
                     </tr>
-                </tbody></table> 
+                </tbody></table>
         <!--[if mso]>
         </td>
         <![endif]-->
@@ -710,12 +710,12 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://www.facebook.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/facebook.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -724,17 +724,17 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
                                                     </td>
                                                 </tr>
                                             </tbody></table> -->
-                                        
+
                                         <!--[if mso]>
                                         </td>
                                         <![endif]-->
-                                    
+
                                         <!--[if mso]>
                                         <td align="center" valign="top">
                                         <![endif]-->
-                                        
-                                        
-                                            
+
+
+
                       <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
@@ -743,12 +743,12 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://twitter.com/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/twitter.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -757,16 +757,16 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
                                                     </td>
                                                 </tr>
                                             </tbody></table> -->
-                                        
+
                                         <!--[if mso]>
                                         </td>
                                         <![endif]-->
-                                    
+
                                         <!--[if mso]>
                                         <td align="center" valign="top">
                                         <![endif]-->
-                                        
-                                        
+
+
                                             <!-- <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
                                                     <td valign="top" style="padding-right: 0;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
@@ -775,12 +775,12 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
                                                                 <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
-                                                                            
+
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                                     <a href="https://www.linkedin.com/company/Vestabyte" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="http://www.vestabyte.com/assets/images/email/linkedin.png" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
-                                                                            
-                                                                            
+
+
                                                                         </tr>
                                                                     </tbody></table>
                                                                 </td>
@@ -789,11 +789,11 @@ Attached is a copy of your @if($investment->project->share_vs_unit) share @else 
                                                     </td>
                                                 </tr>
                                             </tbody></table> -->
-                                        
+
                                         <!--[if mso]>
                                         </td>
                                         <![endif]-->
-                                    
+
                                     <!--[if mso]>
                                     </tr>
                                     </table>
@@ -843,8 +843,8 @@ The advice provided in relation to the @if($siteTitle=App\Helpers\SiteConfigurat
 including on the @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Platform website,
 is general advice only and has been prepared without taking into account your financial situation, objectives
 and needs.
-Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and consider whether they are right for you. 
-The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages. 
+Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and consider whether they are right for you.
+The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages.
 This email and any attachment is confidential and may be protected by copyright.
 If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
 @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.

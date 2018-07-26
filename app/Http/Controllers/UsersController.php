@@ -470,7 +470,7 @@ class UsersController extends Controller
         $investment_id = base64_decode($investment_id);
         $color = Color::where('project_site',url())->first();
         $investment = InvestmentInvestor::find($investment_id);
-        // dd($investment->project);
+        // dd($investment_id);
         $shareStart = $investment->share_number;
         $shareStart =  explode('-',$shareStart);
         $shareEnd = $shareStart[1];

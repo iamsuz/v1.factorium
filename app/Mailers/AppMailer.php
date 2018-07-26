@@ -215,7 +215,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendInvoiceToUser($investment)
+    public function sendInvoiceToUser($investment,$formLink)
     {
         $this->to = $investment->user->email;
         $this->view = 'emails.invoice';
@@ -226,7 +226,7 @@ class AppMailer
             $this->subject = 'Unit certificate for '.$investment->project->title;
 
         }
-        $this->data = compact('investment');
+        $this->data = compact('investment','formLink');
 
         if($investment->project->share_vs_unit) {
             $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
@@ -279,7 +279,7 @@ class AppMailer
         $this->view = 'emails.moneyReceivedConfirm';
         $this->subject = 'Funds received for '.$investment->project->title;
         $this->data = compact('investment');
-        
+
         $this->deliverWithBcc();
     }
 
@@ -297,8 +297,8 @@ class AppMailer
         $this->view = 'emails.investmentReminder';
         $this->subject = 'Investment Reminder for '.$investment->project->title;
         $this->data = compact('investment');
-        
-        $this->deliverWithBcc();   
+
+        $this->deliverWithBcc();
     }
     public function sendInvestmentConfirmationToUser($investment)
     {
@@ -332,7 +332,7 @@ class AppMailer
         $this->view = 'emails.upcomingProjectInterestNotification';
         $this->subject = 'User Expressed Interest in '.$project->title;
         $this->data = compact('project', 'email', 'phone');
-        
+
         $this->deliver();
     }
 
@@ -349,7 +349,7 @@ class AppMailer
         $this->view = 'emails.projectEoiAdminNotification';
         $this->subject = 'User Expressed Interest in '.$project->title;
         $this->data = compact('project', 'eoi_data');
-        
+
         $this->deliver();
     }
 
@@ -360,7 +360,7 @@ class AppMailer
         $this->view = 'emails.projectEoiUserNotification';
         $this->subject = 'Thank you for expressing Interest in '.$project->title;
         $this->data = compact('project', 'user_info');
-        
+
         $this->deliver();
     }
 
@@ -377,7 +377,7 @@ class AppMailer
         $this->view = 'emails.userFeedbackAdminEmail';
         $this->subject = 'User gave feedback on '.$project->title;
         $this->data = compact('project', 'user_info', 'comment');
-        
+
         $this->deliver();
     }
 
@@ -468,7 +468,7 @@ class AppMailer
         $this->view = 'emails.eoiFormLink';
         $this->subject = 'Your expression of interest in '.$project->title.' has been accepted';
         $this->data = compact('project', 'eoi');
-        
+
         if($eoi->offer_doc_path){
             $this->pathToFile = public_path().$eoi->offer_doc_path;
             $this->deliverWithFile();
