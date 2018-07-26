@@ -53,7 +53,7 @@ EOI Doc
             {!! Form::label(null, 'Amount you would be interested in investing') !!}
             <div class="input-group">
                 <span class="input-group-addon">A$</span>
-                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' , 'step'='100', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
+                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' , 'step'=>'100', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
             </div>
         </div>
 
@@ -62,6 +62,7 @@ EOI Doc
             {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months'],null,array('id'=>'periodEoi')) !!}
         </div>
 
+        {{-- @if($project->show_interested_to_buy_checkbox) --}}
         <div class="row">
             <div class="col-md-12">
                 <div>
@@ -71,6 +72,7 @@ EOI Doc
             </div>
         </div>
         <br>
+        {{-- @endif --}}
 
         <div class="form-group text-center show-eoi-form-btn">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
