@@ -235,7 +235,7 @@ class AppMailer
 
         }
 
-        $this->deliverWithFile();
+        $this->deliver();
     }
 
     public function sendInvoiceToAdmin($investment)
