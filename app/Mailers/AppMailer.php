@@ -238,7 +238,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendInvoiceToAdmin($investment)
+    public function sendInvoiceToAdmin($investment,$formLink)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -255,14 +255,14 @@ class AppMailer
         }else {
             $this->subject = 'Unit certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
         }
-        $this->data = compact('investment');
+        $this->data = compact('investment','formLink');
         if($investment->project->share_vs_unit) {
             $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
         }else {
             $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
 
         }
-        $this->deliverWithFile();
+        $this->deliver();
     }
 
     public function sendMoneyReceivedConfirmationToUser($investment)

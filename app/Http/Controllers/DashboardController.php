@@ -305,7 +305,7 @@ class DashboardController extends Controller
                 }
 
                 $mailer->sendInvoiceToUser($investment,$formLink);
-                $mailer->sendInvoiceToAdmin($investment);
+                $mailer->sendInvoiceToAdmin($investment,$formLink);
             }
             return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
         }
