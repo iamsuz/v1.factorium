@@ -452,6 +452,7 @@ Offer Doc
 									@endif
 									@endif
 									<br>
+									@if($project->show_interested_to_buy_checkbox)
 									<div class="row">
 										<div class="col-md-12">
 											<div>
@@ -461,6 +462,7 @@ Offer Doc
 										</div>
 									</div>
 									<br>
+									@endif
 
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>

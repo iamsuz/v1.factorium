@@ -150,6 +150,17 @@ Edit {{$project->title}} | Dashboard | @parent
 									      </label>
 									</div>
 
+									<br><br>
+									<h3>Show interested to buy property checkbox</h3>
+									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+										<label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 1) active @endif">
+									        <input type="radio" name="show_interested_to_buy_checkbox" value="1"> On
+									      </label>
+									      <label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 0) active @endif" >
+									        <input type="radio" name="show_interested_to_buy_checkbox" value="0"> Off
+									      </label>
+									</div>
+
 									<br><br><br>
 									<div class="row">
 										<div class="form-group">
