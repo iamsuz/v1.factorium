@@ -62,7 +62,7 @@ EOI Doc
             {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months'],null,array('id'=>'periodEoi')) !!}
         </div>
 
-        {{-- @if($project->show_interested_to_buy_checkbox) --}}
+        @if($project->show_interested_to_buy_checkbox)
         <div class="row">
             <div class="col-md-12">
                 <div>
@@ -72,7 +72,7 @@ EOI Doc
             </div>
         </div>
         <br>
-        {{-- @endif --}}
+        @endif
 
         <div class="form-group text-center show-eoi-form-btn">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
