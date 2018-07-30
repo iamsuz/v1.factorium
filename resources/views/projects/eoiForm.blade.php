@@ -62,17 +62,15 @@ EOI Doc
             {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months'],null,array('id'=>'periodEoi')) !!}
         </div>
 
-        @if($project->show_interested_to_buy_checkbox)
-        <div class="row">
+        <div class="row @if(!$project->show_interested_to_buy_checkbox) hide @endif">
             <div class="col-md-12">
                 <div>
                     <input type="hidden" name="interested_to_buy" value="0">
                     <input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
                 </div>
             </div>
+            <br>
         </div>
-        <br>
-        @endif
 
         <div class="form-group text-center show-eoi-form-btn">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
