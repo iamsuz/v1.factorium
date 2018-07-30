@@ -341,7 +341,7 @@ Offer Doc
 									</div>
 									<br>
 
-									<div class="row @if($project->show_interested_to_buy_checkbox) hide @endif">
+									<div class="row @if(!$project->show_interested_to_buy_checkbox) hide @endif">
 										<div class="col-md-12">
 											<div>
 												<input type="hidden" name="interested_to_buy" value="0">
