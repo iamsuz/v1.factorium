@@ -25,7 +25,7 @@ class ChangeDefaultValueInterestedToBuyInProjectEoiTable extends Migration
     public function down()
     {
         Schema::table('project_eoi', function (Blueprint $table) {
-            $table->dropColumn('interested_to_buy')->change();
+            $table->boolean('interested_to_buy')->change();
         });
     }
 }

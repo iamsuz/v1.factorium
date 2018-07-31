@@ -25,7 +25,7 @@ class ChangeDefaultValueInterestedToBuyInInvestmentInvestorTable extends Migrati
     public function down()
     {
         Schema::table('investment_investor', function (Blueprint $table) {
-            $table->dropColumn('interested_to_buy')->change();
+            $table->boolean('interested_to_buy')->change();
         });
     }
 }
