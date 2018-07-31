@@ -745,9 +745,9 @@ class ProjectsController extends Controller
 
     public function storeAdditionalFormContent(Request $request, $id)
     {
-        $this->validate($request, array(
-            'add_additional_form_content' => 'required',
-            ));
+        // $this->validate($request, array(
+        //     'add_additional_form_content' => 'required',
+        //     ));
         $project = Project::where('id', $id);
         $result = $project->update([
             'add_additional_form_content' => $request->add_additional_form_content,
