@@ -287,7 +287,7 @@ class UsersController extends Controller
         }
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'verification docs']);
         $status = $user->update(['verify_id'=>'1']);
-        $mailer->sendVerificationNotificationToUser($user, '1', $id_image);
+        $mailer->sendVerificationNotificationToUser($user, '0', $id_image);
         $mailer->sendIdVerificationEmailToAdmin($user);
         return redirect()->route('users.verification.status', $user)->withMessage('<p class="alert alert-success">Thank You, we will verify the images.</p>');
     }

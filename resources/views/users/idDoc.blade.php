@@ -45,12 +45,15 @@
 							<a href="/{{$user->idDoc->joint_id_path}}">Joint Investor Doc</a>
 							@endif
 							<hr>
-							@if($user->idDoc->get()->last()->verified)
+							@if($user->idDoc->get()->last()->verified == '1')
 							Verified
+							@elseif($user->idDoc->get()->last()->verified == '-1')
+							<span style="color: red;">Verification Failed</span>
 							@else
 							Not-Verified
 							@endif
-							@else
+							@endif
+							@if(!$user->idDoc || $user->idDoc->get()->last()->verified == '-1')
 							<form class="form-group" action="{{route('users.document.upload',[$user->id])}}" method="POST" enctype="multipart/form-data" rel="form">
 								{{ csrf_field() }}
 								<div class="row " id="section-2">

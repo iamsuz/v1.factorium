@@ -186,7 +186,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendVerificationNotificationToUser(User $user, $status, IdImage $idimages)
+    public function sendVerificationNotificationToUser(User $user, $status, IdDocument $idimages)
     {
         $this->to = $user->email;
         $this->view = 'emails.verifyNotification';
