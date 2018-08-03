@@ -57,6 +57,8 @@ Route::get('/dashboard/users/{user_id}/activate', ['as'=>'dashboard.users.activa
 Route::get('/dashboard/users/{user_id}/deactivate', ['as'=>'dashboard.users.deactivate', 'uses'=>'DashboardController@deactivateUser']);
 Route::get('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verification', 'uses'=>'DashboardController@verification']);
 Route::post('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verify', 'uses'=>'DashboardController@verifyId']);
+Route::get('/dashboard/users/{user_id}/idVerification',['as'=>'dashboard.users.idVerify','uses'=>'DashboardController@idDocVerification']);
+Route::post('/dashboard/users/{user_id}/idVerification',['as'=>'dashboard.users.idVerifying','uses'=>'DashboardController@idDocVerify']);
 
 Route::pattern('project_id', '[0-9]+');
 /*Route::get('/dashboard/projects/{project_id}', ['as'=>'dashboard.projects.show', 'uses'=>'DashboardController@showProject']);*/

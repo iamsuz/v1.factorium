@@ -287,7 +287,7 @@ class UsersController extends Controller
         }
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'verification docs']);
         $status = $user->update(['verify_id'=>'1']);
-        $mailer->sendVerificationNotificationToUser($user, '1', $id_image);
+        $mailer->sendVerificationNotificationToUser($user, '0', $id_image);
         $mailer->sendIdVerificationEmailToAdmin($user);
         return redirect()->route('users.verification.status', $user)->withMessage('<p class="alert alert-success">Thank You, we will verify the images.</p>');
     }
@@ -412,16 +412,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-           $role = Role::whereRole('investor')->firstOrFail();
+         $role = Role::whereRole('investor')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * delete Developer role from user
@@ -437,16 +437,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-           $role = Role::whereRole('developer')->firstOrFail();
+         $role = Role::whereRole('developer')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * get user investments
@@ -544,7 +544,7 @@ class UsersController extends Controller
         $user = User::find($id);
         return view('users.idDoc',compact('color','user'));
     }
-    public function uploadDocuments(Request $request,$id)
+    public function uploadDocuments(Request $request,AppMailer $mailer,$id)
     {
         $validation_rules = array(
             'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
@@ -556,35 +556,43 @@ class UsersController extends Controller
         $user = User::find($id);
         if($request->hasFile('joint_investor_id_doc'))
         {
-            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
+            $destinationPath = 'assets/users/kyc/'.$user->id.'/joint/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
             $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
             $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
-            $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
-            $project->investmentDocuments()->save($user_investment_doc);
+            $user_doc = new IdDocument(['type'=>'JointDocument', 'joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'user_id'=>$user->id,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last]);
+            // dd($user_investment_doc);
+            $user->idDoc()->save($user_doc);
 
         }
         if($request->hasFile('trust_or_company_docs'))
         {
-            $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->investing_company_name.'/';
+            $destinationPath = 'assets/users/kyc/'.$user->id.'/trust/'.$request->investing_company_name.'/';
             $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
             $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
             $request->file('trust_or_company_docs')->move($destinationPath, $filename);
-            $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
-            $project->investmentDocuments()->save($user_investment_doc);
+            $user_doc = new IdDocument(['type'=>'TrustDoc', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name]);
+            $user->idDoc()->save($user_doc);
 
         }
         if($request->hasFile('user_id_doc'))
         {
-            $destinationPath = 'assets/users/'.$user->id.'/normal_name/';
+            $destinationPath = 'assets/users/kyc/'.$user->id.'/doc/';
             $filename = $request->file('user_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
             $request->file('user_id_doc')->move($destinationPath, $filename);
             // dd($request);
-            $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as]);
-            $user->idDoc()->save($user_doc);
-
+            if($user->idDoc){
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension]);
+            }else{
+                $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as]);
+                $user->idDoc()->save($user_doc);
+            }
         }
-        return redirect()->back()->withMessage('Successfully Uploaded documents');
+        // $credit = Credit::create(['user_id'=>$user->id, 'amount'=>500, 'type'=>'uploading docs','currency'=>'konkrete']);
+        $mailer->sendIdVerificationNotificationToUser($user, '0');
+        $mailer->sendIdVerificationEmailToAdmin($user);
+        return redirect()->back()->withMessage('<p class="alert alert-success">Thank You! Successfully Uploaded documents, We will verify the Documents.</p>');
+        // return redirect()->back()->withMessage('Successfully Uploaded documents');
     }
 }

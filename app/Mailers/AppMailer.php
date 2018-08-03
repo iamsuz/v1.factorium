@@ -7,6 +7,7 @@ use App\Role;
 use App\User;
 use App\Project;
 use App\IdImage;
+use App\IdDocument;
 use App\MailSetting;
 use App\UserRegistration;
 use Illuminate\Contracts\Mail\Mailer;
@@ -185,10 +186,30 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendVerificationNotificationToUser(User $user, $status, IdImage $idimages)
+    public function sendVerificationNotificationToUser(User $user, $status, IdDocument $idimages)
     {
         $this->to = $user->email;
         $this->view = 'emails.verifyNotification';
+        if($status == '0')
+        {
+            $this->subject = 'Verification Status';
+        }
+        elseif ($status == '-1') {
+            $this->subject = 'Verification Unsuccessful';
+        }
+        else{
+            $this->subject = 'Verification Successful';
+        }
+        $this->data = compact('user', 'status', 'idimages');
+
+        $this->deliver();
+    }
+
+    public function sendIdVerificationNotificationToUser(User $user, $status)
+    {
+        $this->to = $user->email;
+        $this->view = 'emails.verifyNotification';
+        $idimages = $user->idDoc;
         if($status == '1')
         {
             $this->subject = 'Verification Status';

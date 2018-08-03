@@ -563,7 +563,7 @@
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">
-@if($status == 1)
+@if($status == 0)
 We have received your verification request and will process it shortly.
 @elseif($status == -1)
 Unfortunately we were unable to verify the images you have submitted, please try again.<br><br>

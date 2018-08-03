@@ -187,7 +187,30 @@ class DashboardController extends Controller
         $status = $user->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
         return redirect()->back();
     }
-
+    public function idDocVerification($user_id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = User::findOrFail($user_id);
+        return view('dashboard.users.idDocVerification',compact('user','color'));
+    }
+    public function idDocVerify(Request $request,AppMailer $mailer, $user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $user->idDoc->update(['verified'=>$request->status]);
+        $user->idDoc()->get()->last()->update(['verified'=>$request->status, 'id_comment'=>$request->fixing_message, 'joint_id_comment'=>$request->fixing_message_for_id]);
+        $idimages = $user->idDoc()->get()->last();
+        if($request->status == '1') {
+            $invitee = Invite::whereEmail($user->email)->first();
+            if($invitee) {
+                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>500, 'type'=>'User Confirmed by Admin']);
+            }
+            $message = '<p class="alert alert-success text-center">User has been verified successfully and a notification has been sent.</p>';
+        } else {
+            $message = '<p class="alert alert-warning text-center">User has to try again.</p>';
+        }
+        $mailer->sendVerificationNotificationToUser($user, $request->status, $idimages);
+        return redirect()->back()->withMessage($message);
+    }
     public function verification($user_id)
     {
         $color = Color::where('project_site',url())->first();
