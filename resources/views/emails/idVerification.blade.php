@@ -593,7 +593,7 @@ Phone: <b>{{$details['phone_number']}}</b></span></span></span><br>
                     <tbody>
                         <tr>
                             <td align="center" valign="middle" class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 16px;padding: 10px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                <a class="mcnButton " title="Activate Account" href="{{route('dashboard.users.idVerify', $details['id'])}}" target="_blank" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Verify Images</a>
+                                <a class="mcnButton " title="Activate Account" href="{{route('dashboard.users.idVerify', $details['id'])}}" target="_blank" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Verify Documents</a>
                                  </td>
                         </tr>
                     </tbody>

@@ -567,14 +567,14 @@
 We have received your verification request and will process it shortly.
 @elseif($status == -1)
 Unfortunately we were unable to verify the images you have submitted, please try again.<br><br>
-@if($idimages->fixing_message)
-Please fix personal image.<br>
-Note - {{$idimages->fixing_message}}
+@if($idimages->id_comment)
+Please fix personal Document.<br>
+Note - {{$idimages->id_comment}}
 @endif
 <br><br>
-@if($idimages->fixing_message_for_id)
-Please fix personal ID image <br>
-Note - {{$idimages->fixing_message_for_id}}
+@if($idimages->joint_id_comment)
+Please fix Joint ID Document <br>
+Note - {{$idimages->joint_id_comment}}
 @endif
 @else
 We have successfully verified your images.

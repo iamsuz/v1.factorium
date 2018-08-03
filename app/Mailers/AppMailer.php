@@ -210,7 +210,7 @@ class AppMailer
         $this->to = $user->email;
         $this->view = 'emails.verifyNotification';
         $idimages = $user->idDoc;
-        if($status == '1')
+        if($status == '0')
         {
             $this->subject = 'Verification Status';
         }

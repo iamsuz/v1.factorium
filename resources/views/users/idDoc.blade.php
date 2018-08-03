@@ -39,10 +39,10 @@
 							@if($user->idDoc)
 							<h4>You are Investing as</h4>
 							<b>{{$user->idDoc->investing_as}}</b><br>
-							<a href="/{{$user->idDoc->path}}">Your Doc</a>
+							<a href="/{{$user->idDoc->get()->last()->path}}">Your Doc</a>
 							@if($user->idDoc->type == 'JointDocument')
 							<p>Joint Investor Name:<br><b>{{$user->idDoc->joint_first_name}} {{$user->idDoc->joint_last_name}}</b></p>
-							<a href="/{{$user->idDoc->joint_id_path}}">Joint Investor Doc</a>
+							<a href="/{{$user->idDoc->get()->last()->joint_id_path}}">Joint Investor Doc</a>
 							@endif
 							<hr>
 							@if($user->idDoc->get()->last()->verified == '1')
