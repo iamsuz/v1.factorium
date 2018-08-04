@@ -181,7 +181,7 @@
 								<center>
 									<small class="wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:1.2em;">
 									Share this link with your friends and for every user who signs up using this link we will give you and the referred user </br> 500
-									<a href="{{ url('konkrete/slide') }}" target="_blank" > KONKRETE </a> cryptotokens each
+									<a href="https://estatebaron.com/konkrete/slide" target="_blank" > KONKRETE </a> cryptotokens each
 								</small>
 							</center>
 						</div>
@@ -192,4 +192,11 @@
 	</div>
 </div>
 </div>
+@endsection
+@section('js-section')
+<script>
+	$(document).ready(function () {
+		new Clipboard('.btn');
+	});
+</script>
 @endsection
