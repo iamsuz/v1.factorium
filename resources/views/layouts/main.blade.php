@@ -322,6 +322,8 @@ $_SESSION['code'] = md5(microtime(true));
 <!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
 {!! Html::script('/js/bootstrap.min.js') !!}
 {!! Html::script('/js/circle-progress.js')!!}
+{!! Html::script('/js/clipboard.min.js') !!}
+{!! Html::script('/js/clipboard-action.js') !!}
 
 <!-- JCrop -->
 {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
