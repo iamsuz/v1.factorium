@@ -144,20 +144,22 @@
 				<li class="list-group-item">
 					<dl class="dl-horizontal">
 						<dt></dt>
-						<dd style="margin-left: 230px !important;"><h2>{{$user->first_name}} {{$user->last_name}}</h2></dd>
-						<dt></dt>
-						<dd style="margin-left: 230px !important;">
-							<div class="row">
-								<div class="col-md-5">
-									{{$user->email}}
+						<div class="col-md-offset-2 col-xs-offset-3 col-sm-offset-1">
+							<dd{{--  style="margin-left: 230px !important;" --}}><h2>{{$user->first_name}} {{$user->last_name}}</h2></dd>
+							<dt></dt>
+							<dd{{--  style="margin-left: 230px !important;" --}}>
+								<div class="row">
+									<div class="col-md-5">
+										{{$user->email}}
+									</div>
+									<div class="col-md-7">
+										<a href="{{route('users.edit', $user)}}">edit</a>
+									</div>
 								</div>
-								<div class="col-md-7">
-									<a href="{{route('users.edit', $user)}}">edit</a>
-								</div>
-							</div>
-						</dd>
-						<dt></dt>
-						<dd style="margin-left: 230px !important;">{{$user->phone_number}}</dd>
+							</dd>
+							<dt></dt>
+							<dd{{--  style="margin-left: 230px !important;" --}}>{{$user->phone_number}}</dd>
+						</div>
 						<hr>
 						<dt></dt>
 						<dd style="margin-left: 0px;">
@@ -166,7 +168,7 @@
 								</h2>
 								@forelse(auth()->user()->getReferrals() as $referral)
 								@if($referral->program->uri == 'users/create')
-								<div class="input-group" style="width: 60%;margin-left: 20%;">
+								<div class="input-group" style="width: 60%;margin-left: auto;">
 									<input class="form-control text-center" id="foo" value="{{ $referral->link }}"  readonly>
 									<span class="input-group-btn">
 										<button class="btn btn-default copy" data-clipboard-target="#foo" style="height: 42px;">
