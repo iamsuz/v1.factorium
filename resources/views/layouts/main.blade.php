@@ -111,6 +111,10 @@ $_SESSION['code'] = md5(microtime(true));
         .investment-title1-description-section, .csef-text {
             color: #fff !important;
         }
+        .swal-footer{
+            text-align: center;
+        }
+
     </style>
 
     <!-- Google Analytics -->
@@ -324,6 +328,7 @@ $_SESSION['code'] = md5(microtime(true));
 {!! Html::script('/js/circle-progress.js')!!}
 {!! Html::script('/js/clipboard.min.js') !!}
 {!! Html::script('/js/clipboard-action.js') !!}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- JCrop -->
 {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
@@ -354,6 +359,25 @@ $_SESSION['code'] = md5(microtime(true));
         $('a[data-disabled]').click(function (e) {
             e.preventDefault();
         });
+
+        // Signin bonus message
+        @if (Session::has('loginaction'))
+        @if(\Cookie::get('login_bonus'))
+        swal("Welcome back {{Auth::user()->first_name}}", "We have added {{\Cookie::get('login_bonus')}} KONKRETE as a sign in bonus", "success", {
+            buttons: {
+                start_over: "Continue to site >>"
+            }
+        });
+        $('.swal-icon').replaceWith('<div style="margin-top: 25px;"><center><img src="{{asset('assets/images/konkrete_logo_dark.png')}}" width="100px"></center></div>');
+        $('.swal-text').replaceWith('<div class="swal-text text-center"><p>We have added {{\Cookie::get("login_bonus")}} KONKRETE as a sign in bonus</p><a href="{{route('konkrete.slide')}}">What is the KONKRETE crypto token?</a><br><small class="text-grey">Login everyday to receive bonus KONKRETE every 24 hours</small></div>');
+        @else
+        swal("Welcome back {{Auth::user()->first_name}}", "", "success", {
+            buttons: {
+                start_over: "Continue to site >>"
+            }
+        });
+        @endif
+        @endif
 
         function toggleChevron(e) {
             $(e.target)

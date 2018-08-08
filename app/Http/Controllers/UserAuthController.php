@@ -322,7 +322,20 @@ class UserAuthController extends Controller
      */
     public function authenticate(UserAuthRequest $request)
     {
+        $loginBonus = 0;
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            if(Auth::user()->last_login){
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                    $loginBonus = rand(1, 100);
+                    Credit::create([
+                        'user_id' => Auth::user()->id,
+                        'amount' => $loginBonus,
+                        'type' => 'Daily login bonus',
+                        'project_site' => url(),
+                        'currency' => 'concrete'
+                        ]);
+                }
+            }
             Auth::user()->update(['last_login'=> Carbon::now()]);
             if (Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {
                 $this->redirectTo = "/dashboard";
@@ -341,7 +354,8 @@ class UserAuthController extends Controller
                 $this->redirectTo = "/#projects";
             }
             Session::flash('loginaction', 'success.');
-            return redirect($this->redirectTo);
+            // return redirect($this->redirectTo);
+            return redirect($this->redirectTo)->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
         if (Auth::viaRemember()) {
             Auth::user()->update(['last_login'=> Carbon::now()]);

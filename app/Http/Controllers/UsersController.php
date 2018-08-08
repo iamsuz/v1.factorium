@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Credit;
 use App\Color;
 use App\Http\Controllers\Controller;
@@ -47,6 +48,10 @@ class UsersController extends Controller
         if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
             $users = User::paginate(100)->where('registration_site',$url);
             return view('users.index', compact('users'));
+        }
+
+        if(Session::has('loginaction')){
+            Session::flash('loginaction', 'success.');
         }
 
         return redirect()->route('users.show', $user);
