@@ -28,6 +28,7 @@ use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use App\Credit;
 
 class UserAuthController extends Controller
 {
