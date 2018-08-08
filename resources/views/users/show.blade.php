@@ -168,7 +168,7 @@
 								</h2>
 								@forelse(auth()->user()->getReferrals() as $referral)
 								@if($referral->program->uri == 'users/create')
-								<div class="input-group" style="width: 60%;margin-left: auto;">
+								<div class="input-group" style="width: 60%;margin: auto; margin-bottom: 1.1em; margin-top: 1.6em;">
 									<input class="form-control text-center" id="foo" value="{{ $referral->link }}"  readonly>
 									<span class="input-group-btn">
 										<button class="btn btn-default copy" data-clipboard-target="#foo" style="height: 42px;">
