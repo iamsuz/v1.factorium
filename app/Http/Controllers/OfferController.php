@@ -65,7 +65,7 @@ class OfferController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+
     public function store(Request $request)
     {
         $project = Project::findOrFail($request->project_id);
@@ -79,9 +79,6 @@ class OfferController extends Controller
             return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
         }
         $validation_rules = array(
-            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
-            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
-            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
             'amount_to_invest'   => 'required|integer',
             'line_1' => 'required',
             'state' => 'required',
@@ -120,15 +117,15 @@ class OfferController extends Controller
 
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$user->idDoc->investing_as, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
         $investor = InvestmentInvestor::get()->last();
-        if($request->investing_as != 'Individual Investor'){
+        if($user->idDoc->investing_as != 'Individual Investor'){
             $investing_joint = new InvestingJoint;
             $investing_joint->project_id = $project->id;
             $investing_joint->investment_investor_id = $investor->id;
-            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
-            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
-            $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->joint_investor_first_name = $user->idDoc->joint_first_name;
+            $investing_joint->joint_investor_last_name = $user->idDoc->joint_last_name;
+            $investing_joint->investing_company = $user->idDoc->trust_or_company;
             $investing_joint->account_name = $request->account_name;
             $investing_joint->bsb = $request->bsb;
             $investing_joint->account_number = $request->account_number;
@@ -297,7 +294,7 @@ class OfferController extends Controller
 
     /**
      * Show Investment form requested by user
-     * 
+     *
      * @param int $request_id
      * @return view
      */
@@ -319,7 +316,7 @@ class OfferController extends Controller
 
     /**
      * Cancel Investment form request
-     * 
+     *
      * @param int $request_id
      * @return view
      */

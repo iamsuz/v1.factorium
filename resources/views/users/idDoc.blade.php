@@ -37,8 +37,8 @@
 						<dt></dt>
 						<dd>
 							@if($user->idDoc)
-							<h4>You are Investing as</h4>
-							<b>{{$user->idDoc->investing_as}}</b><br>
+							<h4>You are Investing as
+							<b style="color: blue;">{{$user->idDoc->investing_as}}</b></h4><br>
 							<a href="/{{$user->idDoc->get()->last()->path}}">Your Doc</a>
 							@if($user->idDoc->type == 'JointDocument')
 							<p>Joint Investor Name:<br><b>{{$user->idDoc->joint_first_name}} {{$user->idDoc->joint_last_name}}</b></p>
@@ -46,7 +46,7 @@
 							@endif
 							<hr>
 							@if($user->idDoc->get()->last()->verified == '1')
-							Verified
+							Verified <i class="fa fa-check-circle" aria-hidden="true"></i>
 							@elseif($user->idDoc->get()->last()->verified == '-1')
 							<span style="color: red;">Verification Failed</span>
 							@else
