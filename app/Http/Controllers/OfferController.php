@@ -117,9 +117,14 @@ class OfferController extends Controller
 
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$user->idDoc->investing_as, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
+        if($user->idDoc != NULL){
+            $investingAs = $user->idDoc->get()->last()->investing_as;
+        }else{
+            $investingAs = $request->investing_as;
+        }
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
         $investor = InvestmentInvestor::get()->last();
-        if($user->idDoc->investing_as != 'Individual Investor'){
+        if($user->idDoc != NULL && $user->idDoc->investing_as != 'Individual Investor'){
             $investing_joint = new InvestingJoint;
             $investing_joint->project_id = $project->id;
             $investing_joint->investment_investor_id = $investor->id;
@@ -143,17 +148,17 @@ class OfferController extends Controller
             $user->update($request->all());
         }
         $investor_joint = InvestingJoint::get()->last();
-        if($user->idDoc->investing_as == 'Joint Investor'){
+        if($user->idDoc != NULL && $user->idDoc->investing_as == 'Joint Investor'){
             $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$user->idDoc->get()->last()->joint_id_filename, 'path'=>$user->idDoc->get()->last()->joint_id_path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->joint_id_extension,'user_id'=>$user->id]);
             $project->investmentDocuments()->save($user_investment_doc);
             $user_ind_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
             $project->investmentDocuments()->save($user_ind_investment_doc);
         }
-        if($user->idDoc->investing_as == 'Individual Investor'){
+        if($user->idDoc != NULL && $user->idDoc->investing_as == 'Individual Investor'){
             $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
             $project->investmentDocuments()->save($user_investment_doc);
         }
-        if($user->idDoc->investing_as == 'Trust or Company'){
+        if($user->idDoc != NULL && $user->idDoc->investing_as == 'Trust or Company'){
             $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
             $project->investmentDocuments()->save($user_investment_doc);
         }
