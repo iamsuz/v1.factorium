@@ -19,7 +19,8 @@
 	<a href="{{route('projects.invite.only')}}" class="list-group-item @if($active == 8) active @endif">Invite for Projects </a>
 	@endif
 	{{--<a href="{{route('users.interests', [$user])}}" class="list-group-item @if($active == 2) active @endif">Interest Expressed </a>--}}
-	<a href="{{route('users.document', [$user])}}" class="list-group-item @if($active == 10) active @endif">KYC</a>
+	<a href="{{route('users.document', [$user])}}" class="list-group-item @if($active == 10) active @endif">KYC @if($user->idDoc && $user->idDoc->verified == '1') <i class="fa fa-check-circle" aria-hidden="true"></i>
+ @endif </a>
 	<!-- {{-- @if($user->verify_id != 2)<a href="{{route('users.verification', [$user])}}" class="list-group-item @if($active == 3) active @endif">Verification </a> @endif --}}
 	@if($user->verify_id != 2)<a href="<?php echo url();?>/users/{{$user->id}}/verification" class="list-group-item @if($active == 3) active @endif" target="_blank">Verification </a> @endif -->
 	{{--<a href="{{route('users.book', [$user])}}" class="list-group-item @if($active == 4) active @endif">Book a Meeting </a>--}}

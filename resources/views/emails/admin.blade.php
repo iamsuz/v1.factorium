@@ -583,14 +583,14 @@
                   <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Application form received as {{$investing_as}} from:<br>
                     <br>
                     Name:  <b>{{$investor->first_name}} {{$investor->last_name}}</b>
-                    <br><br> 
+                    <br><br>
                     Email: <b>{{$investor->email}}</b>
                     <br><br>
                     @if($investing_as == 'Joint Investor')
-                    Joint Investor Name:  <b>{{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}</b>
+                    Joint Investor Name:  <b>{{$investor->joint_investor_first_name}} {{$investor->joint_investor_last_name}}</b>
                     <br><br>
                     @elseif($investing_as == 'Trust or Company')
-                    Trust or Company Name: <b>{{$investing->investing_company}}</b>
+                    Trust or Company Name: <b>{{$investor->investing_company}}</b>
                     <br><br>
                     @endif
                     Phone: <b>{{$investor->phone_number}}</b>
@@ -680,10 +680,10 @@
               <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
                 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"
                 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Regards,<br>
-                  <br><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px"> 
-                  @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name != '') 
+                  <br><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">
+                  @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name != '')
                   {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name !!}
-                  @else 
+                  @else
                   Estate Baron
                   @endif Team<br><br>
                 </td>

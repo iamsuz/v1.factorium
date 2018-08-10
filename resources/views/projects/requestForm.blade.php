@@ -64,6 +64,7 @@ Offer Doc
 										</div>
 									</div>
 									<br><br>
+									@if(!$user->idDoc)
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
@@ -75,7 +76,6 @@ Offer Doc
 												<input type="radio" name="investing_as" value="Trust or Company"> Trust or Company<br>
 												<hr>
 											</div>
-
 										</div>
 									</div>
 									<div class="row " id="section-3">
@@ -117,7 +117,8 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-									<div class="row " id="section-4">
+									@endif
+									{{-- <div class="row " id="section-4">
 										<div class="col-md-12">
 											<div id="trust_doc" style="display: none;">
 												<label>Trust or Company DOCS</label>
@@ -138,7 +139,7 @@ Offer Doc
 												<input type="file" name="user_id_doc" class="form-control" required><br>
 												<p>If you have not completed your verification process. Please upload a copy of your Driver License or Passport for AML/CTF purposes</p>
 											</div>
-											
+
 											<div id="joint_investor_docs" style="display: none;">
 												<label>Joint Investor ID DOCS</label>
 												<input type="file" name="joint_investor_id_doc" class="form-control" disabled="disabled" required><br>
@@ -146,7 +147,7 @@ Offer Doc
 												<p>Please upload a copy of the joint investors Driver License or Passport for AML/CTF purposes</p>
 											</div>
 										</div>
-									</div>
+									</div> --}}
 									<div class="@if($project->retail_vs_wholesale) hide @endif">
 										<div class="row" id="wholesale_project">
 											<div class="col-md-12"><br>
@@ -189,7 +190,7 @@ Offer Doc
 
 											<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
 											<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
-											
+
 											<b>How much investment experience do you have? (tick appropriate)</b>
 											<div style="margin-left: 1.3em; margin-top: 5px;">
 												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
@@ -529,7 +530,7 @@ Offer Doc
 			}
 			else{
 				$('.aml-requirements-link i').removeClass('fa-minus');
-				$('.aml-requirements-link i').addClass('fa-plus');	
+				$('.aml-requirements-link i').addClass('fa-plus');
 			}
 		});
 
@@ -550,8 +551,8 @@ Offer Doc
 				e.preventDefault();
 			}
 		});
-	});  
-	
+	});
+
 	$(document).ready( function() {
 		$("input[name='wholesale_investing_as']").on('change',function() {
 			if($(this).is(':checked') && $(this).val() == 'Wholesale Investor (Net Asset $2,500,000 plus)')
@@ -578,7 +579,7 @@ Offer Doc
 		        $(this).prop('checked',true);
 		    }
 		});
-	}); 
+	});
 
 </script>
 @stop

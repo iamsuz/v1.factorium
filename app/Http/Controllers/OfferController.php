@@ -65,7 +65,7 @@ class OfferController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+
     public function store(Request $request)
     {
         $project = Project::findOrFail($request->project_id);
@@ -79,14 +79,11 @@ class OfferController extends Controller
             return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
         }
         $validation_rules = array(
-            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
-            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
-            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf,doc,docx',
             'amount_to_invest'   => 'required|integer',
             'line_1' => 'required',
             'state' => 'required',
             'postal_code' => 'required'
-            );
+        );
         $validator = Validator::make($request->all(), $validation_rules);
 
         // Return back to form w/ validation errors & session data as input
@@ -120,15 +117,20 @@ class OfferController extends Controller
 
         $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
+        if($user->idDoc != NULL){
+            $investingAs = $user->idDoc->get()->last()->investing_as;
+        }else{
+            $investingAs = $request->investing_as;
+        }
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
         $investor = InvestmentInvestor::get()->last();
-        if($request->investing_as != 'Individual Investor'){
+        if($user->idDoc != NULL && $user->idDoc->investing_as != 'Individual Investor'){
             $investing_joint = new InvestingJoint;
             $investing_joint->project_id = $project->id;
             $investing_joint->investment_investor_id = $investor->id;
-            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
-            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
-            $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->joint_investor_first_name = $user->idDoc->joint_first_name;
+            $investing_joint->joint_investor_last_name = $user->idDoc->joint_last_name;
+            $investing_joint->investing_company = $user->idDoc->trust_or_company;
             $investing_joint->account_name = $request->account_name;
             $investing_joint->bsb = $request->bsb;
             $investing_joint->account_number = $request->account_number;
@@ -146,6 +148,20 @@ class OfferController extends Controller
             $user->update($request->all());
         }
         $investor_joint = InvestingJoint::get()->last();
+        if($user->idDoc != NULL && $user->idDoc->investing_as == 'Joint Investor'){
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$user->idDoc->get()->last()->joint_id_filename, 'path'=>$user->idDoc->get()->last()->joint_id_path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->joint_id_extension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+            $user_ind_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_ind_investment_doc);
+        }
+        if($user->idDoc != NULL && $user->idDoc->investing_as == 'Individual Investor'){
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+        }
+        if($user->idDoc != NULL && $user->idDoc->investing_as == 'Trust or Company'){
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
+            $project->investmentDocuments()->save($user_investment_doc);
+        }
         if($request->hasFile('joint_investor_id_doc'))
         {
             $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
@@ -154,7 +170,6 @@ class OfferController extends Controller
             $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
             $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
             $project->investmentDocuments()->save($user_investment_doc);
-
         }
         if($request->hasFile('trust_or_company_docs'))
         {
@@ -179,47 +194,47 @@ class OfferController extends Controller
 
         //Save wholesale project input fields
         if(!$project->retail_vs_wholesale) {
-	        $wholesale_investor = WholesaleInvestment::get()->last();{
-	            $wholesale_investing = new WholesaleInvestment;
-	            $wholesale_investing->project_id = $project->id;
-	            $wholesale_investing->investment_investor_id = $investor->id;
-	            $wholesale_investing->wholesale_investing_as = $request->wholesale_investing_as;
-	            if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
-		            $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
-		            $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
-		            $wholesale_investing->accountant_email = $request->accountant_email_txt;
-		            $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
-	        	}
-	        	elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
-		            $wholesale_investing->experience_period = $request->experience_period_txt;
-		            $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
-		            $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
-		            $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
-	        	}
-	            $wholesale_investing->save();
-	        }
-    	}
+           $wholesale_investor = WholesaleInvestment::get()->last();{
+               $wholesale_investing = new WholesaleInvestment;
+               $wholesale_investing->project_id = $project->id;
+               $wholesale_investing->investment_investor_id = $investor->id;
+               $wholesale_investing->wholesale_investing_as = $request->wholesale_investing_as;
+               if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
+                  $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
+                  $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
+                  $wholesale_investing->accountant_email = $request->accountant_email_txt;
+                  $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+              }
+              elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+                  $wholesale_investing->experience_period = $request->experience_period_txt;
+                  $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
+                  $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
+                  $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+              }
+              $wholesale_investing->save();
+          }
+      }
 
         // Mark request form link expired
-        if($request->investment_request_id){
-            InvestmentRequest::find($request->investment_request_id)->update([
-                'is_link_expired' => 1
-                ]);
-        }
+      if($request->investment_request_id){
+        InvestmentRequest::find($request->investment_request_id)->update([
+            'is_link_expired' => 1
+        ]);
+    }
 
         // Create PDF of Application form
-        $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
-        $pdfPath = storage_path().$pdfBasePath;
-        $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
-        $pdf->save($pdfPath);
-        $investor->application_path = $pdfBasePath;
-        $investor->save();
+    // $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
+    // $pdfPath = storage_path().$pdfBasePath;
+    // $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
+    // $pdf->save($pdfPath);
+    // $investor->application_path = $pdfBasePath;
+    $investor->save();
 
-        $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
-        $this->dispatch(new SendReminderEmail($user,$project));
+    $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+    $this->dispatch(new SendReminderEmail($user,$project));
 
-        return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
-    }
+    return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+}
 
     /**
      * Display the specified resource.
@@ -287,7 +302,7 @@ class OfferController extends Controller
                 $investmentRequest = InvestmentRequest::create([
                     'user_id' => $user->id,
                     'project_id' => $project->id,
-                    ]);
+                ]);
                 $formLink = url().'/project/'.$investmentRequest->id.'/interest/fill';
                 $mailer->sendInvestmentRequestToAdmin($user, $project, $formLink);
                 return redirect()->back()->with('requestStatus', 1);
@@ -297,7 +312,7 @@ class OfferController extends Controller
 
     /**
      * Show Investment form requested by user
-     * 
+     *
      * @param int $request_id
      * @return view
      */
@@ -319,7 +334,7 @@ class OfferController extends Controller
 
     /**
      * Cancel Investment form request
-     * 
+     *
      * @param int $request_id
      * @return view
      */
@@ -331,7 +346,7 @@ class OfferController extends Controller
                 if($investmentRequest->project->project_site == url()) {
                     $investmentRequest->update([
                         'is_link_expired' => 1
-                        ]);
+                    ]);
                     return redirect()->route('home');
                 }
                 else {

@@ -152,6 +152,7 @@ Offer Doc
 										</div>
 									</div>
 									<br><br>
+									@if(!$user->idDoc)
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
@@ -159,8 +160,8 @@ Offer Doc
 												<br>
 												<h4>Are you Investing as</h4>
 												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
-												<input type="radio" name="investing_as" value="Joint Investor"> Joint Investor<br>
-												<input type="radio" name="investing_as" value="Trust or Company"> Trust or Company<br>
+												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
+												<input type="radio" name="investing_as" value="Trust or Company" > Trust or Company<br>
 												<hr>
 											</div>
 
@@ -172,7 +173,7 @@ Offer Doc
 												<label>Company of Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled">
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled" >
 													</div>
 												</div><br>
 											</div>
@@ -194,10 +195,10 @@ Offer Doc
 												<label>Joint Investor Details</label>
 												<div class="row">
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required disabled="disabled">
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required disabled="disabled" @if($user->idDoc && $user->idDoc->investing_as == 'Joint Investor') value="{{$user->idDoc->joint_first_name}}" readonly @endif>
 													</div>
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled">
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled" @if($user->idDoc && $user->idDoc->investing_as == 'Joint Investor') value="{{$user->idDoc->joint_last_name}}" readonly @endif>
 													</div>
 												</div>
 												<br>
@@ -205,7 +206,8 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-									<div class="row " id="section-4">
+									@endif
+									{{-- <div class="row" id="section-4" style="display: none;">
 										<div class="col-md-12">
 											<div id="trust_doc" style="display: none;">
 												<label>Trust or Company DOCS</label>
@@ -223,18 +225,26 @@ Offer Doc
 												@else
 												@endif
 												<label>ID DOCS</label>
-												<input type="file" name="user_id_doc" class="form-control" required><br>
+												@if($user->idDoc && $user->idDoc->investing_as != 'Company or Trust')<br>
+												<a href="/{{$user->idDoc->get()->last()->path}}" target="_blank">User ID Doc</a>
+												@else
+												<input type="file" name="user_id_doc" class="form-control" required ><br>
+
+												@endif
 												<p>If you have not completed your verification process. Please upload a copy of your Driver License or Passport for AML/CTF purposes</p>
 											</div>
 
 											<div id="joint_investor_docs" style="display: none;">
 												<label>Joint Investor ID DOCS</label>
+												@if($user->idDoc && $user->idDoc->investing_as == 'Joint Investor')<br>
+												<a href="/{{$user->idDoc->get()->last()->joint_id_path}}" target="_blank">Joint Investor ID Doc</a>
+												@else
 												<input type="file" name="joint_investor_id_doc" class="form-control" disabled="disabled" required><br>
-
+												@endif
 												<p>Please upload a copy of the joint investors Driver License or Passport for AML/CTF purposes</p>
 											</div>
 										</div>
-									</div>
+									</div> --}}
 									<div class="@if($project->retail_vs_wholesale) hide @endif">
 										<div class="row" id="wholesale_project">
 											<div class="col-md-12"><br>
@@ -461,7 +471,7 @@ Offer Doc
 										</div>
 										<br>
 									</div>
-									
+
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
@@ -725,6 +735,7 @@ Offer Doc
 		});
 	});
 	$(document).ready( function() {
+
 		$("input[name='investing_as']").on('change',function() {
 			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
 			{
@@ -770,7 +781,14 @@ Offer Doc
 			}
 
 		});
-
+		@if($user->idDoc && $user->idDoc->investing_as == 'Individual Investor')
+		$("input[value='Individual Investor']").trigger("initCheckboxes");
+		@elseif($user->idDoc && $user->idDoc->investing_as == 'Joint Investor')
+		console.log($("input[name='investing_as']"));
+		$("input[value='Joint Investor']").trigger("click");
+		@elseif($user->idDoc && $user->idDoc->investing_as == 'Trust or Company')
+		$("input[value='Trust or Company']").trigger("initCheckboxes");
+		@endif
 		// Slide and show the aml requirements section
 		$('.aml-requirements-link').click(function(e){
 			$('.aml-requirements-section').slideToggle();
