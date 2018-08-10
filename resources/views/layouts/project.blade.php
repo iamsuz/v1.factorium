@@ -112,6 +112,30 @@ $_SESSION['code'] = md5(microtime(true));
         .investment-title1-description-section, .csef-text {
             color: #fff !important;
         }
+
+        /*Center align sweetalert continue to site button*/
+        .swal-footer {
+            text-align: center;
+        }
+
+        .konkrete-slide-link {
+            color: #337ab7;
+        }
+
+        .konkrete-slide-link:hover {
+            color: #23527c !important;
+            text-decoration: underline !important;
+        }
+
+        .konkrete-slide-link:visited {
+            color: #23527c !important;
+        }
+
+        .konkrete-slide-link:focus {
+            color: #23527c !important;
+            text-decoration: underline !important;
+        }
+
     </style>
 
     <!-- Google Analytics -->
@@ -329,6 +353,9 @@ $_SESSION['code'] = md5(microtime(true));
 <!-- JCrop -->
 {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
 
+<!-- Sweetalert for daily sign in -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <!-- Begin Inspectlet Embed Code -->
 <script type="text/javascript" id="inspectletjs">
     window.__insp = window.__insp || [];
@@ -340,14 +367,25 @@ $_SESSION['code'] = md5(microtime(true));
 </script>
 <!-- End Inspectlet Embed Code -->
 <script type="text/javascript">
-    //login flash
-    @if (Session::has('loginaction'))
-    $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
-    $('#session_flash_message').show()
-    setInterval(function() {
-        $('#session_flash_message').fadeOut(500);
-    }, 2500);
-    @endif
+
+        // Signin bonus message
+        @if (Session::has('loginaction'))
+        @if(\Cookie::get('login_bonus'))
+        swal("Welcome back {{Auth::user()->first_name}}", "We have added {{\Cookie::get('login_bonus')}} KONKRETE as a sign in bonus", "success", {
+            buttons: {
+                start_over: "Continue to site >>"
+            }
+        });
+        $('.swal-icon').replaceWith('<div style="margin-top: 25px;"><center><img src="{{asset('assets/images/konkrete_logo_dark.png')}}" width="100px"></center></div>');
+        $('.swal-text').replaceWith('<div class="swal-text text-center"><p>We have added {{\Cookie::get("login_bonus")}} KONKRETE as a sign in bonus</p><a href="https://estatebaron.com/konkrete/slide" class="konkrete-slide-link">What is the KONKRETE crypto token?</a><br><small class="text-grey">Login everyday to receive bonus KONKRETE every 24 hours</small></div>');
+        @else
+        $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
+        $('#session_flash_message').show()
+        setInterval(function() {
+            $('#session_flash_message').fadeOut(500);
+        }, 2500);
+        @endif
+        @endif
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
