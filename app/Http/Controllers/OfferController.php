@@ -143,6 +143,25 @@ class OfferController extends Controller
             $investing_joint->country_code = $request->country_code;
             $investing_joint->tfn = $request->tfn;
             $investing_joint->save();
+        }elseif($request->investing_as != 'Individual Investor'){
+          $investing_joint = new InvestingJoint;
+            $investing_joint->project_id = $project->id;
+            $investing_joint->investment_investor_id = $investor->id;
+            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+            $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->account_name = $request->account_name;
+            $investing_joint->bsb = $request->bsb;
+            $investing_joint->account_number = $request->account_number;
+            $investing_joint->line_1 = $request->line_1;
+            $investing_joint->line_2 = $request->line_2;
+            $investing_joint->city = $request->city;
+            $investing_joint->state = $request->state;
+            $investing_joint->postal_code = $request->postal_code;
+            $investing_joint->country = $request->country;
+            $investing_joint->country_code = $request->country_code;
+            $investing_joint->tfn = $request->tfn;
+            $investing_joint->save();
         }
         else{
             $user->update($request->all());
