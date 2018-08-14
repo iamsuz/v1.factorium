@@ -43,7 +43,7 @@
 					{{'+1 300 033 221'}}
 					@endif
 					<br><br>
-					Date: {{ $investment->updated_at->toFormattedDateString()}}
+					Date: {{ $investment->share_certificate_issued_at->toFormattedDateString()}}
 					<br><br>
 					<p>
 						This is to certify @if($investment->investing_as=='Individual Investor'){{$investment->user->first_name}} {{$investment->user->last_name}}@elseif($investment->investing_as == 'Joint Investor'){{$investment->user->first_name}} {{$investment->user->last_name}} and {{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}@elseif($investment->investing_as=='Trust or Company'){{$investing->investing_company}}@else{{$investment->user->first_name}} {{$investment->user->last_name}}@endif @if($investment->user->line_1) of {{$investment->user->line_1}}, @if(isset($investment->user->line_2)){{$investment->user->line_2}}, @endif {{$investment->user->city}}, {{$investment->user->state}}, {{$investment->user->postal_code}}@endif owns {{$investment->amount}} @if($investment->project->share_vs_unit) redeemable preference shares @else units @endif of @if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif numbered {{$shareStart}} to {{$shareEnd}}.
