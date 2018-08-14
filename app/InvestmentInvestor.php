@@ -12,6 +12,7 @@ class InvestmentInvestor extends Model
      * @var string
      */
     protected $table = 'investment_investor';
+    protected $dates = ['share_certificate_issued_at'];
 
     /**
      * The attributes that are mass assignable.
