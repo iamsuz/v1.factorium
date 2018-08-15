@@ -107,6 +107,18 @@ class UserAuthController extends Controller
     public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            if(Auth::user()->last_login){
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                    $loginBonus = rand(1, 50);
+                    Credit::create([
+                        'user_id' => Auth::user()->id,
+                        'amount' => $loginBonus,
+                        'type' => 'Daily login bonus',
+                        'project_site' => url(),
+                        'currency' => 'konkrete'
+                        ]);
+                }
+            }
             Auth::user()->update(['last_login'=> Carbon::now()]);
             Session::flash('loginaction', 'success.');
             $color = Color::where('project_site',url())->first();
@@ -116,11 +128,11 @@ class UserAuthController extends Controller
             $min_amount_invest = $project->investment->minimum_accepted_amount;
             if((int)$request->investment_amount < (int)$min_amount_invest)
             {
-                return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
+                return redirect()->back()->withCookie(cookie('login_bonus', $loginBonus, 1))->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
             }
             if((int)$request->investment_amount % 1000 != 0)
             {
-                return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
+                return redirect()->back()->withCookie(cookie('login_bonus', $loginBonus, 1))->withErrors(['Please enter amount in increments of $1000 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
             }
             $this->validate($request, [
                 'first_name' => 'required',
@@ -149,7 +161,7 @@ class UserAuthController extends Controller
 
                 }
             }
-            return redirect()->route('users.success.eoi');
+            return redirect()->route('users.success.eoi')->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
     }
 
@@ -327,13 +339,13 @@ class UserAuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
-                    $loginBonus = rand(1, 100);
+                    $loginBonus = rand(1, 50);
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,
                         'type' => 'Daily login bonus',
                         'project_site' => url(),
-                        'currency' => 'concrete'
+                        'currency' => 'konkrete'
                         ]);
                 }
             }
