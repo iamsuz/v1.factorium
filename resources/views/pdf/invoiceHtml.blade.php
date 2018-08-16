@@ -34,7 +34,7 @@
 					@endif
 					<br>
 					@if($spv=$investment->project->projectspvdetail)
-					{{$spv->spv_line_1}},@if(isset($spv->first()->spv_line_2) && !empty($spv->first()->spv_line_2) && $investment->user->line_2 != '') {{$spv->spv_line_2}}, @endif {{$spv->spv_city}}, {{$spv->spv_state}}, {{$spv->spv_postal_code}}
+					@if(isset($spv->first()->spv_line_1) && !empty($spv->first()->spv_line_1) && $spv->first()->spv_line_1 != '') {{$spv->spv_line_1}}, @endif @if(isset($spv->first()->spv_line_2) && !empty($spv->first()->spv_line_2) && $spv->first()->spv_line_2 != '') {{$spv->spv_line_2}}, @endif {{$spv->spv_city}}, {{$spv->spv_state}}, {{$spv->spv_postal_code}}
 					@endif
 					<br>
 					@if($investment->project->projectspvdetail)
