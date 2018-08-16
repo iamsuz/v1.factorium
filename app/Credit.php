@@ -11,7 +11,7 @@ class Credit extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'amount', 'invite_id', 'type'];
+    protected $fillable = ['user_id', 'amount', 'invite_id', 'type','currency'];
 
     public function user()
     {

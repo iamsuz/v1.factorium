@@ -247,6 +247,7 @@ Route::get('/dashboard/broadcastMail', ['as'=>'dashboard.broadcastMail', 'uses'=
 Route::post('/dashboard/mail/broadcast', ['as'=>'dashboard.mail.broadcast', 'uses'=>'DashboardController@sendBroadcastMail']);
 Route::get('/users/{user_id}/investments', ['as'=>'users.investments', 'uses'=>'UsersController@usersInvestments']);
 Route::get('/users/{user_id}/notification', ['as'=>'users.notifications', 'uses'=>'UsersController@usersNotifications']);
+Route::get('/users/{user_id}/referral',['as'=>'users.referral','uses'=>'UsersController@referralUser']);
 Route::get('/pages/redirectNotification', ['as'=>'pages.redirectNotifications', 'uses'=>'PagesController@redirectUsersNotifications']);
 Route::get('/user/view/{investment_id}/share', ['as'=>'user.view.share', 'uses'=>'UsersController@viewShareCertificate']);
 Route::get('/user/view/{investment_id}/unit', ['as'=>'user.view.unit', 'uses'=>'UsersController@viewUnitCertificate']);

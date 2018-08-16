@@ -24,6 +24,8 @@ use Mailgun\Mailgun;
 use App\Transaction;
 use App\Position;
 use App\ProjectProg;
+use App\ReferralLink;
+use App\ReferralRelationship;
 use App\Helpers\SiteConfigurationHelper;
 use Illuminate\Mail\TransportManager;
 use App\ProjectInterest;
@@ -123,7 +125,7 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = User::findOrFail($user_id);
         $investments = InvestmentInvestor::where('user_id', $user->id)
-                        ->where('project_site', url())->get();
+        ->where('project_site', url())->get();
         return view('dashboard.users.investments', compact('user','color', 'investments'));
     }
 
@@ -142,9 +144,9 @@ class DashboardController extends Controller
         $project = Project::findOrFail($project_id);
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         $shareInvestments = InvestmentInvestor::where('project_id', $project_id)
-                    ->where('accepted', 1)
-                    ->orderBy('share_certificate_issued_at','ASC')
-                    ->get();
+        ->where('accepted', 1)
+        ->orderBy('share_certificate_issued_at','ASC')
+        ->get();
         $transactions = Transaction::where('project_id', $project_id)->get();
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
         $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
@@ -202,7 +204,13 @@ class DashboardController extends Controller
         if($request->status == '1') {
             $invitee = Invite::whereEmail($user->email)->first();
             if($invitee) {
-                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>500, 'type'=>'User Confirmed by Admin']);
+                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>500, 'type'=>'KYC Confirmed by Admin']);
+            }
+            $refRel = ReferralRelationship::where('user_id',$user->id)->get()->first();
+            if($refRel){
+                $refLink = ReferralLink::find($refRel->referral_link_id);
+                $refUser = User::find($refLink->user_id);
+                $credit = Credit::create(['user_id'=>$refUser->id, 'amount'=>500, 'type'=>'KYC Verfied of '.$user->first_name.' '.$user->last_name,'currency'=>'konkrete']);
             }
             $message = '<p class="alert alert-success text-center">User has been verified successfully and a notification has been sent.</p>';
         } else {
@@ -256,7 +264,7 @@ class DashboardController extends Controller
         $this->validate($request, [
             'investor' => 'required',
             'amount' => 'required|numeric',
-            ]);
+        ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investment->amount = $request->amount;
@@ -270,14 +278,14 @@ class DashboardController extends Controller
     {
         $this->validate($request, [
             'investor' => 'required',
-            ]);
+        ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
         if($investment){
             $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
-                            ->where('accepted', 1)
-                            ->orderBy('share_certificate_issued_at','DESC')->get()
-                            ->first();
+            ->where('accepted', 1)
+            ->orderBy('share_certificate_issued_at','DESC')->get()
+            ->first();
             $shareInit = 0;
             if($investmentShares){
                 if($investmentShares->share_number){
@@ -313,7 +321,7 @@ class DashboardController extends Controller
                 'amount' => round($investment->amount,2),
                 'rate' => round($transactionRate,2),
                 'number_of_shares' => $noOfShares,
-                ]);
+            ]);
 
             $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
             if($investment->accepted) {
@@ -530,7 +538,7 @@ class DashboardController extends Controller
             'amount' => round($investment->amount,2),
             'rate' => round($transactionRate,2),
             'number_of_shares' => $noOfShares,
-            ]);
+        ]);
 
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
 
@@ -565,7 +573,7 @@ class DashboardController extends Controller
                     'updated_date' => Carbon::now(),
                     'progress_description' => 'Dividend Declaration',
                     'progress_details' => 'A Dividend of '.$dividendPercent.'% annualized for the duration between '.date('m-d-Y', strtotime($request->start_date)).' and '.date('m-d-Y', strtotime($request->end_date)).' has been declared.'
-                    ]);
+                ]);
 
                 // send dividend email to admins
                 $csvPath = $this->exportDividendCSV($investments, $dividendPercent, $dateDiff, $project);
@@ -588,7 +596,7 @@ class DashboardController extends Controller
                         'amount' => $dividendAmount,
                         'rate' => $dividendPercent,
                         'number_of_shares' => $noOfShares,
-                        ]);
+                    ]);
 
                     $content = \View::make('emails.userDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'startDate' => $strStartDate, 'endDate' => $strEndDate, 'project' => $project));
                     $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
@@ -625,17 +633,17 @@ class DashboardController extends Controller
             // Add the records to project progress table
             if($project->share_vs_unit) {
                 ProjectProg::create([
-                'project_id' => $projectId,
-                'updated_date' => Carbon::now(),
-                'progress_description' => 'Repurchase Declaration',
-                'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
+                    'project_id' => $projectId,
+                    'updated_date' => Carbon::now(),
+                    'progress_description' => 'Repurchase Declaration',
+                    'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
                 ]);
             }else {
                 ProjectProg::create([
-                'project_id' => $projectId,
-                'updated_date' => Carbon::now(),
-                'progress_description' => 'Repurchase Declaration',
-                'progress_details' => 'Units Repurchased by company at $'.$repurchaseRate.' per unit.'
+                    'project_id' => $projectId,
+                    'updated_date' => Carbon::now(),
+                    'progress_description' => 'Repurchase Declaration',
+                    'progress_details' => 'Units Repurchased by company at $'.$repurchaseRate.' per unit.'
                 ]);
             }
 
@@ -654,7 +662,7 @@ class DashboardController extends Controller
                 InvestmentInvestor::where('id', $investment->id)->update([
                     'is_cancelled' => 1,
                     'is_repurchased' => 1
-                    ]);
+                ]);
 
                 // Save details to transaction table
                 $repurchaseAmount = round(($investment->amount * $repurchaseRate), 2);
@@ -669,7 +677,7 @@ class DashboardController extends Controller
                     'amount' => $repurchaseAmount,
                     'rate' => $repurchaseRate,
                     'number_of_shares' => $noOfShares,
-                    ]);
+                ]);
 
                 $shareNumber = explode('-', $investment->share_number);
                 $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
@@ -798,8 +806,8 @@ class DashboardController extends Controller
     public function investmentStatement($projectId)
     {
         $investmentRecords = InvestmentInvestor::where('project_id', $projectId)
-            ->where(function ($query) { $query->where('is_cancelled', 0)->where('is_repurchased', 0); })
-            ->get()->groupby('user_id');
+        ->where(function ($query) { $query->where('is_cancelled', 0)->where('is_repurchased', 0); })
+        ->get()->groupby('user_id');
         foreach ($investmentRecords as $userId => $investments) {
             $UserShares = 0;
             foreach ($investments as $key => $investment) {
@@ -816,7 +824,7 @@ class DashboardController extends Controller
                 'effective_date' => Carbon::now(),
                 'number_of_shares' => $UserShares,
                 'current_value' => $UserShares * 1
-                ]);
+            ]);
         }
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Latest Investor Statement is successfully generated.<br>You can view it in Position records tab.</p>');
     }
@@ -871,8 +879,8 @@ class DashboardController extends Controller
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-               return new TransportManager($app);
-            });
+             return new TransportManager($app);
+         });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);
@@ -922,8 +930,8 @@ class DashboardController extends Controller
     public function investmentRequests()
     {
         $investmentRequests = InvestmentRequest::where('is_link_expired', 0)
-                            ->whereRaw('investment_requests.project_id IN (select id from projects where project_site="'.url().'")')
-                            ->get();
+        ->whereRaw('investment_requests.project_id IN (select id from projects where project_site="'.url().'")')
+        ->get();
 
         $color = Color::where('project_site',url())->first();
         return view('dashboard.requests.requests', compact('investmentRequests', 'color'));
@@ -935,8 +943,8 @@ class DashboardController extends Controller
     public function prospectusDownloads()
     {
         $prospectusDownloads = ProspectusDownload::where('project_site', url())
-                            ->orderBy('created_at','DESC')
-                            ->get();
+        ->orderBy('created_at','DESC')
+        ->get();
         $color = Color::where('project_site',url())->first();
         return view('dashboard.prospectusDownloads', compact('prospectusDownloads', 'color'));
     }
@@ -949,7 +957,7 @@ class DashboardController extends Controller
             $mailer->sendEoiApplicationLinkToUser($project, $eoi);
             $eoi->update([
                 'is_link_sent' => 1
-                ]);
+            ]);
             return 1;
         }
     }
@@ -975,7 +983,7 @@ class DashboardController extends Controller
         $projectEoi->update([
             'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
             'offer_doc_name' => $uniqueFileName
-            ]);
+        ]);
 
         return redirect()->back()->with('success', 'File uploaded successfully.');
     }

@@ -17,8 +17,10 @@ use App\Project;
 use Carbon\Carbon;
 use App\IdDocument;
 use App\Investment;
+use App\ReferralLink;
 use App\InvestingJoint;
 use Illuminate\Http\Request;
+use App\ReferralRelationship;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -67,6 +69,10 @@ class UsersController extends Controller
         $color = Color::where('project_site',url())->first();
         $siteConfiguration = SiteConfiguration::all();
         $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
+        if(request()->ref){
+            $ref = request()->ref;
+            return view('users.create',compact('ref','color', 'siteConfiguration'));
+        }
         return view('users.create',compact('color', 'siteConfiguration'));
     }
 
@@ -594,10 +600,21 @@ class UsersController extends Controller
                 $user->idDoc()->save($user_doc);
             }
         }
-        // $credit = Credit::create(['user_id'=>$user->id, 'amount'=>500, 'type'=>'uploading docs','currency'=>'konkrete']);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>500, 'type'=>'KYC Submitted','currency'=>'konkrete']);
         $mailer->sendIdVerificationNotificationToUser($user, '0');
         $mailer->sendIdVerificationEmailToAdmin($user);
         return redirect()->back()->withMessage('<p class="alert alert-success">Thank You! Successfully Uploaded documents, We will verify the Documents.</p>');
         // return redirect()->back()->withMessage('Successfully Uploaded documents');
+    }
+    public function referralUser($user_id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = User::find($user_id);
+        $ref = ReferralLink::where('user_id',$user_id)->get()->first();
+        $relationRefs = ReferralRelationship::where('referral_link_id',$ref->id)->get()->all();
+        foreach($relationRefs as $relationRef){
+            $refUsers[] = User::find($relationRef->user_id);
+        }
+        return view('users.userReferral',compact('user','color','refUsers'));
     }
 }

@@ -97,17 +97,25 @@ class UserRegistrationsController extends Controller
                     ->withInput();
             }
         }
-        // dd($request);
-        if($request->eoiReg == 'eoiReg'){
+        if($request->has('ref'))
+        {
+            $ref = request()->ref;
+            $request->request->add(['referral_code' => Request()->ref]);
+            $user = UserRegistration::create($request->all());
+            $mailer->sendRegistrationConfirmationTo($user,$ref);
+        }
+        elseif($request->eoiReg == 'eoiReg'){
+            $ref = false;
             $color = Color::where('project_site',url())->first();
             $eoi_token = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token'=>$eoi_token]);
-            $mailer->sendRegistrationConfirmationTo($user);
+            $mailer->sendRegistrationConfirmationTo($user,$ref);
             return view('users.registerCode',compact('color'));
         }
         else{
+            $ref = false;
             $user = UserRegistration::create($request->all());
-            $mailer->sendRegistrationConfirmationTo($user);
+            $mailer->sendRegistrationConfirmationTo($user,$ref);
         }
 
         // $intercom = IntercomBasicAuthClient::factory(array(
@@ -170,12 +178,16 @@ class UserRegistrationsController extends Controller
         //
     }
 
-    public function activate($token)
+    public function activate($token,Request $request)
     {
         $color = Color::where('project_site',url())->first();
         $user = UserRegistration::whereToken($token)->firstOrFail();
         if($user->active) {
             // return redirect()->route('users.login')->withMessage('<p class="alert alert-info text-center">User Already Activated</p>');
+        }
+        if($request->has('ref'))
+        {
+            $request->session()->put('ref',request()->ref);
         }
         $user->active = true;
         $user->activated_on = Carbon::now();
@@ -221,9 +233,13 @@ class UserRegistrationsController extends Controller
         $user = User::create($request->all());
         $time_now = Carbon::now();
         $user->roles()->attach($role);
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'sign up']);
         $password = $oldPassword;
         $userReg->delete();
+        if ($request->session()->has('ref')) {
+            event(new \App\Events\UserReferred(request()->session()->get('ref'), $user));
+        }else{
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>100, 'type'=>'sign up','currency'=>'konkrete']);
+        }
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);

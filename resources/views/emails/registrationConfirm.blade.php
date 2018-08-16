@@ -605,7 +605,7 @@
               @else
               <td align="center" valign="middle" class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 16px;padding: 10px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
 
-                <a class="mcnButton " title="Activate Account" href="{{route('registration.activation', $user->token)}}" target="_blank" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Activate Account</a>
+                <a class="mcnButton " title="Activate Account" href="@if($ref) {{route('registration.activation', $user->token)}}?ref={{$ref}} @else {{route('registration.activation', $user->token)}} @endif" target="_blank" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Activate Account</a>
               </td>
               @endif
             </tr>

@@ -30,4 +30,5 @@
 	@endif
 	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">Investments </a>
 	<a href="{{route('users.notifications', [$user])}}" class="list-group-item @if($active == 9) active @endif">Notifications </a>
+	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
 </div>

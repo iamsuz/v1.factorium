@@ -48,13 +48,13 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendRegistrationConfirmationTo(UserRegistration $user)
+    public function sendRegistrationConfirmationTo(UserRegistration $user,$ref)
     {
         $this->to = $user->email;
         $this->view = 'emails.registrationConfirm';
         $siteTitle = ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron';
         $this->subject = 'Please complete your registration on '.$siteTitle;
-        $this->data = compact('user');
+        $this->data = compact('user','ref');
 
         $this->deliver();
     }
