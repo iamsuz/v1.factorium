@@ -107,9 +107,9 @@ class UserAuthController extends Controller
     public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            $loginBonus = rand(1, 50);
             if(Auth::user()->last_login){
-                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
-                    $loginBonus = rand(1, 50);
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){                    
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,
