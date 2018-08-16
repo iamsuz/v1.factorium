@@ -72,7 +72,7 @@ EOI Doc
             <br>
         </div>
 
-        <div class="form-group text-center show-eoi-form-btn">
+        <div class="form-group text-center show-eoi-form-btn" style="margin-top: 1em;">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
         </div>
         <br>
