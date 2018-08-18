@@ -204,13 +204,13 @@ class DashboardController extends Controller
         if($request->status == '1') {
             $invitee = Invite::whereEmail($user->email)->first();
             if($invitee) {
-                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>500, 'type'=>'KYC Confirmed by Admin']);
+                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>200, 'type'=>'KYC Confirmed by Admin', 'currency'=>'konkrete']);
             }
             $refRel = ReferralRelationship::where('user_id',$user->id)->get()->first();
             if($refRel){
                 $refLink = ReferralLink::find($refRel->referral_link_id);
                 $refUser = User::find($refLink->user_id);
-                $credit = Credit::create(['user_id'=>$refUser->id, 'amount'=>500, 'type'=>'KYC Verfied of '.$user->first_name.' '.$user->last_name,'currency'=>'konkrete']);
+                $credit = Credit::create(['user_id'=>$refUser->id, 'amount'=>200, 'type'=>'KYC Verfied of '.$user->first_name.' '.$user->last_name, 'currency'=>'konkrete']);
             }
             $message = '<p class="alert alert-success text-center">User has been verified successfully and a notification has been sent.</p>';
         } else {

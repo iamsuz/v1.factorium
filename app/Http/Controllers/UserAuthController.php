@@ -110,7 +110,7 @@ class UserAuthController extends Controller
             $loginBonus = 0;
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
-                    $loginBonus = rand(1, 50);          
+                    $loginBonus = rand(1, 10);          
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,
@@ -340,7 +340,7 @@ class UserAuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
-                    $loginBonus = rand(1, 50);
+                    $loginBonus = rand(1, 10);
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,

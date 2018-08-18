@@ -280,7 +280,7 @@ class UserRegistrationsController extends Controller
         $user = User::create($request->all());
         $time_now = Carbon::now();
         $user->roles()->attach($role);
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'sign up']);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>100, 'type'=>'sign up']);
         $password = $userReg->password;
         $userReg->delete();
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
@@ -294,9 +294,9 @@ class UserRegistrationsController extends Controller
             {
                 return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
             }
-            if((int)$request->investment_amount % 1000 != 0)
+            if((int)$request->investment_amount % 100 != 0)
             {
-                return redirect()->back()->withErrors(['Please enter amount in increments of $1000 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
+                return redirect()->back()->withErrors(['Please enter amount in increments of $100 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
             }
             if($project){
                 if($project->eoi_button){
@@ -356,7 +356,7 @@ class UserRegistrationsController extends Controller
         $user = User::create($request->all());
         $time_now = Carbon::now();
         $user->roles()->attach($role);
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'sign up']);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>100, 'type'=>'sign up']);
 
         $invite = Invite::whereToken($request->token)->firstOrFail();
         $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);

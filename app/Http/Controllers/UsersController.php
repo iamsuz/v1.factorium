@@ -600,7 +600,7 @@ class UsersController extends Controller
                 $user->idDoc()->save($user_doc);
             }
         }
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>500, 'type'=>'KYC Submitted','currency'=>'konkrete']);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>200, 'type'=>'KYC Submitted','currency'=>'konkrete']);
         $mailer->sendIdVerificationNotificationToUser($user, '0');
         $mailer->sendIdVerificationEmailToAdmin($user);
         return redirect()->back()->withMessage('<p class="alert alert-success">Thank You! Successfully Uploaded documents, We will verify the Documents.</p>');
