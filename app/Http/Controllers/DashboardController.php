@@ -212,6 +212,7 @@ class DashboardController extends Controller
                 $refUser = User::find($refLink->user_id);
                 $credit = Credit::create(['user_id'=>$refUser->id, 'amount'=>200, 'type'=>'KYC Verfied of '.$user->first_name.' '.$user->last_name, 'currency'=>'konkrete']);
             }
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>200, 'type'=>'KYC Verfication successful', 'currency'=>'konkrete']);
             $message = '<p class="alert alert-success text-center">User has been verified successfully and a notification has been sent.</p>';
         } else {
             $message = '<p class="alert alert-warning text-center">User has to try again.</p>';
