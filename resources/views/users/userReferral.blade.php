@@ -43,6 +43,7 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if(isset($refUsers))
 							@foreach($refUsers as $refUser)
 							<tr>
 								<td>{{$refUser->first_name}}</td>
@@ -51,6 +52,9 @@
 								<td>@if($refUser->idDoc) @if($refUser->idDoc->verified == 1) KYC Verified @else KYC Not Verified @endif @else KYC not submitted @endif</td>
 							</tr>
 							@endforeach
+							@else
+							No Referral yet
+							@endif
 						</tbody>
 					</table>
 				</li>

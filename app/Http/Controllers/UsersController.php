@@ -600,7 +600,7 @@ class UsersController extends Controller
                 $user->idDoc()->save($user_doc);
             }
         }
-        @if(!$user->idDoc){
+        if(!$user->idDoc){
             $credit = Credit::create(['user_id'=>$user->id, 'amount'=>200, 'type'=>'KYC Submitted','currency'=>'konkrete']);
         }
         $mailer->sendIdVerificationNotificationToUser($user, '0');
