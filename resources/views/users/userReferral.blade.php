@@ -48,7 +48,7 @@
 								<td>{{$refUser->first_name}}</td>
 								<td>{{$refUser->last_name}}</td>
 								<td>{{$refUser->email}}</td>
-								<td>@if($refUser->idDoc) @if($refUser->idDoc->verified == 1) KYC Verified @else KYC Not Verified @endif @else KYC Have not Submitted @endif</td>
+								<td>@if($refUser->idDoc) @if($refUser->idDoc->verified == 1) KYC Verified @else KYC Not Verified @endif @else KYC not submitted @endif</td>
 							</tr>
 							@endforeach
 						</tbody>

@@ -38,8 +38,8 @@ class RewardUser
                 // $provider->addCredits(15);
                 // User who used the link
                 $user = $event->user;
-                $credit = Credit::create(['user_id'=>$referral->user->id, 'amount'=>500, 'type'=>'referred '.$user->first_name.' for sign up','currency'=>'konkrete']);
-                $credit = Credit::create(['user_id'=>$event->user->id, 'amount'=>500, 'type'=>'referred by '.$referral->user->first_name.' sign up','currency'=>'konkrete']);
+                $credit = Credit::create(['user_id'=>$referral->user->id, 'amount'=>200, 'type'=>'referred '.$user->first_name.' for sign up','currency'=>'konkrete']);
+                $credit = Credit::create(['user_id'=>$event->user->id, 'amount'=>200, 'type'=>'referred by '.$referral->user->first_name.' sign up','currency'=>'konkrete']);
                 // $user->addCredits(20);
             }
 

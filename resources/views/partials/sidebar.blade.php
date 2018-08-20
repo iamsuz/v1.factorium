@@ -13,6 +13,7 @@
 		<h4><b>{{$sum}}</b></h4>
 	</div>
 	<a href="{{route('users.show', [$user])}}" class="list-group-item @if($active == 1) active @endif">Profile </a>
+	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
 	<a href="{{route('home')}}#projects" class="list-group-item @if($active == 7) active @endif">All Projects</a>
 	{{--<a href="{{route('users.invitation', [$user])}}" class="list-group-item @if($active == 6) active @endif">Invite friends </a>--}}
 	@if($user->invite_only_projects->count())
@@ -30,5 +31,4 @@
 	@endif
 	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">Investments </a>
 	<a href="{{route('users.notifications', [$user])}}" class="list-group-item @if($active == 9) active @endif">Notifications </a>
-	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
 </div>
