@@ -268,10 +268,10 @@ class SiteConfigurationsController extends Controller
                     list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
                     if($uploadStatus) {
                         if($fileExt != 'jpg') {
-                            Image::make($destinationPath.$fileName)->encode('jpg', 90)->save(public_path('assets/images/main_bg.jpg'));
+                            Image::make($destinationPath.$fileName)->encode('jpg', 90)->save(public_path().'/assets/images/main_bg.jpg');
                         }
                         else {
-                            Image::make($destinationPath.$fileName)->save(public_path('assets/images/main_bg.jpg'));
+                            Image::make($destinationPath.$fileName)->save(public_path().'/assets/images/main_bg.jpg');
                         }
                         return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
                     }
@@ -689,14 +689,14 @@ class SiteConfigurationsController extends Controller
             return redirect()->back();
         }
 
-    public function deleteProgressDetails(Request $request,$id)     
+    public function deleteProgressDetails(Request $request,$id)
     {
         $proj_prog = ProjectProg::findOrFail($id);
         $proj_prog->delete();
         return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Deleted Successfully</p>');
     }
 
-    public function updateCoInvestDetails(Request $request, $projectId) 
+    public function updateCoInvestDetails(Request $request, $projectId)
     {
         $this->validate($request, array(
                 'project_title_txt' => 'required',
