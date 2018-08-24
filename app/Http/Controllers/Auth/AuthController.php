@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Session;
 // namespace App\Http\Controllers;
 use App\User;
 use Validator;
@@ -16,6 +17,8 @@ use App\SocialAccountService2;
 use App\SocialAccountService3;
 use Socialite;
 use App\Color;
+use Carbon\Carbon;
+use App\Credit;
 
 class AuthController extends Controller
 {
@@ -64,6 +67,19 @@ class AuthController extends Controller
         $redirect_url = url().'/auth/facebook/callback';
         \Config::set('services.facebook.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('facebook')->user(),$mailer);
+        $loginBonus = 0;
+        if($user->last_login){
+            if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
+                $loginBonus = rand(1, 10);          
+                Credit::create([
+                    'user_id' => $user->id,
+                    'amount' => $loginBonus,
+                    'type' => 'Daily login bonus',
+                    'project_site' => url(),
+                    'currency' => 'konkrete'
+                    ]);
+            }
+        }
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
         // $mailer->sendRegistrationNotificationAdmin($user);
@@ -73,13 +89,14 @@ class AuthController extends Controller
         //     return view('users.registrationFinish', compact('user'));
         // }
         // dd($user->phone_number);
+        Session::flash('loginaction', 'success.');
         if($user->phone_number != ''){
             $color = Color::where('project_site',url())->first();
-            return view('users.show',compact('user','color'));
+            return view('users.show',compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
         else{
             $color = Color::where('project_site',url())->first();
-            return view('users.fbedit', compact('user','color'));
+            return view('users.fbedit', compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
     }
     public function handleProviderCallback1(SocialAccountService1 $service,AppMailer $mailer, Request $request)
@@ -92,6 +109,19 @@ class AuthController extends Controller
         $redirect_url = url().'/auth/linkedin/callback';
         \Config::set('services.linkedin.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('linkedin')->user(),$mailer);
+        $loginBonus = 0;
+        if($user->last_login){
+            if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
+                $loginBonus = rand(1, 10);          
+                Credit::create([
+                    'user_id' => $user->id,
+                    'amount' => $loginBonus,
+                    'type' => 'Daily login bonus',
+                    'project_site' => url(),
+                    'currency' => 'konkrete'
+                    ]);
+            }
+        }
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
         auth()->loginUsingId($user->id);
@@ -100,13 +130,14 @@ class AuthController extends Controller
         //     return view('users.registrationFinish', compact('user'));
         // }
         // dd($user->phone_number);
+        Session::flash('loginaction', 'success.');
         if($user->phone_number != ''){
             $color = Color::where('project_site',url())->first();
-            return view('users.show',compact('user','color'));
+            return view('users.show',compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
         else{
             $color = Color::where('project_site',url())->first();
-            return view('users.fbedit', compact('user','color'));
+            return view('users.fbedit', compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
     }
     public function handleProviderCallback2(SocialAccountService2 $service,AppMailer $mailer)
@@ -116,6 +147,19 @@ class AuthController extends Controller
         $redirect_url = url().'/auth/twitter/callback';
         \Config::set('services.twitter.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('twitter')->user(),$mailer);
+        $loginBonus = 0;
+        if($user->last_login){
+            if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
+                $loginBonus = rand(1, 10);          
+                Credit::create([
+                    'user_id' => $user->id,
+                    'amount' => $loginBonus,
+                    'type' => 'Daily login bonus',
+                    'project_site' => url(),
+                    'currency' => 'konkrete'
+                    ]);
+            }
+        }
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
         auth()->loginUsingId($user->id);
@@ -126,11 +170,11 @@ class AuthController extends Controller
         // dd($user->phone_number);
         if($user->phone_number != ''){
             $color = Color::where('project_site',url())->first();
-            return view('users.show',compact('user','color'));
+            return view('users.show',compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
         else{
             $color = Color::where('project_site',url())->first();
-            return view('users.fbedit', compact('user','color'));
+            return view('users.fbedit', compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
     }
     public function handleProviderCallback3(SocialAccountService3 $service,AppMailer $mailer)
@@ -140,6 +184,19 @@ class AuthController extends Controller
         $redirect_url = url().'/auth/google/callback';
         \Config::set('services.google.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('google')->user(),$mailer);
+        $loginBonus = 0;
+        if($user->last_login){
+            if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
+                $loginBonus = rand(1, 10);          
+                Credit::create([
+                    'user_id' => $user->id,
+                    'amount' => $loginBonus,
+                    'type' => 'Daily login bonus',
+                    'project_site' => url(),
+                    'currency' => 'konkrete'
+                    ]);
+            }
+        }
         // dd($user);
         // Auth::loginUsingId($fan->getAuthIdentifier());
         auth()->loginUsingId($user->id);
@@ -149,11 +206,12 @@ class AuthController extends Controller
         // }
         // dd($user->phone_number);
         $color = Color::where('project_site',url())->first();
+        Session::flash('loginaction', 'success.');
         if($user->phone_number != ''){
-            return view('users.show',compact('user','color'));
+            return view('users.show',compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
         else{
-            return view('users.fbedit', compact('user','color'));
+            return view('users.fbedit', compact('user','color'))->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
     }
 // }
