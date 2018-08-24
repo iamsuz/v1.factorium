@@ -15,6 +15,7 @@ use App\Note;
 use App\Project;
 use App\User;
 use Carbon\Carbon;
+use App\IdDocument;
 use Chumper\Datatable\Datatable;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -987,5 +988,11 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'File uploaded successfully.');
+    }
+    public function kycRequests()
+    {
+        $color = Color::where('project_site',url())->first();
+        $kycRequests = IdDocument::groupBy('user_id')->get();
+        return view('dashboard.requests.kycRequest',compact('kycRequests','color'));
     }
 }
