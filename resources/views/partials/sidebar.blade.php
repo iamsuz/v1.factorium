@@ -1,11 +1,11 @@
 <?php $sum = 0; ?>
 <div class="list-group">
 	<div class="list-group-item text-center">
-		@if($user->profile_picture)
-		<img src="{{asset($user->profile_picture)}}" height="100" style="border-radius: 3px;">
-		@else
-		<img src="{{-- {{asset('assets/images/default-'.$user->gender.'.png')}} --}}{{ asset('/assets/images/konkrete_logo_dark.png') }}" width="100px" style="border-radius: 3px;">
-		@endif
+		{{-- @if($user->profile_picture) --}}
+		{{-- <img src="{{asset($user->profile_picture)}}" height="100" style="border-radius: 3px;"> --}}
+		{{-- @else --}}
+		<a href="https://konkrete.io" target="_blank" ><img src="{{-- {{asset('assets/images/default-'.$user->gender.'.png')}} --}}{{ asset('/assets/images/konkrete_logo_dark.png') }}" width="100px" style="border-radius: 3px;"></a>
+		{{-- @endif --}}
 		<h3 class="text-center"><b>KONKRETE Balance</b></h3>
 		@foreach($user->credits as $credit)
 			<?php $sum = $sum + $credit->amount; ?>
