@@ -39,21 +39,21 @@
 							@if($user->idDoc)
 							<h4>You are Investing as
 							<b style="color: blue;">{{$user->idDoc->investing_as}}</b></h4><br>
-							<a href="/{{$user->idDoc->get()->last()->path}}">Your Doc</a>
+							<a href="/{{$user->idDoc->path}}">Your Doc</a>
 							@if($user->idDoc->type == 'JointDocument')
 							<p>Joint Investor Name:<br><b>{{$user->idDoc->joint_first_name}} {{$user->idDoc->joint_last_name}}</b></p>
-							<a href="/{{$user->idDoc->get()->last()->joint_id_path}}">Joint Investor Doc</a>
+							<a href="/{{$user->idDoc->joint_id_path}}">Joint Investor Doc</a>
 							@endif
 							<hr>
-							@if($user->idDoc->get()->last()->verified == '1')
+							@if($user->idDoc->verified == '1')
 							Verified <i class="fa fa-check-circle" aria-hidden="true"></i>
-							@elseif($user->idDoc->get()->last()->verified == '-1')
+							@elseif($user->idDoc->verified == '-1')
 							<span style="color: red;">Verification Failed</span>
 							@else
 							Not-Verified
 							@endif
 							@endif
-							@if(!$user->idDoc || $user->idDoc->get()->last()->verified == '-1')
+							@if(!$user->idDoc || $user->idDoc->verified == '-1')
 							<form class="form-group" action="{{route('users.document.upload',[$user->id])}}" method="POST" enctype="multipart/form-data" rel="form">
 								{{ csrf_field() }}
 								<div class="row " id="section-2">
