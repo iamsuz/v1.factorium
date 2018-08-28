@@ -6,12 +6,12 @@
 		{{-- @else --}}
 		<a href="https://konkrete.io" target="_blank" ><img src="{{-- {{asset('assets/images/default-'.$user->gender.'.png')}} --}}{{ asset('/assets/images/konkrete_logo_dark.png') }}" width="100px" style="border-radius: 3px;"></a>
 		{{-- @endif --}}
-		<h3 class="text-center"><b>KONKRETE Balance</b></h3>
+		<a href="https://konkrete.io" target="_blank" ><h3 class="text-center"><b>KONKRETE Balance</b></h3></a>
 		@foreach($user->credits as $credit)
 			<?php $sum = $sum + $credit->amount; ?>
 		@endforeach
-		<h4><b>{{$sum}}</b></h4>
-	</div>
+		<a href="https://konkrete.io" target="_blank" ><h4><b>{{$sum}}</b></h4>
+	</div></a>
 	<a href="{{route('users.show', [$user])}}" class="list-group-item @if($active == 1) active @endif">Profile </a>
 	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
 	<a href="{{route('home')}}#projects" class="list-group-item @if($active == 7) active @endif">All Projects</a>
