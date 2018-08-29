@@ -18,11 +18,11 @@
 			@if($user->idDoc)
 			<div class="row">
 				<div class="col-md-6">
-					<a href="{{asset($user->idDoc->get()->last()->path)}}" alt="Document" class="thumbnail" target="_blank">User Doc</a>
+					<a href="{{asset($user->idDoc->path)}}" alt="Document" class="thumbnail" target="_blank">User Doc</a>
 				</div>
 				@if($user->idDoc->investing_as == 'Joint Investor')
 				<div class="col-md-6">
-					<a href="{{asset($user->idDoc->get()->last()->joint_id_path)}}" alt="Document" class="thumbnail" target="_blank">Other Doc</a>
+					<a href="{{asset($user->idDoc->joint_id_path)}}" alt="Document" class="thumbnail" target="_blank">Other Doc</a>
 				</div>
 				@endif
 			</div>
