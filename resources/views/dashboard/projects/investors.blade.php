@@ -446,7 +446,7 @@
 									<td>@if($transaction->project->projectspvdetail){{$transaction->project->projectspvdetail->spv_name}}@endif</td>
 									<td class="text-center">{{$transaction->transaction_type}}</td>
 									<td>{{date('m-d-Y', strtotime($transaction->transaction_date))}}</td>
-									<td>${{number_format($transaction->amount)}}</td>
+									<td>${{$transaction->amount}}</td>
 									<td>{{$transaction->rate}}</td>
 									<td>{{$transaction->number_of_shares}}</td>
 								</tr>
