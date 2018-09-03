@@ -166,18 +166,35 @@
 					<div class="col-md-5">
 						<div class="" style="color:#fff;">
 							@if($project->investment)
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="text-center" style="margin-left: -9em;">
+									<input type="checkbox" class="toggle-elements" action="duration" autocomplete="off" data-label-text="Duration" data-size="mini" @if($project->projectconfiguration->show_duration) checked value="1" @else value="0" @endif>
+								</div>
+								@endif
+								@endif
 							<div class="row text-left">
-								<div class="col-md-3 col-sm-3 col-xs-6" style="border-right: thin solid #ffffff; height:70px;">
+								<div class="col-md-3 col-sm-3 col-xs-6" style="@if($project->projectconfiguration->show_duration || $project->projectconfiguration->show_expected_return || $project->projectconfiguration->show_project_investor_count) border-right: thin solid #ffffff; @endif>
 									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{number_format((int)$project->investment->minimum_accepted_amount)}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-6" style="border-right: thin solid #ffffff; height:70px;">
+								<div class="col-md-3 col-sm-3 col-xs-6 duration" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-right: thin solid #ffffff;>
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-6" style="@if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif height:70px;">
+								
+								@if(Auth::guest())
+								@else
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<div class="text-center">
+									<input type="checkbox" class="toggle-elements" action="expected_return" autocomplete="off" data-label-text="ExpectedReturn" data-size="mini" @if($project->projectconfiguration->show_expected_return) checked value="1" @else value="0" @endif>
+								</div>
+								@endif
+								@endif
+								<div class="col-md-3 col-sm-3 col-xs-6 expected_return" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif @if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif ">
 									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4>
 									<h6 class="font-regular @if(Auth::guest()) @else @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) edit-project-page-labels @endif @endif" style="font-size: 0.875em;color: #fff" effect="expected_return_label_text">{{$project->projectconfiguration->expected_return_label_text}}</h6>
+								</div>								
 
-								</div>
 								<div class="col-md-3 col-sm-3 col-xs-6 project_investor_count" @if(!$project->projectconfiguration->show_project_investor_count) style="display:none;" @endif>
 									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
 										@if($project->investment) {{$number_of_investors}} @else ### @endif
