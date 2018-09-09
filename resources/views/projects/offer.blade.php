@@ -25,7 +25,7 @@ Offer Doc
 		<img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
 	</div>
 </div>
-<div class="container-fluid">
+<div class="container-fluid" id="mainPage">
 	<div class="row" id="forScroll">
 		<div class="col-md-12">
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
@@ -152,7 +152,7 @@ Offer Doc
 										</div>
 									</div>
 									<br><br>
-									@if(!$user->idDoc)
+									@if(!Auth::guest() && !$user->idDoc)
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
@@ -199,6 +199,61 @@ Offer Doc
 													</div>
 													<div class="col-md-6">
 														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled" @if($user->idDoc && $user->idDoc->investing_as == 'Joint Investor') value="{{$user->idDoc->joint_last_name}}" readonly @endif>
+													</div>
+												</div>
+												<br>
+												<hr>
+											</div>
+										</div>
+									</div>
+									@endif
+									@if(Auth::guest())
+									<div class="row " id="section-2">
+										<div class="col-md-12">
+											<div >
+												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
+												<br>
+												<h4>Are you Investing as</h4>
+												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
+												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
+												<input type="radio" name="investing_as" value="Trust or Company" > Trust or Company<br>
+												<hr>
+											</div>
+
+										</div>
+									</div>
+									<div class="row " id="section-3">
+										<div class="col-md-12">
+											<div style="display: none;" id="company_trust">
+												<label>Company of Trust Name</label>
+												<div class="row">
+													<div class="col-md-9">
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled" >
+													</div>
+												</div><br>
+											</div>
+											<div id="normal_name">
+												<label>Given Name(s)</label>
+												<div class="row">
+													<div class="col-md-9">
+														<input type="text" name="first_name" class="form-control" placeholder="First Name" required @if(!Auth::guest() && $user->first_name) value="{{$user->first_name}}" @endif>
+													</div>
+												</div><br>
+												<label>Surname</label>
+												<div class="row">
+													<div class="col-md-9">
+														<input type="text" name="last_name" class="form-control" placeholder="Last Name" required @if(!Auth::guest() && $user->last_name) value="{{$user->last_name}}" @endif>
+													</div>
+												</div><br>
+											</div>
+											<div style="display: none;" id="joint_investor">
+												<label>Joint Investor Details</label>
+												<div class="row">
+													<div class="col-md-6">
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required disabled="disabled" @if(!Auth::guest() && $user->idDoc && $user->idDoc->investing_as == 'Joint Investor') value="{{$user->idDoc->joint_first_name}}" readonly @endif>
+													</div>
+													<div class="col-md-6">
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled" @if(!Auth::guest() && $user->idDoc && $user->idDoc->investing_as == 'Joint Investor') value="{{$user->idDoc->joint_last_name}}" readonly @endif>
 													</div>
 												</div>
 												<br>
@@ -466,7 +521,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<input type="hidden" name="interested_to_buy" value="0">
-											    <input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
+												<input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
 											</div>
 										</div>
 										<br>
@@ -626,41 +681,75 @@ Offer Doc
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
 	function isNumber(evt) {
-	    evt = (evt) ? evt : window.event;
-	    var charCode = (evt.which) ? evt.which : evt.keyCode;
-	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-	        return false;
-	    }
-	    return true;
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+			return false;
+		}
+		return true;
 	}
 	$(document).ready(function(){
 		$("#myModal").on('shown.bs.modal', function(){
 			$(this).find('input[type="text"]').focus();
 		});
 		$('#myform').submit(function(event) {
-			@if(Auth::guest())
-			var email = $('#offerEmail').val();
-			var _token = $('meta[name="csrf-token"]').attr('content');
-			var offerData = $('#myform').serialize();
-            $.post('/users/login/check',{email,_token},function (data) {
-            	if(data == email){
-            		$('#loginEmailEoi').val(email);
-            		$("#loginModal").modal();
-            		$('#submitformlogin').click(function (e) {
-            			var password = $('#loginPwdEoi').val();
-            			$('#passwordOffer').val(password);
-            			$('#myform').attr('action','/users/login/offer');
-            			$('#myform').submit();
-            			// $.post('/users/login/offer',{email,password,_token,offerData},function (offerData) {
-            			// 	console.log(offerData);
-            			// });
-            			e.preventDefault();
+    		@if(Auth::guest())
+    		var email = $('#offerEmail').val();
+    		var _token = $('meta[name="csrf-token"]').attr('content');
+    		var offerData = $('#myform').serialize();
+    		console.log(offerData);
+    		$.post('/users/login/check',{email,_token},function (data) {
+    			if(data == email){
+    				// $('#myform').attr('action','/users/login/offer');
+    				$('#loginEmailEoi').val(email);
+    				$("#loginModal").modal();
+    				$('#submitformlogin').click(function (e) {
+    					e.preventDefault();
+    					var password = $('#password').val();
+    					$('#passwordOffer').val(password);
+    					// $('#myform').submit();
+    					$('.loader-overlay').show();
+    					$.ajax({
+    						type: "POST",
+    						url: "/users/login/offer",
+    						data: offerData,
+    						datatype: 'html',
+    						success: function (data) {
+    							$('#loginModal').modal('hide');
+    							$('.loader-overlay').hide();
+    							$('#mainPage').html(data.html);
+    							$("html, body").animate({ scrollTop: 0 }, "slow");
+    						}
+    					});
             		});
-            	}else{
-            		location.reload('/users/create');
-            	}
-            });
-			@else
+    			}else{
+    				$('#eoiREmail').val(email);
+    				$('#registerModal').modal({
+    					keyboard: false,
+  						backdrop: 'static'
+    				});
+    				$('#submitform').click(function (e) {
+    					e.preventDefault();
+    					var password = $('#loginPwdEoi').val();
+    					$('#passwordOffer').val(password);
+    					// $('#myform').submit();
+    					$('.loader-overlay').show();
+    					$.ajax({
+    						type: "POST",
+    						url: "/users/register/offer",
+    						data: offerData,
+    						datatype: 'html',
+    						success: function (data) {
+    							$('#loginModal').modal('hide');
+    							$('.loader-overlay').hide();
+    							$('#mainPage').html(data.html);
+    							$("html, body").animate({ scrollTop: 0 }, "slow");
+    						}
+    					});
+            		});
+    			}
+    		});
+    		@else
     		$('.loader-overlay').show(); // show animation
     		return true; // allow regular form submission
     		@endif
@@ -781,12 +870,12 @@ Offer Doc
 			}
 
 		});
-		@if($user->idDoc && $user->idDoc->investing_as == 'Individual Investor')
+		@if(!Auth::guest() && $user->idDoc && $user->idDoc->investing_as == 'Individual Investor')
 		$("input[value='Individual Investor']").trigger("initCheckboxes");
-		@elseif($user->idDoc && $user->idDoc->investing_as == 'Joint Investor')
+		@elseif(!Auth::guest() && $user->idDoc && $user->idDoc->investing_as == 'Joint Investor')
 		console.log($("input[name='investing_as']"));
 		$("input[value='Joint Investor']").trigger("click");
-		@elseif($user->idDoc && $user->idDoc->investing_as == 'Trust or Company')
+		@elseif(!Auth::guest() && $user->idDoc && $user->idDoc->investing_as == 'Trust or Company')
 		$("input[value='Trust or Company']").trigger("initCheckboxes");
 		@endif
 		// Slide and show the aml requirements section

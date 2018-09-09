@@ -109,15 +109,15 @@ class UserAuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $loginBonus = 0;
             if(Auth::user()->last_login){
-                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
-                    $loginBonus = rand(1, 10);          
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                    $loginBonus = rand(1, 10);
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,
                         'type' => 'Daily login bonus',
                         'project_site' => url(),
                         'currency' => 'konkrete'
-                        ]);
+                    ]);
                 }
             }
             Auth::user()->update(['last_login'=> Carbon::now()]);
@@ -169,6 +169,9 @@ class UserAuthController extends Controller
     public function authenticateOffer(UserAuthRequest $request)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            $request->merge([
+                'password'=>bcrypt($request->password)
+            ]);
             Auth::user()->update(['last_login'=> Carbon::now()]);
             Session::flash('loginaction', 'success.');
             $color = Color::where('project_site',url())->first();
@@ -324,8 +327,8 @@ class UserAuthController extends Controller
 
         $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
         $this->dispatch(new SendReminderEmail($user,$project));
-
-        return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+        $viewHtml = view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'))->render();
+        return response()->json(array('success'=>true,'html'=>$viewHtml)) ;
     }
 }
 
@@ -347,7 +350,7 @@ class UserAuthController extends Controller
                         'type' => 'Daily login bonus',
                         'project_site' => url(),
                         'currency' => 'konkrete'
-                        ]);
+                    ]);
                 }
             }
             Auth::user()->update(['last_login'=> Carbon::now()]);

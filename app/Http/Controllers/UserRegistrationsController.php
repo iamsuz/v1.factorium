@@ -80,7 +80,7 @@ class UserRegistrationsController extends Controller
                 }
                 $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
                 if($request->eoiReg == 'eoiReg'){
-                    return redirect($request->next)->withErrors(['email'=> $errorMessage])->withInput();
+                    return redirect()->back()->withErrors(['email'=> $errorMessage])->withInput();
                 }
                 return redirect('/users/create')->withErrors(['email'=> $errorMessage])->withInput();
             }
@@ -109,6 +109,14 @@ class UserRegistrationsController extends Controller
             $color = Color::where('project_site',url())->first();
             $eoi_token = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token'=>$eoi_token]);
+            $mailer->sendRegistrationConfirmationTo($user,$ref);
+            return view('users.registerCode',compact('color'));
+        }
+        elseif($request->offerReg == 'offerReg'){
+            $ref =false;
+            $color = Color::where('project_site',url())->first();
+            $offerToken = mt_rad(100000, 999999);
+            $user = UserRegistration::create($request->all()+['offerToken' => $offerToken]);
             $mailer->sendRegistrationConfirmationTo($user,$ref);
             return view('users.registerCode',compact('color'));
         }
