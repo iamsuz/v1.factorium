@@ -46,7 +46,7 @@ Sign Up | @parent
 						<div class="col-md-6">
 							<section id="registerForm" style="padding:0 10px;">
 								<h4 class="font-bold first_color" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
-								{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'form'))!!}
+								{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'form'))!!}
 								<div class="row form-group">
 									<!-- <div> -->
 									<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
@@ -55,13 +55,11 @@ Sign Up | @parent
 									</div>
 									<!-- </div> -->
 								</div>
-								<div class="row"> <!-- Removed class form-group -->
-									<!-- <div> -->
+								<div class="row hide">
 									<div class="col-md-12 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
 										{!! Form::password('password', array('placeholder'=>'Password', 'class'=>'form-control input-box','name'=>'password', 'Value'=>'', 'id'=>'password', 'tabindex'=>'3')) !!}
 										{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 									</div>
-									<!-- </div> -->
 								</div>
 								<p class="font-bold hide" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
 								<div class="row text-left hide">
@@ -103,11 +101,11 @@ Sign Up | @parent
 								<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 									<!-- <a class='btn btn-lg btn-info disabled' style="background: #4875b4;border-color: #4875b4;"><i class="fa fa-linkedin" style="width:16px;"></i></a> -->
 									<a class='btn btn-lg btn-info  font-semibold' href='/auth/linkedin' style="width:243px; background-color: #127AB6; border-color: #127AB6; font-size:1em; color:#fff; border-radius:0;"><img class="pull-left" src="{{asset('assets/images/linkedin_login.png')}}" style="width:25px; background-color:#fff;"> Sign in with Linkedin</a>
-								</div>	
+								</div>
 								<br><br>
 								<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 									<a class='btn btn-lg btn-primary font-semibold' href='/auth/facebook' style="width:243px; background-color: #375599; border-color: #375599; font-size:1em; color:#fff; border-radius:0;"><img class="pull-left" src="{{asset('assets/images/fb_login.png')}}" style=" margin:-10px -12px; background-color: #fff; width:45px;"> Sign in with Facebook</a>
-								</div>	
+								</div>
 								<br><br>
 							</div>
 						</div>--}}
@@ -121,7 +119,7 @@ Sign Up | @parent
 		<div class="container" style="height: 300px;">
 			<div class="row">
 				<div class="col-md-12">
-					
+
 				</div>
 			</div>
 		</div>
