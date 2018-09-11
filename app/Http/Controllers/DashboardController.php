@@ -623,6 +623,66 @@ class DashboardController extends Controller
         }
     }
 
+    public function declareFixedDividend(Request $request, AppMailer $mailer, $projectId)
+    {
+        $investorList = $request->investors_list;
+        $dividendPercent = $request->fixed_dividend_percent;
+        $project = Project::findOrFail($projectId);
+
+        if($investorList != ''){
+            $investors = explode(',', $investorList);
+            $investments = InvestmentInvestor::findMany($investors);
+
+            // Add the records to project progress table
+            ProjectProg::create([
+                'project_id' => $projectId,
+                'updated_date' => Carbon::now(),
+                'progress_description' => 'Fixed Dividend Declaration',
+                'progress_details' => 'A Fixed Dividend of '.$dividendPercent.'% has been declared.'
+            ]);
+
+            // send dividend email to admins
+            $csvPath = $this->exportFixedDividendCSV($investments, $dividendPercent, $project);
+            $mailer->sendFixedDividendDistributionNotificationToAdmin($investments, $dividendPercent, $csvPath, $project);
+
+            // send dividend emails to investors
+            $failedEmails = [];
+            $subject = 'Fixed Dividend declared for '.$project->title;
+            foreach ($investments as $investment) {
+                // Save details to transaction table
+                $dividendAmount = round($investment->amount * ((int)$dividendPercent/100));
+                $shareNumber = explode('-', $investment->share_number);
+                $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                Transaction::create([
+                    'user_id' => $investment->user_id,
+                    'project_id' => $investment->project_id,
+                    'investment_investor_id' => $investment->id,
+                    'transaction_type' => 'FIXED DIVIDEND',
+                    'transaction_date' => Carbon::now(),
+                    'amount' => $dividendAmount,
+                    'rate' => $dividendPercent,
+                    'number_of_shares' => $noOfShares,
+                ]);
+
+                $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project));
+                $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+                if($result->http_response_code != 200){
+                    array_push($failedEmails, $investment->user->email);
+                }
+            }
+            if(empty($failedEmails)){
+                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Fixed Dividend distribution have been mailed to Investors and admins</p>');
+            }
+            else{
+                $emails = '';
+                foreach ($failedEmails as $email) {
+                    $emails = $emails.", $email";
+                }
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Fixed Dividend distribution email sending failed for investors - '.$emails.'.</p>');
+            }
+        }
+    }
+
     public function declareRepurchase(Request $request, AppMailer $mailer, $projectId){
         $investorList = $request->investors_list;
         $repurchaseRate = $request->repurchase_rate;
@@ -727,6 +787,40 @@ class DashboardController extends Controller
                 $dateDiff,
                 $dividendPercent,
                 round($investment->amount * ((int)$dividendPercent/(365*100)) * $dateDiff, 2)
+            ));
+        }
+
+        // Close the file
+        fclose($file);
+
+        return $csvPath;
+    }
+
+    public function exportFixedDividendCSV($investments, $dividendPercent, $project)
+    {
+        $csvPath = storage_path().'/app/dividend/fixed_dividend_distribution_'.time().'.csv';
+
+        // create a file pointer connected to the output stream
+        $file = fopen($csvPath, 'w');
+
+        // Add column names to csv
+        if($project->share_vs_unit) {
+            fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Share amount", "Rate", "Investor Dividend amount"));
+        }else {
+            fputcsv($file, array("Investor Name", "Investor Bank account name", "Investor bank", "Investor BSB", "Investor Account", "Unit amount", "Rate", "Investor Dividend amount"));
+        }
+
+        // data to add to the csv file
+        foreach ($investments as $investment) {
+            fputcsv($file, array(
+                $investment->user->first_name.' '.$investment->user->last_name,
+                $investment->investingJoint ? $investment->investingJoint->account_name : $investment->user->account_name,
+                $investment->investingJoint ? $investment->investingJoint->bank_name : $investment->user->bank_name,
+                $investment->investingJoint ? $investment->investingJoint->bsb : $investment->user->bsb,
+                $investment->investingJoint ? $investment->investingJoint->account_number : $investment->user->account_number,
+                $investment->amount,
+                $dividendPercent,
+                round($investment->amount * ((int)$dividendPercent/100))
             ));
         }
 

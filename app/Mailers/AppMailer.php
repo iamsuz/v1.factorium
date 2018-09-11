@@ -437,6 +437,24 @@ class AppMailer
         $this->deliverWithFile();
     }
 
+    public function sendFixedDividendDistributionNotificationToAdmin($investments, $dividendPercent, $csvPath, $project)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.adminFixedDividendDistributioNotify';
+        $this->subject = 'Distribute fixed dividend amount to investors';
+        $this->data = compact('investments', 'dividendPercent', 'project');
+        $this->pathToFile = $csvPath;
+
+        $this->deliverWithFile();
+    }
+
     public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project)
     {
         $role = Role::findOrFail(1);

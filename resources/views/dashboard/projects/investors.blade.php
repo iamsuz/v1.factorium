@@ -314,7 +314,8 @@
 				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
 					<!-- <ul class="list-group">Hello</ul> -->
 					<div class="share-registry-actions">
-						<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend</button>
+						<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend Annualized</button>
+						<button class="btn btn-primary issue-fixed-dividend-btn" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
 						<button class="btn btn-primary repurchase-shares-btn" action="repurchase">Repurchase</button>
 					</div>
 					<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
@@ -322,9 +323,14 @@
 						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="text" name="start_date" id="start_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> and <input type="text" name="end_date" id="end_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
+					<form action="{{route('dashboard.investment.declareFixedDividend', [$project->id])}}" method="POST">
+						{{csrf_field()}}
+						<span class="declare-fixed-statement hide"><small>Issue Dividend at <input type="number" name="fixed_dividend_percent" id="fixed_dividend_percent" step="0.01"> <input type="submit" class="btn btn-primary declare-fixed-dividend-btn" value="Declare"></small></span>
+						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
+					</form>
 					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
 						{{csrf_field()}}
-						<span class="repurcahse-statement hide"><small>Repurchase @if($project->share_vs_unit) shares @else units @endif at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per @if($project->share_vs_unit) share @else unit @endif: <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
+						<span class="repurchase-statement hide"><small>Repurchase @if($project->share_vs_unit) shares @else units @endif at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per @if($project->share_vs_unit) share @else unit @endif: <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
 					<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right">
@@ -444,7 +450,7 @@
 								<tr>
 									<td>{{$transaction->user->first_name}} {{$transaction->user->last_name}}</td>
 									<td>@if($transaction->project->projectspvdetail){{$transaction->project->projectspvdetail->spv_name}}@endif</td>
-									<td class="text-center">{{$transaction->transaction_type}}</td>
+									<td class="text-center">@if($transaction->transaction_type == "DIVIDEND") {{"ANNUALIZED DIVIDEND"}} @else {{$transaction->transaction_type}} @endif</td>
 									<td>{{date('m-d-Y', strtotime($transaction->transaction_date))}}</td>
 									<td>${{$transaction->amount}}</td>
 									<td>{{$transaction->rate}}</td>
@@ -665,13 +671,15 @@
 		});
 
 		// show select checkbox for share registry
-		$('.issue-dividend-btn, .repurchase-shares-btn').click(function(e){
+		$('.issue-dividend-btn, .repurchase-shares-btn, .issue-fixed-dividend-btn').click(function(e){
 			$('.select-check').removeClass('hide');
 			$('.share-registry-actions').addClass('hide');
 			if($(this).attr('action') == "dividend"){
 				$('.declare-statement').removeClass('hide');
+			}else if($(this).attr('action') == "fixed-dividend"){
+				$('.declare-fixed-statement').removeClass('hide');
 			} else {
-				$('.repurcahse-statement').removeClass('hide');
+				$('.repurchase-statement').removeClass('hide');
 			}
 
 			// Selector deselect all investors
@@ -702,6 +710,8 @@
 	        });
 			// Declare dividend
 			declareDividend();
+			// Declare fixed dividend
+			declareFixedDividend();
 			// repurchase shares
 			repurchaseShares();
 		});
@@ -725,6 +735,26 @@
 			if(dividendPercent == '' || startDate == '' || endDate == ''){
 				e.preventDefault();
 				alert('Before declaration enter dividend percent, start date and end date input fields.');
+			}
+			else {
+				if(investorsList == ''){
+					e.preventDefault();
+					alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
+				}
+			}
+		});
+	}
+
+	// Declare fixed dividend
+	function declareFixedDividend(){
+		$('.declare-fixed-dividend-btn').click(function(e){
+			var dividendPercent = $('#fixed_dividend_percent').val();
+			dividendPercent = dividendPercent.toString();
+			var investorsList = $('.investors-list').val();
+
+			if(dividendPercent == ''){
+				e.preventDefault();
+				alert('Before declaration please enter dividend percent.');
 			}
 			else {
 				if(investorsList == ''){
