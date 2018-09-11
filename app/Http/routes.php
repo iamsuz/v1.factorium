@@ -81,7 +81,8 @@ Route::post('/users/login/eoi', ['as'=>'users.auth.eoi', 'uses'=>'UserAuthContro
 Route::post('/users/login/offer', ['as'=>'users.auth.offer', 'uses'=>'UserAuthController@authenticateOffer']);
 Route::get('/users/successfull/eoi', ['as'=>'users.success.eoi', 'uses'=>'UserAuthController@successEoi']);
 Route::POST('/users/registration/code', ['as'=>'users.registration.code', 'uses'=>'UserRegistrationsController@registrationCode']);
-Route::get('/users/register/offer',['as'=>'user.register.offer','uses'=>'UserRegistrationsController@offerRegistrationCode']);
+Route::POST('/users/register/{id}/offer',['as'=>'user.register.offer','uses'=>'UserRegistrationsController@offerRegistrationCode']);
+Route::get('/users/register/offer/code',['as'=>'users.register.view.code','uses'=>'UserRegistrationsController@registerCodeView']);
 Route::post('/users/login/check', ['as'=>'users.auth.check', 'uses'=>'UserAuthController@authenticateCheck']);
 Route::get('/users/activation/{token}', ['as'=>'users.activation', 'uses'=>'UserAuthController@activate']);
 Route::get('/users/{id}/documents',['as'=>'users.document','uses'=>'UsersController@documents']);

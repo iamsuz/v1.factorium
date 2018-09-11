@@ -45,4 +45,8 @@ class UserRegistration extends Model
     {
         $this->attributes['password'] = $value;
     }
+    public function offer_registration()
+    {
+        return $this->hasOne('App\OfferRegistration');
+    }
 }

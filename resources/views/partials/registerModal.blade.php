@@ -8,11 +8,13 @@
 						<div class="col-md-10 col-md-offset-1">
 							<div class="row">
 								<div class="col-md-12">
+									<div id="session_message">
 									<br>
 									@if (Session::has('message'))
 									{!! Session::get('message') !!}
 									@endif
 									<br>
+								</div>
 									<div class="text-left">
 										<h3 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;visibility: visible;">You are almost there!</h3>
 										<h4 class="wow fadeIn animated font-regular first_color" data-wow-duration="1.5s" data-wow-delay="0.3s" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;visibility: visible;"><br>Please set a password for your account to complete the process</h4>
@@ -66,7 +68,7 @@
 													</div>
 												</div><br>
 												<div class="row">
-													<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s">
+													<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s" style="visibility: visible;">
 														<input type="submit" value="Register" id="submit1" name="submit"  class="btn btn-block font-bold hide" hidden style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
 														<button type="button" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform"  style="width:243px; background-color: #fed405; font-size:1em; color:#000;border-radius:50px; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register</button>
 													</div>

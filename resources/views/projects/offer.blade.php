@@ -487,6 +487,7 @@ Offer Doc
 									</div>
 									@if(Auth::guest())
 									<input type="password" name="password" class="hidden" id="passwordOffer">
+									<input type="text" name="role" class="hidden" value="investor">
 									@endif
 									<br>
 									<div class="row " id="section-8">
@@ -693,13 +694,12 @@ Offer Doc
 			$(this).find('input[type="text"]').focus();
 		});
 		$('#myform').submit(function(event) {
-    		@if(Auth::guest())
-    		var email = $('#offerEmail').val();
-    		var _token = $('meta[name="csrf-token"]').attr('content');
-    		var offerData = $('#myform').serialize();
-    		console.log(offerData);
-    		$.post('/users/login/check',{email,_token},function (data) {
-    			if(data == email){
+			@if(Auth::guest())
+			var email = $('#offerEmail').val();
+			var _token = $('meta[name="csrf-token"]').attr('content');
+			var offerData = $('#myform').serialize();
+			$.post('/users/login/check',{email,_token},function (data) {
+				if(data == email){
     				// $('#myform').attr('action','/users/login/offer');
     				$('#loginEmailEoi').val(email);
     				$("#loginModal").modal();
@@ -721,14 +721,15 @@ Offer Doc
     							$("html, body").animate({ scrollTop: 0 }, "slow");
     						}
     					});
-            		});
+    				});
     			}else{
     				$('#eoiREmail').val(email);
     				$('#registerModal').modal({
     					keyboard: false,
-  						backdrop: 'static'
+    					backdrop: 'static'
     				});
     				$('#submitform').click(function (e) {
+    					var projectId = {{$project->id}};
     					e.preventDefault();
     					var password = $('#loginPwdEoi').val();
     					$('#passwordOffer').val(password);
@@ -736,20 +737,25 @@ Offer Doc
     					$('.loader-overlay').show();
     					$.ajax({
     						type: "POST",
-    						url: "/users/register/offer",
+    						url: "/users/register/"+projectId+"/offer",
     						data: offerData,
     						datatype: 'html',
     						success: function (data) {
-    							$('#loginModal').modal('hide');
+    							$('#registerModal').modal('hide');
     							$('.loader-overlay').hide();
-    							$('#mainPage').html(data.html);
-    							$("html, body").animate({ scrollTop: 0 }, "slow");
+    							setTimeout(function(){// wait for 5 secs(2)
+           							window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+       							}, 100);
+    						},
+    						error: function (data) {
+    							$('.loader-overlay').hide();
+    							$('#session_message').html(data);
     						}
     					});
-            		});
+    				});
     			}
     		});
-    		@else
+			@else
     		$('.loader-overlay').show(); // show animation
     		return true; // allow regular form submission
     		@endif
