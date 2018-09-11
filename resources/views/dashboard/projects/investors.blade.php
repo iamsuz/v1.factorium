@@ -325,7 +325,7 @@
 					</form>
 					<form action="{{route('dashboard.investment.declareFixedDividend', [$project->id])}}" method="POST">
 						{{csrf_field()}}
-						<span class="declare-fixed-statement hide"><small>Issue Dividend at <input type="number" name="fixed_dividend_percent" id="fixed_dividend_percent" step="0.01"> <input type="submit" class="btn btn-primary declare-fixed-dividend-btn" value="Declare"></small></span>
+						<span class="declare-fixed-statement hide"><small>Issue Dividend at <input type="number" name="fixed_dividend_percent" id="fixed_dividend_percent" step="0.01">% <input type="submit" class="btn btn-primary declare-fixed-dividend-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 					</form>
 					<form action="{{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">
