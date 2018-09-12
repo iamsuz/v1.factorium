@@ -18,7 +18,7 @@ Thank You | @parent
 					<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 					@endif
 					<div style="padding:10em 0;">
-						<h1 class="text-center wow fadeIn animated h1-faq">To Continue your @if($type == 'eoi')Expression of Interest @else Application <br><small>We have sent a 6 digit code to your email address. Please enter that over here to confirm your email id and complete the registration process.</small><br><br><br>
+						<h1 class="text-center wow fadeIn animated h1-faq">To Continue your @if($type == 'eoi')Expression of Interest @else Application @endif <br><small>We have sent a 6 digit code to your email address. Please enter that over here to confirm your email id and complete the registration process.</small><br><br><br>
 							<small>
 								<form action="{{route('users.registration.code')}}" method="POST">
 									{{csrf_field()}}
