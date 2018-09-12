@@ -324,8 +324,14 @@ class UserRegistrationsController extends Controller
 
     public function registrationCode(Request $request,AppMailer $mailer)
     {
+        $this->validate($request, [
+            'eoiCode' => 'required|numeric|digits:6',
+        ]);
         $color = Color::where('project_site',url())->first();
-        $userR = UserRegistration::where('eoi_token',$request->eoiCode)->firstOrFail();
+        $userR = UserRegistration::where('eoi_token',$request->eoiCode)->first();
+        if(!$userR){
+            return redirect()->back()->withMessage('Code is Invalid, Please Ensure you enter 6 digit code code which is sent on your Email')->withInput(['eoiCode'=>$request->eoiCode]);
+        }
         $userR->active = true;
         $userR->activated_on = Carbon::now();
         $userR->save();

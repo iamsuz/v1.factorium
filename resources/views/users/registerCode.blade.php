@@ -57,6 +57,13 @@ Thank You | @parent
 			if (e.which == 32)
 				return false;
 		});
-	})
+	});
+	$(function(){
+		$('#eoiCode').bind('input', function(){
+			$(this).val(function(_, v){
+				return v.replace(/\s+/g, '');
+			});
+		});
+	});
 </script>
 @stop

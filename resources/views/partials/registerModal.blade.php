@@ -26,7 +26,7 @@
 								<div class="col-md-12">
 									<section id="registerForm" style="padding:0 10px;">
 										<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
-										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'form'))!!}
+										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'regForm'))!!}
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
@@ -38,7 +38,7 @@
 											<div class="row form-group">
 												<!-- <div> -->
 													<div class="col-md-12 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
-														{!! Form::password('password', array('placeholder'=>'Password', 'class'=>'form-control input-box','name'=>'password', 'Value'=>'', 'id'=>'password', 'tabindex'=>'3')) !!}
+														{!! Form::password('password', array('placeholder'=>'Password', 'class'=>'form-control input-box','name'=>'password', 'Value'=>'', 'id'=>'RegPassword', 'tabindex'=>'3','required')) !!}
 														{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 													</div>
 													<div class="col-md-12 <?php if($errors->first('registration_site')){echo 'has-error';}?>" data-wow-delay="0.2s" hidden >
@@ -68,7 +68,7 @@
 													</div>
 												</div><br>
 												<div class="row">
-													<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s" style="visibility: visible;">
+													<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s" style="visibility: visible !important;">
 														<input type="submit" value="Register" id="submit1" name="submit"  class="btn btn-block font-bold hide" hidden style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
 														<button type="button" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform"  style="width:243px; background-color: #fed405; font-size:1em; color:#000;border-radius:50px; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register</button>
 													</div>

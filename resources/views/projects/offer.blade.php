@@ -697,7 +697,6 @@ Offer Doc
 			@if(Auth::guest())
 			var email = $('#offerEmail').val();
 			var _token = $('meta[name="csrf-token"]').attr('content');
-			var offerData = $('#myform').serialize();
 			$.post('/users/login/check',{email,_token},function (data) {
 				if(data == email){
     				// $('#myform').attr('action','/users/login/offer');
@@ -708,6 +707,7 @@ Offer Doc
     					var password = $('#password').val();
     					$('#passwordOffer').val(password);
     					// $('#myform').submit();
+    					var offerData = $('#myform').serialize();
     					$('.loader-overlay').show();
     					$.ajax({
     						type: "POST",
@@ -731,10 +731,20 @@ Offer Doc
     				$('#submitform').click(function (e) {
     					var projectId = {{$project->id}};
     					e.preventDefault();
-    					var password = $('#loginPwdEoi').val();
+    					$('#RegPassword').on('input',function (e) {
+    						var name=$('#RegPassword').val();
+    						if(name.length == 0){
+    							$('#RegPassword').after('<div class="red">Password is Required</div>');
+    						}
+        				});
+    					var password = $('#RegPassword').val();
+    					if(password.length == 0){
+    						$('#RegPassword').after('<div class="red">Password is Required</div>');
+    						return false;
+    					}
     					$('#passwordOffer').val(password);
-    					// $('#myform').submit();
     					$('.loader-overlay').show();
+    					var offerData = $('#myform').serialize();
     					$.ajax({
     						type: "POST",
     						url: "/users/register/"+projectId+"/offer",
@@ -745,7 +755,7 @@ Offer Doc
     							$('.loader-overlay').hide();
     							setTimeout(function(){// wait for 5 secs(2)
            							window.location.href = "/users/register/offer/code"; // then reload the page.(3)
-       							}, 100);
+           						}, 100);
     						},
     						error: function (data) {
     							$('.loader-overlay').hide();
