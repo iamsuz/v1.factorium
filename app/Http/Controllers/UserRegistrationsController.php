@@ -20,6 +20,7 @@ use App\OfferRegistration;
 use App\InvestmentInvestor;
 use App\Mailers\AppMailer;
 use App\Jobs\SendReminderEmail;
+use App\WholesaleInvestment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Intercom\IntercomBasicAuthClient;
