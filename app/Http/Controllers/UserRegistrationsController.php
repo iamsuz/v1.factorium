@@ -187,7 +187,7 @@ class UserRegistrationsController extends Controller
         $color = Color::where('project_site',url())->first();
         $offerToken = mt_rand(100000, 999999);
         $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
-        $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id]);
+        $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
         $mailer->sendRegistrationConfirmationTo($user,$ref);
         return view('users.registerCode',compact('color'));
         // $intercom = IntercomBasicAuthClient::factory(array(

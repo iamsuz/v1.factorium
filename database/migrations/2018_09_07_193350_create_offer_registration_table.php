@@ -22,9 +22,9 @@ class CreateOfferRegistrationTable extends Migration
             $table->foreign('investment_id')->references('id')->on('investments');
             $table->double('amount_to_invest', 20,2);
             $table->string('investing_as');
-            $table->string('joint_fname');
-            $table->string('joint_lname');
-            $table->string('trust_company');
+            $table->string('joint_fname')->nullable();
+            $table->string('joint_lname')->nullable();
+            $table->string('trust_company')->nullable();
             $table->string('account_name')->nullable();
             $table->string('bsb')->nullable();
             $table->string('account_number')->nullable();
