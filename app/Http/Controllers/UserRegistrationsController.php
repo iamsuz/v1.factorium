@@ -116,7 +116,8 @@ class UserRegistrationsController extends Controller
             $eoi_token = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token'=>$eoi_token]);
             $mailer->sendRegistrationConfirmationTo($user,$ref);
-            return view('users.registerCode',compact('color'));
+            $type = 'eoi';
+            return view('users.registerCode',compact('color','type'));
         }
         elseif($request->offerReg == 'offerReg'){
             $ref =false;
@@ -189,7 +190,8 @@ class UserRegistrationsController extends Controller
         $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
         $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
         $mailer->sendRegistrationConfirmationTo($user,$ref);
-        return view('users.registerCode',compact('color'));
+        $type = 'offer';
+        return view('users.registerCode',compact('color','type'));
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
         //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
@@ -206,7 +208,8 @@ class UserRegistrationsController extends Controller
     public function registerCodeView()
     {
         $color = Color::where('project_site',url())->first();
-        return view('users.registerCode',compact('color'));
+        $type = 'offer';
+        return view('users.registerCode',compact('color','type'));
     }
     /**
      * Display the specified resource.
