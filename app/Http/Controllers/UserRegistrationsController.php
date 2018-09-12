@@ -420,18 +420,6 @@ class UserRegistrationsController extends Controller
                     return redirect()->route('users.success.eoi');
                 }else{
                     $project = Project::findOrFail($request->project_id);
-                    $validation_rules = array(
-                        'amount_to_invest'   => 'required|integer',
-                        'line_1' => 'required',
-                        'state' => 'required',
-                        'postal_code' => 'required'
-                    );
-                    $validator = Validator::make($request->all(), $validation_rules);
-                    // Return back to form w/ validation errors & session data as input
-                    if($validator->fails()) {
-                        dd($validator);
-                        return  redirect()->back()->withErrors($validator);
-                    }
                     $user = Auth::user();
                     // If application store request received from request form
                     if($request->investment_request_id)
