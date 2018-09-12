@@ -704,7 +704,7 @@ Offer Doc
     				$("#loginModal").modal();
     				$('#submitformlogin').click(function (e) {
     					e.preventDefault();
-    					var password = $('#password').val();
+    					var password = $('#loginPwdEoi').val();
     					$('#passwordOffer').val(password);
     					// $('#myform').submit();
     					var offerData = $('#myform').serialize();
