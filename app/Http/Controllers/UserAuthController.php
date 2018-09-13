@@ -168,10 +168,12 @@ class UserAuthController extends Controller
 
     public function authenticateOffer(UserAuthRequest $request)
     {
+        $auth = false;
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $request->merge([
                 'password'=>bcrypt($request->password)
             ]);
+            $auth = true;
             Auth::user()->update(['last_login'=> Carbon::now()]);
             Session::flash('loginaction', 'success.');
             $color = Color::where('project_site',url())->first();
@@ -328,8 +330,9 @@ class UserAuthController extends Controller
         $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
         $this->dispatch(new SendReminderEmail($user,$project));
         $viewHtml = view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'))->render();
-        return response()->json(array('success'=>true,'html'=>$viewHtml)) ;
+        return response()->json(array('success'=>true,'html'=>$viewHtml,'auth'=>$auth));
     }
+    return response()->json(array('success'=>false,'auth'=>$auth));
 }
 
     /**

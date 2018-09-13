@@ -715,10 +715,21 @@ Offer Doc
     						data: offerData,
     						datatype: 'html',
     						success: function (data) {
-    							$('#loginModal').modal('hide');
+    							if(!data.success){
+    								$('.loader-overlay').hide();
+    								$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
+    								return false;
+    							}
     							$('.loader-overlay').hide();
+    							$('#loginModal').modal('hide');
     							$('#mainPage').html(data.html);
     							$("html, body").animate({ scrollTop: 0 }, "slow");
+
+    						},
+    						error: function (data) {
+    							$('.loader-overlay').hide();
+    							$('#session_message').html(data);
+    							return false;
     						}
     					});
     				});
