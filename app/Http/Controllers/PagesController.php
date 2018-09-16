@@ -290,7 +290,7 @@ class PagesController extends Controller
         $aboutus->content = $request->content;
         $aboutus->project_site = url();
         $aboutus->save();
-        Session::flash('message','Upadates Successfully');
+        Session::flash('message','Updates Successfully');
         return redirect()->back();
     }
     public function updateTeam(Request $request, $id){
