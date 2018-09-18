@@ -45,6 +45,7 @@ Offer Doc
 								@if (Session::has('message'))
 								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
+								@if(!Auth::guest())
 								<div class="well text-center cursor-pointer fill-form-request-container">
 									@if (Session::has('requestStatus'))
 									<i class="fa fa-check-circle-o fa-3x" aria-hidden="true" style="color: green;"></i><br>
@@ -56,6 +57,7 @@ Offer Doc
 									@endif
 								</div>
 								<hr>
+								@endif
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">

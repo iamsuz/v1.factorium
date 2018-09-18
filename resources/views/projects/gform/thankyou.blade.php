@@ -40,6 +40,7 @@
 								<tr><td>Account Name</td><td>{!!$project->investment->bank_account_name!!}</td></tr>
 								<tr><td>BSB </td><td>{!!$project->investment->bsb!!}</td></tr>
 								<tr><td>Account No</td><td>{!!$project->investment->bank_account_number!!}</td></tr>
+								<tr><td>SWIFT Code</td><td>{!!$project->investment->swift_code!!}</td></tr>
 								<tr><td>Reference</td><td>{!!$project->investment->bank_reference!!}</td></tr>
 							</table>
 
