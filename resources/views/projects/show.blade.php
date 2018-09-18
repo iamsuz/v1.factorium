@@ -181,7 +181,7 @@
 								<div class="col-md-3 col-sm-3 col-xs-6 duration" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-right: thin solid #ffffff;>
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 								</div>
-								
+
 								@if(Auth::guest())
 								@else
 								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -193,7 +193,7 @@
 								<div class="col-md-3 col-sm-3 col-xs-6 expected_return" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif @if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif ">
 									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4>
 									<h6 class="font-regular @if(Auth::guest()) @else @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) edit-project-page-labels @endif @endif" style="font-size: 0.875em;color: #fff" effect="expected_return_label_text">{{$project->projectconfiguration->expected_return_label_text}}</h6>
-								</div>								
+								</div>
 
 								<div class="col-md-3 col-sm-3 col-xs-6 project_investor_count" @if(!$project->projectconfiguration->show_project_investor_count) style="display:none;" @endif>
 									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
@@ -1477,6 +1477,7 @@
 										<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
 										<tr><td>BSB </td><td class="bsb-name-field">{!!$project->investment->bsb!!}</td></tr>
 										<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
+										<tr><td>SWIFT Code</td><td class="swift-code-field">{!!$project->investment->swift_code!!}</td></tr>
 										<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
 									</table>
 									@if($project->investment->bitcoin_wallet_address)

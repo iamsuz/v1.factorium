@@ -633,6 +633,7 @@
 														<tr><td>Account Name</td><td class="account-name-field"><input type="text" value="{!!$project->investment->bank_account_name!!}" id="account_name" name="account_name"></td></tr>
 														<tr><td>BSB </td><td class="bsb-name-field"><input type="text" value="{!!$project->investment->bsb!!}" id="bsb_name" name="bsb_name"></td></tr>
 														<tr><td>Account No</td><td class="account-number-field"><input type="text" value="{!!$project->investment->bank_account_number!!}" id="account_number" name="account_number"></td></tr>
+														<tr><td>SWIFT code</td><td class="swift-code-field"><input type="text" value="{!!$project->investment->swift_code!!}" id="swift_code" name="swift_code"></td></tr>
 														<tr><td>Reference</td><td class="bank-reference-field"><input type="text" value="{!!$project->investment->bank_reference!!}" id="bank_reference" name="bank_reference"></td></tr>
 													</table>
 													<h3 class="text-center second_color">Or pay using Bitcoin</h3><br>
