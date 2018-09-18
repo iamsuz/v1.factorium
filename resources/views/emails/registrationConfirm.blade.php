@@ -600,7 +600,7 @@
             <tr>
               @if(isset($user->eoi_token))
               <td>
-                <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px;background-color: #fff !important; ">{{$user->eoi_token}}</span></span></span></strong>
+                <strong><span style="color: #282a73;"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px;background-color: #fff !important; ">{{$user->eoi_token}}</span></span></span></strong>
             </td>
               @else
               <td align="center" valign="middle" class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 16px;padding: 10px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">

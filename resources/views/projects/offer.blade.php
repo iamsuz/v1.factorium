@@ -464,24 +464,17 @@ Offer Doc
 											<hr>
 											<div>
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>Account Name</label>
 														<input type="text" name="account_name" class="form-control" placeholder="Account Name"  @if(!Auth::guest() && $user->account_name) value="{{$user->account_name}}" @endif>
 													</div>
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>BSB</label>
 														<input type="text" name="bsb" class="form-control" placeholder="BSB"  @if(!Auth::guest() && $user->bsb) value="{{$user->bsb}}" @endif>
 													</div>
-												</div>
-												<br>
-												<div class="row">
-													<div class="col-md-6">
+													<div class="col-md-4">
 														<label>Account Number</label>
 														<input type="text" name="account_number" class="form-control" placeholder="Account Number"  @if(!Auth::guest() && $user->account_number) value="{{$user->account_number}}" @endif>
-													</div>
-													<div class="col-md-6">
-														<label>SWIFT Code</label>
-														<input type="text" name="swift_code" class="form-control" placeholder="Account Number"  @if(!Auth::guest() && $user->swift_code) value="{{$user->swift_code}}" @endif>
 													</div>
 												</div>
 
