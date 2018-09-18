@@ -802,6 +802,7 @@ class SiteConfigurationsController extends Controller
                     'bank_account_name' => trim($request->account_name),
                     'bsb' => trim($request->bsb_name),
                     'bank_account_number' => trim($request->account_number),
+                    'swift_code' => trim($request->swift_code),
                     'bank_reference' => trim($request->bank_reference),
                     'investments_structure_video_url' => $request->investments_structure_video_url,
                     'bitcoin_wallet_address' => $request->bitcoin_wallet_address,
