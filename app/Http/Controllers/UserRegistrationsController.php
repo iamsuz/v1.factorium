@@ -313,10 +313,11 @@ class UserRegistrationsController extends Controller
         $user->roles()->attach($role);
         $password = $oldPassword;
         $userReg->delete();
+        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
         if ($request->session()->has('ref')) {
             event(new \App\Events\UserReferred(request()->session()->get('ref'), $user));
         }else{
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>100, 'type'=>'sign up','currency'=>'konkrete']);
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete']);
         }
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
@@ -387,7 +388,8 @@ class UserRegistrationsController extends Controller
         $user = User::create($request->all());
         $time_now = Carbon::now();
         $user->roles()->attach($role);
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>100, 'type'=>'sign up']);
+        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete']);
         $password = $userReg->password;
         $offerRegi = $userReg->offer_registration;
         $offerRegi->delete();
@@ -627,7 +629,8 @@ public function storeDetailsInvite(Request $request)
     $user = User::create($request->all());
     $time_now = Carbon::now();
     $user->roles()->attach($role);
-    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>100, 'type'=>'sign up']);
+    $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete']);
 
     $invite = Invite::whereToken($request->token)->firstOrFail();
     $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);

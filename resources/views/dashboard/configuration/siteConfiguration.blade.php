@@ -259,6 +259,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'change_konkrete_bonus_allocation')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Konkrete Bonus</b></h3>
+                                    <p><small>Edit the konkrete bonus allocation on this site.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-konkrete-bonus-allocation-btn" style="cursor: pointer;">
+                                                <strong>Change Konkrete Bonus Allocation</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -656,13 +679,75 @@ Configuration | Dashboard | @parent
                         <label for="licensee_name_input" style="text-align: left;" class="pull-left">Licensee Name:</label>
                         {!! Form::text('licensee_name_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->licensee_name, array('placeholder'=>'Enter Licensee Name', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'licensee_name_input', 'required' => 'required')) !!}
                         <br>
-                        <label for="licensee_name_input" style="text-align: left;" class="pull-left">AFSL Number:</label>
+                        <label for="afsl_no" style="text-align: left;" class="pull-left">AFSL Number:</label>
                         {!! Form::text('afsl_no_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->afsl_no, array('placeholder'=>'Enter AFSL Number', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'afsl_no', 'required' => 'required')) !!}
                         <br>
-                        <label for="licensee_name_input" style="text-align: left;" class="pull-left">CAR Number:</label>
+                        <label for="car_no" style="text-align: left;" class="pull-left">CAR Number:</label>
                         {!! Form::text('car_no_input', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->car_no, array('placeholder'=>'Enter CAR Number', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'car_no', 'required' => 'required')) !!}
                         <br>
                         {!! Form::submit('Save Details', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'4', 'style'=>'margin-bottom: 20px; margin-top: 10px;', 'required' => 'required')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Changing Konkrete Bonus Allocation -->
+<div class="modal fade" id="change_konkrete_bonus_allocation_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change Konkrete Bonus Allocation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateKonkreteAllocationChanges'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the Konkrete amount you would like to allocate to users on this site.</small></i></h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="daily_login_bonus" style="text-align: left;" class="pull-left">Daily Login Bonus:</label>
+                                {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'1', 'title'=>'Enter konkrete amount for daily login bonus')) !!}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="user_sign_up" style="text-align: left;" class="pull-left">User Sign Up:</label>
+                                {!! Form::input('number', 'user_sign_up_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete, array('placeholder'=>'Enter konkrete amount for user sign up', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'user_sign_up', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for user sign up')) !!}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="kyc_upload" style="text-align: left;" class="pull-left">KYC Submission:</label>
+                                {!! Form::input('number', 'kyc_upload_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC upload', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'kyc_upload', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC upload')) !!}
+                                <br>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="kyc_approval" style="text-align: left;" class="pull-left">KYC Approval:</label>
+                                {!! Form::input('number', 'kyc_approval_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC approval', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'kyc_approval', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC approval')) !!}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="referral" style="text-align: left;" class="pull-left">Referrer:</label>
+                                {!! Form::input('number', 'referrer_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete, array('placeholder'=>'Enter konkrete amount for referrer', 'class'=>'form-control ', 'tabindex'=>'5', 'id'=>'referral', 'required' => 'required', 'title'=>'Enter konkrete amount for referrer')) !!}
+                                <br>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="referee" style="text-align: left;" class="pull-left">Referee:</label>
+                                {!! Form::input('number', 'referee_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete, array('placeholder'=>'Enter konkrete amount for referee', 'class'=>'form-control ', 'tabindex'=>'6', 'id'=>'referral', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for referee')) !!}
+                                <br>
+                            </div>
+                        </div>
+
+                        {!! Form::submit('Save Konkrete Amounts', array('class'=>'btn btn-primary col-md-6 col-md-offset-3', 'tabindex'=>'7', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>
@@ -843,6 +928,7 @@ Configuration | Dashboard | @parent
         editVisibilityOfSiteConfigItems();
         editProjectInterestEmbedLink();
         editLegalDetails();
+        changeKonkreteBonusAllocation();
     });
 
 function updateCoords(coords, w, h, origWidth, origHeight){
@@ -947,6 +1033,16 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 'backdrop': false,
             });
             $('#licensee_name_input').select();
+        });
+    }
+
+    function changeKonkreteBonusAllocation(){
+        $('.change-konkrete-bonus-allocation-btn').click(function(){
+            $('#change_konkrete_bonus_allocation_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#daily_login_bonus').select();
         });
     }
 

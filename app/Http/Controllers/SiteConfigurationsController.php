@@ -1051,6 +1051,39 @@ class SiteConfigurationsController extends Controller
         return redirect()->back();
     }
 
+    public function updateKonkreteAllocationChanges(Request $request)
+    {
+        $this->validate($request, array(
+            'daily_login_bonus_konkrete' => 'required',
+            'user_sign_up_konkrete' => 'required',
+            'kyc_upload_konkrete' => 'required',
+            'kyc_approval_konkrete' => 'required',
+            'referrer_konkrete' => 'required',
+            'referee_konkrete' => 'required',
+        ));
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        if(!$siteconfiguration)
+        {
+            $siteconfiguration = new SiteConfiguration;
+            $siteconfiguration->project_site = url();
+            $siteconfiguration->save();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        }
+        $siteconfiguration->update([
+            'daily_login_bonus_konkrete'=>$request->daily_login_bonus_konkrete,
+            'user_sign_up_konkrete'=>$request->user_sign_up_konkrete,
+            'kyc_upload_konkrete'=>$request->kyc_upload_konkrete,
+            'kyc_approval_konkrete'=>$request->kyc_approval_konkrete,
+            'referrer_konkrete'=>$request->referrer_konkrete,
+            'referee_konkrete'=>$request->referee_konkrete,
+        ]);
+        Session::flash('message', 'Konkrete Allocation Updated Successfully');
+        Session::flash('action', 'change_konkrete_bonus_allocation');
+        return redirect()->back();
+    }
+
     public function uploadProjectThumbImage(Request $request)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){

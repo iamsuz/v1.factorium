@@ -29,6 +29,8 @@ use App\Jobs\SendDeveloperNotificationEmail;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Credit;
+use App\Helpers\SiteConfigurationHelper;
+
 
 class UserAuthController extends Controller
 {
@@ -108,9 +110,10 @@ class UserAuthController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $loginBonus = 0;
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
-                    $loginBonus = rand(1, 10);
+                    $loginBonus = rand(1, $daily_bonus_konkrete);
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,
@@ -343,10 +346,11 @@ class UserAuthController extends Controller
     public function authenticate(UserAuthRequest $request)
     {
         $loginBonus = 0;
+        $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
-                    $loginBonus = rand(1, 10);
+                    $loginBonus = rand(1, $daily_bonus_konkrete);
                     Credit::create([
                         'user_id' => Auth::user()->id,
                         'amount' => $loginBonus,

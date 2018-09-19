@@ -261,6 +261,7 @@ Route::post('/pages/home/expressProjectInterest', ['as'=>'pages.home.expressProj
 Route::post('/configuration/updateConversionPixel', ['as'=> 'configuration.updateConversionPixel', 'uses'=>'SiteConfigurationsController@updateConversionPixel']);
 Route::post('/configuration/updateProspectusText', ['as'=> 'configuration.updateProspectusText', 'uses'=>'SiteConfigurationsController@updateProspectusText']);
 Route::post('/configuration/updateLegalDetails', ['as'=> 'configuration.updateLegalDetails', 'uses'=>'SiteConfigurationsController@updateLegalDetails']);
+Route::post('/configuration/updateKonkreteAllocationChanges', ['as'=> 'configuration.updateKonkreteAllocationChanges', 'uses'=>'SiteConfigurationsController@updateKonkreteAllocationChanges']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);

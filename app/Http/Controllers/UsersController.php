@@ -607,8 +607,10 @@ class UsersController extends Controller
                 $user->idDoc()->save($user_doc);
             }
         }
+
+        $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete;
         if(!$user->idDoc){
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>200, 'type'=>'KYC Submitted','currency'=>'konkrete']);
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete']);
         }
         $mailer->sendIdVerificationNotificationToUser($user, '0');
         $mailer->sendIdVerificationEmailToAdmin($user);
