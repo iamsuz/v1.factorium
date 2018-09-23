@@ -532,12 +532,17 @@ Offer Doc
 
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
-									<div id="signature"></div>
+
+									<div id="signature"><button class="btn pull-right" id="signatureClear">Clear</button></div>
 									<h4 class="text-center">Please Sign Here</h4>
 									<input type="hidden" name="signature_data" id="signature_data" value="">
 									<script>
 										$(document).ready(function() {
 											$("#signature").jSignature();
+											$("#signatureClear").click(function (e) {
+												e.preventDefault();
+												$("#signature").jSignature("reset");
+											})
 											$("#signature").bind('change', function(e){
 												var svgData = $(this).jSignature("getData", "image");
 												$('#signature_data').val(svgData[1]);
