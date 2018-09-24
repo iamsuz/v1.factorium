@@ -296,7 +296,7 @@ class UsersController extends Controller
             $user->profile_picture = $destinationPath.$filename.'.jpg';
             $user->save();
         }
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'verification docs']);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>50, 'type'=>'verification docs', 'project_site' => url()]);
         $status = $user->update(['verify_id'=>'1']);
         $mailer->sendVerificationNotificationToUser($user, '0', $id_image);
         $mailer->sendIdVerificationEmailToAdmin($user);
@@ -610,7 +610,7 @@ class UsersController extends Controller
 
         $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete;
         if(!$user->idDoc){
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete']);
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete', 'project_site' => url()]);
         }
         $mailer->sendIdVerificationNotificationToUser($user, '0');
         $mailer->sendIdVerificationEmailToAdmin($user);

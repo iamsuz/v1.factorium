@@ -723,12 +723,12 @@ Configuration | Dashboard | @parent
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="kyc_upload" style="text-align: left;" class="pull-left">KYC Submission:</label>
                                 {!! Form::input('number', 'kyc_upload_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC upload', 'class'=>'form-control ', 'tabindex'=>'3', 'id'=>'kyc_upload', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC upload')) !!}
                                 <br>
-                            </div>
-                            <div class="col-md-6">
+                            </div> --}}
+                            <div class="col-md-12">
                                 <label for="kyc_approval" style="text-align: left;" class="pull-left">KYC Approval:</label>
                                 {!! Form::input('number', 'kyc_approval_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC approval', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'kyc_approval', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC approval')) !!}
                                 <br>

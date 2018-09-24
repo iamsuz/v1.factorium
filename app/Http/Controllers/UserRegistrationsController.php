@@ -317,7 +317,7 @@ class UserRegistrationsController extends Controller
         if ($request->session()->has('ref')) {
             event(new \App\Events\UserReferred(request()->session()->get('ref'), $user));
         }else{
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete']);
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
         }
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
@@ -389,7 +389,7 @@ class UserRegistrationsController extends Controller
         $time_now = Carbon::now();
         $user->roles()->attach($role);
         $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete']);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
         $password = $userReg->password;
         $offerRegi = $userReg->offer_registration;
         $offerRegi->delete();
@@ -630,7 +630,7 @@ public function storeDetailsInvite(Request $request)
     $time_now = Carbon::now();
     $user->roles()->attach($role);
     $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
-    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete']);
+    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
 
     $invite = Invite::whereToken($request->token)->firstOrFail();
     $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);

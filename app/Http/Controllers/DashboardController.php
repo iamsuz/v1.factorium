@@ -207,15 +207,15 @@ class DashboardController extends Controller
         if($request->status == '1') {
             $invitee = Invite::whereEmail($user->email)->first();
             if($invitee) {
-                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>200, 'type'=>'KYC Confirmed by Admin', 'currency'=>'konkrete']);
+                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>200, 'type'=>'KYC Confirmed by Admin', 'currency'=>'konkrete', 'project_site' => url()]);
             }
             $refRel = ReferralRelationship::where('user_id',$user->id)->get()->first();
             if($refRel){
                 $refLink = ReferralLink::find($refRel->referral_link_id);
                 $refUser = User::find($refLink->user_id);
-                $credit = Credit::create(['user_id'=>$refUser->id, 'amount'=>200, 'type'=>'KYC Verfied of '.$user->first_name.' '.$user->last_name, 'currency'=>'konkrete']);
+                $credit = Credit::create(['user_id'=>$refUser->id, 'amount'=>200, 'type'=>'KYC Verfied of '.$user->first_name.' '.$user->last_name, 'currency'=>'konkrete', 'project_site' => url()]);
             }
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_approval_konkrete, 'type'=>'KYC Verfication successful', 'currency'=>'konkrete']);
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_approval_konkrete, 'type'=>'KYC Verification successful', 'currency'=>'konkrete', 'project_site' => url()]);
             $message = '<p class="alert alert-success text-center">User has been verified successfully and a notification has been sent.</p>';
         } else {
             $message = '<p class="alert alert-warning text-center">User has to try again.</p>';
@@ -239,7 +239,7 @@ class DashboardController extends Controller
         if($request->status == '2') {
             $invitee = Invite::whereEmail($user->email)->first();
             if($invitee) {
-                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>50, 'type'=>'User Confirmed by Admin']);
+                Credit::create(['user_id'=>$invitee->user_id, 'invite_id'=>$invitee->id, 'amount'=>50, 'type'=>'User Confirmed by Admin', 'project_site' => url()]);
             }
             $message = '<p class="alert alert-success text-center">User has been verified successfully and a notification has been sent.</p>';
         } else {
