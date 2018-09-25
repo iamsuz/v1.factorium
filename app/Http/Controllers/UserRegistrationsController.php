@@ -355,8 +355,9 @@ class UserRegistrationsController extends Controller
         $request['active'] = true;
         $request['activated_on'] = $userReg->activated_on;
         $request['registration_site'] = $userReg->registration_site;
-        if($request->eoi_project){
+        if($userReg->eoi_project != NULL){
             $request['project_id'] = $userReg->eoi_project;
+            $request['eoi_project'] = $userReg->eoi_project;
             $request['investment_amount'] = $userReg->investment_amount;
             $request['investment_period'] = $userReg->investment_period;
         }else{
@@ -391,8 +392,10 @@ class UserRegistrationsController extends Controller
         $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
         $password = $userReg->password;
-        $offerRegi = $userReg->offer_registration;
-        $offerRegi->delete();
+        if($userReg->eoi_project == NULL){
+            $offerRegi = $userReg->offer_registration;
+            $offerRegi->delete();
+        }
         $userReg->delete();
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
@@ -410,7 +413,7 @@ class UserRegistrationsController extends Controller
                 return redirect()->back()->withErrors(['Please enter amount in increments of $100 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
             }
             if($project){
-                if($project->eoi_button && $project->eoi_project){
+                if($project->eoi_button && $request->eoi_project){
                     $eoi_data = ProjectEOI::create([
                         'project_id' => $request->project_id,
                         'user_id' => $user->id,
