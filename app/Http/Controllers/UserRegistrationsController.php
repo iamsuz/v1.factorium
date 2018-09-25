@@ -117,7 +117,8 @@ class UserRegistrationsController extends Controller
             $user = UserRegistration::create($request->all()+['eoi_token'=>$eoi_token]);
             $mailer->sendRegistrationConfirmationTo($user,$ref);
             $type = 'eoi';
-            return view('users.registerCode',compact('color','type'));
+            // return view('users.registerCode',compact('color','type'));
+            return redirect()->route('users.register.view.code')->with(['color'=>$color,'type'=>$type]);
         }
         elseif($request->offerReg == 'offerReg'){
             $ref =false;
