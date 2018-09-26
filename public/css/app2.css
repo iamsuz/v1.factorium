@@ -90,7 +90,7 @@ dd, dt {
 	color: #000;
 	background-color: #C1C1C1;
 	/*padding-right: 2.3em;*/
-	/*padding-left: 2.3em;*/	
+	/*padding-left: 2.3em;*/
 	/*padding-bottom: 0.5em;*/
 	/*padding-top: 0.5em;*/
 	border-radius: 0 !important;
@@ -101,7 +101,7 @@ dd, dt {
 	color: #000;
 	background-color: #fed405;
 	padding-right: 2.3em;
-	padding-left: 2.3em;	
+	padding-left: 2.3em;
 	/*padding-bottom: 0.5em;*/
 	/*padding-top: 0.5em;*/
 	border-radius: 0 !important;
@@ -165,7 +165,7 @@ a:hover {
 	border-color: #fff;
 }
 .content {
-	margin-top: 4em;
+	margin-top: 5em;
 	min-height: 37em;
 }
 .navbar {
@@ -307,7 +307,7 @@ a:hover {
 	width: 70%;
 }
 
-.panel-open-right { 
+.panel-open-right {
 	right: -20px;
 }
 
@@ -364,7 +364,7 @@ a:hover {
 	width: 90%;
 }
 
-.panel-open-left { 
+.panel-open-left {
 	left: 0px;
 }
 
@@ -426,7 +426,7 @@ input[type="radio"] {
 }
 .pdf-icon{
 	position:relative;
-	top:25px; 
+	top:25px;
 	/*left:-40px;*/
 }
 .download-text{
@@ -517,11 +517,11 @@ input[type="radio"] {
 		padding: 3px 20px !important;
 	}
 	.content{
-		margin-top: 0em !important; 
+		margin-top: 0em !important;
 	}
 	.pdf-icon{
 		position:relative;
-		top:36px !important; 
+		top:36px !important;
 		left:0px !important;
 	}
 	.download-text{
@@ -621,7 +621,7 @@ input[type="radio"] {
 		padding: 3px 20px !important;
 	}
 	.content{
-		margin-top: 0em !important; 
+		margin-top: 0em !important;
 	}
 }
 @media (max-width: 320px) {
@@ -639,7 +639,7 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 .loader-overlay{
   position: fixed;
@@ -694,7 +694,7 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 #preview_project_thumb_img{
 	width: 150px;
@@ -708,7 +708,7 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 #preview_project_progress_circle_img{
 	width: 150px;
@@ -722,7 +722,7 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 #preview_spv_logo_img{
 	width: 150px;
@@ -736,7 +736,7 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;	
+      ) !important;
 }
 #preview_spv_md_sign_image{
 	width: 160px;
@@ -750,7 +750,7 @@ input[type="radio"] {
       rgba(0, 0, 0, 0.1) 10px,
       rgba(0, 0, 0, 0.2) 10px,
       rgba(0, 0, 0, 0.2) 20px
-      ) !important;		
+      ) !important;
 }
 .carousel-control.right, .carousel-control.left{
 	background-image: linear-gradient(to right,rgba(0,0,0,.0) 0,rgba(0,0,0,0) 100%);
