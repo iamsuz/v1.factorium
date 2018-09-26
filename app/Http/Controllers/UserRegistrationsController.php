@@ -336,7 +336,7 @@ class UserRegistrationsController extends Controller
         $color = Color::where('project_site',url())->first();
         $userR = UserRegistration::where('eoi_token',$request->eoiCode)->first();
         if(!$userR){
-            return redirect()->back()->withMessage('Code is Invalid, Please Ensure you enter 6 digit code code which is sent on your Email')->withInput(['eoiCode'=>$request->eoiCode]);
+            return redirect()->back()->withMessage('Code is Invalid, Please Ensure you enter 6 digit code which is sent on your Email')->withInput(['eoiCode'=>$request->eoiCode]);
         }
         $userR->active = true;
         $userR->activated_on = Carbon::now();
