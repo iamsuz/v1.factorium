@@ -67,7 +67,7 @@ Edit {!! $user->first_name !!} | @parent
 									<?php $dob_string = Null; ?>
 									@endif
 									<div class="col-sm-9">
-										{!! Form::input('date', 'date_of_birth', $dob_string , array('class'=>'form-control', 'tabindex'=>'8')) !!}
+										{!! Form::input('date', 'date_of_birth', $dob_string , array('class'=>'form-control', 'tabindex'=>'8', 'max'=>'2099-01-01')) !!}
 										{!! $errors->first('date_of_birth', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>

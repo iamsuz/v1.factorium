@@ -41,6 +41,7 @@ class UserRequest extends Request
                 'username'=>'max:255',
                 'email'=>'required|email|max:255',
                 'gender'=>'in:male,female|max:12',
+                'date_of_birth'=>'date_format:Y-m-d|before:today',
                 'phone_number'=>'min:10',
             ];
         }
