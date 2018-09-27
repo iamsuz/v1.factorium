@@ -529,7 +529,23 @@ Offer Doc
 										</div>
 										<br>
 									</div>
-
+									{{-- <center>
+										<h3>Choose type of Signature pad</h3>
+										<div class="btn-group project-progress-3way-switch text-center" data-toggle="buttons">
+											<label class="btn btn-default active ">
+												<input type="radio" name="signature_type" value="0"> Trackpad
+											</label>
+											<label class="btn btn-default ">
+												<input type="radio" name="signature_type" value="1"> Type...
+											</label>
+										</div>
+									</center> --}}
+									{{-- <br><br> --}}
+									{{-- <div class="row hidden">
+										<div class="col-md-8 col-md-offset-2">
+											<input type="text" name="signature_data" class="form-control" id="typeSignatureData" style="font-size: 100px;height: 100px;">
+										</div>
+									</div> --}}
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 
@@ -542,12 +558,12 @@ Offer Doc
 											$("#signatureClear").click(function (e) {
 												e.preventDefault();
 												$("#signature").jSignature("reset");
-											})
+											});
 											$("#signature").bind('change', function(e){
 												var svgData = $(this).jSignature("getData", "image");
 												$('#signature_data').val(svgData[1]);
 											});
-										})
+										});
 									</script>
 									<br><br>
 									<div class="row " id="11">
@@ -714,7 +730,9 @@ Offer Doc
     					var password = $('#loginPwdEoi').val();
     					$('#passwordOffer').val(password);
     					// $('#myform').submit();
+    					$('#offerEmail').removeAttr('disabled');
     					var offerData = $('#myform').serialize();
+    					$('#offerEmail').attr('disabled');
     					$('.loader-overlay').show();
     					$.ajax({
     						type: "POST",
@@ -754,7 +772,7 @@ Offer Doc
     						if(name.length == 0){
     							$('#RegPassword').after('<div class="red">Password is Required</div>');
     						}
-        				});
+    					});
     					var password = $('#RegPassword').val();
     					if(password.length == 0){
     						$('#RegPassword').after('<div class="red">Password is Required</div>');
