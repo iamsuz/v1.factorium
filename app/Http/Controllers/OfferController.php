@@ -122,7 +122,7 @@ class OfferController extends Controller
         }else{
             $investingAs = $request->investing_as;
         }
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy]);
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type]);
         $investor = InvestmentInvestor::get()->last();
         if($user->idDoc != NULL && $user->idDoc->investing_as != 'Individual Investor'){
             $investing_joint = new InvestingJoint;
