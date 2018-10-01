@@ -529,7 +529,7 @@ Offer Doc
 										</div>
 										<br>
 									</div>
-									{{-- <center>
+									<center>
 										<h3>Choose type of Signature pad</h3>
 										<div class="btn-group project-progress-3way-switch text-center" data-toggle="buttons">
 											<label class="btn btn-default active ">
@@ -539,13 +539,13 @@ Offer Doc
 												<input type="radio" name="signature_type" value="1"> Type...
 											</label>
 										</div>
-									</center> --}}
-									{{-- <br><br> --}}
-									{{-- <div class="row hidden">
+									</center>
+									<br><br>
+									<div class="row hidden">
 										<div class="col-md-8 col-md-offset-2">
 											<input type="text" name="signature_data" class="form-control" id="typeSignatureData" style="font-size: 100px;height: 100px;">
 										</div>
-									</div> --}}
+									</div>
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 
@@ -713,6 +713,9 @@ Offer Doc
 		return true;
 	}
 	$(document).ready(function(){
+		$('#myForm input[name=signature_type]').on('change', function() {
+			alert($('input[name=signature_type]:checked', '#myForm').val());
+		});
 		$("#myModal").on('shown.bs.modal', function(){
 			$(this).find('input[type="text"]').focus();
 		});
