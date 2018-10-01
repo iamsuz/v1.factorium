@@ -286,7 +286,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<label>Tax File Number</label>
-												<input type="text" class="form-control" name="tfn" placeholder="Tax File Number" @if($user->tfn) value="{{$user->tfn}}" @endif>
+												<input type="text" class="form-control" name="tfn" placeholder="Tax File Number (applicable to Australian investors only)" @if($user->tfn) value="{{$user->tfn}}" @endif>
 												<p><small>You are not required to provide your TFN, but in it being unavailable we will be required to withhold tax at the highest marginal rate of 49.5% </small></p><br>
 												<div class="row">
 													<div class="col-md-6">
