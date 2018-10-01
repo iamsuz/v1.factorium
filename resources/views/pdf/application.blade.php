@@ -12,8 +12,8 @@
 	hr{
 		width: 100% !important;
 	}
-	input[type=checkbox]:before { 
-		font-family: DejaVu Sans; 
+	input[type=checkbox]:before {
+		font-family: DejaVu Sans;
 	}
 	input[type=checkbox] { display: inline; }
 </style>
@@ -37,15 +37,15 @@
 	@if(!$investment->investing_as)
 		Individual Investor <br>
 	@endif
-	@if($investment->investing_as) 
+	@if($investment->investing_as)
 		@if($investment->investing_as == 'Individual Investor') Individual Investor <br>
-		@else 
-		@if($investment->investing_as == 'Joint Investor') Joint Investor <br> 
+		@else
+		@if($investment->investing_as == 'Joint Investor') Joint Investor <br>
 		@else
 		@if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor') Trust or Company <br>
 		@else
 		{{$investment->investing_as}}
-		@endif 
+		@endif
 		@endif
 		@endif
 	@endif
@@ -179,8 +179,12 @@
 	<br><br>
 	<div align="right">
 		<h4 align="right"><b>Signature &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></h4>
+		@if($investment->signature_type == 0)
 		@if($investment->signature_data)
 		<img src="data:image/png;base64,{!!$investment->signature_data!!}">
+		@endif
+		@else
+		<p style="font-size: 80px;height: 100px;font-family: cursive; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; ">{{$investment->signature_data_type}}</p>
 		@endif
 	</div>
 </div>
