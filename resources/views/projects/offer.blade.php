@@ -601,7 +601,7 @@ Offer Doc
 									</div>
 									<div class="row hidden" id="typeSignatureDiv">
 										<div class="col-md-8 col-md-offset-2">
-											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 100px;height: 100px;font-family: cursive; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; " disabled>
+											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 60px;height: 100px;font-family: cursive; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; " disabled>
 										</div>
 									</div>
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
