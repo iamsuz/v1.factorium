@@ -19,6 +19,66 @@ Offer Doc
 	display: inline;
 	vertical-align: middle;
 }
+.switch-field {
+	font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
+	padding: 40px;
+	overflow: hidden;
+}
+
+.switch-title {
+	margin-bottom: 6px;
+}
+
+.switch-field input {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+
+.switch-field label {
+	float: left;
+}
+
+.switch-field label {
+	display: inline-block;
+	width: 130px;
+	background-color: #e4e4e4;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 14px;
+	font-weight: normal;
+	text-align: center;
+	text-shadow: none;
+	padding: 6px 14px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition:    all 0.1s ease-in-out;
+	-ms-transition:     all 0.1s ease-in-out;
+	-o-transition:      all 0.1s ease-in-out;
+	transition:         all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+	cursor: pointer;
+}
+
+.switch-field input:checked + label {
+	background-color: #A5DC86;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+	border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+	border-radius: 0 4px 4px 0;
+}
 </style>
 <div class="loader-overlay hide" style="display: none;">
 	<div class="overlay-loader-image">
@@ -529,26 +589,23 @@ Offer Doc
 										</div>
 										<br>
 									</div>
-									<center>
-										<h3>Choose type of Signature pad</h3>
-										<div class="btn-group project-progress-3way-switch text-center" data-toggle="buttons">
-											<label class="btn btn-default active ">
-												<input type="radio" name="signature_type" value="0"> Trackpad
-											</label>
-											<label class="btn btn-default ">
-												<input type="radio" name="signature_type" value="1"> Type...
-											</label>
-										</div>
-									</center>
-									<br><br>
-									<div class="row hidden">
+									<div class="row text-center">
 										<div class="col-md-8 col-md-offset-2">
-											<input type="text" name="signature_data" class="form-control" id="typeSignatureData" style="font-size: 100px;height: 100px;">
+											<div class="switch-field">
+												<input type="radio" id="switch_left" name="signature_type" value="0" checked/>
+												<label for="switch_left">Draw to sign</label>
+												<input type="radio" id="switch_right" name="signature_type" value="1" />
+												<label for="switch_right">Type to sign</label>
+											</div>
+										</div>
+									</div>
+									<div class="row hidden" id="typeSignatureDiv">
+										<div class="col-md-8 col-md-offset-2">
+											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 100px;height: 100px;font-family: cursive; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; " disabled>
 										</div>
 									</div>
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
-
 									<div id="signature"><button class="btn pull-right" id="signatureClear">Clear</button></div>
 									<h4 class="text-center">Please Sign Here</h4>
 									<input type="hidden" name="signature_data" id="signature_data" value="">
@@ -713,11 +770,17 @@ Offer Doc
 		return true;
 	}
 	$(document).ready(function(){
-		$('#myForm input[name=signature_type]').on('change', function() {
-			alert($('input[name=signature_type]:checked', '#myForm').val());
+		$('#switch_right').click(function () {
+			$('#typeSignatureDiv').removeClass('hidden');
+			$('#signature').addClass('hidden');
+			$('#signature_data').prop('disabled',true);
+			$('#typeSignatureData').prop('disabled',false);
 		});
-		$("#myModal").on('shown.bs.modal', function(){
-			$(this).find('input[type="text"]').focus();
+		$('#switch_left').click(function () {
+			$('#signature').removeClass('hidden');
+			$('#typeSignatureDiv').addClass('hidden');
+			$('#signature_data').prop('disabled',false);
+			$('#typeSignatureData').prop('disabled',true);
 		});
 		$('#myform').submit(function(event) {
 			@if(Auth::guest())

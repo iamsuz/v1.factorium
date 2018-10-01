@@ -15,6 +15,7 @@ class AddColumnSignatureTypeToInvestmentInvestor extends Migration
         Schema::table('investment_investor', function (Blueprint $table)
         {
             $table->boolean('signature_type')->default(0);
+            $table->text('signature_data_type')->nullable();
         });
     }
 
@@ -28,6 +29,7 @@ class AddColumnSignatureTypeToInvestmentInvestor extends Migration
         Schema::table('investment_investor',function (Blueprint $table)
         {
             $table->dropColumn('signature_type');
+            $table->dropColumn('signature_data_type');
         });
     }
 }
