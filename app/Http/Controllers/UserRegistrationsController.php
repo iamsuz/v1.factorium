@@ -314,7 +314,12 @@ class UserRegistrationsController extends Controller
         $user->roles()->attach($role);
         $password = $oldPassword;
         $userReg->delete();
-        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        }
+        else {
+            $signup_konkrete = 100;
+        };
         if ($request->session()->has('ref')) {
             event(new \App\Events\UserReferred(request()->session()->get('ref'), $user));
         }else{
@@ -392,7 +397,12 @@ class UserRegistrationsController extends Controller
         $user = User::create($request->all());
         $time_now = Carbon::now();
         $user->roles()->attach($role);
-        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        }
+        else {
+            $signup_konkrete = 100;
+        };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
         $password = $userReg->password;
         if($userReg->eoi_project == NULL){
@@ -635,7 +645,12 @@ public function storeDetailsInvite(Request $request)
     $user = User::create($request->all());
     $time_now = Carbon::now();
     $user->roles()->attach($role);
-    $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+    if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+    }
+    else {
+        $signup_konkrete = 100;
+    };
     $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
 
     $invite = Invite::whereToken($request->token)->firstOrFail();

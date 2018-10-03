@@ -28,8 +28,20 @@ class RewardUser
     public function handle(UserReferred $event)
     {
         $referral = \App\ReferralLink::where('code',$event->referralId)->get()->first();
-        $referrer_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete;
-        $referee_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete) {
+            $referrer_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete;
+        }
+        else {
+            $referrer_konkrete = 200;
+        };
+
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete) {
+            $referee_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete;
+        }
+        else {
+            $referee_konkrete = 200;
+        };
+
         if (!is_null($referral)) {
             \App\ReferralRelationship::create(['referral_link_id' => $referral->id, 'user_id' => $event->user->id]);
 

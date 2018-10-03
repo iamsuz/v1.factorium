@@ -51,7 +51,12 @@ class SocialAccountService3
                 $roleText = 'investor';
                 $time_now = Carbon::now();
                 $user->roles()->attach($role);
-                $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+                if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+                    $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+                }
+                else {
+                    $signup_konkrete = 100;
+                };
                 $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency' => 'konkrete', 'project_site' => url()]);
                 // dd($credit);
                 // $password = $userReg->password;

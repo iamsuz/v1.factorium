@@ -67,7 +67,12 @@ class AuthController extends Controller
         $redirect_url = url().'/auth/facebook/callback';
         \Config::set('services.facebook.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('facebook')->user(),$mailer);
-        $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        }
+        else {
+            $daily_bonus_konkrete = 10;
+        };
         $loginBonus = 0;
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
@@ -111,7 +116,12 @@ class AuthController extends Controller
         \Config::set('services.linkedin.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('linkedin')->user(),$mailer);
         $loginBonus = 0;
-        $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        }
+        else {
+            $daily_bonus_konkrete = 10;
+        };
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
                 $loginBonus = rand(1, $daily_bonus_konkrete);          
@@ -150,7 +160,12 @@ class AuthController extends Controller
         \Config::set('services.twitter.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('twitter')->user(),$mailer);
         $loginBonus = 0;
-        $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        }
+        else {
+            $daily_bonus_konkrete = 10;
+        };
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
                 $loginBonus = rand(1, $daily_bonus_konkrete);          
@@ -188,7 +203,12 @@ class AuthController extends Controller
         \Config::set('services.google.redirect',$redirect_url);
         $user = $service->createOrGetUser(Socialite::driver('google')->user(),$mailer);
         $loginBonus = 0;
-        $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+        }
+        else {
+            $daily_bonus_konkrete = 10;
+        };
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
                 $loginBonus = rand(1, $daily_bonus_konkrete);          

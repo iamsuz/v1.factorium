@@ -202,7 +202,12 @@ class DashboardController extends Controller
         $user->idDoc->update(['verified'=>$request->status]);
         $user->idDoc()->get()->last()->update(['verified'=>$request->status, 'id_comment'=>$request->fixing_message, 'joint_id_comment'=>$request->fixing_message_for_id]);
         $idimages = $user->idDoc()->get()->last();
-        $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+            $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete;
+        }
+        else {
+            $kyc_approval_konkrete = 200;
+        };
 
         if($request->status == '1') {
             $invitee = Invite::whereEmail($user->email)->first();
