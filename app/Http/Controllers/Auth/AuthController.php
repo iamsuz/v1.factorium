@@ -71,7 +71,7 @@ class AuthController extends Controller
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         }
         else {
-            $daily_bonus_konkrete = 10;
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
         };
         $loginBonus = 0;
         if($user->last_login){
@@ -120,7 +120,7 @@ class AuthController extends Controller
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         }
         else {
-            $daily_bonus_konkrete = 10;
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
         };
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
@@ -164,7 +164,7 @@ class AuthController extends Controller
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         }
         else {
-            $daily_bonus_konkrete = 10;
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
         };
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          
@@ -207,7 +207,7 @@ class AuthController extends Controller
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         }
         else {
-            $daily_bonus_konkrete = 10;
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
         };
         if($user->last_login){
             if(!$user->last_login->gt(\Carbon\Carbon::now()->subDays(1))){          

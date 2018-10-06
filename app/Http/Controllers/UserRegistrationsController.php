@@ -318,7 +318,7 @@ class UserRegistrationsController extends Controller
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
         }
         else {
-            $signup_konkrete = 100;
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
         if ($request->session()->has('ref')) {
             event(new \App\Events\UserReferred(request()->session()->get('ref'), $user));
@@ -401,7 +401,7 @@ class UserRegistrationsController extends Controller
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
         }
         else {
-            $signup_konkrete = 100;
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
         $password = $userReg->password;
@@ -649,7 +649,7 @@ public function storeDetailsInvite(Request $request)
         $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
     }
     else {
-        $signup_konkrete = 100;
+        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
     };
     $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
 

@@ -612,9 +612,9 @@ class UsersController extends Controller
             $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete;
         }
         else {
-            $kyc_upload_konkrete = 200;
+            $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->kyc_upload_konkrete;
         };
-        $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete;
+
         if(!$user->idDoc){
             $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete', 'project_site' => url()]);
         }

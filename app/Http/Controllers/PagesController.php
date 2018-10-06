@@ -86,6 +86,24 @@ class PagesController extends Controller
 
         $BannerCities = ['Adelaide', 'Auckland', 'Brisbane', 'Canberra', 'Darwin', 'Hobart', 'Melbourne', 'Perth', 'Sydney'];
         $siteConfiguration = SiteConfiguration::all();
+
+        $ebConfiguration = $siteConfiguration->where('project_site','https://estatebaron.com')->first();
+        //Create configuration variable for settings from estatebaron site
+        if(!$ebConfiguration)
+        {
+            $ebConfiguration = new SiteConfiguration;
+            $ebConfiguration->project_site = 'https://estatebaron.com';
+            $ebConfiguration->daily_login_bonus_konkrete = '10';
+            $ebConfiguration->user_sign_up_konkrete = '100';
+            $ebConfiguration->kyc_upload_konkrete = '200';
+            $ebConfiguration->kyc_approval_konkrete = '200';
+            $ebConfiguration->referrer_konkrete = '200';
+            $ebConfiguration->referee_konkrete = '200';
+            $ebConfiguration->save();
+            $ebConfiguration = SiteConfiguration::all();
+            $ebConfiguration = $ebConfiguration->where('project_site', 'https://estatebaron.com')->first();
+        }
+        
         $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
         if(!$siteConfiguration)
         {
@@ -96,9 +114,10 @@ class PagesController extends Controller
             $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
             // dd($siteConfiguration);
         }
+        
         $testimonials = Testimonial::where('project_site', url())->get();
         $isiosDevice = stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'iphone');
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration'));
     }
 
     /**

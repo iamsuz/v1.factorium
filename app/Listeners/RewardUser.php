@@ -32,14 +32,14 @@ class RewardUser
             $referrer_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete;
         }
         else {
-            $referrer_konkrete = 200;
+            $referrer_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referrer_konkrete;
         };
 
         if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete) {
             $referee_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete;
         }
         else {
-            $referee_konkrete = 200;
+            $referee_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referee_konkrete;
         };
 
         if (!is_null($referral)) {
@@ -52,8 +52,8 @@ class RewardUser
                 // $provider->addCredits(15);
                 // User who used the link
                 $user = $event->user;
-                $credit = Credit::create(['user_id'=>$referral->user->id, 'amount'=>$referrer_konkrete, 'type'=>'referred '.$user->first_name.' for sign up','currency'=>'konkrete']);
-                $credit = Credit::create(['user_id'=>$event->user->id, 'amount'=>$referee_konkrete, 'type'=>'referred by '.$referral->user->first_name.' sign up','currency'=>'konkrete']);
+                $credit = Credit::create(['user_id'=>$referral->user->id, 'amount'=>$referrer_konkrete, 'type'=>'referred '.$user->first_name.' for sign up','currency'=>'konkrete', 'project_site'=>url()]);
+                $credit = Credit::create(['user_id'=>$event->user->id, 'amount'=>$referee_konkrete, 'type'=>'referred by '.$referral->user->first_name.' sign up', 'currency'=>'konkrete', 'project_site'=>url()]);
                 // $user->addCredits(20);
             }
 

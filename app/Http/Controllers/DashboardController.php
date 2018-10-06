@@ -206,7 +206,7 @@ class DashboardController extends Controller
             $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete;
         }
         else {
-            $kyc_approval_konkrete = 200;
+            $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->kyc_approval_konkrete;
         };
 
         if($request->status == '1') {
