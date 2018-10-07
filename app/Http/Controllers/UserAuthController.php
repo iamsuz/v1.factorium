@@ -355,7 +355,7 @@ class UserAuthController extends Controller
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         }
         else {
-            daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
+            $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
         };
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             if(Auth::user()->last_login){
