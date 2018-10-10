@@ -276,9 +276,10 @@ class UserRegistrationsController extends Controller
 
     public function resend_activation_link(Request $request, AppMailer $mailer)
     {
+        $ref = false;
         $email = $request->email;
         $user = UserRegistration::whereEmail($email)->firstOrFail();
-        $mailer->sendRegistrationConfirmationTo($user);
+        $mailer->sendRegistrationConfirmationTo($user,$ref);
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully resent an activation link.</p>');
     }
 
