@@ -1093,7 +1093,7 @@ class DashboardController extends Controller
     public function kycRequests()
     {
         $color = Color::where('project_site',url())->first();
-        $kycRequests = IdDocument::groupBy('user_id')->get();
+        $kycRequests = IdDocument::groupBy('user_id')->get()->where('registration_site',url());
         return view('dashboard.requests.kycRequest',compact('kycRequests','color'));
     }
 }
