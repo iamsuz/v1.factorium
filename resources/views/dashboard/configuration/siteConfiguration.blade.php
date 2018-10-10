@@ -711,14 +711,22 @@ Configuration | Dashboard | @parent
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="daily_login_bonus" style="text-align: left;" class="pull-left">Daily Login Bonus:</label>
-                                {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'1', 'title'=>'Enter konkrete amount for daily login bonus')) !!}
+                                @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete)
+                                    {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'1', 'title'=>'Enter konkrete amount for daily login bonus')) !!}
+                                @else
+                                    {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'1', 'title'=>'Enter konkrete amount for daily login bonus')) !!}
+                                @endif
                                 <br>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="user_sign_up" style="text-align: left;" class="pull-left">User Sign Up:</label>
-                                {!! Form::input('number', 'user_sign_up_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete, array('placeholder'=>'Enter konkrete amount for user sign up', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'user_sign_up', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for user sign up')) !!}
+                                @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete)
+                                    {!! Form::input('number', 'user_sign_up_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete, array('placeholder'=>'Enter konkrete amount for user sign up', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'user_sign_up', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for user sign up')) !!}
+                                @else
+                                    {!! Form::input('number', 'user_sign_up_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete, array('placeholder'=>'Enter konkrete amount for user sign up', 'class'=>'form-control ', 'tabindex'=>'2', 'id'=>'user_sign_up', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for user sign up')) !!}
+                                @endif
                                 <br>
                             </div>
                         </div>
@@ -730,19 +738,31 @@ Configuration | Dashboard | @parent
                             </div> --}}
                             <div class="col-md-12">
                                 <label for="kyc_approval" style="text-align: left;" class="pull-left">KYC Approval:</label>
-                                {!! Form::input('number', 'kyc_approval_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC approval', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'kyc_approval', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC approval')) !!}
+                                @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete)
+                                    {!! Form::input('number', 'kyc_approval_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC approval', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'kyc_approval', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC approval')) !!}
+                                @else
+                                    {!! Form::input('number', 'kyc_approval_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->kyc_approval_konkrete, array('placeholder'=>'Enter konkrete amount given on KYC approval', 'class'=>'form-control ', 'tabindex'=>'4', 'id'=>'kyc_approval', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount given on KYC approval')) !!}
+                                @endif
                                 <br>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="referral" style="text-align: left;" class="pull-left">Referrer:</label>
-                                {!! Form::input('number', 'referrer_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete, array('placeholder'=>'Enter konkrete amount for referrer', 'class'=>'form-control ', 'tabindex'=>'5', 'id'=>'referral', 'required' => 'required', 'title'=>'Enter konkrete amount for referrer')) !!}
+                                @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete)
+                                    {!! Form::input('number', 'referrer_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete, array('placeholder'=>'Enter konkrete amount for referrer', 'class'=>'form-control ', 'tabindex'=>'5', 'id'=>'referral', 'required' => 'required', 'title'=>'Enter konkrete amount for referrer')) !!}
+                                @else
+                                    {!! Form::input('number', 'referrer_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referrer_konkrete, array('placeholder'=>'Enter konkrete amount for referrer', 'class'=>'form-control ', 'tabindex'=>'5', 'id'=>'referral', 'required' => 'required', 'title'=>'Enter konkrete amount for referrer')) !!}
+                                @endif
                                 <br>
                             </div>
                             <div class="col-md-6">
                                 <label for="referee" style="text-align: left;" class="pull-left">Referee:</label>
-                                {!! Form::input('number', 'referee_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete, array('placeholder'=>'Enter konkrete amount for referee', 'class'=>'form-control ', 'tabindex'=>'6', 'id'=>'referral', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for referee')) !!}
+                                @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete)
+                                    {!! Form::input('number', 'referee_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete, array('placeholder'=>'Enter konkrete amount for referee', 'class'=>'form-control ', 'tabindex'=>'6', 'id'=>'referral', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for referee')) !!}
+                                @else
+                                    {!! Form::input('number', 'referee_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referee_konkrete, array('placeholder'=>'Enter konkrete amount for referee', 'class'=>'form-control ', 'tabindex'=>'6', 'id'=>'referral', 'required' => 'required', 'min'=>'1', 'title'=>'Enter konkrete amount for referee')) !!}
+                                @endif
                                 <br>
                             </div>
                         </div>
