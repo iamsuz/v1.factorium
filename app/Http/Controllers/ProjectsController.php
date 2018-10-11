@@ -177,7 +177,23 @@ class ProjectsController extends Controller
         $investmentDetails->fund_raising_close_date = Carbon::now()->addDays(30)->toDateTimeString();
         $investmentDetails->project_site = url();
         $investmentDetails->save();
+        $projectConfiguration = ProjectConfiguration::all();
+        $projectConfiguration = $projectConfiguration->where('project_id', $project->id)->first();
+        if(!$projectConfiguration)
+        {
+            $projectConfiguration = new ProjectConfiguration;
+            $projectConfiguration->project_id = $project->id;
+            $projectConfiguration->save();
+        }
 
+        $projectConfigurationPartial = ProjectConfigurationPartial::all();
+        $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $project->id)->first();
+        if(!$projectConfigurationPartial)
+        {
+            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial->project_id = $project->id;
+            $projectConfigurationPartial->save();
+        }
         $mailer->sendProjectSubmit($user, $project);
         return redirect()->route('projects.confirmation', $project)->withMessage('<p class="alert alert-success text-center">Successfully Added New Project.</p>');
     }
