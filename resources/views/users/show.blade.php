@@ -182,7 +182,7 @@
 								@endforelse
 								<center>
 									<small class="wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:1.2em;">
-									Share this link with your friends and for every user who signs up using this link we will give you {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete}} and the referred user </br> {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete}}
+									Share this link with your friends and for every user who signs up using this link we will give you @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete}}@else{{App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referrer_konkrete}}@endif and the referred user </br> @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete;){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete}}@else{{App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referee_konkrete}}@endif
 									<a href="https://konkrete.io" target="_blank" > KONKRETE </a> cryptotokens each
 								</small>
 							</center>
