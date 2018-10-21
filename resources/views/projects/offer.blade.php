@@ -90,7 +90,7 @@ Offer Doc
 		<div class="col-md-12">
 			<div style="display:block;margin:0;padding:0;border:0;outline:0;color:#000!important;vertical-align:baseline;width:100%;">
 				<div class="row">
-					<div class="col-md-7 investment-gform" id="offer_frame" style="border-right: 11px solid #F1F1F1;">
+					<div class="col-md-12 investment-gform" id="offer_frame" style="border-right: 11px solid #F1F1F1;">
 						<div class="row">
 							<div class="col-md-offset-1 col-md-10" ><br>
 								@if ($errors->has())
@@ -640,7 +640,7 @@ Offer Doc
 					</div>
 
 					@if ($project->show_download_pdf_page)
-					<div class="col-md-5">
+					<div class="col-md-5 hide">
 						<br>
 						<!-- <p class="" style="font-size:1em;color:#282a73;">Please read the following PDS and Financial Services
 							Guide carefully and when you are ready to invest, fill the application form electronically and transfer your funds to the following account
@@ -752,6 +752,9 @@ Offer Doc
 		<p style="color:#000;"><b><span id="numberofpeople"></span></b> people reading this offer document right now!</p>
 	</div>
 </section> -->
+@if($project->investment)
+@include('projects.offer.terms')
+@endif
 @if(Auth::guest())
 @include('partials.loginModal');
 @include('partials.registerModal');
@@ -770,6 +773,10 @@ Offer Doc
 		return true;
 	}
 	$(document).ready(function(){
+		$('#myTermsModal').modal({
+			backdrop: 'static',
+			keyboard: false
+		})
 		$('#switch_right').click(function () {
 			$('#typeSignatureDiv').removeClass('hidden');
 			$('#signature').addClass('hidden');

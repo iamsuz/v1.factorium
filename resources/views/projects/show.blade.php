@@ -1952,6 +1952,9 @@
 		</div>
 	</div>
 </div>
+@if($project->investment)
+@include('projects.offer.terms')
+@endif
 @stop
 @section('js-section')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
@@ -2015,7 +2018,10 @@
 </script>
 <script>
 	$(function () {
-
+		$('.download-prospectus-btn').click(function (e) {
+			e.preventDefault();
+			$('#myTermsModal').modal('show');
+		});
 		var minimized_elements = $('p.minimize');
 		minimized_elements.each(function(){
 			var t = $(this).text();
@@ -2035,7 +2041,7 @@
 		});
 		$('.item').first().addClass('active');
 		$('.carousel-indicators > li').first().addClass('active');
-		var daysPassedCheck=0;
+		var daysPassedCheck = 0;
 		@if($project->investment && $project->investment->fund_raising_close_date)
 		fund_close_date = new Date({{date('Y,m-1,d', strtotime($project->investment->fund_raising_close_date))}});
 		var now = new Date();
