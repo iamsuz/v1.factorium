@@ -9,8 +9,6 @@ Offer Doc
 
 @section('css-section')
 @parent
-@stop
-@section('content-section')
 <style type="text/css">
 .check1{
 	padding: 2px !important;
@@ -79,7 +77,20 @@ Offer Doc
 .switch-field label:last-of-type {
 	border-radius: 0 4px 4px 0;
 }
+@media screen and (max-width: 768px) {
+	#terms_accepted_button{
+		font-size: 12px;
+	}
+}
+@media screen and (max-width: 320px){
+	#terms_accepted_button{
+		font-size: 10px;
+	}
+}
 </style>
+@stop
+@section('content-section')
+
 <div class="loader-overlay hide" style="display: none;">
 	<div class="overlay-loader-image">
 		<img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
@@ -123,9 +134,10 @@ Offer Doc
 									<div class="row" id="section-1">
 										<div class="col-md-12">
 											<div>
-												<label class="form-label">Project SPV Name</label><br>
-												<input class="form-control" type="text" name="project_spv_name" placeholder="Project SPV Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" disabled @endif >
-												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5>
+												<label class="form-label">Project Name</label><br>
+												<input class="form-control" type="text" name="project_spv_name" placeholder="Project Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" disabled @endif >
+												{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
+												<br>
 												<p>
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 												</p>

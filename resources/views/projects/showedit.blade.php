@@ -220,7 +220,7 @@
 							<div class="col-md-3 text-left">
 								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
 								<span style="font-size:1.7em;" class="project-pds1-link-field">
-									<input type="text" name="project_prospectus_txt" class="form-control" value="{{$project->project_prospectus_text}}" style="font-size: 25px;" placeholder="Title" data-toggle="tooltip" title="This will replace all instances of Prospectus with the word you type for that particular project"><input type="text" name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>
+									<input type="text" name="project_prospectus_txt" class="form-control" value="{{$project->project_prospectus_text}}" style="font-size: 25px;" placeholder="Title" data-toggle="tooltip" title="This will replace all instances of Prospectus with the word you type for that particular project"><textarea name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>@if(Auth::check()) @if($project->investment){{$project->investment->PDS_part_1_link}}@endif @endif</textarea>
 								</span>
 							</div>
 						</div>
