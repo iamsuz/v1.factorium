@@ -541,10 +541,10 @@
                                 <!-- <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage"> -->
 
                                 <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
-                                <img src="https://monthly.estatebaron.com/assets/images/email/1_email_prog.png" style="display:block" width="100%" height="100%" />
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
+                                {{-- <img src="https://monthly.estatebaron.com/assets/images/email/1_email_prog.png" style="display:block" width="100%" height="100%" /> --}}
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 1px solid black;max-width: 600px !important;">
                                   <tbody>
-                                    <tr>
+                                    {{-- <tr>
                                       <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;">Application received</p>
                                         <p style="text-align: center; color: #959595;">{{$investment->created_at->format('F j, Y')}}</p> </td>
                                         <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff;"">Application approval</p>
@@ -557,8 +557,34 @@
                                           </tbody>
                                         </table>
                                       </td>
-                                    </tr>
-                                  </tbody></table>
+                                    </tr> --}}
+                                              <tr>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: black;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #fff; font-weight: bold;">Application received</p>
+                                               </td>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">Application approval</p>
+                                                </td>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">Funds received</p>
+                                                </td>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">@if($project->share_vs_unit) Shares @else Units @endif not issued</p>
+                                                </td>
+                                              </tr>
+
+                                              <tr style="border: 1px solid #000;">
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="text-align: center; color: #000;"><i>{{$investment->created_at->format('F j, Y')}}</i></p>
+                                                </td>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="text-align: center;  color: #000;"><i>in progress</i></p>
+                                                </td>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="text-align: center;  color: #000;"></p>
+                                                </td>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="text-align: center;  color: #000;"></p>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                  </tbody>
+                                </table>
                                 </td>
                               </tr>
                             </tbody>
