@@ -24,34 +24,44 @@
 {!! Html::style('/assets/plugins/summernote/summernote.css') !!}
 @parent
 <style>
-	#map {
-		height: 350px;
+#map {
+	height: 350px;
+}
+.blur {
+	color: transparent;
+	text-shadow: 0 0 5px rgba(0,0,0,0.9);
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+}
+.btn-hover-default-color:hover{
+	color: #000 !important;
+}
+.edit-pencil-style{
+	padding: 6px 7px;
+	border: 2px solid #fff;
+	border-radius: 50px;
+	color: #fff;
+	cursor: pointer;
+}
+.btn-n1 {
+	color: white;
+}
+.btn-n1:hover {
+	color: black;
+}
+@media screen and (max-width: 768px) {
+	#terms_accepted_button{
+		font-size: 12px;
 	}
-	.blur {
-		color: transparent;
-		text-shadow: 0 0 5px rgba(0,0,0,0.9);
-		-webkit-filter: blur(5px);
-		-moz-filter: blur(5px);
-		-o-filter: blur(5px);
-		-ms-filter: blur(5px);
-		filter: blur(5px);
+}
+@media screen and (max-width: 320px){
+	#terms_accepted_button{
+		font-size: 10px;
 	}
-	.btn-hover-default-color:hover{
-		color: #000 !important;
-	}
-	.edit-pencil-style{
-	    padding: 6px 7px;
-	    border: 2px solid #fff;
-	    border-radius: 50px;
-	    color: #fff;
-	    cursor: pointer;
-	}
-	.btn-n1 {
-		color: white;
-	}
-	.btn-n1:hover {
-		color: black;
-	}
+}
 </style>
 @stop
 
@@ -116,22 +126,22 @@
 					{{-- <div class="col-md-4 col-md-offset-4 col-sm-6 text-center project-close-date-field"></div> --}}
 					<div class="col-md-4 col-md-offset-3 col-sm-6">
 						@if(Auth::guest())
-			            @else
-			            @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-			            <div class="edit-button-style edit-project-progress-circle-img" style="z-index: 10; position: absolute;" action="project_progress_circle_image" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Upload Project Progress Circle Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
-			            <input class="hide" type="file" name="project_progress_circle_image" id="project_progress_circle_image">
-        				<input type="hidden" name="project_progress_circle_image_name" id="project_progress_circle_image_name">
-        				@endif
-			            @endif
+						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<div class="edit-button-style edit-project-progress-circle-img" style="z-index: 10; position: absolute;" action="project_progress_circle_image" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Upload Project Progress Circle Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+						<input class="hide" type="file" name="project_progress_circle_image" id="project_progress_circle_image">
+						<input type="hidden" name="project_progress_circle_image_name" id="project_progress_circle_image_name">
+						@endif
+						@endif
 
-			            @if($project->projectconfiguration->show_project_progress_image)
-			            @if($project->media->where('type', 'project_progress_circle_image')->count())
-			            <div>
+						@if($project->projectconfiguration->show_project_progress_image)
+						@if($project->media->where('type', 'project_progress_circle_image')->count())
+						<div>
 							<center><img src="{{asset($project->media->where('type', 'project_progress_circle_image')->last()->path)}}" style="position:relative;max-height: 200px; max-width: 100%;"></center>
-			            </div>
-			            @endif
-			            @elseif($project->projectconfiguration->show_project_progress_circle)
-			            <div id="circle" class="days-left-circle">
+						</div>
+						@endif
+						@elseif($project->projectconfiguration->show_project_progress_circle)
+						<div id="circle" class="days-left-circle">
 							<div class="text-center" style="color:#fff">
 								<div class="circle" data-size="140" data-thickness="15" data-reverse="true" style="max-height: 140px;">
 									<div class="text-center"  style="color:#fff; position:relative; bottom:100px;">
@@ -144,18 +154,18 @@
 								</div>
 							</div>
 						</div>
-			            @else
-			            @endif
+						@else
+						@endif
 
 						@if(Auth::guest())
 						@else
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="text-center">
 							<div class="btn-group btn-radio project-progress-3way-switch">
-							    <button type="button" class="btn btn-default btn-sm @if($project->projectconfiguration->show_project_progress_image) active @endif" action="project_progress_image">Image</button>
-							    <button type="button" class="btn btn-default btn-sm @if(!$project->projectconfiguration->show_project_progress_image && !$project->projectconfiguration->show_project_progress_circle) active @endif" action="off">OFF</button>
-							    <button type="button" class="btn btn-default btn-sm @if(!$project->projectconfiguration->show_project_progress_image && $project->projectconfiguration->show_project_progress_circle) active @endif" action="project_progress_circle">Circle</button>
-						  	</div>
+								<button type="button" class="btn btn-default btn-sm @if($project->projectconfiguration->show_project_progress_image) active @endif" action="project_progress_image">Image</button>
+								<button type="button" class="btn btn-default btn-sm @if(!$project->projectconfiguration->show_project_progress_image && !$project->projectconfiguration->show_project_progress_circle) active @endif" action="off">OFF</button>
+								<button type="button" class="btn btn-default btn-sm @if(!$project->projectconfiguration->show_project_progress_image && $project->projectconfiguration->show_project_progress_circle) active @endif" action="project_progress_circle">Circle</button>
+							</div>
 						</div>
 						@endif
 						@endif
@@ -166,101 +176,101 @@
 					<div class="col-md-5">
 						<div class="" style="color:#fff;">
 							@if($project->investment)
-								@if(Auth::guest())
-								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-								<div class="text-center" style="margin-left: -9em;">
-									<input type="checkbox" class="toggle-elements" action="duration" autocomplete="off" data-label-text="Duration" data-size="mini" @if($project->projectconfiguration->show_duration) checked value="1" @else value="0" @endif>
-								</div>
-								@endif
-								@endif
-							<div class="row text-left">
-								<div class="col-md-3 col-sm-3 col-xs-6" style="@if($project->projectconfiguration->show_duration || $project->projectconfiguration->show_expected_return || $project->projectconfiguration->show_project_investor_count) border-right: thin solid #ffffff; @endif>
-									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{number_format((int)$project->investment->minimum_accepted_amount)}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-6 duration" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-right: thin solid #ffffff;>
-									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
-								</div>
-
-								@if(Auth::guest())
-								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-								<div class="text-center">
-									<input type="checkbox" class="toggle-elements" action="expected_return" autocomplete="off" data-label-text="ExpectedReturn" data-size="mini" @if($project->projectconfiguration->show_expected_return) checked value="1" @else value="0" @endif>
-								</div>
-								@endif
-								@endif
-								<div class="col-md-3 col-sm-3 col-xs-6 expected_return" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif @if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif ">
-									<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4>
-									<h6 class="font-regular @if(Auth::guest()) @else @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) edit-project-page-labels @endif @endif" style="font-size: 0.875em;color: #fff" effect="expected_return_label_text">{{$project->projectconfiguration->expected_return_label_text}}</h6>
-								</div>
-
-								<div class="col-md-3 col-sm-3 col-xs-6 project_investor_count" @if(!$project->projectconfiguration->show_project_investor_count) style="display:none;" @endif>
-									<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
-										@if($project->investment) {{$number_of_investors}} @else ### @endif
-									</h4>
-									<h6 class="font-regular" style="font-size: 0.875em;color: #fff">Investors</h6>
-								</div>
-								@if(Auth::guest())
-								@else
-								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-								<div class="text-right">
-									<input type="checkbox" class="toggle-elements" action="project_investor_count" autocomplete="off" data-label-text="InvestorCount" data-size="mini" @if($project->projectconfiguration->show_project_investor_count) checked value="1" @else value="0" @endif>
-								</div>
-								@endif
-								@endif
+							@if(Auth::guest())
+							@else
+							@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+							<div class="text-center" style="margin-left: -9em;">
+								<input type="checkbox" class="toggle-elements" action="duration" autocomplete="off" data-label-text="Duration" data-size="mini" @if($project->projectconfiguration->show_duration) checked value="1" @else value="0" @endif>
 							</div>
 							@endif
+							@endif
+							<div class="row text-left">
+								<div class="col-md-3 col-sm-3 col-xs-6" style="@if($project->projectconfiguration->show_duration || $project->projectconfiguration->show_expected_return || $project->projectconfiguration->show_project_investor_count) border-right: thin solid #ffffff; @endif>
+								<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff;">${{number_format((int)$project->investment->minimum_accepted_amount)}}</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-6 duration" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-right: thin solid #ffffff;>
+							<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">{{$project->investment->hold_period}}</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
 						</div>
 
-						<div class="project-progress-section" style="@if(!$project->projectconfiguration->show_project_progress) display: none; @endif">
-							<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
-								<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
-								</div>
-							</div>
-							<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
-								@if($project->investment)
-								${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
-								@endif
-							</span>
+						@if(Auth::guest())
+						@else
+						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+						<div class="text-center">
+							<input type="checkbox" class="toggle-elements" action="expected_return" autocomplete="off" data-label-text="ExpectedReturn" data-size="mini" @if($project->projectconfiguration->show_expected_return) checked value="1" @else value="0" @endif>
+						</div>
+						@endif
+						@endif
+						<div class="col-md-3 col-sm-3 col-xs-6 expected_return" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif @if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif ">
+							<h4 class="font-bold project-returns-field" style="font-size:1.375em;color:#fff;">{{$project->investment->projected_returns}}%</h4>
+							<h6 class="font-regular @if(Auth::guest()) @else @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) edit-project-page-labels @endif @endif" style="font-size: 0.875em;color: #fff" effect="expected_return_label_text">{{$project->projectconfiguration->expected_return_label_text}}</h6>
+						</div>
+
+						<div class="col-md-3 col-sm-3 col-xs-6 project_investor_count" @if(!$project->projectconfiguration->show_project_investor_count) style="display:none;" @endif>
+							<h4 class="text-left font-bold" style="font-size:1.375em;color:#fff; ">
+								@if($project->investment) {{$number_of_investors}} @else ### @endif
+							</h4>
+							<h6 class="font-regular" style="font-size: 0.875em;color: #fff">Investors</h6>
 						</div>
 						@if(Auth::guest())
 						@else
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 						<div class="text-right">
-							<input type="checkbox" class="project-progress-switch" autocomplete="off" data-label-text="ShowProgress" data-size="mini" @if($project->projectconfiguration->show_project_progress) checked value="1" @else value="0" @endif>
+							<input type="checkbox" class="toggle-elements" action="project_investor_count" autocomplete="off" data-label-text="InvestorCount" data-size="mini" @if($project->projectconfiguration->show_project_investor_count) checked value="1" @else value="0" @endif>
 						</div>
 						@endif
 						@endif
 					</div>
-					<div class="col-md-4 col-md-offset-3 project-invest-button-field" style="margin-top:0%;" id="express_interest">
-						<br>
-						@if($project->investment)
-						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
-							@if($project->is_funding_closed)
-							Funding Closed
-							@elseif($project->button_label)
-							<?php echo $project->button_label; ?>
-							@else
-							Invest Now
-							@endif
-						</b></a>
-						<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
-						@else
-						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
-						@endif
-						@if(Auth::guest())
-						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<div class="text-center hide" >
-							<input type="checkbox" class="project-payment-switch" action="payment_switch" autocomplete="off" data-label-text="PaymentMethod" data-size="mini" @if($project->projectconfiguration->payment_switch) checked value="1" @else value="0" @endif>
-						</div>
-						@endif
-						@endif
-					</div>
+					@endif
 				</div>
+
+				<div class="project-progress-section" style="@if(!$project->projectconfiguration->show_project_progress) display: none; @endif">
+					<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc; margin: 10px 0 20px;">
+						<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+						</div>
+					</div>
+					<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
+						@if($project->investment)
+						${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">{{number_format($project->investment->goal_amount)}}</span>
+						@endif
+					</span>
+				</div>
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-right">
+					<input type="checkbox" class="project-progress-switch" autocomplete="off" data-label-text="ShowProgress" data-size="mini" @if($project->projectconfiguration->show_project_progress) checked value="1" @else value="0" @endif>
+				</div>
+				@endif
+				@endif
 			</div>
-			<!-- 			<div class="offer-doclink"></div> -->
+			<div class="col-md-4 col-md-offset-3 project-invest-button-field" style="margin-top:0%;" id="express_interest">
+				<br>
+				@if($project->investment)
+				<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px; border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+					@if($project->is_funding_closed)
+					Funding Closed
+					@elseif($project->button_label)
+					<?php echo $project->button_label; ?>
+					@else
+					Invest Now
+					@endif
+				</b></a>
+				<h6><small style="font-size:0.85em; color:#fff;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
+				@else
+				<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+				@endif
+				@if(Auth::guest())
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+				<div class="text-center hide" >
+					<input type="checkbox" class="project-payment-switch" action="payment_switch" autocomplete="off" data-label-text="PaymentMethod" data-size="mini" @if($project->projectconfiguration->payment_switch) checked value="1" @else value="0" @endif>
+				</div>
+				@endif
+				@endif
+			</div>
+		</div>
+	</div>
+	<!-- 			<div class="offer-doclink"></div> -->
 <!-- 			@if(Auth::guest())
 			@else
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -316,24 +326,24 @@
 			@endif
 			@endif
 			@if(Auth::guest())
-				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs || !$project->projectconfiguration->show_downloads_section && count($project->documents->where('type','reference_document')->where('project_site', url()))==0) display: none; @endif">
-			@else
-			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs || !$project->projectconfiguration->show_downloads_section && count($project->documents->where('type','reference_document')->where('project_site', url()))==0) display: none; @endif">
+				@else
+				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 				<div class="row" style="background-color:#E6E6E6;">
-			@else
-				<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs || !$project->projectconfiguration->show_downloads_section && count($project->documents->where('type','reference_document')->where('project_site', url()))==0) display: none; @endif">
-			@endif
-			@endif
-				<div class="col-md-10 col-md-offset-1">
-					<div class="downloads_section" @if(!$project->projectconfiguration->show_downloads_section) style="display: none;" @endif>
-						<h2 class="download-text first_color">Downloads</h2><br>
-						<div class="row">
-							<div class="col-md-3 text-left">
-								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
-								<span style="font-size:1.7em;" class="project-pds1-link-field">
-									<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
-								</span>
-							</div>
+					@else
+					<div class="row" style="background-color:#E6E6E6; @if(!$project->projectconfiguration->show_downloads_section && !$project->projectconfiguration->show_reference_docs || !$project->projectconfiguration->show_downloads_section && count($project->documents->where('type','reference_document')->where('project_site', url()))==0) display: none; @endif">
+						@endif
+						@endif
+						<div class="col-md-10 col-md-offset-1">
+							<div class="downloads_section" @if(!$project->projectconfiguration->show_downloads_section) style="display: none;" @endif>
+								<h2 class="download-text first_color">Downloads</h2><br>
+								<div class="row">
+									<div class="col-md-3 text-left">
+										<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
+										<span style="font-size:1.7em;" class="project-pds1-link-field">
+											<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
+										</span>
+									</div>
 
 								<!-- <div class="col-md-3 text-left">
 								<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="30" style="position: initial;">
@@ -466,12 +476,12 @@
 </div>
 </section> -->
 @if(Auth::guest())
-	@if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs && count($project->documents->where('type','reference_document')->where('project_site', url()))!==0)@if(!$project->eoi_button)<br>@endif @endif
+@if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs && count($project->documents->where('type','reference_document')->where('project_site', url()))!==0)@if(!$project->eoi_button)<br>@endif @endif
 @else
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-	@if(!$project->eoi_button)<br>@endif
+@if(!$project->eoi_button)<br>@endif
 @else
-    @if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs && count($project->documents->where('type','reference_document')->where('project_site', url()))!==0)@if(!$project->eoi_button)<br>@endif @endif
+@if($project->projectconfiguration->show_downloads_section || $project->projectconfiguration->show_reference_docs && count($project->documents->where('type','reference_document')->where('project_site', url()))!==0)@if(!$project->eoi_button)<br>@endif @endif
 @endif
 @endif
 <ul class="nav nav-tabs text-center">
@@ -1441,76 +1451,76 @@
 @endif
 <section>
 	<div class="container">
-					<div class="col-md-6 @if($project->eoi_button) hide @endif">
-				@if(Auth::guest())
-				@else
-				@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-				<div class="text-center row">
-					<small><small>How To Invest</small></small><br>
-					<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_how_to_invest_whole_section" @if($project->projectconfiguration->show_how_to_invest_whole_section) checked value="1" @else value="0" @endif>
-				</div>
-				@endif
-				@endif
-				<div class="row show_how_to_invest_whole_section" @if(!$project->projectconfiguration->show_how_to_invest_whole_section) style="display: none;" @endif>
-					<div class="col-md-12 text-center">
-						@if(Auth::guest())
-						@else
-						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="how_to_invest_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
-						@endif
-						@endif
-						<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
-						<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:42px;">How To Invest</h4><br>
-						@if($project->investment)<p class="project-how-to-invest-field">{!!nl2br($project->investment->how_to_invest)!!}</p> @endif
+		<div class="col-md-6 @if($project->eoi_button) hide @endif">
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+			<div class="text-center row">
+				<small><small>How To Invest</small></small><br>
+				<input type="checkbox" class="checkbox-switch" autocomplete="off" data-label-text="Show" action="show_how_to_invest_whole_section" @if($project->projectconfiguration->show_how_to_invest_whole_section) checked value="1" @else value="0" @endif>
+			</div>
+			@endif
+			@endif
+			<div class="row show_how_to_invest_whole_section" @if(!$project->projectconfiguration->show_how_to_invest_whole_section) style="display: none;" @endif>
+				<div class="col-md-12 text-center">
+					@if(Auth::guest())
+					@else
+					@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+					<div class="edit-img-button-style edit-projectpg-thumbnails" style="z-index: 10; position: absolute;" action="how_to_invest_image"><a data-toggle="tooltip" title="Edit Thumbnail"><i class="fa fa fa-edit fa-lg" style="color: #fff; vertical-align: -webkit-baseline-middle;"></i></a></div>
+					@endif
+					@endif
+					<img src="@if($projMedia=$project->media->where('type', 'how_to_invest_image')->first()){{asset($projMedia->path)}}@else{{asset('assets/images/new_how_to_invest.png')}}@endif" alt="exit" width="110px" /><br><br>
+					<h4 class="second_color" style="margin-bottom:0px; color:#fed405;font-size:42px;">How To Invest</h4><br>
+					@if($project->investment)<p class="project-how-to-invest-field">{!!nl2br($project->investment->how_to_invest)!!}</p> @endif
 
-						@if($project->investment)
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1 text-justify">
-								<h5>
-									@if($project->projectconfiguration->payment_switch)
-									<h5 class="text-center">
-										Please read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif and complete and submit the online Application Form by clicking the SUBMIT APPLICATION button. Please make payment via EFT within 48 hours of completing the Application Form. Alternatively please contact us should you wish to make payment using Cheque.
-									</h5>
-									@else
-									<table class="table table-responsive font-bold" style="color:#2d2d4b;">
-										<tr><td>Bank</td><td class="bank-name-field">{!!$project->investment->bank!!}</td></tr>
-										<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
-										<tr><td>BSB </td><td class="bsb-name-field">{!!$project->investment->bsb!!}</td></tr>
-										<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
-										<tr><td>SWIFT Code</td><td class="swift-code-field">{!!$project->investment->swift_code!!}</td></tr>
-										<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
-									</table>
-									@if($project->investment->bitcoin_wallet_address)
-									<h3 class="text-center second_color">Or pay using Bitcoin</h3><br>
-									<table class="table table-responsive font-bold" style="color:#2d2d4b;">
-										<tr><td>Bitcoin Wallet Address</td><td class="bitcoin-wallet-address-field">{!!$project->investment->bitcoin_wallet_address!!}</td></tr>
-									</table>
-									<div class="btcwdgt-price" bw-theme="light" bw-cur="aud" style="margin: auto !important;"></div>
-									@endif
-									@endif
+					@if($project->investment)
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1 text-justify">
+							<h5>
+								@if($project->projectconfiguration->payment_switch)
+								<h5 class="text-center">
+									Please read the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif and complete and submit the online Application Form by clicking the SUBMIT APPLICATION button. Please make payment via EFT within 48 hours of completing the Application Form. Alternatively please contact us should you wish to make payment using Cheque.
 								</h5>
-							</div>
-						</div>
-						@endif
-						<br>
-						<div class="col-md-10 col-md-offset-1">
-							@if($project->investment)
-							<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
-								@if($project->is_funding_closed)
-								Funding Closed
-								@elseif($project->button_label)
-								<?php echo $project->button_label; ?>
 								@else
-								Invest Now
+								<table class="table table-responsive font-bold" style="color:#2d2d4b;">
+									<tr><td>Bank</td><td class="bank-name-field">{!!$project->investment->bank!!}</td></tr>
+									<tr><td>Account Name</td><td class="account-name-field">{!!$project->investment->bank_account_name!!}</td></tr>
+									<tr><td>BSB </td><td class="bsb-name-field">{!!$project->investment->bsb!!}</td></tr>
+									<tr><td>Account No</td><td class="account-number-field">{!!$project->investment->bank_account_number!!}</td></tr>
+									<tr><td>SWIFT Code</td><td class="swift-code-field">{!!$project->investment->swift_code!!}</td></tr>
+									<tr><td>Reference</td><td class="bank-reference-field">{!!$project->investment->bank_reference!!}</td></tr>
+								</table>
+								@if($project->investment->bitcoin_wallet_address)
+								<h3 class="text-center second_color">Or pay using Bitcoin</h3><br>
+								<table class="table table-responsive font-bold" style="color:#2d2d4b;">
+									<tr><td>Bitcoin Wallet Address</td><td class="bitcoin-wallet-address-field">{!!$project->investment->bitcoin_wallet_address!!}</td></tr>
+								</table>
+								<div class="btcwdgt-price" bw-theme="light" bw-cur="aud" style="margin: auto !important;"></div>
 								@endif
-							</b></a>
-							<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
-							@else
-							<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
-							@endif
+								@endif
+							</h5>
 						</div>
 					</div>
+					@endif
+					<br>
+					<div class="col-md-10 col-md-offset-1">
+						@if($project->investment)
+						<a href="@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif" style="font-size:1.375em;letter-spacing:2px;border-radius: 50px !important;" class="btn btn-block btn-n1 btn-lg pulse-button text-center second_color_btn @if(!$project->show_invest_now_button) disabled @endif @if(!$project->show_invest_now_button || $project->is_funding_closed) disabled @endif btn-hover-default-color" @if(Auth::user() && Auth::user()->investments->contains($project))  @endif><b>
+							@if($project->is_funding_closed)
+							Funding Closed
+							@elseif($project->button_label)
+							<?php echo $project->button_label; ?>
+							@else
+							Invest Now
+							@endif
+						</b></a>
+						<h6><small style="font-size:0.85em; color:#999;">* Note that this is a No Obligation Expression of interest, you get to review the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif before making any decisions</small></h6>
+						@else
+						<a href="{{route('projects.interest', [$project])}}" class="btn btn-block btn-primary" disabled>NO Investment Policy Yet</a>
+						@endif
+					</div>
 				</div>
+			</div>
 				<!-- <ol>
 				<li style="font-size:0.875em;"><a href="#" class="scrollto ">Read PDS/Offer document carefully</a></li>
 				<li style="font-size:0.875em;">Press �Invest Now� at the top of the screen</li>
@@ -1552,8 +1562,8 @@
 			</div>
 
 
+		</div>
 	</div>
-</div>
 </section>
 <!-- <section class="chunk-box">
 	<div class="container">
@@ -1638,10 +1648,10 @@
 				<hr style="margin-top:0px;">
 			</div>
 		</div> --}}
-<section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
-	<div class="container">
-		<h3 class="text-center">More questions/comments/concerns? You can post them here</h3>
-		<br>
+		<section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
+			<div class="container">
+				<h3 class="text-center">More questions/comments/concerns? You can post them here</h3>
+				<br>
 		{{-- <div class="row">
 			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
 			<div class="col-md-8"></div>
@@ -1677,18 +1687,18 @@
 	</div>
 </section>
 <style type="text/css">
-	.vote-input {
-		visibility:hidden;
-	}
-	.vote-input-label {
-		cursor: pointer;
-	}
-	.vote-input:checked + label {
-		color: red;
-	}
-	.vote-count {
-		display:inline;
-	}
+.vote-input {
+	visibility:hidden;
+}
+.vote-input-label {
+	cursor: pointer;
+}
+.vote-input:checked + label {
+	color: red;
+}
+.vote-count {
+	display:inline;
+}
 </style>
 <section id="comments-list" class="chunk-box hide" style="padding-top:0px;">
 	<div class="container">
@@ -1994,9 +2004,9 @@
 			var formData = $(form).serialize();
 			// Submit the form using AJAX.
 			$.ajax({
-			    type: 'POST',
-			    url: $(form).attr('action'),
-			    data: formData
+				type: 'POST',
+				url: $(form).attr('action'),
+				data: formData
 			})
 			.done(function() {
 				$('.loader-overlay').hide();
@@ -2008,13 +2018,13 @@
 </script>
 {{-- Code for Bitcoin Widget --}}
 <script>
-  (function(b,i,t,C,O,I,N) {
-    window.addEventListener('load',function() {
-      if(b.getElementById(C))return;
-      I=b.createElement(i),N=b.getElementsByTagName(i)[0];
-      I.src=t;I.id=C;N.parentNode.insertBefore(I, N);
-    },false)
-  })(document,'script','https://widgets.bitcoin.com/widget.js','btcwdgt');
+	(function(b,i,t,C,O,I,N) {
+		window.addEventListener('load',function() {
+			if(b.getElementById(C))return;
+			I=b.createElement(i),N=b.getElementsByTagName(i)[0];
+			I.src=t;I.id=C;N.parentNode.insertBefore(I, N);
+		},false)
+	})(document,'script','https://widgets.bitcoin.com/widget.js','btcwdgt');
 </script>
 <script>
 	$(function () {
@@ -2254,19 +2264,19 @@
 		$('#myCarousel').addClass('carousel slide');
 	});
 
-	function editProjectPageDetailsByAdmin(){
-		$('.edit-project-page-details-btn').click(function(e){
-			setProjectDetailsEditable();
-		});
+function editProjectPageDetailsByAdmin(){
+	$('.edit-project-page-details-btn').click(function(e){
+		setProjectDetailsEditable();
+	});
 
-		$('.save-project-details-floating-btn').click(function(e){
-			$('.store-project-page-details-btn').trigger('click');
-		});
+	$('.save-project-details-floating-btn').click(function(e){
+		$('.store-project-page-details-btn').trigger('click');
+	});
 
-		$('.exit-project-details-editable-btn').click(function(){
-			location.reload('/');
-		});
-	}
+	$('.exit-project-details-editable-btn').click(function(){
+		location.reload('/');
+	});
+}
 
 	/*	function setProjectDetailsEditable(){
 		$('.set_zoom').html('<div class="form-group" style="width: 450px; float: left;"> <label for="demo2" class="col-md-4 control-label">Set Map Zoom Level (upto 22x):</label> <input id="demo2" type="number" value="{{nl2br(e($project->location->zoom_level))}}" name="zoom_level" class="col-md-8 form-control "> </div> </form>');
@@ -2565,221 +2575,221 @@
 			$('.show-risk-input').html('<input type="text" name="investment_risk_label" id="investment_risk_label" class="form-control check-input-empty" value="@if($project->projectconfiguration){{nl2br(e($project->projectconfiguration->investment_risk_label))}}@endif"  placeholder="Risk">');
 		});
 
-		$('.save-sub-headings').click(function(){
-			var project_details_tab_label = $('#project_details_tab_label').val();
-			var project_progress_tab_label = $('#project_progress_tab_label').val();
-			var project_summary_label = $('#project_summary_label').val();
-			var summary_label = $('#summary_label').val();
-			var security_label = $('#security_label').val();
-			var investor_distribution_label = $('#investor_distribution_label').val();
-			var suburb_profile_label = $('#suburb_profile_label').val();
-			var marketability_label = $('#marketability_label').val();
-			var residents_label = $('#residents_label').val();
-			var investment_profile_label = $('#investment_profile_label').val();
-			var investment_type_label = $('#investment_type_label').val();
-			var investment_security_label = $('#investment_security_label').val();
-			var expected_returns_label = $('#expected_returns_label').val();
-			var return_paid_as_label = $('#return_paid_as_label').val();
-			var taxation_label = $('#taxation_label').val();
-			var project_profile_label = $('#project_profile_label').val();
-			var developer_label = $('#developer_label').val();
-			var venture_label = $('#venture_label').val();
-			var duration_label = $('#duration_label').val();
-			var current_status_label = $('#current_status_label').val();
-			var rationale_label = $('#rationale_label').val();
-			var investment_risk_label = $('#investment_risk_label').val();
-			var labelIsEmpty = false;
-			$('.check-input-empty').each(function(){
-				if($(this).val() == ''){
-					labelIsEmpty = true;
-				}
-			});
-			if(!labelIsEmpty){
-				var projectId = $('#current_project_id').val();
-				$.ajax({
-					url: '/configuration/project/updateProjectPageSubHeading',
-					type: 'POST',
-					dataType: 'JSON',
-					data: {project_details_tab_label, project_progress_tab_label, projectId, project_summary_label, summary_label, security_label, investor_distribution_label, suburb_profile_label, marketability_label, residents_label, investment_profile_label, investment_type_label, investment_security_label, expected_returns_label, return_paid_as_label, taxation_label, project_profile_label, developer_label, venture_label, duration_label, current_status_label, rationale_label, investment_risk_label},
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					},
-				}).done(function(data){
-					console.log(data);
-					location.reload('/');
-				});
-			} else {
-				alert("Label Inputs can't be empty");
-			}
-
+$('.save-sub-headings').click(function(){
+	var project_details_tab_label = $('#project_details_tab_label').val();
+	var project_progress_tab_label = $('#project_progress_tab_label').val();
+	var project_summary_label = $('#project_summary_label').val();
+	var summary_label = $('#summary_label').val();
+	var security_label = $('#security_label').val();
+	var investor_distribution_label = $('#investor_distribution_label').val();
+	var suburb_profile_label = $('#suburb_profile_label').val();
+	var marketability_label = $('#marketability_label').val();
+	var residents_label = $('#residents_label').val();
+	var investment_profile_label = $('#investment_profile_label').val();
+	var investment_type_label = $('#investment_type_label').val();
+	var investment_security_label = $('#investment_security_label').val();
+	var expected_returns_label = $('#expected_returns_label').val();
+	var return_paid_as_label = $('#return_paid_as_label').val();
+	var taxation_label = $('#taxation_label').val();
+	var project_profile_label = $('#project_profile_label').val();
+	var developer_label = $('#developer_label').val();
+	var venture_label = $('#venture_label').val();
+	var duration_label = $('#duration_label').val();
+	var current_status_label = $('#current_status_label').val();
+	var rationale_label = $('#rationale_label').val();
+	var investment_risk_label = $('#investment_risk_label').val();
+	var labelIsEmpty = false;
+	$('.check-input-empty').each(function(){
+		if($(this).val() == ''){
+			labelIsEmpty = true;
+		}
+	});
+	if(!labelIsEmpty){
+		var projectId = $('#current_project_id').val();
+		$.ajax({
+			url: '/configuration/project/updateProjectPageSubHeading',
+			type: 'POST',
+			dataType: 'JSON',
+			data: {project_details_tab_label, project_progress_tab_label, projectId, project_summary_label, summary_label, security_label, investor_distribution_label, suburb_profile_label, marketability_label, residents_label, investment_profile_label, investment_type_label, investment_security_label, expected_returns_label, return_paid_as_label, taxation_label, project_profile_label, developer_label, venture_label, duration_label, current_status_label, rationale_label, investment_risk_label},
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function(data){
+			console.log(data);
+			location.reload('/');
 		});
+	} else {
+		alert("Label Inputs can't be empty");
 	}
 
-	function uploadSubSectionImages(){
-		$('.upload-sub-section-img').click(function(){
-			var imgType = $(this).attr('imgType');
-			$('#project_sub_heading_image_type').val(imgType);
-			$('#project_sub_heading_image').trigger('click');
+});
+}
+
+function uploadSubSectionImages(){
+	$('.upload-sub-section-img').click(function(){
+		var imgType = $(this).attr('imgType');
+		$('#project_sub_heading_image_type').val(imgType);
+		$('#project_sub_heading_image').trigger('click');
+	});
+	$('#project_sub_heading_image').change(function(){
+		if($('#project_sub_heading_image').val() != ''){
+			var formData = new FormData();
+			formData.append('project_sub_heading_image', $('#project_sub_heading_image')[0].files[0]);
+			formData.append('imgType', $('#project_sub_heading_image_type').val());
+			formData.append('projectId', {{$project->id}});
+			$('.loader-overlay').show();
+			$.ajax({
+				url: '/project/edit/uploadSubSectionImages',
+				type: 'POST',
+				dataType: 'JSON',
+				data: formData,
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+				contentType: false,
+				processData: false
+			}).done(function(data){
+				if(data.status){
+					console.log(data);
+					location.reload('/');
+				}
+				else{
+					$('#project_sub_heading_image_type').val('');
+					$('#project_sub_heading_image').val('');
+					alert(data.message);
+					$('.loader-overlay').hide();
+				}
+			});
+		}
+	});
+}
+
+function updateOverlayOpacity(){
+	$('.update-overlay-opacity').click(function(e){
+		var action = $(this).attr('action');
+		var projectId = '{{$project->id}}';
+		$.ajax({
+			url: '/configuration/project/updateProjectPgOverlayOpacity',
+			type: 'POST',
+			dataType: 'JSON',
+			data: {action, projectId},
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function(data){
+			if(data.status){
+				console.log(data.opacity);
+				@if($color)
+				@if($color->nav_footer_color)
+				var hexColor = '{{trim($color->nav_footer_color)}}';
+				var rgb = hex2rgb(hexColor);
+				var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+data.opacity+')';
+				$('.main-fold-overlay-color').css('background', rgbaColor);
+				@else
+				var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
+				$('.main-fold-overlay-color').css('background', rgbaColor);
+				@endif
+				@else
+				var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
+				$('.main-fold-overlay-color').css('background', rgbaColor);
+				@endif
+			}
 		});
-		$('#project_sub_heading_image').change(function(){
-			if($('#project_sub_heading_image').val() != ''){
-				var formData = new FormData();
-				formData.append('project_sub_heading_image', $('#project_sub_heading_image')[0].files[0]);
-				formData.append('imgType', $('#project_sub_heading_image_type').val());
-				formData.append('projectId', {{$project->id}});
+	});
+}
+
+function hex2rgb(hexStr){
+	var hex = parseInt(hexStr, 16);
+	var r = (hex & 0xff0000) >> 16;
+	var g = (hex & 0x00ff00) >> 8;
+	var b = hex & 0x0000ff;
+	return [r, g, b];
+}
+
+function toggleSubSectionsVisibility(){
+	$(".checkbox-switch").bootstrapSwitch();
+	$('.checkbox-switch').on('switchChange.bootstrapSwitch', function () {
+		var setVal = $(this).val() == 1? 0 : 1;
+		$(this).val(setVal);
+		$('#'+$(this).attr('action')).val(setVal);
+		var checkValue = $(this).val();
+		var action = $(this).attr('action');
+		var projectId = '{{$project->id}}';
+		$('.loader-overlay').show();
+		$.ajax({
+			url: '/configuration/project/toggleSubSectionsVisibility',
+			type: 'POST',
+			dataType: 'JSON',
+			data: {checkValue, action, projectId},
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function(data){
+			console.log(data);
+			if(data.status){
+				$('.loader-overlay').hide();
+				$('.'+action).slideToggle();
+			}
+		});
+	});
+}
+
+function deleteSubSectionImages(){
+	$('.delete-project-section-image').click(function(){
+		var mediaId = $(this).attr('action');
+		var projectId = '{{$project->id}}';
+		if(mediaId!=''){
+			if (confirm('Are you sure ?')) {
 				$('.loader-overlay').show();
 				$.ajax({
-					url: '/project/edit/uploadSubSectionImages',
+					url: '/project/edit/deleteSubSectionImages',
 					type: 'POST',
 					dataType: 'JSON',
-					data: formData,
+					data: {mediaId,projectId},
 					headers: {
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 					},
-					contentType: false,
-					processData: false
 				}).done(function(data){
 					if(data.status){
-						console.log(data);
-						location.reload('/');
-					}
-					else{
-						$('#project_sub_heading_image_type').val('');
-						$('#project_sub_heading_image').val('');
-						alert(data.message);
+						$('#project_media_'+data.mediaImageId).remove();
 						$('.loader-overlay').hide();
 					}
 				});
 			}
-		});
-	}
+		}
+	});
+}
 
-	function updateOverlayOpacity(){
-		$('.update-overlay-opacity').click(function(e){
-			var action = $(this).attr('action');
-			var projectId = '{{$project->id}}';
-			$.ajax({
-				url: '/configuration/project/updateProjectPgOverlayOpacity',
-				type: 'POST',
-				dataType: 'JSON',
-				data: {action, projectId},
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-			}).done(function(data){
-				if(data.status){
-					console.log(data.opacity);
-					@if($color)
-					@if($color->nav_footer_color)
-					var hexColor = '{{trim($color->nav_footer_color)}}';
-					var rgb = hex2rgb(hexColor);
-					var rgbaColor = 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+data.opacity+')';
-					$('.main-fold-overlay-color').css('background', rgbaColor);
-					@else
-					var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
-					$('.main-fold-overlay-color').css('background', rgbaColor);
-					@endif
-					@else
-					var rgbaColor = 'rgba(45, 45, 75, '+data.opacity+')';
-					$('.main-fold-overlay-color').css('background', rgbaColor);
-					@endif
-				}
-			});
-		});
-	}
-
-	function hex2rgb(hexStr){
-		var hex = parseInt(hexStr, 16);
-		var r = (hex & 0xff0000) >> 16;
-		var g = (hex & 0x00ff00) >> 8;
-		var b = hex & 0x0000ff;
-		return [r, g, b];
-	}
-
-	function toggleSubSectionsVisibility(){
-		$(".checkbox-switch").bootstrapSwitch();
-		$('.checkbox-switch').on('switchChange.bootstrapSwitch', function () {
-			var setVal = $(this).val() == 1? 0 : 1;
-			$(this).val(setVal);
-			$('#'+$(this).attr('action')).val(setVal);
-			var checkValue = $(this).val();
-			var action = $(this).attr('action');
-			var projectId = '{{$project->id}}';
-			$('.loader-overlay').show();
-			$.ajax({
-				url: '/configuration/project/toggleSubSectionsVisibility',
-				type: 'POST',
-				dataType: 'JSON',
-				data: {checkValue, action, projectId},
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-			}).done(function(data){
-				console.log(data);
-				if(data.status){
-					$('.loader-overlay').hide();
-					$('.'+action).slideToggle();
-				}
-			});
-		});
-	}
-
-	function deleteSubSectionImages(){
-		$('.delete-project-section-image').click(function(){
-			var mediaId = $(this).attr('action');
-			var projectId = '{{$project->id}}';
-			if(mediaId!=''){
-				if (confirm('Are you sure ?')) {
-					$('.loader-overlay').show();
-					$.ajax({
-						url: '/project/edit/deleteSubSectionImages',
-						type: 'POST',
-						dataType: 'JSON',
-						data: {mediaId,projectId},
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						},
-					}).done(function(data){
-						if(data.status){
-							$('#project_media_'+data.mediaImageId).remove();
-							$('.loader-overlay').hide();
-						}
-					});
-				}
+function deleteCarouselImage(){
+	$(".carousel-thumb-image").mouseover(function() {
+		$(this).children('.delete-carousel-section').show();
+	}).mouseout(function() {
+		$(this).children('.delete-carousel-section').hide();
+	});
+	$('.delete-project-carousel-image').click(function(){
+		var mediaId = $(this).attr('action');
+		var projectId = '{{$project->id}}';
+		if(mediaId!=''){
+			if (confirm('Are you sure, you want to delete selected Image?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+					url: '/project/edit/deleteProjectCarouselImages',
+					type: 'POST',
+					dataType: 'JSON',
+					data: {mediaId,projectId},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}).done(function(data){
+					if(data.status){
+						location.reload('/#carousel_image_delete_pane');
+						$('.loader-overlay').hide();
+					}
+				});
 			}
-		});
-	}
-
-	function deleteCarouselImage(){
-		$(".carousel-thumb-image").mouseover(function() {
-			$(this).children('.delete-carousel-section').show();
-		}).mouseout(function() {
-			$(this).children('.delete-carousel-section').hide();
-		});
-		$('.delete-project-carousel-image').click(function(){
-			var mediaId = $(this).attr('action');
-			var projectId = '{{$project->id}}';
-			if(mediaId!=''){
-				if (confirm('Are you sure, you want to delete selected Image?')) {
-					$('.loader-overlay').show();
-					$.ajax({
-						url: '/project/edit/deleteProjectCarouselImages',
-						type: 'POST',
-						dataType: 'JSON',
-						data: {mediaId,projectId},
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						},
-					}).done(function(data){
-						if(data.status){
-							location.reload('/#carousel_image_delete_pane');
-							$('.loader-overlay').hide();
-						}
-					});
-				}
-			}
-		});
-	}
+		}
+	});
+}
 
 /*	function toggleProspectusText(){
 		$('.prospectus-text-switch').bootstrapSwitch({
@@ -2965,7 +2975,7 @@
 			imgAction = $(this).attr('action');
 			$('#project_progress_circle_image, #project_progress_circle_image_name').val('');
 		});
-      	$('#project_progress_circle_image').change(function(e){
+		$('#project_progress_circle_image').change(function(e){
 			if($('#project_progress_circle_image').val() != ''){
 				var formData = new FormData();
 				formData.append('project_progress_circle_image', $('#project_progress_circle_image')[0].files[0]);
@@ -3027,15 +3037,15 @@
 		$('#modal_close_btn').click(function(e){
 			$('#project_progress_circle_image, #project_progress_circle_image_name').val('');
 		});
-    }
+	}
 
-    function projectProgressImageSwitching(){
-    	$(document).on('click.bs.radio', '.project-progress-3way-switch > .btn', function(e) {
-		  	$(this).siblings().removeClass('active');
-		  	$(this).addClass('active');
+	function projectProgressImageSwitching(){
+		$(document).on('click.bs.radio', '.project-progress-3way-switch > .btn', function(e) {
+			$(this).siblings().removeClass('active');
+			$(this).addClass('active');
 
-	  		var toggleAction = $(this).attr('action');
-	  		var checkValue = 1;
+			var toggleAction = $(this).attr('action');
+			var checkValue = 1;
 			var projectId = '{{$project->id}}';
 			$('.loader-overlay').show();
 			$.ajax({
@@ -3053,8 +3063,8 @@
 					location.reload();
 				}
 			});
-	  	});
-    }
+		});
+	}
 
 </script>
 @stop

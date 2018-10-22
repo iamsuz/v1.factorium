@@ -235,7 +235,7 @@ Offer Doc
 												<h4>Are you Investing as</h4>
 												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
 												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
-												<input type="radio" name="investing_as" value="Trust or Company" > Trust or Company<br>
+												<input type="radio" name="investing_as" value="Trust or Company" > Company, Trust or SMSF<br>
 												<hr>
 											</div>
 
@@ -290,7 +290,7 @@ Offer Doc
 												<h4>Are you Investing as</h4>
 												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
 												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
-												<input type="radio" name="investing_as" value="Trust or Company" > Trust or Company<br>
+												<input type="radio" name="investing_as" value="Trust or Company" > Company, Trust or SMSF<br>
 												<hr>
 											</div>
 
