@@ -242,11 +242,11 @@ class OfferController extends Controller
     }
 
         // Create PDF of Application form
-    // $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
-    // $pdfPath = storage_path().$pdfBasePath;
-    // $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
-    // $pdf->save($pdfPath);
-    // $investor->application_path = $pdfBasePath;
+    $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
+    $pdfPath = storage_path().$pdfBasePath;
+    $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
+    $pdf->save($pdfPath);
+    $investor->application_path = $pdfBasePath;
     $investor->save();
 
     $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));

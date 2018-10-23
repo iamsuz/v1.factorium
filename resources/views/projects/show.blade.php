@@ -2031,6 +2031,9 @@
 		$('.download-prospectus-btn').click(function (e) {
 			e.preventDefault();
 			$('#myTermsModal').modal('show');
+			$('#terms_accepted_button').click(function () {
+				window.location = '@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif';
+			});
 		});
 		var minimized_elements = $('p.minimize');
 		minimized_elements.each(function(){
