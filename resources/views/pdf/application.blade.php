@@ -1,24 +1,24 @@
 <style type="text/css">
-	*{
-		font-family: 'Open Sans', sans-serif;
-		text-align: justify;
-	}
-	input[type="text"]{
-		width: 100% !important;
-		min-height: 32px !important;
-		padding: 0.5em 1em;
-		/*border-radius: 5px;*/
-	}
-	hr{
-		width: 100% !important;
-	}
-	input[type=checkbox]:before {
-		font-family: DejaVu Sans;
-	}
-	input[type=checkbox] { display: inline; }
+*{
+	font-family: 'Open Sans', sans-serif;
+	text-align: justify;
+}
+input[type="text"]{
+	width: 100% !important;
+	min-height: 32px !important;
+	padding: 0.5em 1em;
+	/*border-radius: 5px;*/
+}
+hr{
+	width: 100% !important;
+}
+input[type=checkbox]:before {
+	font-family: DejaVu Sans;
+}
+input[type=checkbox] { display: inline; }
 </style>
 <?php
-	$siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()
+$siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()
 ?>
 <div>
 	<h2 align="center"><b>Prospectus Application – {{$siteConfiguration->website_name}}</b></h2><br>
@@ -29,25 +29,33 @@
 	<br>
 	<h4><b>I/we apply for <span class="red">*</span></b></h4>
 	<input type="text" name="" class="form-control" placeholder="5000" value="{{$investment->amount}}"><br>
-	<p>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</p><br>
+	@if($investment->project->share_vs_unit == 1)
+	<p>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</p>
+	@elseif($investment->project->share_vs_unit == 2)
+	<p>Number of Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</p>
+	@elseif($investment->project->share_vs_unit == 3)
+	<p>Number of Ordinary Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</p>
+	@else
+	<p>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</p>
+	@endif<br>
 	<h4><b>I/we lodge full Application Money</b></h4>
 	<input type="text" name="" class="form-control" placeholder="$5000" value="A$ {{$investment->amount}}"><br>
 	<p>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</p><br>
 	<h4><b>You are investing as</b></h4>
 	@if(!$investment->investing_as)
-		Individual Investor <br>
+	Individual Investor <br>
 	@endif
 	@if($investment->investing_as)
-		@if($investment->investing_as == 'Individual Investor') Individual Investor <br>
-		@else
-		@if($investment->investing_as == 'Joint Investor') Joint Investor <br>
-		@else
-		@if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor') Trust or Company <br>
-		@else
-		{{$investment->investing_as}}
-		@endif
-		@endif
-		@endif
+	@if($investment->investing_as == 'Individual Investor') Individual Investor <br>
+	@else
+	@if($investment->investing_as == 'Joint Investor') Joint Investor <br>
+	@else
+	@if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor') Trust or Company <br>
+	@else
+	{{$investment->investing_as}}
+	@endif
+	@endif
+	@endif
 	@endif
 	<br>
 	@if($investment->investing_as)
@@ -155,7 +163,7 @@
 	@if($investment->userInvestmentDoc->count() > 0)
 	@foreach($investment->userInvestmentDoc as $doc)
 	<a href="{{$investment->project_site}}/{{$doc->path}}" target="_blank">
-	{{$doc->filename}}
+		{{$doc->filename}}
 	</a><br>
 	@endforeach
 	@else

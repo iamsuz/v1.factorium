@@ -143,8 +143,12 @@ Offer Doc
 												</p>
 												<label>I/We apply for *</label>
 												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" step="100" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
-												@if($project->share_vs_unit)
+												@if($project->share_vs_unit == 1)
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+												@elseif($project->share_vs_unit == 2)
+												<h5>Number of Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+												@elseif($project->share_vs_unit == 3)
+												<h5>Number of Ordinary Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@else
 												<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
 												@endif

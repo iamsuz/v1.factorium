@@ -119,13 +119,19 @@ Edit {{$project->title}} | Dashboard | @parent
 									      </label>
 									</div>
 									<br>
-									<h3>Share vs Unit</h3>
+									<h3>Select a type of Shares</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->share_vs_unit == 1) active @endif">
-									        <input type="radio" name="share_vs_unit" value="1"> Share
+									        <input type="radio" name="share_vs_unit" value="1">Redeemable preference Share
 									      </label>
 									      <label class="btn btn-default @if($project->share_vs_unit == 0) active @endif" >
 									        <input type="radio" name="share_vs_unit" value="0"> Unit
+									      </label>
+									      <label class="btn btn-default @if($project->share_vs_unit == 2) active @endif" >
+									        <input type="radio" name="share_vs_unit" value="2"> Preference shares
+									      </label>
+									      <label class="btn btn-default @if($project->share_vs_unit == 3) active @endif" >
+									        <input type="radio" name="share_vs_unit" value="3"> Ordinary shares
 									      </label>
 									</div>
 									<br><br>
