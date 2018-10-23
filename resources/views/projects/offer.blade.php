@@ -79,12 +79,12 @@ Offer Doc
 }
 @media screen and (max-width: 768px) {
 	#terms_accepted_button{
-		font-size: 12px;
+		font-size: 11px;
 	}
 }
 @media screen and (max-width: 320px){
 	#terms_accepted_button{
-		font-size: 10px;
+		font-size: 9px;
 	}
 }
 </style>

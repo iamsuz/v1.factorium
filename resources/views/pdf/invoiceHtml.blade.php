@@ -22,7 +22,7 @@
 				<div class="text-center" style="top:15%;width:100%;position:absolute;z-index:-1;opacity:0.05;"><img src="/{{$investment->project->media->where('type', 'spv_logo_image')->first()->path}}" width="700"></div>
 				@endif
 				<div class="text-center" style="padding: 10% 20%;">
-					<h1>@if($investment->project->share_vs_unit){{'Share'}}@else{{'Unit'}}@endif Certificate</h1>
+					<h1>@if($investment->project->share_vs_unit == 1) Redeemable Preference Share @elseif($investment->project->share_vs_unit == 2) Preference Shares @elseif($investment->project->share_vs_unit == 3) Ordinary Shares @else Unit @endif Certificate</h1>
 					<br>
 					@if($investment->project->media->where('type','spv_logo_image')->first())
 					<center><img src="/{{$investment->project->media->where('type','spv_logo_image')->first()->path}}" height="100"></center><br>
@@ -46,7 +46,7 @@
 					Date: {{ $investment->share_certificate_issued_at->toFormattedDateString()}}
 					<br><br>
 					<p>
-						This is to certify @if($investment->investing_as=='Individual Investor'){{$investment->user->first_name}} {{$investment->user->last_name}}@elseif($investment->investing_as == 'Joint Investor'){{$investment->user->first_name}} {{$investment->user->last_name}} and {{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}@elseif($investment->investing_as=='Trust or Company'){{$investing->investing_company}}@else{{$investment->user->first_name}} {{$investment->user->last_name}}@endif @if($investment->user->line_1) of {{$investment->user->line_1}}, @if($investment->user->line_2 != '') {{$investment->user->line_2}}, @endif {{$investment->user->city}}, {{$investment->user->state}}, {{$investment->user->postal_code}}@endif owns {{$investment->amount}} @if($investment->project->share_vs_unit) redeemable preference shares @else units @endif of @if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif.
+						This is to certify @if($investment->investing_as=='Individual Investor'){{$investment->user->first_name}} {{$investment->user->last_name}}@elseif($investment->investing_as == 'Joint Investor'){{$investment->user->first_name}} {{$investment->user->last_name}} and {{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}@elseif($investment->investing_as=='Trust or Company'){{$investing->investing_company}}@else{{$investment->user->first_name}} {{$investment->user->last_name}}@endif @if($investment->user->line_1) of {{$investment->user->line_1}}, @if($investment->user->line_2 != '') {{$investment->user->line_2}}, @endif {{$investment->user->city}}, {{$investment->user->state}}, {{$investment->user->postal_code}}@endif owns {{$investment->amount}} @if($investment->project->share_vs_unit == 1) redeemable preference shares @elseif($investment->project->share_vs_unit == 2) Preference Shares @elseif($investment->project->share_vs_unit == 3) Ordinary shares @else units @endif of @if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_name}}@else Estate Baron @endif.
 					</p>
 					<br><br>
 					@if($investment->project->media->where('type', 'spv_md_sign_image')->first())
