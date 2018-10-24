@@ -77,6 +77,9 @@ Offer Doc
 .switch-field label:last-of-type {
 	border-radius: 0 4px 4px 0;
 }
+.scribd_iframe_embed{
+	height: 530px;
+}
 @media screen and (max-width: 768px) {
 	#terms_accepted_button{
 		font-size: 11px;

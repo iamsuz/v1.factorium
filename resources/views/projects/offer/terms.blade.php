@@ -4,7 +4,7 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-body" style="height: 100%">
+        <div class="modal-body">
           @if($project->investment){!! $project->investment->PDS_part_1_link !!}@endif
         </div>
         <div class="modal-footer">
