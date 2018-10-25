@@ -21,8 +21,9 @@
                 newResult.push(split_names[i].charAt(0));
               }
               $('#abbrev').html(newResult);
-            }
+            }else{
             $('#abbrev').html(str1);
+          }
         });
       </script>
     </div>
