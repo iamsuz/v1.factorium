@@ -10,6 +10,12 @@ Offer Doc
 @section('css-section')
 @parent
 <style type="text/css">
+.navbar{
+	display: none;
+}
+.content{
+	margin-top: 1em;
+}
 .check1{
 	padding: 2px !important;
 }
@@ -78,7 +84,7 @@ Offer Doc
 	border-radius: 0 4px 4px 0;
 }
 .scribd_iframe_embed{
-	height: 530px;
+	height: 80vh;
 }
 @media screen and (max-width: 768px) {
 	#terms_accepted_button{
