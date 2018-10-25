@@ -324,7 +324,7 @@ class OfferController extends Controller
                 ]);
                 $formLink = url().'/project/'.$investmentRequest->id.'/interest/fill';
                 $mailer->sendInvestmentRequestToAdmin($user, $project, $formLink);
-                return redirect()->back()->with('requestStatus', 1);
+                return view('projects.offer.requestSubmitted',compact('project'));
             }
         }
     }
