@@ -84,7 +84,7 @@ Offer Doc
 	border-radius: 0 4px 4px 0;
 }
 .scribd_iframe_embed{
-	height: 80vh;
+	height: 75vh;
 }
 @media screen and (max-width: 768px) {
 	#terms_accepted_button{
