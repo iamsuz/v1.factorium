@@ -8,7 +8,7 @@
           @if($project->investment){!! $project->investment->PDS_part_1_link !!}@endif
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" id="terms_accepted_button">I have read the @if($project->project_prospectus_text) <abbr title="{{$project->project_prospectus_text}}"><span id="abbrev"></span></abbr>@else prospectus@endif, take me to the application form</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="terms_accepted_button">I have read the @if($project->project_prospectus_text) <abbr title="{{$project->project_prospectus_text}}"><span id="abbrev"></span></abbr>@else prospectus @endif, take me to the application form</button>
         </div>
       </div>
       <script>
