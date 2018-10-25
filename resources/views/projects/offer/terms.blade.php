@@ -22,6 +22,7 @@
               }
               $('#abbrev').html(newResult);
             }
+            $('#abbrev').html(str1);
         });
       </script>
     </div>
