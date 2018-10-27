@@ -539,7 +539,10 @@
 
                               <!-- <img align="center" alt="Brand Logo" src="@if($brandlogo=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->siteconfigmedia->where('type','brand_logo')->first()){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/'.$brandlogo->path}}@else{{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->project_site.'/assets/images/main_logo.png'}}@endif" width="200" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;margin:7px 10px;" class="mcnImage"> -->
 
-                              <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
+                              {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p> --}}
+                              <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                                <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
+                             </table>
 
 
                             </td>

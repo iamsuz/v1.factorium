@@ -540,7 +540,12 @@
 
                                 <!-- <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage"> -->
 
-                                <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
+                                {{-- <td valign="top" style="padding-left: 18px;mso-line-height-rule: exactly;" class="mcnImageBlockInner"> --}}
+                                  {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else <td style="padding-left: 18px;">Estate Baron</td> @endif</p> --}}
+                                  <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                                    <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
+                                 </table>
+                                {{-- </td> --}}
                                 {{-- <img src="https://monthly.estatebaron.com/assets/images/email/3_email_prog.png" style="display:block" width="100%" height="100%" /> --}}
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 1px solid black;max-width: 600px !important;">
                                   <tbody>

@@ -199,7 +199,10 @@
           <div class='body' style='background-color:#e9e9e9;box-shadow: 5px 5px 2px #aaaaaa;max-width:100%;margin:0 auto;width:660px;clear:both;'>
             <div style="text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
               <!-- <img src='http://www.vestabyte.com/assets/images/email/VB_header.png' width='100%' style="max-width: 100%;"/> -->
-              <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px; margin: 0px; line-height: 60px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p>
+              {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px; margin: 0px; line-height: 60px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p> --}}
+              <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                  <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
+               </table>
             </div>
             <div id='content' style='max-width:100%;padding:40px;background-color:#FFF;line-height:21px;'>
               <!-- <div align='center'><img src='".URL."public/images/eb.png' align='middle' width='300px'><br></div> -->
