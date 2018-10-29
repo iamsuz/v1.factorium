@@ -173,7 +173,7 @@
 									</a>
 									<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 										<div class="modal-dialog">
-											<div class="modal-content">              
+											<div class="modal-content">
 												<div class="modal-body">
 													<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 													<img src="" class="imagepreview" style="width: 100%;" >
@@ -185,8 +185,8 @@
 										$(function() {
 											$('.pop').on('click', function() {
 												$('.imagepreview').attr('src', $(this).find('img').attr('src'));
-												$('#imagemodal').modal('show');   
-											});		
+												$('#imagemodal').modal('show');
+											});
 										});
 									</script>
 									@else
@@ -206,14 +206,14 @@
 								<td>
 									@if($investment->userInvestmentDoc)
 									@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
-									<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank"> 
-										{{$investment->investingJoint->investing_company}} Doc 
+									<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank">
+										{{$investment->investingJoint->investing_company}} Doc
 									</a>
 									@else
 									NA
 									@endif
-									@else 
-									NA 
+									@else
+									NA
 									@endif
 								</td>
 								@if(!$project->retail_vs_wholesale)
@@ -242,8 +242,8 @@
 										<div class="col-md-12">
 											<label class="form-label"><h4>Which option closely describes you?</h4></label>
 											@if($investment->wholesaleInvestment->wholesale_investing_as == 'Wholesale Investor (Net Asset $2,500,000 plus)')
-											<textarea class="form-control" disabled="" style="cursor: default;">I have net assets of at least $2,500,000 or a gross income for each of the last 2 financial investors of at lease $2,50,000 a year.</textarea><br />	
-											<h4>Accountant's details:</h4><hr>										
+											<textarea class="form-control" disabled="" style="cursor: default;">I have net assets of at least $2,500,000 or a gross income for each of the last 2 financial investors of at lease $2,50,000 a year.</textarea><br />
+											<h4>Accountant's details:</h4><hr>
 												<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
 													<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control" value="@if($investment->wholesaleInvestment->accountant_name_and_firm){{$investment->wholesaleInvestment->accountant_name_and_firm}} @else No user input @endif" disabled="" style="cursor: default;"><br />
 												<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
@@ -257,7 +257,7 @@
 													<input type="text" name="accountant_phone_txt" id="asdd" class="form-control" value="No user input" disabled="" style="cursor: default;"><br />
 													@endif
 												@elseif($investment->wholesaleInvestment->wholesale_investing_as == 'Sophisticated Investor')
-												<textarea rows="3" type="text" class="form-control" disabled="" style="cursor: default;">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.</textarea><br />	
+												<textarea rows="3" type="text" class="form-control" disabled="" style="cursor: default;">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.</textarea><br />
 												<h4>Experienced Investor Information:</h4><hr>
 												<label for="asd" class="form-label"><b>Equity investment experience:</b></label>
 													<textarea rows="4" id="asd" class="form-control" disabled="" style="cursor: default;">@if($investment->wholesaleInvestment->equity_investment_experience_text){{$investment->wholesaleInvestment->equity_investment_experience_text}} @else No user input @endif</textarea> <br />
@@ -270,7 +270,7 @@
 												@elseif($investment->wholesaleInvestment->wholesale_investing_as == 'Inexperienced Investor')
 												<input type="text" class="form-control" value="I have no experience in property, securities or similar" disabled="" style="cursor: default;"><br />
 												@else
-												<input type="text" class="form-control" value="No user input" disabled="" style="cursor: default;"><br />	
+												<input type="text" class="form-control" value="No user input" disabled="" style="cursor: default;"><br />
 												@endif
 											</div>
 										</div>
@@ -278,7 +278,7 @@
 							          	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							        </div>
 							      </div>
-							      
+
 							    </div>
 							</div>
 						@endif
@@ -381,7 +381,7 @@
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
-										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif 
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif
 										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
 
 									</td>
@@ -397,7 +397,7 @@
 												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
 													Share Certificate
 												</a>
-											@else 
+											@else
 												<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
 													Unit Certificate
 												</a>
@@ -539,9 +539,9 @@
 									<td>
 										@if($projectsEoi->offer_doc_path)
 											@if($projectsEoi->is_link_sent)
-											<a class="send-app-form-link" href="javascript:void();" data="{{$projectsEoi->id}}"><b>Resend link</b></a>
+											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}"><b>Resend link</b></a>
 											@else
-											<a class="send-app-form-link" href="javascript:void();" data="{{$projectsEoi->id}}"><b>Send link</b></a>
+											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}"><b>Send link</b></a>
 											@endif
 										@else
 											<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
@@ -562,7 +562,7 @@
 										</form>
 									</td>
 									<td>
-										@if($projectsEoi->interested_to_buy) Yes @else No @endif 
+										@if($projectsEoi->interested_to_buy) Yes @else No @endif
 									</td>
 								</tr>
 								@endforeach
@@ -599,7 +599,7 @@
 				$('.loader-overlay').show();
 			} else {
 				e.preventDefault();
-			}			
+			}
 		});
 
 		$('.money-received-btn').click(function(e){
