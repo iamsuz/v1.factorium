@@ -539,9 +539,9 @@
 									<td>
 										@if($projectsEoi->offer_doc_path)
 											@if($projectsEoi->is_link_sent)
-											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}"><b>Resend link</b></a>
+											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Resend link</b></a>
 											@else
-											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}"><b>Send link</b></a>
+											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Send link</b></a>
 											@endif
 										@else
 											<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
