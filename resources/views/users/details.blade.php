@@ -61,7 +61,7 @@ Fill the user details | @parent
 							<div class="row">
 								<div class="form-group">
 									<div class="col-sm-offset-1 col-sm-10">
-										{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
+										{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'id'=>'submit_button')) !!}
 									</div>
 								</div>
 							</div>
@@ -73,4 +73,13 @@ Fill the user details | @parent
 		</div>
 	</div>
 </div>
+
+@section('js-section')
+	<script type="text/javascript">
+		$('#submit_button').click(function () {
+			$('.loader-overlay').show();
+		});
+	</script>
+@stop
+
 @stop
