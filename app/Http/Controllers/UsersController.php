@@ -528,6 +528,18 @@ class UsersController extends Controller
         // return view('pdf.invoice',compact('investment','color','user','project','investing','shareEnd','shareStart'));
     }
 
+    public function viewApplication($investment_id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $investment_id = base64_decode($investment_id);
+        $color = Color::where('project_site',url())->first();
+        $investment = InvestmentInvestor::find($investment_id);
+        $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
+        $project = $investment->project;
+        $user = $investment->user;
+        return view('pdf.applicationHtml',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+    }
+
     public function usersNotifications($user_id)
     {
         $color = Color::where('project_site',url())->first();

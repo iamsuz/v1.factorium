@@ -41,6 +41,7 @@
 							<th>Investment Date</th>
 							<th>Investment status</th>
 							<th>Link to share certificate</th>
+							<th>Link to application form</th>
 							<th>Returns received</th>
 							<th>Tax and Accounting Docs</th>
 						</tr>
@@ -78,12 +79,13 @@
 									@endif
 									@endif
 								</td>
+								<td><a href="{{route('user.view.application', [base64_encode($investment->id)])}}" target="_blank">Application form</a></td>
 								<td></td>
 								<td></td>
 							</tr>
 						@endforeach
 						@endif
-					</tbody>				
+					</tbody>
 				</table>
 			</div>
 

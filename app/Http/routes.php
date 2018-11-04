@@ -253,6 +253,7 @@ Route::get('/users/{user_id}/referral',['as'=>'users.referral','uses'=>'UsersCon
 Route::get('/pages/redirectNotification', ['as'=>'pages.redirectNotifications', 'uses'=>'PagesController@redirectUsersNotifications']);
 Route::get('/user/view/{investment_id}/share', ['as'=>'user.view.share', 'uses'=>'UsersController@viewShareCertificate']);
 Route::get('/user/view/{investment_id}/unit', ['as'=>'user.view.unit', 'uses'=>'UsersController@viewUnitCertificate']);
+Route::get('/user/view/{investment_id}/application', ['as'=>'user.view.application', 'uses'=>'UsersController@viewApplication']);
 Route::post('/pages/testimonial/store', ['as'=>'pages.testimonial.store', 'uses'=>'PagesController@storeTestimonial']);
 Route::post('/pages/testimonial/uploadImg', ['as'=>'pages.testimonial.uploadImg', 'uses'=>'PagesController@uploadTestimonialImgThumbnail']);
 Route::post('/pages/testimonial/delete', ['as'=>'pages.testimonial.delete', 'uses'=>'PagesController@deleteTestimonial']);
