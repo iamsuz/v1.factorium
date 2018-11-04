@@ -541,7 +541,7 @@
                                 <!-- <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage"> -->
 
                                 {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p> --}}
-                                <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                                <table  border="0" cellpadding="18" cellspacing="0" align="left">
                                   <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
                                </table>
                                 {{-- <img src="https://monthly.estatebaron.com/assets/images/email/1_email_prog.png" style="display:block" width="100%" height="100%" /> --}}
@@ -624,12 +624,29 @@ Australia’s leading venture crowdfunding investment platform --></span></span>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account Name <b> {!!$project->investment->bank_account_name!!} </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">BSB <b> {!!$project->investment->bsb!!} </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account No <b> {!!$project->investment->bank_account_number!!} </b>.</span></span></span><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Reference <b> {!!$project->investment->bank_reference!!} </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Reference <b> {!!$project->investment->bank_reference!!} </b>.</span></span></span><br><br>
 &nbsp;</div>
 
 </td>
 </tr>
 </tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnButtonBlockOuter">
+        <tr>
+            <td style="padding-top: 0;padding-right: 18px;padding-bottom: 18px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="left" class="mcnButtonBlockInner">
+                <table border="0" cellpadding="0" cellspacing="0" class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 0px;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                    <tbody>
+                        <tr>
+                            <td align="center" valign="middle" class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 16px;padding: 10px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                <a class="mcnButton " title="Activate Account" href="{{route('user.view.application', [base64_encode($investment->id)])}}" target="_blank" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Application form</a>
+                                 </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
         <!--[if mso]>
         </td>
         <![endif]-->

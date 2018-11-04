@@ -84,7 +84,7 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
         $this->data = compact('user', 'project','amount','investment');
 
         $mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach(storage_path().$this->investment->application_path, ['as' => 'Application_Form']);
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
 
     }
