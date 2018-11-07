@@ -53,7 +53,7 @@ Fill the user details | @parent
 							<div class="row">
 								<div class="form-group">
 									<div class="col-sm-10 col-md-offset-1 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
-										{!! Form::password('password', array('placeholder'=>'Set a password for your account', 'class'=>'form-control input-box','name'=>'password', 'id'=>'password', 'tabindex'=>'3')) !!}
+										{!! Form::password('password', array('placeholder'=>'Set a password for your account', 'class'=>'form-control input-box','name'=>'password', 'id'=>'password', 'tabindex'=>'3', 'required'=>'true')) !!}
 										{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
@@ -76,7 +76,8 @@ Fill the user details | @parent
 
 @section('js-section')
 	<script type="text/javascript">
-		$('#submit_button').click(function () {
+		jQuery('form').submit(function(){
+			$(this).find(':submit').attr( 'disabled','disabled' );
 			$('.loader-overlay').show();
 		});
 	</script>
