@@ -429,20 +429,20 @@ $_SESSION['code'] = md5(microtime(true));
         @endif
         @endif
     });
-    function checkvalidi() {
-        if ((document.getElementById('email').value != '')) {
-            document.getElementById('password_form').style.display = 'block';
-            if (document.getElementById('password').Value == '') {
-                document.getElementById('err_msg').innerHTML = 'Just one more step, lets enter a password !';                 document.getElementById('password').focus();
-                return false;
-            }
-            if (document.getElementById('password').value != '') {
-                return true;
-            }
-            return false;
-        }
-        return true;
-    }
+    // function checkvalidi() {
+    //     if ((document.getElementById('email').value != '')) {
+    //         document.getElementById('password_form').style.display = 'block';
+    //         if (document.getElementById('password').Value == '') {
+    //             document.getElementById('err_msg').innerHTML = 'Just one more step, lets enter a password !';                 document.getElementById('password').focus();
+    //             return false;
+    //         }
+    //         if (document.getElementById('password').value != '') {
+    //             return true;
+    //         }
+    //         return false;
+    //     }
+    //     return true;
+    // }
 </script>
 @yield('js-section')
 </body>
