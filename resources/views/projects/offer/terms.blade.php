@@ -5,7 +5,7 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-body">
-          @if($project->investment){!! $project->investment->PDS_part_1_link !!}@endif
+          @if($project->investment)<iframe class="scribd_iframe_embed" src="{{$project->investment->PDS_part_1_link}}" width="100%" height="400px"></iframe>@endif
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" id="terms_accepted_button">I have read the @if($project->project_prospectus_text) <abbr title="{{$project->project_prospectus_text}}"><span id="abbrev"></span></abbr>@else prospectus @endif, take me to the application form</button>

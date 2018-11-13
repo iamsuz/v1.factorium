@@ -82,155 +82,243 @@ class SiteConfigurationsController extends Controller
     public function cropUploadedImage(Request $request)
     {
         if (SiteConfigurationHelper::isSiteAdmin())
-            {
-                $type = [];
-                $type['brand logo'] = 'brand_logo';
-                $type['back image'] = 'homepg_back_img';
-                $type['investment image'] = 'investment_page_image';
-                $type['howItWorks image'] = 'how_it_works_image'.substr($request->hiwImgAction, -1);
-                $type['favicon image'] = 'favicon_image_url';
-                $type['project_thumbnail'] = 'project_thumbnail';
-                $type['spv_logo_image'] = 'spv_logo_image';
-                $type['spv_md_sign_image'] = 'spv_md_sign_image';
-                $type['projectPg back image'] = 'projectpg_back_img';
-                $type['projectPg thumbnail image'] = $request->projectThumbAction;
-                $type['project_progress_circle_image'] = 'project_progress_circle_image';
+        {
+            $type = [];
+            $type['brand logo'] = 'brand_logo';
+            $type['back image'] = 'homepg_back_img';
+            $type['investment image'] = 'investment_page_image';
+            $type['howItWorks image'] = 'how_it_works_image'.substr($request->hiwImgAction, -1);
+            $type['favicon image'] = 'favicon_image_url';
+            $type['project_thumbnail'] = 'project_thumbnail';
+            $type['spv_logo_image'] = 'spv_logo_image';
+            $type['spv_md_sign_image'] = 'spv_md_sign_image';
+            $type['projectPg back image'] = 'projectpg_back_img';
+            $type['projectPg thumbnail image'] = $request->projectThumbAction;
+            $type['project_progress_circle_image'] = 'project_progress_circle_image';
 
-                if($request->imageName) {
-                    $src  = $request->imageName;
-                    $origWidth = $request->origWidth;
-                    $origHeight = $request->origHeight;
-                    $convertedWidth = 530;
-                    $convertedHeight = ($origHeight/$origWidth) * $convertedWidth;
+            if($request->imageName) {
+                $src  = $request->imageName;
+                $origWidth = $request->origWidth;
+                $origHeight = $request->origHeight;
+                $convertedWidth = 530;
+                $convertedHeight = ($origHeight/$origWidth) * $convertedWidth;
 
-                    $newWValue = ($request->wValue * $origWidth) / $convertedWidth;
-                    $newHValue = ($request->hValue * $origHeight) / $convertedHeight;
-                    $newXValue = ($request->xValue * $origWidth) / $convertedWidth;
-                    $newYValue = ($request->yValue * $origHeight) / $convertedHeight;
+                $newWValue = ($request->wValue * $origWidth) / $convertedWidth;
+                $newHValue = ($request->hValue * $origHeight) / $convertedHeight;
+                $newXValue = ($request->xValue * $origWidth) / $convertedWidth;
+                $newYValue = ($request->yValue * $origHeight) / $convertedHeight;
 
-                    $extension = strtolower(File::extension($src));
+                $extension = strtolower(File::extension($src));
 
-                    $projectId = '';
-                    if($request->projectId) {
-                        $projectId = $request->projectId;
-                    }
+                $projectId = '';
+                if($request->projectId) {
+                    $projectId = $request->projectId;
+                }
 
-                    if($request->currentProjectId) {
-                        $projectId = $request->currentProjectId;
-                    }
+                if($request->currentProjectId) {
+                    $projectId = $request->currentProjectId;
+                }
 
-                    $result = $this->cropImage($src, $newWValue, $newHValue, $newXValue, $newYValue);
+                $result = $this->cropImage($src, $newWValue, $newHValue, $newXValue, $newYValue);
                 // dd($src);
-                    if($request->imgAction == 'testimonial_image'){
-                        $finalpath = $src;
-                        $image = Image::make($result)->save(public_path($finalpath));
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $finalpath);
+                if($request->imgAction == 'testimonial_image'){
+                    $finalpath = $src;
+                    $image = Image::make($result)->save(public_path($finalpath));
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $finalpath);
+                }
+                if ($result && !$projectId) {
+                    $saveLoc = 'assets/images/media/home_page/';
+                    $finalFile = time().'.'. $extension;
+                    $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
+
+                    if($type[$request->imgAction] == 'brand_logo') {
+                        $image->resize(274, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                        })->save(public_path($saveLoc.$finalFile));
                     }
-                    if ($result && !$projectId) {
-                        $saveLoc = 'assets/images/media/home_page/';
-                        $finalFile = time().'.'. $extension;
-                        $finalpath = 'assets/images/media/home_page/'.$finalFile;
+                    $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
+                    $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                    ->where('type', $type[$request->imgAction])
+                    ->first();
+                    if($siteMedia) {
+                        File::delete(public_path($siteMedia->path));
+                    }
+                    else {
+                        $siteMedia = new SiteConfigMedia;
+                        $siteMedia->site_configuration_id = $siteConfigurationId;
+                        $siteMedia->type = $type[$request->imgAction];
+                        $siteMedia->caption = 'Home Page Main fold Back Image';
+                    }
+                    $siteMedia->filename = $finalFile;
+                    $siteMedia->path = $finalpath;
+                    $siteMedia->save();
+                    File::delete($src);
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                } elseif ($result && $projectId) {
+                    if(($request->imgAction == $type['spv_logo_image']) || ($request->imgAction == $type['spv_md_sign_image'])){
+                        $image = Image::make($result)->save();
+                    }
+                    else{
+                        $saveLoc = 'assets/images/media/project_page/';
+                        $finalFile = 'proj_'.time().'.'. $extension;
+                        $finalpath = $saveLoc.$finalFile;
+
                         $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
 
-                        if($type[$request->imgAction] == 'brand_logo') {
-                            $image->resize(274, null, function ($constraint) {
+                        if($type[$request->imgAction] == 'projectpg_back_img') {
+                            $image->resize(1080, null, function ($constraint) {
                                 $constraint->aspectRatio();
                             })->save(public_path($saveLoc.$finalFile));
                         }
-                        $siteConfigurationId = SiteConfiguration::where('project_site', url())->first()->id;
-                        $siteMedia = SiteConfigMedia::where('site_configuration_id', $siteConfigurationId)
+                        $projectMedia = Media::where('project_id', $projectId)
+                        ->where('project_site', url())
                         ->where('type', $type[$request->imgAction])
                         ->first();
-                        if($siteMedia) {
-                            File::delete(public_path($siteMedia->path));
-                        }
-                        else {
-                            $siteMedia = new SiteConfigMedia;
-                            $siteMedia->site_configuration_id = $siteConfigurationId;
-                            $siteMedia->type = $type[$request->imgAction];
-                            $siteMedia->caption = 'Home Page Main fold Back Image';
-                        }
-                        $siteMedia->filename = $finalFile;
-                        $siteMedia->path = $finalpath;
-                        $siteMedia->save();
-                        File::delete($src);
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
-                    } elseif ($result && $projectId) {
-                        if(($request->imgAction == $type['spv_logo_image']) || ($request->imgAction == $type['spv_md_sign_image'])){
-                            $image = Image::make($result)->save();
+                        if($projectMedia){
+                            File::delete(public_path($projectMedia->path));
                         }
                         else{
-                            $saveLoc = 'assets/images/media/project_page/';
-                            $finalFile = 'proj_'.time().'.'. $extension;
-                            $finalpath = $saveLoc.$finalFile;
-
-                            $image = Image::make($result)->save(public_path($saveLoc.$finalFile));
-
-                            if($type[$request->imgAction] == 'projectpg_back_img') {
-                                $image->resize(1080, null, function ($constraint) {
-                                    $constraint->aspectRatio();
-                                })->save(public_path($saveLoc.$finalFile));
-                            }
-                            $projectMedia = Media::where('project_id', $projectId)
-                            ->where('project_site', url())
-                            ->where('type', $type[$request->imgAction])
-                            ->first();
-                            if($projectMedia){
-                                File::delete(public_path($projectMedia->path));
-                            }
-                            else{
-                                $projectMedia = new Media;
-                                $projectMedia->project_id = $projectId;
-                                $projectMedia->type = $type[$request->imgAction];
-                                $projectMedia->project_site = url();
-                                $projectMedia->caption = 'Project Page Main fold back Image';
-                            }
-                            $projectMedia->filename = $finalFile;
-                            $projectMedia->path = $finalpath;
-                            $projectMedia->save();
-                            File::delete($src);
+                            $projectMedia = new Media;
+                            $projectMedia->project_id = $projectId;
+                            $projectMedia->type = $type[$request->imgAction];
+                            $projectMedia->project_site = url();
+                            $projectMedia->caption = 'Project Page Main fold back Image';
                         }
-                        return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
+                        $projectMedia->filename = $finalFile;
+                        $projectMedia->path = $finalpath;
+                        $projectMedia->save();
+                        File::delete($src);
                     }
-
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
-                    }
+                    return $resultArray = array('status' => 1, 'message' => 'Image Successfully Updated.', 'imageSource' => $src);
                 }
 
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Something went wrong.');
+                }
+            }
+
+        }
+    }
+
+    public function cropImage($srcImg, $wValue, $hValue, $xValue, $yValue)
+    {
+        $bg_image = Image::make($srcImg);
+        return $bg_image->crop( (int) $wValue, (int) $hValue, (int) $xValue, (int) $yValue);
+    }
+
+    public function saveHomePageText1(Request $request)
+    {
+        $str = $request->text1;
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        if(!$siteconfiguration)
+        {
+            $siteconfiguration = new SiteConfiguration;
+            $siteconfiguration->save();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        }
+        $siteconfiguration->update(['homepg_text1' => $str]);
+        return array('status' => 1, 'Message' => 'Data Successfully Updated');
+    }
+
+    public function saveHomePageBtn1Text(Request $request)
+    {
+        $uinput = $request->text1;
+        $gotoid = $request->gotoid;
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url());
+            // dd($siteconfiguration);
+        if($siteconfiguration->isEmpty())
+        {
+            $siteconfiguration = new SiteConfiguration;
+            $siteconfiguration->project_site = url();
+            $siteconfiguration->save();
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        }
+        $siteconfiguration = $siteconfiguration->first();
+        $siteconfiguration->update(['homepg_btn1_text' => $uinput,'homepg_btn1_gotoid' => $gotoid]);
+        return array('status' => 1, 'Message' => 'Data Successfully Updated');
+    }
+
+    public function uploadHomePgBackImg1 (Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'homepg_back_img'   => 'required|mimes:jpeg,png,jpg',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('homepg_back_img') && $request->file('homepg_back_img')->isValid()){
+                // Image::make($request->homepg_back_img)->resize(530, null, function($constraint){
+                //     $constraint->aspectRatio();
+                // })->save();
+                // Image::make($request->homepg_back_img)->resize(1920, null, function($constraint){
+                //     $constraint->aspectRatio();
+                // })->save();
+                $fileExt = $request->file('homepg_back_img')->getClientOriginalExtension();
+                $fileName = 'main_bg'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('homepg_back_img')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus) {
+                    if($fileExt != 'jpg') {
+                        Image::make($destinationPath.$fileName)->encode('jpg', 90)->save(public_path().'/assets/images/main_bg.jpg');
+                    }
+                    else {
+                        Image::make($destinationPath.$fileName)->save(public_path().'/assets/images/main_bg.jpg');
+                    }
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
             }
         }
+    }
 
-        public function cropImage($srcImg, $wValue, $hValue, $xValue, $yValue)
-        {
-            $bg_image = Image::make($srcImg);
-            return $bg_image->crop( (int) $wValue, (int) $hValue, (int) $xValue, (int) $yValue);
+    public function updateFavicon(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'favicon_image_url'   => 'required|mimes:png',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
+            }
+            $destinationPath = '/';
+
+            if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
+                Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
+                $fileName = 'favicon'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('favicon_image_url')->move(public_path($destinationPath), $fileName);
+                list($origWidth, $origHeight) = getimagesize(public_path($destinationPath).$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
         }
+    }
 
-        public function saveHomePageText1(Request $request)
-        {
-            $str = $request->text1;
+    public function updateSiteTitle(Request $request)
+    {
+        $title = $request->title_text_imput;
+        if($title != ""){
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             if(!$siteconfiguration)
-            {
-                $siteconfiguration = new SiteConfiguration;
-                $siteconfiguration->save();
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-            }
-            $siteconfiguration->update(['homepg_text1' => $str]);
-            return array('status' => 1, 'Message' => 'Data Successfully Updated');
-        }
-
-        public function saveHomePageBtn1Text(Request $request)
-        {
-            $uinput = $request->text1;
-            $gotoid = $request->gotoid;
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url());
-            // dd($siteconfiguration);
-            if($siteconfiguration->isEmpty())
             {
                 $siteconfiguration = new SiteConfiguration;
                 $siteconfiguration->project_site = url();
@@ -238,456 +326,368 @@ class SiteConfigurationsController extends Controller
                 $siteconfiguration = SiteConfiguration::all();
                 $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             }
-            $siteconfiguration = $siteconfiguration->first();
-            $siteconfiguration->update(['homepg_btn1_text' => $uinput,'homepg_btn1_gotoid' => $gotoid]);
-            return array('status' => 1, 'Message' => 'Data Successfully Updated');
-        }
-
-        public function uploadHomePgBackImg1 (Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'homepg_back_img'   => 'required|mimes:jpeg,png,jpg',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
-                }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('homepg_back_img') && $request->file('homepg_back_img')->isValid()){
-                // Image::make($request->homepg_back_img)->resize(530, null, function($constraint){
-                //     $constraint->aspectRatio();
-                // })->save();
-                // Image::make($request->homepg_back_img)->resize(1920, null, function($constraint){
-                //     $constraint->aspectRatio();
-                // })->save();
-                    $fileExt = $request->file('homepg_back_img')->getClientOriginalExtension();
-                    $fileName = 'main_bg'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('homepg_back_img')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus) {
-                        if($fileExt != 'jpg') {
-                            Image::make($destinationPath.$fileName)->encode('jpg', 90)->save(public_path().'/assets/images/main_bg.jpg');
-                        }
-                        else {
-                            Image::make($destinationPath.$fileName)->save(public_path().'/assets/images/main_bg.jpg');
-                        }
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
-                }
-            }
-        }
-
-        public function updateFavicon(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'favicon_image_url'   => 'required|mimes:png',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: png');
-                }
-                $destinationPath = '/';
-
-                if($request->hasFile('favicon_image_url') && $request->file('favicon_image_url')->isValid()){
-                    Image::make($request->favicon_image_url)->resize(null, 200, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('favicon_image_url')->getClientOriginalExtension();
-                    $fileName = 'favicon'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('favicon_image_url')->move(public_path($destinationPath), $fileName);
-                    list($origWidth, $origHeight) = getimagesize(public_path($destinationPath).$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
-                }
-            }
-        }
-
-        public function updateSiteTitle(Request $request)
-        {
-            $title = $request->title_text_imput;
-            if($title != ""){
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                if(!$siteconfiguration)
-                {
-                    $siteconfiguration = new SiteConfiguration;
-                    $siteconfiguration->project_site = url();
-                    $siteconfiguration->save();
-                    $siteconfiguration = SiteConfiguration::all();
-                    $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                }
-                $siteconfiguration->update(['title_text'=>$title]);
-                Session::flash('message', 'Title Updated Successfully');
-                Session::flash('action', 'site-title');
-                return redirect()->back();
-            }
-        }
-
-        public function updateWebsiteName(Request $request)
-        {
-            $websiteName = $request->site_name_input;
-            if($websiteName != ""){
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                if(!$siteconfiguration)
-                {
-                    $siteconfiguration = new SiteConfiguration;
-                    $siteconfiguration->project_site = url();
-                    $siteconfiguration->save();
-                    $siteconfiguration = SiteConfiguration::all();
-                    $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                }
-                $siteconfiguration->update(['website_name'=>$websiteName]);
-                Session::flash('message', 'Website Name Updated Successfully');
-                Session::flash('action', 'website-name');
-                return redirect()->back();
-            }
-        }
-
-        public function updateSocialSiteLinks(Request $request)
-        {
-            $this->validate($request, array(
-                'facebook_link' => 'url|required',
-                'twitter_link' => 'url|required',
-                'youtube_link' => 'url|required',
-                'linkedin_link' => 'url|required',
-                'google_link' => 'url|required',
-                'instagram_link' => 'url|required',
-            ));
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-        // dd($siteconfiguration);
-            $result = $siteconfiguration->update([
-                'facebook_link' => $request->facebook_link,
-                'twitter_link' => $request->twitter_link,
-                'youtube_link' => $request->youtube_link,
-                'linkedin_link' => $request->linkedin_link,
-                'google_link' => $request->google_link,
-                'instagram_link' => $request->instagram_link,
-            ]);
-            if($result){
-                Session::flash('socialLinkUpdateMessage', 'Saved Successfully');
-            }
+            $siteconfiguration->update(['title_text'=>$title]);
+            Session::flash('message', 'Title Updated Successfully');
+            Session::flash('action', 'site-title');
             return redirect()->back();
         }
+    }
 
-        public function updateSitemapLinks(Request $request)
-        {
-            $this->validate($request, array(
-                'blog_link_new' => 'url|required',
+    public function updateWebsiteName(Request $request)
+    {
+        $websiteName = $request->site_name_input;
+        if($websiteName != ""){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            if(!$siteconfiguration)
+            {
+                $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
+                $siteconfiguration->save();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            }
+            $siteconfiguration->update(['website_name'=>$websiteName]);
+            Session::flash('message', 'Website Name Updated Successfully');
+            Session::flash('action', 'website-name');
+            return redirect()->back();
+        }
+    }
+
+    public function updateSocialSiteLinks(Request $request)
+    {
+        $this->validate($request, array(
+            'facebook_link' => 'url|required',
+            'twitter_link' => 'url|required',
+            'youtube_link' => 'url|required',
+            'linkedin_link' => 'url|required',
+            'google_link' => 'url|required',
+            'instagram_link' => 'url|required',
+        ));
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        // dd($siteconfiguration);
+        $result = $siteconfiguration->update([
+            'facebook_link' => $request->facebook_link,
+            'twitter_link' => $request->twitter_link,
+            'youtube_link' => $request->youtube_link,
+            'linkedin_link' => $request->linkedin_link,
+            'google_link' => $request->google_link,
+            'instagram_link' => $request->instagram_link,
+        ]);
+        if($result){
+            Session::flash('socialLinkUpdateMessage', 'Saved Successfully');
+        }
+        return redirect()->back();
+    }
+
+    public function updateSitemapLinks(Request $request)
+    {
+        $this->validate($request, array(
+            'blog_link_new' => 'url|required',
             // 'terms_conditions_link' => 'url|required',
             // 'privacy_link' => 'url|required',
             // 'financial_service_guide_link' => 'url|required',
             // 'media_kit_link' => 'url|required',
-            ));
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-            $result = $siteconfiguration->update([
-                'blog_link_new' => $request->blog_link_new,
-                'terms_conditions_link' => $request->terms_conditions_link,
-                'privacy_link' => $request->privacy_link,
-                'financial_service_guide_link' => $request->financial_service_guide_link,
+        ));
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $result = $siteconfiguration->update([
+            'blog_link_new' => $request->blog_link_new,
+            'terms_conditions_link' => $request->terms_conditions_link,
+            'privacy_link' => $request->privacy_link,
+            'financial_service_guide_link' => $request->financial_service_guide_link,
             // 'media_kit_link' => $request->media_kit_link,
-            ]);
-            if($result){
-                Session::flash('sitemapLinksUpdateMessage', 'Saved Successfully');
-            }
-            return redirect()->back();
+        ]);
+        if($result){
+            Session::flash('sitemapLinksUpdateMessage', 'Saved Successfully');
         }
+        return redirect()->back();
+    }
 
-        public function updateGreyBoxNote(Request $request)
-        {
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+    public function updateGreyBoxNote(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         // dd($siteconfiguration);
-            $result = $siteconfiguration->update([
-                'grey_box_note' => trim(preg_replace('/\s+/', ' ', $request->grey_box_note)),
-                'compliance_description' => trim(preg_replace('/\s+/', ' ', $request->investment_title1_description)),
-            ]);
+        $result = $siteconfiguration->update([
+            'grey_box_note' => trim(preg_replace('/\s+/', ' ', $request->grey_box_note)),
+            'compliance_description' => trim(preg_replace('/\s+/', ' ', $request->investment_title1_description)),
+        ]);
         // dd($result);
-            return redirect()->back();
-        }
+        return redirect()->back();
+    }
 
-        public function updateGreyBoxNote1(Request $request)
-        {
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-            dd('$request');
-        }
-        public function editHomePgInvestmentTitle1(Request $request)
-        {
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+    public function updateGreyBoxNote1(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        dd('$request');
+    }
+    public function editHomePgInvestmentTitle1(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         //Created new field due to default value issue
         //$siteconfiguration->update([
           //  'investment_title_text1' => $request->investment_title_text1,
             //]);
-            $siteconfiguration->update([
-                'compliance_title' => $request->investment_title_text1,
-            ]);
-            return redirect()->back();
-        }
+        $siteconfiguration->update([
+            'compliance_title' => $request->investment_title_text1,
+        ]);
+        return redirect()->back();
+    }
 
-        public function editHomePgInvestmentTitle1Description(Request $request)
-        {
-            $siteconfiguration = SiteConfiguration::all();
-            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+    public function editHomePgInvestmentTitle1Description(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
         //Created new field due to default value issue
         //$siteconfiguration->update([
             //'investment_title1_description' => $request->investment_title1_description,
             //]);
-            $siteconfiguration->update([
-                'compliance_description' => $request->investment_title1_description,
-            ]);
-            return redirect()->back();
-        }
+        $siteconfiguration->update([
+            'compliance_description' => $request->investment_title1_description,
+        ]);
+        return redirect()->back();
+    }
 
-        public function editSmsfReferenceText(Request $request)
-        {
+    public function editSmsfReferenceText(Request $request)
+    {
+        $siteconfiguration = SiteConfiguration::all();
+        $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+        $siteconfiguration->update([
+            'smsf_reference_txt' => $request->smsf_reference_text,
+        ]);
+        return redirect()->back();
+    }
+
+    public function uploadHomePgInvestmentImage(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'investment_page_image'   => 'required|mimes:jpeg,png,jpg',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+            }
+            $destinationPath = 'assets/images/websiteLogo/';
+
+            if($request->hasFile('investment_page_image') && $request->file('investment_page_image')->isValid()){
+                Image::make($request->investment_page_image)->resize(530, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('investment_page_image')->getClientOriginalExtension();
+                $fileName = 'Disclosure-250'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('investment_page_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
+                }
+            }
+        }
+    }
+
+
+    public function uploadVideo(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $video_url = $request->explainer_video_url;
             $siteconfiguration = SiteConfiguration::all();
             $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             $siteconfiguration->update([
-                'smsf_reference_txt' => $request->smsf_reference_text,
+                'explainer_video_url' => $request->explainer_video_url,
             ]);
             return redirect()->back();
         }
+    }
 
-        public function uploadHomePgInvestmentImage(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'investment_page_image'   => 'required|mimes:jpeg,png,jpg',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
-                }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('investment_page_image') && $request->file('investment_page_image')->isValid()){
-                    Image::make($request->investment_page_image)->resize(530, null, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('investment_page_image')->getClientOriginalExtension();
-                    $fileName = 'Disclosure-250'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('investment_page_image')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
-                }
-            }
+    public function storeShowFundingOptionsFlag(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $fundingFlag = $request->show_funding_options;
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
+                'show_funding_options' => $request->show_funding_options,
+            ]);
+            return redirect()->back();
         }
+    }
 
 
-        public function uploadVideo(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $video_url = $request->explainer_video_url;
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                $siteconfiguration->update([
-                    'explainer_video_url' => $request->explainer_video_url,
-                ]);
-                return redirect()->back();
-            }
+    public function storeShowSocialLinksFlag(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $socialicons = $request->show_social_icons;
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            $siteconfiguration->update([
+                'show_social_icons' => $request->show_social_icons,
+            ]);
+            return redirect()->back();
         }
+    }
 
-        public function storeShowFundingOptionsFlag(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $fundingFlag = $request->show_funding_options;
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                $siteconfiguration->update([
-                    'show_funding_options' => $request->show_funding_options,
-                ]);
-                return redirect()->back();
-            }
-        }
-
-
-        public function storeShowSocialLinksFlag(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $socialicons = $request->show_social_icons;
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
-                $siteconfiguration->update([
-                    'show_social_icons' => $request->show_social_icons,
-                ]);
-                return redirect()->back();
-            }
-        }
-
-        public function storeHowItWorksContent(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $this->validate($request, array(
-                    'how_it_works_title1' => 'required',
-                    'how_it_works_title2' => 'required',
-                    'how_it_works_title3' => 'required',
-                    'how_it_works_title4' => 'required',
-                    'how_it_works_title5' => 'required',
-                    'how_it_works_desc1' => 'required',
-                    'how_it_works_desc2' => 'required',
-                    'how_it_works_desc3' => 'required',
-                    'how_it_works_desc4' => 'required',
-                    'how_it_works_desc5' => 'required',
-                ));
-                $siteconfiguration = SiteConfiguration::all();
-                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+    public function storeHowItWorksContent(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $this->validate($request, array(
+                'how_it_works_title1' => 'required',
+                'how_it_works_title2' => 'required',
+                'how_it_works_title3' => 'required',
+                'how_it_works_title4' => 'required',
+                'how_it_works_title5' => 'required',
+                'how_it_works_desc1' => 'required',
+                'how_it_works_desc2' => 'required',
+                'how_it_works_desc3' => 'required',
+                'how_it_works_desc4' => 'required',
+                'how_it_works_desc5' => 'required',
+            ));
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
             // trim(preg_replace('/\s+/', ' ', $string));
-                $siteconfiguration->update([
-                    'how_it_works_title1' => $request->how_it_works_title1,
-                    'how_it_works_title2' => $request->how_it_works_title2,
-                    'how_it_works_title3' => $request->how_it_works_title3,
-                    'how_it_works_title4' => $request->how_it_works_title4,
-                    'how_it_works_title5' => $request->how_it_works_title5,
-                    'how_it_works_desc1' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc1)),
-                    'how_it_works_desc2' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc2)),
-                    'how_it_works_desc3' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc3)),
-                    'how_it_works_desc4' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc4)),
-                    'how_it_works_desc5' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc5)),
-                ]);
-                return redirect()->back();
+            $siteconfiguration->update([
+                'how_it_works_title1' => $request->how_it_works_title1,
+                'how_it_works_title2' => $request->how_it_works_title2,
+                'how_it_works_title3' => $request->how_it_works_title3,
+                'how_it_works_title4' => $request->how_it_works_title4,
+                'how_it_works_title5' => $request->how_it_works_title5,
+                'how_it_works_desc1' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc1)),
+                'how_it_works_desc2' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc2)),
+                'how_it_works_desc3' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc3)),
+                'how_it_works_desc4' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc4)),
+                'how_it_works_desc5' => trim(preg_replace('/\s+/', ' ', $request->how_it_works_desc5)),
+            ]);
+            return redirect()->back();
+        }
+    }
+    public function uploadProgressImage(Request $request, $project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        // dd($project);
+        $image_type = 'progress_images';
+
+        $destinationPath = 'assets/images/projects/progress/'.$project_id;
+        $filename = $request->file->getClientOriginalName();
+        $filename = time().'_'.$filename;
+        $extension = $request->file->getClientOriginalExtension();
+        $photo = $request->file->move($destinationPath, $filename);
+        $photo= Image::make($destinationPath.'/'.$filename);
+        $photo->resize(1566, 885, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save();
+        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+        $project->media()->save($media);
+        return 1;
+    }
+    public function uploadGallaryImage(Request $request, $project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        // dd($project);
+        $image_type = 'gallary_images';
+
+        $destinationPath = 'assets/images/projects/gallary/'.$project_id;
+        $filename = $request->file->getClientOriginalName();
+        $filename = time().'_'.$filename;
+        $extension = $request->file->getClientOriginalExtension();
+        $photo = $request->file->move($destinationPath, $filename);
+        $photo= Image::make($destinationPath.'/'.$filename);
+        $photo->resize(1566, 885, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save();
+        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension, 'project_site'=>url()]);
+        $project->media()->save($media);
+        return 1;
+    }
+
+    public function uploadHowItWorksImages(Request $request)
+    {
+        if (SiteConfigurationHelper::isSiteAdmin()){
+            $validation_rules = array(
+                'how_it_works_image'   => 'required|mimes:jpeg,png,jpg',
+                'imgAction' => 'required',
+            );
+            $validator = Validator::make($request->all(), $validation_rules);
+            if($validator->fails()){
+                return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
-        }
-        public function uploadProgressImage(Request $request, $project_id)
-        {
-            $project = Project::findOrFail($project_id);
-        // dd($project);
-            $image_type = 'progress_images';
+            $destinationPath = 'assets/images/websiteLogo/';
 
-            $destinationPath = 'assets/images/projects/progress/'.$project_id;
-            $filename = $request->file->getClientOriginalName();
-            $filename = time().'_'.$filename;
-            $extension = $request->file->getClientOriginalExtension();
-            $photo = $request->file->move($destinationPath, $filename);
-            $photo= Image::make($destinationPath.'/'.$filename);
-            $photo->resize(1566, 885, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save();
-            $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-            $project->media()->save($media);
-            return 1;
-        }
-        public function uploadGallaryImage(Request $request, $project_id)
-        {
-            $project = Project::findOrFail($project_id);
-        // dd($project);
-            $image_type = 'gallary_images';
-
-            $destinationPath = 'assets/images/projects/gallary/'.$project_id;
-            $filename = $request->file->getClientOriginalName();
-            $filename = time().'_'.$filename;
-            $extension = $request->file->getClientOriginalExtension();
-            $photo = $request->file->move($destinationPath, $filename);
-            $photo= Image::make($destinationPath.'/'.$filename);
-            $photo->resize(1566, 885, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save();
-            $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension, 'project_site'=>url()]);
-            $project->media()->save($media);
-            return 1;
-        }
-
-        public function uploadHowItWorksImages(Request $request)
-        {
-            if (SiteConfigurationHelper::isSiteAdmin()){
-                $validation_rules = array(
-                    'how_it_works_image'   => 'required|mimes:jpeg,png,jpg',
-                    'imgAction' => 'required',
-                );
-                $validator = Validator::make($request->all(), $validation_rules);
-                if($validator->fails()){
-                    return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
-                }
-                $destinationPath = 'assets/images/websiteLogo/';
-
-                if($request->hasFile('how_it_works_image') && $request->file('how_it_works_image')->isValid()){
-                    Image::make($request->how_it_works_image)->resize(530, null, function($constraint){
-                        $constraint->aspectRatio();
-                    })->save();
-                    $fileExt = $request->file('how_it_works_image')->getClientOriginalExtension();
-                    $fileName = 'how_it_works_img'.'_'.time().'.'.$fileExt;
-                    $uploadStatus = $request->file('how_it_works_image')->move($destinationPath, $fileName);
-                    list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
-                    if($uploadStatus){
+            if($request->hasFile('how_it_works_image') && $request->file('how_it_works_image')->isValid()){
+                Image::make($request->how_it_works_image)->resize(530, null, function($constraint){
+                    $constraint->aspectRatio();
+                })->save();
+                $fileExt = $request->file('how_it_works_image')->getClientOriginalExtension();
+                $fileName = 'how_it_works_img'.'_'.time().'.'.$fileExt;
+                $uploadStatus = $request->file('how_it_works_image')->move($destinationPath, $fileName);
+                list($origWidth, $origHeight) = getimagesize($destinationPath.$fileName);
+                if($uploadStatus){
                     // if($fileExt != 'png'){
                     //     Image::make($destinationPath.$fileName)->encode('png', 9)->save(public_path('assets/images/main_bg.jpg'));
                     // }
                     // else{
                     //     Image::make($destinationPath.$fileName)->save(public_path('assets/images/main_bg.jpg'));
                     // }
-                        return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
-                    }
-                    else {
-                        return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
-                    }
+                    return $resultArray = array('status' => 1, 'message' => 'Image Uploaded Successfully', 'destPath' => $destinationPath, 'fileName' => $fileName, 'origWidth' =>$origWidth, 'origHeight' => $origHeight);
+                }
+                else {
+                    return $resultArray = array('status' => 0, 'message' => 'Image upload failed.');
                 }
             }
         }
-        public function addProgressDetails(Request $request, $project_id, AppMailer $mailer)
-        {
+    }
+    public function addProgressDetails(Request $request, $project_id, AppMailer $mailer)
+    {
+        $this->validate($request, array(
+            'updated_date'=>'required|date',
+            'progress_description'=>'required',
+            'progress_details'=>'required',
+            'video_url'=>'',
+        ));
+
+        $imagePath = '';
+        if($request->project_progress_image){
             $this->validate($request, array(
-                'updated_date'=>'required|date',
-                'progress_description'=>'required',
-                'progress_details'=>'required',
-                'video_url'=>'',
+                'project_progress_image'=>'image',
             ));
-
-            $imagePath = '';
-            if($request->project_progress_image){
-                $this->validate($request, array(
-                    'project_progress_image'=>'image',
-                ));
-                $destinationPath = 'assets/images/projects/progress/'.$project_id;
-                $filename = $request->project_progress_image->getClientOriginalName();
-                $filename = time().'_'.$filename;
-                $extension = $request->project_progress_image->getClientOriginalExtension();
-                $photo = $request->project_progress_image->move($destinationPath, $filename);
-                $photo= Image::make($destinationPath.'/'.$filename);
-                $photo->resize(700, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save();
-                $imagePath = $destinationPath.'/'.$filename;
-            }
-
-            $project = Project::findOrFail($project_id);
-            $project_prog = new ProjectProg;
-            $project_prog->project_id = $project_id;
-            $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
-            $project_prog->progress_description = trim(preg_replace('/\s+/', ' ', $request->progress_description));
-            $project_prog->progress_details = trim(preg_replace('/\s+/', ' ', $request->progress_details));
-            $project_prog->video_url = $request->video_url;
-            $project_prog->image_path = $imagePath;
-            $project_prog->save();
-
-            $SiteConfiguration = SiteConfiguration::where('project_site', url())->first();
-
-            $investors = $project->investors->groupBy('email');
-            foreach ($investors as $email => $investor) {
-                $user = User::where('email',$email)->get()->first();
-                Mail::later(5, 'emails.updateNotification', compact('user','project'), function($message) use ($email, $project, $SiteConfiguration){
-                    $message->to($email)->subject('You have received an update for '.$project->title.' on '.$SiteConfiguration->website_name);
-                });
-            }
-            return redirect()->back();
+            $destinationPath = 'assets/images/projects/progress/'.$project_id;
+            $filename = $request->project_progress_image->getClientOriginalName();
+            $filename = time().'_'.$filename;
+            $extension = $request->project_progress_image->getClientOriginalExtension();
+            $photo = $request->project_progress_image->move($destinationPath, $filename);
+            $photo= Image::make($destinationPath.'/'.$filename);
+            $photo->resize(700, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save();
+            $imagePath = $destinationPath.'/'.$filename;
         }
+
+        $project = Project::findOrFail($project_id);
+        $project_prog = new ProjectProg;
+        $project_prog->project_id = $project_id;
+        $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
+        $project_prog->progress_description = trim(preg_replace('/\s+/', ' ', $request->progress_description));
+        $project_prog->progress_details = trim(preg_replace('/\s+/', ' ', $request->progress_details));
+        $project_prog->video_url = $request->video_url;
+        $project_prog->image_path = $imagePath;
+        $project_prog->save();
+
+        $SiteConfiguration = SiteConfiguration::where('project_site', url())->first();
+
+        $investors = $project->investors->groupBy('email');
+        foreach ($investors as $email => $investor) {
+            $user = User::where('email',$email)->get()->first();
+            Mail::later(5, 'emails.updateNotification', compact('user','project'), function($message) use ($email, $project, $SiteConfiguration){
+                $message->to($email)->subject('You have received an update for '.$project->title.' on '.$SiteConfiguration->website_name);
+            });
+        }
+        return redirect()->back();
+    }
 
     public function deleteProgressDetails(Request $request,$id)
     {
@@ -699,34 +699,34 @@ class SiteConfigurationsController extends Controller
     public function updateCoInvestDetails(Request $request, $projectId)
     {
         $this->validate($request, array(
-                'project_title_txt' => 'required',
-                'project_description_txt' => 'required',
-                'project_goal_amount_txt'=>'required|integer|min:1',
-                ));
+            'project_title_txt' => 'required',
+            'project_description_txt' => 'required',
+            'project_goal_amount_txt'=>'required|integer|min:1',
+        ));
 
         Project::where('id', $projectId)->update([
-                'title' => $request->project_title_txt,
-                'description' => $request->project_description_txt,
-                'project_prospectus_text'=>$request->project_prospectus_txt,
-                'edit_disclaimer'=>$request->add_disclaimer_txt,
-                'coinvest_project_completion_date'=>$request->coinvest_project_completion_date,
-                'coinvest_carousel_text'=>$request->coinvest_carousel_text,
-                ]);
+            'title' => $request->project_title_txt,
+            'description' => $request->project_description_txt,
+            'project_prospectus_text'=>$request->project_prospectus_txt,
+            'edit_disclaimer'=>$request->add_disclaimer_txt,
+            'coinvest_project_completion_date'=>$request->coinvest_project_completion_date,
+            'coinvest_carousel_text'=>$request->coinvest_carousel_text,
+        ]);
 
         Investment::where('project_id', $projectId)->first()->update([
-                'fund_raising_close_date'=>$request->fund_raising_close_date,
-                'minimum_accepted_amount' => $request->project_min_investment_txt,
-                'hold_period' => $request->project_hold_period_txt,
-                'projected_returns' => $request->project_returns_txt,
-                'goal_amount' => $request->project_goal_amount_txt,
-                'summary' => $request->project_summary_txt,
-                'security_long' => $request->project_security_long_txt,
-                'exit_d' => $request->project_investor_distribution_txt,
-                'marketability' => $request->project_marketability_txt,
-                'residents' => $request->project_residents_txt,
-                'investment_type' => $request->project_investment_type_txt,
-                'security' => $request->project_security_txt,
-            ]);
+            'fund_raising_close_date'=>$request->fund_raising_close_date,
+            'minimum_accepted_amount' => $request->project_min_investment_txt,
+            'hold_period' => $request->project_hold_period_txt,
+            'projected_returns' => $request->project_returns_txt,
+            'goal_amount' => $request->project_goal_amount_txt,
+            'summary' => $request->project_summary_txt,
+            'security_long' => $request->project_security_long_txt,
+            'exit_d' => $request->project_investor_distribution_txt,
+            'marketability' => $request->project_marketability_txt,
+            'residents' => $request->project_residents_txt,
+            'investment_type' => $request->project_investment_type_txt,
+            'security' => $request->project_security_txt,
+        ]);
 
         $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
         $response = \Geocoder::geocode('json', $param);
@@ -749,8 +749,8 @@ class SiteConfigurationsController extends Controller
             'zoom_level'=>$request->zoom_level,
         ]);
         Session::flash('message', 'Project Details Updated');
-            Session::flash('editable', 'true');
-            return redirect()->back();
+        Session::flash('editable', 'true');
+        return redirect()->back();
     }
 
     public function updateProjectDetails(Request $request, $projectId)
@@ -761,91 +761,101 @@ class SiteConfigurationsController extends Controller
                 'project_description_txt' => 'required',
                 'project_goal_amount'=>'required|integer|min:1',
                 'project_min_investment_txt'=>'required|integer|min:100'
-                ));
+            ));
                 //Check for minimum investment amount
-                if((int)$request->project_min_investment_txt % 100 != 0)
-                {
-                    return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center" style="color="white;">Please enter amount in increments of $100 only</p>');
+            if((int)$request->project_min_investment_txt % 100 != 0)
+            {
+                return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center" style="color="white;">Please enter amount in increments of $100 only</p>');
+            }
+            Project::where('id', $projectId)->update([
+                'title' => $request->project_title_txt,
+                'description' => $request->project_description_txt,
+                'button_label'=>$request->project_button_invest_txt,
+                'project_prospectus_text'=>$request->project_prospectus_txt,
+                'edit_disclaimer'=>$request->add_disclaimer_txt,
+                'custom_project_page_link'=>$request->custom_project_page_link,
+            ]);
+            Investment::where('project_id', $projectId)->first()->update([
+                'fund_raising_close_date'=>$request->fund_raising_close_date,
+                'minimum_accepted_amount' => $request->project_min_investment_txt,
+                'hold_period' => $request->project_hold_period_txt,
+                'projected_returns' => $request->project_returns_txt,
+                'goal_amount' => $request->project_goal_amount,
+                'summary' => $request->project_summary_txt,
+                'security_long' => $request->project_security_long_txt,
+                'exit_d' => $request->project_investor_distribution_txt,
+                'marketability' => $request->project_marketability_txt,
+                'residents' => $request->project_residents_txt,
+                'investment_type' => $request->project_investment_type_txt,
+                'security' => $request->project_security_txt,
+                'expected_returns_long' => $request->project_expected_returns_txt,
+                'returns_paid_as' => $request->project_return_paid_as_txt,
+                'taxation' => $request->project_taxation_txt,
+                'proposer' => $request->project_developer_txt,
+                'current_status' => $request->project_current_status_txt,
+                'rationale' => $request->project_rationale_txt,
+                'risk' => $request->project_risk_txt,
+                'PDS_part_1_link' => $request->project_pds1_link_txt,
+                'PDS_part_2_link' => $request->project_pds2_link_txt,
+                'how_to_invest' => $request->project_how_to_invest_txt,
+                'bank' => trim($request->bank_name),
+                'bank_account_name' => trim($request->account_name),
+                'bsb' => trim($request->bsb_name),
+                'bank_account_number' => trim($request->account_number),
+                'swift_code' => trim($request->swift_code),
+                'bank_reference' => trim($request->bank_reference),
+                'investments_structure_video_url' => $request->investments_structure_video_url,
+                'bitcoin_wallet_address' => $request->bitcoin_wallet_address,
+            ]);
+            $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
+            $response = \Geocoder::geocode('json', $param);
+            if(json_decode($response)->status != 'ZERO_RESULTS') {
+                $latitude =json_decode(($response))->results[0]->geometry->location->lat;
+                $longitude =json_decode(($response))->results[0]->geometry->location->lng;
+            } else {
+                return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
+            }
+            Location::where('id', $projectId)->update([
+                'line_1'=>$request->line_1,
+                'line_2'=>$request->line_2,
+                'city'=>$request->city,
+                'state'=>$request->state,
+                'postal_code'=>$request->postal_code,
+                'country_code'=>$request->country,
+                'country'=>array_search($request->country, \App\Http\Utilities\Country::aus()),
+                'latitude'=>$latitude,
+                'longitude'=>$longitude,
+                'zoom_level'=>$request->zoom_level,
+            ]);
+            Document::where('project_id', $projectId)->where('type','reference_document')->where('project_site', url())->delete();
+            $i=0;
+            while ($i < (int)$request->add_doc_ref_count) {
+                if (($request->doc_ref_title[$i] != '') && ($request->doc_ref_link[$i] != '')) {
+                    $document = new Document;
+                    $document->project_id = $projectId;
+                    $document->type = 'reference_document';
+                    $document->filename = $request->doc_ref_title[$i];
+                    $document->path = $request->doc_ref_link[$i];
+                    $document->verified = 1;
+                    $document->project_site = url();
+                    $document->save();
                 }
-                Project::where('id', $projectId)->update([
-                    'title' => $request->project_title_txt,
-                    'description' => $request->project_description_txt,
-                    'button_label'=>$request->project_button_invest_txt,
-                    'project_prospectus_text'=>$request->project_prospectus_txt,
-                    'edit_disclaimer'=>$request->add_disclaimer_txt,
-                    'custom_project_page_link'=>$request->custom_project_page_link,
-                ]);
+                $i++;
+            }
+            if($request->hasFile('prospectusDocument')){
+                $destinationPath = 'assets/documents/projects/'.$projectId.'/';
+                $filename = $request->file('prospectusDocument')->getClientOriginalName();
+                $fileExtension = $request->file('prospectusDocument')->getClientOriginalExtension();
+                $request->file('prospectusDocument')->move($destinationPath, $filename);
+                $prospectusDoc = Document::create(['type'=>'ProspectusDocument', 'project_id'=>$projectId, 'path'=>$destinationPath.$filename,'filename'=>$filename,'extension'=>$fileExtension,'verified'=>'1','project_site'=>url()]);
                 Investment::where('project_id', $projectId)->first()->update([
-                    'fund_raising_close_date'=>$request->fund_raising_close_date,
-                    'minimum_accepted_amount' => $request->project_min_investment_txt,
-                    'hold_period' => $request->project_hold_period_txt,
-                    'projected_returns' => $request->project_returns_txt,
-                    'goal_amount' => $request->project_goal_amount,
-                    'summary' => $request->project_summary_txt,
-                    'security_long' => $request->project_security_long_txt,
-                    'exit_d' => $request->project_investor_distribution_txt,
-                    'marketability' => $request->project_marketability_txt,
-                    'residents' => $request->project_residents_txt,
-                    'investment_type' => $request->project_investment_type_txt,
-                    'security' => $request->project_security_txt,
-                    'expected_returns_long' => $request->project_expected_returns_txt,
-                    'returns_paid_as' => $request->project_return_paid_as_txt,
-                    'taxation' => $request->project_taxation_txt,
-                    'proposer' => $request->project_developer_txt,
-                    'current_status' => $request->project_current_status_txt,
-                    'rationale' => $request->project_rationale_txt,
-                    'risk' => $request->project_risk_txt,
-                    'PDS_part_1_link' => $request->project_pds1_link_txt,
-                    'PDS_part_2_link' => $request->project_pds2_link_txt,
-                    'how_to_invest' => $request->project_how_to_invest_txt,
-                    'bank' => trim($request->bank_name),
-                    'bank_account_name' => trim($request->account_name),
-                    'bsb' => trim($request->bsb_name),
-                    'bank_account_number' => trim($request->account_number),
-                    'swift_code' => trim($request->swift_code),
-                    'bank_reference' => trim($request->bank_reference),
-                    'investments_structure_video_url' => $request->investments_structure_video_url,
-                    'bitcoin_wallet_address' => $request->bitcoin_wallet_address,
-                ]);
-                $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
-                $response = \Geocoder::geocode('json', $param);
-                if(json_decode($response)->status != 'ZERO_RESULTS') {
-                    $latitude =json_decode(($response))->results[0]->geometry->location->lat;
-                    $longitude =json_decode(($response))->results[0]->geometry->location->lng;
-                } else {
-                    return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
-                }
-                Location::where('id', $projectId)->update([
-                    'line_1'=>$request->line_1,
-                    'line_2'=>$request->line_2,
-                    'city'=>$request->city,
-                    'state'=>$request->state,
-                    'postal_code'=>$request->postal_code,
-                    'country_code'=>$request->country,
-                    'country'=>array_search($request->country, \App\Http\Utilities\Country::aus()),
-                    'latitude'=>$latitude,
-                    'longitude'=>$longitude,
-                    'zoom_level'=>$request->zoom_level,
+                    'PDS_part_1_link' => $destinationPath.$filename
                 ]);
 
-                Document::where('project_id', $projectId)->where('type','reference_document')->where('project_site', url())->delete();
-                $i=0;
-                while ($i < (int)$request->add_doc_ref_count) {
-                    if (($request->doc_ref_title[$i] != '') && ($request->doc_ref_link[$i] != '')) {
-                        $document = new Document;
-                        $document->project_id = $projectId;
-                        $document->type = 'reference_document';
-                        $document->filename = $request->doc_ref_title[$i];
-                        $document->path = $request->doc_ref_link[$i];
-                        $document->verified = 1;
-                        $document->project_site = url();
-                        $document->save();
-                    }
-                    $i++;
-                }
-                Session::flash('message', 'Project Details Updated');
-                Session::flash('editable', 'true');
-                return redirect()->back();
+            }
+            Session::flash('message', 'Project Details Updated');
+            Session::flash('editable', 'true');
+            return redirect()->back();
         }
     }
 
@@ -854,7 +864,7 @@ class SiteConfigurationsController extends Controller
         if (SiteConfigurationHelper::isSiteAdmin()){
             $validation_rules = array(
                 'projectpg_back_img'   => 'required|mimes:jpeg,png,jpg',
-                );
+            );
             $validator = Validator::make($request->all(), $validation_rules);
             if($validator->fails()){
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
@@ -1512,5 +1522,9 @@ class SiteConfigurationsController extends Controller
                 }
             }
         }
+    }
+    public function uploadProspectus()
+    {
+        dd('Sujit');
     }
 }

@@ -79,7 +79,7 @@
 @if(Auth::guest())
 @else
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-<form action="{{route('configuration.updateProjectDetails', [$project->id])}}" method="POST">
+<form action="{{route('configuration.updateProjectDetails', [$project->id])}}" method="POST" enctype="multipart/form-data">
 	{{csrf_field()}}
 	<button type="submit" class="btn btn-default btn-lg store-project-page-details-btn" style="display: none;">Update Project</button>
 	<div style="position: fixed;z-index: 100;top: 75%;right: 5%;">
@@ -222,6 +222,22 @@
 								<span style="font-size:1.7em;" class="project-pds1-link-field">
 									<input type="text" name="project_prospectus_txt" class="form-control" value="{{$project->project_prospectus_text}}" style="font-size: 25px;" placeholder="Title" data-toggle="tooltip" title="This will replace all instances of Prospectus with the word you type for that particular project"><textarea name="project_pds1_link_txt" class="form-control" placeholder="PDS Document Link" @if(Auth::check()) value="@if($project->investment){{$project->investment->PDS_part_1_link}}@endif" @endif>@if(Auth::check()) @if($project->investment){{$project->investment->PDS_part_1_link}}@endif @endif</textarea>
 								</span>
+								@if(Auth::user())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<h4 style="color: #000;">Upload Prospectus Document
+								</h4>
+								<div class="row">
+									<div class="col-md-12">
+										<input type="file" name="prospectusDocument" value="{{$project->document}}">
+										@foreach($project->documents as $document)
+									@if($document->type == 'ProspectusDocument')
+									{{$document->filename}}
+									@endif
+									@endforeach
+									</div>
+								</div>
+								@endif
+								@endif
 							</div>
 						</div>
 						<hr>
@@ -714,210 +730,210 @@
 								?>
 								@foreach($all_comments as $comment)
 								<div class="row" class="comment" style="padding:1em 0px;">
-								<div class="col-md-12">
-								<div class="row">
-								<div class="col-md-1">
-								<img src="{{asset('assets/images/default-male.png')}}" width="50" style="width:40px; height:50px;">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-1">
+												<img src="{{asset('assets/images/default-male.png')}}" width="50" style="width:40px; height:50px;">
+											</div>
+											<div class="col-md-11">
+												<b>{{$comment->user->first_name}} {{$comment->user->last_name}}</b> . <span style="font-size: 0.7em; padding-left:5px;">{{$comment->updated_at->diffForHumans()}}</span> @if(!Auth::guest() && App\Helpers\SiteConfigurationHelper::isSiteAdmin())<a href="{{route('projects.{projects}.comments.delete', [$project->id, $comment->id])}}"> <i class='fa fa-trash pull-right'></i> </a> @endif <br>
+												<p class="text-justify">{{$comment->text}}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-offset-1 col-md-11">
+												<div style="font-size: 0.7em; color:#aeaeae">
+													{!! Form::open(array('route'=>['projects.{projects}.comments.votes', $project->id, $comment->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+													<input type='radio' name='value' value='1' id='upvote_radio_{{$comment->id}}' class='vote-input'>
+													<div id='upvote-count-{{$comment->id}}' class="upvote-count vote-count">@if($comment->votes->where('value', '1')->count()) {{$comment->votes->where('value', '1')->count()}} @endif </div>
+													<label for='upvote_radio_{{$comment->id}}' class="vote-input-label"><i class='fa fa-chevron-up'></i></label>
+													<input type='radio' name='value' value='-1' id='downvote_radio_{{$comment->id}}' class='vote-input'>
+													<div id='downvote-count-{{$comment->id}}' class="downvote-count vote-count">@if($comment->votes->where('value', '-1')->count()) {{$comment->votes->where('value', '-1')->count()}} @endif </div>
+													<label for='downvote_radio_{{$comment->id}}' class="vote-input-label"><i class='fa fa-chevron-down'></i></label>
+													&nbsp; <i class="fa fa-circle" style="font-size:0.5em;"></i> &nbsp; <a href='#reply-form-{{$comment->id}}' class='reply-to-button'><b>Reply</b></a>
+													{!! Form::close() !!}
+												</div>
+												<div class="reply-to-form" id="reply-form-{{$comment->id}}" style="display:none;">
+													{!! Form::open(array('route'=>['projects.{projects}.comments.reply', $project, $comment], 'class'=>'form-horizontal', 'role'=>'form')) !!}
+													<div class="row">
+														<div class="col-md-12 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
+															<fieldset>
+																<div class="row">
+																	<div class="col-md-1">
+																		<img src="{{asset('assets/images/default-male.png')}}" width="50" style="width:40px; height:50px;">
+																	</div>
+																	<div class="col-md-11">
+																		<div class="form-group">
+																			{!! Form::textarea('text', null, array('placeholder'=>'Write a comment', 'class'=>'form-control', 'rows'=>'2')) !!}
+																		</div>
+																	</div>
+																</div>
+																<div class="row">
+																	<div class="form-group">
+																		<div class="col-md-offset-10 col-md-2">
+																			{!! Form::submit('Post', array('class'=>'btn btn-danger btn-block comment-reply-button', 'tabindex'=>'15')) !!}
+																		</div>
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+													</div>
+													{!! Form::close() !!}
+												</div>
+												@if($comment->replies->count())
+												<?php commentsFunc($project, $comment->replies);
+												?>
+												@endif
+											</div>
+										</div>
+									</div>
 								</div>
-								<div class="col-md-11">
-								<b>{{$comment->user->first_name}} {{$comment->user->last_name}}</b> . <span style="font-size: 0.7em; padding-left:5px;">{{$comment->updated_at->diffForHumans()}}</span> @if(!Auth::guest() && App\Helpers\SiteConfigurationHelper::isSiteAdmin())<a href="{{route('projects.{projects}.comments.delete', [$project->id, $comment->id])}}"> <i class='fa fa-trash pull-right'></i> </a> @endif <br>
-								<p class="text-justify">{{$comment->text}}</p>
-								</div>
-								</div>
-								<div class="row">
-								<div class="col-md-offset-1 col-md-11">
-								<div style="font-size: 0.7em; color:#aeaeae">
-								{!! Form::open(array('route'=>['projects.{projects}.comments.votes', $project->id, $comment->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
-								<input type='radio' name='value' value='1' id='upvote_radio_{{$comment->id}}' class='vote-input'>
-								<div id='upvote-count-{{$comment->id}}' class="upvote-count vote-count">@if($comment->votes->where('value', '1')->count()) {{$comment->votes->where('value', '1')->count()}} @endif </div>
-								<label for='upvote_radio_{{$comment->id}}' class="vote-input-label"><i class='fa fa-chevron-up'></i></label>
-								<input type='radio' name='value' value='-1' id='downvote_radio_{{$comment->id}}' class='vote-input'>
-								<div id='downvote-count-{{$comment->id}}' class="downvote-count vote-count">@if($comment->votes->where('value', '-1')->count()) {{$comment->votes->where('value', '-1')->count()}} @endif </div>
-								<label for='downvote_radio_{{$comment->id}}' class="vote-input-label"><i class='fa fa-chevron-down'></i></label>
-								&nbsp; <i class="fa fa-circle" style="font-size:0.5em;"></i> &nbsp; <a href='#reply-form-{{$comment->id}}' class='reply-to-button'><b>Reply</b></a>
-								{!! Form::close() !!}
-								</div>
-								<div class="reply-to-form" id="reply-form-{{$comment->id}}" style="display:none;">
-								{!! Form::open(array('route'=>['projects.{projects}.comments.reply', $project, $comment], 'class'=>'form-horizontal', 'role'=>'form')) !!}
-								<div class="row">
-								<div class="col-md-12 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
-								<fieldset>
-								<div class="row">
-								<div class="col-md-1">
-								<img src="{{asset('assets/images/default-male.png')}}" width="50" style="width:40px; height:50px;">
-								</div>
-								<div class="col-md-11">
-								<div class="form-group">
-								{!! Form::textarea('text', null, array('placeholder'=>'Write a comment', 'class'=>'form-control', 'rows'=>'2')) !!}
-								</div>
-								</div>
-								</div>
-								<div class="row">
-								<div class="form-group">
-								<div class="col-md-offset-10 col-md-2">
-								{!! Form::submit('Post', array('class'=>'btn btn-danger btn-block comment-reply-button', 'tabindex'=>'15')) !!}
-								</div>
-								</div>
-								</div>
-								</fieldset>
-								</div>
-								</div>
-								{!! Form::close() !!}
-								</div>
-								@if($comment->replies->count())
-								<?php commentsFunc($project, $comment->replies);
-								?>
-								@endif
-							</div>
+								@endforeach
+								<?php
+							}
+							$comments = $project->comments->where('reply_id', '0')->reverse()->all();
+							commentsFunc($project, $comments);?>
 						</div>
 					</div>
 				</div>
-				@endforeach
-				<?php
-			}
-			$comments = $project->comments->where('reply_id', '0')->reverse()->all();
-			commentsFunc($project, $comments);?>
-		</div>
-	</div>
-</div>
-</section>
+			</section>
 
 
-<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document" style="width:46em; padding-top:3em;">
-		<div class="modal-content">
-			<div class="modal-body">
-			</div>
-		</div>
-	</div>
-</div>
-@if(Auth::guest())
-@else
-@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-</form>
-@endif
-@endif
-@if(Auth::guest())
-@else
-@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-<div class="project-faq">
-	<div class="container">
-		<div class="row well">
-			<div class="col-md-12">
-				<div class="row">
-					@foreach($project->projectFAQs as $faq)
-					<div class="col-md-offset-2 col-md-7">
-						<b>{{$faq->question}}</b>
-						<!-- 								{{$faq->id}} -->
-						<p class="text-justify">{{$faq->answer}}</p>
+			<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document" style="width:46em; padding-top:3em;">
+					<div class="modal-content">
+						<div class="modal-body">
+						</div>
 					</div>
-					<div class="col-md-2">
-						{!! Form::open(['route' => ['projects.destroy', $faq->id, $project->id],'id'=>'faq_form_'.$faq->id]) !!}
-						<button class="btn btn-danger" id="delete_faq_{{$faq->id}}">Delete this FAQ?</button>
-						{!! Form::close() !!}
-					</div>
-					<script>
-						$(document).ready(function() {
-							$('#delete_faq_{{$faq->id}}').click(function(){
-								$('#faq_form_{{$faq->id}}').submit();
-							});
-						});
-					</script>
-					@endforeach
 				</div>
-				<br>
-				<div class="row">
+			</div>
+			@if(Auth::guest())
+			@else
+			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+		</form>
+		@endif
+		@endif
+		@if(Auth::guest())
+		@else
+		@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+		<div class="project-faq">
+			<div class="container">
+				<div class="row well">
 					<div class="col-md-12">
-						{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form','id'=>'add_new_faq')) !!}
-						<fieldset>
-							<div class="row">
-								<div class="form-group @if($errors->first('question')){{'has-error'}} @endif">
-									{!!Form::label('question', 'Question', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('question')){{'has-error'}} @endif">
-												{!! Form::text('question', null, array('placeholder'=>'Question', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('question', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
+						<div class="row">
+							@foreach($project->projectFAQs as $faq)
+							<div class="col-md-offset-2 col-md-7">
+								<b>{{$faq->question}}</b>
+								<!-- 								{{$faq->id}} -->
+								<p class="text-justify">{{$faq->answer}}</p>
 							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('answer')){{'has-error'}} @endif">
-									{!!Form::label('answer', 'Answer', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('answer')){{'has-error'}} @endif">
-												{!! Form::textarea('answer', null, array('placeholder'=>'Answer', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('answer', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
+							<div class="col-md-2">
+								{!! Form::open(['route' => ['projects.destroy', $faq->id, $project->id],'id'=>'faq_form_'.$faq->id]) !!}
+								<button class="btn btn-danger" id="delete_faq_{{$faq->id}}">Delete this FAQ?</button>
+								{!! Form::close() !!}
 							</div>
-							<div class="row">
-								<div class="form-group">
-									<div class="col-sm-offset-2 col-sm-9">
-										{{-- {!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!} --}}
-										<button class="btn btn-danger" id="add_faq">Add New FAQ</button>
-									</div>
-								</div>
-							</div>
-						</fieldset>
-						{!! Form::close() !!}
-						<script>
-							$(document).ready(function() {
-								$('#add_faq').click(function(){
-									$('#add_new_faq').submit();
+							<script>
+								$(document).ready(function() {
+									$('#delete_faq_{{$faq->id}}').click(function(){
+										$('#faq_form_{{$faq->id}}').submit();
+									});
 								});
-							});
-						</script>
+							</script>
+							@endforeach
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-12">
+								{!! Form::open(array('route'=>['projects.faq', $project->id], 'class'=>'form-horizontal', 'role'=>'form','id'=>'add_new_faq')) !!}
+								<fieldset>
+									<div class="row">
+										<div class="form-group @if($errors->first('question')){{'has-error'}} @endif">
+											{!!Form::label('question', 'Question', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('question')){{'has-error'}} @endif">
+														{!! Form::text('question', null, array('placeholder'=>'Question', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
+														{!! $errors->first('question', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('answer')){{'has-error'}} @endif">
+											{!!Form::label('answer', 'Answer', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-9">
+												<div class="row">
+													<div class="col-sm-12 @if($errors->first('answer')){{'has-error'}} @endif">
+														{!! Form::textarea('answer', null, array('placeholder'=>'Answer', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
+														{!! $errors->first('answer', '<small class="text-danger">:message</small>') !!}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-9">
+												{{-- {!! Form::submit('Add New FAQ', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!} --}}
+												<button class="btn btn-danger" id="add_faq">Add New FAQ</button>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+								{!! Form::close() !!}
+								<script>
+									$(document).ready(function() {
+										$('#add_faq').click(function(){
+											$('#add_new_faq').submit();
+										});
+									});
+								</script>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		@endif
+		@endif
 	</div>
-</div>
-@endif
-@endif
-</div>
-<div id="menu1" class="tab-pane fade" style="color: #000;">
-	<div class="container">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th style="width: 140px;">Date of Progress</th>
-					<th>Description</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($project_prog as $project_progs)
-				<tr>
-					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
-					</td>
-					<td>{{$project_progs->progress_description}} </td>
-					<td>{{$project_progs->progress_details}}
-						<br>
-						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
-						@if($project_progs->image_path != '')
-						<div class="row">
-							<div class="col-md-10 change_column">
-								<div class="thumbnail">
-									<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
+	<div id="menu1" class="tab-pane fade" style="color: #000;">
+		<div class="container">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="width: 140px;">Date of Progress</th>
+						<th>Description</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($project_prog as $project_progs)
+					<tr>
+						<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
+						</td>
+						<td>{{$project_progs->progress_description}} </td>
+						<td>{{$project_progs->progress_details}}
+							<br>
+							<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
+							@if($project_progs->image_path != '')
+							<div class="row">
+								<div class="col-md-10 change_column">
+									<div class="thumbnail">
+										<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
+									</div>
 								</div>
 							</div>
-						</div>
-						@endif
-						@if($project_progs->video_url != '')
-						<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
-						@endif
-					</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
+							@endif
+							@if($project_progs->video_url != '')
+							<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
+							@endif
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 {{-- @if(Auth::user())
 @if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 <h3 style="color: #000;">Upload a Images</h3>
@@ -981,13 +997,13 @@
 </script>
 {{-- Code for Bitcoin Widget --}}
 <script>
-  (function(b,i,t,C,O,I,N) {
-    window.addEventListener('load',function() {
-      if(b.getElementById(C))return;
-      I=b.createElement(i),N=b.getElementsByTagName(i)[0];
-      I.src=t;I.id=C;N.parentNode.insertBefore(I, N);
-    },false)
-  })(document,'script','https://widgets.bitcoin.com/widget.js','btcwdgt');
+	(function(b,i,t,C,O,I,N) {
+		window.addEventListener('load',function() {
+			if(b.getElementById(C))return;
+			I=b.createElement(i),N=b.getElementsByTagName(i)[0];
+			I.src=t;I.id=C;N.parentNode.insertBefore(I, N);
+		},false)
+	})(document,'script','https://widgets.bitcoin.com/widget.js','btcwdgt');
 </script>
 <script>
 	$(function () {
