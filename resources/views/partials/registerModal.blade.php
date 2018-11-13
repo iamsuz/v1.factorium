@@ -26,7 +26,7 @@
 								<div class="col-md-12">
 									<section id="registerForm" style="padding:0 10px;">
 										<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
-										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'return checkvalidi();','id'=>'regForm'))!!}
+										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'regForm'))!!}
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
