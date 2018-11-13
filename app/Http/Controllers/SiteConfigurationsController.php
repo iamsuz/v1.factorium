@@ -849,7 +849,7 @@ class SiteConfigurationsController extends Controller
                 $request->file('prospectusDocument')->move($destinationPath, $filename);
                 $prospectusDoc = Document::create(['type'=>'ProspectusDocument', 'project_id'=>$projectId, 'path'=>$destinationPath.$filename,'filename'=>$filename,'extension'=>$fileExtension,'verified'=>'1','project_site'=>url()]);
                 Investment::where('project_id', $projectId)->first()->update([
-                    'PDS_part_1_link' => $destinationPath.$filename
+                    'PDS_part_1_link' => url().$destinationPath.$filename
                 ]);
 
             }
