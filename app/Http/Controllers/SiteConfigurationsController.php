@@ -756,12 +756,16 @@ class SiteConfigurationsController extends Controller
     public function updateProjectDetails(Request $request, $projectId)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){
-            $this->validate($request, array(
+            $validator = $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
                 'project_goal_amount'=>'required|integer|min:1',
-                'project_min_investment_txt'=>'required|integer|min:100'
+                'project_min_investment_txt'=>'required|integer|min:100',
+                'prospectusDocument' => 'mimes:pdf'
             ));
+            if ($validator->fails()) {
+                throw new ValidationFailedException($validator->errors());
+            }
                 //Check for minimum investment amount
             if((int)$request->project_min_investment_txt % 100 != 0)
             {

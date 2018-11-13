@@ -67,6 +67,15 @@
 @if (Session::has('message'))
 <div style="z-index: 100;position: fixed;top: 5em;left: 0.5em;background: #56f7c1;padding: 0.7em 2em;border-radius: 10px;opacity: 0.7;font-size: 16px;"><i class="fa fa-check-circle-o" aria-hidden="true">&nbsp;&nbsp;{!! Session::get('message') !!}</i></div>
 @endif
+@if ($errors->any())
+<div class="alert alert-danger" style="z-index: 100;position: fixed;top: 5em;left: 0.5em;background: #56f7c1;padding: 0.7em 2em;border-radius: 10px;opacity: 0.7;font-size: 16px;">
+	<ul>
+		@foreach ($errors->all() as $error)
+		<li ><?php echo $error; ?></li>
+		@endforeach
+	</ul>
+</div>
+@endif
 {{-- @if ($errors->any())
 <div class="alert-danger">
 	<ul>
@@ -179,15 +188,6 @@
 								<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
 								</div>
 							</div>
-							@if ($errors->any())
-							<div class="alert alert-danger" style="border: 0;">
-								<ul>
-									@foreach ($errors->all() as $error)
-									<li ><?php echo $error; ?></li>
-									@endforeach
-								</ul>
-							</div>
-							@endif
 							<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
 								@if($project->investment)
 								${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">
@@ -230,10 +230,10 @@
 									<div class="col-md-12">
 										<input type="file" name="prospectusDocument" value="{{$project->document}}">
 										@foreach($project->documents as $document)
-									@if($document->type == 'ProspectusDocument')
-									{{$document->filename}}
-									@endif
-									@endforeach
+										@if($document->type == 'ProspectusDocument')
+										{{$document->filename}}
+										@endif
+										@endforeach
 									</div>
 								</div>
 								@endif
