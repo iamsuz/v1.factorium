@@ -28,7 +28,7 @@ Users | Dashboard | @parent
 							<th>Notes</th>
 							<th>Last Login</th>
 							<th>Active</th>
-							<th>Registation</th>
+							<th>Registration</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -44,6 +44,7 @@ Users | Dashboard | @parent
 								{{$user->phone_number}}
 								<br>
 								<a href="{{route('dashboard.users.investments', [$user])}}">Investments <i class="fa fa-angle-double-right"></i></a>
+								<a href="{{route('dashboard.users.document', [$user])}}">KYC <i class="fa fa-angle-double-right"></i></a>
 							</td>
 							<td>
 								<?php

@@ -70,6 +70,8 @@ Route::get('/dashboard/projects/{project_id}/deactivate', ['as'=>'dashboard.proj
 Route::patch('/dashboard/projects/{project_id}/toggleStatus', ['as'=>'dashboard.projects.toggleStatus', 'uses'=>'DashboardController@toggleStatus']);
 Route::patch('/dashboard/projects/{investment_id}/investments', ['as'=>'dashboard.investment.update', 'uses'=>'DashboardController@updateInvestment']);
 Route::patch('/dashboard/projects/{investment_id}/investments/accept', ['as'=>'dashboard.investment.accept', 'uses'=>'DashboardController@acceptInvestment']);
+Route::get('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document','uses'=>'DashboardController@documents']);
+Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.upload','uses'=>'DashboardController@uploadDocuments']);
 
 Route::pattern('notes', '[0-9]+');
 Route::resource('notes', 'NotesController');

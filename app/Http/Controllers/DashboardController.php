@@ -1090,10 +1090,88 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('success', 'File uploaded successfully.');
     }
+
     public function kycRequests()
     {
         $color = Color::where('project_site',url())->first();
         $kycRequests = IdDocument::groupBy('user_id')->get()->where('registration_site',url());
         return view('dashboard.requests.kycRequest',compact('kycRequests','color'));
+    }
+
+    public function documents(Request $request,$id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = User::find($id);
+        return view('dashboard.users.idDoc',compact('color','user'));
+    }
+
+    //Upload KYC documents for users by admin
+    public function uploadDocuments(Request $request,AppMailer $mailer,$id)
+    {
+        $validation_rules = array(
+            'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
+            'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
+            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf'
+        );
+        $validator = Validator::make($request->all(), $validation_rules);
+        $user = User::find($id);
+        $check = IdDocument::where('user_id',$user->id)->first();
+        if($request->hasFile('joint_investor_id_doc'))
+        {
+            $destinationPath = 'assets/users/kyc/'.$user->id.'/joint/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
+            $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
+            $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
+            $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+            if($check){
+                $user_doc = $user->idDoc()->update(['joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url()]);
+            }else{
+                $user_doc = IdDocument::create(['type'=>'JointDocument', 'joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'user_id'=>$user->id,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url()]);
+                // $user->idDoc()->save($user_doc);
+            }
+        }
+        $check = IdDocument::where('user_id',$user->id)->first();
+        if($request->hasFile('trust_or_company_docs'))
+        {
+            $destinationPath = 'assets/users/kyc/'.$user->id.'/trust/'.$request->investing_company_name.'/';
+            $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
+            $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
+            $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+            if($check){
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url()]);
+            }else{
+                $user_doc = new IdDocument(['type'=>'TrustDoc', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url()]);
+                $user->idDoc()->save($user_doc);
+            }
+
+        }
+        $check = IdDocument::where('user_id',$user->id)->first();
+        if($request->hasFile('user_id_doc'))
+        {
+            $destinationPath = 'assets/users/kyc/'.$user->id.'/doc/';
+            $filename = $request->file('user_id_doc')->getClientOriginalName();
+            $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
+            $request->file('user_id_doc')->move($destinationPath, $filename);
+            if($check){
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
+            }else{
+                $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
+                $user->idDoc()->save($user_doc);
+            }
+        }
+
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete) {
+            $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete;
+        }
+        else {
+            $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->kyc_upload_konkrete;
+        };
+
+        if(!$user->idDoc){
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete', 'project_site' => url()]);
+        }
+        $mailer->sendIdVerificationNotificationToUser($user, '0');
+        $mailer->sendIdVerificationEmailToAdmin($user);
+        return redirect()->back()->withMessage('<p class="alert alert-success">Thank You! Successfully Uploaded documents, We will verify the Documents.</p>');
+        // return redirect()->back()->withMessage('Successfully Uploaded documents');
     }
 }
