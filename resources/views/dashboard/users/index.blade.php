@@ -44,7 +44,7 @@ Users | Dashboard | @parent
 								{{$user->phone_number}}
 								<br>
 								<a href="{{route('dashboard.users.investments', [$user])}}">Investments <i class="fa fa-angle-double-right"></i></a>
-								<a href="{{route('dashboard.users.document', [$user])}}">KYC <i class="fa fa-angle-double-right"></i></a>
+								<a href="{{route('dashboard.users.document', [$user])}}">KYC @if($user->idDoc && $user->idDoc->verified == '1') <i class="fa fa-check-circle" aria-hidden="true"></i> @endif <i class="fa fa-angle-double-right"></i></a>
 							</td>
 							<td>
 								<?php

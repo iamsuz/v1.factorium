@@ -34,6 +34,7 @@ use App\InvestmentRequest;
 use App\ProjectEOI;
 use App\ProspectusDownload;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 
 class DashboardController extends Controller
@@ -1116,6 +1117,8 @@ class DashboardController extends Controller
         $validator = Validator::make($request->all(), $validation_rules);
         $user = User::find($id);
         $check = IdDocument::where('user_id',$user->id)->first();
+        // $user->idDoc()->get()->last()->update(['verified'=>$request->status, 'id_comment'=>$request->fixing_message, 'joint_id_comment'=>$request->fixing_message_for_id]);
+        // $idimages = $user->idDoc()->get()->last();
         if($request->hasFile('joint_investor_id_doc'))
         {
             $destinationPath = 'assets/users/kyc/'.$user->id.'/joint/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
@@ -1123,9 +1126,9 @@ class DashboardController extends Controller
             $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
             $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
             if($check){
-                $user_doc = $user->idDoc()->update(['joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url()]);
+                $user_doc = $user->idDoc()->update(['joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url(), 'verified'=>1]);
             }else{
-                $user_doc = IdDocument::create(['type'=>'JointDocument', 'joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'user_id'=>$user->id,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url()]);
+                $user_doc = IdDocument::create(['type'=>'JointDocument', 'joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'user_id'=>$user->id,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url(), 'verified'=>1]);
                 // $user->idDoc()->save($user_doc);
             }
         }
@@ -1137,9 +1140,9 @@ class DashboardController extends Controller
             $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
             $request->file('trust_or_company_docs')->move($destinationPath, $filename);
             if($check){
-                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url()]);
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url(), 'verified'=>1]);
             }else{
-                $user_doc = new IdDocument(['type'=>'TrustDoc', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url()]);
+                $user_doc = new IdDocument(['type'=>'TrustDoc', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url(), 'verified'=>1]);
                 $user->idDoc()->save($user_doc);
             }
 
@@ -1152,9 +1155,9 @@ class DashboardController extends Controller
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
             $request->file('user_id_doc')->move($destinationPath, $filename);
             if($check){
-                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url(), 'verified'=>1]);
             }else{
-                $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
+                $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url(), 'verified'=>1]);
                 $user->idDoc()->save($user_doc);
             }
         }
@@ -1169,9 +1172,10 @@ class DashboardController extends Controller
         if(!$user->idDoc){
             $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete', 'project_site' => url()]);
         }
-        $mailer->sendIdVerificationNotificationToUser($user, '0');
-        $mailer->sendIdVerificationEmailToAdmin($user);
-        return redirect()->back()->withMessage('<p class="alert alert-success">Thank You! Successfully Uploaded documents, We will verify the Documents.</p>');
-        // return redirect()->back()->withMessage('Successfully Uploaded documents');
+        $idimages = $user_doc;
+        $mailer->sendVerificationNotificationToUser($user, '1', $idimages);
+        // $mailer->sendIdVerificationNotificationToUser($user, '0');
+        // $mailer->sendIdVerificationEmailToAdmin($user);
+        return redirect()->back()->withMessage('<p class="alert alert-success">User documents uploaded successfully.</p>');
     }
 }
