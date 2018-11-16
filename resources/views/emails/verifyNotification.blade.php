@@ -569,7 +569,7 @@
 @if($status == 0)
 We have received your verification request and will process it shortly.
 @elseif($status == -1)
-Unfortunately we were unable to verify the images you have submitted, please try again.<br><br>
+Unfortunately we were unable to verify the KYC Documents you have submitted, please try again.<br><br>
 @if($idimages->id_comment)
 Please fix personal Document.<br>
 Note - {{$idimages->id_comment}}
