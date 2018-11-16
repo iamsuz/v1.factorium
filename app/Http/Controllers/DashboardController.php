@@ -1172,7 +1172,8 @@ class DashboardController extends Controller
         if(!$user->idDoc){
             $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete', 'project_site' => url()]);
         }
-        $idimages = $user_doc;
+        $idimages = IdDocument::where('user_id',$user->id)->first();
+        // dd($idimages);
         $mailer->sendVerificationNotificationToUser($user, '1', $idimages);
         // $mailer->sendIdVerificationNotificationToUser($user, '0');
         // $mailer->sendIdVerificationEmailToAdmin($user);
