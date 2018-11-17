@@ -581,7 +581,7 @@ Note - {{$idimages->joint_id_comment}}
 @endif
 @else
 We have successfully verified your KYC documents.
-<br> <br>You may now start investing in projects.
+<br>{{--  <br>You may now start investing in projects. --}}
 @endif
 </span></span></span>
 &nbsp;</div>
