@@ -763,7 +763,7 @@ class SiteConfigurationsController extends Controller
                 'project_min_investment_txt'=>'required|integer|min:100',
                 'prospectusDocument' => 'mimes:pdf'
             ));
-            if ($validator->fails()) {
+            if ($validator && $validator->fails()) {
                 throw new ValidationFailedException($validator->errors());
             }
                 //Check for minimum investment amount
