@@ -17,6 +17,7 @@ input[type=checkbox]:before {
 }
 input[type=checkbox] { display: inline; }
 </style>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
 <?php
 $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()
 ?>
@@ -192,7 +193,7 @@ $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()
 		<img src="data:image/png;base64,{!!$investment->signature_data!!}">
 		@endif
 		@else
-		<p style="font-size: 80px;height: 100px;font-family: cursive; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; ">{{$investment->signature_data_type}}</p>
+		<p style="font-size: 80px;height: 100px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; ">{{$investment->signature_data_type}}</p>
 		@endif
 	</div>
 </div>

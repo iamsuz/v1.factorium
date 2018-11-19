@@ -88,7 +88,7 @@ $_SESSION['code'] = md5(microtime(true));
     @if($siteConfiguration->font_family != '')
     <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
     @endif
-
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
     <style type="text/css">
         @if($siteConfiguration->font_family != '')
         /*Override fonts*/

@@ -151,7 +151,6 @@ class UserRegistrationsController extends Controller
 
     public function offerRegistrationCode(Request $request,$id,AppMailer $mailer)
     {
-        dd($request);
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
