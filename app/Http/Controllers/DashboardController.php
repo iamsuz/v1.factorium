@@ -453,7 +453,14 @@ class DashboardController extends Controller
         }
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+    }
 
+    public function hideInvestment(Request $request, $investment_id)
+    {
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $investment->hide_investment = 1;
+        $investment->save();
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
 
     public function investmentReminder(AppMailer $mailer, $investment_id){
@@ -1163,20 +1170,19 @@ class DashboardController extends Controller
         }
 
         if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete) {
-            $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete;
+            $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete;
         }
         else {
-            $kyc_upload_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->kyc_upload_konkrete;
+            $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->kyc_approval_konkrete;
         };
 
-        if(!$user->idDoc){
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_upload_konkrete, 'type'=>'KYC Submitted','currency'=>'konkrete', 'project_site' => url()]);
+        // $user_konkrete = Credit::where('user_id',$user->id)->first();
+        if(!$check) {
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$kyc_approval_konkrete, 'type'=>'KYC Verification successful','currency'=>'konkrete', 'project_site' => url()]);
         }
         $idimages = IdDocument::where('user_id',$user->id)->first();
-        // dd($idimages);
         $mailer->sendVerificationNotificationToUser($user, '1', $idimages);
-        // $mailer->sendIdVerificationNotificationToUser($user, '0');
-        // $mailer->sendIdVerificationEmailToAdmin($user);
+
         return redirect()->back()->withMessage('<p class="alert alert-success">User documents uploaded successfully.</p>');
     }
 }

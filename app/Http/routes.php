@@ -228,6 +228,7 @@ Route::post('/configuration/project/updateProjectPageSubHeading', ['as'=>'config
 Route::post('/configuration/uploadVideo', ['as'=>'configuration.uploadVideo', 'uses'=>'SiteConfigurationsController@uploadVideo']);
 Route::post('/project/edit/uploadSubSectionImages', ['as'=>'project.uploadSubSectionImages', 'uses'=>'ProjectsController@uploadSubSectionImages']);
 Route::patch('/dashboard/projects/{investment_id}/investments/moneyReceived', ['as'=>'dashboard.investment.moneyReceived', 'uses'=>'DashboardController@investmentMoneyReceived']);
+Route::patch('/dashboard/projects/{investment_id}/investments/hideInvestment', ['as'=>'dashboard.investment.hideInvestment', 'uses'=>'DashboardController@hideInvestment']);
 Route::get('/dashboard/projects/{investment_id}/investments/reminder', ['as'=>'dashboard.investment.reminder', 'uses'=>'DashboardController@investmentReminder']);
 Route::patch('/dashboard/projects/{investment_id}/investments/confirmation', ['as'=>'dashboard.investment.confirmation', 'uses'=>'DashboardController@investmentConfirmation']);
 Route::post('/configuration/home/updateOverlayOpacity', ['as'=>'configuration.home.updateOverlayOpacity', 'uses'=>'SiteConfigurationsController@updateOverlayOpacity']);
