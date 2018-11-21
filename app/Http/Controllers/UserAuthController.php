@@ -108,8 +108,10 @@ class UserAuthController extends Controller
     }
     public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
     {
+        $auth = false;
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $loginBonus = 0;
+            $auth = true;
             if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
                 $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
             }
@@ -172,6 +174,7 @@ class UserAuthController extends Controller
             }
             return redirect()->route('users.success.eoi')->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
+        return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Login Failed, please check your password and email combination</p>');
     }
 
     public function authenticateOffer(UserAuthRequest $request)
