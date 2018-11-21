@@ -1052,12 +1052,13 @@ class ProjectsController extends Controller
         $project = Project::find($request->projectId);
         if($project){
             if($project->project_site == url()){
-                ProspectusDownload::create([
+                $data = ProspectusDownload::create([
                     'user_id' => Auth::user()->id,
                     'project_id' => $project->id,
                     'project_site' => url()
                 ]);
             }
+            return $data;
         }
     }
 }

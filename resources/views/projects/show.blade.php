@@ -341,7 +341,7 @@
 									<div class="col-md-3 text-left">
 										<img src="{{asset('assets/images/pdf_icon.png')}}" class="pdf-icon" alt="clip" height="40" style="position: initial;">
 										<span style="font-size:1.7em;" class="project-pds1-link-field">
-											<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" target="_blank" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
+											<a @if(Auth::check()) href="@if($project->investment){{$project->investment->PDS_part_1_link}}@else#@endif" @else href="#" data-toggle="tooltip" title="Sign In to Access Document" @endif alt="Part 1 PDS" style="text-decoration:underline;" class="download-links download-prospectus-btn">@if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ($siteConfiguration->prospectus_text!='') {{$siteConfiguration->prospectus_text}} @else Prospectus @endif</a>
 										</span>
 									</div>
 
@@ -1977,7 +1977,8 @@
 <script type="text/javascript">
 	$(document).ready(function(e){
 		// Track users downloading prospectus
-		$('.download-prospectus-btn').click(function(){
+		$('.download-prospectus-btn').click(function(e){
+			e.preventDefault();
 			var projectId = {{$project->id}};
 			$.ajax({
 				url: '/projects/prospectus',
@@ -1989,7 +1990,7 @@
 				},
 			}).done(function(data){
 				console.log(data);
-				location.reload('/');
+				window.location = '@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif';
 			});
 		});
 		$('#feedback_form').submit(function(e) {
@@ -2028,10 +2029,10 @@
 </script>
 <script>
 	$(function () {
-		$('.download-prospectus-btn').click(function (e) {
-			e.preventDefault();
-			window.location = '@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif';
-		});
+		// $('.download-prospectus-btn').click(function (e) {
+		// 	e.preventDefault();
+		// 	window.location = '@if($project->eoi_button) {{route('projects.eoi', $project)}} @else {{route('projects.interest', $project)}} @endif';
+		// });
 		var minimized_elements = $('p.minimize');
 		minimized_elements.each(function(){
 			var t = $(this).text();
