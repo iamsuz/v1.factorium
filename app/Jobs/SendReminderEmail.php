@@ -40,7 +40,7 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
         //
         $this->investor = $user;
         $this->project = $project;
-        
+
     }
 
     public function overrideMailerConfig()
@@ -53,6 +53,7 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
         \Config::set('mail.username',$config->username);
         \Config::set('mail.password',$config->password);
         \Config::set('mail.sendmail',$config->from);
+        $this->from = $config->from;
         $app = \App::getInstance();
         $app['swift.transport'] = $app->share(function ($app) {
            return new TransportManager($app);
