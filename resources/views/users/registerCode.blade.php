@@ -17,6 +17,15 @@ Thank You | @parent
 					@if (Session::has('message'))
 					<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 					@endif
+					@if (count($errors) > 0)
+					<div class="alert alert-danger">
+						<ul>
+							@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+					@endif
 					<div style="padding:10em 0;">
 						<h1 class="text-center wow fadeIn animated h1-faq">To Continue your @if($type == 'eoi')Expression of Interest @else Application @endif <br><small>We have sent a 6 digit code to your email address. Please enter that over here to confirm your email id and complete the registration process.</small><br><br><br>
 							<small>

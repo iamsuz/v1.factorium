@@ -336,9 +336,15 @@ class UserRegistrationsController extends Controller
 
     public function registrationCode(Request $request,AppMailer $mailer)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'eoiCode' => 'required|numeric|digits:6',
         ]);
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         $color = Color::where('project_site',url())->first();
         $userR = UserRegistration::where('eoi_token',$request->eoiCode)->first();
         if(!$userR){
