@@ -1169,7 +1169,7 @@ class DashboardController extends Controller
             }
         }
 
-        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_upload_konkrete) {
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete) {
             $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete;
         }
         else {
