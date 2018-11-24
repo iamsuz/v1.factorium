@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use ReCaptcha\ReCaptcha;
 
 class UserRegistrationsController extends Controller
 {
@@ -63,7 +64,8 @@ class UserRegistrationsController extends Controller
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'role'=>'required'
+            'role'=>'required',
+            'g-recaptcha-response' => 'required'
         ]);
         $validator1 = Validator::make($request->all(), [
             'email' => 'unique:users,email||unique:user_registrations,email',
@@ -102,6 +104,13 @@ class UserRegistrationsController extends Controller
                 ->withErrors($validator1)
                 ->withInput();
             }
+        }
+
+        // Verify Captcha
+        $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
+        $capResponse = $recaptcha->verify($request->get('g-recaptcha-response'), $_SERVER['REMOTE_ADDR']);
+        if(!$capResponse->isSuccess()) {
+            return redirect()->back()->withErrors(['g-recaptcha-response'=> 'Recaptcha timeout or duplicate.'])->withInput();
         }
         if($request->has('ref'))
         {
