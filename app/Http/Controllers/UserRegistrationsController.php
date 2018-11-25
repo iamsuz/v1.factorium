@@ -280,7 +280,10 @@ class UserRegistrationsController extends Controller
         $user->active = true;
         $user->activated_on = Carbon::now();
         $user->save();
-        return view('users.details', compact('user','color'))->withMessage('Successfully Activated, please fill the details');
+
+        $siteConfiguration = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr();
+        
+        return view('users.details', compact('user','color', 'siteConfiguration'))->withMessage('Successfully Activated, please fill the details');
     }
 
     public function resend_activation_link(Request $request, AppMailer $mailer)
@@ -302,6 +305,7 @@ class UserRegistrationsController extends Controller
             'phone_number' => 'required|numeric',
             'password' => 'required|min:6|max:60',
             'token'=>'required',
+            'country_code'=>'required'
         ]);
 
         $userReg = UserRegistration::whereToken($request->token)->firstOrFail();
@@ -315,6 +319,15 @@ class UserRegistrationsController extends Controller
         $request['active'] = true;
         $request['activated_on'] = $userReg->activated_on;
         $request['registration_site'] = $userReg->registration_site;
+
+        // Modify the is interested investment offers flag to boolean
+        ($request->is_interested_investment_offers && ($request->is_interested_investment_offers == 'on'))
+            ? $request->merge(['is_interested_investment_offers' => 1])
+            : $request->merge(['is_interested_investment_offers' => 0]);
+
+        // Set country name by using country code
+        $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
+        
         // dd($userReg);
         $role = Role::whereRole($userReg->role)->firstOrFail();
         $roleText = $userReg->role;
@@ -339,7 +352,10 @@ class UserRegistrationsController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
             // return view('users.registrationFinish', compact('user','color'));
-            return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));
+
+            return ($request->country_code == 'au')
+                ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
+                : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
         }
     }
 
