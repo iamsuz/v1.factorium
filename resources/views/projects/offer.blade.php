@@ -879,21 +879,27 @@ Offer Doc
     					$('#passwordOffer').val(password);
     					$('.loader-overlay').show();
     					var offerData = $('#myform').serialize();
+    					console.log(offerData);
     					$.ajax({
     						type: "POST",
+    						headers: {
+    							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    						},
     						url: "/users/register/"+projectId+"/offer",
     						data: offerData,
-    						datatype: 'html',
+    						dataType: 'json',
     						success: function (data) {
     							$('#registerModal').modal('hide');
     							$('.loader-overlay').hide();
     							setTimeout(function(){// wait for 5 secs(2)
            							window.location.href = "/users/register/offer/code"; // then reload the page.(3)
            						}, 100);
+           						console.log('inside success');
     						},
     						error: function (data) {
     							$('.loader-overlay').hide();
     							$('#session_message').html(data);
+    							console.log('You are in error');
     						}
     					});
     				});

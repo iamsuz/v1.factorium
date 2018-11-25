@@ -201,7 +201,7 @@ class UserRegistrationsController extends Controller
         $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
         $mailer->sendRegistrationConfirmationTo($user,$ref);
         $type = 'offer';
-        return view('users.registerCode',compact('color','type'));
+        return $offerData;
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
         //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
