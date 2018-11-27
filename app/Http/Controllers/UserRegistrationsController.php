@@ -194,14 +194,17 @@ class UserRegistrationsController extends Controller
             }
         }
         $project = Project::find($id);
-        $ref =false;
-        $color = Color::where('project_site',url())->first();
-        $offerToken = mt_rand(100000, 999999);
-        $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
-        $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
-        $mailer->sendRegistrationConfirmationTo($user,$ref);
-        $type = 'offer';
-        return $offerData;
+        if($project){
+            $ref =false;
+            $color = Color::where('project_site',url())->first();
+            $offerToken = mt_rand(100000, 999999);
+            $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
+            $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
+            $mailer->sendRegistrationConfirmationTo($user,$ref);
+            $type = 'offer';
+            return $offerData;
+        }
+        return Response::json(['error' => 'Sorry! We could not able to process the investment'], 404);
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
         //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
@@ -366,9 +369,9 @@ class UserRegistrationsController extends Controller
         ]);
         if ($validator->fails()) {
             return redirect()
-                        ->back()
-                        ->withErrors($validator)
-                        ->withInput();
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
         }
         $color = Color::where('project_site',url())->first();
         $userR = UserRegistration::where('eoi_token',$request->eoiCode)->first();

@@ -896,9 +896,9 @@ Offer Doc
            						}, 100);
            						console.log('inside success');
     						},
-    						error: function (data) {
+    						error: function (error) {
     							$('.loader-overlay').hide();
-    							$('#session_message').html(data);
+    							$('#session_message').html(error);
     							console.log('You are in error');
     						}
     					});
