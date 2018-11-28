@@ -240,8 +240,7 @@ class UserAuthController extends Controller
                     return redirect()->back()->withErrors('Something went wrong');
                 }
             }
-
-            $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
+        $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type]);
         $investor = InvestmentInvestor::get()->last();

@@ -199,12 +199,19 @@ class UserRegistrationsController extends Controller
             $color = Color::where('project_site',url())->first();
             $offerToken = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
-            $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
-            $mailer->sendRegistrationConfirmationTo($user,$ref);
-            $type = 'offer';
-            return $offerData;
+            if($user){
+                $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
+                if($offerData){
+                    $mailer->sendRegistrationConfirmationTo($user,$ref);
+                    $type = 'offer';
+                    return $offerData;
+                }else{
+                    // $mailer->sendApplicationRegistrationFailTo($request,$user);
+                    return Response::json(['error' => 'Sorry! We were not able to process the investment','data'=>$offerData], 404);
+                }
+            }
         }
-        return Response::json(['error' => 'Sorry! We could not able to process the investment'], 404);
+        return Response::json(['error' => 'Sorry! We were not able to process the investment'], 404);
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
         //     'api_key' => '3efa92a75b60ff52ab74b0cce6a210e33e624e9a',
@@ -285,7 +292,7 @@ class UserRegistrationsController extends Controller
         $user->save();
 
         $siteConfiguration = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr();
-        
+
         return view('users.details', compact('user','color', 'siteConfiguration'))->withMessage('Successfully Activated, please fill the details');
     }
 
@@ -325,12 +332,12 @@ class UserRegistrationsController extends Controller
 
         // Modify the is interested investment offers flag to boolean
         ($request->is_interested_investment_offers && ($request->is_interested_investment_offers == 'on'))
-            ? $request->merge(['is_interested_investment_offers' => 1])
-            : $request->merge(['is_interested_investment_offers' => 0]);
+        ? $request->merge(['is_interested_investment_offers' => 1])
+        : $request->merge(['is_interested_investment_offers' => 0]);
 
         // Set country name by using country code
         $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
-        
+
         // dd($userReg);
         $role = Role::whereRole($userReg->role)->firstOrFail();
         $roleText = $userReg->role;
@@ -357,8 +364,8 @@ class UserRegistrationsController extends Controller
             // return view('users.registrationFinish', compact('user','color'));
 
             return ($request->country_code == 'au')
-                ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
-                : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
+            ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
+            : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
         }
     }
 
@@ -529,168 +536,168 @@ class UserRegistrationsController extends Controller
                         $investing_joint->tfn = $request->tfn;
                         $investing_joint->save();
                     }elseif($request->investing_as != 'Individual Investor'){
-                      $investing_joint = new InvestingJoint;
-                      $investing_joint->project_id = $project->id;
-                      $investing_joint->investment_investor_id = $investor->id;
-                      $investing_joint->joint_investor_first_name = $request->joint_investor_first;
-                      $investing_joint->joint_investor_last_name = $request->joint_investor_last;
-                      $investing_joint->investing_company = $request->investing_company_name;
-                      $investing_joint->account_name = $request->account_name;
-                      $investing_joint->bsb = $request->bsb;
-                      $investing_joint->account_number = $request->account_number;
-                      $investing_joint->line_1 = $request->line_1;
-                      $investing_joint->line_2 = $request->line_2;
-                      $investing_joint->city = $request->city;
-                      $investing_joint->state = $request->state;
-                      $investing_joint->postal_code = $request->postal_code;
-                      $investing_joint->country = $request->country;
-                      $investing_joint->country_code = $request->country_code;
-                      $investing_joint->tfn = $request->tfn;
-                      $investing_joint->save();
-                  }
-                  else{
-                    $user->update($request->all());
-                }
-                $investor_joint = InvestingJoint::get()->last();
-                if($user->idDoc != NULL && $user->idDoc->investing_as == 'Joint Investor'){
-                    $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$user->idDoc->get()->last()->joint_id_filename, 'path'=>$user->idDoc->get()->last()->joint_id_path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->joint_id_extension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_investment_doc);
-                    $user_ind_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_ind_investment_doc);
-                }
-                if($user->idDoc != NULL && $user->idDoc->investing_as == 'Individual Investor'){
-                    $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_investment_doc);
-                }
-                if($user->idDoc != NULL && $user->idDoc->investing_as == 'Trust or Company'){
-                    $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_investment_doc);
-                }
-                if($request->hasFile('joint_investor_id_doc'))
-                {
-                    $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
-                    $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
-                    $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
-                    $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
-                    $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_investment_doc);
-                }
-                if($request->hasFile('trust_or_company_docs'))
-                {
-                    $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->investing_company_name.'/';
-                    $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
-                    $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
-                    $request->file('trust_or_company_docs')->move($destinationPath, $filename);
-                    $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_investment_doc);
-
-                }
-                if($request->hasFile('user_id_doc'))
-                {
-                    $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/normal_name/';
-                    $filename = $request->file('user_id_doc')->getClientOriginalName();
-                    $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
-                    $request->file('user_id_doc')->move($destinationPath, $filename);
-                    $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
-                    $project->investmentDocuments()->save($user_investment_doc);
-
-                }
-                //Save wholesale project input fields
-                if(!$project->retail_vs_wholesale) {
-                    $wholesale_investor = WholesaleInvestment::get()->last();{
-                        $wholesale_investing = new WholesaleInvestment;
-                        $wholesale_investing->project_id = $project->id;
-                        $wholesale_investing->investment_investor_id = $investor->id;
-                        $wholesale_investing->wholesale_investing_as = $request->wholesale_investing_as;
-                        if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
-                            $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
-                            $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
-                            $wholesale_investing->accountant_email = $request->accountant_email_txt;
-                            $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
-                        }
-                        elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
-                            $wholesale_investing->experience_period = $request->experience_period_txt;
-                            $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
-                            $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
-                            $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
-                        }
-                        $wholesale_investing->save();
+                        $investing_joint = new InvestingJoint;
+                        $investing_joint->project_id = $project->id;
+                        $investing_joint->investment_investor_id = $investor->id;
+                        $investing_joint->joint_investor_first_name = $request->joint_investor_first_name;
+                        $investing_joint->joint_investor_last_name = $request->joint_investor_last_name;
+                        $investing_joint->investing_company = $request->investing_company;
+                        $investing_joint->account_name = $request->account_name;
+                        $investing_joint->bsb = $request->bsb;
+                        $investing_joint->account_number = $request->account_number;
+                        $investing_joint->line_1 = $request->line_1;
+                        $investing_joint->line_2 = $request->line_2;
+                        $investing_joint->city = $request->city;
+                        $investing_joint->state = $request->state;
+                        $investing_joint->postal_code = $request->postal_code;
+                        $investing_joint->country = $request->country;
+                        $investing_joint->country_code = $request->country_code;
+                        $investing_joint->tfn = $request->tfn;
+                        $investing_joint->save();
                     }
-                }
+                    else{
+                        $user->update($request->all());
+                    }
+                    $investor_joint = InvestingJoint::get()->last();
+                    if($user->idDoc != NULL && $user->idDoc->investing_as == 'Joint Investor'){
+                        $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$user->idDoc->get()->last()->joint_id_filename, 'path'=>$user->idDoc->get()->last()->joint_id_path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->joint_id_extension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_investment_doc);
+                        $user_ind_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_ind_investment_doc);
+                    }
+                    if($user->idDoc != NULL && $user->idDoc->investing_as == 'Individual Investor'){
+                        $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_investment_doc);
+                    }
+                    if($user->idDoc != NULL && $user->idDoc->investing_as == 'Trust or Company'){
+                        $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$$user->idDoc->get()->last()->filename, 'path'=>$user->idDoc->get()->last()->path,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$user->idDoc->get()->last()->extension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_investment_doc);
+                    }
+                    if($request->hasFile('joint_investor_id_doc'))
+                    {
+                        $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
+                        $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
+                        $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
+                        $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+                        $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_investment_doc);
+                    }
+                    if($request->hasFile('trust_or_company_docs'))
+                    {
+                        $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->investing_company_name.'/';
+                        $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
+                        $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
+                        $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+                        $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_investment_doc);
+
+                    }
+                    if($request->hasFile('user_id_doc'))
+                    {
+                        $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/normal_name/';
+                        $filename = $request->file('user_id_doc')->getClientOriginalName();
+                        $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
+                        $request->file('user_id_doc')->move($destinationPath, $filename);
+                        $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+                        $project->investmentDocuments()->save($user_investment_doc);
+
+                    }
+                //Save wholesale project input fields
+                    if(!$project->retail_vs_wholesale) {
+                        $wholesale_investor = WholesaleInvestment::get()->last();{
+                            $wholesale_investing = new WholesaleInvestment;
+                            $wholesale_investing->project_id = $project->id;
+                            $wholesale_investing->investment_investor_id = $investor->id;
+                            $wholesale_investing->wholesale_investing_as = $request->wholesale_investing_as;
+                            if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
+                                $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
+                                $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
+                                $wholesale_investing->accountant_email = $request->accountant_email_txt;
+                                $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+                            }
+                            elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+                                $wholesale_investing->experience_period = $request->experience_period_txt;
+                                $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
+                                $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
+                                $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+                            }
+                            $wholesale_investing->save();
+                        }
+                    }
                 // Mark request form link expired
-                if($request->investment_request_id){
-                    InvestmentRequest::find($request->investment_request_id)->update([
-                        'is_link_expired' => 1
-                    ]);
-                }
+                    if($request->investment_request_id){
+                        InvestmentRequest::find($request->investment_request_id)->update([
+                            'is_link_expired' => 1
+                        ]);
+                    }
                 // Create PDF of Application form
                 // $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
                 // $pdfPath = storage_path().$pdfBasePath;
                 // $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
                 // $pdf->save($pdfPath);
                 // $investor->application_path = $pdfBasePath;
-                $investor->save();
+                    $investor->save();
 
-                $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
-                $this->dispatch(new SendReminderEmail($user,$project));
+                    $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+                    $this->dispatch(new SendReminderEmail($user,$project));
 
-                return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+                    return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+                }
+
             }
 
         }
-
+        return view('users.details', compact('user','color'))->withMessage('Successfully Activated, please fill the details');
     }
-    return view('users.details', compact('user','color'))->withMessage('Successfully Activated, please fill the details');
-}
 
-public function acceptedInvitation($token)
-{
-    $color = Color::where('project_site',url())->first();
-    $invite = Invite::whereToken($token)->firstOrFail();
-    if($invite->accepted){
-        return view('users.alreadyAcceptedInvitation', compact('token','color'));
-    }
+    public function acceptedInvitation($token)
+    {
+        $color = Color::where('project_site',url())->first();
+        $invite = Invite::whereToken($token)->firstOrFail();
+        if($invite->accepted){
+            return view('users.alreadyAcceptedInvitation', compact('token','color'));
+        }
         // $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);
         // $invite = Credit::create(['user_id'=>$invite->user_id, 'invite_id'=>$invite->id, 'amount'=>25, 'type'=>'accepted invite']);
 
-    return view('users.acceptedInvitation', compact('token','color'));
-}
-
-
-public function storeDetailsInvite(Request $request)
-{
-    $this->validate($request, [
-        'first_name' => 'required|alpha_dash|min:1|max:50',
-        'last_name' => 'required|alpha_dash|min:1|max:50',
-        'phone_number' => 'required',
-        'password' => 'required',
-        'token'=>'required',
-    ]);
-
-    $userReg = Invite::whereToken($request->token)->firstOrFail();
-    $color = Color::where('project_site',url())->first();
-    if (!$request['username']) {
-        $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
+        return view('users.acceptedInvitation', compact('token','color'));
     }
-    $request['email'] = $userReg->email;
-    $request['active'] = true;
-    $request['activated_on'] = $userReg->accepted_on;
-    $role = Role::whereRole('investor')->firstOrFail();
 
-    $user = User::create($request->all());
-    $time_now = Carbon::now();
-    $user->roles()->attach($role);
-    if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
-        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
-    }
-    else {
-        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
-    };
-    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
 
-    $invite = Invite::whereToken($request->token)->firstOrFail();
-    $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);
-    $mailer->sendRegistrationNotificationAdmin($user);
+    public function storeDetailsInvite(Request $request)
+    {
+        $this->validate($request, [
+            'first_name' => 'required|alpha_dash|min:1|max:50',
+            'last_name' => 'required|alpha_dash|min:1|max:50',
+            'phone_number' => 'required',
+            'password' => 'required',
+            'token'=>'required',
+        ]);
+
+        $userReg = Invite::whereToken($request->token)->firstOrFail();
+        $color = Color::where('project_site',url())->first();
+        if (!$request['username']) {
+            $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
+        }
+        $request['email'] = $userReg->email;
+        $request['active'] = true;
+        $request['activated_on'] = $userReg->accepted_on;
+        $role = Role::whereRole('investor')->firstOrFail();
+
+        $user = User::create($request->all());
+        $time_now = Carbon::now();
+        $user->roles()->attach($role);
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        }
+        else {
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
+        };
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+
+        $invite = Invite::whereToken($request->token)->firstOrFail();
+        $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);
+        $mailer->sendRegistrationNotificationAdmin($user);
         //intercom create user
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
@@ -708,15 +715,15 @@ public function storeDetailsInvite(Request $request)
         //         "activated_on_at" => $user->activated_on->timestamp
         //         ),
         //     ));
-    if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
-        Auth::user()->update(['last_login'=> Carbon::now()]);
-        return view('users.registrationFinish', compact('user','color'));
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            Auth::user()->update(['last_login'=> Carbon::now()]);
+            return view('users.registrationFinish', compact('user','color'));
+        }
     }
-}
 
-public function thanks()
-{
-    $color = Color::where('project_site',url())->first();
-    return view('users.registrationFinish',compact('color'));
-}
+    public function thanks()
+    {
+        $color = Color::where('project_site',url())->first();
+        return view('users.registrationFinish',compact('color'));
+    }
 }
