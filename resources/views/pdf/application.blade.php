@@ -15,6 +15,23 @@ hr{
 input[type=checkbox]:before {
 	font-family: DejaVu Sans;
 }
+@font-face {
+	font-family: 'Mr De Haviland';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Mr De Haviland Regular'), local('MrDeHaviland-Regular'), url(https://fonts.gstatic.com/s/mrdehaviland/v6/OpNVnooIhJj96FdB73296ksbOg3L60P3NilAZTs.woff2) format('woff2');
+	unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Mr De Haviland';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Mr De Haviland Regular'), local('MrDeHaviland-Regular'), url(https://fonts.gstatic.com/s/mrdehaviland/v6/OpNVnooIhJj96FdB73296ksbOg3F60P3NilA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+.signature_font{
+	font-family: 'Mr De Haviland' !important;
+}
 input[type=checkbox] { display: inline; }
 </style>
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
@@ -62,7 +79,7 @@ $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()
 	@if($investment->investing_as)
 	@if($investment->investing_as != 'Individual Investor' && $investment->investing_as != 'Joint Investor')
 	<h4><b>Company or Trust Name</b></h4>
-	<input type="text" name="" class="form-control" placeholder="Company or Trust Name" value="@if($investment->investing_as)@if($investment->investing_as != 'Individual Investor'){{$investment->investingJoint->investing_company}}@endif @endif"><br>
+	<input type="text" name="" class="form-control" placeholder="Company or Trust Name" value="@if($investment->investing_as) @if($investment->investing_as != 'Individual Investor'){{$investment->investingJoint->investing_company}} @endif @endif"><br>
 	@endif
 	@endif
 	<h4><b>Given Name(s)</b></h4>
@@ -193,7 +210,7 @@ $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr()
 		<img src="data:image/png;base64,{!!$investment->signature_data!!}">
 		@endif
 		@else
-		<p style="font-size: 80px;height: 100px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; ">{{$investment->signature_data_type}}</p>
+		<p class="signature_font" style="font-size: 80px;height: 100px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; ">{{$investment->signature_data_type}}</p>
 		@endif
 	</div>
 </div>
