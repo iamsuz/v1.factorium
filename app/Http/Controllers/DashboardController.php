@@ -455,12 +455,24 @@ class DashboardController extends Controller
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
 
-    public function hideInvestment(Request $request, $investment_id)
+    public function hideInvestment(Request $request)
     {
-        $investment = InvestmentInvestor::findOrFail($investment_id);
-        $investment->hide_investment = 1;
-        $investment->save();
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+        if ($request->ajax()) {
+            // $project = Project::find($request->project_id);
+            // $eoi = ProjectEOI::find($request->eoi_id);
+            // $mailer->sendEoiApplicationLinkToUser($project, $eoi);
+            // $eoi->update([
+            //     'is_link_sent' => 1
+            // ]);
+            $investment = InvestmentInvestor::findOrFail($request->investment_id);
+            $investment->hide_investment = 1;
+            $investment->save();
+            return 1;
+        }
+        // $investment = InvestmentInvestor::findOrFail($investment_id);
+        // $investment->hide_investment = 1;
+        // $investment->save();
+        // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
 
     public function investmentReminder(AppMailer $mailer, $investment_id){

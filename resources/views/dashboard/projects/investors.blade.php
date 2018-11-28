@@ -71,13 +71,14 @@
 						<tbody>
 							@foreach($investments as $investment)
 								@if(!$investment->hide_investment)
-									<tr>
+									<tr id="application{{$investment->id}}">
 										<td>INV{{$investment->id}} 
 											@if(!$investment->money_received && !$investment->accepted) 
-												<form action="{{route('dashboard.investment.hideInvestment', $investment->id)}}" method="POST">
+												{{-- <form action="{{route('dashboard.investment.hideInvestment', $investment->id)}}" method="POST">
 												{{method_field('PATCH')}}
-												{{csrf_field()}}
-												<button type="submit" name="hide_investment" class="hide-investment" style="margin-top: 1.1rem;">
+												{{csrf_field()}} --}}
+												{{-- <a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Resend link</b></a> --}}
+												<button type="button" name="hide_investment" class="hide-investment" data="{{$investment->id}}" onclick="hideApplication()" style="margin-top: 1.1rem;">
 													<i class="fa fa-trash" aria-hidden="true"></i>
 												</button>
 											@endif
@@ -590,6 +591,7 @@
 @section('js-section')
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/fnAddDataAndDisplay.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('a.edit').click(function () {
@@ -652,13 +654,13 @@
 			}
 		});
 
-		$('.hide-investment').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-		});
+		// $('.hide-investment').click(function(e){
+		// 	if (confirm('Are you sure ?')) {
+		// 		console.log('confirmed');
+		// 	} else {
+		// 		e.preventDefault();
+		// 	}
+		// });
 
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
@@ -726,6 +728,19 @@
 	            });
 	            $('.investors-list').val(investors.join(','));
 	        });
+	  //       $('#myTable').on( 'click', 'tbody tr', function () {
+			//     myTable.row( this ).delete( {
+			//         buttons: [
+			//             { label: 'Cancel', fn: function () { this.close(); } },
+			//             'Delete'
+			//         ]
+			//     } );
+			// } );
+	        // var investorsTable = $('#investorsTable').DataTable();
+ 
+			// $('#investorsTable').on( 'click', 'tbody tr', function () {
+			//     investorsTable.row( this ).delete();
+			// } );
 			// Declare dividend
 			declareDividend();
 			// Declare fixed dividend
@@ -824,6 +839,31 @@
 	        	}
 	        });
 		});
+	}
+
+	function hideApplication(){
+		$('.hide-investment').click(function(e){
+			e.preventDefault();
+			var investment_id = $(this).attr('data');
+			if (confirm('Are you sure you want to delete this?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+		          	url: '/dashboard/projects/hideInvestment',
+		          	type: 'PATCH',
+		          	dataType: 'JSON',
+		          	data: {investment_id},
+		          	headers: {
+		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		          	},
+		        }).done(function(data){
+		        	if(data){
+		        		$('.loader-overlay').hide();
+	 						// $("#investorsTable").DataTable().row( $('#application' + investment_id) ).remove().draw( false );
+	 					$('#application' + investment_id).css('background-color', 'red');
+		        	}
+		        });
+		    }
+	    });
 	}
 </script>
 @endsection
