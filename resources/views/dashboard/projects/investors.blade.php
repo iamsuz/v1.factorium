@@ -78,7 +78,7 @@
 												{{method_field('PATCH')}}
 												{{csrf_field()}} --}}
 												{{-- <a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Resend link</b></a> --}}
-												<button type="button" name="hide_investment" class="hide-investment" data="{{$investment->id}}" onclick="hideApplication()" style="margin-top: 1.1rem;">
+												<a href="javascript:void(0);" class="hide-investment" data="{{$investment->id}}"><br>
 													<i class="fa fa-trash" aria-hidden="true"></i>
 												</button>
 											@endif
@@ -654,14 +654,6 @@
 			}
 		});
 
-		// $('.hide-investment').click(function(e){
-		// 	if (confirm('Are you sure ?')) {
-		// 		console.log('confirmed');
-		// 	} else {
-		// 		e.preventDefault();
-		// 	}
-		// });
-
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 50,
@@ -728,19 +720,7 @@
 	            });
 	            $('.investors-list').val(investors.join(','));
 	        });
-	  //       $('#myTable').on( 'click', 'tbody tr', function () {
-			//     myTable.row( this ).delete( {
-			//         buttons: [
-			//             { label: 'Cancel', fn: function () { this.close(); } },
-			//             'Delete'
-			//         ]
-			//     } );
-			// } );
-	        // var investorsTable = $('#investorsTable').DataTable();
- 
-			// $('#investorsTable').on( 'click', 'tbody tr', function () {
-			//     investorsTable.row( this ).delete();
-			// } );
+
 			// Declare dividend
 			declareDividend();
 			// Declare fixed dividend
@@ -749,11 +729,37 @@
 			repurchaseShares();
 		});
 
+		//Hide application from admin dashboard
+
+		$('.hide-investment').click(function(e){
+			e.preventDefault();
+			var investment_id = $(this).attr('data');
+			if (confirm('Are you sure you want to delete this?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+		          	url: '/dashboard/projects/hideInvestment',
+		          	type: 'PATCH',
+		          	dataType: 'JSON',
+		          	data: {investment_id},
+		          	headers: {
+		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		          	},
+		        }).done(function(data){
+		        	if(data){
+		        		$('.loader-overlay').hide();
+	 						$("#investorsTable").DataTable().row( $('#application' + investment_id) ).remove().draw( false );
+	 					// $('#application' + investment_id).css('background-color', 'red');
+		        	}
+		        });
+		    }
+		});
+
 		// Apply date picker to html elements to select date
         $( ".datepicker" ).datepicker({
         	'format': 'dd/mm/yy'
         });
         sendEOIAppFormLink();
+        hideApplication();
 	});
 
 	// Declare dividend
@@ -841,29 +847,5 @@
 		});
 	}
 
-	function hideApplication(){
-		$('.hide-investment').click(function(e){
-			e.preventDefault();
-			var investment_id = $(this).attr('data');
-			if (confirm('Are you sure you want to delete this?')) {
-				$('.loader-overlay').show();
-				$.ajax({
-		          	url: '/dashboard/projects/hideInvestment',
-		          	type: 'PATCH',
-		          	dataType: 'JSON',
-		          	data: {investment_id},
-		          	headers: {
-		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		          	},
-		        }).done(function(data){
-		        	if(data){
-		        		$('.loader-overlay').hide();
-	 						// $("#investorsTable").DataTable().row( $('#application' + investment_id) ).remove().draw( false );
-	 					$('#application' + investment_id).css('background-color', 'red');
-		        	}
-		        });
-		    }
-	    });
-	}
 </script>
 @endsection
