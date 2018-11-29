@@ -517,9 +517,27 @@ class AppMailer
         }
     }
 
-    public function overrideMailerConfig()
+    public function sendUserOnboardingReminderEmail($user, $ref = false)
     {
-        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $adminUser) {
+            if($adminUser->registration_site == url()){
+                array_push($recipients, $adminUser->email);
+            }
+        }
+        $this->to = $user->email;
+        $this->bcc = $recipients;
+        $this->view = 'emails.registrationReminder';
+        $siteTitle = ($titleName=SiteConfigurationHelper::getConfigurationAttr($user->registration_site)->title_text) ? $titleName : 'Estate Baron';
+        $this->subject = 'Please complete your registration on '.$siteTitle;
+        $this->data = compact('user', 'ref');
+        $this->deliver($user->registration_site);
+    }
+
+    public function overrideMailerConfig($withSiteUrl = null)
+    {
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr($withSiteUrl);
         $config = $siteconfig->mailSetting()->first();
         // Config::set('mail.driver',$configs['driver']);
         \Config::set('mail.host',$config->host);
@@ -537,15 +555,15 @@ class AppMailer
         Mail::setSwiftMailer($mailer);
     }
 
-    public function deliver()
+    public function deliver($withSiteUrl = null)
     {
-        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+        $siteconfig = SiteConfigurationHelper::getConfigurationAttr($withSiteUrl);
         $config = $siteconfig->mailSetting()->first();
         if($config){
-            $this->overrideMailerConfig();
+            $this->overrideMailerConfig($withSiteUrl);
         }
-        $this->mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
+        $this->mailer->send($this->view, $this->data, function ($message) use ($withSiteUrl) {
+            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr($withSiteUrl)->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });
     }
 
