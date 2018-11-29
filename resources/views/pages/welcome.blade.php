@@ -69,7 +69,14 @@ Sign Up | @parent
 											<input type="radio" name="role" id="developer_role" autocomplete="off" value="developer" tabindex="2"><span class="font-regular first_color" style="font-size:0.875em;color:#2d2a6e;">&nbsp;&nbsp;&nbsp; I have a venture </span>
 										</div>
 									</div>
-								</div><br>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
+										{!! $errors->first('g-recaptcha-response', '<small class="text-danger">:message</small>') !!} 
+										<br>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s">
 										<input type="submit" value="Register" id="submit" name="submit"  class="btn btn-block font-bold second_color_btn hide" style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
@@ -127,6 +134,9 @@ Sign Up | @parent
 	@stop
 
 	@section('js-section')
+	<!-- Script for reCaptcha -->
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	
 	<script type="text/javascript">
 		function getParameterByName(name, url) {
 			if (!url) url = window.location.href;

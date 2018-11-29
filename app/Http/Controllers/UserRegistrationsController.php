@@ -71,7 +71,8 @@ class UserRegistrationsController extends Controller
             'email' => 'unique:users,email||unique:user_registrations,email',
         ]);
         if ($validator->fails()) {
-            return redirect('/users/create')
+            return redirect()
+            ->back()
             ->withErrors($validator)
             ->withInput();
         }
