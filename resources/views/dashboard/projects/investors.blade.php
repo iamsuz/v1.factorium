@@ -759,7 +759,6 @@
         	'format': 'dd/mm/yy'
         });
         sendEOIAppFormLink();
-        hideApplication();
 	});
 
 	// Declare dividend
