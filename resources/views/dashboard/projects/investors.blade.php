@@ -654,6 +654,32 @@
 			}
 		});
 
+		//Hide application from admin dashboard
+
+		$('.hide-investment').on("click", function(e){
+			e.preventDefault();
+			var investment_id = $(this).attr('data');
+			if (confirm('Are you sure you want to delete this?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+		          	url: '/dashboard/projects/hideInvestment',
+		          	type: 'PATCH',
+		          	dataType: 'JSON',
+		          	data: {investment_id},
+		          	headers: {
+		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		          	},
+		        }).done(function(data){
+		        	if(data){
+		        		$('.loader-overlay').hide();
+	 						$("#investorsTable").DataTable().row( $('#application' + investment_id) ).remove().draw( false );
+	 					// $('#application' + investment_id).css('background-color', 'red');
+		        	}
+		        });
+		    }
+		});
+
+
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 50,
@@ -727,31 +753,6 @@
 			declareFixedDividend();
 			// repurchase shares
 			repurchaseShares();
-		});
-
-		//Hide application from admin dashboard
-
-		$('.hide-investment').click(function(e){
-			e.preventDefault();
-			var investment_id = $(this).attr('data');
-			if (confirm('Are you sure you want to delete this?')) {
-				$('.loader-overlay').show();
-				$.ajax({
-		          	url: '/dashboard/projects/hideInvestment',
-		          	type: 'PATCH',
-		          	dataType: 'JSON',
-		          	data: {investment_id},
-		          	headers: {
-		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		          	},
-		        }).done(function(data){
-		        	if(data){
-		        		$('.loader-overlay').hide();
-	 						$("#investorsTable").DataTable().row( $('#application' + investment_id) ).remove().draw( false );
-	 					// $('#application' + investment_id).css('background-color', 'red');
-		        	}
-		        });
-		    }
 		});
 
 		// Apply date picker to html elements to select date
