@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\ProfileActivationReminder::class,
     ];
 
     /**
@@ -26,5 +27,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+
+        $schedule->command('activation:reminder')
+                 ->dailyAt('00:00');
     }
 }
