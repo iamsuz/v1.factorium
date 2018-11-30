@@ -191,7 +191,7 @@ class UserRegistrationsController extends Controller
             }
             else{
                 $errorMessage = 'This email is already registered but seems its not activated please activate email';
-                return redirect()->back()->withMessage('<p>This email is already registered but seems its not activated please activate email</p>');
+                return redirect()->back()->withMessage('This email is already registered but seems its not activated please activate email');
             }
         }
         $project = Project::find($id);
@@ -201,14 +201,19 @@ class UserRegistrationsController extends Controller
             $offerToken = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
             if($user){
-                $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
+                $offerData = '';
+                $i = 0;
+                while($offerData == '' && $i != 5){
+                    $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
+                    $i = $i+1;
+                }
                 if($offerData){
                     $mailer->sendRegistrationConfirmationTo($user,$ref);
                     $type = 'offer';
                     return $offerData;
                 }else{
                     // $mailer->sendApplicationRegistrationFailTo($request,$user);
-                    return Response::json(['error' => 'Sorry! We were not able to process the investment','data'=>$offerData], 404);
+                    return \Response::json(['error' => 'Sorry! We were not able to process the investment','data'=>$offerData], 404);
                 }
             }
         }
