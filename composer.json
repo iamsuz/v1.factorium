@@ -22,8 +22,7 @@
         "mailgun/mailgun-php": "^2.3",
         "php-http/guzzle6-adapter": "^1.1",
         "doctrine/dbal": "v2.5.13",
-        "ramsey/uuid": "^3.7",
-        "google/recaptcha": "^1.2"
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

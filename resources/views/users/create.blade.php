@@ -6,8 +6,6 @@ Sign up for free Australia's top Venture Crowdfunding
 @section('meta-section')
 <meta property="og:title" content="Sign up for free Australia's top Property Crowdfunding" />
 <meta property="og:description" content="Australia's only crowdfunding platform open to Retail investors. Access details of top quality real estate development opportunities around Australia for free" />
-<!-- Script for reCaptcha -->
-<script src='https://www.google.com/recaptcha/api.js'></script>
 @stop
 
 @section('css-section')
@@ -48,13 +46,6 @@ Sign up for free Australia's top Venture Crowdfunding
 									{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
 								</div>
 								<!-- </div> -->
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
-									{!! $errors->first('g-recaptcha-response', '<small class="text-danger">:message</small>') !!} 
-									<br>
-								</div>
 							</div>
 							<?php
 							if(isset($ref)){
