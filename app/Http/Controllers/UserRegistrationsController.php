@@ -198,6 +198,9 @@ class UserRegistrationsController extends Controller
                     $i = $i+1;
                 }
                 if($offerData){
+                    echo $project;
+                    echo "################";
+                    dd($request);
                     $mailer->sendRegistrationConfirmationTo($user,$ref);
                     $type = 'offer';
                     return $offerData;
