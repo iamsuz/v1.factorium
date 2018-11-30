@@ -29,7 +29,7 @@ Thank You | @parent
 					<div style="padding:10em 0;">
 						<h1 class="text-center wow fadeIn animated h1-faq">To Continue your @if($type == 'eoi')Expression of Interest @else Application @endif <br><small>We have sent a 6 digit code to your email address. Please enter that over here to confirm your email id and complete the registration process.</small><br><br><br>
 							<small>
-								<form action="{{route('users.registration.code')}}" method="POST">
+								<form action="{{route('users.registration.code')}}" method="POST" id="eoiFormToken">
 									{{csrf_field()}}
 									<div class="row">
 										<div class="col-md-6 col-md-offset-3">
@@ -38,7 +38,7 @@ Thank You | @parent
 											</div>
 										</div>
 									</div>
-									<button type="submit" class="btn btn-lg btn-danger font-semibold text-right second_color_btn">Confirm</button>
+									<button type="submit" class="btn btn-lg btn-danger font-semibold text-right second_color_btn eoiFormSubmitBtn">Confirm</button>
 								</form>
 							</small>
 						</h1>
@@ -65,6 +65,10 @@ Thank You | @parent
 		$('#eoiCode').on('keypress', function(e) {
 			if (e.which == 32)
 				return false;
+		});
+		$('#eoiFormToken').submit(function (e) {
+			$('.loader-overlay').show();
+			return true;
 		});
 	});
 	$(function(){
