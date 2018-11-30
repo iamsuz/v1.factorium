@@ -61,7 +61,7 @@ Fill the user details | @parent
 							<div class="row">
 								<div class="form-group">
 									<div class="col-sm-10 col-md-offset-1 <?php if($errors->first('country_code')){echo 'has-error';}?>" data-wow-delay="0.2s">
-										{!! Form::select('country_code', array_flip(\App\Http\Utilities\Country::all()), 'au', array('class' => 'required form-control select-country-code')); !!}
+										{!! Form::select('country_code', array_flip(\App\Http\Utilities\Country::all()), 'au', array('class' => 'required form-control')); !!}
 										{!! $errors->first('country_code', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
@@ -77,7 +77,7 @@ Fill the user details | @parent
 							<div class="row">
 								<div class="form-group">
 									<div class="col-sm-offset-1 col-sm-10">
-										{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block submit-user-onboarding', 'tabindex'=>'10', 'id'=>'submit_button')) !!}
+										{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'id'=>'submit_button')) !!}
 									</div>
 								</div>
 							</div>
@@ -95,14 +95,6 @@ Fill the user details | @parent
 		jQuery('form').submit(function(){
 			$(this).find(':submit').attr( 'disabled','disabled' );
 			$('.loader-overlay').show();
-		});
-
-		jQuery('.select-country-code').on('change', function(e) {
-			if($(this).val() == 'au') {
-				$('.submit-user-onboarding').val('Take me to the projects');
-			} else {
-				$('.submit-user-onboarding').val('Take me to my profile');
-			}
 		});
 	</script>
 @stop
