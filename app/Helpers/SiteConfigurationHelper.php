@@ -8,10 +8,9 @@ use Auth;
 
 class SiteConfigurationHelper
 {
-    public static function getConfigurationAttr($url = null)
+    public static function getConfigurationAttr()
     {
-        $siteUrl = $url ? $url : url();
-    	$siteConfiguration =  SiteConfiguration::where('project_site', $siteUrl)->first();
+    	$siteConfiguration = SiteConfiguration::where('project_site', url())->first();
         return $siteConfiguration;
     }
 
@@ -32,10 +31,9 @@ class SiteConfigurationHelper
     	return 0;
     }
 
-    public static function getSiteThemeColors($url = null)
+    public static function getSiteThemeColors()
     {
-        $siteUrl = $url ? $url : url();
-        $color = Color::where('project_site', $siteUrl)->first();
+        $color = Color::where('project_site', url())->first();
         return $color;
     }
 }
