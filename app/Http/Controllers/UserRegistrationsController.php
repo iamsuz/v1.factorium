@@ -184,7 +184,7 @@ class UserRegistrationsController extends Controller
                 return redirect()->back()->withMessage('This email is already registered but seems its not activated please activate email');
             }
         }
-        $project = Project::find($id);
+        $project = Project::findOrFail($id);
         if($project){
             $ref =false;
             $color = Color::where('project_site',url())->first();
@@ -197,10 +197,7 @@ class UserRegistrationsController extends Controller
                     $offerData = OfferRegistration::create($request->all()+['user_registration_id'=>$user->id,'project_id'=>$project->id,'investment_id'=>$project->investment->id,'joint_fname'=>$request->joint_investor_first,'joint_lname'=>$request->joint_investor_last,'trust_company'=>$request->investing_company_name]);
                     $i = $i+1;
                 }
-                if($offerData){
-                    echo $project;
-                    echo "################";
-                    dd($request);
+                if($offerData != ''){
                     $mailer->sendRegistrationConfirmationTo($user,$ref);
                     $type = 'offer';
                     return $offerData;

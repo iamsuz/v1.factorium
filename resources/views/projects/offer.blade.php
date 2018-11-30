@@ -789,14 +789,6 @@ Offer Doc
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
-	function isNumber(evt) {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-			return false;
-		}
-		return true;
-	}
 	$(document).ready(function(){
 		$('#myTermsModal').modal({
 			backdrop: 'static',
@@ -891,9 +883,9 @@ Offer Doc
     						success: function (data) {
     							$('#registerModal').modal('hide');
     							$('.loader-overlay').hide();
-    							// setTimeout(function(){// wait for 5 secs(2)
-           // 							// window.location.href = "/users/register/offer/code"; // then reload the page.(3)
-           // 						}, 100);
+    							setTimeout(function(){// wait for 5 secs(2)
+           							window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+           						}, 100);
            						console.log('inside success');
     						},
     						error: function (error) {
@@ -1100,6 +1092,14 @@ Offer Doc
 			});
 		});
 	});
+	function isNumber(evt) {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+			return false;
+		}
+		return true;
+	}
 </script>
 </script>
 @stop
