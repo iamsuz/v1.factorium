@@ -932,7 +932,7 @@ Offer Doc
 				event.preventDefault();
 				var _token = $('meta[name="csrf-token"]').attr('content');
 				var email = $('#defaultForm-email').val();
-				$.post('/users/login/check',{email,_token},function (data) {
+				$.post('/users/login/check',{email:email,_token:_token},function (data) {
 					if(data == email){
 						$('#checkEmail').modal('hide');
 						$('#loginEmailEoi').val(email);
