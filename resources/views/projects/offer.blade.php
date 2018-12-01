@@ -122,6 +122,7 @@ Offer Doc
 								</div>
 								<br>
 								@endif
+								@if(!Auth::guest())
 								@if (Session::has('message'))
 								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
@@ -136,6 +137,7 @@ Offer Doc
 									@endif
 								</div>
 								<hr>
+								@endif
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
@@ -1046,7 +1048,7 @@ $(document).ready(function(){
 		@if(Auth::guest())
 		var email = $('#offerEmail').val();
 		var _token = $('meta[name="csrf-token"]').attr('content');
-		$.post('/users/login/check',{email,_token},function (data) {
+		$.post('/users/login/check',{email: email,_token:_token},function (data) {
 			if(data == email){
     			// $('#myform').attr('action','/users/login/offer');
     			$('#loginEmailEoi').val(email);
