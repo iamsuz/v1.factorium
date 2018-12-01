@@ -1017,7 +1017,7 @@ $(document).ready( function() {
 				url: '/projects/prospectus',
 				type: 'POST',
 				dataType: 'JSON',
-				data: {projectId},
+				data: {projectId:projectId},
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				},
