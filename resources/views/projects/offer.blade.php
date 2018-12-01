@@ -781,7 +781,7 @@ Offer Doc
 @if(Auth::guest())
 @include('partials.loginModal');
 @include('partials.registerModal');
-@include('partials.emailCheck');
+{{-- @include('partials.emailCheck'); --}}
 @endif
 @stop
 @section('js-section')
