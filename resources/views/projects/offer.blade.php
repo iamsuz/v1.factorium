@@ -125,7 +125,6 @@ Offer Doc
 								@if (Session::has('message'))
 								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
-								@if(!Auth::guest())
 								<div class="well text-center cursor-pointer fill-form-request-container">
 									@if (Session::has('requestStatus'))
 									<i class="fa fa-check-circle-o fa-3x" aria-hidden="true" style="color: green;"></i><br>
@@ -137,7 +136,6 @@ Offer Doc
 									@endif
 								</div>
 								<hr>
-								@endif
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
@@ -783,127 +781,13 @@ Offer Doc
 @if(Auth::guest())
 @include('partials.loginModal');
 @include('partials.registerModal');
+@include('partials.emailCheck');
 @endif
 @stop
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
-	$(document).ready(function(){
-		$('#myTermsModal').modal({
-			backdrop: 'static',
-			keyboard: false
-		})
-		$('#switch_right').click(function () {
-			$('#typeSignatureDiv').removeClass('hidden');
-			$('#signature').addClass('hidden');
-			$('#signature_data').prop('disabled',true);
-			$('#typeSignatureData').prop('disabled',false);
-		});
-		$('#switch_left').click(function () {
-			$('#signature').removeClass('hidden');
-			$('#typeSignatureDiv').addClass('hidden');
-			$('#signature_data').prop('disabled',false);
-			$('#typeSignatureData').prop('disabled',true);
-		});
-		$('#myform').submit(function(event) {
-			@if(Auth::guest())
-			var email = $('#offerEmail').val();
-			var _token = $('meta[name="csrf-token"]').attr('content');
-			$.post('/users/login/check',{email,_token},function (data) {
-				if(data == email){
-    				// $('#myform').attr('action','/users/login/offer');
-    				$('#loginEmailEoi').val(email);
-    				$("#loginModal").modal();
-    				$('#submitformlogin').click(function (e) {
-    					e.preventDefault();
-    					var password = $('#loginPwdEoi').val();
-    					$('#passwordOffer').val(password);
-    					// $('#myform').submit();
-    					$('#offerEmail').removeAttr('disabled');
-    					var offerData = $('#myform').serialize();
-    					$('#offerEmail').attr('disabled');
-    					$('.loader-overlay').show();
-    					$.ajax({
-    						type: "POST",
-    						url: "/users/login/offer",
-    						data: offerData,
-    						datatype: 'html',
-    						success: function (data) {
-    							if(!data.success){
-    								$('.loader-overlay').hide();
-    								$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
-    								return false;
-    							}
-    							$('.loader-overlay').hide();
-    							$('#loginModal').modal('hide');
-    							$('#mainPage').html(data.html);
-    							$("html, body").animate({ scrollTop: 0 }, "slow");
-
-    						},
-    						error: function (data) {
-    							$('.loader-overlay').hide();
-    							$('#session_message').html(data);
-    							return false;
-    						}
-    					});
-    				});
-    			}else{
-    				$('#eoiREmail').val(email);
-    				$('#registerModal').modal({
-    					keyboard: false,
-    					backdrop: 'static'
-    				});
-    				$('#submitform').click(function (e) {
-    					var projectId = {{$project->id}};
-    					e.preventDefault();
-    					$('#RegPassword').on('input',function (e) {
-    						var name=$('#RegPassword').val();
-    						if(name.length == 0){
-    							$('#RegPassword').after('<div class="red">Password is Required</div>');
-    						}
-    					});
-    					var password = $('#RegPassword').val();
-    					if(password.length == 0){
-    						$('#RegPassword').after('<div class="red">Password is Required</div>');
-    						return false;
-    					}
-    					$('#passwordOffer').val(password);
-    					$('.loader-overlay').show();
-    					var offerData = $('#myform').serialize();
-    					console.log(offerData);
-    					$.ajax({
-    						type: "POST",
-    						headers: {
-    							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    						},
-    						url: "/users/register/"+projectId+"/offer",
-    						data: offerData,
-    						dataType: 'json',
-    						success: function (data) {
-    							$('#registerModal').modal('hide');
-    							$('.loader-overlay').hide();
-    							setTimeout(function(){// wait for 5 secs(2)
-           							window.location.href = "/users/register/offer/code"; // then reload the page.(3)
-           						}, 100);
-           						console.log('inside success');
-    						},
-    						error: function (error) {
-    							$('.loader-overlay').hide();
-    							$('#session_message').html(error);
-    							console.log('You are in error');
-    						}
-    					});
-    				});
-    			}
-    		});
-			@else
-    		$('.loader-overlay').show(); // show animation
-    		return true; // allow regular form submission
-    		@endif
-    		event.preventDefault();
-    	});
-	});
 	$(function () {
 		// Function that runs with interval for side panel
 		var x = Math.floor((Math.random() * 20000) + 10000);
@@ -972,7 +856,6 @@ Offer Doc
 		});
 	});
 	$(document).ready( function() {
-
 		$("input[name='investing_as']").on('change',function() {
 			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
 			{
@@ -1038,43 +921,93 @@ Offer Doc
 				$('.aml-requirements-link i').addClass('fa-plus');
 			}
 		});
-
 		// Submit Request for Form Filling
 		$('.send-form-filling-request').click(function(e){
+			@if(Auth::guest())
+			e.preventDefault();
+			$('#checkEmail').modal('show');
+			$('.checkEmailRequest').click(function (event) {
+				event.preventDefault();
+				var _token = $('meta[name="csrf-token"]').attr('content');
+				var email = $('#defaultForm-email').val();
+				$.post('/users/login/check',{email,_token},function (data) {
+					if(data == email){
+						$('#checkEmail').modal('hide');
+						$('#loginEmailEoi').val(email);
+						$("#loginModal").modal('show');
+						$('#submitformlogin').click(function (t) {
+							t.preventDefault();
+							var password = $('#loginPwdEoi').val();
+							$('#passwordOffer').val(password);
+    						// $('#myform').submit();
+    						$('#offerEmail').removeAttr('disabled');
+    						$('#offerEmail').attr('disabled');
+    						$('.loader-overlay').show();
+    						var projectId = {{$project->id}};
+    						$.ajax({
+    							type: "POST",
+    							url: "/users/login/requestformfilling",
+    							data: { email: email, password: password, project_id: projectId,_token:_token },
+    							datatype: 'json',
+    							success: function (data) {
+    								// if(!data.success){
+    								// 	$('.loader-overlay').hide();
+    								// 	$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
+    								// 	return false;
+    								// }
+    								$('.loader-overlay').hide();
+    								$('#loginModal').modal('hide');
+    								// $('#mainPage').html(data.html);
+    								// $("html, body").animate({ scrollTop: 0 }, "slow");
+    								window.location.href = "/projects/"+projectId+"/interest/request";
+
+    							},
+    							error: function (data) {
+    								$('.loader-overlay').hide();
+    								$('#session_message').html(data);
+    								return false;
+    							}
+    						});
+    					});
+					}
+				});
+			});
+			@else
 			if (confirm('This will raise a request for form filling. Do you want to continue ?')) {
 				console.log('confirmed');
 			} else {
 				e.preventDefault();
 			}
+			@endif
 		});
 	});
 
-	$(document).ready( function() {
-		$("input[name='wholesale_investing_as']").on('change',function() {
-			if($(this).is(':checked') && $(this).val() == 'Wholesale Investor (Net Asset $2,500,000 plus)')
-			{
-				$('#accountant_details_section').show();
-				$('#experienced_investor_information_section').hide();
-			}
-			else if($(this).is(':checked') && $(this).val() == 'Sophisticated Investor')
-			{
-				$('#experienced_investor_information_section').show();
-				$('#accountant_details_section').hide();
-			}
-			else
-			{
-				$('#experienced_investor_information_section').hide();
-				$('#accountant_details_section').hide();
-			}
-		});
+$(document).ready( function() {
+	$("input[name='wholesale_investing_as']").on('change',function() {
+		if($(this).is(':checked') && $(this).val() == 'Wholesale Investor (Net Asset $2,500,000 plus)')
+		{
+			$('#accountant_details_section').show();
+			$('#experienced_investor_information_section').hide();
+		}
+		else if($(this).is(':checked') && $(this).val() == 'Sophisticated Investor')
+		{
+			$('#experienced_investor_information_section').show();
+			$('#accountant_details_section').hide();
+		}
+		else
+		{
+			$('#experienced_investor_information_section').hide();
+			$('#accountant_details_section').hide();
+		}
+	});
 
-		$(".wholesale_invest_checkbox").change(function() {
-			var checked = $(this).is(':checked');
-			$(".wholesale_invest_checkbox").prop('checked',false);
-			if(checked) {
-				$(this).prop('checked',true);
-			}
-		});
+	$(".wholesale_invest_checkbox").change(function() {
+		var checked = $(this).is(':checked');
+		$(".wholesale_invest_checkbox").prop('checked',false);
+		if(checked) {
+			$(this).prop('checked',true);
+		}
+	});
 		// Track users downloading prospectus
 		$('.download-prospectus-btn').click(function(){
 			var projectId = {{$project->id}};
@@ -1092,14 +1025,131 @@ Offer Doc
 			});
 		});
 	});
-	function isNumber(evt) {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-			return false;
-		}
-		return true;
+$(document).ready(function(){
+	$('#myTermsModal').modal({
+		backdrop: 'static',
+		keyboard: false
+	});
+	$('#switch_right').click(function () {
+		$('#typeSignatureDiv').removeClass('hidden');
+		$('#signature').addClass('hidden');
+		$('#signature_data').prop('disabled',true);
+		$('#typeSignatureData').prop('disabled',false);
+	});
+	$('#switch_left').click(function () {
+		$('#signature').removeClass('hidden');
+		$('#typeSignatureDiv').addClass('hidden');
+		$('#signature_data').prop('disabled',false);
+		$('#typeSignatureData').prop('disabled',true);
+	});
+	$('#myform').submit(function(event) {
+		@if(Auth::guest())
+		var email = $('#offerEmail').val();
+		var _token = $('meta[name="csrf-token"]').attr('content');
+		$.post('/users/login/check',{email,_token},function (data) {
+			if(data == email){
+    			// $('#myform').attr('action','/users/login/offer');
+    			$('#loginEmailEoi').val(email);
+    			$("#loginModal").modal();
+    			$('#submitformlogin').click(function (e) {
+    				e.preventDefault();
+    				var password = $('#loginPwdEoi').val();
+    				$('#passwordOffer').val(password);
+    				// $('#myform').submit();
+    				$('#offerEmail').removeAttr('disabled');
+    				var offerData = $('#myform').serialize();
+    				$('#offerEmail').attr('disabled');
+    				$('.loader-overlay').show();
+    				$.ajax({
+    					type: "POST",
+    					url: "/users/login/offer",
+    					data: offerData,
+    					datatype: 'html',
+    					success: function (data) {
+    						if(!data.success){
+    							$('.loader-overlay').hide();
+    							$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
+    							return false;
+    						}
+    						$('.loader-overlay').hide();
+    						$('#loginModal').modal('hide');
+    						$('#mainPage').html(data.html);
+    						$("html, body").animate({ scrollTop: 0 }, "slow");
+
+    					},
+    					error: function (data) {
+    						$('.loader-overlay').hide();
+    						$('#session_message').html(data);
+    						return false;
+    					}
+    				});
+    			});
+    		}else{
+    			$('#eoiREmail').val(email);
+    			$('#registerModal').modal({
+    				keyboard: false,
+    				backdrop: 'static'
+    			});
+    			var offerData = $('#myform').serialize();
+    			console.log(offerData);
+    			$('#submitform').click(function (e) {
+    				var projectId = {{$project->id}};
+    				e.preventDefault();
+    				$('#RegPassword').on('input',function (e) {
+    					var name=$('#RegPassword').val();
+    					if(name.length == 0){
+    						$('#RegPassword').after('<div class="red">Password is Required</div>');
+    					}
+    				});
+    				var password = $('#RegPassword').val();
+    				if(password.length == 0){
+    					$('#RegPassword').after('<div class="red">Password is Required</div>');
+    					return false;
+    				}
+    				$('#passwordOffer').val(password);
+    				$('.loader-overlay').show();
+    				var offerData = $('#myform').serialize();
+    				console.log(offerData);
+    				$.ajax({
+    					type: "POST",
+    					headers: {
+    						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    					},
+    					url: "/users/register/"+projectId+"/offer",
+    					data: offerData,
+    					dataType: 'json',
+    					success: function (data) {
+    						$('#registerModal').modal('hide');
+    						$('.loader-overlay').hide();
+    						setTimeout(function(){// wait for 5 secs(2)
+           						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+           					}, 100);
+    						console.log('inside success');
+    					},
+    					error: function (error) {
+    						$('.loader-overlay').hide();
+    						$('#session_message').html(error);
+    						console.log('You are in error');
+    					}
+    				});
+    			});
+    		}
+    	});
+		@else
+    	$('.loader-overlay').show(); // show animation
+    	return true; // allow regular form submission
+    	@endif
+    	event.preventDefault();
+    });
+});
+function isNumber(evt) {
+	evt = (evt) ? evt : window.event;
+	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		return false;
 	}
+	return true;
+}
 </script>
 </script>
 @stop
