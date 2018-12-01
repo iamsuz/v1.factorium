@@ -154,6 +154,8 @@ class UserRegistrationsController extends Controller
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'role'=>'required'
         ]);
         $validator1 = Validator::make($request->all(), [
