@@ -187,7 +187,7 @@ class UserRegistrationsController extends Controller
             }
         }
         $project = Project::findOrFail($id);
-        if($project){
+        if($project && $request->first_name !=''){
             $ref =false;
             $color = Color::where('project_site',url())->first();
             $offerToken = mt_rand(100000, 999999);
