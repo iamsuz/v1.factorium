@@ -1119,13 +1119,13 @@ $(document).ready(function(){
     					},
     					url: "/users/register/"+projectId+"/offer",
     					data: offerData,
-    					dataType: 'json',
+    					dataType: 'html',
     					success: function (data) {
     						$('#registerModal').modal('hide');
     						$('.loader-overlay').hide();
-    						setTimeout(function(){// wait for 5 secs(2)
-           						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
-           					}, 100);
+    						// setTimeout(function(){// wait for 5 secs(2)
+          //  						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+          //  					}, 100);
     						console.log('inside success');
     					},
     					error: function (error) {

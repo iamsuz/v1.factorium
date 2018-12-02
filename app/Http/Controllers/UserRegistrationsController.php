@@ -188,11 +188,14 @@ class UserRegistrationsController extends Controller
         }
         $project = Project::findOrFail($id);
         if($project && $request->first_name !=''){
+            echo $project;
+            echo $request->first_name;
             $ref =false;
             $color = Color::where('project_site',url())->first();
             $offerToken = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
             if($user){
+                echo $user;
                 $offerData = '';
                 $i = 0;
                 while($offerData == '' && $i != 5){
@@ -200,6 +203,8 @@ class UserRegistrationsController extends Controller
                     $i = $i+1;
                 }
                 if($offerData != ''){
+                    echo $offerData;
+                    dd($request);
                     $mailer->sendRegistrationConfirmationTo($user,$ref);
                     $type = 'offer';
                     return $offerData;
