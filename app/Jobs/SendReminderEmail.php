@@ -9,6 +9,7 @@ use App\User;
 use App\Project;
 use App\InvestingJoint;
 use App\UserRegistration;
+use App\InvestmentInvestor;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Mail\TransportManager;
@@ -35,11 +36,12 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, Project $project)
+    public function __construct(User $user, Project $project, InvestmentInvestor $investor)
     {
         //
-        $this->investor = $user;
+        $this->investor = $investor;
         $this->project = $project;
+        $this->user = $user;
 
     }
 
@@ -76,22 +78,23 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
         }
         $investor = $this->investor;
         $project = $this->project;
+        $user = $investor->user;
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
-        foreach ($role->users as $user) {
-            if($user->registration_site == url()){
-                array_push($recipients, $user->email);
+        foreach ($role->users as $recipient) {
+            if($recipient->registration_site == url()){
+                array_push($recipients, $recipient->email);
             }
         }
-        $amount = $investor->investments->last()->pivot->amount;
-        $investing_as = $investor->investments->last()->pivot->investing_as;
-        $investment_investor_id = $investor->investments->last()->pivot->id;
+        $amount = $investor->amount;
+        $investing_as = $investor->investing_as;
+        $investment_investor_id = $investor->id;
         $investing = InvestingJoint::where('investment_investor_id', $investment_investor_id)->get()->last();
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.admin';
-        $this->subject = $investor->first_name.' '.$investor->last_name.' has invested '.$amount.' in '.$project->title;
-        $this->data = compact('project', 'investor' , 'investing_as','investing');
+        $this->subject = $user->first_name.' '.$user->last_name.' has invested '.$amount.' in '.$project->title;
+        $this->data = compact('project', 'investor' , 'investing_as','investing','user');
         $mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
         });

@@ -549,7 +549,7 @@
                                 @endif -->
 
                                 {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;"> @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}} @else Estate Baron @endif</p> --}}
-                                <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                                <table  border="0" cellpadding="18" cellspacing="0" align="left">
                                   <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
                                </table>
 
@@ -585,18 +585,18 @@
                 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
                   <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Application form received as {{$investing_as}} from:<br>
                     <br>
-                    Name:  <b>{{$investor->first_name}} {{$investor->last_name}}</b>
+                    Name:  <b>{{$user->first_name}} {{$user->last_name}}</b>
                     <br><br>
-                    Email: <b>{{$investor->email}}</b>
+                    Email: <b>{{$user->email}}</b>
                     <br><br>
                     @if($investing_as == 'Joint Investor')
-                    Joint Investor Name:  <b>{{$investor->joint_investor_first_name}} {{$investor->joint_investor_last_name}}</b>
+                    Joint Investor Name:  <b>{{$investing->joint_investor_first_name}} {{$investing->joint_investor_last_name}}</b>
                     <br><br>
                     @elseif($investing_as == 'Trust or Company')
-                    Trust or Company Name: <b>{{$investor->investing_company}}</b>
+                    Trust or Company Name: <b>{{$investing->investing_company}}</b>
                     <br><br>
                     @endif
-                    Phone: <b>{{$investor->phone_number}}</b>
+                    Phone: <b>{{$user->phone_number}}</b>
                     <br><br>
                     Project: <b>{{$project->title}}</b></span></span></span>
                     &nbsp;</div>

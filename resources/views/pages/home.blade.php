@@ -579,7 +579,7 @@
 									href="javascript:void(0);"
 									@endif
 									@else href="{{route('projects.show', [$project])}}"
-									@endif>
+									@endif name="project-link">
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
@@ -1942,7 +1942,7 @@
 			editGreyBoxNoteContent();
 			//Edit the text below project thumbnail image
 			editProjectThumbnailText();
-			//Edit the smsf reference text above the listed projects 
+			//Edit the smsf reference text above the listed projects
 			editSmsfReferenceText();
 
 		});

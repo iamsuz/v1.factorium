@@ -188,14 +188,11 @@ class UserRegistrationsController extends Controller
         }
         $project = Project::findOrFail($id);
         if($project && $request->first_name !=''){
-            echo $project;
-            echo $request->first_name;
             $ref =false;
             $color = Color::where('project_site',url())->first();
             $offerToken = mt_rand(100000, 999999);
             $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'phone_number'=>$request->phone]);
             if($user){
-                echo $user;
                 $offerData = '';
                 $i = 0;
                 while($offerData == '' && $i != 5){
@@ -203,8 +200,6 @@ class UserRegistrationsController extends Controller
                     $i = $i+1;
                 }
                 if($offerData != ''){
-                    echo $offerData;
-                    dd($request);
                     $mailer->sendRegistrationConfirmationTo($user,$ref);
                     $type = 'offer';
                     return $offerData;
@@ -629,7 +624,7 @@ class UserRegistrationsController extends Controller
                     $investor->save();
 
                     $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
-                    $this->dispatch(new SendReminderEmail($user,$project));
+                    $this->dispatch(new SendReminderEmail($user,$project,$investor));
 
                     return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
                 }

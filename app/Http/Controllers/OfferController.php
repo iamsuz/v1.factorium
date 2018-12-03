@@ -250,7 +250,7 @@ class OfferController extends Controller
     $investor->save();
 
     $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
-    $this->dispatch(new SendReminderEmail($user,$project));
+    $this->dispatch(new SendReminderEmail($user,$project,$investor));
 
     return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
 }

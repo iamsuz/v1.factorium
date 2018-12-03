@@ -240,7 +240,7 @@ class UserAuthController extends Controller
                     return redirect()->back()->withErrors('Something went wrong');
                 }
             }
-        $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
+            $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as, 'signature_data'=>$request->signature_data,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type]);
         $investor = InvestmentInvestor::get()->last();
@@ -298,7 +298,6 @@ class UserAuthController extends Controller
             $project->investmentDocuments()->save($user_investment_doc);
 
         }
-
         //Save wholesale project input fields
         if(!$project->retail_vs_wholesale) {
             $wholesale_investor = WholesaleInvestment::get()->last();{
@@ -321,24 +320,21 @@ class UserAuthController extends Controller
                 $wholesale_investing->save();
             }
         }
-
         // Mark request form link expired
         if($request->investment_request_id){
             InvestmentRequest::find($request->investment_request_id)->update([
                 'is_link_expired' => 1
             ]);
         }
-
         // Create PDF of Application form
-        $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
-        $pdfPath = storage_path().$pdfBasePath;
-        $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
-        $pdf->save($pdfPath);
-        $investor->application_path = $pdfBasePath;
+        // $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
+        // $pdfPath = storage_path().$pdfBasePath;
+        // $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
+        // $pdf->save($pdfPath);
+        // $investor->application_path = $pdfBasePath;
         $investor->save();
-
         $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
-        $this->dispatch(new SendReminderEmail($user,$project));
+        $this->dispatch(new SendReminderEmail($user,$project,$investor));
         $viewHtml = view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'))->render();
         return response()->json(array('success'=>true,'html'=>$viewHtml,'auth'=>$auth));
     }
@@ -430,5 +426,46 @@ class UserAuthController extends Controller
         $user->activated_on = Carbon::now();
         $user->save();
         return redirect()->route('users.login')->withMessage('<p class="alert alert-success text-center">Activation Successful! Login to see the opportunities, you recieved $25 in your credit.</p>');
+    }
+
+    public function requestFormFilling(UserAuthRequest $request,AppMailer $mailer)
+    {
+        $auth = false;
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+            $auth = true;
+            $user = Auth::user();
+            if(Auth::user()->last_login){
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                    $loginBonus = rand(1, $daily_bonus_konkrete);
+                    Credit::create([
+                        'user_id' => Auth::user()->id,
+                        'amount' => $loginBonus,
+                        'type' => 'Daily login bonus',
+                        'project_site' => url(),
+                        'currency' => 'konkrete'
+                    ]);
+                }
+            }
+            $project = Project::find($request->project_id);
+            if(!$project){
+                return redirect()->back();
+            }
+            else{
+                if(!$project->url != url()){
+                    return redirect()->back();
+                }
+                else{
+                    $user = Auth::user();
+                    $investmentRequest = InvestmentRequest::create([
+                        'user_id' => $user->id,
+                        'project_id' => $project->id,
+                    ]);
+                    $formLink = url().'/project/'.$investmentRequest->id.'/interest/fill';
+                    $mailer->sendInvestmentRequestToAdmin($user, $project, $formLink);
+                    return view('projects.offer.requestSubmitted',compact('project'));
+                }
+            }
+        }
+        return $auth;
     }
 }
