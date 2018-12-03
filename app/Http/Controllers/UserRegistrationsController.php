@@ -398,8 +398,8 @@ class UserRegistrationsController extends Controller
             $request['investment_amount'] = $userReg->offer_registration->amount_to_invest;
             $request['amount_to_invest'] = $userReg->offer_registration->amount_to_invest;
             $request['investing_as'] = $userReg->offer_registration->investing_as;
-            $request['joint_investor_first'] = $userReg->offer_registration->joint_fname;
-            $request['joint_investor_last'] = $userReg->offer_registration->joint_lname;
+            $request['joint_investor_first_name'] = $userReg->offer_registration->joint_fname;
+            $request['joint_investor_last_name'] = $userReg->offer_registration->joint_lname;
             $request['investing_company'] = $userReg->offer_registration->trust_company;
             $request['account_name'] = $userReg->offer_registration->account_name;
             $request['bsb'] = $userReg->offer_registration->bsb;
