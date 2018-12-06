@@ -1046,6 +1046,8 @@ $(document).ready(function(){
 	});
 	$('#myform').submit(function(event) {
 		@if(Auth::guest())
+    	var $this = $(this);
+		event.preventDefault();
 		var email = $('#offerEmail').val();
 		var _token = $('meta[name="csrf-token"]').attr('content');
 		$.post('/users/login/check',{email: email,_token:_token},function (data) {
@@ -1087,61 +1089,114 @@ $(document).ready(function(){
     				});
     			});
     		}else{
-    			$('#eoiREmail').val(email);
-    			$('#registerModal').modal({
-    				keyboard: false,
-    				backdrop: 'static'
-    			});
-    			var offerData = $('#myform').serialize();
-    			console.log(offerData);
-    			$('#submitform').click(function (e) {
-    				var projectId = {{$project->id}};
-    				e.preventDefault();
-    				$('#RegPassword').on('input',function (e) {
-    					var name=$('#RegPassword').val();
-    					if(name.length == 0){
-    						$('#RegPassword').after('<div class="red">Password is Required</div>');
-    					}
-    				});
-    				var password = $('#RegPassword').val();
-    				if(password.length == 0){
-    					$('#RegPassword').after('<div class="red">Password is Required</div>');
-    					return false;
-    				}
-    				$('#passwordOffer').val(password);
-    				$('.loader-overlay').show();
-    				var offerData = $('#myform').serialize();
-    				console.log(offerData);
-    				$.ajax({
-    					type: "POST",
-    					headers: {
-    						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    					},
-    					url: "/users/register/"+projectId+"/offer",
-    					data: offerData,
-    					dataType: 'json',
-    					success: function (data) {
-    						$('#registerModal').modal('hide');
-    						$('.loader-overlay').hide();
-    						setTimeout(function(){// wait for 5 secs(2)
-           						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
-           					}, 100);
-    						console.log('inside success');
-    					},
-    					error: function (error) {
-    						$('.loader-overlay').hide();
-    						$('#session_message').html(error);
-    						console.log('You are in error');
-    					}
-    				});
-    			});
+    			// $('#eoiREmail').val(email);
+    			// $('#registerModal').modal({
+    			// 	keyboard: false,
+    			// 	backdrop: 'static'
+    			// });
+    			// var offerData = $('#myform').serialize();
+    			// console.log(offerData);
+    			// $('#submitform').click(function (e) {
+    			// 	var projectId = {{$project->id}};
+    			// 	e.preventDefault();
+    			// 	$('#RegPassword').on('input',function (e) {
+    			// 		var name=$('#RegPassword').val();
+    			// 		if(name.length == 0){
+    			// 			$('#RegPassword').after('<div class="red">Password is Required</div>');
+    			// 		}
+    			// 	});
+    			// 	var password = $('#RegPassword').val();
+    			// 	if(password.length == 0){
+    			// 		$('#RegPassword').after('<div class="red">Password is Required</div>');
+    			// 		return false;
+    			// 	}
+    			// 	$('#passwordOffer').val(password);
+    			// 	$('.loader-overlay').show();
+    			// 	var offerData = $('#myform').serialize();
+    			// 	console.log(offerData);
+    			// 	$.ajax({
+    			// 		type: "POST",
+    			// 		headers: {
+    			// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			// 		},
+    			// 		url: "/users/register/"+projectId+"/offer",
+    			// 		data: offerData,
+    			// 		dataType: 'json',
+    			// 		success: function (data) {
+    			// 			$('#registerModal').modal('hide');
+    			// 			$('.loader-overlay').hide();
+    			// 			setTimeout(function(){// wait for 5 secs(2)
+       //     						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+       //     					}, 100);
+    			// 			console.log('inside success');
+    			// 		},
+    			// 		error: function (error) {
+    			// 			$('.loader-overlay').hide();
+    			// 			$('#session_message').html(error);
+    			// 			console.log('You are in error');
+    			// 		}
+    			// 	});
+    			// });
+
+
+    			/* Start of section - Register user without verification email */
+				$('#eoiREmail').val(email);
+				$('#registerModal').modal({
+					keyboard: false,
+					backdrop: 'static'
+				});
+
+				$('#submitform').click(function (e) {
+					var projectId = {{$project->id}};
+					e.preventDefault();
+					$('#RegPassword').on('input',function (e) {
+						var name=$('#RegPassword').val();
+						if(name.length == 0){
+							$('#RegPassword').after('<div class="red">Password is Required</div>');
+						}
+					});
+					var password = $('#RegPassword').val();
+					if(password.length == 0){
+						$('#RegPassword').after('<div class="red">Password is Required</div>');
+						return false;
+					}
+					$('#passwordOffer').val(password);
+					$('.loader-overlay').show();
+					var offerData = $('#myform').serialize();
+					console.log(offerData);
+					$.ajax({
+						type: "POST",
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+						url: "/users/register/login/"+projectId+"/offer",
+						data: offerData,
+						dataType: 'json',
+						success: function (data) {
+							if(data.status) {
+								// $('#myform').submit();
+								$this.unbind('submit').submit();
+								console.log('offer submitted');
+							} else {
+								alert(data.message);
+								$('#registerModal').modal('hide');
+								$('.loader-overlay').hide();
+							}
+						},
+						error: function (error) {
+							$('.loader-overlay').hide();
+							$('#session_message').html(error);
+							console.log('You are in error');
+						}
+					});
+				});
+				/* End of section - Register user without verification email */
     		}
     	});
 		@else
     	$('.loader-overlay').show(); // show animation
     	return true; // allow regular form submission
     	@endif
-    	event.preventDefault();
     });
 });
 function isNumber(evt) {
