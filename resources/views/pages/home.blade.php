@@ -1903,6 +1903,9 @@
 			var rgbaColor = 'rgba(45, 45, 75, {{$siteConfiguration->overlay_opacity}})';
 			$('.main-fold-overlay-color').css('background', rgbaColor);
 			@endif
+			@if(Auth::guest())
+			@else
+			@if($admin_access == 1)
 			//Functionality to Edit Text 1 of Home Page.
 			//This can be actioned by only admin
 			editHomePageText1();
@@ -1944,9 +1947,13 @@
 			editProjectThumbnailText();
 			//Edit the smsf reference text above the listed projects
 			editSmsfReferenceText();
+			@endif
+			@endif
 
 		});
-
+@if(Auth::guest())
+				@else
+				@if($admin_access == 1)
 function updateCoords(coords, w, h, origWidth, origHeight){
 	var target_width= w;
 	var target_height=h;
@@ -2053,7 +2060,6 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 			});
 		});
-
 		//Functionality to Edit Text 1 of Home Page.
 		//This can be actioned by only admin
 		function editHomePageText1(){
@@ -2520,13 +2526,6 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			});
 		}
 
-		function hex2rgb(hexStr){
-			var hex = parseInt(hexStr, 16);
-			var r = (hex & 0xff0000) >> 16;
-			var g = (hex & 0x00ff00) >> 8;
-			var b = hex & 0x0000ff;
-			return [r, g, b];
-		}
 
 		function updateOverlayOpacity(){
 			$('.update-overlay-opacity').click(function(e){
@@ -2558,17 +2557,6 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 						@endif
 					}
 				});
-			});
-		}
-
-		function richTextareaFieldInitialization(){
-			tinymce.init({
-				forced_root_block : "div",
-				selector: '#how-it-works textarea',
-				plugins: 'charmap textcolor',
-				toolbar: "alignleft aligncenter alignright alignjustify forecolor",
-				menubar: false,
-				statusbar: false,
 			});
 		}
 
@@ -2720,7 +2708,25 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 				}
 			});
 		}
-
+		@endif
+		@endif
+		function richTextareaFieldInitialization(){
+			tinymce.init({
+				forced_root_block : "div",
+				selector: '#how-it-works textarea',
+				plugins: 'charmap textcolor',
+				toolbar: "alignleft aligncenter alignright alignjustify forecolor",
+				menubar: false,
+				statusbar: false,
+			});
+		}
+		function hex2rgb(hexStr){
+			var hex = parseInt(hexStr, 16);
+			var r = (hex & 0xff0000) >> 16;
+			var g = (hex & 0x00ff00) >> 8;
+			var b = hex & 0x0000ff;
+			return [r, g, b];
+		}
 		function expressInterestInUpcomingProject(){
 			$('.show-upcoming-project-interest-btn').click(function(e){
 				var thisElement = $(this);
