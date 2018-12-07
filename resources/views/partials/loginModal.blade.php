@@ -23,7 +23,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<section id="loginForm" style="padding:0 10px;">
-										{!! Form::open(array( 'route'=>'users.auth.eoi', 'class'=>'form-horizontal', 'role'=>'form' )) !!}
+										{!! Form::open(array( 'route'=>'users.auth.eoi', 'class'=>'form-horizontal', 'role'=>'form', 'name'=>'offer_user_login_form', 'id'=>'offer_user_login_form' )) !!}
 										<input type="hidden" name="redirectNotification" value="">
 										<fieldset>
 											<div class="form-group <?php if($errors->first('email')){echo 'has-error';}?> has-feedback">

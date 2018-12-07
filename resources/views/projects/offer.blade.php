@@ -1055,8 +1055,8 @@ $(document).ready(function(){
     			// $('#myform').attr('action','/users/login/offer');
     			$('#loginEmailEoi').val(email);
     			$("#loginModal").modal();
-    			$('#submitformlogin').click(function (e) {
-    				e.preventDefault();
+    			$('#offer_user_login_form').submit(function (e) {
+					e.preventDefault();
     				var password = $('#loginPwdEoi').val();
     				$('#passwordOffer').val(password);
     				// $('#myform').submit();
@@ -1146,7 +1146,7 @@ $(document).ready(function(){
 					backdrop: 'static'
 				});
 
-				$('#submitform').click(function (e) {
+				$('form[name=offer_user_registration_form]').submit(function(e) {
 					var projectId = {{$project->id}};
 					e.preventDefault();
 					$('#RegPassword').on('input',function (e) {
