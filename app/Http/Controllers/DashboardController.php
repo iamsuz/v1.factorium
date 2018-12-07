@@ -33,6 +33,7 @@ use App\ProjectInterest;
 use App\InvestmentRequest;
 use App\ProjectEOI;
 use App\ProspectusDownload;
+use App\ProjectSpvDetail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
@@ -279,6 +280,19 @@ class DashboardController extends Controller
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investment->amount = $request->amount;
         $investment->save();
+
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+
+    }
+
+    public function updateApplication(Request $request, $investment_id)
+    {
+        $this->validate($request, [
+            'amount' => 'required|numeric',
+        ]);
+
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $investment->update($request->all());
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
 
@@ -1196,5 +1210,13 @@ class DashboardController extends Controller
         $mailer->sendVerificationNotificationToUser($user, '1', $idimages);
 
         return redirect()->back()->withMessage('<p class="alert alert-success">User documents uploaded successfully.</p>');
+    }
+
+    public function viewApplication(Request $request, $id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $investment = InvestmentInvestor::find($id);
+        $projects_spv = ProjectSpvDetail::where('project_id', $investment->project_id)->first();
+        return view('dashboard.application.view',compact('color','investment', 'projects_spv'));
     }
 }

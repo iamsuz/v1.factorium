@@ -73,6 +73,9 @@
 								@if(!$investment->hide_investment)
 									<tr id="application{{$investment->id}}">
 										<td>INV{{$investment->id}} 
+											<a href="{{route('dashboard.application.view', [$investment->id])}}" class="edit-application" style="margin-top: 1.2em;"><br>
+												<i class="fa fa-edit" aria-hidden="true"></i>
+											</a>
 											@if(!$investment->money_received && !$investment->accepted) 
 												{{-- <form action="{{route('dashboard.investment.hideInvestment', $investment->id)}}" method="POST">
 												{{method_field('PATCH')}}
@@ -80,7 +83,7 @@
 												{{-- <a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Resend link</b></a> --}}
 												<a href="javascript:void(0);" class="hide-investment" data="{{$investment->id}}"><br>
 													<i class="fa fa-trash" aria-hidden="true"></i>
-												</button>
+												</a>
 											@endif
 										<td>
 											<div class="col-md-3 text-left">
