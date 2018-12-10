@@ -30,7 +30,7 @@
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control hide', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
+													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 													{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
 												</div>
 												<!-- </div> -->

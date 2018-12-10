@@ -1147,6 +1147,7 @@ $(document).ready(function(){
 				});
 
 				$('form[name=offer_user_registration_form]').submit(function(e) {
+					$('#offerEmail').val($('#eoiREmail').val());
 					var projectId = {{$project->id}};
 					e.preventDefault();
 					$('#RegPassword').on('input',function (e) {
