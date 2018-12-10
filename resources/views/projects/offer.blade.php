@@ -655,6 +655,7 @@ Offer Doc
 											</div>
 										</div>
 									</div>
+									<textarea class="g-recaptcha-response hide" name="g-recaptcha-response"></textarea>
 								</form>
 								<br><br>
 							</div>
@@ -789,6 +790,8 @@ Offer Doc
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
+<!-- Script for reCaptcha -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script>
 	$(function () {
 		// Function that runs with interval for side panel
@@ -1146,7 +1149,9 @@ $(document).ready(function(){
 					backdrop: 'static'
 				});
 
-				$('form[name=offer_user_registration_form]').submit(function(e) {
+				$('form[name=offer_user_registration_form]').one('submit', function(e) {
+					var captchaToken = $('#g-recaptcha-response').val();
+					$('.g-recaptcha-response').val(captchaToken);
 					$('#offerEmail').val($('#eoiREmail').val());
 					var projectId = {{$project->id}};
 					e.preventDefault();

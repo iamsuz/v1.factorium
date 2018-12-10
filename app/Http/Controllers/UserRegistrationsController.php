@@ -30,6 +30,7 @@ use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Response;
+use ReCaptcha\ReCaptcha;
 
 class UserRegistrationsController extends Controller
 {
@@ -230,7 +231,8 @@ class UserRegistrationsController extends Controller
             'email' => 'required|email',
             'first_name' => 'required',
             'last_name' => 'required',
-            'role'=>'required'
+            'role'=>'required',
+            'g-recaptcha-response' => 'required'
         ]);
         $validator1 = Validator::make($request->all(), [
             'email' => 'unique:users,email||unique:user_registrations,email',
@@ -238,6 +240,14 @@ class UserRegistrationsController extends Controller
         if ($validator->fails()) {
             return Response::json(['status' => false, 'message' => $validator->errors()->first()]);
         }
+
+        // Verify Captcha
+        $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
+        $capResponse = $recaptcha->verify($request->get('g-recaptcha-response'), $_SERVER['REMOTE_ADDR']);
+        if(!$capResponse->isSuccess()) {
+            return Response::json(['status' => false, 'message'=> 'Recaptcha timeout or duplicate.']);
+        }
+
         if($validator1->fails()){
             $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
             $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
