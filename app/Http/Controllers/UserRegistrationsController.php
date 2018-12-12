@@ -75,6 +75,26 @@ class UserRegistrationsController extends Controller
             ->withErrors($validator)
             ->withInput();
         }
+
+        // Validate captcha only if the form has captcha feature
+        if($request->input('g-recaptcha-response') !== null) {
+            $validator2 = Validator::make($request->all(), [
+                'g-recaptcha-response' => 'required'
+            ]);
+            if ($validator2->fails()) {
+                return redirect('/users/create')
+                ->withErrors($validator2)
+                ->withInput();
+            }
+
+            // Verify Captcha
+            $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
+            $capResponse = $recaptcha->verify($request->get('g-recaptcha-response'), $_SERVER['REMOTE_ADDR']);
+            if(!$capResponse->isSuccess()) {
+                return redirect('/users/create')->withErrors(['g-recaptcha-response'=> 'Recaptcha timeout or duplicate.'])->withInput();
+            }
+        }
+        
         if($validator1->fails()){
             $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
             $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();

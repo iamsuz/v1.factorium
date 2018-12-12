@@ -89,6 +89,7 @@ EOI Doc
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script>
 	$(document).ready(function(){
         @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
@@ -137,6 +138,15 @@ EOI Doc
             $('.loader-overlay').show(); // show animation
             return true; // allow regular form submission
             @endif
+        });
+
+        /**
+         * Update the email from the EOI form 
+         * when updated from user registration form.
+         */ 
+        $('#eoiREmail').on('keyup', function(e) {
+            $('#eoi_email').val($(this).val());
+            console.log('email updated');
         });
     });
 </script>
