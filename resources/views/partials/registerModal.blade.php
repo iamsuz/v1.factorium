@@ -53,6 +53,7 @@
 													<input type="text" class="hidden" name="last_name" id="eoiRLName">
 													{{-- <input type="text" class="hidden" name="lname" id="eoiLName"> --}}
 													<input type="text" class="hidden" name="phone_number" id="eoiRPhone">
+													<input type="text" class="hidden" name="phone" id="eoiRPhone1">
 													<input type="text" class="hidden" name="investment_period" id="eoiRInvestmentPeriod">
 													<input type="text" class="hidden" name="investment_amount" id="eoiRInvestmentAmount">
 													<input type="text" class="hidden" name="eoi_project" id="eoiRProjectId">
@@ -77,7 +78,7 @@
 												<div class="row">
 													<div class="col-md-12 " style="visibility: visible !important;">
 														<input type="submit" value="Register" id="submit1" name="submit"  class="btn btn-block font-bold hide" hidden style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
-														<button type="submit" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform"  style="width:243px; background-color: #fed405; font-size:1em; color:#000;border-radius:50px; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register</button>
+														<button type="button" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform"  style="width:243px; background-color: #fed405; font-size:1em; color:#000;border-radius:50px; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register</button>
 													</div>
 													<div class="col-md-12">
 														<span><small>** If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again.</small></span>

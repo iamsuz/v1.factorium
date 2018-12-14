@@ -1149,6 +1149,10 @@ $(document).ready(function(){
 					backdrop: 'static'
 				});
 
+				$('#submitform').click(function(){
+		            $('#submit1').trigger('click');
+		        });
+
 				$('form[name=offer_user_registration_form]').one('submit', function(e) {
 					var captchaToken = $('#g-recaptcha-response').val();
 					$('.g-recaptcha-response').val(captchaToken);
@@ -1180,8 +1184,7 @@ $(document).ready(function(){
 						dataType: 'json',
 						success: function (data) {
 							if(data.status) {
-								// $('#myform').submit();
-								$this.unbind('submit').submit();
+								$('#myform').unbind('submit').submit();
 								console.log('offer submitted');
 							} else {
 								alert(data.message);
