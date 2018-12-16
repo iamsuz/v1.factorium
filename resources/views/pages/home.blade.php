@@ -928,12 +928,12 @@
 			@if(Auth::guest())
 			@else
 			@if($admin_access == 1)
-			<div class="row text-left">
+			<div class="row text-left hide">
 				<i class="fa fa-pencil edit-pencil-style show-grey-box-note-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the below content" data-placement="right"></i>
 			</div>
 			@endif
 			@endif
-			<div class="row grey" style="padding: 1em 1em; border-radius: 10px;">
+			<div class="row grey hide" style="padding: 1em 1em; border-radius: 10px;">
 				<form action="{{ route('configuration.updateGreyBoxNote') }}" method="POST">
 					{{csrf_field()}}
 					<p class="col-md-12 text-justify grey-box-note-content"><small style="color: #888;">@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the {{$prospectus}} for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the {{$prospectus}}. You should carefully review the {{$prospectus}} in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the {{$prospectus}}. @endif</small></p>

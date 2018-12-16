@@ -84,10 +84,12 @@ Route::get('/users/logout', ['as'=>'users.logout', 'uses'=>'UserAuthController@l
 Route::post('/users/login', ['as'=>'users.auth', 'uses'=>'UserAuthController@authenticate']);
 Route::post('/users/login/eoi', ['as'=>'users.auth.eoi', 'uses'=>'UserAuthController@authenticateEoi']);
 Route::post('/users/login/offer', ['as'=>'users.auth.offer', 'uses'=>'UserAuthController@authenticateOffer']);
+Route::post('/users/login/requestformfilling',['as'=>'users.auth.requestFormFilling', 'uses'=>'UserAuthController@requestFormFilling']);
 Route::get('/users/successfull/eoi', ['as'=>'users.success.eoi', 'uses'=>'UserAuthController@successEoi']);
 Route::POST('/users/registration/code', ['as'=>'users.registration.code', 'uses'=>'UserRegistrationsController@registrationCode']);
 Route::POST('/users/register/{id}/offer',['as'=>'user.register.offer','uses'=>'UserRegistrationsController@offerRegistrationCode']);
 Route::POST('/users/register/login/{id}/offer',['as'=>'user.register.offer','uses'=>'UserRegistrationsController@userRegisterLoginFromOfferForm']);
+Route::POST('/users/register/{projectId}/requestformfilling',['as'=>'user.register.requestformfilling','uses'=>'UserRegistrationsController@requestFormFillingRegistration']);
 Route::get('/users/register/offer/code',['as'=>'users.register.view.code','uses'=>'UserRegistrationsController@registerCodeView']);
 Route::post('/users/login/check', ['as'=>'users.auth.check', 'uses'=>'UserAuthController@authenticateCheck']);
 Route::get('/users/activation/{token}', ['as'=>'users.activation', 'uses'=>'UserAuthController@activate']);

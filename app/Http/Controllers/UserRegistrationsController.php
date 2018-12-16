@@ -94,7 +94,7 @@ class UserRegistrationsController extends Controller
                 return redirect('/users/create')->withErrors(['g-recaptcha-response'=> 'Recaptcha timeout or duplicate.'])->withInput();
             }
         }
-        
+
         if($validator1->fails()){
             $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
             $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
@@ -312,12 +312,12 @@ class UserRegistrationsController extends Controller
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
-        
+
         // $mailer->sendRegistrationNotificationAdmin($user,$referrer);
-        
+
         if (Auth::attempt(['email' => $request->email, 'password' => $passwordString, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
-            
+
             return Response::json(['status' => true, 'message' => 'Login Successfull']);
         }
     }
@@ -492,6 +492,9 @@ class UserRegistrationsController extends Controller
             $request['eoi_project'] = $userReg->eoi_project;
             $request['investment_amount'] = $userReg->investment_amount;
             $request['investment_period'] = $userReg->investment_period;
+        }elseif($userReg->request_form_project_id != NULL){
+            $request['request_form_project_id'] = $userReg->request_form_project_id;
+            $request['project_id'] = $userReg->request_form_project_id;
         }else{
             $request['project_id'] = $userReg->offer_registration->project_id;
             $request['investment_amount'] = $userReg->offer_registration->amount_to_invest;
@@ -531,10 +534,11 @@ class UserRegistrationsController extends Controller
         };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
         $password = $userReg->password;
-        if($userReg->eoi_project == NULL){
+        if($userReg->request_form_project_id == NULL && $userReg->eoi_project == NULL){
             $offerRegi = $userReg->offer_registration;
             $offerRegi->delete();
         }
+
         $userReg->delete();
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
@@ -542,6 +546,10 @@ class UserRegistrationsController extends Controller
             $project = Project::findOrFail($request->project_id);
             $user = Auth::user();
             $user_info = Auth::user();
+            if($request->request_form_project_id != NULL){
+                return redirect()->route('projects.interest.request',$request->project_id);
+            }
+            dd('test');
             $min_amount_invest = $project->investment->minimum_accepted_amount;
             if((int)$request->investment_amount < (int)$min_amount_invest)
             {
@@ -809,5 +817,47 @@ class UserRegistrationsController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         return view('users.registrationFinish',compact('color'));
+    }
+
+    public function requestFormFillingRegistration($id, Request $request, AppMailer $mailer)
+    {
+        $color = Color::where('project_site',url())->first();
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+        $validator1 = Validator::make($request->all(), [
+            'email' => 'unique:users,email||unique:user_registrations,email',
+        ]);
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        if($validator1->fails()){
+            $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
+            $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
+            if(!$res1 && !$res2){
+                $originSite="";
+                if($user=User::where('email', $request->email)->first()){
+                    $originSite = $user->registration_site;
+                }
+                if($userReg=UserRegistration::where('email', $request->email)->first()){
+                    $originSite = $userReg->registration_site;
+                }
+                $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
+                return redirect()->back()->withErrors(['email'=> $errorMessage])->withInput();
+            }
+            else{
+                $errorMessage = 'This email is already registered but seems its not activated please activate email';
+                return redirect()->back()->withMessage('This email is already registered but seems its not activated please activate email');
+            }
+        }
+        $project = Project::findOrFail($id);
+        $ref =false;
+        $color = Color::where('project_site',url())->first();
+        $offerToken = mt_rand(100000, 999999);
+        $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'role'=>'investor']);
+        return Response::json(['success' => true]);
     }
 }

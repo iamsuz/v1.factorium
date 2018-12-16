@@ -434,6 +434,12 @@ class UserAuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $auth = true;
             $user = Auth::user();
+            if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+                $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
+            }
+            else {
+                $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
+            };
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
                     $loginBonus = rand(1, $daily_bonus_konkrete);
@@ -446,26 +452,8 @@ class UserAuthController extends Controller
                     ]);
                 }
             }
-            $project = Project::find($request->project_id);
-            if(!$project){
-                return redirect()->back();
-            }
-            else{
-                if(!$project->url != url()){
-                    return redirect()->back();
-                }
-                else{
-                    $user = Auth::user();
-                    $investmentRequest = InvestmentRequest::create([
-                        'user_id' => $user->id,
-                        'project_id' => $project->id,
-                    ]);
-                    $formLink = url().'/project/'.$investmentRequest->id.'/interest/fill';
-                    $mailer->sendInvestmentRequestToAdmin($user, $project, $formLink);
-                    return view('projects.offer.requestSubmitted',compact('project'));
-                }
-            }
+            return response()->json(array('success'=>true,'auth'=>$auth));
         }
-        return $auth;
+        return response()->json(array('success'=>false,'auth'=>$auth));
     }
 }

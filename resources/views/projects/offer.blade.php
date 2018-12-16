@@ -122,7 +122,6 @@ Offer Doc
 								</div>
 								<br>
 								@endif
-								@if(!Auth::guest())
 								@if (Session::has('message'))
 								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
@@ -137,7 +136,6 @@ Offer Doc
 									@endif
 								</div>
 								<hr>
-								@endif
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
@@ -784,7 +782,7 @@ Offer Doc
 @if(Auth::guest())
 @include('partials.loginModal');
 @include('partials.registerModal');
-{{-- @include('partials.emailCheck'); --}}
+@include('partials.emailCheck');
 @endif
 @stop
 @section('js-section')
@@ -955,17 +953,10 @@ Offer Doc
     							data: { email: email, password: password, project_id: projectId,_token:_token },
     							datatype: 'json',
     							success: function (data) {
-    								// if(!data.success){
-    								// 	$('.loader-overlay').hide();
-    								// 	$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
-    								// 	return false;
-    								// }
-    								$('.loader-overlay').hide();
-    								$('#loginModal').modal('hide');
-    								// $('#mainPage').html(data.html);
-    								// $("html, body").animate({ scrollTop: 0 }, "slow");
-    								window.location.href = "/projects/"+projectId+"/interest/request";
-
+    								if(data.success == true){
+    									$('#loginModal').modal('hide');
+    									window.location.href = "/projects/"+projectId+"/interest/request";
+    								}
     							},
     							error: function (data) {
     								$('.loader-overlay').hide();
@@ -974,6 +965,55 @@ Offer Doc
     							}
     						});
     					});
+					}else{
+						$('#checkEmail').modal('hide');
+						$('#eoiREmail').val(email);
+						$('#eoiREmail').prop('disabled',true);
+						$('#registerModal').modal({
+							keyboard: false,
+							backdrop: 'static'
+						});
+						$('#submitform').click(function (e) {
+							var projectId = {{$project->id}};
+							e.preventDefault();
+							$('#RegPassword').on('input',function (e) {
+								var name=$('#RegPassword').val();
+								if(name.length == 0){
+									$('#RegPassword').after('<div class="red">Password is Required</div>');
+								}
+							});
+							var password = $('#RegPassword').val();
+							if(password.length == 0){
+								$('#RegPassword').after('<div class="red">Password is Required</div>');
+								return false;
+							}
+							$('#passwordOffer').val(password);
+							$('.loader-overlay').show();
+							$.ajax({
+								type: "POST",
+								headers: {
+									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+								},
+								url: "/users/register/"+projectId+"/requestformfilling",
+								data: {email:email,password:password,_token:_token,request_form_project_id:projectId},
+								dataType: 'json',
+								success: function (data) {
+									if(data.success){
+										$('#registerModal').modal('hide');
+										$('.loader-overlay').hide();
+    									setTimeout(function(){// wait for 5 secs(2)
+           								window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+           							}, 100);
+    									console.log('inside success');
+    								}
+    							},
+    							error: function (error) {
+    								$('.loader-overlay').hide();
+    								$('#session_message').html(error);
+    								console.log('You are in error');
+    							}
+    						});
+						});
 					}
 				});
 			});
@@ -1049,7 +1089,7 @@ $(document).ready(function(){
 	});
 	$('#myform').submit(function(event) {
 		@if(Auth::guest())
-    	var $this = $(this);
+		var $this = $(this);
 		event.preventDefault();
 		var email = $('#offerEmail').val();
 		var _token = $('meta[name="csrf-token"]').attr('content');
@@ -1059,7 +1099,7 @@ $(document).ready(function(){
     			$('#loginEmailEoi').val(email);
     			$("#loginModal").modal();
     			$('#offer_user_login_form').submit(function (e) {
-					e.preventDefault();
+    				e.preventDefault();
     				var password = $('#loginPwdEoi').val();
     				$('#passwordOffer').val(password);
     				// $('#myform').submit();
@@ -1143,66 +1183,66 @@ $(document).ready(function(){
 
 
     			/* Start of section - Register user without verification email */
-				$('#eoiREmail').val(email);
-				$('#registerModal').modal({
-					keyboard: false,
-					backdrop: 'static'
-				});
+    			$('#eoiREmail').val(email);
+    			$('#registerModal').modal({
+    				keyboard: false,
+    				backdrop: 'static'
+    			});
 
-				$('#submitform').click(function(){
-		            $('#submit1').trigger('click');
-		        });
+    			$('#submitform').click(function(){
+    				$('#submit1').trigger('click');
+    			});
 
-				$('form[name=offer_user_registration_form]').one('submit', function(e) {
-					var captchaToken = $('#g-recaptcha-response').val();
-					$('.g-recaptcha-response').val(captchaToken);
-					$('#offerEmail').val($('#eoiREmail').val());
-					var projectId = {{$project->id}};
-					e.preventDefault();
-					$('#RegPassword').on('input',function (e) {
-						var name=$('#RegPassword').val();
-						if(name.length == 0){
-							$('#RegPassword').after('<div class="red">Password is Required</div>');
-						}
-					});
-					var password = $('#RegPassword').val();
-					if(password.length == 0){
-						$('#RegPassword').after('<div class="red">Password is Required</div>');
-						return false;
-					}
-					$('#passwordOffer').val(password);
-					$('.loader-overlay').show();
-					var offerData = $('#myform').serialize();
-					console.log(offerData);
-					$.ajax({
-						type: "POST",
-						headers: {
-							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-						},
-						url: "/users/register/login/"+projectId+"/offer",
-						data: offerData,
-						dataType: 'json',
-						success: function (data) {
-							if(data.status) {
-								$('#myform').unbind('submit').submit();
-								console.log('offer submitted');
-							} else {
-								alert(data.message);
-								$('#registerModal').modal('hide');
-								$('.loader-overlay').hide();
-							}
-						},
-						error: function (error) {
-							$('.loader-overlay').hide();
-							$('#session_message').html(error);
-							console.log('You are in error');
-						}
-					});
-				});
-				/* End of section - Register user without verification email */
+    			$('form[name=offer_user_registration_form]').one('submit', function(e) {
+    				var captchaToken = $('#g-recaptcha-response').val();
+    				$('.g-recaptcha-response').val(captchaToken);
+    				$('#offerEmail').val($('#eoiREmail').val());
+    				var projectId = {{$project->id}};
+    				e.preventDefault();
+    				$('#RegPassword').on('input',function (e) {
+    					var name=$('#RegPassword').val();
+    					if(name.length == 0){
+    						$('#RegPassword').after('<div class="red">Password is Required</div>');
+    					}
+    				});
+    				var password = $('#RegPassword').val();
+    				if(password.length == 0){
+    					$('#RegPassword').after('<div class="red">Password is Required</div>');
+    					return false;
+    				}
+    				$('#passwordOffer').val(password);
+    				$('.loader-overlay').show();
+    				var offerData = $('#myform').serialize();
+    				console.log(offerData);
+    				$.ajax({
+    					type: "POST",
+    					headers: {
+    						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    					},
+    					url: "/users/register/login/"+projectId+"/offer",
+    					data: offerData,
+    					dataType: 'json',
+    					success: function (data) {
+    						if(data.status) {
+    							$('#myform').unbind('submit').submit();
+    							console.log('offer submitted');
+    						} else {
+    							alert(data.message);
+    							$('#registerModal').modal('hide');
+    							$('.loader-overlay').hide();
+    						}
+    					},
+    					error: function (error) {
+    						$('.loader-overlay').hide();
+    						$('#session_message').html(error);
+    						console.log('You are in error');
+    					}
+    				});
+    			});
+    			/* End of section - Register user without verification email */
     		}
     	});
-		@else
+@else
     	$('.loader-overlay').show(); // show animation
     	return true; // allow regular form submission
     	@endif

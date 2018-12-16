@@ -59,6 +59,11 @@ class AppMailer
         $this->deliver();
     }
 
+    // public function sendApplicationRegistrationFailTo(Request $request,UserRegistration $user)
+    // {
+    //     # code...
+    // }
+
     public function sendInterestNotificationInvestor(User $user, Project $project)
     {
         $this->to = $user->email;
