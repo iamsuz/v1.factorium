@@ -969,6 +969,7 @@ Offer Doc
 						$('#checkEmail').modal('hide');
 						$('#eoiREmail').val(email);
 						$('#eoiREmail').prop('disabled',true);
+						$('#requestFormPhoneNumber').css('display','block');
 						$('#registerModal').modal({
 							keyboard: false,
 							backdrop: 'static'
@@ -988,6 +989,7 @@ Offer Doc
 								return false;
 							}
 							$('#passwordOffer').val(password);
+							var phone_number = $('#requestFormPhoneNumber').val();
 							$('.loader-overlay').show();
 							$.ajax({
 								type: "POST",
@@ -995,7 +997,7 @@ Offer Doc
 									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								},
 								url: "/users/register/"+projectId+"/requestformfilling",
-								data: {email:email,password:password,_token:_token,request_form_project_id:projectId},
+								data: {email:email,password:password,_token:_token,request_form_project_id:projectId,phone_number:phone_number},
 								dataType: 'json',
 								success: function (data) {
 									if(data.success){

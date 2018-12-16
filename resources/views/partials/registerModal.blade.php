@@ -36,6 +36,14 @@
 												<!-- </div> -->
 											</div>
 											<div class="row form-group">
+											<!-- <div> -->
+												<div class="col-md-12 <?php if($errors->first('phone_number')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+													{!! Form::text('request_form_phone_number', null, array('placeholder'=>'Phone number', 'class'=>'form-control', 'tabindex'=>'3', 'id'=>'requestFormPhoneNumber', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true','style'=>'display:none;')) !!}
+													{!! $errors->first('phone_number', '<small class="text-danger">:message</small>') !!}
+												</div>
+												<!-- </div> -->
+											</div>
+											<div class="row form-group">
 												<!-- <div> -->
 													<div class="col-md-12 <?php if($errors->first('password')){echo 'has-error';}?>" data-wow-delay="0.2s">
 														{!! Form::password('password', array('placeholder'=>'Password', 'class'=>'form-control input-box','name'=>'password', 'Value'=>'', 'id'=>'RegPassword', 'tabindex'=>'3','required')) !!}
