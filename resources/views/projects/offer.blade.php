@@ -655,6 +655,7 @@ Offer Doc
 											</div>
 										</div>
 									</div>
+									<textarea class="g-recaptcha-response hide" name="g-recaptcha-response"></textarea>
 								</form>
 								<br><br>
 							</div>
@@ -789,6 +790,8 @@ Offer Doc
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
+<!-- Script for reCaptcha -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script>
 	$(function () {
 		// Function that runs with interval for side panel
@@ -1046,6 +1049,8 @@ $(document).ready(function(){
 	});
 	$('#myform').submit(function(event) {
 		@if(Auth::guest())
+    	var $this = $(this);
+		event.preventDefault();
 		var email = $('#offerEmail').val();
 		var _token = $('meta[name="csrf-token"]').attr('content');
 		$.post('/users/login/check',{email: email,_token:_token},function (data) {
@@ -1053,8 +1058,8 @@ $(document).ready(function(){
     			// $('#myform').attr('action','/users/login/offer');
     			$('#loginEmailEoi').val(email);
     			$("#loginModal").modal();
-    			$('#submitformlogin').click(function (e) {
-    				e.preventDefault();
+    			$('#offer_user_login_form').submit(function (e) {
+					e.preventDefault();
     				var password = $('#loginPwdEoi').val();
     				$('#passwordOffer').val(password);
     				// $('#myform').submit();
@@ -1087,61 +1092,120 @@ $(document).ready(function(){
     				});
     			});
     		}else{
-    			$('#eoiREmail').val(email);
-    			$('#registerModal').modal({
-    				keyboard: false,
-    				backdrop: 'static'
-    			});
-    			var offerData = $('#myform').serialize();
-    			console.log(offerData);
-    			$('#submitform').click(function (e) {
-    				var projectId = {{$project->id}};
-    				e.preventDefault();
-    				$('#RegPassword').on('input',function (e) {
-    					var name=$('#RegPassword').val();
-    					if(name.length == 0){
-    						$('#RegPassword').after('<div class="red">Password is Required</div>');
-    					}
-    				});
-    				var password = $('#RegPassword').val();
-    				if(password.length == 0){
-    					$('#RegPassword').after('<div class="red">Password is Required</div>');
-    					return false;
-    				}
-    				$('#passwordOffer').val(password);
-    				$('.loader-overlay').show();
-    				var offerData = $('#myform').serialize();
-    				console.log(offerData);
-    				$.ajax({
-    					type: "POST",
-    					headers: {
-    						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    					},
-    					url: "/users/register/"+projectId+"/offer",
-    					data: offerData,
-    					dataType: 'json',
-    					success: function (data) {
-    						$('#registerModal').modal('hide');
-    						$('.loader-overlay').hide();
-    						setTimeout(function(){// wait for 5 secs(2)
-           						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
-           					}, 100);
-    						console.log('inside success');
-    					},
-    					error: function (error) {
-    						$('.loader-overlay').hide();
-    						$('#session_message').html(error);
-    						console.log('You are in error');
-    					}
-    				});
-    			});
+    			// $('#eoiREmail').val(email);
+    			// $('#registerModal').modal({
+    			// 	keyboard: false,
+    			// 	backdrop: 'static'
+    			// });
+    			// var offerData = $('#myform').serialize();
+    			// console.log(offerData);
+    			// $('#submitform').click(function (e) {
+    			// 	var projectId = {{$project->id}};
+    			// 	e.preventDefault();
+    			// 	$('#RegPassword').on('input',function (e) {
+    			// 		var name=$('#RegPassword').val();
+    			// 		if(name.length == 0){
+    			// 			$('#RegPassword').after('<div class="red">Password is Required</div>');
+    			// 		}
+    			// 	});
+    			// 	var password = $('#RegPassword').val();
+    			// 	if(password.length == 0){
+    			// 		$('#RegPassword').after('<div class="red">Password is Required</div>');
+    			// 		return false;
+    			// 	}
+    			// 	$('#passwordOffer').val(password);
+    			// 	$('.loader-overlay').show();
+    			// 	var offerData = $('#myform').serialize();
+    			// 	console.log(offerData);
+    			// 	$.ajax({
+    			// 		type: "POST",
+    			// 		headers: {
+    			// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			// 		},
+    			// 		url: "/users/register/"+projectId+"/offer",
+    			// 		data: offerData,
+    			// 		dataType: 'json',
+    			// 		success: function (data) {
+    			// 			$('#registerModal').modal('hide');
+    			// 			$('.loader-overlay').hide();
+    			// 			setTimeout(function(){// wait for 5 secs(2)
+       //     						window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+       //     					}, 100);
+    			// 			console.log('inside success');
+    			// 		},
+    			// 		error: function (error) {
+    			// 			$('.loader-overlay').hide();
+    			// 			$('#session_message').html(error);
+    			// 			console.log('You are in error');
+    			// 		}
+    			// 	});
+    			// });
+
+
+    			/* Start of section - Register user without verification email */
+				$('#eoiREmail').val(email);
+				$('#registerModal').modal({
+					keyboard: false,
+					backdrop: 'static'
+				});
+
+				$('#submitform').click(function(){
+		            $('#submit1').trigger('click');
+		        });
+
+				$('form[name=offer_user_registration_form]').one('submit', function(e) {
+					var captchaToken = $('#g-recaptcha-response').val();
+					$('.g-recaptcha-response').val(captchaToken);
+					$('#offerEmail').val($('#eoiREmail').val());
+					var projectId = {{$project->id}};
+					e.preventDefault();
+					$('#RegPassword').on('input',function (e) {
+						var name=$('#RegPassword').val();
+						if(name.length == 0){
+							$('#RegPassword').after('<div class="red">Password is Required</div>');
+						}
+					});
+					var password = $('#RegPassword').val();
+					if(password.length == 0){
+						$('#RegPassword').after('<div class="red">Password is Required</div>');
+						return false;
+					}
+					$('#passwordOffer').val(password);
+					$('.loader-overlay').show();
+					var offerData = $('#myform').serialize();
+					console.log(offerData);
+					$.ajax({
+						type: "POST",
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+						url: "/users/register/login/"+projectId+"/offer",
+						data: offerData,
+						dataType: 'json',
+						success: function (data) {
+							if(data.status) {
+								$('#myform').unbind('submit').submit();
+								console.log('offer submitted');
+							} else {
+								alert(data.message);
+								$('#registerModal').modal('hide');
+								$('.loader-overlay').hide();
+							}
+						},
+						error: function (error) {
+							$('.loader-overlay').hide();
+							$('#session_message').html(error);
+							console.log('You are in error');
+						}
+					});
+				});
+				/* End of section - Register user without verification email */
     		}
     	});
 		@else
     	$('.loader-overlay').show(); // show animation
     	return true; // allow regular form submission
     	@endif
-    	event.preventDefault();
     });
 });
 function isNumber(evt) {

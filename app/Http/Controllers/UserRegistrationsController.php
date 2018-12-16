@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Response;
+use ReCaptcha\ReCaptcha;
 
 class UserRegistrationsController extends Controller
 {
@@ -73,6 +75,26 @@ class UserRegistrationsController extends Controller
             ->withErrors($validator)
             ->withInput();
         }
+
+        // Validate captcha only if the form has captcha feature
+        if($request->input('g-recaptcha-response') !== null) {
+            $validator2 = Validator::make($request->all(), [
+                'g-recaptcha-response' => 'required'
+            ]);
+            if ($validator2->fails()) {
+                return redirect('/users/create')
+                ->withErrors($validator2)
+                ->withInput();
+            }
+
+            // Verify Captcha
+            $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
+            $capResponse = $recaptcha->verify($request->get('g-recaptcha-response'), $_SERVER['REMOTE_ADDR']);
+            if(!$capResponse->isSuccess()) {
+                return redirect('/users/create')->withErrors(['g-recaptcha-response'=> 'Recaptcha timeout or duplicate.'])->withInput();
+            }
+        }
+        
         if($validator1->fails()){
             $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
             $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
@@ -223,6 +245,83 @@ class UserRegistrationsController extends Controller
         //         ),
         //     ));
     }
+
+    public function userRegisterLoginFromOfferForm(Request $request, $id, AppMailer $mailer) {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'role'=>'required',
+            'g-recaptcha-response' => 'required'
+        ]);
+        $validator1 = Validator::make($request->all(), [
+            'email' => 'unique:users,email||unique:user_registrations,email',
+        ]);
+        if ($validator->fails()) {
+            return Response::json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        // Verify Captcha
+        $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
+        $capResponse = $recaptcha->verify($request->get('g-recaptcha-response'), $_SERVER['REMOTE_ADDR']);
+        if(!$capResponse->isSuccess()) {
+            return Response::json(['status' => false, 'message'=> 'Recaptcha timeout or duplicate.']);
+        }
+
+        if($validator1->fails()){
+            $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
+            $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
+            if(!$res1 && !$res2){
+                $originSite="";
+                if($user=User::where('email', $request->email)->first()){
+                    $originSite = $user->registration_site;
+                }
+                if($userReg=UserRegistration::where('email', $request->email)->first()){
+                    $originSite = $userReg->registration_site;
+                }
+                $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
+                return Response::json(['status' => false, 'message' => $errorMessage]);
+
+            }
+            else{
+                $errorMessage = 'This email is already registered but seems its not activated please activate email';
+                return Response::json(['status' => false, 'message' => $errorMessage]);
+            }
+        }
+
+        if (!$request['username']) {
+            $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
+        }
+        $request['phone_number'] = $request['phone'];
+        $passwordString = $request['password'];
+        $request['password'] = bcrypt($request['password']);
+        $request['active'] = true;
+        $request['activated_on'] = Carbon::now();;
+        $request['registration_site'] = url();
+
+        $role = Role::whereRole($request['role'])->firstOrFail();
+        $roleText = $request['role'];
+
+        $user = User::create($request->all());
+        $time_now = Carbon::now();
+        $user->roles()->attach($role);
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+        }
+        else {
+            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
+        };
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+        
+        // $mailer->sendRegistrationNotificationAdmin($user,$referrer);
+        
+        if (Auth::attempt(['email' => $request->email, 'password' => $passwordString, 'active'=>1], $request->remember)) {
+            Auth::user()->update(['last_login'=> Carbon::now()]);
+            
+            return Response::json(['status' => true, 'message' => 'Login Successfull']);
+        }
+    }
+
     public function registerCodeView()
     {
         $color = Color::where('project_site',url())->first();

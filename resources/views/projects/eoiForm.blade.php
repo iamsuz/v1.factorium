@@ -77,6 +77,11 @@ EOI Doc
         </div>
         <br>
         <input type="text" name="project_id" @if($project) value="{{$project->id}}" @endif hidden id="projIdEoi">
+        
+        @if(Auth::guest())
+        <input type="text" name="role" class="hidden" value="investor">
+        @endif
+
         {!! Form::close() !!}
     </div>
 </div>
@@ -89,6 +94,7 @@ EOI Doc
 @section('js-section')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 {!! Html::script('plugins/wow.min.js') !!}
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script>
 	$(document).ready(function(){
         @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
@@ -112,6 +118,7 @@ EOI Doc
             var investment_amount = $('#amountEoi').val();
             var project_id = $('#projIdEoi').val();
             var _token = $('meta[name="csrf-token"]').attr('content');
+            var projectId = {{$project->id}};
             $.post('/users/login/check',{email,_token},function (data) {
                 if(data == email){
                     $('#loginEmailEoi').val(email);
@@ -127,10 +134,17 @@ EOI Doc
                     $('#eoiRFName').val(fname);
                     $('#eoiRLName').val(lname);
                     $('#eoiRPhone').val(phone);
+                    $('#eoiRPhone1').val(phone);
                     $('#eoiRInvestmentPeriod').val(investment_period);
                     $('#eoiRInvestmentAmount').val(investment_amount);
                     $('#eoiRProjectId').val(project_id);
                     $('#registerModal').modal();
+
+                    // Submit registration form manually
+                    $('form[name=offer_user_registration_form]').on('submit', function(e) {
+                        e.preventDefault();
+                        registerUserManually(projectId);
+                    });
                 }
             });
             @else
@@ -138,6 +152,62 @@ EOI Doc
             return true; // allow regular form submission
             @endif
         });
+
+        /**
+         * Update the email from the EOI form 
+         * when updated from user registration form.
+         */ 
+        $('#eoiREmail').on('keyup', function(e) {
+            $('#eoi_email').val($(this).val());
+            console.log('email updated');
+        });
+
+        /**
+         * Submit user registration form manually and login user
+         * Then submit the EOI form on successfull login
+         */ 
+        function registerUserManually(projectId) {
+            $('#RegPassword').on('input',function () {
+                var name = $('#RegPassword').val();
+                if(name.length == 0){
+                    $('#RegPassword').after('<div class="red">Password is Required</div>');
+                }
+            });
+            var password = $('#RegPassword').val();
+            if(password.length == 0){
+                $('#RegPassword').after('<div class="red">Password is Required</div>');
+                return false;
+            }
+            $('.loader-overlay').show();
+            var userRegistrationData = $('#regForm[name=offer_user_registration_form]').serialize();
+            console.log(userRegistrationData);
+            $.ajax({
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "/users/register/login/"+projectId+"/offer",
+                data: userRegistrationData,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if(data.status) {
+                        $('#eoiFormButton').unbind('submit').submit();
+                        console.log('eoi submitted');
+                    } else {
+                        alert(data.message);
+                        $('#registerModal').modal('hide');
+                        $('.loader-overlay').hide();
+                    }
+                },
+                error: function (error) {
+                    $('.loader-overlay').hide();
+                    $('#session_message').html(error);
+                    console.log('You are in error');
+                }
+            });
+        }
+
     });
 </script>
 @stop

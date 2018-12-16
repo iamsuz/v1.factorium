@@ -26,11 +26,11 @@
 								<div class="col-md-12">
 									<section id="registerForm" style="padding:0 10px;">
 										<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
-										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'regForm'))!!}
+										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'regForm', 'name'=>'offer_user_registration_form'))!!}
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control hide', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
+													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 													{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
 												</div>
 												<!-- </div> -->
@@ -53,6 +53,7 @@
 													<input type="text" class="hidden" name="last_name" id="eoiRLName">
 													{{-- <input type="text" class="hidden" name="lname" id="eoiLName"> --}}
 													<input type="text" class="hidden" name="phone_number" id="eoiRPhone">
+													<input type="text" class="hidden" name="phone" id="eoiRPhone1">
 													<input type="text" class="hidden" name="investment_period" id="eoiRInvestmentPeriod">
 													<input type="text" class="hidden" name="investment_amount" id="eoiRInvestmentAmount">
 													<input type="text" class="hidden" name="eoi_project" id="eoiRProjectId">
@@ -67,6 +68,13 @@
 														</div>
 													</div>
 												</div><br>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
+														{!! $errors->first('g-recaptcha-response', '<small class="text-danger">:message</small>') !!}
+														<br><br>
+													</div>
+												</div>
 												<div class="row">
 													<div class="col-md-12 " style="visibility: visible !important;">
 														<input type="submit" value="Register" id="submit1" name="submit"  class="btn btn-block font-bold hide" hidden style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
