@@ -6,7 +6,7 @@ Offer Doc
 @section('css-section')
 @parent
 <style>
-	.switch-field {
+.switch-field {
 	font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
 	padding: 40px;
 	overflow: hidden;
@@ -71,7 +71,7 @@ Offer Doc
 @section('content-section')
 <div class="loader-overlay hide" style="display: none;">
 	<div class="overlay-loader-image">
-	   <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
+		<img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
 	</div>
 </div>
 <div class="container-fluid">
@@ -92,7 +92,7 @@ Offer Doc
 								<br>
 								@endif
 								@if (Session::has('message'))
-   								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
+								<div class="alert alert-success text-center">{{ Session::get('message') }}</div>
 								@endif
 								@if($investmentRequest->is_link_expired)
 								<div class="well text-center cursor-pointer fill-form-request-container">
@@ -107,16 +107,37 @@ Offer Doc
 											<div>
 												<input type="hidden" name="investment_request_id" value="{{$investmentRequest->id}}">
 												<label class="form-label">Applicant Name</label><br>
-												<i class="text-dark-grey">{{$user->first_name}} {{$user->last_name}}</i><br><br>
+												@if($user->first_name == '')
+												<div class="row">
+													<div class="form-group @if($errors->first('line_1') && $errors->first('line_2')){{'has-error'}} @endif ">
+														<div class="col-sm-12">
+															<div class="row">
+																<div class="col-sm-6 @if($errors->first('first_name')){{'has-error'}} @endif">
+																	{!! Form::text('first_name', null, array('placeholder'=>'First Name', 'class'=>'form-control','required')) !!}
+																	{!! $errors->first('first_name', '<small class="text-danger">:message</small>') !!}
+																</div>
+																<div class="col-sm-6 @if($errors->first('last_name')){{'has-error'}} @endif">
+																	{!! Form::text('last_name', null, array('placeholder'=>'Last Name', 'class'=>'form-control')) !!}
+																	{!! $errors->first('last_name', '<small class="text-danger">:message</small>') !!}
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<br>
+												@else
+												<i class="text-dark-grey">{{$user->first_name}} {{$user->last_name}}
+												</i><br><br>
+												@endif
 												<label class="form-label">Project SPV Name</label><br>
 												<i class="text-dark-grey">@if($projects_spv){{$projects_spv->spv_name}} @else - @endif</i>
 												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5><br>
 												<label>User apply for *</label>
 												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" step="100" min="{{$project->investment->minimum_accepted_amount}}" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
 												@if($project->share_vs_unit)
-													<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
+												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@else
-													<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
+												<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
 												@endif
 												<br>
 												<label>User lodge full Application Money</label>
@@ -232,43 +253,43 @@ Offer Doc
 												<h4>Accountant's details</h4>
 												<p>Please provide the details of your accountant for verification of income and/or net asset position.</p>
 												<hr>
-													<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
-														<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
-													<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
-														<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
-													<label for="asds" class="form-label"><b>Email</b></label>
-														<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
-													<label for="asdd" class="form-label"><b>Phone</b></label>
-														<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
+												<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
+												<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
+												<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
+												<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
+												<label for="asds" class="form-label"><b>Email</b></label>
+												<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
+												<label for="asdd" class="form-label"><b>Phone</b></label>
+												<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
 											</div>
 										</div>
 
 										<div class="row" id="experienced_investor_information_section" style="display: none;">
 											<div class="col-md-12">
-											<br>
-											<h4>Experienced investor information</h4>
-											<p>Please complete all of the questions below:</p>
-											<hr>
+												<br>
+												<h4>Experienced investor information</h4>
+												<p>Please complete all of the questions below:</p>
+												<hr>
 
-											<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
-											<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
+												<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
+												<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
 
-											<b>How much investment experience do you have? (tick appropriate)</b>
-											<div style="margin-left: 1.3em; margin-top: 5px;">
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding"><span class="check1">Some investment knowledge and understanding</span><br>
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge"><span class="check1">Experienced private investor with good investment knowledge</span><br>
-												<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor"><span class="check1">Business Investor</span><br>
+												<b>How much investment experience do you have? (tick appropriate)</b>
+												<div style="margin-left: 1.3em; margin-top: 5px;">
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding"><span class="check1">Some investment knowledge and understanding</span><br>
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge"><span class="check1">Experienced private investor with good investment knowledge</span><br>
+													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor"><span class="check1">Business Investor</span><br>
+												</div>
+												<br>
+
+												<label>What experience do you have with unlisted invesments ?</label><br>
+												<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
+
+												<label>Do you clearly understand the risks of investing with this offer ?</label><br>
+												<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
+
 											</div>
-											<br>
-
-											<label>What experience do you have with unlisted invesments ?</label><br>
-											<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
-
-											<label>Do you clearly understand the risks of investing with this offer ?</label><br>
-											<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
-
-										</div>
 										</div>
 									</div>
 									<div class="row" >
@@ -396,7 +417,7 @@ Offer Doc
 												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
 
 												@if($project->add_additional_form_content)
-													<p style="margin-top: 0.3em;">{{$project->add_additional_form_content}}</p>
+												<p style="margin-top: 0.3em;">{{$project->add_additional_form_content}}</p>
 												@endif
 											</div>
 
@@ -408,7 +429,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<input type="hidden" name="interested_to_buy" value="0">
-											    <input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
+												<input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
 											</div>
 										</div>
 										<br>
@@ -472,12 +493,12 @@ Offer Doc
 {!! Html::script('plugins/wow.min.js') !!}
 <script>
 	function isNumber(evt) {
-	    evt = (evt) ? evt : window.event;
-	    var charCode = (evt.which) ? evt.which : evt.keyCode;
-	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-	        return false;
-	    }
-	    return true;
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+			return false;
+		}
+		return true;
 	}
 	$(document).ready(function(){
 		$('#switch_right').click(function () {
@@ -492,7 +513,7 @@ Offer Doc
 			$('#signature_data').prop('disabled',false);
 			$('#typeSignatureData').prop('disabled',true);
 		});
-	    $('#myform').submit(function() {
+		$('#myform').submit(function() {
 		    $('.loader-overlay').show(); // show animation
 		    return true; // allow regular form submission
 		});
@@ -661,11 +682,11 @@ Offer Doc
 		});
 
 		$(".wholesale_invest_checkbox").change(function() {
-		    var checked = $(this).is(':checked');
-		    $(".wholesale_invest_checkbox").prop('checked',false);
-		    if(checked) {
-		        $(this).prop('checked',true);
-		    }
+			var checked = $(this).is(':checked');
+			$(".wholesale_invest_checkbox").prop('checked',false);
+			if(checked) {
+				$(this).prop('checked',true);
+			}
 		});
 	});
 
