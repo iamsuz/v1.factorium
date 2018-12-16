@@ -988,8 +988,25 @@ Offer Doc
 								$('#RegPassword').after('<div class="red">Password is Required</div>');
 								return false;
 							}
-							$('#passwordOffer').val(password);
+							$('#requestFormPhoneNumber').on('input',function (e) {
+								var phone_number = $('#requestFormPhoneNumber').val();
+								if(phone_number.length == 0){
+									$('#requestFormPhoneNumber').after('<div class="red">Phone number is Required</div>');
+									return false;
+								}
+							});
 							var phone_number = $('#requestFormPhoneNumber').val();
+							if(phone_number.length == 0){
+								$('#requestFormPhoneNumber').after('<div class="red">Phone number is Required</div>');
+								return false;
+							}
+							var captchaToken = $('#g-recaptcha-response').val();
+							$('.g-recaptcha-response').val(captchaToken);
+							if (captchaToken.length == 0) {
+								$('.g-recaptcha-response').after('<div class="red">Recaptcha is Required</div>');
+								return false;
+							}
+							$('#passwordOffer').val(password);
 							$('.loader-overlay').show();
 							$.ajax({
 								type: "POST",
@@ -1019,15 +1036,15 @@ Offer Doc
 					}
 				});
 			});
-			@else
-			if (confirm('This will raise a request for form filling. Do you want to continue ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-			@endif
-		});
-	});
+@else
+if (confirm('This will raise a request for form filling. Do you want to continue ?')) {
+	console.log('confirmed');
+} else {
+	e.preventDefault();
+}
+@endif
+});
+});
 
 $(document).ready( function() {
 	$("input[name='wholesale_investing_as']").on('change',function() {
