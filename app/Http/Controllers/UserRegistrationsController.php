@@ -858,6 +858,7 @@ class UserRegistrationsController extends Controller
         $color = Color::where('project_site',url())->first();
         $offerToken = mt_rand(100000, 999999);
         $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'role'=>'investor']);
+        $mailer->sendRegistrationConfirmationTo($user,$ref);
         return Response::json(['success' => true]);
     }
 }
