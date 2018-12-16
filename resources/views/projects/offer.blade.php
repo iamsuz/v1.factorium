@@ -938,7 +938,7 @@ Offer Doc
 						$('#checkEmail').modal('hide');
 						$('#loginEmailEoi').val(email);
 						$("#loginModal").modal('show');
-						$('#submitformlogin').click(function (t) {
+						$('#offer_user_login_form').submit(function (t) {
 							t.preventDefault();
 							var password = $('#loginPwdEoi').val();
 							$('#passwordOffer').val(password);

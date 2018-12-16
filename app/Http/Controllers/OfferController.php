@@ -69,7 +69,7 @@ class OfferController extends Controller
     public function store(Request $request)
     {
       $request = new Request(array_except($request->all(),['password']));
-      
+
         $project = Project::findOrFail($request->project_id);
         $min_amount_invest = $project->investment->minimum_accepted_amount;
         if((int)$request->amount_to_invest < (int)$min_amount_invest)
@@ -245,11 +245,11 @@ class OfferController extends Controller
     }
 
         // Create PDF of Application form
-    $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
-    $pdfPath = storage_path().$pdfBasePath;
-    $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
-    $pdf->save($pdfPath);
-    $investor->application_path = $pdfBasePath;
+    // $pdfBasePath = '/app/application/application-'.$investor->id.'-'.time().'.pdf';
+    // $pdfPath = storage_path().$pdfBasePath;
+    // $pdf = PDF::loadView('pdf.application', ['project' => $project, 'investment' => $investor, 'user' => $user]);
+    // $pdf->save($pdfPath);
+    // $investor->application_path = $pdfBasePath;
     $investor->save();
 
     $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));

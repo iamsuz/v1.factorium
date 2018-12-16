@@ -107,28 +107,8 @@ Offer Doc
 											<div>
 												<input type="hidden" name="investment_request_id" value="{{$investmentRequest->id}}">
 												<label class="form-label">Applicant Name</label><br>
-												@if($user->first_name == '')
-												<div class="row">
-													<div class="form-group @if($errors->first('line_1') && $errors->first('line_2')){{'has-error'}} @endif ">
-														<div class="col-sm-12">
-															<div class="row">
-																<div class="col-sm-6 @if($errors->first('first_name')){{'has-error'}} @endif">
-																	{!! Form::text('first_name', null, array('placeholder'=>'First Name', 'class'=>'form-control','required')) !!}
-																	{!! $errors->first('first_name', '<small class="text-danger">:message</small>') !!}
-																</div>
-																<div class="col-sm-6 @if($errors->first('last_name')){{'has-error'}} @endif">
-																	{!! Form::text('last_name', null, array('placeholder'=>'Last Name', 'class'=>'form-control')) !!}
-																	{!! $errors->first('last_name', '<small class="text-danger">:message</small>') !!}
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<br>
-												@else
 												<i class="text-dark-grey">{{$user->first_name}} {{$user->last_name}}
 												</i><br><br>
-												@endif
 												<label class="form-label">Project SPV Name</label><br>
 												<i class="text-dark-grey">@if($projects_spv){{$projects_spv->spv_name}} @else - @endif</i>
 												<h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5><br>
