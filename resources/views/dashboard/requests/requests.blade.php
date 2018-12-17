@@ -22,6 +22,7 @@ Projects | Dashboard | @parent
 						<tr>
 							<th>Applicant Name</th>
 							<th>Email</th>
+							<th>Phone</th>
 							<th>Project Name</th>
 							<th>Requested On</th>
 							<th>Investment Form Link</th>
@@ -32,6 +33,7 @@ Projects | Dashboard | @parent
 						<tr>
 							<td><a href="{{route('dashboard.users.show', [$investmentRequest->user_id])}}">{{$investmentRequest->user->first_name}} {{$investmentRequest->user->last_name}}</a></td>
 							<td><a href="{{route('dashboard.users.show', [$investmentRequest->user_id])}}">{{$investmentRequest->user->email}}</a></td>
+							<td><a href="tel:{{$investmentRequest->user->phone_number}}">{{$investmentRequest->user->phone_number}}</a></td>
 							<td>{{$investmentRequest->project->title}}</td>
 							<td>{{$investmentRequest->created_at}}</td>
 							<td class="text-center"><a target="_blank" href="{{route('project.interest.fill', [$investmentRequest->id])}}">Investment Form</a></td>
