@@ -269,31 +269,56 @@ class UserRegistrationsController extends Controller
         }
 
         if($validator1->fails()){
-            $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
-            $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
-            if(!$res1 && !$res2){
-                $originSite="";
-                if($user=User::where('email', $request->email)->first()){
-                    $originSite = $user->registration_site;
-                }
-                if($userReg=UserRegistration::where('email', $request->email)->first()){
-                    $originSite = $userReg->registration_site;
-                }
-                $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
-                return Response::json(['status' => false, 'message' => $errorMessage]);
+            $activatedUser = User::where('email', $request->email)->first();
+            $nonActivatedUser = UserRegistration::where('email', $request->email)->first();
+            
+            if($activatedUser) {  // If user email is registered.
 
+                if($nonActivatedUser)
+                    $nonActivatedUser->delete();    // Account is already verified, so deleted from user_registration table
+
+                if($activatedUser->active) {    // User is active
+                    if(Auth::attempt(['email' => $request->email, 'password' => $request['password'], 'active'=>1], $request->remember)) {
+                        return Response::json(['status' => true, 'message' => 'The email id is already registered. So performed login with given password.']);
+                    } 
+                    else {
+                        return Response::json(['status' => false, 'message' => 'The email id is already registered. The login also failed with the given password. Please use correct password for this email account.', 'next_redirect' => 'login']);
+                    }
+                } 
+                else {      // User is inactive
+                    return Response::json(['status' => false, 'message' => 'The email id is already registered and is deactivated.']);
+                }
             }
-            else{
-                $errorMessage = 'This email is already registered but seems its not activated please activate email';
-                return Response::json(['status' => false, 'message' => $errorMessage]);
-            }
+            else if(!$activatedUser && $nonActivatedUser) {     // If user email is registered but is not verified yet.
+                $nonActivatedUser->delete();
+            }   
         }
 
+        $passwordString = $request['password'];
+        $this->createNewUser($request);     // Create new user with request details
+
+        // $mailer->sendRegistrationNotificationAdmin($user,$referrer);        
+        if (Auth::attempt(['email' => $request->email, 'password' => $passwordString, 'active'=>1], $request->remember)) {
+            Auth::user()->update(['last_login'=> Carbon::now()]);
+            
+            return Response::json(['status' => true, 'message' => 'Login Successfull']);
+        }
+    }
+
+    /**
+     * User Creation from EOI and Offer forms
+     * 
+     * This method creates the new active user in users table
+     * to support EOI and Offer forms submission for guest users.
+     * 
+     * @param $request Contains Request details from EOI or offer form.
+     * @return void
+     */
+    public function createNewUser(Request $request) {
         if (!$request['username']) {
             $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
         }
         $request['phone_number'] = $request['phone'];
-        $passwordString = $request['password'];
         $request['password'] = bcrypt($request['password']);
         $request['active'] = true;
         $request['activated_on'] = Carbon::now();;
@@ -312,14 +337,6 @@ class UserRegistrationsController extends Controller
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
-        
-        // $mailer->sendRegistrationNotificationAdmin($user,$referrer);
-        
-        if (Auth::attempt(['email' => $request->email, 'password' => $passwordString, 'active'=>1], $request->remember)) {
-            Auth::user()->update(['last_login'=> Carbon::now()]);
-            
-            return Response::json(['status' => true, 'message' => 'Login Successfull']);
-        }
     }
 
     public function registerCodeView()
