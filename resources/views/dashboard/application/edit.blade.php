@@ -11,7 +11,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 	<br>
 	<div class="row">
 		<div class="col-md-2">
-			@include('dashboard.includes.sidebar', ['active'=>2])
+			@include('dashboard.includes.sidebar', ['active'=>1])
 		</div>
 		<div class="col-md-10 well">
 			@if (Session::has('message'))
@@ -37,7 +37,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 								</div>
 								<br>
 								@endif
-								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
+								<form action="{{route('dashboard.investment.update', [$investment->id])}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
 										<div class="col-md-12">
@@ -132,7 +132,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 										</div>
 									</div>
 									<br><br>
-									@if(!Auth::guest() && !$investment->user->idDoc)
+									{{-- @if(!Auth::guest() && !$investment->user->idDoc)
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
@@ -186,62 +186,8 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 											</div>
 										</div>
 									</div>
-									@endif
-									@if(Auth::guest())
-									<div class="row " id="section-2">
-										<div class="col-md-12">
-											<div >
-												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
-												<br>
-												<h4>Are you Investing as</h4>
-												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
-												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
-												<input type="radio" name="investing_as" value="Trust or Company" > Company, Trust or SMSF<br>
-												<hr>
-											</div>
-
-										</div>
-									</div>
-									<div class="row " id="section-3">
-										<div class="col-md-12">
-											<div style="display: none;" id="company_trust">
-												<label>Company of Trust Name</label>
-												<div class="row">
-													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled" >
-													</div>
-												</div><br>
-											</div>
-											<div id="normal_name">
-												<label>Given Name(s)</label>
-												<div class="row">
-													<div class="col-md-9">
-														<input type="text" name="first_name" class="form-control" placeholder="First Name" required @if(!Auth::guest() && $investment->user->first_name) value="{{$investment->user->first_name}}" @endif>
-													</div>
-												</div><br>
-												<label>Surname</label>
-												<div class="row">
-													<div class="col-md-9">
-														<input type="text" name="last_name" class="form-control" placeholder="Last Name" required @if(!Auth::guest() && $investment->user->last_name) value="{{$investment->user->last_name}}" @endif>
-													</div>
-												</div><br>
-											</div>
-											<div style="display: none;" id="joint_investor">
-												<label>Joint Investor Details</label>
-												<div class="row">
-													<div class="col-md-6">
-														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required disabled="disabled" @if(!Auth::guest() && $investment->user->idDoc && $investment->user->idDoc->investing_as == 'Joint Investor') value="{{$investment->user->idDoc->joint_first_name}}" readonly @endif>
-													</div>
-													<div class="col-md-6">
-														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled" @if(!Auth::guest() && $investment->user->idDoc && $investment->user->idDoc->investing_as == 'Joint Investor') value="{{$investment->user->idDoc->joint_last_name}}" readonly @endif>
-													</div>
-												</div>
-												<br>
-												<hr>
-											</div>
-										</div>
-									</div>
-									@endif
+									@endif --}}
+									
 									<div class="@if($investment->project->retail_vs_wholesale) hide @endif">
 										<div class="row" id="wholesale_project">
 											<div class="col-md-12"><br>
@@ -411,39 +357,25 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 														<input type="text" name="account_number" class="form-control" placeholder="Account Number"  @if(!Auth::guest() && $investment->user->account_number) value="{{$investment->user->account_number}}" @endif>
 													</div>
 												</div>
-
-												{{-- <div class="row">
-													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
-														<button class="btn btn-primary btn-block" id="step-7">Next</button>
-													</div>
-												</div> --}}
 											</div>
-
 										</div>
 									</div>
-									@if(Auth::guest())
-									<input type="password" name="password" class="hidden" id="passwordOffer">
-									<input type="text" name="role" class="hidden" value="investor">
-									@endif
 									<br>
-									<div class="row " id="section-8">
+									<div class="row " id="section-2">
 										<div class="col-md-12">
-											<div>
-												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
-												I/we as Applicant declare (i) that I/we have read the entire @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
-
-												@if($investment->project->add_additional_form_content)
-												<p style="margin-top: 0.3em;">{{$investment->project->add_additional_form_content}}</p>
-												@endif
-												{{-- <div class="row">
-													<div class="text-left col-md-offset-5 col-md-2 wow fadeIn animated">
-														<button class="btn btn-primary btn-block" id="step-8">Next</button>
-													</div>
-												</div> --}}
+											<div >
+												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
+												<br>
+												<h4>Are you Investing as</h4>
+												<input type="radio" name="investing_as" value="Individual Investor" @if($investment->investing_as=="Individual Investor") checked @endif> Individual Investor<br>
+												<input type="radio" name="investing_as" value="Joint Investor" @if($investment->investing_as=="Joint Investor") checked @endif> Joint Investor<br>
+												<input type="radio" name="investing_as" value="Trust or Company" @if($investment->investing_as=="Trust or Company") checked @endif > Company, Trust or SMSF<br>
+												<hr>
 											</div>
 
 										</div>
 									</div>
+									<br>
 									<div class="row @if(!$investment->project->show_interested_to_buy_checkbox) hide @endif">
 										<div class="col-md-12">
 											<div>
@@ -453,39 +385,6 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 										</div>
 										<br>
 									</div>
-									{{-- <div class="row text-center">
-										<div class="col-md-8 col-md-offset-2">
-											<div class="switch-field">
-												<input type="radio" id="switch_left" name="signature_type" value="0" checked/>
-												<label for="switch_left">Draw to sign</label>
-												<input type="radio" id="switch_right" name="signature_type" value="1" />
-												<label for="switch_right">Type to sign</label>
-											</div>
-										</div>
-									</div>
-									<div class="row hidden" id="typeSignatureDiv">
-										<div class="col-md-8 col-md-offset-2">
-											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 60px;height: 100px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; padding-left: 10px;" disabled>
-										</div>
-									</div>
-									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
-									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
-									<div id="signature"><button class="btn pull-right" id="signatureClear">Clear</button></div>
-									<h4 class="text-center">Please Sign Here</h4>
-									<input type="hidden" name="signature_data" id="signature_data" value="">
-									<script>
-										$(document).ready(function() {
-											$("#signature").jSignature();
-											$("#signatureClear").click(function (e) {
-												e.preventDefault();
-												$("#signature").jSignature("reset");
-											});
-											$("#signature").bind('change', function(e){
-												var svgData = $(this).jSignature("getData", "image");
-												$('#signature_data').val(svgData[1]);
-											});
-										});
-									</script> --}}
 									<br><br>
 									<div class="row " id="11">
 										<div class="col-md-12">
@@ -557,5 +456,13 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 				$('.aml-requirements-link i').addClass('fa-plus');
 			}
 		});
+
+		$(document).ready(function(){
+		var qty=$("#apply_for");
+		qty.bind('keyup mouseup', function (){
+			var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			$("#application_money").val(total);
+		});
+	});
 </script>
 @stop

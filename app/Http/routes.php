@@ -68,13 +68,13 @@ Route::get('/dashboard/projects/{project_id}/private', ['as'=>'dashboard.project
 Route::get('/dashboard/projects/{project_id}/activate', ['as'=>'dashboard.projects.activate', 'uses'=>'DashboardController@activateProject']);
 Route::get('/dashboard/projects/{project_id}/deactivate', ['as'=>'dashboard.projects.deactivate', 'uses'=>'DashboardController@deactivateProject']);
 Route::patch('/dashboard/projects/{project_id}/toggleStatus', ['as'=>'dashboard.projects.toggleStatus', 'uses'=>'DashboardController@toggleStatus']);
-Route::patch('/dashboard/projects/{investment_id}/investments', ['as'=>'dashboard.investment.update', 'uses'=>'DashboardController@updateInvestment']);
+Route::post('/dashboard/projects/{investment_id}/investments', ['as'=>'dashboard.investment.update', 'uses'=>'DashboardController@updateInvestment']);
 Route::patch('/dashboard/projects/{investment_id}/investments/accept', ['as'=>'dashboard.investment.accept', 'uses'=>'DashboardController@acceptInvestment']);
 Route::get('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document','uses'=>'DashboardController@documents']);
 Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.upload','uses'=>'DashboardController@uploadDocuments']);
 Route::get('/dashboard/application/{id}',['as'=>'dashboard.application.view','uses'=>'DashboardController@viewApplication']);
 Route::post('/dashboard/application/{id}/edit',['as'=>'dashboard.application.edit','uses'=>'DashboardController@editApplication']);
-Route::patch('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
+// Route::patch('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
 
 Route::pattern('notes', '[0-9]+');
 Route::resource('notes', 'NotesController');

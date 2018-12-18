@@ -270,21 +270,6 @@ class DashboardController extends Controller
         return redirect()->back();
     }
 
-    public function updateInvestment(Request $request, $investment_id)
-    {
-        $this->validate($request, [
-            'investor' => 'required',
-            'amount' => 'required|numeric',
-        ]);
-
-        $investment = InvestmentInvestor::findOrFail($investment_id);
-        $investment->amount = $request->amount;
-        $investment->save();
-
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
-
-    }
-
     public function updateApplication(Request $request, $investment_id)
     {
         $this->validate($request, [
@@ -1217,6 +1202,83 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $investment = InvestmentInvestor::find($id);
         $projects_spv = ProjectSpvDetail::where('project_id', $investment->project_id)->first();
-        return view('dashboard.application.view',compact('color','investment', 'projects_spv'));
+        return view('dashboard.application.edit',compact('color','investment', 'projects_spv'));
+    }
+
+
+    public function updateInvestment(Request $request, $investment_id)
+    {
+
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        // $investment->amount = $request->amount_to_invest;
+        // $investment->save();
+
+        $project = Project::findOrFail($investment->project_id);
+        $min_amount_invest = $project->investment->minimum_accepted_amount;
+        if((int)$request->amount_to_invest < (int)$min_amount_invest)
+        {
+            return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
+        }
+        if((int)$request->amount_to_invest % 100 != 0)
+        {
+            return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
+        }
+        $validation_rules = array(
+            'amount_to_invest'   => 'required|integer',
+            'line_1' => 'required',
+            'state' => 'required',
+            'postal_code' => 'required'
+        );
+        $validator = Validator::make($request->all(), $validation_rules);
+
+        // Return back to form with validation errors & session data as input
+        if($validator->fails()) {
+            return  redirect()->back()->withErrors($validator);
+        }
+
+        $investment_investor_id = $investment_id;
+        $wholesale_investing = InvestmentInvestor::findOrFail($investment_investor_id);
+
+        //Save wholesale project input fields
+        if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
+              $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
+              $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
+              $wholesale_investing->accountant_email = $request->accountant_email_txt;
+              $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+        }
+        elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+              $wholesale_investing->experience_period = $request->experience_period_txt;
+              $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
+              $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
+              $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+        }
+        $wholesale_investing->save();
+
+          // $investment->update($request->all());
+
+          $result = $investment->update([
+            'amount' => $request->amount_to_invest,
+            'investing_as'=> $request->investing_as,
+            ]);
+
+          $user = $investment->user;
+
+        $updateUserDetails = $user->update([
+            'phone_number' => $request->phone,
+            'tfn' => $request->tfn,
+            'account_name' => $request->account_name,
+            'bsb' => $request->bsb,
+            'account_number' => $request->account_number,
+            'line_1' => $request->line_1,
+            'line_2' => $request->line_2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+            'country' => $request->country,
+            'country_code' => $request->country_code,
+        ]);
+
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Application form updated successfully.</p>');
+
     }
 }
