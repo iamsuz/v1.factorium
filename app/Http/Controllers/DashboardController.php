@@ -270,14 +270,16 @@ class DashboardController extends Controller
         return redirect()->back();
     }
 
-    public function updateApplication(Request $request, $investment_id)
+    public function updateInvestment(Request $request, $investment_id)
     {
         $this->validate($request, [
+            'investor' => 'required',
             'amount' => 'required|numeric',
         ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $investment->update($request->all());
+        $investment->amount = $request->amount;
+        $investment->save();
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
 
@@ -1206,12 +1208,10 @@ class DashboardController extends Controller
     }
 
 
-    public function updateInvestment(Request $request, $investment_id)
+    public function updateApplication(Request $request, $investment_id)
     {
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        // $investment->amount = $request->amount_to_invest;
-        // $investment->save();
 
         $project = Project::findOrFail($investment->project_id);
         $min_amount_invest = $project->investment->minimum_accepted_amount;
@@ -1224,7 +1224,7 @@ class DashboardController extends Controller
             return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
         }
         $validation_rules = array(
-            'amount_to_invest'   => 'required|integer',
+            'amount_to_invest'   => 'required|numeric',
             'line_1' => 'required',
             'state' => 'required',
             'postal_code' => 'required'
@@ -1259,6 +1259,7 @@ class DashboardController extends Controller
           $result = $investment->update([
             'amount' => $request->amount_to_invest,
             'investing_as'=> $request->investing_as,
+            'interested_to_buy'=> $request->interested_to_buy,
             ]);
 
           $user = $investment->user;

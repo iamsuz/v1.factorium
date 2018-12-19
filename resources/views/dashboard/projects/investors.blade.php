@@ -98,7 +98,7 @@
 										</td>
 										<td>
 											<div class="col-md-1">
-												<form action="{{route('dashboard.investment.update', $investment->id)}}" method="POST">
+												<form action="{{route('dashboard.investment.update', [$investment->id])}}" method="POST">
 													{{method_field('PATCH')}}
 													{{csrf_field()}}
 													<a href="#edit" class="edit">${{number_format($investment->amount) }}</a>

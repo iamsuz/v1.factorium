@@ -37,7 +37,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 								</div>
 								<br>
 								@endif
-								<form action="{{route('dashboard.investment.update', [$investment->id])}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
+								<form action="{{route('dashboard.application.update', [$investment->id])}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
 										<div class="col-md-12">
@@ -380,7 +380,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 										<div class="col-md-12">
 											<div>
 												<input type="hidden" name="interested_to_buy" value="0">
-												<input type="checkbox" name="interested_to_buy" value="1">  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
+												<input type="checkbox" name="interested_to_buy" value="1" @if($investment->interested_to_buy) checked @endif>  I am also interested in purchasing one of the properties being developed. Please have someone get in touch with me with details
 											</div>
 										</div>
 										<br>
