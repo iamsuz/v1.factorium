@@ -61,7 +61,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
 												@endif
 												<label>I/We lodge full Application Money</label>
-												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ @if(isset($eoi)) {{number_format(round($eoi->investment_amount, 2))}} @else 0.00 @endif" disabled="" style="width: 60%; background-color: #fff" id="application_money">
+												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ {{number_format(round($investment->amount, 2))}}" disabled="" style="width: 60%; background-color: #fff" id="application_money">
 												<input type="text" name="project_id" @if($investment->projects_spv) value="{{$investment->projects_spv->project_id}}" @endif hidden >
 											</div>
 										</div>
