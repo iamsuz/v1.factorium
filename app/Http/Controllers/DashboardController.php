@@ -1148,6 +1148,12 @@ class DashboardController extends Controller
             'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf'
         );
         $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
         $user = User::find($id);
         $check = IdDocument::where('user_id',$user->id)->first();
         // $user->idDoc()->get()->last()->update(['verified'=>$request->status, 'id_comment'=>$request->fixing_message, 'joint_id_comment'=>$request->fixing_message_for_id]);
