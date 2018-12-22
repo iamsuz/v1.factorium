@@ -618,7 +618,7 @@ class UsersController extends Controller
             $filename = $request->file('user_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
             // $request->file('user_id_doc')->move($destinationPath, $filename);
-            $storagePath = \Storage::disk('s3')->put("$destinationPath", (string) $request->file('user_id_doc'), 'public');
+            $storagePath = \Storage::disk('s3')->put("uploads", (string) $request->file('user_id_doc'), 'public');
             if($check){
                 $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
             }else{
