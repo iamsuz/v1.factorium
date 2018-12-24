@@ -13,6 +13,7 @@
 									@if (Session::has('message'))
 									{!! Session::get('message') !!}
 									@endif
+									<div id="loginErrors"></div>
 									<br>
 									<div class="text-left">
 										<h1 class="wow fadeIn animated font-bold first_color" data-wow-duration="1.5s" data-wow-delay="0.2s" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;">Login</h1>
