@@ -956,6 +956,10 @@ Offer Doc
     								if(data.success == true){
     									$('#loginModal').modal('hide');
     									window.location.href = "/projects/"+projectId+"/interest/request";
+    								}else{
+    									$('.loader-overlay').hide();
+    									$('#loginErrors').html();
+    									$('#loginErrors').html('<div class="alert alert-danger">Authentication failed! Please check your password.</div>');
     								}
     							},
     							error: function (data) {

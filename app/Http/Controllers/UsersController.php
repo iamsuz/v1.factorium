@@ -565,6 +565,7 @@ class UsersController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $user = User::find($id);
+        // dd(\Storage::disk('s3')->files());
         return view('users.idDoc',compact('color','user'));
     }
     public function uploadDocuments(Request $request,AppMailer $mailer,$id)
@@ -617,8 +618,8 @@ class UsersController extends Controller
             $destinationPath = 'assets/users/kyc/'.$user->id.'/doc/';
             $filename = $request->file('user_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
-            // $request->file('user_id_doc')->move($destinationPath, $filename);
-            $storagePath = \Storage::disk('s3')->put("uploads", (string) $request->file('user_id_doc'), 'public');
+            $request->file('user_id_doc')->move($destinationPath, $filename);
+            // $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('user_id_doc')));
             if($check){
                 $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
             }else{
