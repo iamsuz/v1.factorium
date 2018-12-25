@@ -7,7 +7,7 @@ $ua = $_SERVER['HTTP_USER_AGENT'];
 if(strstr($ua, 'Safari')!='' && strstr($ua, 'Chrome')==''){
     // 如果未设置第一方cookie
     if(!isset($_SESSION['safari'])){
-        echo '<script type="text/javascript"> window.top.location="/setSession.php"; </script>';
+        echo '<script type="text/javascript"> window.top.location="/setSession.php?redirect='.$_SERVER['REQUEST_URI'].'"; </script>';
         exit();
     }
 }

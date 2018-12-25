@@ -423,16 +423,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-         $role = Role::whereRole('investor')->firstOrFail();
+           $role = Role::whereRole('investor')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * delete Developer role from user
@@ -448,16 +448,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-         $role = Role::whereRole('developer')->firstOrFail();
+           $role = Role::whereRole('developer')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * get user investments
@@ -565,6 +565,7 @@ class UsersController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $user = User::find($id);
+        // dd(\Storage::disk('s3')->files());
         return view('users.idDoc',compact('color','user'));
     }
     public function uploadDocuments(Request $request,AppMailer $mailer,$id)
@@ -572,9 +573,15 @@ class UsersController extends Controller
         $validation_rules = array(
             'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
             'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
-            'user_id_doc'   => 'mimes:jpeg,jpg,png,pdf'
+            'user_id_doc' => 'mimes:jpeg,jpg,png,pdf'
         );
         $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
         $user = User::find($id);
         $check = IdDocument::where('user_id',$user->id)->first();
         if($request->hasFile('joint_investor_id_doc'))
@@ -612,6 +619,7 @@ class UsersController extends Controller
             $filename = $request->file('user_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
             $request->file('user_id_doc')->move($destinationPath, $filename);
+            // $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('user_id_doc')));
             if($check){
                 $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
             }else{

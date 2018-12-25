@@ -198,6 +198,19 @@ EOI Doc
                         alert(data.message);
                         $('#registerModal').modal('hide');
                         $('.loader-overlay').hide();
+                        if(data.next_redirect)
+                            if(data.next_redirect == 'login') {
+                                // load login modal
+                                $('#loginEmailEoi').val($('#eoi_email').val());
+                                $('#eoiFName').val($('#eoi_fname').val());
+                                $('#eoiLName').val($('#eoi_lname').val());
+                                $('#eoiPhone').val($('#eoi_phone').val());
+                                $('#eoiInvestmentPeriod').val($('#periodEoi').find(':selected').text());
+                                $('#eoiInvestmentAmount').val($('#amountEoi').val());
+                                $('#eoiProjectId').val($('#projIdEoi').val());
+                                $("#loginModal").modal();
+                            }
+
                     }
                 },
                 error: function (error) {

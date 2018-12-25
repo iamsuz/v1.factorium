@@ -1610,6 +1610,9 @@
 			$('#scheduler_toggle').click(function() {
 				$('#scheduler').toggle("slow");
 			});
+			@if(Auth::guest())
+			@else
+			@if($admin_access == 1)
 			var c1 = $('.circle1');
 			c1.circleProgress({
 				fill: { color: '#5BC0DE' },
@@ -1681,6 +1684,8 @@
 					setTimeout(function() { c7.circleProgress('redraw'); }, 200);
 				}
 			};
+			@endif
+			@endif
 			if ($(window).width() < 480) {
 				$('#promo').removeClass('parallax');
 				$('.small-logo').removeClass('hide');
