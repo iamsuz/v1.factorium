@@ -87,7 +87,7 @@ $_SESSION['code'] = md5(microtime(true));
     @if($siteConfiguration->font_family != '')
     <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
     @endif
-
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
     <style type="text/css">
         @if($siteConfiguration->font_family != '')
         /*Override fonts*/
@@ -132,7 +132,7 @@ $_SESSION['code'] = md5(microtime(true));
             color: #23527c !important;
             text-decoration: underline !important;
         }
-        
+
     </style>
 
     <!-- Google Analytics -->
@@ -330,7 +330,7 @@ $_SESSION['code'] = md5(microtime(true));
         <br>
         <p class="investment-title1-description-section text-justify" style="font-size:16px;">
         <small><small>@if($siteConfiguration->compliance_description != '')
-        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else 
+        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
         The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative @if($siteConfiguration->car_no != '') {{$siteConfiguration->car_no}} @else 001264952 @endif of AFSL @if($siteConfiguration->afsl_no != '') {{$siteConfiguration->afsl_no}} @else 299812 @endif provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="@if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->financial_service_guide_link}} @else https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0 @endif" target="_blank"><span style="text-decoration: none; color: #fff;">Financial Services Guide</span></a>.
         @endif</small></small>
         </p>

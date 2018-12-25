@@ -426,13 +426,13 @@ Offer Doc
 									</div>
 									<div class="row hidden" id="typeSignatureDiv">
 										<div class="col-md-8 col-md-offset-2">
-											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 60px;height: 100px;font-family: cursive; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; " disabled>
+											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 60px;height: 100px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; padding-left: 10px;" disabled>
 										</div>
 									</div>
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
 									<script src="/assets/plugins/jSignature/jSignature.min.js"></script>
 									<div id="signature"></div>
-									<h4 class="text-center">Please Signasdf Here</h4>
+									<h4 class="text-center">Please Sign Here</h4>
 									<input type="hidden" name="signature_data" id="signature_data" value="">
 									<script>
 										$(document).ready(function() {
