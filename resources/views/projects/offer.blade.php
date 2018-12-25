@@ -255,7 +255,7 @@ Offer Doc
 									<div class="row " id="section-3">
 										<div class="col-md-12">
 											<div style="display: none;" id="company_trust">
-												<label>Company of Trust Name</label>
+												<label>Company or Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
 														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled" >

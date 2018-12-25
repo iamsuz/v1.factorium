@@ -132,16 +132,16 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 										</div>
 									</div>
 									<br><br>
-									{{-- @if(!Auth::guest() && !$investment->user->idDoc)
+									{{-- @if(!Auth::guest() && !$investment->user->idDoc) --}}
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
 												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
 												<br>
 												<h4>Are you Investing as</h4>
-												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
-												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
-												<input type="radio" name="investing_as" value="Trust or Company" > Company, Trust or SMSF<br>
+												<input type="radio" name="investing_as" value="Individual Investor" @if($investment->investing_as == "Individual Investor") checked @endif> Individual Investor<br>
+												<input type="radio" name="investing_as" value="Joint Investor" @if($investment->investing_as =="Joint Investor") checked @endif> Joint Investor<br>
+												<input type="radio" name="investing_as" value="Trust or Company" @if($investment->investing_as == "Trust or Company") checked @endif > Company, Trust or SMSF<br>
 												<hr>
 											</div>
 
@@ -149,11 +149,11 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 									</div>
 									<div class="row " id="section-3">
 										<div class="col-md-12">
-											<div style="display: none;" id="company_trust">
-												<label>Company of Trust Name</label>
+											<div @if($investment->investing_as !== 'Trust or Company') style="display: none;" @endif id="company_trust">
+												<label>Company or Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" required disabled="disabled" >
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" required  >
 													</div>
 												</div><br>
 											</div>
@@ -171,14 +171,14 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 													</div>
 												</div><br>
 											</div>
-											<div style="display: none;" id="joint_investor">
+											<div @if($investment->investing_as !== 'Joint Investor') style="display: none; background-color: blue;" @endif id="joint_investor">
 												<label>Joint Investor Details</label>
 												<div class="row">
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required disabled="disabled" @if($investment->user->idDoc && $investment->user->idDoc->investing_as == 'Joint Investor') value="{{$investment->user->idDoc->joint_first_name}}" readonly @endif>
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
 													</div>
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required disabled="disabled" @if($investment->user->idDoc && $investment->user->idDoc->investing_as == 'Joint Investor') value="{{$investment->user->idDoc->joint_last_name}}" readonly @endif>
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
 													</div>
 												</div>
 												<br>
@@ -186,7 +186,8 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 											</div>
 										</div>
 									</div>
-									@endif --}}
+									{{-- @endif --}}
+
 									
 									<div class="@if($investment->project->retail_vs_wholesale) hide @endif">
 										<div class="row" id="wholesale_project">
@@ -361,7 +362,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 										</div>
 									</div>
 									<br>
-									<div class="row " id="section-2">
+									{{-- <div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
 												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
@@ -375,7 +376,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 
 										</div>
 									</div>
-									<br>
+									<br> --}}
 									<div class="row @if(!$investment->project->show_interested_to_buy_checkbox) hide @endif">
 										<div class="col-md-12">
 											<div>
@@ -444,7 +445,52 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 
 @section('js-section')
 <script type="text/javascript">
-	// Slide and show the aml requirements section
+		$("input[name='investing_as']").on('change',function() {
+			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
+			{
+				$('#normal_id_docs').removeAttr('style');
+				$('#joint_investor_docs').attr('style','display:none;');
+				$('#trust_doc').attr('style','display:none;');
+				$('#company_trust').attr('style','display:none;');
+				$('#joint_investor').attr('style','display:none;');
+				$("input[name='joint_investor_first']").attr('disabled','disabled');
+				$("input[name='joint_investor_last']").attr('disabled','disabled');
+				$("input[name='investing_company_name']").attr('disabled','disabled');
+				$("input[name='user_id_doc']").removeAttr('disabled');
+				$("input[name='trust_or_company_docs']").attr('disabled','disabled');
+				$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
+			}
+			else if($(this).is(':checked') && $(this).val() == 'Joint Investor')
+			{
+				$('#joint_investor_docs').removeAttr('style');
+				$('#normal_id_docs').removeAttr('style');
+				$('#trust_doc').attr('style','display:none;');
+				$('#company_trust').attr('style','display:none;');
+				$('#joint_investor').removeAttr('style');
+				$("input[name='joint_investor_first']").removeAttr('disabled');
+				$("input[name='joint_investor_last']").removeAttr('disabled');
+				$("input[name='investing_company_name']").attr('disabled','disabled');
+				$("input[name='joint_investor_id_doc']").removeAttr('disabled');
+				$("input[name='trust_or_company_docs']").attr('disabled','disabled');
+				$("input[name='user_id_doc']").removeAttr('disabled');
+			}
+			else
+			{
+				$('#trust_doc').removeAttr('style');
+				$('#normal_id_docs').attr('style','display:none;');
+				$('#joint_investor_docs').attr('style','display:none;');
+				$('#joint_investor').attr('style','display:none;');
+				$('#company_trust').removeAttr('style');
+				$("input[name='joint_investor_first']").attr('disabled','disabled');
+				$("input[name='joint_investor_last']").attr('disabled','disabled');
+				$("input[name='investing_company_name']").removeAttr('disabled');
+				$("input[name='joint_investor_id_doc']").attr('disabled','disabled');
+				$("input[name='trust_or_company_docs']").removeAttr('disabled');
+				$("input[name='user_id_doc']").attr('disabled','disabled');
+			}
+		});
+
+		// Slide and show the aml requirements section
 		$('.aml-requirements-link').click(function(e){
 			$('.aml-requirements-section').slideToggle();
 			if($('.aml-requirements-link i').hasClass('fa-plus')){
@@ -459,10 +505,11 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 
 		$(document).ready(function(){
 		var qty=$("#apply_for");
-		qty.bind('keyup mouseup', function (){
-			var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-			$("#application_money").val(total);
+			qty.bind('keyup mouseup', function (){
+				var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				$("#application_money").val(total);
+			});	
 		});
-	});
+
 </script>
 @stop

@@ -1216,8 +1216,11 @@ class DashboardController extends Controller
 
     public function updateApplication(Request $request, $investment_id)
     {
+        // dd($request);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
+        // dd($investment->investingJoint);
+        $user = $investment->user;
 
         $project = Project::findOrFail($investment->project_id);
         $min_amount_invest = $project->investment->minimum_accepted_amount;
@@ -1260,15 +1263,53 @@ class DashboardController extends Controller
         }
         $wholesale_investing->save();
 
-          // $investment->update($request->all());
-
-          $result = $investment->update([
+        $result = $investment->update([
             'amount' => $request->amount_to_invest,
             'investing_as'=> $request->investing_as,
             'interested_to_buy'=> $request->interested_to_buy,
-            ]);
+        ]);
 
-          $user = $investment->user;
+        if($request->investing_as !== 'Individual Investor'){
+            if($investment->investingJoint){
+                $investing_joint = $investment->investingJoint;
+                $result = $investing_joint->update([
+                    'joint_investor_first_name' => $request->joint_investor_first,
+                    'joint_investor_last_name' => $request->joint_investor_last,
+                    'investing_company' => $request->investing_company_name,
+                    'account_name' => $request->account_name,
+                    'bsb' => $request->bsb,
+                    'account_number' => $request->account_number,
+                    'line_1' => $request->line_1,
+                    'line_2' => $request->line_2,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'postal_code' => $request->postal_code,
+                    'country' => $request->country,
+                    'country_code' => $request->country_code,
+                    'tfn' => $request->tfn,
+                ]);
+            }
+            else{
+                $investing_joint = new InvestingJoint;
+                $investing_joint->project_id = $project->id;
+                $investing_joint->investment_investor_id = $investment->id;
+                $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+                $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+                $investing_joint->investing_company = $request->investing_company_name;
+                $investing_joint->account_name = $request->account_name;
+                $investing_joint->bsb = $request->bsb;
+                $investing_joint->account_number = $request->account_number;
+                $investing_joint->line_1 = $request->line_1;
+                $investing_joint->line_2 = $request->line_2;
+                $investing_joint->city = $request->city;
+                $investing_joint->state = $request->state;
+                $investing_joint->postal_code = $request->postal_code;
+                $investing_joint->country = $request->country;
+                $investing_joint->country_code = $request->country_code;
+                $investing_joint->tfn = $request->tfn;
+                $investing_joint->save();
+            }
+        }
 
         $updateUserDetails = $user->update([
             'phone_number' => $request->phone,
