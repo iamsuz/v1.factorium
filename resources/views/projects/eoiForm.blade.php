@@ -10,7 +10,7 @@ EOI Doc
         display: none;
     }
     .content{
-        margin-top: 3em;
+        margin-top: 1em;
     }
 </style>
 @stop
