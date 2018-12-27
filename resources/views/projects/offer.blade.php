@@ -613,7 +613,7 @@ Offer Doc
 										<br>
 									</div>
 									<div class="row text-center">
-										<div class="col-md-8 col-md-offset-2">
+										<div class="col-md-8 col-md-offset-4">
 											<div class="switch-field">
 												<input type="radio" id="switch_left" name="signature_type" value="0" checked/>
 												<label for="switch_left">Draw to sign</label>
@@ -624,7 +624,7 @@ Offer Doc
 									</div>
 									<div class="row hidden" id="typeSignatureDiv">
 										<div class="col-md-8 col-md-offset-2">
-											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 60px;height: 100px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; padding-left: 10px;" disabled>
+											<input type="text" name="signature_data_type" class="form-control" id="typeSignatureData" style="font-size: 80px;height: 120px;font-family: 'Mr De Haviland' !important; font-variant: normal; font-weight: 100; line-height: 15px; padding-left: 10px; text-align: center;" disabled>
 										</div>
 									</div>
 									<script type="text/javascript" src="/assets/plugins/jSignature/flashcanvas.js"></script>
