@@ -5,6 +5,14 @@ EOI Doc
 
 @section('css-section')
 @parent
+<style type="text/css">
+    .navbar{
+        display: none;
+    }
+    .content{
+        margin-top: 3em;
+    }
+</style>
 @stop
 @section('content-section')
 <div class="loader-overlay hide" style="display: none;">
@@ -26,6 +34,7 @@ EOI Doc
         {!! Session::get('message') !!}
         @endif
         <h1 class="text-center">Expression of Interest</h1>
+        <br>
         <h5 style="color: #767676;">** This is a no obligation expression of interest which allows us to determine how much money is likely to come in when the offer is made.</h5>
 
         {!! Form::open(array('route' => ['projects.eoiStore'], 'class' => 'form', 'id'=>'eoiFormButton')) !!}
@@ -72,7 +81,7 @@ EOI Doc
             <br>
         </div>
 
-        <div class="form-group text-center show-eoi-form-btn" style="margin-top: 1em;">
+        <div class="form-group text-center show-eoi-form-btn" style="margin-top: 1.8em;">
             {!! Form::submit('Submit', array('class'=>'btn btn-primary btn-block')) !!}
         </div>
         <br>
