@@ -589,11 +589,12 @@ class UsersController extends Controller
             $destinationPath = 'assets/users/kyc/'.$user->id.'/joint/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
             $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
-            $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+            // $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+            $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('joint_investor_id_doc')),'public');
             if($check){
-                $user_doc = $user->idDoc()->update(['joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url()]);
+                $user_doc = $user->idDoc()->update(['joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
             }else{
-                $user_doc = IdDocument::create(['type'=>'JointDocument', 'joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'user_id'=>$user->id,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>url()]);
+                $user_doc = IdDocument::create(['type'=>'JointDocument', 'joint_id_filename'=>$filename, 'joint_id_path'=>$destinationPath.$filename,'joint_id_extension'=>$fileExtension,'user_id'=>$user->id,'investing_as'=>$request->investing_as,'joint_first_name'=>$request->joint_investor_first,'joint_last_name'=>$request->joint_investor_last,'registration_site'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
                 // $user->idDoc()->save($user_doc);
             }
         }
@@ -603,11 +604,12 @@ class UsersController extends Controller
             $destinationPath = 'assets/users/kyc/'.$user->id.'/trust/'.$request->investing_company_name.'/';
             $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
             $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
-            $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+            // $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+            $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('trust_or_company_docs')),'public');
             if($check){
-                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url()]);
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
             }else{
-                $user_doc = new IdDocument(['type'=>'TrustDoc', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>url()]);
+                $user_doc = new IdDocument(['type'=>'TrustDoc', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'extension'=>$fileExtension,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'trust_or_company'=>$request->investing_company_name,'registration_site'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
                 $user->idDoc()->save($user_doc);
             }
 
@@ -618,12 +620,12 @@ class UsersController extends Controller
             $destinationPath = 'assets/users/kyc/'.$user->id.'/doc/';
             $filename = $request->file('user_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
-            $request->file('user_id_doc')->move($destinationPath, $filename);
-            // $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('user_id_doc')));
+            // $request->file('user_id_doc')->move($destinationPath, $filename);
+            $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('user_id_doc')),'public');
             if($check){
-                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
+                $user_doc = $user->idDoc()->update(['filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
             }else{
-                $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>url()]);
+                $user_doc = new IdDocument(['type'=>'Document', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'user_id'=>$user->id,'extension'=>$fileExtension,'investing_as'=>$request->investing_as,'registration_site'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
                 $user->idDoc()->save($user_doc);
             }
         }
