@@ -171,6 +171,11 @@ EOI Doc
             console.log('email updated');
         });
 
+        $('#offer_user_login_form, #regForm').submit(function(){
+            $(this).find(':submit').attr( 'disabled','disabled' );
+            $('.loader-overlay').show();
+        });
+
         /**
          * Submit user registration form manually and login user
          * Then submit the EOI form on successfull login
