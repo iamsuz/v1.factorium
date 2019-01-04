@@ -312,8 +312,6 @@ class UserRegistrationsController extends Controller
 
         // $mailer->sendRegistrationNotificationAdmin($user,$referrer);
 
-        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid 
-
         if (Auth::attempt(['email' => $request->email, 'password' => $passwordString, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
             
@@ -353,6 +351,8 @@ class UserRegistrationsController extends Controller
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+
+        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid 
     }
 
     public function registerCodeView()
@@ -897,6 +897,12 @@ class UserRegistrationsController extends Controller
         $mailer->sendRegistrationConfirmationTo($user,$ref);
         return Response::json(['success' => true]);
     }
+
+    /**
+     * Calls the sendgrid library to save the user details to sendgrid contact
+     * @param $userDetails Array
+     * @return void
+     */
     public function addUserToSendgridContacts($userDetails) {
         $user = [
             'email' => $userDetails['email'],
