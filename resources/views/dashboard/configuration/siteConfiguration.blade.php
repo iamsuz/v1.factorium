@@ -282,6 +282,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'change_sendgrid_api_key')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Sendgrid API key</b></h3>
+                                    <p><small>Edit the sendgrid API key for this site with new key.</small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm change-sendgrid-api-key-btn" style="cursor: pointer;">
+                                                <strong>Change Sendgrid API key</strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -776,6 +799,33 @@ Configuration | Dashboard | @parent
     </div>
 </div>
 
+<!-- Modal for Changing Sendgrid API key -->
+<div class="modal fade" id="change_sendgrid_api_key_modal" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update Sendgrid API key</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateSendgridAPIKey'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Enter the text in below text field and save to update the sendgrid api key for the website.</small></i></h5>
+                        <br>
+                        <div class="row prospectus-text-error" style="text-align: -webkit-center;"></div>
+                        {!! Form::text('sendgrid_api_key', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->sendgrid_api_key, array('placeholder'=>'Enter Sendgrid API Key', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'sendgrid_api_key')) !!}
+                        <br>
+                        {!! Form::submit('Save Sendgrid API Key', array('class'=>'btn btn-primary col-md-4 col-md-offset-4', 'tabindex'=>'2', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 </div>
 @stop
@@ -949,6 +999,7 @@ Configuration | Dashboard | @parent
         editProjectInterestEmbedLink();
         editLegalDetails();
         changeKonkreteBonusAllocation();
+        changeSendgridAPIKey();
     });
 
 function updateCoords(coords, w, h, origWidth, origHeight){
@@ -1063,6 +1114,16 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 'backdrop': false,
             });
             $('#daily_login_bonus').select();
+        });
+    }
+
+    function changeSendgridAPIKey(){
+        $('.change-sendgrid-api-key-btn').click(function(){
+            $('#change_sendgrid_api_key_modal').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            $('#sendgrid_api_key').select();
         });
     }
 
