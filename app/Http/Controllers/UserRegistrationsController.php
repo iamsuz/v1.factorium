@@ -907,8 +907,7 @@ class UserRegistrationsController extends Controller
         $user = [
             'email' => $userDetails['email'],
             'first_name' => $userDetails['first_name'] ? $userDetails['first_name'] : '',
-            'last_name' => $userDetails['last_name'] ? $userDetails['last_name'] : '',
-            'registration_site' => $userDetails['registration_site'] ? $userDetails['registration_site'] : ''
+            'last_name' => $userDetails['last_name'] ? $userDetails['last_name'] : ''
         ];
 
         $response = $this->sendgrid->curlSendgrid(
