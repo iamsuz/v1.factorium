@@ -576,6 +576,9 @@ class UserRegistrationsController extends Controller
         }
 
         $userReg->delete();
+
+        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid 
+
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
@@ -906,8 +909,8 @@ class UserRegistrationsController extends Controller
     public function addUserToSendgridContacts($userDetails) {
         $user = [
             'email' => $userDetails['email'],
-            'first_name' => $userDetails['first_name'] ? $userDetails['first_name'] : '',
-            'last_name' => $userDetails['last_name'] ? $userDetails['last_name'] : ''
+            'first_name' => $userDetails['first_name'] ? $userDetails['first_name'] : 'null',
+            'last_name' => $userDetails['last_name'] ? $userDetails['last_name'] : 'null'
         ];
 
         $response = $this->sendgrid->curlSendgrid(
