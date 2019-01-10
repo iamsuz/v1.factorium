@@ -253,7 +253,9 @@ class SiteConfigurationsController extends Controller
             if($validator->fails()){
                 return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
             }
-            $destinationPath = 'assets/images/websiteLogo/';
+            $strUrl = url();
+            $urlDestination = str_replace(['https://','.estatebaron.com'],'',$strUrl);
+            $destinationPath = 'assets/images/'.$urlDestination.'/websiteLogo/';
 
             if($request->hasFile('homepg_back_img') && $request->file('homepg_back_img')->isValid()){
                 // Image::make($request->homepg_back_img)->resize(530, null, function($constraint){
