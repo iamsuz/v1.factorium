@@ -64,9 +64,9 @@ class UserRegistrationsController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'role'=>'required'
+            'email' => 'required|email'
         ]);
+        $request['role'] = 'investor';
         $validator1 = Validator::make($request->all(), [
             'email' => 'unique:users,email||unique:user_registrations,email',
         ]);
