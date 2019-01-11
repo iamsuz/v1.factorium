@@ -18,7 +18,7 @@ class UserInvestmentDocument extends Model
      *
      * @var array
      */
-    protected $fillable = ['project_id','investment_investor_id','investing_joint_id','filename', 'type','path','extenstion','verified','user_id'];
+    protected $fillable = ['project_id','investment_investor_id','investing_joint_id','filename', 'type','path','extenstion','verified','user_id','document_url'];
 
     public function project()
     {

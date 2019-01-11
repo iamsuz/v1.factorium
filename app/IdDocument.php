@@ -11,7 +11,7 @@ class IdDocument extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'filename','type', 'path','investing_as','joint_first_name','joint_last_name','trust_or_company', 'extension','verified','joint_id_filename','joint_id_path','joint_id_extension','id_comment','joint_id_comment','company_id_comment','registration_site'];
+    protected $fillable = ['user_id', 'filename','type', 'path','investing_as','joint_first_name','joint_last_name','trust_or_company', 'extension','verified','joint_id_filename','joint_id_path','joint_id_extension','id_comment','joint_id_comment','company_id_comment','registration_site','media_url'];
 
     /**
      * this is a many to many relationship between user and their photo
