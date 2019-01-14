@@ -79,7 +79,7 @@ class Sendgrid {
     /**
      * @return \GuzzleHttp\Client
      */
-    public function getClient(): Client
+    public function getClient()
     {
         return $this->client;
     }
