@@ -189,8 +189,9 @@ class OfferController extends Controller
             $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->joint_investor_first.'_'.$request->joint_investor_last.'/';
             $filename = $request->file('joint_investor_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('joint_investor_id_doc')->getClientOriginalExtension();
-            $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
-            $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            // $request->file('joint_investor_id_doc')->move($destinationPath, $filename);
+            $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('joint_investor_id_doc')),'public');
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'joint_investor', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id,'document_url'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
             $project->investmentDocuments()->save($user_investment_doc);
         }
         if($request->hasFile('trust_or_company_docs'))
@@ -198,8 +199,9 @@ class OfferController extends Controller
             $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/'.$request->investing_company_name.'/';
             $filename = $request->file('trust_or_company_docs')->getClientOriginalName();
             $fileExtension = $request->file('trust_or_company_docs')->getClientOriginalExtension();
-            $request->file('trust_or_company_docs')->move($destinationPath, $filename);
-            $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            // $request->file('trust_or_company_docs')->move($destinationPath, $filename);
+            $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('joint_investor_id_doc')),'public');
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'trust_or_company', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id,'document_url'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
             $project->investmentDocuments()->save($user_investment_doc);
 
         }
@@ -208,8 +210,9 @@ class OfferController extends Controller
             $destinationPath = 'assets/users/'.$user->id.'/investments/'.$investor->id.'/normal_name/';
             $filename = $request->file('user_id_doc')->getClientOriginalName();
             $fileExtension = $request->file('user_id_doc')->getClientOriginalExtension();
-            $request->file('user_id_doc')->move($destinationPath, $filename);
-            $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id]);
+            // $request->file('user_id_doc')->move($destinationPath, $filename);
+            $storagePath = \Storage::disk('s3')->put($destinationPath.$filename, file_get_contents($request->file('joint_investor_id_doc')),'public');
+            $user_investment_doc = new UserInvestmentDocument(['type'=>'normal_name', 'filename'=>$filename, 'path'=>$destinationPath.$filename,'project_id'=>$project->id,'investing_joint_id'=>$investor_joint->id,'investment_investor_id'=>$investor->id,'extension'=>$fileExtension,'user_id'=>$user->id,'document_url'=>'https://s3-ap-southeast-2.amazonaws.com/whitelabeleb']);
             $project->investmentDocuments()->save($user_investment_doc);
 
         }

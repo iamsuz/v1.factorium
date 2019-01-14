@@ -44,10 +44,12 @@
 							@if($user->idDoc)
 							<h4>You are Investing as
 								<b style="color: blue;">{{$user->idDoc->investing_as}}</b></h4><br>
-								<a href="{{$user->idDoc->registration_site}}/{{$user->idDoc->path}}">Your Doc</a>
+								{{-- <p>{{ Storage::disk('s3')->get($user->idDoc->path) }} test</p> --}}
+								{{-- {!!Html::image(('https://s3-ap-southeast-2.amazonaws.com/whitelabeleb/'.$user->idDoc->path),'logo',['width'=>60,'height'=>55])!!} --}}
+								<a href="{{$user->idDoc->media_url}}/{{$user->idDoc->path}}" target="_blank">Your Doc</a>
 								@if($user->idDoc->investing_as == 'Joint Investor')
 								<p>Joint Investor Name:<br><b>{{$user->idDoc->joint_first_name}} {{$user->idDoc->joint_last_name}}</b></p>
-								<a href="{{$user->idDoc->registration_site}}/{{$user->idDoc->joint_id_path}}">Joint Investor Doc</a>
+								<a href="{{$user->idDoc->media_url}}/{{$user->idDoc->joint_id_path}}">Joint Investor Doc</a>
 								@endif
 								<hr>
 								@if($user->idDoc->verified == '1')
