@@ -12,6 +12,9 @@ EOI Doc
     .content{
         margin-top: 1em;
     }
+    #footer{
+        display: none;
+    }
 </style>
 @stop
 @section('content-section')
