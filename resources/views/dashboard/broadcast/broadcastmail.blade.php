@@ -12,6 +12,7 @@ Broadcast | Dashboard | @parent
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
 <!-- Summernote -->
 {!! Html::style('/assets/plugins/summernote/summernote.css') !!}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
 <style type="text/css">
 	
 </style>
@@ -29,12 +30,12 @@ Broadcast | Dashboard | @parent
                 @if (Session::has('message'))
                 {!! Session::get('message') !!}
                 @endif
-                <div class="row text-center"><h2>Registered Users</h2></div>
-                <div class="row" style="border: 1px solid #ddd;max-height: 200px;overflow: auto;">
-                    <table class="table">
+                <div class="text-center"><h2>Registered Users</h2></div>
+                <div>
+                    <table class="table" id="broadcast_emails_list">
                     <thead style="background: #ddd;">
                         <tr>
-                            <th><input class="select-all-emails" type="checkbox" name="select_all_emails" id="select_all_emails" checked></th>
+                            <th class="no-sort"><input title="Select all" class="select-all-emails" type="checkbox" name="select_all_emails" id="select_all_emails" checked></th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
@@ -59,9 +60,9 @@ Broadcast | Dashboard | @parent
                     </tbody>
                     </table>
                 </div>
-
-                <div class="row text-center"><h2>Broadcast Mail</h2></div>
-                <div class="row" style="margin-bottom: 5%;">
+                <br>
+                <div class="text-center"><h2>Broadcast Mail</h2></div>
+                <div style="margin-bottom: 5%;">
                     <form action="{{route('dashboard.mail.broadcast')}}" method="POST">
                         {{csrf_field()}}
                         <input type="hidden" name="email_string" id="email_string" value="{{$emailStr}}">
@@ -84,9 +85,22 @@ Broadcast | Dashboard | @parent
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
 <!-- Summernote Email editor -->
 {!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
+
+        $('#broadcast_emails_list').DataTable( {
+            fixedHeader: true,
+            scrollY: "200px",
+            scrollCollapse: true,
+            paging: false,
+            columnDefs: [{
+                targets: 'no-sort',
+                orderable: false,
+            }]
+        });
+
         $('#select_all_emails').change(function(e){
             if($(this).is(":checked")){
                 console.log('checked');
