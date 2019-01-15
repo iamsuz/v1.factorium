@@ -517,6 +517,11 @@ class DashboardController extends Controller
         $setupEmail = isset($mailSettings->from) ? $mailSettings->from : (\Config::get('mail.from.address'));
         $setupEmailName = $siteConfiguration->title_text ? $siteConfiguration->title_text : (\Config::get('mail.from.name'));
 
+        if($setupEmail == "info@estatebaron.com") {
+            Session::flash('message', '<div class="alert alert-danger text-center">Please setup your email configurations first. <br>You can do that from <b><a href="'.route('dashboard.configurations').'">Configurations tab</a> > Mailer Email</b>.</div>');
+            return redirect()->back();
+        }
+
         $email = new SendgridMail(); 
         $email->setFrom($setupEmail, $setupEmailName);
         $email->setSubject($subject);
