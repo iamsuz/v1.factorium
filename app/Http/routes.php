@@ -272,6 +272,7 @@ Route::post('/configuration/updateConversionPixel', ['as'=> 'configuration.updat
 Route::post('/configuration/updateProspectusText', ['as'=> 'configuration.updateProspectusText', 'uses'=>'SiteConfigurationsController@updateProspectusText']);
 Route::post('/configuration/updateLegalDetails', ['as'=> 'configuration.updateLegalDetails', 'uses'=>'SiteConfigurationsController@updateLegalDetails']);
 Route::post('/configuration/updateKonkreteAllocationChanges', ['as'=> 'configuration.updateKonkreteAllocationChanges', 'uses'=>'SiteConfigurationsController@updateKonkreteAllocationChanges']);
+Route::post('/configuration/updateSendgridAPIKey', ['as'=> 'configuration.updateSendgridAPIKey', 'uses'=>'SiteConfigurationsController@updateSendgridAPIKey']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);

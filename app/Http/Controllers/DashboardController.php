@@ -36,6 +36,7 @@ use App\ProspectusDownload;
 use App\ProjectSpvDetail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use SendGrid\Mail\Mail as SendgridMail;
 
 
 class DashboardController extends Controller
@@ -508,30 +509,40 @@ class DashboardController extends Controller
         $content = $request->mail_content;
         $emailStr = $request->email_string;
 
-        //Disable SSL Check
-        $client = new \GuzzleHttp\Client([
-            'verify' => false,
-        ]);
-        $adapter = new \Http\Adapter\Guzzle6\Client($client);
+        $sendgridApiKey = \Config::get('services.sendgrid_key');
+        $siteConfiguration = SiteConfiguration::where('project_site', url())->first();
+        $mailSettings = $siteConfiguration->mailSetting()->first();
+        if($siteConfiguration)
+            $sendgridApiKey = $siteConfiguration->sendgrid_api_key ? $siteConfiguration->sendgrid_api_key : $sendgridApiKey;
+        $setupEmail = isset($mailSettings->from) ? $mailSettings->from : (\Config::get('mail.from.address'));
+        $setupEmailName = $siteConfiguration->title_text ? $siteConfiguration->title_text : (\Config::get('mail.from.name'));
 
-        # Instantiate the client.
-        $mgClient = new Mailgun(env('MAILGUN_API_KEY'), $adapter);
-        $domain = env('MAILGUN_DOMAIN');
+        if($setupEmail == "info@estatebaron.com") {
+            Session::flash('message', '<div class="alert alert-danger text-center">Please setup your email configurations first. <br>You can do that from <b><a href="'.route('dashboard.configurations').'">Configurations tab</a> > Mailer Email</b>.</div>');
+            return redirect()->back();
+        }
 
-        # Make the call to the client.
-        $result = $mgClient->sendMessage($domain, array(
-            'from'    => 'info@estatebaron.com',
-            'to'      => 'info@estatebaron.com',
-            'bcc'     => $emailStr,
-            'subject' => $subject,
-            'html'    => $content
-        ));
-        if($result->http_response_code == 200){
-            Session::flash('message', '<div class="row text-center" style="padding: 12px;border-radius: 8px;background-color: #EEFBF3;">Emails Queued Successfully</div>');
+        $email = new SendgridMail(); 
+        $email->setFrom($setupEmail, $setupEmailName);
+        $email->setSubject($subject);
+        $email->addTo($setupEmail);
+        foreach (explode(',', $emailStr) as $userEmailId) {
+            $email->addPersonalization(['to' => [['email' => $userEmailId]]]);
         }
-        else{
-            Session::flash('message', '<div class="row text-center" style="background-color:#FAEBD7;padding: 12px;border-radius: 8px;">'.$result->http_response_body->message."</div>");
+        
+        $email->addContent(
+            "text/html", $content
+        );
+        
+        $sendgrid = new \SendGrid($sendgridApiKey);
+        try {
+            $response = $sendgrid->send($email);
+        } catch (Exception $e) {
+            throw new Exception("Error Processing Request", 1);
         }
+
+        Session::flash('message', '<div class="row text-center" style="padding: 12px;border-radius: 8px;background-color: #EEFBF3;">Emails Queued Successfully</div>');
+
         return redirect()->back();
     }
 

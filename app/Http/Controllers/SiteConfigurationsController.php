@@ -1533,4 +1533,31 @@ class SiteConfigurationsController extends Controller
     {
         dd('Sujit');
     }
+
+    public function updateSendgridAPIKey(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'sendgrid_api_key' => 'required'
+        ]);
+        if($validator->fails())
+            return array('status' => 0, 'message' => 'Empty sendgrid api key input');
+        
+        $apiKey = $request->sendgrid_api_key;
+        if($apiKey != ""){
+            $siteconfiguration = SiteConfiguration::all();
+            $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            if(!$siteconfiguration)
+            {
+                $siteconfiguration = new SiteConfiguration;
+                $siteconfiguration->project_site = url();
+                $siteconfiguration->save();
+                $siteconfiguration = SiteConfiguration::all();
+                $siteconfiguration = $siteconfiguration->where('project_site',url())->first();
+            }
+            $siteconfiguration->update(['sendgrid_api_key'=>$apiKey]);
+            Session::flash('message', 'API Key Updated Successfully');
+            Session::flash('action', 'change_sendgrid_api_key');
+            return redirect()->back();
+        }
+    }
 }

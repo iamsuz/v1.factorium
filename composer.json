@@ -24,7 +24,8 @@
         "doctrine/dbal": "v2.5.13",
         "ramsey/uuid": "^3.7",
         "google/recaptcha": "^1.2",
-        "league/flysystem-aws-s3-v3": "^1.0"
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "sendgrid/sendgrid": "~7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
