@@ -56,4 +56,6 @@ return [
     'redirect' => 'http://estatebaron.com/auth/google/callback',
     ],
 
+    'sendgrid_key' => env('SENDGRID_KEY'),
+
 ];
