@@ -29,7 +29,7 @@ class Sendgrid {
      * @param array|NULL $data
      * @return mixed
      */
-    public function curlSendgrid(string $method, string $path, Array $headers = [], Array $data = null, Array $options = [])
+    public function curlSendgrid($method, $path, $headers = [], $data = null, $options = [])
     {
     	$endPoint = $this->getUri() . $path;
 
