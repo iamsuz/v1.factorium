@@ -64,7 +64,7 @@ class DashboardController extends Controller
         $notes = Note::all();
         // $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
         // $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('hide_investment', 0);
-        $activeP = $projects->where('project_site',url())->where('active', '1');
+        $activeP = $projects->where('project_site',url())->where('active', true);
         $goal_amount = [];
         $amount = [];
         $funds_received = [];        
@@ -73,12 +73,12 @@ class DashboardController extends Controller
             $goal_amount[] = $proj->investment->goal_amount;
             $investors = $proj->investors;
 
-            $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', 0);
+            $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', false);
             foreach($pledged_investments as $pledged_investment){
                 $amount[] = $pledged_investment->amount;;
             }
 
-            $funds_received_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', 0)->where('money_received', 1);
+            $funds_received_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', false)->where('money_received', true);
             foreach($funds_received_investments as $funds_received_investment){
                 $funds_received[] = $funds_received_investment->amount;;
             }
