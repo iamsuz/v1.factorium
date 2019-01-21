@@ -1537,8 +1537,11 @@ class SiteConfigurationsController extends Controller
         $validator = Validator::make($request->all(), [
             'sendgrid_api_key' => 'required'
         ]);
-        if($validator->fails())
-            return array('status' => 0, 'message' => 'Empty sendgrid api key input');
+        if($validator->fails()) {
+            Session::flash('message', 'Empty Sendgrid API key given');
+            Session::flash('action', 'change_sendgrid_api_key');
+            return redirect()->back();
+        }
         
         $apiKey = $request->sendgrid_api_key;
         if($apiKey != ""){

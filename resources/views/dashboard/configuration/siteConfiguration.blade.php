@@ -811,7 +811,7 @@ Configuration | Dashboard | @parent
             <div class="modal-body">
                 <div class="row text-center" id="modal_body_container">
                     <div class="col-md-10 col-md-offset-1">
-                        {!! Form::open(array('route'=>['configuration.updateSendgridAPIKey'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        {!! Form::open(array('route'=>['configuration.updateSendgridAPIKey'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form', 'id'=>'sendgrid_key_form')) !!}
                         <h5><i><small>Enter the text in below text field and save to update the sendgrid api key for the website.</small></i></h5>
                         <br>
                         <div class="row prospectus-text-error" style="text-align: -webkit-center;"></div>
@@ -897,6 +897,14 @@ Configuration | Dashboard | @parent
             if($('#site_name_input').val() == ''){
                 e.preventDefault();
                 $('.site-name-error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Website name field is empty</h6></div>')
+            }
+        });
+
+        $('#sendgrid_key_form').on('submit', function(e) {
+            var apiKey = $('#sendgrid_api_key').val();
+            if($.trim(apiKey) == '') {
+                e.preventDefault();
+                alert('Please enter your sendgrid API key');
             }
         });
 
