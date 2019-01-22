@@ -256,6 +256,8 @@ Route::post('/configuration/edit/visibilityOfSiteItems', ['as'=> 'configuration.
 Route::post('/configuration/updateInterestFormLink', ['as'=> 'configuration.updateInterestFormLink', 'uses'=>'SiteConfigurationsController@updateInterestFormLink']);
 Route::get('/dashboard/broadcastMail', ['as'=>'dashboard.broadcastMail', 'uses'=>'DashboardController@createBroadcastMailForm']);
 Route::post('/dashboard/mail/broadcast', ['as'=>'dashboard.mail.broadcast', 'uses'=>'DashboardController@sendBroadcastMail']);
+Route::get('/dashboard/import/contacts', ['as'=>'dashboard.import.contacts', 'uses'=>'DashboardController@showImportContacts']);
+Route::post('/dashboard/import/contacts', ['as'=>'dashboard.import.contacts.csv', 'uses'=>'DashboardController@saveContactsFromCSV']);
 Route::get('/users/{user_id}/investments', ['as'=>'users.investments', 'uses'=>'UsersController@usersInvestments']);
 Route::get('/users/{user_id}/notification', ['as'=>'users.notifications', 'uses'=>'UsersController@usersNotifications']);
 Route::get('/users/{user_id}/referral',['as'=>'users.referral','uses'=>'UsersController@referralUser']);

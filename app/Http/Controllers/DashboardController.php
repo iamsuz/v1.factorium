@@ -34,6 +34,7 @@ use App\InvestmentRequest;
 use App\ProjectEOI;
 use App\ProspectusDownload;
 use App\ProjectSpvDetail;
+use App\UserRegistration;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use SendGrid\Mail\Mail as SendgridMail;
@@ -41,6 +42,9 @@ use SendGrid\Mail\Mail as SendgridMail;
 
 class DashboardController extends Controller
 {
+
+    protected $siteConfiguration;
+
     /**
      * constructor for DashboardController
      */
@@ -48,6 +52,8 @@ class DashboardController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('admin');
+
+        $this->siteConfiguration = SiteConfiguration::where('project_site', url())->first();
     }
 
     /**
@@ -1339,5 +1345,140 @@ class DashboardController extends Controller
 
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Application form updated successfully.</p>');
 
+    }
+
+    /**
+     * \brief Show import CSV form
+     * \details This shows a form to site admin to upload the CSV file containing users list.
+     * \return View
+     */
+    public function showImportContacts()
+    {
+        $color = Color::where('project_site',url())->first();
+        $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
+        return view('dashboard.importcontacts.importcontacts',compact('color','siteconfiguration'));
+    }
+
+    /**
+     * \brief Import user contact CSV
+     * \details - Allows site admin to upload the list of users in CSV file, 
+     *          - Save new users from CSV file to system
+     *          - Send them registration bulk email using sendgrid
+     *          - Allow users to register themselves using the email link
+     * \return View
+     */
+    public function saveContactsFromCSV(Request $request)
+    {   
+        $validator = Validator::make($request->all(), [
+            'contacts_csv_file' => 'required|mimes:csv,txt'
+        ]);
+        if($validator->fails()) {
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">'.$validator->errors()->first().'</p>');
+        }
+
+        // START: Don't allow using this functionality unless admin sets his own mailer settings.
+        $mailSettings = $this->siteConfiguration->mailSetting()->first();
+        $setupEmail = isset($mailSettings->from) ? $mailSettings->from : (\Config::get('mail.from.address'));
+        if($setupEmail == "info@estatebaron.com") {
+            Session::flash('message', '<div class="alert alert-danger text-center">Please setup your email configurations first. <br>You can do that from <b><a href="'.route('dashboard.configurations').'">Configurations tab</a> > Mailer Email</b>.</div>');
+            return redirect()->back();
+        }
+        // END.
+        
+        try {
+            $csvTmpPath = $request->file('contacts_csv_file')->getRealPath();
+            $alldata = array_map('str_getcsv', file($csvTmpPath));
+            $csv_data = array_slice($alldata, 1);
+            
+            if(!empty($csv_data)) {
+                $sendgridPersonalization = [];
+                foreach ($csv_data as $key => $userRecord) {
+                    if(
+                        ($userRecord[0] != '') &&
+                        ($userRecord[2] != '')
+                    ) {
+                        $toRegEmail = trim($userRecord[2]);
+                        $user = User::where('email', $toRegEmail)->first();
+                        $userReg = UserRegistration::where('email', $toRegEmail)->first();
+                        
+                        if(!$user && !$userReg) {
+                            $result = UserRegistration::create([
+                                'email' => $toRegEmail,
+                                'role' => \Config::get('constants.roles.INVESTOR'),
+                                'registration_site' => url(),
+                                'first_name' => trim($userRecord[0]),
+                                'last_name' => trim($userRecord[1])
+                            ]);
+                            array_push(
+                                $sendgridPersonalization, 
+                                [
+                                    'to' => [[ 'email' => $result->email ]],
+                                    'substitutions' => [
+                                        '%first_name%' => $result->first_name,
+                                        '%user_token%' => $result->token,
+                                    ]
+                                ]
+                            );
+                        }                        
+                    }
+                }
+
+                // START: Sending bulk email using sendgrid
+                $sitename = $this->siteConfiguration->website_name ? $this->siteConfiguration->website_name : 'Estate Baron';
+                $resultBulkEmail =  $this->sendBulkEmail(
+                    $sitename . ' invitation', 
+                    $sendgridPersonalization,
+                    view('emails.sendgrid-api-specific.welcomeEmailForCSVImportedUser')->render()
+                );
+
+                if(!$resultBulkEmail['status']) {
+                    return redirect()->back()->withMessage('<p class="alert alert-danger text-center">' . $resultBulkEmail->message . '</p>');
+                }
+                // END: Sending bulk email using sendgrid
+
+            } else {
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">CSV file is empty</p>');
+            }
+
+        } catch(\Exception $e) {
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center">' . $e->getMessage() . '</p>');
+        }
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">CSV file import done successfully.</p>');
+    }
+
+    /**
+     * \brief Sendgrid bulk API
+     * \details - Common function to send bulk email to multiple users.
+     *          - Every email is personalized with respective user details.
+     * \return Array
+     */
+    public function sendBulkEmail($subject, $sendgridPersonalization, $content = '')
+    {
+        $sendgridApiKey = \Config::get('services.sendgrid_key');
+        $sendgridApiKey = $this->siteConfiguration->sendgrid_api_key ? $this->siteConfiguration->sendgrid_api_key : $sendgridApiKey;
+        $mailSettings = $this->siteConfiguration->mailSetting()->first();
+        $setupEmail = isset($mailSettings->from) ? $mailSettings->from : (\Config::get('mail.from.address'));
+        $setupEmailName = $this->siteConfiguration->website_name ? $this->siteConfiguration->website_name : (\Config::get('mail.from.name'));
+        
+        $email = new SendgridMail(); 
+        $email->setFrom($setupEmail, $setupEmailName);
+        $email->setSubject($subject);
+        $email->addTo($setupEmail);
+        $email->addContent("text/html", $content);
+        foreach ($sendgridPersonalization as $personalization) {
+            $email->addPersonalization($personalization);
+        }
+        
+        $sendgrid = new \SendGrid($sendgridApiKey);
+        try {
+            $response = $sendgrid->send($email);
+        } catch (Exception $e) {
+            return array(
+                'status' => false,
+                'message' => 'Failed to send bulk email. Error message: ' . $e->getMessage()
+            );
+        }
+
+        return array('status' => true);
     }
 }
