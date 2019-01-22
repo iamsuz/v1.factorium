@@ -733,11 +733,11 @@ Configuration | Dashboard | @parent
                         <h5><i><small>Enter the Konkrete amount you would like to allocate to users on this site.</small></i></h5>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="daily_login_bonus" style="text-align: left;" class="pull-left">Daily Login Bonus:</label>
-                                @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete)
-                                    {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'1', 'title'=>'Enter konkrete amount for daily login bonus')) !!}
+                                <label for="daily_login_bonus" style="text-align: left;" class="pull-left">Daily Login Bonus @if(isset($siteConfigurationHelper->daily_login_bonus_konkrete) && $siteConfigurationHelper->daily_login_bonus_konkrete == 0) (Currently Disabled) @endif</label>
+                                @if(isset($siteConfigurationHelper->daily_login_bonus_konkrete) && $siteConfigurationHelper->daily_login_bonus_konkrete!='')
+                                    {!! Form::input('number', 'daily_login_bonus_konkrete', $siteConfigurationHelper->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'0', 'title'=>'Enter konkrete amount for daily login bonus. (If you want to disable login bonus, enter 0)')) !!}
                                 @else
-                                    {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'1', 'title'=>'Enter konkrete amount for daily login bonus')) !!}
+                                    {!! Form::input('number', 'daily_login_bonus_konkrete', App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete, array('placeholder'=>'Enter konkrete amount for daily login bonus', 'class'=>'form-control ', 'tabindex'=>'1', 'id'=>'daily_login_bonus', 'required' => 'required', 'type'=>'number', 'min'=>'0', 'title'=>'Enter konkrete amount for daily login bonus. (If you want to disable login bonus, enter 0)')) !!}
                                 @endif
                                 <br>
                             </div>
