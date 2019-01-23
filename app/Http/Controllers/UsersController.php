@@ -466,7 +466,10 @@ class UsersController extends Controller
     public function usersInvestments($user_id)
     {
         $color = Color::where('project_site',url())->first();
-        $user = User::findOrFail($user_id);
+        $user = Auth::user();
+        if($user->id != $user_id){
+            return redirect()->route('users.investments', $user)->withMessage('<p class="alert text-center alert-warning">You can not access that profile.</p>');
+        }
         $investments = InvestmentInvestor::where('user_id', $user->id)
         ->where('project_site', url())->get();
         return view('users.investments', compact('user','color', 'investments'));
@@ -543,7 +546,10 @@ class UsersController extends Controller
     public function usersNotifications($user_id)
     {
         $color = Color::where('project_site',url())->first();
-        $user = User::findOrFail($user_id);
+        $user = Auth::user();
+        if($user->id != $user_id){
+            return redirect()->route('users.notifications', $user)->withMessage('<p class="alert text-center alert-warning">You can not access that profile.</p>');
+        }
         $investments = InvestmentInvestor::where('user_id', $user->id)
         ->where('project_site', url())->get()->groupBy('project_id');
         $project_prog = array();
@@ -564,7 +570,10 @@ class UsersController extends Controller
     public function documents(Request $request,$id)
     {
         $color = Color::where('project_site',url())->first();
-        $user = User::find($id);
+        $user = Auth::user();
+        if($user->id != $id){
+            return redirect()->route('users.document', $user)->withMessage('<p class="alert text-center alert-warning">You can not access that profile.</p>');
+        }
         // dd(\Storage::disk('s3')->files());
         return view('users.idDoc',compact('color','user'));
     }
@@ -582,7 +591,10 @@ class UsersController extends Controller
             ->withErrors($validator)
             ->withInput();
         }
-        $user = User::find($id);
+        $user = Auth::user();
+        if($user->id != $id){
+            return redirect()->route('users.document', $user)->withMessage('<p class="alert text-center alert-warning">You can not access that profile.</p>');
+        }
         $check = IdDocument::where('user_id',$user->id)->first();
         if($request->hasFile('joint_investor_id_doc'))
         {
@@ -648,8 +660,14 @@ class UsersController extends Controller
     public function referralUser($user_id)
     {
         $color = Color::where('project_site',url())->first();
-        $user = User::find($user_id);
+        $user = Auth::user();
+        if($user->id != $user_id){
+            return redirect()->route('users.referral', $user)->withMessage('<p class="alert text-center alert-warning">You can not access that profile.</p>');
+        }
         $ref = ReferralLink::where('user_id',$user_id)->get()->first();
+        if(!$ref){
+            return view('users.userReferral',compact('user','color','refUsers'));
+        }
         $relationRefs = ReferralRelationship::where('referral_link_id',$ref->id)->get()->all();
         foreach($relationRefs as $relationRef){
             $refUsers[] = User::find($relationRef->user_id);
