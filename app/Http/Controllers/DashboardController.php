@@ -81,7 +81,8 @@ class DashboardController extends Controller
     public function users()
     {
         $color = Color::where('project_site',url())->first();
-        $users = User::all()->where('registration_site',url());
+        $users = User::where('registration_site',url())->paginate(30);;
+        // dd($users);
         return view('dashboard.users.index', compact('users','color'));
     }
 
@@ -95,15 +96,24 @@ class DashboardController extends Controller
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }
 
+    public function test()
+    {
+        $color = Color::where('project_site',url())->first();
+        return view('dashboard.users.test',compact('color'));
+    }
+
     public function getDashboardUsers()
     {
         $datatable = new Datatable();
         return $datatable->collection(User::all())
-        ->showColumns('id', 'first_name', 'last_name', 'phone_number','email')
+        ->showColumns('id')
+        ->addColumn('Details',function($model){
+            return $model;
+        })
+        ->showColumns('phone_number','email')
         ->searchColumns('first_name')
         ->orderColumns('id','first_name')
         ->make();
-
     }
 
     public function getDashboardProjects()

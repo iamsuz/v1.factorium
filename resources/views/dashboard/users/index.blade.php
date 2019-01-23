@@ -51,25 +51,30 @@ Users | Dashboard | @parent
 								$note=$user->notes->last();
 								$note_content = null;
 								if($note) {
-								$note_content = $note->content;
-							}
-							?>
-							{!! Form::open(array('route'=>'notes.store', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-							{!! Form::textarea('content', $note_content, array('placeholder'=>'note', 'class'=>'form-control note-content', 'rows'=>'3')) !!}
-							{!! Form::hidden('user_id', $user->id) !!}
-							{!! Form::close() !!}
-						</td>
-						<td>@if($user->last_login) <time datetime="{{$user->last_login}}">{{$user->last_login->diffForHumans()}}</time> @else Not yet @endif</td>
-						<td>@if($user->active && $user->activated_on)<time datetime="{{$user->activated_on}}">{{$user->activated_on->toFormattedDateString()}}</time> <br> <a href="{{route('dashboard.users.deactivate', [$user])}}">Deactivate</a>@else Not Active <br> <a href="{{route('dashboard.users.activate', [$user])}}">Activate</a>@endif</td>
-						<td><time datetime="{{$user->created_at}}">{{$user->created_at->toFormattedDateString()}}</time></td>
-						{{-- <td>@foreach($user->roles as $role) {{$role->role}}<br> @endforeach</td> --}}
-					</tr>
-					@endforeach
-				</tbody>
-			</table>
+									$note_content = $note->content;
+								}
+								?>
+								{!! Form::open(array('route'=>'notes.store', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+								{!! Form::textarea('content', $note_content, array('placeholder'=>'note', 'class'=>'form-control note-content', 'rows'=>'3')) !!}
+								{!! Form::hidden('user_id', $user->id) !!}
+								{!! Form::close() !!}
+							</td>
+							<td>@if($user->last_login) <time datetime="{{$user->last_login}}">{{$user->last_login->diffForHumans()}}</time> @else Not yet @endif</td>
+							<td>@if($user->active && $user->activated_on)<time datetime="{{$user->activated_on}}">{{$user->activated_on->toFormattedDateString()}}</time> <br> <a href="{{route('dashboard.users.deactivate', [$user])}}">Deactivate</a>@else Not Active <br> <a href="{{route('dashboard.users.activate', [$user])}}">Activate</a>@endif</td>
+							<td><time datetime="{{$user->created_at}}">{{$user->created_at->toFormattedDateString()}}</time></td>
+							{{-- <td>@foreach($user->roles as $role) {{$role->role}}<br> @endforeach</td> --}}
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<span class="pull-left">Total Users {!! $users->total() !!}</span>
+			</div>
+			<div class="pull-right"> {!! $users->render() !!} <br>
+			</div>
 		</div>
 	</div>
-</div>
 </div>
 @stop
 
@@ -84,13 +89,15 @@ Users | Dashboard | @parent
 			"order": [[5, 'desc'], [0, 'desc']],
 			"iDisplayLength": 50
 		});
-
+		$('#usersTable_info').addClass('hide');
+		$('#usersTable_paginate').addClass('hide');
+		$('#usersTable_length').addClass('hide');
 		function onChangeMsg() {
 			$('.note-content').change(function() {
 				swal("User Note Added Successfully!", {
-				  icon: "success",
-				  buttons: false,
-				  timer: 1350,
+					icon: "success",
+					buttons: false,
+					timer: 1350,
 				});
 			})
 		}
