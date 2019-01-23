@@ -223,7 +223,7 @@ class ProjectsController extends Controller
         $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
 
         if($project->investment) {
-            $pledged_amount = InvestmentInvestor::where('project_id', $project->id)->sum('amount');
+            $pledged_amount = InvestmentInvestor::where(['project_id'=> $project->id, 'hide_investment'=>'0'])->sum('amount');
             $number_of_investors = InvestmentInvestor::where('project_id', $project->id)->count();
             $completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
         }

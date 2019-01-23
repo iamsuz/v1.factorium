@@ -106,7 +106,7 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
-        $pledged_investments = InvestmentInvestor::all();
+        $pledged_investments = InvestmentInvestor::where('hide_investment', '0')->get();
 
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }
