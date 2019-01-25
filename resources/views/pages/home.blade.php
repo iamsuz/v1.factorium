@@ -557,7 +557,7 @@
 						<div class="row">
 							@foreach($sets as $project)
 							<?php
-							$pledged_amount = $investments->where('project_id', $project->id)->sum('amount');
+							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -680,7 +680,7 @@
 						<div class="row" id="project-section-to-reload1">
 							@foreach($sets as $project)
 							<?php
-							$pledged_amount = $investments->where('project_id', $project->id)->sum('amount');
+							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -803,7 +803,7 @@
 						<div class="row" id="project-section-to-reload2">
 							@foreach($sets as $project)
 							<?php
-							$pledged_amount = $investments->where('project_id', $project->id)->sum('amount');
+							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
