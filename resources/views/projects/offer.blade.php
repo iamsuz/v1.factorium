@@ -96,6 +96,9 @@ Offer Doc
 		font-size: 9px;
 	}
 }
+#footer{
+    display: none;
+}
 </style>
 @stop
 @section('content-section')

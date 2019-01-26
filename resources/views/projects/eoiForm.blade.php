@@ -12,6 +12,9 @@ EOI Doc
     .content{
         margin-top: 1em;
     }
+    #footer{
+        display: none;
+    }
 </style>
 @stop
 @section('content-section')
@@ -169,6 +172,11 @@ EOI Doc
         $('#eoiREmail').on('keyup', function(e) {
             $('#eoi_email').val($(this).val());
             console.log('email updated');
+        });
+
+        $('#offer_user_login_form, #regForm').submit(function(){
+            $(this).find(':submit').attr( 'disabled','disabled' );
+            $('.loader-overlay').show();
         });
 
         /**

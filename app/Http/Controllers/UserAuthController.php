@@ -112,14 +112,14 @@ class UserAuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $loginBonus = 0;
             $auth = true;
-            if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+            if(isset(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) && \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete != '') {
                 $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
             }
             else {
                 $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
             };
             if(Auth::user()->last_login){
-                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1)) && $daily_bonus_konkrete != 0){
                     $loginBonus = rand(1, $daily_bonus_konkrete);
                     Credit::create([
                         'user_id' => Auth::user()->id,
@@ -349,7 +349,7 @@ class UserAuthController extends Controller
     public function authenticate(UserAuthRequest $request)
     {
         $loginBonus = 0;
-        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+        if(isset(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) && \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete != '') {
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
         }
         else {
@@ -357,7 +357,7 @@ class UserAuthController extends Controller
         };
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             if(Auth::user()->last_login){
-                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1)) && $daily_bonus_konkrete != 0){
                     $loginBonus = rand(1, $daily_bonus_konkrete);
                     Credit::create([
                         'user_id' => Auth::user()->id,
@@ -434,14 +434,14 @@ class UserAuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $auth = true;
             $user = Auth::user();
-            if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) {
+            if(isset(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete) && \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete != '') {
                 $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->daily_login_bonus_konkrete;
             }
             else {
                 $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
             };
             if(Auth::user()->last_login){
-                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1))){
+                if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1)) && $daily_bonus_konkrete != 0){
                     $loginBonus = rand(1, $daily_bonus_konkrete);
                     Credit::create([
                         'user_id' => Auth::user()->id,

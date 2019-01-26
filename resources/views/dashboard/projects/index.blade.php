@@ -39,7 +39,7 @@ Projects | Dashboard | @parent
 							<a href="{{route('dashboard.projects.edit', [$project])}}">{{$project->title}}</a><br><br>
 							<a href="{{route('dashboard.projects.investors', [$project])}}">Investors <i class="fa fa-angle-double-right"></i></a>
 							</td>
-							<td>{{substr($project->description, 0, 50)}}...</td>
+							<td>{!!substr($project->description, 0, 50)!!}...</td>
 							@if(!$project->projectspvdetail && $project->is_coming_soon == '0')
 							<td>Submitted <br> <a href="#" id="alert">Activate</a></td>
 							@else

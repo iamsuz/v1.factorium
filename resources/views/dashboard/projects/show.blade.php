@@ -17,7 +17,7 @@
 							<h3 class="text-center">{{$project->title}}
 								<small><a href="{{route('dashboard.projects.edit', [$project])}}" class="pull-right">EDIT</a></small>
 							</h3>
-							<p class="text-center">{{$project->description}}</p>
+							<p class="text-center">{!! $project->description !!}</p>
 							<address class="text-center">
 								<b>{{$project->location->line_1}}, {{$project->location->line_2}}, {{$project->location->city}}, {{$project->location->postal_code}},{{$project->location->country}}</b>
 							</address>

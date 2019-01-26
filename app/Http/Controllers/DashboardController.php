@@ -63,20 +63,35 @@ class DashboardController extends Controller
         $projects = $projects->where('project_site',url());
         $notes = Note::all();
         // $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
-        // $pledged_investments = InvestmentInvestor::all()->where('project_site',url());
-        $activeP = $projects->where('project_site',url())->where('active','1');
+        // $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('hide_investment', 0);
+        $activeP = $projects->where('project_site',url())->where('active', true);
         $goal_amount = [];
         $amount = [];
+        $funds_received = [];        
+
         foreach ($activeP as $proj) {
             $goal_amount[] = $proj->investment->goal_amount;
             $investors = $proj->investors;
-            foreach($investors as $investor){
-                $amount[] = $investor->getOriginal('pivot_amount');
+
+            $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', false);
+            foreach($pledged_investments as $pledged_investment){
+                $amount[] = $pledged_investment->amount;;
             }
+
+            $funds_received_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', false)->where('money_received', true);
+            foreach($funds_received_investments as $funds_received_investment){
+                $funds_received[] = $funds_received_investment->amount;;
+            }
+            // foreach($investors as $investor){
+            //     $amount[] = $investor->getOriginal('pivot_amount');
+            // }
         }
+
         $total_goal = array_sum($goal_amount);
         $pledged_investments = array_sum($amount);
-        return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color'));
+        $total_funds_received = array_sum($funds_received);
+
+        return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color', 'total_funds_received'));
     }
 
     public function users()
@@ -91,7 +106,7 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
-        $pledged_investments = InvestmentInvestor::all();
+        $pledged_investments = InvestmentInvestor::where('hide_investment', '0')->get();
 
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }
@@ -441,7 +456,8 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
         $mail_setting = $siteconfiguration->mailSetting;
-        return view('dashboard.configuration.siteConfiguration',compact('color','siteconfiguration','mail_setting'));
+        $siteConfigurationHelper = SiteConfigurationHelper::getConfigurationAttr();
+        return view('dashboard.configuration.siteConfiguration',compact('color','siteconfiguration','mail_setting', 'siteConfigurationHelper'));
     }
 
     public function investmentMoneyReceived(Request $request, AppMailer $mailer, $investment_id)
