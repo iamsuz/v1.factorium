@@ -1701,7 +1701,7 @@ Edit {{$project->title}} | Dashboard | @parent
 															</label>
 															<input type="text" class="form-control" id="spv_md_sign_name" name="spv_md_sign_name" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->filename}}@endif" readonly>
 															<input type="hidden" name="spv_md_sign_image_path" id="spv_md_sign_image_path" value="">
-															<input type="hidden" id="spv_md_sign_full_path" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->path}}@endif">
+															<input type="hidden" name="spv_md_sign_full_path" id="spv_md_sign_full_path" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->path}}@endif">
 														</div>
 														<div class="row spv_md_sign_error" style="text-align: -webkit-center;"></div>
 														{!! $errors->first('spv_md_sign', '<small class="text-danger">:message</small>') !!}
@@ -1735,13 +1735,13 @@ Edit {{$project->title}} | Dashboard | @parent
 										</div>
 									</div>
 									<div class="row text-center">
-										<p><a id="show_certificate_preview">+Preview</a></p>
+										<p><button id="show_certificate_preview" class="btn btn-primary">Preview</button></p>
 										<div class="col-md-10 col-md-offset-1 certificate-preview" style=" border: 1px solid #eee; display: none; background-color: #fff; font-size: 13px;"></div>
 									</div>
 									<br>
 									<div class="row">
 										<div class="form-group">
-											<div class="col-sm-offset-2 col-sm-9">
+											<div class="col-sm-offset-2 col-sm-8">
 												{!! Form::submit('Update Certificate details', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
 											</div>
 										</div>
@@ -2310,6 +2310,12 @@ Edit {{$project->title}} | Dashboard | @parent
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
+                // success: {
+                // 	$('#img').attr('src', document.location.origin + '/' + data.imageSource);
+                // },
+             //    success: function (data) {
+             //    	$('#img').attr('src', document.location.origin + '/' + data.imageSource);
+            	// },
             }).done(function(data){
                 console.log(data);
                 $('#image_crop_modal').modal('toggle');
@@ -2318,11 +2324,13 @@ Edit {{$project->title}} | Dashboard | @parent
                     $('#image_crop').val(data.imageSource);
                     if (imgAction == 'spv_logo_image'){
                     	$('#spv_logo_image_path').val(data.imageSource);
+                    	$('#spv_logo_full_path').val(data.imageSource + '?date=' + new Date().getTime());
                     }
                     else if(imgAction == 'spv_md_sign_image'){
                     	$('#spv_md_sign_image_path').val(data.imageSource);
+                    	//Force browser(due to cache) to refresh the image by passing extra date query string
+                    	$('#spv_md_sign_full_path').val(data.imageSource + '?date=' + new Date().getTime());
                     }
-                    // location.reload('/');
                 }
                 else{
                     // $('#image_crop_modal').modal('toggle');
@@ -2426,15 +2434,16 @@ Edit {{$project->title}} | Dashboard | @parent
     		var logo = $('#spv_logo_full_path').val();
     		var mdSign = $('#spv_md_sign_full_path').val();
     		var frame = $('input[name="certificate_frame"]:checked').val();
+
     		if(frame != ''){
     			$('.certificate-preview').css('background','url(../../../assets/images/certificate_frames/'+frame+') no-repeat');
     			$('.certificate-preview').css('background-size', '100% 100%');
     		}
-    		$('.certificate-preview').html('<div class="text-center" style="top: 20%;width: 100%;position: absolute;opacity: 0.05;"><img src="../../../'+logo+'" width="700"></div><div style="text-align: center; margin:8em 6em;"><h1>@if($project->share_vs_unit)Share @else Unit @endif Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br>'+name+'<br>'+line1+',@if(isset($project->projectspvdetail->spv_line_2)) '+line2+', @endif '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 @if($project->share_vs_unit) redeemable preference shares @else units @endif of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>@if($project->md_vs_trustee)Managing Director @else Trustee @endif<br>'+name+'</div>').toggle();
-
+    		$('.certificate-preview').html('<div class="text-center" style="top: 20%;width: 100%;position: absolute;opacity: 0.05;"><img src="../../../'+logo+'" width="700"></div><div style="text-align: center; margin:8em 6em;"><h1>@if($project->share_vs_unit)Share @else Unit @endif Certificate</h1><br><br><img src="../../../'+logo+'" width="300"><br>'+name+'<br>'+line1+',@if(isset($project->projectspvdetail->spv_line_2)) '+line2+', @endif '+city+', '+state+', '+country+', '+postal+' <br>'+number+'<br><br>Date: Date<br><br><br>This is to certify Mr. XYZ of address_line_1, address_line2, city, state, 3001 owns 200 @if($project->share_vs_unit) redeemable preference shares @else units @endif of '+name+' numbered 1 to 200.<br><br><br><img src="../../../'+mdSign+'" width="150"><br>'+mdName+'<br>@if($project->md_vs_trustee)Managing Director @else Trustee @endif<br>'+name+'</div>').fadeToggle("linear");
 
     	});
     }
+
 
 </script>
 @stop
