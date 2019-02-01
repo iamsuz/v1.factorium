@@ -68,7 +68,7 @@ $_SESSION['code'] = md5(microtime(true));
 
     <!-- JCrop -->
     {!! Html::style('/assets/plugins/JCrop/css/jquery.Jcrop.css') !!}
-    {!! Html::script('/js/jquery-1.11.3.min.js') !!}
+    {{-- {!! Html::script('/js/jquery-1.11.3.min.js') !!} --}}
     @yield('css-section')
 
     <!-- Google tag manager header script if set  -->

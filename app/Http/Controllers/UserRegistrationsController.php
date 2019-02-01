@@ -264,7 +264,6 @@ class UserRegistrationsController extends Controller
             'email' => 'required|email',
             'first_name' => 'required',
             'last_name' => 'required',
-            'role'=>'required',
             'g-recaptcha-response' => 'required'
         ]);
         $validator1 = Validator::make($request->all(), [
@@ -273,7 +272,7 @@ class UserRegistrationsController extends Controller
         if ($validator->fails()) {
             return Response::json(['status' => false, 'message' => $validator->errors()->first()]);
         }
-
+        $request['role'] = 'investor';
         // Verify Captcha
         $recaptcha = new ReCaptcha(env('CAPTCHA_SECRET'));
         $capResponse = $recaptcha->verify($request->get('g-recaptcha-response'), $_SERVER['REMOTE_ADDR']);

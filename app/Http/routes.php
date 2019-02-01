@@ -105,6 +105,8 @@ Route::post('/password/reset', 'Auth\PasswordController@postReset');
 
 Route::pattern('users', '[0-9]+');
 Route::resource('users', 'UsersController');
+Route::get('/dashboard/test',['as'=>'d.test','uses'=>'DashboardController@test']);
+Route::get('api/users', ['as'=>'api.users', 'uses'=>'DashboardController@getDashboardUsers']);
 
 Route::get('/users/{users}/roles/investor/add', ['as'=>'users.investor.add', 'uses'=>'UsersController@addInvestor']);
 Route::get('/users/{users}/roles/developer/add', ['as'=>'users.developer.add', 'uses'=>'UsersController@addDeveloper']);
