@@ -602,11 +602,11 @@ class DashboardController extends Controller
         $investorList = $request->investors_list;
         $dividendPercent = $request->dividend_percent;
         $strStartDate = (string)$request->start_date;
-        $startDate = date_create((string)$request->start_date);
+        $startDate = date_create_from_format('d/m/Y', (string)$request->start_date);
         $strEndDate = (string)$request->end_date;
-        $endDate = date_create((string)$request->end_date);
+        $endDate = date_create_from_format('d/m/Y', (string)$request->end_date);
         $dateDiff = date_diff($startDate, $endDate);
-        $dateDiff = (int)$dateDiff->format("%R%a");
+        $dateDiff = (int)$dateDiff->format("%R%a") + 1;
         $project = Project::findOrFail($projectId);
 
         if($investorList != ''){
