@@ -615,7 +615,7 @@
 	      		<table class="table-striped dividend-confirm-table" border="0" cellpadding="10">
 	      			<tbody>
 	      				<tr>
-	      					<td><b>Divident Rate: </b></td>
+	      					<td><b>Dividend Rate: </b></td>
 	      					<td><small><span id="modal_dividend_rate"></span>%</small></td>
 	      				</tr>
 	      				<tr>
