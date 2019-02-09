@@ -10,6 +10,11 @@
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<style type="text/css">
+	.dividend-confirm-table td{ padding: 10px 20px; }
+	.dividend-confirm-table{ margin-left:auto;margin-right:auto; }
+</style>
 @stop
 
 @section('content-section')
@@ -332,7 +337,7 @@
 						<button class="btn btn-primary issue-fixed-dividend-btn" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
 						<button class="btn btn-primary repurchase-shares-btn" action="repurchase">Repurchase</button>
 					</div>
-					<form action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
+					<form id="declare_dividend_form" action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
 						{{csrf_field()}}
 						<span class="declare-statement hide"><small>Issue Dividend at <input type="number" name="dividend_percent" id="dividend_percent" step="0.01">% annual for the duration of between <input type="text" name="start_date" id="start_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> and <input type="text" name="end_date" id="end_date" class="datepicker" placeholder="DD/MM/YYYY" readonly="readonly"> : <input type="submit" class="btn btn-primary declare-dividend-btn" value="Declare"></small></span>
 						<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
@@ -589,6 +594,49 @@
 		</div>
 	</div>
 </div>
+
+<!--Dividend confirm Modal -->
+<div id="dividend_confirm_modal" class="modal fade" role="dialog">
+  	<div class="modal-dialog">
+    	<!-- Modal content-->
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+        		<h4 class="modal-title">CONFIRM DIVIDEND</h4>
+      		</div>
+	      	<div class="modal-body" style="padding: 15px 30px;">
+	      		<p class="text-center">
+	      			<i><small>** Please check and confirm the below dividend details.</small></i>
+	      		</p><br>
+	      		<div class="text-center">
+	      			<h2>{{$project->title}}</h2>
+	      			<small>{{$project->location->line_1}}, {{$project->location->line_2}}, {{$project->location->city}}, {{$project->location->postal_code}},{{$project->location->country}}</small>
+	      		</div><br>
+	      		<table class="table-striped dividend-confirm-table" border="0" cellpadding="10">
+	      			<tbody>
+	      				<tr>
+	      					<td><b>Dividend Rate: </b></td>
+	      					<td><small><span id="modal_dividend_rate"></span>%</small></td>
+	      				</tr>
+	      				<tr>
+	      					<td><b>Start Date <small>(DD/MM/YYYY)</small>: </b></td>
+	      					<td><small><span id="modal_dividend_start_date"></span></small></td>
+	      				</tr>
+	      				<tr>
+	      					<td>End Date <small>(DD/MM/YYYY)</small>:</td>
+	      					<td><small><span id="modal_dividend_end_date"></span></small></td>
+	      				</tr>
+	      			</tbody>
+	      		</table>
+	      		<br>
+	      	</div>
+	      	<div class="modal-footer">
+	        	<button type="button" class="btn btn-primary" id="submit_dividend_confirmation">Confirm</button>
+	        	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      	</div>
+    	</div>
+  	</div>
+</div>
 @stop
 
 @section('js-section')
@@ -758,9 +806,14 @@
 			repurchaseShares();
 		});
 
+		// Submit dividend form
+		$('#submit_dividend_confirmation').on('click', function(e) {
+			$('#declare_dividend_form').submit();
+		});
+
 		// Apply date picker to html elements to select date
         $( ".datepicker" ).datepicker({
-        	'format': 'dd/mm/yy'
+        	'dateFormat': 'dd/mm/yy'
         });
         sendEOIAppFormLink();
 	});
@@ -768,6 +821,7 @@
 	// Declare dividend
 	function declareDividend(){
 		$('.declare-dividend-btn').click(function(e){
+			e.preventDefault();
 			var dividendPercent = $('#dividend_percent').val();
 			dividendPercent = dividendPercent.toString();
 			var startDate = new Date($('#start_date').val());
@@ -775,14 +829,22 @@
 			var investorsList = $('.investors-list').val();
 
 			if(dividendPercent == '' || startDate == '' || endDate == ''){
-				e.preventDefault();
 				alert('Before declaration enter dividend percent, start date and end date input fields.');
 			}
+			else if(investorsList == ''){
+				alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
+			}
 			else {
-				if(investorsList == ''){
-					e.preventDefault();
-					alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
-				}
+				$('#modal_dividend_rate').html(dividendPercent);
+				$('#modal_dividend_start_date').html($('#start_date').val());
+				$('#modal_dividend_end_date').html($('#end_date').val());
+				
+				$('#dividend_confirm_modal').modal({
+    				keyboard: false,
+    				backdrop: 'static'
+    			});
+
+
 			}
 		});
 	}
