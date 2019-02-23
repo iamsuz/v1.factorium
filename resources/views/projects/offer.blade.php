@@ -1141,7 +1141,7 @@ $(document).ready(function(){
     					success: function (data) {
     						if(!data.success){
     							$('.loader-overlay').hide();
-    							$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
+    							$('#loginModal #loginErrors').html('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
     							return false;
     						}
     						$('.loader-overlay').hide();
