@@ -38,7 +38,7 @@ Edit {!! $user->first_name !!} | @parent
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="form-group <?php if($errors->first('email')){echo 'has-error';}?>">
 									{!!Form::label('email', 'Email', array('class'=>'col-sm-2 control-label'))!!}
@@ -123,11 +123,12 @@ Edit {!! $user->first_name !!} | @parent
 												{!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!}
 											</div>
 											<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
-												<select name="country" class="form-control">
+												<select name="country" class="form-control country-dropdown" >
 													@foreach(\App\Http\Utilities\Country::all() as $country => $code)
-													<option @if($user->country == $country) value="{{$country}}" selected="selected" @else value="{{$country}}" @endif>{{$country}}</option>
+													<option data-country-code="{{$code}}" @if($user->country == $country) value="{{$country}}" selected="selected" @else value="{{$country}}" @endif>{{$country}}</option>
 													@endforeach
 												</select>
+												<input type="hidden" name="country_code" class="country-code" value="{{ array_search($user->country, array_flip(\App\Http\Utilities\Country::all())) }}">
 												{!! $errors->first('country', '<small class="text-danger">:message</small>') !!}
 											</div>
 										</div>
@@ -189,4 +190,19 @@ Edit {!! $user->first_name !!} | @parent
 		</div>
 	</div>
 </div>
+@stop
+
+@section('js-section')
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('.country-dropdown').on('change', function(e) {
+			var countryName = $(this).val();
+			var countryCode = $('.country-dropdown option:selected').attr('data-country-code');
+			$('.country-code').val(countryCode);
+		});
+	});
+
+</script>
 @stop

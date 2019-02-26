@@ -351,7 +351,10 @@ class ProjectsController extends Controller
         }
 
         //Check for minimum investment amount
-        if((int)$request->project_min_investment_txt % 100 != 0)
+        if((int)$request->project_min_investment_txt % 5 != 0 && $request->project_status == 'eoi')
+        {
+            return redirect()->back()->withErrors(['Please enter amount in increments of $5 only']);
+        }elseif((int)$request->project_min_investment_txt % 100 != 0)
         {
             return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
         }

@@ -762,14 +762,18 @@ class SiteConfigurationsController extends Controller
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
                 'project_goal_amount'=>'required|integer|min:1',
-                'project_min_investment_txt'=>'required|integer|min:100',
+                'project_min_investment_txt'=>'required|integer|min:5',
                 'prospectusDocument' => 'mimes:pdf'
             ));
             if ($validator && $validator->fails()) {
                 throw new ValidationFailedException($validator->errors());
             }
+            $project = Project::findOrFail($projectId);
                 //Check for minimum investment amount
-            if((int)$request->project_min_investment_txt % 100 != 0)
+            if($project->eoi_button == '1' && (int)$request->project_min_investment_txt % 5 != 0)
+            {
+                return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center" style="color="white;">Please enter amount in increments of $5 only</p>');
+            }elseif($project->eoi_button == '0' && (int)$request->project_min_investment_txt % 100 != 0)
             {
                 return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center" style="color="white;">Please enter amount in increments of $100 only</p>');
             }
@@ -1544,7 +1548,7 @@ class SiteConfigurationsController extends Controller
             Session::flash('action', 'change_sendgrid_api_key');
             return redirect()->back();
         }
-        
+
         $apiKey = $request->sendgrid_api_key;
         if($apiKey != ""){
             $siteconfiguration = SiteConfiguration::all();

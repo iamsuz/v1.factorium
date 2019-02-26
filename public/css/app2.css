@@ -24,6 +24,7 @@ body {
 }
 .form-control{
 	border-radius: 0px;
+	-webkit-appearance: none;
 }
 .font-bold{
 	font-family: SourceSansPro-Bold;

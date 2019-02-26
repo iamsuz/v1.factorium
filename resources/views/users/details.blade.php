@@ -60,27 +60,45 @@ Fill the user details | @parent
 							</div>
 							<div class="row">
 								<div class="form-group">
-									<div class="col-sm-offset-1 col-sm-10">
-										{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'id'=>'submit_button')) !!}
+									<div class="col-sm-10 col-md-offset-1 <?php if($errors->first('country_code')){echo 'has-error';}?>" data-wow-delay="0.2s">
+										{!! Form::select('country_code', array_flip(\App\Http\Utilities\Country::all()), 'au', array('class' => 'required form-control input-box')); !!}
+										{!! $errors->first('country_code', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
 							</div>
-						</fieldset>
-						{!! Form::close() !!}
-					</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-offset-1 col-sm-10" data-wow-delay="0.2s">
+									{!! Form::checkbox('is_interested_investment_offers', 'on', true); !!} &nbsp;
+									<small>I am interested in receiving investment offers from @if($siteConfiguration->website_name) {{$siteConfiguration->website_name}} @else Estate Baron @endif</small>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-offset-1 col-sm-10">
+									{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'id'=>'submit_button','style'=>'border-radius:0;')) !!}
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					{!! Form::close() !!}
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	</div>
+</div>
 </div>
 
 @section('js-section')
-	<script type="text/javascript">
-		jQuery('form').submit(function(){
-			$(this).find(':submit').attr( 'disabled','disabled' );
-			$('.loader-overlay').show();
-		});
-	</script>
+<script type="text/javascript">
+	jQuery('form').submit(function(){
+		$(this).find(':submit').attr( 'disabled','disabled' );
+		$('.loader-overlay').show();
+	});
+</script>
 @stop
 
 @stop

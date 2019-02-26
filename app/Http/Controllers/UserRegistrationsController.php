@@ -283,7 +283,7 @@ class UserRegistrationsController extends Controller
         if($validator1->fails()){
             $activatedUser = User::where('email', $request->email)->first();
             $nonActivatedUser = UserRegistration::where('email', $request->email)->first();
-            
+
             if($activatedUser) {  // If user email is registered.
 
                 if($nonActivatedUser)
@@ -292,18 +292,18 @@ class UserRegistrationsController extends Controller
                 if($activatedUser->active) {    // User is active
                     if(Auth::attempt(['email' => $request->email, 'password' => $request['password'], 'active'=>1], $request->remember)) {
                         return Response::json(['status' => true, 'message' => 'The email id is already registered. So performed login with given password.']);
-                    } 
+                    }
                     else {
                         return Response::json(['status' => false, 'message' => 'The email id is already registered. The login also failed with the given password. Please use correct password for this email account.', 'next_redirect' => 'login']);
                     }
-                } 
+                }
                 else {      // User is inactive
                     return Response::json(['status' => false, 'message' => 'The email id is already registered and is deactivated.']);
                 }
             }
             else if(!$activatedUser && $nonActivatedUser) {     // If user email is registered but is not verified yet.
                 $nonActivatedUser->delete();
-            }   
+            }
         }
 
         $passwordString = $request['password'];
@@ -313,17 +313,17 @@ class UserRegistrationsController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $passwordString, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
-            
+
             return Response::json(['status' => true, 'message' => 'Login Successfull']);
         }
     }
 
     /**
      * User Creation from EOI and Offer forms
-     * 
+     *
      * This method creates the new active user in users table
      * to support EOI and Offer forms submission for guest users.
-     * 
+     *
      * @param $request Contains Request details from EOI or offer form.
      * @return void
      */
@@ -351,7 +351,7 @@ class UserRegistrationsController extends Controller
         };
         $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
 
-        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid 
+        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid
     }
 
     public function registerCodeView()
@@ -443,6 +443,7 @@ class UserRegistrationsController extends Controller
             'phone_number' => 'required|numeric',
             'password' => 'required|min:6|max:60',
             'token'=>'required',
+            'country_code'=>'required'
         ]);
 
         $userReg = UserRegistration::whereToken($request->token)->firstOrFail();
@@ -456,6 +457,13 @@ class UserRegistrationsController extends Controller
         $request['active'] = true;
         $request['activated_on'] = $userReg->activated_on;
         $request['registration_site'] = $userReg->registration_site;
+        // Modify the is interested investment offers flag to boolean
+        ($request->is_interested_investment_offers && ($request->is_interested_investment_offers == 'on'))
+            ? $request->merge(['is_interested_investment_offers' => 1])
+            : $request->merge(['is_interested_investment_offers' => 0]);
+
+        // Set country name by using country code
+        $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
 
         // dd($userReg);
         $role = Role::whereRole($userReg->role)->firstOrFail();
@@ -479,12 +487,14 @@ class UserRegistrationsController extends Controller
         }
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
 
-        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid 
-        
+        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid
+
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
             // return view('users.registrationFinish', compact('user','color'));
-            return redirect('/#projects')->withCookie(\Cookie::forget('referrer'));
+            return ($request->country_code == 'au')
+                ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
+                : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
         }
     }
 
@@ -576,7 +586,7 @@ class UserRegistrationsController extends Controller
 
         $userReg->delete();
 
-        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid 
+        $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid
 
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
         if (Auth::attempt(['email' => $request->email, 'password' => $password, 'active'=>1], $request->remember)) {

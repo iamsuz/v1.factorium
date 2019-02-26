@@ -65,7 +65,7 @@ EOI Doc
             {!! Form::label(null, 'Amount you would be interested in investing') !!}
             <div class="input-group">
                 <span class="input-group-addon">A$</span>
-                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' , 'step'=>'100', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
+                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' , 'step'=>'5', 'min'=>'5', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
             </div>
         </div>
 
@@ -89,7 +89,7 @@ EOI Doc
         </div>
         <br>
         <input type="text" name="project_id" @if($project) value="{{$project->id}}" @endif hidden id="projIdEoi">
-        
+
         @if(Auth::guest())
         <input type="text" name="role" class="hidden" value="investor">
         @endif
@@ -166,9 +166,9 @@ EOI Doc
         });
 
         /**
-         * Update the email from the EOI form 
+         * Update the email from the EOI form
          * when updated from user registration form.
-         */ 
+         */
         $('#eoiREmail').on('keyup', function(e) {
             $('#eoi_email').val($(this).val());
             console.log('email updated');
@@ -182,7 +182,7 @@ EOI Doc
         /**
          * Submit user registration form manually and login user
          * Then submit the EOI form on successfull login
-         */ 
+         */
         function registerUserManually(projectId) {
             $('#RegPassword').on('input',function () {
                 var name = $('#RegPassword').val();
