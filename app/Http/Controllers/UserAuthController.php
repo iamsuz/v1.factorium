@@ -141,9 +141,9 @@ class UserAuthController extends Controller
             {
                 return redirect()->back()->withCookie(cookie('login_bonus', $loginBonus, 1))->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
             }
-            if((int)$request->investment_amount % 100 != 0)
+            if((int)$request->investment_amount % 5 != 0)
             {
-                return redirect()->back()->withCookie(cookie('login_bonus', $loginBonus, 1))->withErrors(['Please enter amount in increments of $100 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
+                return redirect()->back()->withCookie(cookie('login_bonus', $loginBonus, 1))->withErrors(['Please enter amount in increments of $5 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
             }
             $this->validate($request, [
                 'first_name' => 'required',
