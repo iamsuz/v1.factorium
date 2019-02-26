@@ -1254,7 +1254,7 @@ $(document).ready(function(){
     							console.log('offer submitted');
     						} else {
     							alert(data.message);
-    							$('#registerModal').modal('hide');
+    							// $('#registerModal').modal('hide');
     							$('.loader-overlay').hide();
     						}
     					},
