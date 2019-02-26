@@ -265,7 +265,8 @@ class UserRegistrationsController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'role'=>'required',
-            'g-recaptcha-response' => 'required'
+            'g-recaptcha-response' => 'required',
+            'password'=>'required|min:6|max:60'
         ]);
         $validator1 = Validator::make($request->all(), [
             'email' => 'unique:users,email||unique:user_registrations,email',
