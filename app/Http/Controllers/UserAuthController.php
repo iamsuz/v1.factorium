@@ -155,6 +155,7 @@ class UserAuthController extends Controller
             ]);
             if($project){
                 if($project->eoi_button){
+                    $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
                     $eoi_data = ProjectEOI::create([
                         'project_id' => $request->project_id,
                         'user_id' => $user->id,
@@ -163,6 +164,9 @@ class UserAuthController extends Controller
                         'phone_number' => $request->phone_number,
                         'investment_amount' => $request->investment_amount,
                         'invesment_period' => $request->investment_period,
+                        'is_accredited_investor' => $request->is_accredited_investor,
+                        'country_code' => $request->country_code,
+                        'country'=>$request->country,
                         'project_site' => url(),
                     ]);
                     $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
