@@ -6,15 +6,15 @@ EOI Doc
 @section('css-section')
 @parent
 <style type="text/css">
-    .navbar{
-        display: none;
-    }
-    .content{
-        margin-top: 1em;
-    }
-    #footer{
-        display: none;
-    }
+.navbar{
+    display: none;
+}
+.content{
+    margin-top: 1em;
+}
+#footer{
+    display: none;
+}
 </style>
 @stop
 @section('content-section')
@@ -55,20 +55,36 @@ EOI Doc
             {!! Form::label('Email') !!}
             {!! Form::input('email', 'email', !Auth::guest() ? Auth::user()->email : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your email','id'=>'eoi_email')) !!}
         </div>
-
-        <div class="form-group">
-            {!! Form::label(null, 'Phone number') !!}
-            {!! Form::text('phone_number', !Auth::guest() ? Auth::user()->phone_number : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label(null, 'Amount you would be interested in investing') !!}
-            <div class="input-group">
-                <span class="input-group-addon">A$</span>
-                {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' , 'step'=>'5', 'min'=>'5', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-6  <?php if($errors->first('country_code')){echo 'has-error';}?>" data-wow-delay="0.2s">
+                    {!! Form::label(null, 'Phone number') !!}
+                    {!! Form::text('phone_number', !Auth::guest() ? Auth::user()->phone_number : null, array('required', 'class'=>'form-control', 'placeholder'=>'Enter your phone number','id'=>'eoi_phone')) !!}
+                </div>
+                <div class="col-sm-6  <?php if($errors->first('country_code')){echo 'has-error';}?>" data-wow-delay="0.2s">
+                    {!! Form::label(null, 'Country') !!}
+                    {!! Form::select('country_code', array_flip(\App\Http\Utilities\Country::all()), 'au', array('class' => 'required form-control input-box')); !!}
+                    {!! $errors->first('country_code', '<small class="text-danger">:message</small>') !!}
+                </div>
             </div>
         </div>
-
+        <br>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-6  <?php if($errors->first('investment_amount')){echo 'has-error';}?>" data-wow-delay="0.2s">
+                    {!! Form::label(null, 'Amount you would be interested in investing') !!}
+                    <div class="input-group">
+                        <span class="input-group-addon">A$</span>
+                        {!! Form::input('number', 'investment_amount', $project->investment->minimum_accepted_amount, array('required', 'class'=>'form-control','id'=>'amountEoi' , 'step'=>'5', 'min'=>'5', 'placeholder'=>'Enter Invesment Amount (min '.$project->investment->minimum_accepted_amount.'AUD)')) !!}
+                    </div>
+                </div>
+                <div class="col-sm-6  <?php if($errors->first('is_accredited_investor')){echo 'has-error';}?>" data-wow-delay="0.2s">
+                    {!! Form::label(null, 'Are you an accredited/wholesale investor : ') !!}
+                    {!! Form::select('is_accredited_investor', ['1' => 'Yes', '0' => 'No'],null,array('id'=>'accreditedEoi','class'=>'form-control input-box')) !!}
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="form-group">
             {!! Form::label(null, 'When will you be ready to invest : ', array('style' => 'margin-right: 8px;')) !!}
             {!! Form::select('investment_period', ['Now' => 'Now', '1 month' => '1 month', '2 months' => '2 months', '3 months' => '3 months', '4 months' => '4 months', '5 months' => '5 months', '6 months' => '6 months'],null,array('id'=>'periodEoi')) !!}
@@ -169,12 +185,12 @@ EOI Doc
          * Update the email from the EOI form
          * when updated from user registration form.
          */
-        $('#eoiREmail').on('keyup', function(e) {
+         $('#eoiREmail').on('keyup', function(e) {
             $('#eoi_email').val($(this).val());
             console.log('email updated');
         });
 
-        $('#offer_user_login_form, #regForm').submit(function(){
+         $('#offer_user_login_form, #regForm').submit(function(){
             $(this).find(':submit').attr( 'disabled','disabled' );
             $('.loader-overlay').show();
         });
@@ -183,7 +199,7 @@ EOI Doc
          * Submit user registration form manually and login user
          * Then submit the EOI form on successfull login
          */
-        function registerUserManually(projectId) {
+         function registerUserManually(projectId) {
             $('#RegPassword').on('input',function () {
                 var name = $('#RegPassword').val();
                 if(name.length == 0){
@@ -228,14 +244,14 @@ EOI Doc
                                 $("#loginModal").modal();
                             }
 
+                        }
+                    },
+                    error: function (error) {
+                        $('.loader-overlay').hide();
+                        $('#session_message').html(error);
+                        console.log('You are in error');
                     }
-                },
-                error: function (error) {
-                    $('.loader-overlay').hide();
-                    $('#session_message').html(error);
-                    console.log('You are in error');
-                }
-            });
+                });
         }
 
     });

@@ -560,6 +560,7 @@ class ProjectsController extends Controller
             'investment_amount' => 'required|numeric',
             'investment_period' => 'required',
             ]);
+        $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
         if($project){
             if($project->eoi_button){
                 $eoi_data = ProjectEOI::create([
@@ -571,6 +572,9 @@ class ProjectsController extends Controller
                     'investment_amount' => $request->investment_amount,
                     'invesment_period' => $request->investment_period,
                     'interested_to_buy' => $request->interested_to_buy,
+                    'is_accredited_investor' => $request->is_accredited_investor,
+                    'country_code' => $request->country_code,
+                    'country'=>$request->country,
                     'project_site' => url(),
                     ]);
                 $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);

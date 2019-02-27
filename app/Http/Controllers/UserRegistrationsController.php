@@ -459,8 +459,8 @@ class UserRegistrationsController extends Controller
         $request['registration_site'] = $userReg->registration_site;
         // Modify the is interested investment offers flag to boolean
         ($request->is_interested_investment_offers && ($request->is_interested_investment_offers == 'on'))
-            ? $request->merge(['is_interested_investment_offers' => 1])
-            : $request->merge(['is_interested_investment_offers' => 0]);
+        ? $request->merge(['is_interested_investment_offers' => 1])
+        : $request->merge(['is_interested_investment_offers' => 0]);
 
         // Set country name by using country code
         $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
@@ -493,8 +493,8 @@ class UserRegistrationsController extends Controller
             Auth::user()->update(['last_login'=> Carbon::now()]);
             // return view('users.registrationFinish', compact('user','color'));
             return ($request->country_code == 'au')
-                ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
-                : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
+            ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
+            : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
         }
     }
 
@@ -609,6 +609,7 @@ class UserRegistrationsController extends Controller
             }
             if($project){
                 if($project->eoi_button && $request->eoi_project){
+                    $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
                     $eoi_data = ProjectEOI::create([
                         'project_id' => $request->project_id,
                         'user_id' => $user->id,
@@ -617,6 +618,9 @@ class UserRegistrationsController extends Controller
                         'phone_number' => $request->phone_number,
                         'investment_amount' => $request->investment_amount,
                         'invesment_period' => $request->investment_period,
+                        'is_accredited_investor' => $request->is_accredited_investor,
+                        'country_code' => $request->country_code,
+                        'country'=>$request->country,
                         'project_site' => url(),
                     ]);
                     $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
