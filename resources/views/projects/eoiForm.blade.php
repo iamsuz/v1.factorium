@@ -80,7 +80,7 @@ EOI Doc
                 </div>
                 <div class="col-sm-6  <?php if($errors->first('is_accredited_investor')){echo 'has-error';}?>" data-wow-delay="0.2s">
                     {!! Form::label(null, 'Are you an accredited/wholesale investor : ') !!}
-                    {!! Form::select('is_accredited_investor', ['1' => 'Yes', '0' => 'No'],null,array('id'=>'accreditedEoi','class'=>'form-control input-box')) !!}
+                    {!! Form::select('is_accredited_investor', [1 => 'Yes', 0 => 'No'],null,array('id'=>'accreditedEoi','class'=>'form-control input-box')) !!}
                 </div>
             </div>
         </div>
@@ -158,6 +158,8 @@ EOI Doc
                     $('#eoiInvestmentPeriod').val(investment_period);
                     $('#eoiInvestmentAmount').val(investment_amount);
                     $('#eoiProjectId').val(project_id);
+                    $('#accreditedEoiL').val(accreditedEoi);
+                    $('#country_codeL').val(country_code);
                     $("#loginModal").modal();
                 }else{
                     $('#eoiREmail').val(email);

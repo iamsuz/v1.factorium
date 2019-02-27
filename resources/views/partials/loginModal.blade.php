@@ -44,6 +44,8 @@
 											<input type="text" class="hidden" name="phone_number" id="eoiPhone">
 											<input type="text" class="hidden" name="investment_period" id="eoiInvestmentPeriod">
 											<input type="text" class="hidden" name="investment_amount" id="eoiInvestmentAmount">
+											<input type="text" class="hidden" name="is_accredited_investor" id="accreditedEoiL">
+											<input type="text" class="hidden" name="country_code" id="country_codeL">
 											<input type="text" class="hidden" name="project_id" id="eoiProjectId">
 											@endif
 											<div class="form-group" style="width:75%;">
