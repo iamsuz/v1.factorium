@@ -549,7 +549,7 @@
                                 @endif -->
 
                                 {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;"> @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}} @else Estate Baron @endif</p> --}}
-                                <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                                <table  border="0" cellpadding="18" cellspacing="0" align="left">
                                   <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
                                </table>
 
@@ -594,6 +594,10 @@
                     Amount to be invested: <b>{{$eoi_data->investment_amount}}</b>
                     <br><br>
                     When the user is ready to invest: <b>{{$eoi_data->invesment_period}}</b>
+                    <br><br>
+                    Are you an accredited/wholesale investor: <b>@if($eoi_data->is_accredited_investor) Yes @else No @endif</b>
+                    <br><br>
+                    Country: <b>{{$eoi_data->country}}</b>
                     <br>
                     </span></span></span>
                     &nbsp;</div>
