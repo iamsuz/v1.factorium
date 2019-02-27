@@ -339,7 +339,7 @@ class UserRegistrationsController extends Controller
 
         $role = Role::whereRole($request['role'])->firstOrFail();
         $roleText = $request['role'];
-
+        $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
         $user = User::create($request->all());
         $time_now = Carbon::now();
         $user->roles()->attach($role);

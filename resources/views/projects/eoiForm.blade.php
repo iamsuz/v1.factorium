@@ -63,7 +63,7 @@ EOI Doc
                 </div>
                 <div class="col-sm-6  <?php if($errors->first('country_code')){echo 'has-error';}?>" data-wow-delay="0.2s">
                     {!! Form::label(null, 'Country') !!}
-                    {!! Form::select('country_code', array_flip(\App\Http\Utilities\Country::all()), 'au', array('class' => 'required form-control input-box')); !!}
+                    {!! Form::select('country_code', array_flip(\App\Http\Utilities\Country::all()), 'au', array('class' => 'required form-control input-box','id'=>'country_code')); !!}
                     {!! $errors->first('country_code', '<small class="text-danger">:message</small>') !!}
                 </div>
             </div>
@@ -145,6 +145,8 @@ EOI Doc
             var investment_period = $('#periodEoi').find(':selected').text();
             var investment_amount = $('#amountEoi').val();
             var project_id = $('#projIdEoi').val();
+            var accreditedEoi = $('#accreditedEoi').val();
+            var country_code = $('#country_code').val();
             var _token = $('meta[name="csrf-token"]').attr('content');
             var projectId = {{$project->id}};
             $.post('/users/login/check',{email,_token},function (data) {
@@ -166,6 +168,8 @@ EOI Doc
                     $('#eoiRInvestmentPeriod').val(investment_period);
                     $('#eoiRInvestmentAmount').val(investment_amount);
                     $('#eoiRProjectId').val(project_id);
+                    $('#accreditedEoiR').val(accreditedEoi);
+                    $('#country_codeR').val(country_code);
                     $('#registerModal').modal();
 
                     // Submit registration form manually

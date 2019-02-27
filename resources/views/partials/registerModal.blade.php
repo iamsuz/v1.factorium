@@ -65,6 +65,8 @@
 													<input type="text" class="hidden" name="investment_period" id="eoiRInvestmentPeriod">
 													<input type="text" class="hidden" name="investment_amount" id="eoiRInvestmentAmount">
 													<input type="text" class="hidden" name="eoi_project" id="eoiRProjectId">
+													<input type="text" class="hidden" name="accreditedEoi" id="accreditedEoiR">
+													<input type="text" class="hidden" name="country_code" id="country_codeR">
 													<!-- </div> -->
 												</div>
 												<p class="font-bold hide" style="font-size:1.125em;color:#2d2d4b;">What best describes you?</p>
