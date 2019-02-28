@@ -201,9 +201,9 @@ class UserAuthController extends Controller
             {
                 return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
             }
-            if((int)$request->amount_to_invest % 100 != 0)
+            if((int)$request->amount_to_invest % 5 != 0)
             {
-                return redirect()->back()->withErrors(['Please enter amount in increments of $100 only']);
+                return redirect()->back()->withErrors(['Please enter amount in increments of $5 only']);
             }
             $validation_rules = array(
                 'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',

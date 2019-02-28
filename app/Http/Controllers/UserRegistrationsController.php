@@ -603,9 +603,9 @@ class UserRegistrationsController extends Controller
             {
                 return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
             }
-            if((int)$request->investment_amount % 100 != 0)
+            if((int)$request->investment_amount % 5 != 0)
             {
-                return redirect()->back()->withErrors(['Please enter amount in increments of $100 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
+                return redirect()->back()->withErrors(['Please enter amount in increments of $5 only'])->withInput(['email'=>$request->email,'first_name'=>$request->first_name,'last_name'=>$request->last_name,'phone_number'=>$request->phone_number,'investment_amount'=>$request->investment_amount,'investment_period'=>$request->investment_period]);
             }
             if($project){
                 if($project->eoi_button && $request->eoi_project){
