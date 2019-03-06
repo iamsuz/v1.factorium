@@ -570,11 +570,11 @@
 									</td>
 									<td>
 										@if($projectsEoi->offer_doc_path)
-										<a href="{{$projectsEoi->offer_doc_path}}" target="_blank" download>
+										<a href="{{$projectsEoi->offer_doc_path}}" id="uploaded_offer_doc_link{{$projectsEoi->id}}" target="_blank" download>
 											{{$projectsEoi->offer_doc_name}}
 										</a>
 										@endif
-										<div id="uploaded_offer_doc_link{{$projectsEoi->id}}"></div>
+										<div id="new_offer_doc_link{{$projectsEoi->id}}"></div>
 										<form{{--  action="{{route('dashboard.upload.offerDoc')}}" --}} class="upload_form" id="upload_form" rel="form" method="POST" enctype="multipart/form-data">
 											{!! csrf_field() !!}
 											<input type="file" name="offer_doc" id="offer_doc" required="required">
@@ -757,7 +757,8 @@
 		        	console.log(data.eoi_id);
 		        	if(data){
 		        		$('#offer_link'+data.eoi_id).html('<a class="send-app-form-link" id="send_link'+data.eoi_id+'" href="javascript:void(0);" data="'+data.eoi_id+'"><b>Send link</b></a>');
-		        		$('#uploaded_offer_doc_link'+data.eoi_id).html('<a href="'+data.offer_doc_path+'" target="_blank" download> '+data.offer_doc_name+'</a><i class="fa fa-check success-icon"></i>');
+		        		$('#new_offer_doc_link'+data.eoi_id).html('<a href="'+data.offer_doc_path+'" target="_blank" download> '+data.offer_doc_name+'</a><i class="fa fa-check success-icon"></i>');
+		        		$('#uploaded_offer_doc_link'+data.eoi_id).hide();
 		        		$('.loader-overlay').hide();
 		        		alert(data.message);
 		        		// sendEOIAppFormLink();		        		
