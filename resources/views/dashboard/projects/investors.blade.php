@@ -14,6 +14,13 @@
 <style type="text/css">
 	.dividend-confirm-table td{ padding: 10px 20px; }
 	.dividend-confirm-table{ margin-left:auto;margin-right:auto; }
+	.success-icon {
+		border: 1px solid;
+	    padding: 2px;
+	    border-radius: 20px;
+	    color: green;
+	    margin-left: 0.8rem;
+	}
 </style>
 @stop
 
@@ -536,13 +543,13 @@
 							<thead>
 								<tr>
 									<th class="text-center">User Name</th>
+									<th>Application Link</th>
+									<th>Offer Document</th>
 									<th class="text-center">User Email</th>
 									<th class="text-center">User Phone Number</th>
 									<th class="text-center">Amount</th>
 									<th class="text-center">Investment Expected</th>
 									<th class="text-center">EOI Timestamp</th>
-									<th>Application Link</th>
-									<th>Offer Document</th>
 									<th>Interested to buy</th>
 								</tr>
 							</thead>
@@ -550,17 +557,12 @@
 								@foreach($projectsEois as $projectsEoi)
 								<tr>
 									<td>{{$projectsEoi->user_name}}</td>
-									<td>{{$projectsEoi->user_email}}</td>
-									<td>{{$projectsEoi->phone_number}}</td>
-									<td>${{number_format($projectsEoi->investment_amount)}}</td>
-									<td>{{$projectsEoi->invesment_period}}</td>
-									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
-									<td>
+									<td id="offer_link{{$projectsEoi->id}}">
 										@if($projectsEoi->offer_doc_path)
 											@if($projectsEoi->is_link_sent)
-											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Resend link</b></a>
+											<a class="send-app-form-link" id="send_link{{$projectsEoi->id}}" href="javascript:void(0);" data="{{$projectsEoi->id}}"{{--  onclick="sendEOIAppFormLink()" --}}><b>Resend link</b></a>
 											@else
-											<a class="send-app-form-link" href="javascript:void(0);" data="{{$projectsEoi->id}}" onclick="sendEOIAppFormLink()"><b>Send link</b></a>
+											<a class="send-app-form-link" id="send_link{{$projectsEoi->id}}" href="javascript:void(0);" data="{{$projectsEoi->id}}"{{--  onclick="sendEOIAppFormLink()" --}}><b>Send link</b></a>
 											@endif
 										@else
 											<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
@@ -572,14 +574,20 @@
 											{{$projectsEoi->offer_doc_name}}
 										</a>
 										@endif
-										<form action="{{route('dashboard.upload.offerDoc')}}" rel="form" method="POST" enctype="multipart/form-data">
+										<div id="uploaded_offer_doc_link{{$projectsEoi->id}}"></div>
+										<form{{--  action="{{route('dashboard.upload.offerDoc')}}" --}} class="upload_form" id="upload_form" rel="form" method="POST" enctype="multipart/form-data">
 											{!! csrf_field() !!}
-											<input type="file" name="offer_doc" id="offer_doc"  required>
+											<input type="file" name="offer_doc" id="offer_doc" required="required">
 											{!! $errors->first('offer_doc', '<small class="text-danger">:message</small>') !!}
 											<input type="hidden" name="eoi_id" value="{{$projectsEoi->id}}">
-											<input type="submit" name="upload_offer_doc" value="Upload" class="btn btn-primary">
+											<input type="submit" name="upload_offer_doc" id="upload_offer_doc" value="Upload" class="btn btn-primary upload-offer-doc upload_offer_doc" data="{{$projectsEoi->id}}">
 										</form>
 									</td>
+									<td>{{$projectsEoi->user_email}}</td>
+									<td>{{$projectsEoi->phone_number}}</td>
+									<td>${{number_format($projectsEoi->investment_amount)}}</td>
+									<td>{{$projectsEoi->invesment_period}}</td>
+									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
 									<td>
 										@if($projectsEoi->interested_to_buy) Yes @else No @endif
 									</td>
@@ -705,6 +713,63 @@
 			}
 		});
 
+		//Ajax call for sending eoi application form link to user (for both send link and resend link buttons)
+		$('#expression_of_interest_tab').on('click', '.send-app-form-link', function(e){
+			e.preventDefault();
+			var project_id = {{$project->id}};
+			var eoi_id = $(this).attr('data');
+			if (confirm('Are you sure?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+		          	url: '/dashboard/project/interest/link',
+		          	type: 'POST',
+		          	dataType: 'JSON',
+		          	data: {project_id, eoi_id},
+		          	headers: {
+		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		          	},
+		        }).done(function(data){
+		        	if(data){
+		        		$('#offer_link'+eoi_id).html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
+		        		$('.loader-overlay').hide();
+		        	}
+		        });
+		    }
+		});
+
+		$('.upload_form').submit(function(e){
+			e.preventDefault();
+				$('.loader-overlay').show();
+				var eoi_id, offer_doc_path, offer_doc_name;
+				$.ajax({
+		          	url: '/dashboard/project/upload/offerdoc',
+		          	type: 'POST',
+		          	dataType: 'JSON',
+		          	data: new FormData(this),
+		          	processData: false,
+		          	contentType: false,
+		          	headers: {
+		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		          	},
+		        }).done(function(data){
+		        	console.log(data.message);
+		        	console.log(data.status);
+		        	console.log(data.eoi_id);
+		        	if(data){
+		        		$('#offer_link'+data.eoi_id).html('<a class="send-app-form-link" id="send_link'+data.eoi_id+'" href="javascript:void(0);" data="'+data.eoi_id+'"><b>Send link</b></a>');
+		        		$('#uploaded_offer_doc_link'+data.eoi_id).html('<a href="'+data.offer_doc_path+'" target="_blank" download> '+data.offer_doc_name+'</a><i class="fa fa-check success-icon"></i>');
+		        		$('.loader-overlay').hide();
+		        		alert(data.message);
+		        		// sendEOIAppFormLink();		        		
+		        	}
+		        	else
+		        	{
+		        		alert('Something went wrong! Please try again.');
+		        		$('.loader-overlay').hide();
+		        	}
+		        });
+		});
+
 		//Hide application from admin dashboard
 
 		$('.hide-investment').on("click", function(e){
@@ -724,7 +789,6 @@
 		        	if(data){
 		        		$('.loader-overlay').hide();
 	 						$("#investorsTable").DataTable().row( $('#application' + investment_id) ).remove().draw( false );
-	 					// $('#application' + investment_id).css('background-color', 'red');
 		        	}
 		        });
 		    }
@@ -804,6 +868,8 @@
 			declareFixedDividend();
 			// repurchase shares
 			repurchaseShares();
+			//Upload offer document for eoi
+			// uploadEOIOfferDoc();
 		});
 
 		// Submit dividend form
@@ -815,7 +881,7 @@
         $( ".datepicker" ).datepicker({
         	'dateFormat': 'dd/mm/yy'
         });
-        sendEOIAppFormLink();
+        // sendEOIAppFormLink();
 	});
 
 	// Declare dividend
@@ -889,11 +955,14 @@
 		});
 	}
 
+	{{--
+
 	function sendEOIAppFormLink(){
-		$('.send-app-form-link').click(function(e){
-			e.preventDefault();
-			var project_id = {{$project->id}};
-			var eoi_id = $(this).attr('data');
+	$('#expression_of_interest_tab').on('click', '.send-app-form-link', function(e){
+		e.preventDefault();
+		var project_id = {{$project->id}};
+		var eoi_id = $(this).attr('data');
+		if (confirm('Are you sure you want to delete this?')) {
 			$('.loader-overlay').show();
 			$.ajax({
 	          	url: '/dashboard/project/interest/link',
@@ -905,12 +974,15 @@
 	          	},
 	        }).done(function(data){
 	        	if(data){
-	        		$('.send-app-form-link').parent().html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
+	        		$('#offer_link'+eoi_id).html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
 	        		$('.loader-overlay').hide();
 	        	}
 	        });
-		});
-	}
+	    }
+	});
+
+	--}}
+	// }
 
 </script>
 @endsection

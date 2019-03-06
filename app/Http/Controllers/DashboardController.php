@@ -1131,28 +1131,42 @@ class DashboardController extends Controller
 
     public function uploadOfferDoc(Request $request)
     {
-        $this->validate($request, [
-            'offer_doc' => 'required|mimes:pdf',
-            'eoi_id' => 'required'
-        ]);
-        $projectEoi = ProjectEOI::find($request->eoi_id);
+            $this->validate($request, [
+                'offer_doc' => 'required|mimes:pdf',
+                'eoi_id' => 'required'
+            ]);
+            $projectEoi = ProjectEOI::find($request->eoi_id);
 
-        if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
-            File::makeDirectory(public_path().'/assets/documents/eoi/'.$projectEoi->id, 0775, true);
-        }
-        if($projectEoi->offer_doc_path){
-            File::delete(public_path().$projectEoi->offer_doc_path);
-        }
-        $destinationPath = '/assets/documents/eoi/'.$projectEoi->id;
-        $uniqueFileName = uniqid() . '-' . $request->file('offer_doc')->getClientOriginalName();
-        $request->file('offer_doc')->move(public_path().$destinationPath, $uniqueFileName);
+            if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
+                File::makeDirectory(public_path().'/assets/documents/eoi/'.$projectEoi->id, 0775, true);
+            }
+            if($projectEoi->offer_doc_path){
+                File::delete(public_path().$projectEoi->offer_doc_path);
+            }
+            $destinationPath = '/assets/documents/eoi/'.$projectEoi->id;
+            $uniqueFileName = uniqid() . '-' . $request->file('offer_doc')->getClientOriginalName();
+            $request->file('offer_doc')->move(public_path().$destinationPath, $uniqueFileName);
 
-        $projectEoi->update([
-            'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
-            'offer_doc_name' => $uniqueFileName
-        ]);
-
-        return redirect()->back()->with('success', 'File uploaded successfully.');
+            $projectEoi->update([
+                'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
+                'offer_doc_name' => $uniqueFileName
+            ]);
+            if($projectEoi->offer_doc_path) {
+                return response()->json([
+                    'status' => '1',
+                    'message' => 'File Uploaded Successfully. You can now send application link to the user',
+                    'eoi_id' => $projectEoi->id,
+                    'offer_doc_path' => $projectEoi->offer_doc_path,
+                    'offer_doc_name' => $projectEoi->offer_doc_name,
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status' => '0',
+                    'message' => 'Something went wrong.',
+                ]);
+            }
     }
 
     public function kycRequests()
