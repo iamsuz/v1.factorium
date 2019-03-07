@@ -153,7 +153,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<label>Company or Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" required  >
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" @if($investment->investing_as === 'Trust or Company') required @endif  >
 													</div>
 												</div><br>
 											</div>
@@ -175,10 +175,10 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<label>Joint Investor Details</label>
 												<div class="row">
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" @if($investment->investing_as === 'Joint Investor') required @endif  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
 													</div>
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" @if($investment->investing_as === 'Joint Investor') required @endif  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
 													</div>
 												</div>
 												<br>
@@ -188,7 +188,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 									</div>
 									{{-- @endif --}}
 
-									
+
 									<div class="@if($investment->project->retail_vs_wholesale) hide @endif">
 										<div class="row" id="wholesale_project">
 											<div class="col-md-12"><br>
@@ -508,7 +508,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 			qty.bind('keyup mouseup', function (){
 				var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 				$("#application_money").val(total);
-			});	
+			});
 		});
 
 </script>
