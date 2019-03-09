@@ -929,7 +929,7 @@ Offer Doc
 			@if(Auth::guest())
 			e.preventDefault();
 			$('#checkEmail').modal('show');
-			$('.checkEmailRequest').click(function (event) {
+			$('.checkEmailRequest').on('click', function (event) {
 				event.preventDefault();
 				var _token = $('meta[name="csrf-token"]').attr('content');
 				var email = $('#defaultForm-email').val();
@@ -974,40 +974,61 @@ Offer Doc
 						$('#eoiREmail').val(email);
 						$('#eoiREmail').prop('disabled',true);
 						$('#requestFormPhoneNumber').css('display','block');
+						$('.user-name-details-section').removeClass('hide');
 						$('#registerModal').modal({
 							keyboard: false,
 							backdrop: 'static'
 						});
-						$('#submitform').click(function (e) {
+						$('#submitform').on('click', function (e) {
 							var projectId = {{$project->id}};
 							e.preventDefault();
+
+							if($.trim($('#reg_first_name').val()) == '') {
+								$('#reg_first_name').siblings('.text-danger').remove();
+								$('#reg_first_name').after('<div class="text-danger"><small>First name is required</small></div>');
+								return false;
+							} else {
+								$('#reg_first_name').siblings('.text-danger').remove();
+							}
+							if($.trim($('#reg_last_name').val()) == '') {
+								$('#reg_last_name').siblings('.text-danger').remove();
+								$('#reg_last_name').after('<div class="text-danger"><small>Last name is required</small></div>');
+								return false;
+							} else {
+								$('#reg_last_name').siblings('.text-danger').remove();
+							}
 							$('#RegPassword').on('input',function (e) {
 								var name=$('#RegPassword').val();
 								if(name.length == 0){
-									$('#RegPassword').after('<div class="red">Password is Required</div>');
+									$('#RegPassword').siblings('.text-danger').remove();
+									$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
 								}
 							});
 							var password = $('#RegPassword').val();
 							if(password.length == 0){
-								$('#RegPassword').after('<div class="red">Password is Required</div>');
+								$('#RegPassword').siblings('.text-danger').remove();
+								$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
 								return false;
 							}
 							$('#requestFormPhoneNumber').on('input',function (e) {
 								var phone_number = $('#requestFormPhoneNumber').val();
 								if(phone_number.length == 0){
-									$('#requestFormPhoneNumber').after('<div class="red">Phone number is Required</div>');
+									$('#requestFormPhoneNumber').siblings('.text-danger').remove();
+									$('#requestFormPhoneNumber').after('<div class="text-danger"><small>Phone number is Required</small></div>');
 									return false;
 								}
 							});
 							var phone_number = $('#requestFormPhoneNumber').val();
 							if(phone_number.length == 0){
-								$('#requestFormPhoneNumber').after('<div class="red">Phone number is Required</div>');
+								$('#requestFormPhoneNumber').siblings('.text-danger').remove();
+								$('#requestFormPhoneNumber').after('<div class="text-danger"><small>Phone number is Required</small></div>');
 								return false;
 							}
 							var captchaToken = $('#g-recaptcha-response').val();
 							$('.g-recaptcha-response').val(captchaToken);
 							if (captchaToken.length == 0) {
-								$('.g-recaptcha-response').after('<div class="red">Recaptcha is Required</div>');
+								$('.g-recaptcha-response').siblings('.text-danger').remove();
+								$('.g-recaptcha-response').after('<div class="text-danger"><small>Recaptcha is Required</small></div>');
 								return false;
 							}
 							$('#passwordOffer').val(password);
@@ -1018,14 +1039,22 @@ Offer Doc
 									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								},
 								url: "/users/register/"+projectId+"/requestformfilling",
-								data: {email:email,password:password,_token:_token,request_form_project_id:projectId,phone_number:phone_number},
+								data: {
+									email:email,
+									password:password,
+									_token:_token,
+									request_form_project_id:projectId,
+									phone_number:phone_number,
+									first_name: $('#reg_first_name').val(),
+									last_name: $('#reg_last_name').val()
+								},
 								dataType: 'json',
 								success: function (data) {
 									if(data.success){
 										$('#registerModal').modal('hide');
 										$('.loader-overlay').hide();
     									setTimeout(function(){// wait for 5 secs(2)
-           								window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+           								window.location.href = "/users/register/offer/code?fn="+data.data.first_name+"&ln="+data.data.last_name; // then reload the page.(3)
            							}, 100);
     									console.log('inside success');
     								}
@@ -1207,16 +1236,19 @@ $(document).ready(function(){
 
     			/* Start of section - Register user without verification email */
     			$('#eoiREmail').val(email);
+    			$('.user-name-details-section').addClass('hide');
     			$('#registerModal').modal({
     				keyboard: false,
     				backdrop: 'static'
     			});
 
-    			$('#submitform').click(function(){
+    			$('#submitform').unbind('click');
+				$('#submitform').on('click', function(){
     				$('#submit1').trigger('click');
     			});
 
-    			$('form[name=offer_user_registration_form]').one('submit', function(e) {
+    			$('form[name=offer_user_registration_form]').unbind('submit');
+    			$('form[name=offer_user_registration_form]').on('submit', function(e) {
     				var captchaToken = $('#g-recaptcha-response').val();
     				$('.g-recaptcha-response').val(captchaToken);
     				$('#offerEmail').val($('#eoiREmail').val());
@@ -1225,12 +1257,16 @@ $(document).ready(function(){
     				$('#RegPassword').on('input',function (e) {
     					var name=$('#RegPassword').val();
     					if(name.length == 0){
-    						$('#RegPassword').after('<div class="red">Password is Required</div>');
+    						$('#RegPassword').siblings('.text-danger').remove();
+    						$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
+    					} else {
+    						$('#RegPassword').siblings('.text-danger').remove();
     					}
     				});
     				var password = $('#RegPassword').val();
     				if(password.length == 0){
-    					$('#RegPassword').after('<div class="red">Password is Required</div>');
+    					$('#RegPassword').siblings('.text-danger').remove();
+    					$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
     					return false;
     				}
     				$('#passwordOffer').val(password);
@@ -1250,8 +1286,7 @@ $(document).ready(function(){
     							$('#myform').unbind('submit').submit();
     							console.log('offer submitted');
     						} else {
-    							alert(data.message);
-    							// $('#registerModal').modal('hide');
+    							$('#session_message').html('<div class="alert alert-danger alert-sm"><small>'+data.message+'</small></div>');
     							$('.loader-overlay').hide();
     						}
     					},
