@@ -1057,9 +1057,18 @@ Offer Doc
 										$('#registerModal').modal('hide');
 										$('.loader-overlay').hide();
     									setTimeout(function(){// wait for 5 secs(2)
-           								window.location.href = "/users/register/offer/code?fn="+data.data.first_name+"&ln="+data.data.last_name; // then reload the page.(3)
-           							}, 100);
+	           								window.location.href = "/users/register/offer/code?fn="+data.data.first_name+"&ln="+data.data.last_name; // then reload the page.(3)
+	           							}, 100);
     									console.log('inside success');
+    								} else {
+    									$('.loader-overlay').hide();
+    									if(data.errors) {
+    										var errorsText = '';
+    										$.each(data.errors, function(k, v) {
+    											errorsText += "- " + v + "<br>";
+    										});
+    										$('#session_message').html('<div class="alert alert-danger"><small>'+errorsText+'</small></div>');
+    									}
     								}
     							},
     							error: function (error) {

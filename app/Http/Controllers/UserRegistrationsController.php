@@ -878,7 +878,8 @@ class UserRegistrationsController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'password'=>'required|min:6|max:60'
         ]);
 
         if(isset($request->reg_first_name) && isset($request->reg_last_name)) {
@@ -893,11 +894,9 @@ class UserRegistrationsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()
-            ->back()
-            ->withErrors($validator)
-            ->withInput();
+            return Response::json(['success' => false, 'errors' => $validator->errors()]);
         }
+
         if($validator1->fails()){
             $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
             $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
