@@ -509,6 +509,16 @@ class DashboardController extends Controller
         // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
 
+    public function hideApplicationFillupRequest(Request $request)
+    {
+        if ($request->ajax()) {
+            $application_request = InvestmentRequest::findOrFail($request->application_request_id);
+            $application_request->deleted_at = Carbon::now();
+            $application_request->save();
+            return 1;
+        }
+    }
+
     public function investmentReminder(AppMailer $mailer, $investment_id){
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $mailer->sendInvestmentReminderToUser($investment);
@@ -1096,7 +1106,7 @@ class DashboardController extends Controller
      */
     public function investmentRequests()
     {
-        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)
+        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)->where('deleted_at', NULL)
         ->whereRaw('investment_requests.project_id IN (select id from projects where project_site="'.url().'")')
         ->get();
 
