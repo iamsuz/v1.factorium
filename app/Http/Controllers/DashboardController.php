@@ -38,6 +38,7 @@ use App\UserRegistration;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use SendGrid\Mail\Mail as SendgridMail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class DashboardController extends Controller
@@ -492,29 +493,18 @@ class DashboardController extends Controller
     public function hideInvestment(Request $request)
     {
         if ($request->ajax()) {
-            // $project = Project::find($request->project_id);
-            // $eoi = ProjectEOI::find($request->eoi_id);
-            // $mailer->sendEoiApplicationLinkToUser($project, $eoi);
-            // $eoi->update([
-            //     'is_link_sent' => 1
-            // ]);
             $investment = InvestmentInvestor::findOrFail($request->investment_id);
             $investment->hide_investment = 1;
             $investment->save();
             return 1;
         }
-        // $investment = InvestmentInvestor::findOrFail($investment_id);
-        // $investment->hide_investment = 1;
-        // $investment->save();
-        // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
 
     public function hideApplicationFillupRequest(Request $request)
     {
         if ($request->ajax()) {
             $application_request = InvestmentRequest::findOrFail($request->application_request_id);
-            $application_request->deleted_at = Carbon::now();
-            $application_request->save();
+            $application_request->delete();
             return 1;
         }
     }
@@ -1106,7 +1096,7 @@ class DashboardController extends Controller
      */
     public function investmentRequests()
     {
-        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)->where('deleted_at', NULL)
+        $investmentRequests = InvestmentRequest::where('is_link_expired', 0)
         ->whereRaw('investment_requests.project_id IN (select id from projects where project_site="'.url().'")')
         ->get();
 
