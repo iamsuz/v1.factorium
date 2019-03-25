@@ -24,7 +24,9 @@ class AddDeletedAtToInvestmentRequestsTable extends Migration
      */
     public function down()
     {
-        $table->dropColumn('deleted_at');
+        Schema::table('investment_requests', function (Blueprint $table) {
+            $table->dropColumn('deleted_at');
+        });
     }
 }
 
