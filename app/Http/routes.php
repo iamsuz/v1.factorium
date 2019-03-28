@@ -73,7 +73,6 @@ Route::patch('/dashboard/projects/{investment_id}/investments/accept', ['as'=>'d
 Route::get('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document','uses'=>'DashboardController@documents']);
 Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.upload','uses'=>'DashboardController@uploadDocuments']);
 Route::get('/dashboard/application/{id}',['as'=>'dashboard.application.view','uses'=>'DashboardController@viewApplication']);
-Route::post('/dashboard/application/{id}/edit',['as'=>'dashboard.application.edit','uses'=>'DashboardController@editApplication']);
 Route::post('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
 
 Route::pattern('notes', '[0-9]+');
