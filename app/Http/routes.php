@@ -73,7 +73,6 @@ Route::patch('/dashboard/projects/{investment_id}/investments/accept', ['as'=>'d
 Route::get('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document','uses'=>'DashboardController@documents']);
 Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.upload','uses'=>'DashboardController@uploadDocuments']);
 Route::get('/dashboard/application/{id}',['as'=>'dashboard.application.view','uses'=>'DashboardController@viewApplication']);
-Route::post('/dashboard/application/{id}/edit',['as'=>'dashboard.application.edit','uses'=>'DashboardController@editApplication']);
 Route::post('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
 
 Route::pattern('notes', '[0-9]+');
@@ -297,6 +296,7 @@ Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.can
 Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
 Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.cancel', 'uses'=>'OfferController@cancelRequestForm']);
 Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
+Route::post('/dashboard/projects/hideApplicationFillupRequest', ['as'=>'dashboard.investment.hideApplicationFillupRequest', 'uses'=>'DashboardController@hideApplicationFillupRequest']);
 Route::post('/configuration/uploadprojectProgressCircleImages', ['as'=>'configuration.uploadprojectProgressCircleImages', 'uses'=>'SiteConfigurationsController@uploadprojectProgressCircleImages']);
 Route::post('/configuration/uploadprospectus',['as'=>'configuration.uploadProspectus','uses'=>'SiteConfigurationsController@uploadProspectus']);
 Route::post('/projects/prospectus', ['as'=>'projects.prospectus', 'uses'=>'ProjectsController@prospectusDownload']);
