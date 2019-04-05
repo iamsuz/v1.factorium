@@ -1,0 +1,9 @@
+1. Header hover color yellow (same as vestabyte)
+2. About Us page comes blank although updated.
+3. Logo on homepage becomes small and gets out of header but it is ok in FAQ and about us.
+4. Page links in FAQ and About us are not mid aligned.
+6. Investments section doesnt come up properly (Image size is small)
+7. Submit venture and view venture button is mis alligned due to text above
+8. We need to remove Developer or Business looking for Funding? segment and only keep The second option.
+9. Title sometimes shows Westminster Capital then Vestabytes or Make an investment from just $2000
+10. Investment segment's description text is not aligned

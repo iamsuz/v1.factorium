@@ -1,3 +1,19 @@
+<?php
+header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
+session_start();
+
+$ua = $_SERVER['HTTP_USER_AGENT'];
+// 如果是safari
+if(strstr($ua, 'Safari')!='' && strstr($ua, 'Chrome')==''){
+    // 如果未设置第一方cookie
+    if(!isset($_SESSION['safari'])){
+        echo '<script type="text/javascript"> window.top.location="/setSession.php"; </script>';
+        exit();
+    }
+}
+
+$_SESSION['code'] = md5(microtime(true));
+?>
 <!DOCTYPE Html>
 <!--[if IE 8]> <Html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <Html lang="en" class="ie9"> <![endif]-->
@@ -139,6 +155,7 @@
 	 ga('send', 'pageview');
  </script>
 </head>
+<?php flush(); ?>
 <body data-spy="scroll" >
 	<!-- Google tag manager body script if set  -->
 	@if($siteConfiguration->tag_manager_body)
