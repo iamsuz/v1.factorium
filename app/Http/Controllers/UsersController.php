@@ -17,6 +17,7 @@ use App\Project;
 use Carbon\Carbon;
 use App\IdDocument;
 use App\Investment;
+use App\Market;
 use App\ReferralLink;
 use App\InvestingJoint;
 use Illuminate\Http\Request;
@@ -423,16 +424,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-           $role = Role::whereRole('investor')->firstOrFail();
+         $role = Role::whereRole('investor')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * delete Developer role from user
@@ -448,16 +449,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-           $role = Role::whereRole('developer')->firstOrFail();
+         $role = Role::whereRole('developer')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * get user investments
@@ -492,7 +493,13 @@ class UsersController extends Controller
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         $project = $investment->project;
         $user = $investment->user;
-        return view('pdf.invoiceHtml',compact('investment','color','user','project','investing','shareEnd','shareStart'));
+        $client = new \GuzzleHttp\Client();
+        $request = $client->request('GET','http://localhost:5050/getBalance',[
+            'query' => ['user_id' => $user->id,'project_id'=>$project->id]
+        ]);
+        $response = $request->getBody()->getContents();
+        $result = json_decode($response);
+        return view('pdf.invoiceHtml',compact('investment','color','user','project','investing','shareEnd','shareStart','result'));
         // $pdf->setPaper('a4', 'landscape');
         // $pdf->setOptions(['Content-Type' => 'application/pdf','images' => true]);
         // return $pdf->stream('invoice.pdf',200,['Content-Type' => 'application/pdf','Content-Disposition' => 'inline']);
@@ -673,5 +680,55 @@ class UsersController extends Controller
             $refUsers[] = User::find($relationRef->user_id);
         }
         return view('users.userReferral',compact('user','color','refUsers'));
+    }
+
+    public function usersWallet(Request $request)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = Auth::user();
+        if(!$user->wallet_address){
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('GET','http://localhost:5050/userWallet',[
+                'query'=> ['user_id'=> $user->id]
+            ]);
+            $response = $request->getBody()->getContents();
+            $result = json_decode($response);
+            $user->wallet_address = $result->signingKey->address;
+            $user->save();
+        }
+        $investments = InvestmentInvestor::select('project_id')->distinct()->where('user_id', $user->id)
+        ->where('project_site', url())->where('accepted', '1')->get();
+        if($investments){
+            $project_balance = [];
+            foreach ($investments as $investment) {
+                $projectName = Project::find($investment->project_id);
+                $client = new \GuzzleHttp\Client();
+                $request = $client->request('GET','http://localhost:5050/getBalance',[
+                    'query'=>['user_id'=> $user->id,'project_id'=>$investment->project_id]
+                ]);
+                $response = $request->getBody()->getContents();
+                $balance = json_decode($response);
+                $project_balance[$projectName->title] = $balance;
+            }
+        }
+        return view('users.wallet',compact('user','color','project_balance'));
+    }
+
+    public function market(Request $request)
+    {
+        $user = Auth::user();
+        $color = Color::where('project_site',url())->first();
+        $projects = Project::where('project_site',url())->where('active',1)->get();
+        $askingOrders = Market::all();
+        return view('users.market',compact('user','color','projects','askingOrders'));
+    }
+
+    public function marketStore(Request $request)
+    {
+        $user = Auth::user();
+        $color = Color::where('project_site',url())->first();
+        $request['user_id'] = $user->id;
+        $market = Market::create($request->all());
+        return redirect()->back()->withMessage('Your Order for BID is succesfully placed');
     }
 }

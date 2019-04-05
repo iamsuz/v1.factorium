@@ -5,6 +5,7 @@ use App\SiteConfiguration;
 use App\User;
 use App\Color;
 use Auth;
+use Config;
 
 class SiteConfigurationHelper
 {
@@ -35,6 +36,14 @@ class SiteConfigurationHelper
     {
         $color = Color::where('project_site', url())->first();
         return $color;
+    }
+
+    public static function isMasterRole()
+    {
+        if(Auth::user()->roles->contains('role', Config::get('constants.roles.MASTER'))){
+            return 1;
+        }
+        return 0;
     }
 }
 

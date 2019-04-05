@@ -19,7 +19,7 @@ class InvestmentInvestor extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'project_id', 'investment_id','amount', 'accepted','investment_confirmation', 'share_certificate_issued_at', 'share_number', 'share_certificate_path', 'is_cancelled', 'is_repurchased', 'signature_data', 'application_path', 'interested_to_buy','signature_type','signature_data_type', 'hide_investment', 'investing_as'];
+    protected $fillable = ['user_id', 'project_id', 'investment_id','amount', 'accepted','investment_confirmation', 'share_certificate_issued_at', 'share_number', 'share_certificate_path', 'is_cancelled', 'is_repurchased', 'signature_data', 'application_path', 'interested_to_buy','signature_type','signature_data_type', 'hide_investment', 'investing_as','transaction_hash'];
 
     /**
      * boolean fields

@@ -50,7 +50,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 												</p>
 												<label>I/We apply for *</label>
-												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$investment->project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$investment->project->investment->minimum_accepted_amount}}" step="5" required value="{{$investment->amount}}">
+												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$investment->project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$investment->project->investment->minimum_accepted_amount}}" step="100" required value="{{$investment->amount}}">
 												@if($investment->project->share_vs_unit == 1)
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@elseif($investment->project->share_vs_unit == 2)
@@ -153,7 +153,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<label>Company or Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" @if($investment->investing_as === 'Trust or Company') required @endif  >
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" required  >
 													</div>
 												</div><br>
 											</div>
@@ -175,10 +175,10 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<label>Joint Investor Details</label>
 												<div class="row">
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" @if($investment->investing_as === 'Joint Investor') required @endif  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
 													</div>
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" @if($investment->investing_as === 'Joint Investor') required @endif  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
 													</div>
 												</div>
 												<br>
@@ -188,7 +188,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 									</div>
 									{{-- @endif --}}
 
-
+									
 									<div class="@if($investment->project->retail_vs_wholesale) hide @endif">
 										<div class="row" id="wholesale_project">
 											<div class="col-md-12"><br>
@@ -508,7 +508,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 			qty.bind('keyup mouseup', function (){
 				var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 				$("#application_money").val(total);
-			});
+			});	
 		});
 
 </script>

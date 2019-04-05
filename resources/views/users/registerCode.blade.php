@@ -38,8 +38,6 @@ Thank You | @parent
 											</div>
 										</div>
 									</div>
-									<input type="hidden" name="first_name" value="{{ $userData['fn'] }}">
-									<input type="hidden" name="last_name" value="{{ $userData['ln'] }}">
 									<button type="submit" class="btn btn-lg btn-danger font-semibold text-right second_color_btn eoiFormSubmitBtn">Confirm</button>
 								</form>
 							</small>

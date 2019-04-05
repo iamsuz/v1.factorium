@@ -1751,6 +1751,103 @@ Edit {{$project->title}} | Dashboard | @parent
 								{!! Form::close() !!}
 							</div>
 						</div>
+
+						<!-- ----------------------------------- -->
+						<!-- START: Project tokenization process -->
+						<!-- ----------------------------------- -->
+
+						@if(App\Helpers\SiteConfigurationHelper::isMasterRole())
+						@if($project->wallet_address)
+
+						<div class="row" id="tokenization_section" style="padding: 80px 0;">
+							<div class="col-md-8 col-md-offset-2">
+								<div class="row well">
+									<h2 class="text-center">Tokenization</h2>
+									<p class="text-center"><small><strong>Project Wallet Address:</strong><br>{{$project->wallet_address}}</small></p>
+									<hr>
+
+									@if(!$project->contract_address)
+
+									<div class="col-sm-8 col-sm-offset-2">
+										<form action="#" method="POST" name="tokenization_form">
+											{!! csrf_field() !!}
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label for="token_symbol">Token Symbol:</label>
+										                <input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" required minlength="3" maxlength="4" style="text-transform:uppercase">
+										                <small><small class="text-info">** Symbol length must be 3 to 4 chars.</small></small>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<label for="number_of_tokens">Number of tokens</label>
+										                <input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->goal_amount }}" min="100" >
+										            </div>
+												</div>
+											</div>
+											<br>
+											<div class="form-group text-center">
+												<input type="hidden" name="project_id" value="{{ $project->id }}">
+												<button type="submit" class="btn btn-primary btn-block"> Generate {{$project->title}} Tokens </button>
+											</div>
+										</form>
+									</div>
+
+									@else
+
+										@if(!$project->is_wallet_tokenized)
+											<!-- START: Tokenize project wallet -->
+											<div class="alert alert-warning text-center">
+												You will have to verify your contract to proceed further. Please <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to verify</a>.
+												<br><strong>Ignore if already done!</strong>
+											</div>
+											<div class="text-center">
+												<p>Click on below button to fill your project wallet with alloted tokens.</p>
+												<p><small>{{$project->wallet_address}}</small></p>
+												<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
+											</div>
+											<!-- END: Tokenize project wallet -->
+										@else
+
+										<div class="alert alert-success text-center">
+											<h4>Tokenization process is done!</h4>
+											@if($contract)
+											<small>
+												<p>
+													<label>Token Name: </label><br>
+													<span>{{$contract->name}}</span>
+												</p>
+												<p>
+													<label>Token Symbol: </label><br>
+													<span>{{$contract->symbol}}</span>
+												</p>
+												<p>
+													<label>Total supply: </label><br>
+													<span>{{$contract->totalSupply}}</span>
+												</p>
+												<p>
+													<label>Available supply: </label><br>
+													<span style="font-size: 20px;">{{$balance->balance}}</span>
+												</p>
+											</small>
+											@endif
+										</div>
+
+										@endif
+
+									@endif
+
+								</div>
+							</div>
+						</div>
+
+						@endif
+						@endif
+
+						<!-- --------------------------------- -->
+						<!-- END: Project tokenization process -->
+						<!-- --------------------------------- -->
+
 					</div>
 				</div>
 			</section>
@@ -2167,6 +2264,8 @@ Edit {{$project->title}} | Dashboard | @parent
 		performCropOnImage();
 		uploadProjectSpvMDSign();
 		previewShareCertificate();
+		projectTokenization();
+		loadProjectWallet();
 	});
 
 	function uploadProjectSPVLogo(){
@@ -2444,6 +2543,80 @@ Edit {{$project->title}} | Dashboard | @parent
     	});
     }
 
+    function projectTokenization() {
+    	$('form[name=tokenization_form]').on('submit', function(e) {
+    		e.preventDefault();
+    		// ToDo
+    		var number_of_tokens = $('#number_of_tokens').val();
+    		var token_symbol = $('#token_symbol').val();
+    		if($.trim(token_symbol) == '') {
+    			alert('Incorrect token symbol.');
+    			return false;
+    		}
+    		if(parseInt(number_of_tokens) < 100) {
+    			alert('Number of tokens should be atleast 100.');
+    			return false;
+    		}
+    		$('form[name=tokenization_form] button[type=submit]').attr('disabled', 'disabled');
+
+    		var form = $('form[name=tokenization_form]');
+    		$('.loader-overlay').show();
+    		$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait while your request is processed. Please do not refresh or reload the page.</p><br></div>');
+
+            $.ajax({
+                url: "{{route('konkrete.tokenize')}}",
+                type: 'POST',
+                dataType: 'JSON',
+                data: form.serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                	console.log(data);
+        			alert(data.message);
+            		location.reload();
+            		$('.loader-overlay').hide();
+                },
+                error: function(error) {
+                	// Error
+                	console.log(error);
+                	alert('Something went wrong!');
+            		$('.loader-overlay').hide();
+                }
+            });
+    	});
+    }
+
+    function loadProjectWallet() {
+    	$('#load_project_wallet').on('click', function(e) {
+    		var projectId = '{{ $project->id }}';
+    		$(this).attr('disabled', 'disabled');
+    		$('.loader-overlay').show();
+    		$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait while your request is processed. Please do not refresh or reload the page.</p><br></div>');
+
+    		$.ajax({
+    			url: "{{ route('konkrete.loadWallet', $project->id) }}",
+    			type: 'GET',
+    			dataType: 'JSON',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                	console.log(data);
+        			alert(data.message);
+            		location.reload();
+            		$('.loader-overlay').hide();
+                },
+                error: function(error) {
+                	// Error
+                	console.log(error);
+                	alert('Something went wrong!');
+            		$('.loader-overlay').hide();
+                }
+    		});
+
+    	});
+    }
 
 </script>
 @stop

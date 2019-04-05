@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InvestmentRequest extends Model
 {
@@ -20,15 +19,6 @@ class InvestmentRequest extends Model
      * @var array
      */
     protected $fillable = ['user_id', 'project_id', 'is_link_expired'];
-
-    use SoftDeletes;
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
 
     /**
      * belongs to relationship with projects

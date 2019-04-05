@@ -44,7 +44,7 @@ Create New Project | @parent
 								<label class="ven btn btn-n2 eb-checkbox col-md-6 col-xs-12">
 									<input type="radio" name="property_type" id="venture" autocomplete="off" value="2" tabindex="2">
 									<img src="{{asset('assets/images/venture_p.png')}}" class="img-responsive pull-left">
-									<font class="font-regular" style="font-size:1.7rem; color:#fff; margin-left:-29px;"> Venture</font> 
+									<font class="font-regular" style="font-size:1.7rem; color:#fff; margin-left:-29px;"> Venture</font>
 								</label>
 							</div>
 						</div>
@@ -253,6 +253,7 @@ Create New Project | @parent
 	</div>
 	@stop
 	@section('js-section')
+	{!! Html::script('js/konkrete.js') !!}
 	<script>
 		$(document).ready(function(){
 			$('input[name="property_type"]').on('change', function(){

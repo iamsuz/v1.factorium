@@ -932,7 +932,7 @@ Offer Doc
 			@if(Auth::guest())
 			e.preventDefault();
 			$('#checkEmail').modal('show');
-			$('.checkEmailRequest').on('click', function (event) {
+			$('.checkEmailRequest').click(function (event) {
 				event.preventDefault();
 				var _token = $('meta[name="csrf-token"]').attr('content');
 				var email = $('#defaultForm-email').val();
@@ -977,61 +977,40 @@ Offer Doc
 						$('#eoiREmail').val(email);
 						$('#eoiREmail').prop('disabled',true);
 						$('#requestFormPhoneNumber').css('display','block');
-						$('.user-name-details-section').removeClass('hide');
 						$('#registerModal').modal({
 							keyboard: false,
 							backdrop: 'static'
 						});
-						$('#submitform').on('click', function (e) {
+						$('#submitform').click(function (e) {
 							var projectId = {{$project->id}};
 							e.preventDefault();
-
-							if($.trim($('#reg_first_name').val()) == '') {
-								$('#reg_first_name').siblings('.text-danger').remove();
-								$('#reg_first_name').after('<div class="text-danger"><small>First name is required</small></div>');
-								return false;
-							} else {
-								$('#reg_first_name').siblings('.text-danger').remove();
-							}
-							if($.trim($('#reg_last_name').val()) == '') {
-								$('#reg_last_name').siblings('.text-danger').remove();
-								$('#reg_last_name').after('<div class="text-danger"><small>Last name is required</small></div>');
-								return false;
-							} else {
-								$('#reg_last_name').siblings('.text-danger').remove();
-							}
 							$('#RegPassword').on('input',function (e) {
 								var name=$('#RegPassword').val();
 								if(name.length == 0){
-									$('#RegPassword').siblings('.text-danger').remove();
-									$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
+									$('#RegPassword').after('<div class="red">Password is Required</div>');
 								}
 							});
 							var password = $('#RegPassword').val();
 							if(password.length == 0){
-								$('#RegPassword').siblings('.text-danger').remove();
-								$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
+								$('#RegPassword').after('<div class="red">Password is Required</div>');
 								return false;
 							}
 							$('#requestFormPhoneNumber').on('input',function (e) {
 								var phone_number = $('#requestFormPhoneNumber').val();
 								if(phone_number.length == 0){
-									$('#requestFormPhoneNumber').siblings('.text-danger').remove();
-									$('#requestFormPhoneNumber').after('<div class="text-danger"><small>Phone number is Required</small></div>');
+									$('#requestFormPhoneNumber').after('<div class="red">Phone number is Required</div>');
 									return false;
 								}
 							});
 							var phone_number = $('#requestFormPhoneNumber').val();
 							if(phone_number.length == 0){
-								$('#requestFormPhoneNumber').siblings('.text-danger').remove();
-								$('#requestFormPhoneNumber').after('<div class="text-danger"><small>Phone number is Required</small></div>');
+								$('#requestFormPhoneNumber').after('<div class="red">Phone number is Required</div>');
 								return false;
 							}
 							var captchaToken = $('#g-recaptcha-response').val();
 							$('.g-recaptcha-response').val(captchaToken);
 							if (captchaToken.length == 0) {
-								$('.g-recaptcha-response').siblings('.text-danger').remove();
-								$('.g-recaptcha-response').after('<div class="text-danger"><small>Recaptcha is Required</small></div>');
+								$('.g-recaptcha-response').after('<div class="red">Recaptcha is Required</div>');
 								return false;
 							}
 							$('#passwordOffer').val(password);
@@ -1042,33 +1021,16 @@ Offer Doc
 									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								},
 								url: "/users/register/"+projectId+"/requestformfilling",
-								data: {
-									email:email,
-									password:password,
-									_token:_token,
-									request_form_project_id:projectId,
-									phone_number:phone_number,
-									first_name: $('#reg_first_name').val(),
-									last_name: $('#reg_last_name').val()
-								},
+								data: {email:email,password:password,_token:_token,request_form_project_id:projectId,phone_number:phone_number},
 								dataType: 'json',
 								success: function (data) {
 									if(data.success){
 										$('#registerModal').modal('hide');
 										$('.loader-overlay').hide();
     									setTimeout(function(){// wait for 5 secs(2)
-	           								window.location.href = "/users/register/offer/code?fn="+data.data.first_name+"&ln="+data.data.last_name; // then reload the page.(3)
-	           							}, 100);
+           								window.location.href = "/users/register/offer/code"; // then reload the page.(3)
+           							}, 100);
     									console.log('inside success');
-    								} else {
-    									$('.loader-overlay').hide();
-    									if(data.errors) {
-    										var errorsText = '';
-    										$.each(data.errors, function(k, v) {
-    											errorsText += "- " + v + "<br>";
-    										});
-    										$('#session_message').html('<div class="alert alert-danger"><small>'+errorsText+'</small></div>');
-    									}
     								}
     							},
     							error: function (error) {
@@ -1179,7 +1141,7 @@ $(document).ready(function(){
     					success: function (data) {
     						if(!data.success){
     							$('.loader-overlay').hide();
-    							$('#loginModal #loginErrors').html('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
+    							$('#loginModal .modal-body').before('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
     							return false;
     						}
     						$('.loader-overlay').hide();
@@ -1248,19 +1210,16 @@ $(document).ready(function(){
 
     			/* Start of section - Register user without verification email */
     			$('#eoiREmail').val(email);
-    			$('.user-name-details-section').addClass('hide');
     			$('#registerModal').modal({
     				keyboard: false,
     				backdrop: 'static'
     			});
 
-    			$('#submitform').unbind('click');
-				$('#submitform').on('click', function(){
+    			$('#submitform').click(function(){
     				$('#submit1').trigger('click');
     			});
 
-    			$('form[name=offer_user_registration_form]').unbind('submit');
-    			$('form[name=offer_user_registration_form]').on('submit', function(e) {
+    			$('form[name=offer_user_registration_form]').one('submit', function(e) {
     				var captchaToken = $('#g-recaptcha-response').val();
     				$('.g-recaptcha-response').val(captchaToken);
     				$('#offerEmail').val($('#eoiREmail').val());
@@ -1269,16 +1228,12 @@ $(document).ready(function(){
     				$('#RegPassword').on('input',function (e) {
     					var name=$('#RegPassword').val();
     					if(name.length == 0){
-    						$('#RegPassword').siblings('.text-danger').remove();
-    						$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
-    					} else {
-    						$('#RegPassword').siblings('.text-danger').remove();
+    						$('#RegPassword').after('<div class="red">Password is Required</div>');
     					}
     				});
     				var password = $('#RegPassword').val();
     				if(password.length == 0){
-    					$('#RegPassword').siblings('.text-danger').remove();
-    					$('#RegPassword').after('<div class="text-danger"><small>Password is Required</small></div>');
+    					$('#RegPassword').after('<div class="red">Password is Required</div>');
     					return false;
     				}
     				$('#passwordOffer').val(password);
@@ -1298,7 +1253,8 @@ $(document).ready(function(){
     							$('#myform').unbind('submit').submit();
     							console.log('offer submitted');
     						} else {
-    							$('#session_message').html('<div class="alert alert-danger alert-sm"><small>'+data.message+'</small></div>');
+    							alert(data.message);
+    							$('#registerModal').modal('hide');
     							$('.loader-overlay').hide();
     						}
     					},

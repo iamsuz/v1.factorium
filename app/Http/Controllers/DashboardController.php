@@ -14,6 +14,7 @@ use App\Mailers\AppMailer;
 use App\Note;
 use App\Project;
 use App\User;
+use App\Market;
 use Carbon\Carbon;
 use App\IdDocument;
 use Chumper\Datatable\Datatable;
@@ -35,10 +36,10 @@ use App\ProjectEOI;
 use App\ProspectusDownload;
 use App\ProjectSpvDetail;
 use App\UserRegistration;
+use App\Http\Controllers\KonkreteController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use SendGrid\Mail\Mail as SendgridMail;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class DashboardController extends Controller
@@ -74,7 +75,7 @@ class DashboardController extends Controller
         $activeP = $projects->where('project_site',url())->where('active', true);
         $goal_amount = [];
         $amount = [];
-        $funds_received = [];        
+        $funds_received = [];
 
         foreach ($activeP as $proj) {
             $goal_amount[] = $proj->investment->goal_amount;
@@ -183,7 +184,8 @@ class DashboardController extends Controller
         ->where('accepted', 1)
         ->orderBy('share_certificate_issued_at','ASC')
         ->get();
-        $transactions = Transaction::where('project_id', $project_id)->get();
+        $transactions = Transaction::where('project_id', $project_id)->get()->groupby('user_id');
+        // dd($transactions);
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
         $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         $projectsEois = ProjectEOI::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
@@ -209,7 +211,21 @@ class DashboardController extends Controller
             $project->save();
         }
 
-        return view('dashboard.projects.edit', compact('project', 'investments','color'));
+        $contract = array();
+        if($project->contract_address && $project->is_wallet_tokenized) {
+            $konkrete = new KonkreteController();
+            $res = $konkrete->getContractDetails($project_id);
+            $contractRes = json_decode($res->getContent());
+            $contract = $contractRes->data;
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('GET','http://localhost:5050/getProjectBalance',[
+                'query'=>['project_id'=>$project->id]
+            ]);
+            $response = $request->getBody()->getContents();
+            $balance = json_decode($response);
+        }
+
+        return view('dashboard.projects.edit', compact('project', 'investments','color', 'contract','balance'));
     }
 
     public function activateUser($user_id)
@@ -326,6 +342,12 @@ class DashboardController extends Controller
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
         if($investment){
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('GET','http://localhost:5050/investment/transaction',[
+                'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+            ]);
+            $response = $request->getBody()->getContents();
+            $result = json_decode($response);
             $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
             ->where('accepted', 1)
             ->orderBy('share_certificate_issued_at','DESC')->get()
@@ -345,6 +367,7 @@ class DashboardController extends Controller
             $investment->money_received = 1;
             $investment->share_certificate_issued_at = Carbon::now();
             $investment->share_number = $shareCount;
+            $investment->transaction_hash = $result->hash;
             if($investment->project->share_vs_unit){
                 $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
             }else{
@@ -369,18 +392,19 @@ class DashboardController extends Controller
 
             $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
             if($investment->accepted) {
-                $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
-                $pdf->setPaper('a4', 'landscape');
-                if($investment->project->share_vs_unit) {
-                    $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                    $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-                }else {
-                    $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                    $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-                }
 
-                $mailer->sendInvoiceToUser($investment,$formLink);
-                $mailer->sendInvoiceToAdmin($investment,$formLink);
+                // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
+                // $pdf->setPaper('a4', 'landscape');
+                // if($investment->project->share_vs_unit) {
+                //     $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
+                //     $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+                // }else {
+                //     $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
+                //     $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+                // }
+
+                // $mailer->sendInvoiceToUser($investment,$formLink);
+                // $mailer->sendInvoiceToAdmin($investment,$formLink);
             }
             return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
         }
@@ -493,20 +517,21 @@ class DashboardController extends Controller
     public function hideInvestment(Request $request)
     {
         if ($request->ajax()) {
+            // $project = Project::find($request->project_id);
+            // $eoi = ProjectEOI::find($request->eoi_id);
+            // $mailer->sendEoiApplicationLinkToUser($project, $eoi);
+            // $eoi->update([
+            //     'is_link_sent' => 1
+            // ]);
             $investment = InvestmentInvestor::findOrFail($request->investment_id);
             $investment->hide_investment = 1;
             $investment->save();
             return 1;
         }
-    }
-
-    public function hideApplicationFillupRequest(Request $request)
-    {
-        if ($request->ajax()) {
-            $application_request = InvestmentRequest::findOrFail($request->application_request_id);
-            $application_request->delete();
-            return 1;
-        }
+        // $investment = InvestmentInvestor::findOrFail($investment_id);
+        // $investment->hide_investment = 1;
+        // $investment->save();
+        // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
 
     public function investmentReminder(AppMailer $mailer, $investment_id){
@@ -554,18 +579,18 @@ class DashboardController extends Controller
             return redirect()->back();
         }
 
-        $email = new SendgridMail(); 
+        $email = new SendgridMail();
         $email->setFrom($setupEmail, $setupEmailName);
         $email->setSubject($subject);
         $email->addTo($setupEmail);
         foreach (explode(',', $emailStr) as $userEmailId) {
             $email->addPersonalization(['to' => [['email' => $userEmailId]]]);
         }
-        
+
         $email->addContent(
             "text/html", $content
         );
-        
+
         $sendgrid = new \SendGrid($sendgridApiKey);
         try {
             $response = $sendgrid->send($email);
@@ -762,7 +787,6 @@ class DashboardController extends Controller
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
-
             // Add the records to project progress table
             if($project->share_vs_unit) {
                 ProjectProg::create([
@@ -801,6 +825,12 @@ class DashboardController extends Controller
                 $repurchaseAmount = round(($investment->amount * $repurchaseRate), 2);
                 $shareNumber = explode('-', $investment->share_number);
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                $client = new \GuzzleHttp\Client();
+                $request = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                    'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                ]);
+                $response = $request->getBody()->getContents();
+                $result = json_decode($response);
                 Transaction::create([
                     'user_id' => $investment->user_id,
                     'project_id' => $investment->project_id,
@@ -1046,8 +1076,8 @@ class DashboardController extends Controller
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-             return new TransportManager($app);
-         });
+               return new TransportManager($app);
+           });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);
@@ -1131,42 +1161,28 @@ class DashboardController extends Controller
 
     public function uploadOfferDoc(Request $request)
     {
-            $this->validate($request, [
-                'offer_doc' => 'required|mimes:pdf',
-                'eoi_id' => 'required'
-            ]);
-            $projectEoi = ProjectEOI::find($request->eoi_id);
+        $this->validate($request, [
+            'offer_doc' => 'required|mimes:pdf',
+            'eoi_id' => 'required'
+        ]);
+        $projectEoi = ProjectEOI::find($request->eoi_id);
 
-            if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
-                File::makeDirectory(public_path().'/assets/documents/eoi/'.$projectEoi->id, 0775, true);
-            }
-            if($projectEoi->offer_doc_path){
-                File::delete(public_path().$projectEoi->offer_doc_path);
-            }
-            $destinationPath = '/assets/documents/eoi/'.$projectEoi->id;
-            $uniqueFileName = uniqid() . '-' . $request->file('offer_doc')->getClientOriginalName();
-            $request->file('offer_doc')->move(public_path().$destinationPath, $uniqueFileName);
+        if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
+            File::makeDirectory(public_path().'/assets/documents/eoi/'.$projectEoi->id, 0775, true);
+        }
+        if($projectEoi->offer_doc_path){
+            File::delete(public_path().$projectEoi->offer_doc_path);
+        }
+        $destinationPath = '/assets/documents/eoi/'.$projectEoi->id;
+        $uniqueFileName = uniqid() . '-' . $request->file('offer_doc')->getClientOriginalName();
+        $request->file('offer_doc')->move(public_path().$destinationPath, $uniqueFileName);
 
-            $projectEoi->update([
-                'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
-                'offer_doc_name' => $uniqueFileName
-            ]);
-            if($projectEoi->offer_doc_path) {
-                return response()->json([
-                    'status' => '1',
-                    'message' => 'File Uploaded Successfully. You can now send application link to the user',
-                    'eoi_id' => $projectEoi->id,
-                    'offer_doc_path' => $projectEoi->offer_doc_path,
-                    'offer_doc_name' => $projectEoi->offer_doc_name,
-                ]);
-            }
-            else
-            {
-                return response()->json([
-                    'status' => '0',
-                    'message' => 'Something went wrong.',
-                ]);
-            }
+        $projectEoi->update([
+            'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
+            'offer_doc_name' => $uniqueFileName
+        ]);
+
+        return redirect()->back()->with('success', 'File uploaded successfully.');
     }
 
     public function kycRequests()
@@ -1307,87 +1323,85 @@ class DashboardController extends Controller
 
         //Save wholesale project input fields
         if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
-              $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
-              $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
-              $wholesale_investing->accountant_email = $request->accountant_email_txt;
-              $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+          $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
+          $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
+          $wholesale_investing->accountant_email = $request->accountant_email_txt;
+          $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
+      }
+      elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+          $wholesale_investing->experience_period = $request->experience_period_txt;
+          $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
+          $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
+          $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+      }
+      $wholesale_investing->save();
+
+      $result = $investment->update([
+        'amount' => $request->amount_to_invest,
+        'investing_as'=> $request->investing_as,
+        'interested_to_buy'=> $request->interested_to_buy,
+    ]);
+
+      if($request->investing_as !== 'Individual Investor'){
+        if($investment->investingJoint){
+            $investing_joint = $investment->investingJoint;
+            $result = $investing_joint->update([
+                'joint_investor_first_name' => $request->joint_investor_first,
+                'joint_investor_last_name' => $request->joint_investor_last,
+                'investing_company' => $request->investing_company_name,
+                'account_name' => $request->account_name,
+                'bsb' => $request->bsb,
+                'account_number' => $request->account_number,
+                'line_1' => $request->line_1,
+                'line_2' => $request->line_2,
+                'city' => $request->city,
+                'state' => $request->state,
+                'postal_code' => $request->postal_code,
+                'country' => $request->country,
+                'country_code' => $request->country_code,
+                'tfn' => $request->tfn,
+            ]);
         }
-        elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
-              $wholesale_investing->experience_period = $request->experience_period_txt;
-              $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
-              $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
-              $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
+        else{
+            $investing_joint = new InvestingJoint;
+            $investing_joint->project_id = $project->id;
+            $investing_joint->investment_investor_id = $investment->id;
+            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+            $investing_joint->investing_company = $request->investing_company_name;
+            $investing_joint->account_name = $request->account_name;
+            $investing_joint->bsb = $request->bsb;
+            $investing_joint->account_number = $request->account_number;
+            $investing_joint->line_1 = $request->line_1;
+            $investing_joint->line_2 = $request->line_2;
+            $investing_joint->city = $request->city;
+            $investing_joint->state = $request->state;
+            $investing_joint->postal_code = $request->postal_code;
+            $investing_joint->country = $request->country;
+            $investing_joint->country_code = $request->country_code;
+            $investing_joint->tfn = $request->tfn;
+            $investing_joint->save();
         }
-        $wholesale_investing->save();
-
-        $result = $investment->update([
-            'amount' => $request->amount_to_invest,
-            'investing_as'=> $request->investing_as,
-            'interested_to_buy'=> $request->interested_to_buy,
-        ]);
-
-        if($request->investing_as !== 'Individual Investor'){
-            if($investment->investingJoint){
-                $investing_joint = $investment->investingJoint;
-                $result = $investing_joint->update([
-                    'joint_investor_first_name' => $request->joint_investor_first,
-                    'joint_investor_last_name' => $request->joint_investor_last,
-                    'investing_company' => $request->investing_company_name,
-                    'account_name' => $request->account_name,
-                    'bsb' => $request->bsb,
-                    'account_number' => $request->account_number,
-                    'line_1' => $request->line_1,
-                    'line_2' => $request->line_2,
-                    'city' => $request->city,
-                    'state' => $request->state,
-                    'postal_code' => $request->postal_code,
-                    'country' => $request->country,
-                    'country_code' => $request->country_code,
-                    'tfn' => $request->tfn,
-                ]);
-            }
-            else{
-                $investing_joint = new InvestingJoint;
-                $investing_joint->project_id = $project->id;
-                $investing_joint->investment_investor_id = $investment->id;
-                $investing_joint->joint_investor_first_name = $request->joint_investor_first;
-                $investing_joint->joint_investor_last_name = $request->joint_investor_last;
-                $investing_joint->investing_company = $request->investing_company_name;
-                $investing_joint->account_name = $request->account_name;
-                $investing_joint->bsb = $request->bsb;
-                $investing_joint->account_number = $request->account_number;
-                $investing_joint->line_1 = $request->line_1;
-                $investing_joint->line_2 = $request->line_2;
-                $investing_joint->city = $request->city;
-                $investing_joint->state = $request->state;
-                $investing_joint->postal_code = $request->postal_code;
-                $investing_joint->country = $request->country;
-                $investing_joint->country_code = $request->country_code;
-                $investing_joint->tfn = $request->tfn;
-                $investing_joint->save();
-            }
-        }
-
-        $updateUserDetails = $user->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'phone_number' => $request->phone,
-            'tfn' => $request->tfn,
-            'account_name' => $request->account_name,
-            'bsb' => $request->bsb,
-            'account_number' => $request->account_number,
-            'line_1' => $request->line_1,
-            'line_2' => $request->line_2,
-            'city' => $request->city,
-            'state' => $request->state,
-            'postal_code' => $request->postal_code,
-            'country' => $request->country,
-            'country_code' => $request->country_code,
-        ]);
-
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Application form updated successfully.</p>');
-
     }
+
+    $updateUserDetails = $user->update([
+        'phone_number' => $request->phone,
+        'tfn' => $request->tfn,
+        'account_name' => $request->account_name,
+        'bsb' => $request->bsb,
+        'account_number' => $request->account_number,
+        'line_1' => $request->line_1,
+        'line_2' => $request->line_2,
+        'city' => $request->city,
+        'state' => $request->state,
+        'postal_code' => $request->postal_code,
+        'country' => $request->country,
+        'country_code' => $request->country_code,
+    ]);
+
+    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Application form updated successfully.</p>');
+
+}
 
     /**
      * \brief Show import CSV form
@@ -1403,14 +1417,14 @@ class DashboardController extends Controller
 
     /**
      * \brief Import user contact CSV
-     * \details - Allows site admin to upload the list of users in CSV file, 
+     * \details - Allows site admin to upload the list of users in CSV file,
      *          - Save new users from CSV file to system
      *          - Send them registration bulk email using sendgrid
      *          - Allow users to register themselves using the email link
      * \return View
      */
     public function saveContactsFromCSV(Request $request)
-    {   
+    {
         $validator = Validator::make($request->all(), [
             'contacts_csv_file' => 'required|mimes:csv,txt'
         ]);
@@ -1426,12 +1440,12 @@ class DashboardController extends Controller
             return redirect()->back();
         }
         // END.
-        
+
         try {
             $csvTmpPath = $request->file('contacts_csv_file')->getRealPath();
             $alldata = array_map('str_getcsv', file($csvTmpPath));
             $csv_data = array_slice($alldata, 1);
-            
+
             if(!empty($csv_data)) {
                 $sendgridPersonalization = [];
                 foreach ($csv_data as $key => $userRecord) {
@@ -1442,7 +1456,7 @@ class DashboardController extends Controller
                         $toRegEmail = trim($userRecord[2]);
                         $user = User::where('email', $toRegEmail)->first();
                         $userReg = UserRegistration::where('email', $toRegEmail)->first();
-                        
+
                         if(!$user && !$userReg) {
                             $result = UserRegistration::create([
                                 'email' => $toRegEmail,
@@ -1452,7 +1466,7 @@ class DashboardController extends Controller
                                 'last_name' => trim($userRecord[1])
                             ]);
                             array_push(
-                                $sendgridPersonalization, 
+                                $sendgridPersonalization,
                                 [
                                     'to' => [[ 'email' => $result->email ]],
                                     'substitutions' => [
@@ -1461,14 +1475,14 @@ class DashboardController extends Controller
                                     ]
                                 ]
                             );
-                        }                        
+                        }
                     }
                 }
 
                 // START: Sending bulk email using sendgrid
                 $sitename = $this->siteConfiguration->website_name ? $this->siteConfiguration->website_name : 'Estate Baron';
                 $resultBulkEmail =  $this->sendBulkEmail(
-                    $sitename . ' invitation', 
+                    $sitename . ' invitation',
                     $sendgridPersonalization,
                     view('emails.sendgrid-api-specific.welcomeEmailForCSVImportedUser')->render()
                 );
@@ -1501,8 +1515,8 @@ class DashboardController extends Controller
         $mailSettings = $this->siteConfiguration->mailSetting()->first();
         $setupEmail = isset($mailSettings->from) ? $mailSettings->from : (\Config::get('mail.from.address'));
         $setupEmailName = $this->siteConfiguration->website_name ? $this->siteConfiguration->website_name : (\Config::get('mail.from.name'));
-        
-        $email = new SendgridMail(); 
+
+        $email = new SendgridMail();
         $email->setFrom($setupEmail, $setupEmailName);
         $email->setSubject($subject);
         $email->addTo($setupEmail);
@@ -1510,7 +1524,7 @@ class DashboardController extends Controller
         foreach ($sendgridPersonalization as $personalization) {
             $email->addPersonalization($personalization);
         }
-        
+
         $sendgrid = new \SendGrid($sendgridApiKey);
         try {
             $response = $sendgrid->send($email);
@@ -1522,5 +1536,72 @@ class DashboardController extends Controller
         }
 
         return array('status' => true);
+    }
+
+    public function market(Request $request)
+    {
+        $color = Color::where('project_site',url())->first();
+        $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
+        $askOrders = Market::orderBy('price','asc')->get();
+        $bidOrders = Market::orderBy('price','desc')->get();
+        // dd($askOrders);
+        $projects = Project::all();
+        return view('dashboard.market',compact('color','siteconfiguration','askOrders','projects','bidOrders'));
+    }
+
+    public function marketStore(Request $request, AppMailer $mailer)
+    {
+        $order = Market::find($request->market_id);
+        $user = User::find($order->user_id);
+        if($request->amount_of_shares != $order->amount_of_shares){
+            $amount = $order->amount_of_shares - $request->amount_of_shares;
+            $newOrder = Market::create([
+                'user_id'=> $order->user_id,
+                'project_id' => $order->project_id,
+                'type' => $order->type,
+                'price' => $order->price,
+                'amount_of_shares' => $amount,
+                'accepted' => 0,
+                'is_money_received' => 0
+            ]);
+            $order->accepted = 1;
+            $order->is_order_changed = 1;
+            $order->original_shares = $order->amount_of_shares;
+            $order->amount_of_shares = $request->amount_of_shares;
+            $order->save();
+            $mailer->sendMarketOrderAcceptToUser($user, $order);
+            return redirect()->back()->withMessage('Order has been accepted with updated shares and New Order has been created for the same user');
+        }else{
+            $order->accepted = 1;
+            $order->save();
+            $mailer->sendMarketOrderAcceptToUser($user, $order);
+            return redirect()->back()->withMessage('Order has been Accepted!');
+        }
+    }
+
+    public function marketMoneyReceived(Request $request)
+    {
+        $order = Market::find($request->market_id);
+        $user = User::find($order->user_id);
+        if($order->type === 'BID'){
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('GET','http://localhost:5050/investment/transaction',[
+                'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
+            ]);
+            $response = $request->getBody()->getContents();
+            $balance = json_decode($response);
+            $order->is_money_received = 1;
+            $order->save();
+        }else{
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
+            ]);
+            $response = $request->getBody()->getContents();
+            $balance = json_decode($response);
+            $order->is_money_received = 1;
+            $order->save();
+        }
+        return redirect()->back()->withMessage('Transaction is Complete');
     }
 }

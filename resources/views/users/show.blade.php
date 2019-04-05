@@ -199,6 +199,9 @@
 <script>
 	$(document).ready(function () {
 		new Clipboard('.btn');
+		@if(isset($wallet))
+		$('#walletModal').modal('show');
+		@endif
 	});
 </script>
 @endsection

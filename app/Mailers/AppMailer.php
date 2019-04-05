@@ -7,6 +7,7 @@ use App\Role;
 use App\User;
 use App\Project;
 use App\IdImage;
+use App\Market;
 use App\IdDocument;
 use App\MailSetting;
 use App\UserRegistration;
@@ -495,6 +496,23 @@ class AppMailer
         $this->view = 'emails.adminInvestmentRequestNotify';
         $this->subject = 'User Requested Form Fill up';
         $this->data = compact('user', 'project', 'formLink');
+        $this->deliver();
+    }
+
+    public function sendMarketOrderAcceptToUser(User $user,Market $order)
+    {
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $user) {
+            if($user->registration_site == url()){
+                array_push($recipients, $user->email);
+            }
+        }
+        $project = $order->project;
+        $this->to = $user->email;
+        $this->view = 'emails.marketOrderConfirm';
+        $this->subject = 'Your order to buy '.$order->amount_of_shares.' shares/units in '.$order->project->title.' for $'.$order->price.' per share is confirmed';
+        $this->data = compact('user', 'order','project');
         $this->deliver();
     }
 

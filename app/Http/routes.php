@@ -3,8 +3,9 @@
  * Application Routes
  * -------------------------------------------------------------------------------------------------------------------
  */
-
 Route::get('/', ['as'=>'home', 'uses'=>'PagesController@home']);
+Route::get('/konkrete',['as'=>'konkrete','uses'=>'PagesController@konkrete']);
+Route::get('/konkreteG',['as'=>'konkreteGuzzle','uses'=>'PagesController@konkreteGuzzle']);
 Route::get('/tests', ['as'=>'home2', 'uses'=>'PagesController@something']);
 Route::get('/testemail', ['as'=>'home1', 'uses'=>'PagesController@test']);
 Route::get('/pages/team', ['as'=>'pages.team', 'uses'=>'PagesController@team']);
@@ -73,6 +74,7 @@ Route::patch('/dashboard/projects/{investment_id}/investments/accept', ['as'=>'d
 Route::get('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document','uses'=>'DashboardController@documents']);
 Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.upload','uses'=>'DashboardController@uploadDocuments']);
 Route::get('/dashboard/application/{id}',['as'=>'dashboard.application.view','uses'=>'DashboardController@viewApplication']);
+Route::post('/dashboard/application/{id}/edit',['as'=>'dashboard.application.edit','uses'=>'DashboardController@editApplication']);
 Route::post('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
 
 Route::pattern('notes', '[0-9]+');
@@ -106,7 +108,7 @@ Route::pattern('users', '[0-9]+');
 Route::resource('users', 'UsersController');
 Route::get('/dashboard/test',['as'=>'d.test','uses'=>'DashboardController@test']);
 Route::get('api/users', ['as'=>'api.users', 'uses'=>'DashboardController@getDashboardUsers']);
-
+Route::get('/users/wallet',['as'=>'users.wallet','uses'=>'UsersController@usersWallet']);
 Route::get('/users/{users}/roles/investor/add', ['as'=>'users.investor.add', 'uses'=>'UsersController@addInvestor']);
 Route::get('/users/{users}/roles/developer/add', ['as'=>'users.developer.add', 'uses'=>'UsersController@addDeveloper']);
 
@@ -126,6 +128,8 @@ Route::get('/users/{username}/edit', ['as'=>'users.edit', 'uses'=>'UsersControll
 Route::get('/users/{username}/fbedit', ['as'=>'users.fbedit', 'uses'=>'UsersController@fbedit']);
 Route::get('/users/{users}/book', ['as'=>'users.book', 'uses'=>'UsersController@book']);
 Route::get('/users/{users}/submit', ['as'=>'users.submit', 'uses'=>'UsersController@submit']);
+Route::get('/users/{users}/market', ['as'=>'users.market','uses'=>'UsersController@market']);
+Route::post('/users/market',['as'=>'users.market.store','uses'=>'UsersController@marketStore']);
 
 Route::pattern('roles', '[0-9]+');
 Route::resource('roles', 'RolesController');
@@ -296,10 +300,24 @@ Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.can
 Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
 Route::get('/project/{request_id}/interest/cancel', ['as'=>'project.interest.cancel', 'uses'=>'OfferController@cancelRequestForm']);
 Route::get('/dashboard/investment/requests', ['as'=>'dashboard.investmentRequests', 'uses'=>'DashboardController@investmentRequests']);
-Route::post('/dashboard/projects/hideApplicationFillupRequest', ['as'=>'dashboard.investment.hideApplicationFillupRequest', 'uses'=>'DashboardController@hideApplicationFillupRequest']);
 Route::post('/configuration/uploadprojectProgressCircleImages', ['as'=>'configuration.uploadprojectProgressCircleImages', 'uses'=>'SiteConfigurationsController@uploadprojectProgressCircleImages']);
 Route::post('/configuration/uploadprospectus',['as'=>'configuration.uploadProspectus','uses'=>'SiteConfigurationsController@uploadProspectus']);
 Route::post('/projects/prospectus', ['as'=>'projects.prospectus', 'uses'=>'ProjectsController@prospectusDownload']);
 Route::get('/dashboard/prospectus/downloads', ['as'=>'dashboard.prospectus.downloads', 'uses'=>'DashboardController@prospectusDownloads']);
 Route::post('/dashboard/project/interest/link', ['as'=>'dashboard.project.interest.link', 'uses'=>'DashboardController@sendEoiLink']);
 Route::post('/dashboard/project/upload/offerdoc', ['as' => 'dashboard.upload.offerDoc', 'uses' => 'DashboardController@uploadOfferDoc']);
+
+Route::get('/dashboard/market',['as'=>'dashboard.market','uses'=>'DashboardController@market']);
+Route::post('/dashboard/market/order',['as'=>'dashboard.market.accept','uses'=>'DashboardController@marketStore']);
+Route::post('/dashboard/market/moneyReceived',['as'=>'dashboard.market.money','uses'=>'DashboardController@marketMoneyReceived']);
+/* Konkrete Routes */
+
+Route::group(['prefix' => 'konkrete'], function () {
+	Route::group(['middleware' => 'master'], function() {
+		Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'KonkreteController@tokenize' ]);
+		Route::get('/dashboard/project/{project_id}/loadWallet', [ 'as' => 'konkrete.loadWallet', 'uses' => 'KonkreteController@loadProjectWallet' ]);
+	});
+});
+
+/* End Konkrete Routes */
+

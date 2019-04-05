@@ -194,6 +194,14 @@ class ProjectsController extends Controller
             $projectConfigurationPartial->project_id = $project->id;
             $projectConfigurationPartial->save();
         }
+        $client = new \GuzzleHttp\Client();
+        $request = $client->request('GET','http://localhost:5050/createProject',[
+            'query' => ['project_id' => $project->id]
+        ]);
+        $response = $request->getBody()->getContents();
+        $result = json_decode($response);
+        $project->wallet_address = $result->signingKey->address;
+        $project->save();
         $mailer->sendProjectSubmit($user, $project);
         return redirect()->route('projects.confirmation', $project)->withMessage('<p class="alert alert-success text-center">Successfully Added New Project.</p>');
     }
