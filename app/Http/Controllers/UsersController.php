@@ -494,7 +494,7 @@ class UsersController extends Controller
         $project = $investment->project;
         $user = $investment->user;
         $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET','http://localhost:5050/getBalance',[
+        $request = $client->request('GET','http://52.62.205.188:8081/getBalance',[
             'query' => ['user_id' => $user->id,'project_id'=>$project->id]
         ]);
         $response = $request->getBody()->getContents();
@@ -688,7 +688,7 @@ class UsersController extends Controller
         $user = Auth::user();
         if(!$user->wallet_address){
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/userWallet',[
+            $request = $client->request('GET','http://52.62.205.188:8081/userWallet',[
                 'query'=> ['user_id'=> $user->id]
             ]);
             $response = $request->getBody()->getContents();
@@ -703,7 +703,7 @@ class UsersController extends Controller
             foreach ($investments as $investment) {
                 $projectName = Project::find($investment->project_id);
                 $client = new \GuzzleHttp\Client();
-                $request = $client->request('GET','http://localhost:5050/getBalance',[
+                $request = $client->request('GET','http://52.62.205.188:8081/getBalance',[
                     'query'=>['user_id'=> $user->id,'project_id'=>$investment->project_id]
                 ]);
                 $response = $request->getBody()->getContents();

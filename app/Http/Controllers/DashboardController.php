@@ -218,7 +218,7 @@ class DashboardController extends Controller
             $contractRes = json_decode($res->getContent());
             $contract = $contractRes->data;
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/getProjectBalance',[
+            $request = $client->request('GET','http://52.62.205.188:8081/getProjectBalance',[
                 'query'=>['project_id'=>$project->id]
             ]);
             $response = $request->getBody()->getContents();
@@ -343,7 +343,7 @@ class DashboardController extends Controller
         $investment = InvestmentInvestor::findOrFail($investment_id);
         if($investment){
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/investment/transaction',[
+            $request = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
                 'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
             ]);
             $response = $request->getBody()->getContents();
@@ -826,7 +826,7 @@ class DashboardController extends Controller
                 $shareNumber = explode('-', $investment->share_number);
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
                 $client = new \GuzzleHttp\Client();
-                $request = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                $request = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
                     'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
                 ]);
                 $response = $request->getBody()->getContents();
@@ -1585,7 +1585,7 @@ class DashboardController extends Controller
         $user = User::find($order->user_id);
         if($order->type === 'BID'){
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/investment/transaction',[
+            $request = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
                 'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
             ]);
             $response = $request->getBody()->getContents();
@@ -1594,7 +1594,7 @@ class DashboardController extends Controller
             $order->save();
         }else{
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+            $request = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
                 'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
             ]);
             $response = $request->getBody()->getContents();
