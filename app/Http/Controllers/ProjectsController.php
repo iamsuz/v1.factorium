@@ -195,7 +195,7 @@ class ProjectsController extends Controller
             $projectConfigurationPartial->save();
         }
         $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET','http://localhost:5050/createProject',[
+        $request = $client->request('GET','http://52.62.205.188:8081/createProject',[
             'query' => ['project_id' => $project->id]
         ]);
         $response = $request->getBody()->getContents();
