@@ -719,8 +719,9 @@ class UsersController extends Controller
         $user = Auth::user();
         $color = Color::where('project_site',url())->first();
         $projects = Project::where('project_site',url())->where('active',1)->get();
-        $askingOrders = Market::all();
-        return view('users.market',compact('user','color','projects','askingOrders'));
+        $askingOrders = Market::where('user_id',$user->id)->get();
+        $allOrders = Market::all();
+        return view('users.market',compact('user','color','projects','askingOrders','allOrders'));
     }
 
     public function marketStore(Request $request)

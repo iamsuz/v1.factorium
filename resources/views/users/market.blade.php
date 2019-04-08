@@ -6,8 +6,8 @@
 @section('css-section')
 <style>
 	.nav >li >a{
-	padding: 0.8em 0.6em;
-}
+		padding: 0.8em 0.6em;
+	}
 </style>
 @stop
 @section('content-section')
@@ -72,62 +72,32 @@
 											</div>
 											<br>
 										</form>
-										<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
-											<li class="active" style="width: 50%"><a data-toggle="tab" href="#bid_orders">BID</a></li>
-											<li style="width: 50%"><a data-toggle="tab" href="#ask_orders">ASK</a></li>
-										</ul>
-
 										<div class="tab-content">
 											<div id="bid_orders" class="tab-pane fade in active">
-												<h3>Bid Orders</h3>
+												<h3>Orders</h3>
 												<br>
 												<table class="table table-striped">
 													<thead>
 														<tr>
 															<th class="text-center">Project</th>
 															<th class="text-center">Price/Share</th>
+															<th class="text-center">Type</th>
 															<th class="text-center">No Of Shares</th>
 															<th class="text-center">Status</th>
 														</tr>
 													</thead>
 													<tbody>
 														@foreach($askingOrders as $askOrder)
-														@if($askOrder->type === 'BID')
 														<tr>
 															<td>{{$askOrder->project->title}}</td>
 															<td>{{$askOrder->price}}</td>
+															<td>{{$askOrder->type}}</td>
 															<td>{{$askOrder->amount_of_shares}}</td>
 															<td>@if($askOrder->accepted) Order Accepted @else Order is in Line @endif</td>
 														</tr>
-														@endif
 														@endforeach
 													</tbody>
 												</table>
-											</div>
-											<div id="ask_orders" class="tab-pane fade">
-												<h3>Ask Orders</h3>
-												<table class="table table-striped">
-											<thead>
-												<tr>
-													<th class="text-center">Project</th>
-													<th class="text-center">Price/Share</th>
-													<th class="text-center">No Of Shares</th>
-													<th class="text-center">Status</th>
-												</tr>
-											</thead>
-											<tbody>
-												@foreach($askingOrders as $askOrder)
-												@if($askOrder->type === 'ASK')
-												<tr>
-													<td>{{$askOrder->project->title}}</td>
-													<td>{{$askOrder->price}}</td>
-													<td>{{$askOrder->amount_of_shares}}</td>
-													<td>@if($askOrder->accepted) Order Accepted @else Order is in Line @endif</td>
-												</tr>
-												@endif
-												@endforeach
-											</tbody>
-										</table>
 											</div>
 										</div>
 									</div>
