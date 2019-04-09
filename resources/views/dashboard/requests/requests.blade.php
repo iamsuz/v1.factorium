@@ -4,6 +4,10 @@
 Projects | Dashboard | @parent
 @stop
 
+@section('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@stop
+
 @section('css-section')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
 @stop
@@ -20,6 +24,7 @@ Projects | Dashboard | @parent
 				<table class="table table-bordered table-striped" id="requestsTable">
 					<thead>
 						<tr>
+							<th></th>
 							<th>Applicant Name</th>
 							<th>Email</th>
 							<th>Phone</th>
@@ -30,7 +35,12 @@ Projects | Dashboard | @parent
 					</thead>
 					<tbody>
 						@foreach($investmentRequests as $investmentRequest)
-						<tr>
+						<tr id="application_request_{{$investmentRequest->id}}">
+							<td>
+								<a href="javascript:void(0);" class="hide-application-request" data="{{$investmentRequest->id}}" title="Delete application form fillup request">
+									<i class="fa fa-trash" aria-hidden="true"></i>
+								</a>
+							</td>
 							<td><a href="{{route('dashboard.users.show', [$investmentRequest->user_id])}}">{{$investmentRequest->user->first_name}} {{$investmentRequest->user->last_name}}</a></td>
 							<td><a href="{{route('dashboard.users.show', [$investmentRequest->user_id])}}">{{$investmentRequest->user->email}}</a></td>
 							<td><a href="tel:{{$investmentRequest->user->phone_number}}">{{$investmentRequest->user->phone_number}}</a></td>
@@ -53,6 +63,30 @@ Projects | Dashboard | @parent
 	$(document).ready(function(){
 		var projectsTable = $('#requestsTable').DataTable({
 			"iDisplayLength": 10
+		});
+		
+		//Hide application form fillup request from requests page in admin dashboard
+
+		$('#requestsTable').on("click", ".hide-application-request", function(e){
+			e.preventDefault();
+			var application_request_id = $(this).attr('data');
+			if (confirm('Are you sure you want to delete this?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+		          	url: '/dashboard/projects/hideApplicationFillupRequest',
+		          	type: 'POST',
+		          	dataType: 'JSON',
+		          	data: {application_request_id},
+		          	headers: {
+		            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		          	},
+		        }).done(function(data){
+		        	if(data){
+		        		$('.loader-overlay').hide();
+	 						$("#requestsTable").DataTable().row( $('#application_request_' + application_request_id) ).remove().draw( false );
+		        	}
+		        });
+		    }
 		});
 	});
 </script>

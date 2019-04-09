@@ -264,7 +264,9 @@ class UserRegistrationsController extends Controller
             'email' => 'required|email',
             'first_name' => 'required',
             'last_name' => 'required',
-            'g-recaptcha-response' => 'required'
+            'role'=>'required',
+            'g-recaptcha-response' => 'required',
+            'password'=>'required|min:6|max:60'
         ]);
         $validator1 = Validator::make($request->all(), [
             'email' => 'unique:users,email||unique:user_registrations,email',
@@ -354,11 +356,12 @@ class UserRegistrationsController extends Controller
         $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid
     }
 
-    public function registerCodeView()
+    public function registerCodeView(Request $request)
     {
+        $userData = $request->all();
         $color = Color::where('project_site',url())->first();
         $type = 'offer';
-        return view('users.registerCode',compact('color','type'));
+        return view('users.registerCode',compact('color','type', 'userData'));
     }
     /**
      * Display the specified resource.
@@ -530,8 +533,8 @@ class UserRegistrationsController extends Controller
         $referrer = isset($cookies['referrer']) ? $cookies['referrer'] : "";
         $userReg = $userR;
         $color = Color::where('project_site',url())->first();
-        $request['first_name'] = $userReg->first_name;
-        $request['last_name'] = $userReg->last_name;
+        $request['first_name'] = isset($request->first_name) ? $request->first_name : $userReg->first_name;
+        $request['last_name'] = isset($request->last_name) ? $request->last_name : $userReg->last_name;
         if (!$request['username']) {
             $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
         }
@@ -884,16 +887,22 @@ class UserRegistrationsController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'password'=>'required|min:6|max:60'
         ]);
+        if(isset($request->reg_first_name) && isset($request->reg_last_name)) {
+           $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'first_name' => 'required',
+                'last_name' => 'required'
+            ]);
+        }
         $validator1 = Validator::make($request->all(), [
             'email' => 'unique:users,email||unique:user_registrations,email',
         ]);
+
         if ($validator->fails()) {
-            return redirect()
-            ->back()
-            ->withErrors($validator)
-            ->withInput();
+            return Response::json(['success' => false, 'errors' => $validator->errors()]);
         }
         if($validator1->fails()){
             $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
@@ -920,7 +929,7 @@ class UserRegistrationsController extends Controller
         $offerToken = mt_rand(100000, 999999);
         $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'role'=>'investor']);
         $mailer->sendRegistrationConfirmationTo($user,$ref);
-        return Response::json(['success' => true]);
+        return Response::json(['success' => true, 'data' => $request->all()]);
     }
 
     /**
