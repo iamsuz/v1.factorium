@@ -40,6 +40,7 @@ use App\Http\Controllers\KonkreteController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use SendGrid\Mail\Mail as SendgridMail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class DashboardController extends Controller
@@ -517,21 +518,20 @@ class DashboardController extends Controller
     public function hideInvestment(Request $request)
     {
         if ($request->ajax()) {
-            // $project = Project::find($request->project_id);
-            // $eoi = ProjectEOI::find($request->eoi_id);
-            // $mailer->sendEoiApplicationLinkToUser($project, $eoi);
-            // $eoi->update([
-            //     'is_link_sent' => 1
-            // ]);
             $investment = InvestmentInvestor::findOrFail($request->investment_id);
             $investment->hide_investment = 1;
             $investment->save();
             return 1;
         }
-        // $investment = InvestmentInvestor::findOrFail($investment_id);
-        // $investment->hide_investment = 1;
-        // $investment->save();
-        // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+    }
+
+    public function hideApplicationFillupRequest(Request $request)
+    {
+        if ($request->ajax()) {
+            $application_request = InvestmentRequest::findOrFail($request->application_request_id);
+            $application_request->delete();
+            return 1;
+        }
     }
 
     public function investmentReminder(AppMailer $mailer, $investment_id){
@@ -1162,9 +1162,9 @@ class DashboardController extends Controller
     public function uploadOfferDoc(Request $request)
     {
         $this->validate($request, [
-            'offer_doc' => 'required|mimes:pdf',
-            'eoi_id' => 'required'
-        ]);
+                'offer_doc' => 'required|mimes:pdf',
+                'eoi_id' => 'required'
+            ]);
         $projectEoi = ProjectEOI::find($request->eoi_id);
 
         if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
@@ -1181,8 +1181,22 @@ class DashboardController extends Controller
             'offer_doc_path' => $destinationPath.'/'.$uniqueFileName,
             'offer_doc_name' => $uniqueFileName
         ]);
-
-        return redirect()->back()->with('success', 'File uploaded successfully.');
+        if($projectEoi->offer_doc_path) {
+            return response()->json([
+                'status' => '1',
+                'message' => 'File Uploaded Successfully. You can now send application link to the user',
+                'eoi_id' => $projectEoi->id,
+                'offer_doc_path' => $projectEoi->offer_doc_path,
+                'offer_doc_name' => $projectEoi->offer_doc_name,
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => '0',
+                'message' => 'Something went wrong.',
+            ]);
+        }
     }
 
     public function kycRequests()
@@ -1323,17 +1337,28 @@ class DashboardController extends Controller
 
         //Save wholesale project input fields
         if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
-          $wholesale_investing->accountant_name_and_firm = $request->accountant_name_firm_txt;
-          $wholesale_investing->accountant_professional_body_designation = $request->accountant_designation_txt;
-          $wholesale_investing->accountant_email = $request->accountant_email_txt;
-          $wholesale_investing->accountant_phone = $request->accountant_phone_txt;
-      }
-      elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
-          $wholesale_investing->experience_period = $request->experience_period_txt;
-          $wholesale_investing->equity_investment_experience_text = $request->equity_investment_experience_txt;
-          $wholesale_investing->unlisted_investment_experience_text = $request->unlisted_investment_experience_txt;
-          $wholesale_investing->understand_risk_text = $request->understand_risk_txt;
-      }
+                $investment->wholesaleInvestment->update([
+                'wholesale_investing_as' => $request->wholesale_investing_as,
+                'accountant_name_and_firm' => $request->accountant_name_firm_txt,
+                'accountant_professional_body_designation'=> $request->accountant_designation_txt,
+                'accountant_email'=> $request->accountant_email_txt,
+                'accountant_phone'=> $request->accountant_phone_txt,
+            ]);
+        }
+        elseif($request->wholesale_investing_as === 'Sophisticated Investor'){
+            $investment->wholesaleInvestment->update([
+                'wholesale_investing_as' => $request->wholesale_investing_as,
+                'experience_period' => $request->experience_period_txt,
+                'equity_investment_experience_text'=> $request->equity_investment_experience_txt,
+                'unlisted_investment_experience_text'=> $request->unlisted_investment_experience_txt,
+                'understand_risk_text'=> $request->understand_risk_txt,
+            ]);
+        }
+        else{
+            $investment->wholesaleInvestment->update([
+                'wholesale_investing_as' => $request->wholesale_investing_as
+            ]);
+        }
       $wholesale_investing->save();
 
       $result = $investment->update([
@@ -1385,6 +1410,8 @@ class DashboardController extends Controller
     }
 
     $updateUserDetails = $user->update([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
         'phone_number' => $request->phone,
         'tfn' => $request->tfn,
         'account_name' => $request->account_name,

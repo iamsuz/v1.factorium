@@ -1388,7 +1388,7 @@
 			<div class="text-center" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style show-sitemap-link-edit-modal-btn" style="font-size: 20px;" data-toggle="tooltip" title="Edit above links" data-placement="right"></i></div>
 			@endif
 			@endif
-			<div class="row text-center" style="padding-top: 20px;">
+			<div class="row text-center @if(!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_powered_by_estatebaron) hide @endif" style="padding-top: 20px;">
 				<img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo_white.png')}}">
 				<p>
 					<span style="color: #fff;">Powered by </span><a href="https://estatebaron.com/whitelabel-property-crowdfunding" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>

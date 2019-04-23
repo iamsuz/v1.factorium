@@ -1,5 +1,5 @@
 <div class="container">
-	<div class="modal fade" id="registerModal" role="dialog">
+	<div class="modal fade" id="registerModal" role="dialog" style="overflow: auto;	>
 		<div class="modal-dialog modal-lg">
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -27,6 +27,16 @@
 									<section id="registerForm" style="padding:0 10px;">
 										<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
 										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'regForm', 'name'=>'offer_user_registration_form'))!!}
+										<div class="row form-group hide user-name-details-section">
+											<div class="col-md-6 <?php if($errors->first('reg_first_name')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+												{!! Form::text('reg_first_name', null, array('placeholder'=>'First Name', 'class'=>'form-control input-box', 'tabindex'=>'1', 'id'=>'reg_first_name')) !!}
+												{!! $errors->first('reg_first_name', '<small class="text-danger">:message</small>') !!}
+											</div>
+											<div class="col-md-6 <?php if($errors->first('reg_last_name')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+												{!! Form::text('reg_last_name', null, array('placeholder'=>'Last Name', 'class'=>'form-control input-box', 'tabindex'=>'1', 'id'=>'reg_last_name')) !!}
+												{!! $errors->first('reg_last_name', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
 										<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">

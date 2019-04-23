@@ -50,7 +50,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($investment->project->project_prospectus_text!='') {{$investment->project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
 												</p>
 												<label>I/We apply for *</label>
-												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$investment->project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$investment->project->investment->minimum_accepted_amount}}" step="100" required value="{{$investment->amount}}">
+												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$investment->project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$investment->project->investment->minimum_accepted_amount}}" step="5" required value="{{$investment->amount}}">
 												@if($investment->project->share_vs_unit == 1)
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@elseif($investment->project->share_vs_unit == 2)
@@ -153,7 +153,7 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<label>Company or Trust Name</label>
 												<div class="row">
 													<div class="col-md-9">
-														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" required  >
+														<input type="text" name="investing_company_name" class="form-control" placeholder="Trust or Company" value="@if($investment->investingJoint){{$investment->investingJoint->investing_company}} @endif" @if($investment->investing_as === 'Trust or Company') required @endif  >
 													</div>
 												</div><br>
 											</div>
@@ -175,10 +175,10 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 												<label>Joint Investor Details</label>
 												<div class="row">
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
+														<input type="text" name="joint_investor_first" class="form-control" placeholder="Investor First Name"  @if($investment->investing_as === 'Joint Investor') required @endif  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_first_name}}" @endif>
 													</div>
 													<div class="col-md-6">
-														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" required  @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
+														<input type="text" name="joint_investor_last" class="form-control" placeholder="Investor Last Name" @if($investment->investing_as === 'Joint Investor') required @endif @if($investment->investingJoint) value="{{$investment->investingJoint->joint_investor_last_name}}" @endif>
 													</div>
 												</div>
 												<br>
@@ -190,65 +190,67 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 
 									
 									<div class="@if($investment->project->retail_vs_wholesale) hide @endif">
-										<div class="row" id="wholesale_project">
-											<div class="col-md-12"><br>
-												<h4>Investor Qualification</h4>
-												<p>An issue of securities to the public usually requires a disclosure document (like a prospectus) to ensure participants are fully informed about a range of issues including the characteristics of the offer and the present position and future prospects of the entity offering the securities.</p>
-												<p>However an issue of securities can be made to particular kind of investors, in the categories described below, without the need for a registered disclosure document. Please tell us which category of investors applies:</p>
-												<hr>
-												<b style="font-size: 1.1em;">Which option closely describes you?</b><br>
-												<div style="margin-left: 1.3em; margin-top: 5px;">
-													<input type="checkbox" name="wholesale_investing_as" value="Wholesale Investor (Net Asset $2,500,000 plus)" style="margin-right: 6px;" class="wholesale_invest_checkbox"><span class="check1">I have net assets of at least $2,500,000 or a gross income for each of the last two financial years of at least $250,000 a year.</span><br>
-													<input type="checkbox" name="wholesale_investing_as" value="Sophisticated Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox"><span class="check1">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.</span><br>
-													<input type="checkbox" name="wholesale_investing_as" value="Inexperienced Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox"><b><span class="check1">I have no experience in property, securities or similar</span></b><br>
+										@if($investment->wholesaleInvestment)
+											<div class="row" id="wholesale_project">
+												<div class="col-md-12"><br>
+													<h4>Investor Qualification</h4>
+													<p>An issue of securities to the public usually requires a disclosure document (like a prospectus) to ensure participants are fully informed about a range of issues including the characteristics of the offer and the present position and future prospects of the entity offering the securities.</p>
+													<p>However an issue of securities can be made to particular kind of investors, in the categories described below, without the need for a registered disclosure document. Please tell us which category of investors applies:</p>
+													<hr>
+													<b style="font-size: 1.1em;">Which option closely describes you?</b><br>
+													<div style="margin-left: 1.3em; margin-top: 5px;">
+														<input type="checkbox" name="wholesale_investing_as" value="Wholesale Investor (Net Asset $2,500,000 plus)" style="margin-right: 6px;" class="wholesale_invest_checkbox" @if($investment->wholesaleInvestment->wholesale_investing_as == "Wholesale Investor (Net Asset $2,500,000 plus)") checked @endif><span class="check1">I have net assets of at least $2,500,000 or a gross income for each of the last two financial years of at least $250,000 a year.</span><br>
+													<input type="checkbox" name="wholesale_investing_as" value="Sophisticated Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox" @if($investment->wholesaleInvestment->wholesale_investing_as == "Sophisticated Investor") checked @endif><span class="check1">I have experience as to: the merits of the offer; the value of the securities; the risk involved in accepting the offer; my own information needs; the adequacy of the information provided.</span><br>
+													<input type="checkbox" name="wholesale_investing_as" value="Inexperienced Investor" style="margin-right: 6px;" class="wholesale_invest_checkbox" @if($investment->wholesaleInvestment->wholesale_investing_as == "Inexperienced Investor") checked @endif><b><span class="check1">I have no experience in property, securities or similar</span></b><br>
+												</div>
 												</div>
 											</div>
-										</div>
 
-										<div class="row" id="accountant_details_section" style="display: none;">
-											<br>
-											<div class="col-md-12">
-												<h4>Accountant's details</h4>
-												<p>Please provide the details of your accountant for verification of income and/or net asset position.</p>
-												<hr>
-												<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
-												<input type="text" name="accountant_name_firm_txt" id="asd" class="form-control"><br />
-												<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
-												<input type="text" name="accountant_designation_txt" id="asda" class="form-control"><br />
-												<label for="asds" class="form-label"><b>Email</b></label>
-												<input type="email" name="accountant_email_txt" id="asds" class="form-control"><br />
-												<label for="asdd" class="form-label"><b>Phone</b></label>
-												<input type="number" name="accountant_phone_txt" id="asdd" class="form-control"><br />
-											</div>
-										</div>
-
-										<div class="row" id="experienced_investor_information_section" style="display: none;">
-											<div class="col-md-12">
+											<div class="row" id="accountant_details_section" @if($investment->wholesaleInvestment->wholesale_investing_as != "Wholesale Investor (Net Asset $2,500,000 plus)") style="display: none;" @endif">
 												<br>
-												<h4>Experienced investor information</h4>
-												<p>Please complete all of the questions below:</p>
-												<hr>
-
-												<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
-												<textarea class="form-control" rows="5" name="equity_investment_experience_txt"></textarea><br>
-
-												<b>How much investment experience do you have? (tick appropriate)</b>
-												<div style="margin-left: 1.3em; margin-top: 5px;">
-													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" checked=""><span class="check1">Very little knowledge or experience</span><br>
-													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding"><span class="check1">Some investment knowledge and understanding</span><br>
-													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge"><span class="check1">Experienced private investor with good investment knowledge</span><br>
-													<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor"><span class="check1">Business Investor</span><br>
+												<div class="col-md-12">
+													<h4>Accountant's details</h4>
+													<p>Please provide the details of your accountant for verification of income and/or net asset position.</p>
+													<hr>
+													<label for="asd" class="form-label"><b>Name and firm of qualified accountant</b></label>
+													<input type="text" name="accountant_name_firm_txt" id="asd" value="{{$investment->wholesaleInvestment->accountant_name_and_firm}}" class="form-control"><br />
+													<label for="asda" class="form-label"><b>Qualified accountant's professional body and membership designation</b></label>
+													<input type="text" name="accountant_designation_txt" id="asda" class="form-control" value="{{$investment->wholesaleInvestment->accountant_professional_body_designation}}"><br />
+													<label for="asds" class="form-label"><b>Email</b></label>
+													<input type="email" name="accountant_email_txt" id="asds" class="form-control" value="{{$investment->wholesaleInvestment->accountant_email}}"><br />
+													<label for="asdd" class="form-label"><b>Phone</b></label>
+													<input type="number" name="accountant_phone_txt" id="asdd" class="form-control" value="{{$investment->wholesaleInvestment->accountant_phone}}"><br />
 												</div>
-												<br>
-
-												<label>What experience do you have with unlisted invesments ?</label><br>
-												<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt"></textarea><br>
-
-												<label>Do you clearly understand the risks of investing with this offer ?</label><br>
-												<textarea class="form-control" rows="5" name="understand_risk_txt"></textarea><br>
-
 											</div>
-										</div>
+
+											<div class="row" id="experienced_investor_information_section" @if($investment->wholesaleInvestment->wholesale_investing_as != "Sophisticated Investor") style="display: none;" @endif>
+												<div class="col-md-12">
+													<br>
+													<h4>Experienced investor information</h4>
+													<p>Please complete all of the questions below:</p>
+													<hr>
+
+													<label>Equity investment experience (please be as detailed and specific as possible):</label><br>
+													<textarea class="form-control" rows="5" name="equity_investment_experience_txt">{{$investment->wholesaleInvestment->equity_investment_experience_text}}</textarea><br>
+
+													<b>How much investment experience do you have? (tick appropriate)</b>
+													<div style="margin-left: 1.3em; margin-top: 5px;">
+														<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Very little knowledge or experience" @if($investment->wholesaleInvestment->experience_period == "Very little knowledge or experience") checked="" @endif><span class="check1">Very little knowledge or experience</span><br>
+														<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Some investment knowledge and understanding" @if($investment->wholesaleInvestment->experience_period == "Some investment knowledge and understanding") checked="" @endif><span class="check1">Some investment knowledge and understanding</span><br>
+														<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Experienced private investor with good investment knowledge" @if($investment->wholesaleInvestment->experience_period == "Experienced private investor with good investment knowledge") checked="" @endif><span class="check1">Experienced private investor with good investment knowledge</span><br>
+														<input type="radio" name="experience_period_txt" style="margin-right: 6px;" value="Business Investor" @if($investment->wholesaleInvestment->experience_period == "Business Investor") checked="" @endif><span class="check1">Business Investor</span><br>
+													</div>
+													<br>
+
+													<label>What experience do you have with unlisted invesments ?</label><br>
+													<textarea class="form-control" rows="5" name="unlisted_investment_experience_txt">{{$investment->wholesaleInvestment->unlisted_investment_experience_text}}</textarea><br>
+
+													<label>Do you clearly understand the risks of investing with this offer ?</label><br>
+													<textarea class="form-control" rows="5" name="understand_risk_txt">{{$investment->wholesaleInvestment->understand_risk_text}}</textarea><br>
+
+												</div>
+											</div>
+										@endif
 									</div>
 
 									<div class="row" >
@@ -362,21 +364,6 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 										</div>
 									</div>
 									<br>
-									{{-- <div class="row " id="section-2">
-										<div class="col-md-12">
-											<div >
-												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
-												<br>
-												<h4>Are you Investing as</h4>
-												<input type="radio" name="investing_as" value="Individual Investor" @if($investment->investing_as=="Individual Investor") checked @endif> Individual Investor<br>
-												<input type="radio" name="investing_as" value="Joint Investor" @if($investment->investing_as=="Joint Investor") checked @endif> Joint Investor<br>
-												<input type="radio" name="investing_as" value="Trust or Company" @if($investment->investing_as=="Trust or Company") checked @endif > Company, Trust or SMSF<br>
-												<hr>
-											</div>
-
-										</div>
-									</div>
-									<br> --}}
 									<div class="row @if(!$investment->project->show_interested_to_buy_checkbox) hide @endif">
 										<div class="col-md-12">
 											<div>
@@ -445,6 +432,33 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 
 @section('js-section')
 <script type="text/javascript">
+	$(document).ready( function() {
+		$("input[name='wholesale_investing_as']").on('change',function() {
+			if($(this).is(':checked') && $(this).val() == 'Wholesale Investor (Net Asset $2,500,000 plus)')
+			{
+				$('#accountant_details_section').show();
+				$('#experienced_investor_information_section').hide();
+			}
+			else if($(this).is(':checked') && $(this).val() == 'Sophisticated Investor')
+			{
+				$('#experienced_investor_information_section').show();
+				$('#accountant_details_section').hide();
+			}
+			else
+			{
+				$('#experienced_investor_information_section').hide();
+				$('#accountant_details_section').hide();
+			}
+		});
+
+		$(".wholesale_invest_checkbox").change(function() {
+			var checked = $(this).is(':checked');
+			$(".wholesale_invest_checkbox").prop('checked',false);
+			if(checked) {
+				$(this).prop('checked',true);
+			}
+		});
+
 		$("input[name='investing_as']").on('change',function() {
 			if($(this).is(':checked') && $(this).val() == 'Individual Investor')
 			{
@@ -503,13 +517,12 @@ Edit {!! $investment->user->first_name !!} | Dashboard | @parent
 			}
 		});
 
-		$(document).ready(function(){
 		var qty=$("#apply_for");
-			qty.bind('keyup mouseup', function (){
-				var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-				$("#application_money").val(total);
-			});	
-		});
+		qty.bind('keyup mouseup', function (){
+			var total='A$ '+qty.val().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			$("#application_money").val(total);
+		});	
+	});
 
 </script>
 @stop
