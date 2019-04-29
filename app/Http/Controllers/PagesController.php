@@ -31,6 +31,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App\Testimonial;
 use App\Helpers\SiteConfigurationHelper;
 use App\ProjectInterest;
+use App\ThirdPartyListing;
 
 
 class PagesController extends Controller

@@ -36,6 +36,7 @@ use App\ProjectEOI;
 use App\ProspectusDownload;
 use App\ProjectSpvDetail;
 use App\UserRegistration;
+use App\ThirdPartyListing;
 use App\Http\Controllers\KonkreteController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -119,6 +120,41 @@ class DashboardController extends Controller
         $pledged_investments = InvestmentInvestor::where('hide_investment', '0')->get();
 
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
+    }
+
+    //Projects from other estatebaron subdomains
+    public function thirdPartyListings()
+    {
+        $color = Color::where('project_site',url())->first();
+        $all_projects = Project::where('active', 1)->whereNotIn('project_site', [url()])->get();
+
+        return view('dashboard.third_party_projects.allProjects', compact('all_projects','color'));
+    }
+
+    //Projects from other estatebaron subdomains
+    public function showThirdPartyProject(Request $request)
+    {
+        if ($request->ajax()) {
+            $third_party_listing = ThirdPartyListing::all();
+            $project_id = (int)$request->project_id;
+            $third_party_listing = $third_party_listing->where('list_on_site',url())->where('project_id', $project_id)->first();
+            if(!$third_party_listing)
+            {
+                $third_party_listing = new ThirdPartyListing;
+                $third_party_listing->project_id = $project_id;
+                $third_party_listing->list_on_site = url();
+                $third_party_listing->save();
+                $third_party_listing = ThirdPartyListing::all();
+                $third_party_listing = $third_party_listing->where('list_on_site',url())->first();
+            }
+            if($request->checkValue == "1") {
+                $status = $third_party_listing->update(['active'=> 1, 'updated_at'=>Carbon::now()]);
+            }
+            else {
+                $status = $third_party_listing->update(['active'=> 0, 'updated_at'=>Carbon::now()]);
+            }
+            return 1;
+        }
     }
 
     public function test()

@@ -40,6 +40,8 @@ Route::get('/gformredirect','ProjectsController@gformRedirects');
 
 Route::get('/dashboard/users', ['as'=>'dashboard.users', 'uses'=>'DashboardController@users']);
 Route::get('/dashboard/projects', ['as'=>'dashboard.projects', 'uses'=>'DashboardController@projects']);
+Route::get('/dashboard/thirdPartyListings', ['as'=>'dashboard.thirdPartyListings', 'uses'=>'DashboardController@thirdPartyListings']);
+Route::post('/dashboard/showThirdPartyProject', ['as'=>'dashboard.showThirdPartyProject', 'uses'=>'DashboardController@showThirdPartyProject']);
 Route::get('/dashboard/configurations', ['as'=>'dashboard.configurations', 'uses'=>'DashboardController@siteConfigurations']);
 Route::post('/dashboard/configurations/uploadSiteLogo', ['as'=>'dashboard.configurations.uploadSiteLogo', 'uses'=>'DashboardController@uploadSiteLogo']);
 Route::post('/configuration/changecolor/footer/home',['as'=>'configuration.footercolor.home','uses'=>'PagesController@changeColorFooter']);
