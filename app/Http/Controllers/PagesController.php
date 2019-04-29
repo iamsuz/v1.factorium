@@ -62,6 +62,7 @@ class PagesController extends Controller
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
         $admin_access = 0;
+        $third_party_listings = ThirdPartyListing::where(['list_on_site'=>url(), 'active'=>1])->orderBy('id', 'asc')->get();
         if(Auth::guest()) {
             $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             $currentUserRole = 'guest';
@@ -119,7 +120,7 @@ class PagesController extends Controller
 
         $testimonials = Testimonial::where('project_site', url())->get();
         $isiosDevice = stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'iphone');
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings'));
     }
 
     /**
