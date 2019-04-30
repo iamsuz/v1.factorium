@@ -136,7 +136,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
             $third_party_listing = ThirdPartyListing::all();
-            $project_id = (int)$request->project_id;
+            $project_id = $request->project_id;
             $third_party_listing = $third_party_listing->where('list_on_site',url())->where('project_id', $project_id)->first();
             if(!$third_party_listing)
             {
