@@ -64,7 +64,6 @@ Projects | Dashboard | @parent
 			"iDisplayLength": 10,
 			"fnInitComplete": thirdPartyListingSwitch()
 		});
-		thirdPartyListingSwitch();
 	});
 
 	function thirdPartyListingSwitch(){
