@@ -191,4 +191,9 @@ class Project extends Model
     {
         return $this->hasMany('App\Market');
     }
+
+    public function third_party_listing()
+    {
+        return $this->hasOne('App\ThirdPartyListing');
+    }
 }
