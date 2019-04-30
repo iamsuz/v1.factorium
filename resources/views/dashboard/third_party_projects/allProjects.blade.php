@@ -61,14 +61,15 @@ Projects | Dashboard | @parent
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script><script type="text/javascript">
 	$(document).ready(function(){
 		var projectsTable = $('#projectsTable').DataTable({
-			"iDisplayLength": 10
+			"iDisplayLength": 10,
+			"fnInitComplete": thirdPartyListingSwitch()
 		});
 		thirdPartyListingSwitch();
 	});
 
 	function thirdPartyListingSwitch(){
         $('.third-party-switch').bootstrapSwitch();
-        $('.third-party-switch').on('switchChange.bootstrapSwitch', function () {
+        $('#projectsTable').on('switchChange.bootstrapSwitch', '.third-party-switch', function () {
             var setVal = $(this).val() == 1? 0 : 1;
             $(this).val(setVal);
             var checkValue = $(this).val();
