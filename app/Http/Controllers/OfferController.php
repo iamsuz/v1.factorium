@@ -253,14 +253,14 @@ class OfferController extends Controller
       if($project->use_tokens){
         $client = new \GuzzleHttp\Client();
         $requestBalance = $client->request('GET','http://52.62.205.188:8081/getBalance',[
-          'query'=>['user_id'=> $user->id,'project_id'=>27]
+          'query'=>['user_id'=> $user->id,'project_id'=>58]
         ]);
         $responseBalance = $requestBalance->getBody()->getContents();
         $balance = json_decode($responseBalance);
         $transactionAUDK = false;
         if($balance->balance >= $amount){
           $client = new \GuzzleHttp\Client();
-          $requestTransaction = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
+          $requestTransaction = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>58,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
         ]);
           $responseTransact = $requestTransaction->getBody()->getContents();
           $result = json_decode($responseTransact);
@@ -278,7 +278,7 @@ class OfferController extends Controller
           $remainingAmount = $amount - (int)$balance->balance;
           if((int)$balance->balance != 0){
             $requestTransaction = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
-              'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$balance->balance,'project_address'=>$project->wallet_address]
+              'query' => ['user_id' => $user->id,'project_id'=>58,'securityTokens'=>$balance->balance,'project_address'=>$project->wallet_address]
             ]);
             $responseTransact = $requestTransaction->getBody()->getContents();
             $result = json_decode($responseTransact);

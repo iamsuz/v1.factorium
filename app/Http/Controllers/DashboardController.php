@@ -426,7 +426,7 @@ class DashboardController extends Controller
                     {
                         $client = new \GuzzleHttp\Client();
                         $requestLinked = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
-                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>27,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
+                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>58,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
                         ]);
                         $responseLinked = $requestLinked->getBody()->getContents();
                         $result = json_decode($responseLinked);
@@ -868,7 +868,7 @@ class DashboardController extends Controller
                     $responseRepurchase = $requestRepurchase->getBody()->getContents();
                     $result = json_decode($responseRepurchase);
                     $requestRepurchaseAudk = $client->request('GET','http://localhost:5050/investment/transaction',[
-                        'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                        'query'=>['user_id'=> $investment->user_id,'project_id'=>58,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
                     ]);
                     $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
                     $balance = json_decode($responseRepurchaseAudk);
