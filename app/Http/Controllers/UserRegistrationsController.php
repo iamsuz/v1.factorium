@@ -497,7 +497,7 @@ class UserRegistrationsController extends Controller
             // return view('users.registrationFinish', compact('user','color'));
             $user = Auth::user();
             $client = new \GuzzleHttp\Client();
-            $req = $client->request('GET','http://localhost:5050/userWallet',[
+            $req = $client->request('GET','http://52.62.205.188:8081/userWallet',[
                 'query' => ['user_id' => $user->id]
             ]);
             $res = $req->getBody()->getContents();

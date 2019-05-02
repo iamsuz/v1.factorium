@@ -218,4 +218,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\Market');
     }
+    public function votes()
+    {
+        return $this->hasOne('App\ProjectProgVote');
+    }
 }

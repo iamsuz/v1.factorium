@@ -43,15 +43,18 @@
 							</small>
 						</address>
 					</h3>
+					@if($balanceAudk) <h4 class="text-center">AUDK Balance: {{$balanceAudk->balance}}</h4> @endif
 				</div>
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
-				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Applications</h3></a></li>
-				<li style="width: 30%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h3></a></li>
-				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
-				<li style="width: 30%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
-				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
-				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
+				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h4 class="text-center">Applications</h4></a></li>
+				{{-- <li style="width: 30%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h4 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h4></a></li> --}}
+				<li style="width: 30%;"><a data-toggle="tab" href="#accepted_applications" style="padding: 0em 2em"><h4 class="text-center">Accepted Applications</h4></a></li>
+				<li style="width: 30%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h4 class="text-center">Share Registry</h4></a></li>
+				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h4 class="text-center">Transactions</h4></a></li>
+				<li style="width: 30%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h4 class="text-center">Position records</h4></a></li>
+				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h4 class="text-center">EOI (Coming Soon)</h4></a></li>
+				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h4 class="text-center">Project EOI</h4></a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
@@ -337,7 +340,7 @@
 					</table>
 				</div>
 
-				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+				<div id="accepted_applications" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
 					<!-- <ul class="list-group">Hello</ul> -->
 					<div class="share-registry-actions">
 						<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend Annualized</button>
@@ -394,6 +397,101 @@
 								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
 									<td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
 									<td>INV{{$shareInvestment->id}}</td>
+									{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
+									<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
+									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
+									<td>{{$shareInvestment->investing_as}}</td>
+									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
+									<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
+									<td>{{$shareInvestment->user->phone_number}}</td>
+									<td>{{$shareInvestment->user->email}}</td>
+									<td>
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
+
+									</td>
+									<td>{{$shareInvestment->amount}}</td>
+									<td>
+										@if($shareInvestment->is_repurchased)
+										<strong>Investment is repurchased</strong>
+										@else
+										@if($shareInvestment->is_cancelled)
+										<strong>Investment record is cancelled</strong>
+										@else
+											@if($project->share_vs_unit)
+												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Share Certificate
+												</a>
+											@else
+												<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Unit Certificate
+												</a>
+											@endif
+										@endif
+										@endif
+									</td>
+									<td>
+										@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
+									</td>
+									<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
+									<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
+									<td>
+										@if($shareInvestment->is_repurchased)
+										<strong>Repurchased</strong>
+										@else
+										@if($shareInvestment->is_cancelled)
+										<strong>Cancelled</strong>
+										@else
+										<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a>
+										@endif
+										@endif
+									</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+				<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+					<!-- <ul class="list-group">Hello</ul> -->
+					<br><br>
+					<div class="">
+						<table class="table table-bordered table-striped" id="shareRegistryTable">
+							<thead>
+								<tr>
+									<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
+									{{-- <th>Unique ID</th> --}}
+									{{-- <th>@if($project->share_vs_unit) Share @else Unit @endif numbers</th> --}}
+									<th>Project SPV Name</th>
+									<th>Investor Name</th>
+									<th>Investment type</th>
+									<th>Joint Investor Name</th>
+									<th>Entity details</th>
+									<th>Phone</th>
+									<th>Email</th>
+									<th>Address</th>
+									<th>@if($project->share_vs_unit) Share @else Unit @endif face value</th>
+									<th>Link to @if($project->share_vs_unit) share @else unit @endif certificate</th>
+									<th>TFN</th>
+									<th>Investment Documents</th>
+									<th>Account Name</th>
+									<th>BSB</th>
+									<th>Account Number</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($shareInvestments as $shareInvestment)
+								<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
+									{{-- <td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td> --}}
+									{{-- <td>INV{{$shareInvestment->id}}</td> --}}
 									{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
 									<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
 									<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>

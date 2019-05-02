@@ -185,14 +185,23 @@ class DashboardController extends Controller
         ->where('accepted', 1)
         ->orderBy('share_certificate_issued_at','ASC')
         ->get();
-        $transactions = Transaction::where('project_id', $project_id)->get()->groupby('user_id');
+        $transactions = Transaction::where('project_id', $project_id)->get();
         // dd($transactions);
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
         $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         $projectsEois = ProjectEOI::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois'));
+        $balanceAudk = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $requestAudk = $client->request('GET','http://52.62.205.188:8081/getProjectBalance/audk',[
+                'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
+            ]);
+            $responseAudk = $requestAudk->getBody()->getContents();
+            $balanceAudk = json_decode($responseAudk);
+        }
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois','balanceAudk'));
     }
 
     public function editProject($project_id)
@@ -220,7 +229,7 @@ class DashboardController extends Controller
             $contract = $contractRes->data;
             $client = new \GuzzleHttp\Client();
             $request = $client->request('GET','http://52.62.205.188:8081/getProjectBalance',[
-                'query'=>['project_id'=>$project->id]
+                'query'=>['project_contract_id'=>$project->id,'project_id'=>$project->id]
             ]);
             $response = $request->getBody()->getContents();
             $balance = json_decode($response);
@@ -340,15 +349,17 @@ class DashboardController extends Controller
         $this->validate($request, [
             'investor' => 'required',
         ]);
-
         $investment = InvestmentInvestor::findOrFail($investment_id);
         if($investment){
-            $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
-                'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
-            ]);
-            $response = $request->getBody()->getContents();
-            $result = json_decode($response);
+            if($investment->project->is_wallet_tokenized)
+            {
+                $client = new \GuzzleHttp\Client();
+                $requestInvest = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
+                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+                ]);
+                $responseInvest = $requestInvest->getBody()->getContents();
+                $resultInvest = json_decode($responseInvest);
+            }
             $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
             ->where('accepted', 1)
             ->orderBy('share_certificate_issued_at','DESC')->get()
@@ -368,7 +379,9 @@ class DashboardController extends Controller
             $investment->money_received = 1;
             $investment->share_certificate_issued_at = Carbon::now();
             $investment->share_number = $shareCount;
-            $investment->transaction_hash = $result->hash;
+            if(isset($resultInvest)){
+                $investment->transaction_hash = $resultInvest->hash;
+            }
             if($investment->project->share_vs_unit){
                 $investment->share_certificate_path = "/app/invoices/Share-Certificate-".$investment->id.".pdf";
             }else{
@@ -376,7 +389,6 @@ class DashboardController extends Controller
             }
             $investment->save();
             // dd($investment);
-
             // Save details to transaction table
             $noOfShares = $shareEnd-$shareInit;
             $transactionRate = $investment->amount/$noOfShares;
@@ -406,6 +418,29 @@ class DashboardController extends Controller
 
                 // $mailer->sendInvoiceToUser($investment,$formLink);
                 // $mailer->sendInvoiceToAdmin($investment,$formLink);
+            }
+            if(isset($investment->pay_investment_id)){
+                $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
+                if($linkedInvestment){
+                    if($linkedInvestment->project->is_wallet_tokenized)
+                    {
+                        $client = new \GuzzleHttp\Client();
+                        $requestLinked = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
+                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>27,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
+                        ]);
+                        $responseLinked = $requestLinked->getBody()->getContents();
+                        $result = json_decode($responseLinked);
+                    }
+                    $investmentShares = InvestmentInvestor::where('project_id', $linkedInvestment->project_id)
+                    ->where('accepted', 1)
+                    ->orderBy('share_certificate_issued_at','DESC')->get()
+                    ->first();
+                    //Update current investment and with the share certificate details
+                    $linkedInvestment->money_received = 1;
+                    $linkedInvestment->save();
+
+                    $investing = InvestingJoint::where('investment_investor_id', $linkedInvestment->id)->get()->last();
+                }
             }
             return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
         }
@@ -825,12 +860,20 @@ class DashboardController extends Controller
                 $repurchaseAmount = round(($investment->amount * $repurchaseRate), 2);
                 $shareNumber = explode('-', $investment->share_number);
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
-                $client = new \GuzzleHttp\Client();
-                $request = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
-                ]);
-                $response = $request->getBody()->getContents();
-                $result = json_decode($response);
+                if($project->is_wallet_tokenized){
+                    $client = new \GuzzleHttp\Client();
+                    $requestRepurchase = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
+                        'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                    ]);
+                    $responseRepurchase = $requestRepurchase->getBody()->getContents();
+                    $result = json_decode($responseRepurchase);
+                    $requestRepurchaseAudk = $client->request('GET','http://localhost:5050/investment/transaction',[
+                        'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                    ]);
+                    $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
+                    $balance = json_decode($responseRepurchaseAudk);
+                }
+
                 Transaction::create([
                     'user_id' => $investment->user_id,
                     'project_id' => $investment->project_id,
@@ -1162,9 +1205,9 @@ class DashboardController extends Controller
     public function uploadOfferDoc(Request $request)
     {
         $this->validate($request, [
-                'offer_doc' => 'required|mimes:pdf',
-                'eoi_id' => 'required'
-            ]);
+            'offer_doc' => 'required|mimes:pdf',
+            'eoi_id' => 'required'
+        ]);
         $projectEoi = ProjectEOI::find($request->eoi_id);
 
         if (!file_exists(public_path().'/assets/documents/eoi/'.$projectEoi->id)) {
@@ -1337,7 +1380,7 @@ class DashboardController extends Controller
 
         //Save wholesale project input fields
         if($request->wholesale_investing_as === 'Wholesale Investor (Net Asset $2,500,000 plus)'){
-                $investment->wholesaleInvestment->update([
+            $investment->wholesaleInvestment->update([
                 'wholesale_investing_as' => $request->wholesale_investing_as,
                 'accountant_name_and_firm' => $request->accountant_name_firm_txt,
                 'accountant_professional_body_designation'=> $request->accountant_designation_txt,
@@ -1359,76 +1402,76 @@ class DashboardController extends Controller
                 'wholesale_investing_as' => $request->wholesale_investing_as
             ]);
         }
-      $wholesale_investing->save();
+        $wholesale_investing->save();
 
-      $result = $investment->update([
-        'amount' => $request->amount_to_invest,
-        'investing_as'=> $request->investing_as,
-        'interested_to_buy'=> $request->interested_to_buy,
-    ]);
+        $result = $investment->update([
+            'amount' => $request->amount_to_invest,
+            'investing_as'=> $request->investing_as,
+            'interested_to_buy'=> $request->interested_to_buy,
+        ]);
 
-      if($request->investing_as !== 'Individual Investor'){
-        if($investment->investingJoint){
-            $investing_joint = $investment->investingJoint;
-            $result = $investing_joint->update([
-                'joint_investor_first_name' => $request->joint_investor_first,
-                'joint_investor_last_name' => $request->joint_investor_last,
-                'investing_company' => $request->investing_company_name,
-                'account_name' => $request->account_name,
-                'bsb' => $request->bsb,
-                'account_number' => $request->account_number,
-                'line_1' => $request->line_1,
-                'line_2' => $request->line_2,
-                'city' => $request->city,
-                'state' => $request->state,
-                'postal_code' => $request->postal_code,
-                'country' => $request->country,
-                'country_code' => $request->country_code,
-                'tfn' => $request->tfn,
-            ]);
+        if($request->investing_as !== 'Individual Investor'){
+            if($investment->investingJoint){
+                $investing_joint = $investment->investingJoint;
+                $result = $investing_joint->update([
+                    'joint_investor_first_name' => $request->joint_investor_first,
+                    'joint_investor_last_name' => $request->joint_investor_last,
+                    'investing_company' => $request->investing_company_name,
+                    'account_name' => $request->account_name,
+                    'bsb' => $request->bsb,
+                    'account_number' => $request->account_number,
+                    'line_1' => $request->line_1,
+                    'line_2' => $request->line_2,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'postal_code' => $request->postal_code,
+                    'country' => $request->country,
+                    'country_code' => $request->country_code,
+                    'tfn' => $request->tfn,
+                ]);
+            }
+            else{
+                $investing_joint = new InvestingJoint;
+                $investing_joint->project_id = $project->id;
+                $investing_joint->investment_investor_id = $investment->id;
+                $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+                $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+                $investing_joint->investing_company = $request->investing_company_name;
+                $investing_joint->account_name = $request->account_name;
+                $investing_joint->bsb = $request->bsb;
+                $investing_joint->account_number = $request->account_number;
+                $investing_joint->line_1 = $request->line_1;
+                $investing_joint->line_2 = $request->line_2;
+                $investing_joint->city = $request->city;
+                $investing_joint->state = $request->state;
+                $investing_joint->postal_code = $request->postal_code;
+                $investing_joint->country = $request->country;
+                $investing_joint->country_code = $request->country_code;
+                $investing_joint->tfn = $request->tfn;
+                $investing_joint->save();
+            }
         }
-        else{
-            $investing_joint = new InvestingJoint;
-            $investing_joint->project_id = $project->id;
-            $investing_joint->investment_investor_id = $investment->id;
-            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
-            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
-            $investing_joint->investing_company = $request->investing_company_name;
-            $investing_joint->account_name = $request->account_name;
-            $investing_joint->bsb = $request->bsb;
-            $investing_joint->account_number = $request->account_number;
-            $investing_joint->line_1 = $request->line_1;
-            $investing_joint->line_2 = $request->line_2;
-            $investing_joint->city = $request->city;
-            $investing_joint->state = $request->state;
-            $investing_joint->postal_code = $request->postal_code;
-            $investing_joint->country = $request->country;
-            $investing_joint->country_code = $request->country_code;
-            $investing_joint->tfn = $request->tfn;
-            $investing_joint->save();
-        }
+
+        $updateUserDetails = $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone_number' => $request->phone,
+            'tfn' => $request->tfn,
+            'account_name' => $request->account_name,
+            'bsb' => $request->bsb,
+            'account_number' => $request->account_number,
+            'line_1' => $request->line_1,
+            'line_2' => $request->line_2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+            'country' => $request->country,
+            'country_code' => $request->country_code,
+        ]);
+
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Application form updated successfully.</p>');
+
     }
-
-    $updateUserDetails = $user->update([
-        'first_name' => $request->first_name,
-        'last_name' => $request->last_name,
-        'phone_number' => $request->phone,
-        'tfn' => $request->tfn,
-        'account_name' => $request->account_name,
-        'bsb' => $request->bsb,
-        'account_number' => $request->account_number,
-        'line_1' => $request->line_1,
-        'line_2' => $request->line_2,
-        'city' => $request->city,
-        'state' => $request->state,
-        'postal_code' => $request->postal_code,
-        'country' => $request->country,
-        'country_code' => $request->country_code,
-    ]);
-
-    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Application form updated successfully.</p>');
-
-}
 
     /**
      * \brief Show import CSV form

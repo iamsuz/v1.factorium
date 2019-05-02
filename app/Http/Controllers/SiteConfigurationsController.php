@@ -28,6 +28,7 @@ use App\Mailers\AppMailer;
 use Illuminate\Support\Facades\Mail;
 use App\Location;
 use App\Document;
+use App\ProjectProgVote;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Helpers\SiteConfigurationHelper;
@@ -647,7 +648,6 @@ class SiteConfigurationsController extends Controller
     {
         $this->validate($request, array(
             'updated_date'=>'required|date',
-            'progress_description'=>'required',
             'progress_details'=>'required',
             'video_url'=>'',
         ));
@@ -675,6 +675,8 @@ class SiteConfigurationsController extends Controller
         $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
         $project_prog->progress_description = trim(preg_replace('/\s+/', ' ', $request->progress_description));
         $project_prog->progress_details = trim(preg_replace('/\s+/', ' ', $request->progress_details));
+        $project_prog->request_funds = $request->request_funds;
+        $project_prog->amount = $request->amount;
         $project_prog->video_url = $request->video_url;
         $project_prog->image_path = $imagePath;
         $project_prog->save();
@@ -758,6 +760,10 @@ class SiteConfigurationsController extends Controller
     public function updateProjectDetails(Request $request, $projectId)
     {
         if (SiteConfigurationHelper::isSiteAdmin()){
+            $project = Project::findOrFail($projectId);
+            if($project->is_wallet_tokenized){
+                $request['project_goal_amount'] = $project->investment->goal_amount;
+            }
             $validator = $this->validate($request, array(
                 'project_title_txt' => 'required',
                 'project_description_txt' => 'required',
@@ -1566,5 +1572,38 @@ class SiteConfigurationsController extends Controller
             Session::flash('action', 'change_sendgrid_api_key');
             return redirect()->back();
         }
+    }
+    public function upvote(Request $request,$id)
+    {
+        $projectProg = ProjectProg::findOrFail($id);
+        $project = Project::findOrFail($projectProg->project_id);
+        $request['project_id']= $project->id;
+        $request['project_prog_id']= $id;
+        $request['user_id']= Auth::id();
+        $request['value']=1;
+        $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
+        if($vote) {
+            $vote->update($request->all());
+        } else {
+            ProjectProgVote::create($request->all());
+        }
+        return redirect()->back()->withMessage('Thanks for your vote!');
+    }
+
+    public function downvote(Request $request,$id)
+    {
+        $projectProg = ProjectProg::findOrFail($id);
+        $project = Project::findOrFail($projectProg->project_id);
+        $request['project_id']= $project->id;
+        $request['project_prog_id']= $id;
+        $request['user_id']= Auth::id();
+        $request['value']=-1;
+        $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
+        if($vote) {
+            $vote->update($request->all());
+        } else {
+            ProjectProgVote::create($request->all());
+        }
+        return redirect()->back()->withMessage('Thanks for your vote!');
     }
 }

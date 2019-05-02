@@ -16,7 +16,7 @@ class Konkrete {
 	 */
 	public function __construct()
     {
-        $this->uri = env('KONKRETE_API_URL', 'http://52.62.205.188:8082');
+        $this->uri = env('KONKRETE_API_URL', 'http://localhost:3000');
         $this->setClient(new Client());
     }
 

@@ -135,6 +135,16 @@ class UserAuthController extends Controller
             $color = Color::where('project_site',url())->first();
             $project = Project::findOrFail($request->project_id);
             $user = Auth::user();
+            if(!$user->wallet_address){
+                $client = new \GuzzleHttp\Client();
+                $requestG = $client->request('GET','http://52.62.205.188:8081/userWallet',[
+                    'query'=> ['user_id'=> $user->id]
+                ]);
+                $response = $requestG->getBody()->getContents();
+                $result = json_decode($response);
+                $user->wallet_address = $result->signingKey->address;
+                $user->save();
+            }
             $user_info = Auth::user();
             $min_amount_invest = $project->investment->minimum_accepted_amount;
             if((int)$request->investment_amount < (int)$min_amount_invest)
@@ -194,6 +204,16 @@ class UserAuthController extends Controller
             $color = Color::where('project_site',url())->first();
             $project = Project::findOrFail($request->project_id);
             $user = Auth::user();
+            if(!$user->wallet_address){
+                $client = new \GuzzleHttp\Client();
+                $requestG = $client->request('GET','http://52.62.205.188:8081/userWallet',[
+                    'query'=> ['user_id'=> $user->id]
+                ]);
+                $response = $requestG->getBody()->getContents();
+                $result = json_decode($response);
+                $user->wallet_address = $result->signingKey->address;
+                $user->save();
+            }
             $user_info = Auth::user();
             $project = Project::findOrFail($request->project_id);
             $min_amount_invest = $project->investment->minimum_accepted_amount;
@@ -372,6 +392,17 @@ class UserAuthController extends Controller
                     ]);
                 }
             }
+            if(!Auth::user()->wallet_address){
+                $user = Auth::user();
+                $client = new \GuzzleHttp\Client();
+                $requestG = $client->request('GET','http://localhost:5050/userWallet',[
+                    'query'=> ['user_id'=> $user->id]
+                ]);
+                $response = $requestG->getBody()->getContents();
+                $result = json_decode($response);
+                $user->wallet_address = $result->signingKey->address;
+                $user->save();
+            }
             Auth::user()->update(['last_login'=> Carbon::now()]);
             if (Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {
                 $this->redirectTo = "/dashboard";
@@ -444,6 +475,16 @@ class UserAuthController extends Controller
             else {
                 $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
             };
+            if(!$user->wallet_address){
+                $client = new \GuzzleHttp\Client();
+                $requestG = $client->request('GET','http://52.62.205.188:8081/userWallet',[
+                    'query'=> ['user_id'=> $user->id]
+                ]);
+                $response = $requestG->getBody()->getContents();
+                $result = json_decode($response);
+                $user->wallet_address = $result->signingKey->address;
+                $user->save();
+            }
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1)) && $daily_bonus_konkrete != 0){
                     $loginBonus = rand(1, $daily_bonus_konkrete);

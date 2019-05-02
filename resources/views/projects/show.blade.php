@@ -24,44 +24,65 @@
 {!! Html::style('/assets/plugins/summernote/summernote.css') !!}
 @parent
 <style>
-#map {
-	height: 350px;
-}
-.blur {
-	color: transparent;
-	text-shadow: 0 0 5px rgba(0,0,0,0.9);
-	-webkit-filter: blur(5px);
-	-moz-filter: blur(5px);
-	-o-filter: blur(5px);
-	-ms-filter: blur(5px);
-	filter: blur(5px);
-}
-.btn-hover-default-color:hover{
-	color: #000 !important;
-}
-.edit-pencil-style{
-	padding: 6px 7px;
-	border: 2px solid #fff;
-	border-radius: 50px;
-	color: #fff;
-	cursor: pointer;
-}
-.btn-n1 {
-	color: white;
-}
-.btn-n1:hover {
-	color: black;
-}
-@media screen and (max-width: 768px) {
-	#terms_accepted_button{
-		font-size: 12px;
+	#map {
+		height: 350px;
 	}
-}
-@media screen and (max-width: 320px){
-	#terms_accepted_button{
-		font-size: 10px;
+	.blur {
+		color: transparent;
+		text-shadow: 0 0 5px rgba(0,0,0,0.9);
+		-webkit-filter: blur(5px);
+		-moz-filter: blur(5px);
+		-o-filter: blur(5px);
+		-ms-filter: blur(5px);
+		filter: blur(5px);
 	}
-}
+	.btn-hover-default-color:hover{
+		color: #000 !important;
+	}
+	.edit-pencil-style{
+		padding: 6px 7px;
+		border: 2px solid #fff;
+		border-radius: 50px;
+		color: #fff;
+		cursor: pointer;
+	}
+	.btn-n1 {
+		color: white;
+	}
+	.btn-n1:hover {
+		color: black;
+	}
+	@media screen and (max-width: 768px) {
+		#terms_accepted_button{
+			font-size: 12px;
+		}
+	}
+	@media screen and (max-width: 320px){
+		#terms_accepted_button{
+			font-size: 10px;
+		}
+	}
+	.vote {
+		width: 0;
+		height: 0;
+		border-left: 20px solid transparent;
+		border-right: 20px solid transparent;
+		border-bottom: 20px solid lightgreen;
+	}
+	.vote.on {
+		border-bottom: 20px solid #fed405;
+	}
+	.downvote {
+		width: 0;
+		height: 0;
+		border-left: 20px solid transparent;
+		border-right: 20px solid transparent;
+
+		border-top: 20px solid lightgreen;
+	}
+	.downvote.on {
+		border-top: 20px solid blue !important;
+	}
 </style>
 @stop
 
@@ -1643,19 +1664,19 @@
 </section> -->
 <!-- <h4 class="text-center">More questions/comments/concerns? You can post them here or chat with us</h4> -->
 <br>
-{{-- <div class="row">
+<div class="row">
 			<div class="col-md-offset-1 col-md-10">
 				<hr style="margin-top:0px;">
 			</div>
-		</div> --}}
+		</div>
 		<section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
 			<div class="container">
 				<h3 class="text-center">More questions/comments/concerns? You can post them here</h3>
 				<br>
-		{{-- <div class="row">
+		<div class="row">
 			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
 			<div class="col-md-8"></div>
-		</div> --}}
+		</div>
 
 		{!! Form::open(array('route'=>['projects.{projects}.comments.store', $project], 'class'=>'form-horizontal', 'role'=>'form', 'id'=>'feedback_form')) !!}
 		<div class="row">
@@ -1687,18 +1708,18 @@
 	</div>
 </section>
 <style type="text/css">
-.vote-input {
-	visibility:hidden;
-}
-.vote-input-label {
-	cursor: pointer;
-}
-.vote-input:checked + label {
-	color: red;
-}
-.vote-count {
-	display:inline;
-}
+	.vote-input {
+		visibility:hidden;
+	}
+	.vote-input-label {
+		cursor: pointer;
+	}
+	.vote-input:checked + label {
+		color: red;
+	}
+	.vote-count {
+		display:inline;
+	}
 </style>
 <section id="comments-list" class="chunk-box hide" style="padding-top:0px;">
 	<div class="container">
@@ -1804,17 +1825,24 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<th></th>
 					<th style="width: 140px;">Date of Progress</th>
-					<th>Description</th>
+					{{-- <th>Description</th> --}}
+					<th>Request Funds</th>
+					<th>Amount</th>
 					<th>Details</th>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach($project_prog as $project_progs)
 				<tr>
+					<td>
+						@if($project_progs->is_voting)<a href="{{route('configuration.upvote', [$project_progs->id])}}"><span class="vote @if(Auth::user()->votes->value === 1) on @endif"></span></a><br><br><span class="text-center" style="margin-left: 30%">{{$project_progs->votes()->sum('value')}}</span><br><br><a href="{{route('configuration.upvote', [$project_progs->id])}}"><span class="downvote @if(Auth::user()->votes->value === -1) on @endif"></span></a> <br> <p>Votes {{$project_progs->votes()->count()}}</p>@endif</td>
 					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 					</td>
-					<td>{!!$project_progs->progress_description!!} </td>
+					{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
+					<td>{{$project_progs->request_funds}}</td>
+					<td>{{$project_progs->amount}}</td>
 					<td>
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -1841,6 +1869,7 @@
 				</tr>
 				@endforeach
 				<tr>
+					<td></td>
 					@if(Auth::user())
 					@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 					<h3 style="color: #000;">Add new Update</h3>
@@ -1857,8 +1886,17 @@
 						<td>
 							<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
 								<div class="col-sm-12 <?php if($errors->first('progress_description')){echo 'has-error';}?>">
-									{!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!}
+									{{-- {!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!} --}}
+									<input type="integer" name="request_funds" placeholder="Request Funds" class="form-control">
 									{!! $errors->first('progress_description', '<small class="text-danger">:message</small>') !!}
+								</div>
+
+							</div>
+						</td>
+						<td>
+							<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
+								<div class="col-sm-12">
+									<input type="integer" name="amount" placeholder="Amount" class="form-control">
 								</div>
 							</div>
 						</td>
