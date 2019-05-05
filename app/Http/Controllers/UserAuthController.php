@@ -395,7 +395,7 @@ class UserAuthController extends Controller
             if(!Auth::user()->wallet_address){
                 $user = Auth::user();
                 $client = new \GuzzleHttp\Client();
-                $requestG = $client->request('GET','http://localhost:5050/userWallet',[
+                $requestG = $client->request('GET','http://52.62.205.188:8081/userWallet',[
                     'query'=> ['user_id'=> $user->id]
                 ]);
                 $response = $requestG->getBody()->getContents();
