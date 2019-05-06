@@ -1798,7 +1798,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										@if(!$project->is_wallet_tokenized)
 											<!-- START: Tokenize project wallet -->
 											<div class="alert alert-warning text-center">
-												You will have to verify your contract to proceed further. Please <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to verify</a>.
+												Check your contract on Blockchain by clicking on below link -<br> <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to view contract</a>.
 												<br><strong>Ignore if already done!</strong>
 											</div>
 											<div class="text-center">
@@ -2259,6 +2259,10 @@ Edit {{$project->title}} | Dashboard | @parent
 			$('input[name="certificate_frame"][value="' + selectedImg + '"]').prop('checked', true);
 		});
 
+		@if(isset($contract->isVerified) && !$contract->isVerified)
+		var checkContractInterval = setInterval(checkContractVerification, 30000);
+		@endif
+
 		//Upload Project SPV Logo
 		uploadProjectSPVLogo();
 		performCropOnImage();
@@ -2616,6 +2620,21 @@ Edit {{$project->title}} | Dashboard | @parent
     		});
 
     	});
+    }
+
+    function checkContractVerification() {
+    	var projectId = '{{ $project->id }}';
+    	$.ajax({
+			url: "{{ route('konkrete.verify') }}",
+			type: 'POST',
+			dataType: 'JSON',
+			data: { project_id: projectId },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) { console.log(data); },
+            error: function(error) { console.log(error); }
+		});
     }
 
 </script>

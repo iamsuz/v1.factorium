@@ -37,6 +37,8 @@ use App\ProspectusDownload;
 use App\ProjectSpvDetail;
 use App\UserRegistration;
 use App\ThirdPartyListing;
+use App\InvestorProjectToken;
+use App\SchedulerJob;
 use App\Http\Controllers\KonkreteController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +50,7 @@ class DashboardController extends Controller
 {
 
     protected $siteConfiguration;
+    protected $konkrete;
 
     /**
      * constructor for DashboardController
@@ -58,6 +61,7 @@ class DashboardController extends Controller
         $this->middleware('admin');
 
         $this->siteConfiguration = SiteConfiguration::where('project_site', url())->first();
+        $this->konkrete = new KonkreteController();
     }
 
     /**
@@ -226,9 +230,11 @@ class DashboardController extends Controller
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
         $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         $projectsEois = ProjectEOI::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
+        $investorTokens = InvestorProjectToken::with(['user', 'project', 'scheduler_job'])->where('project_id', $project_id)->get();
+        $investorTokensJobDetails = SchedulerJob::where('type', 'investor_project_tokens')->orderBy('created_at', 'desc')->first();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'investorTokens', 'investorTokensJobDetails'));
     }
 
     public function editProject($project_id)
@@ -249,11 +255,12 @@ class DashboardController extends Controller
         }
 
         $contract = array();
-        if($project->contract_address && $project->is_wallet_tokenized) {
-            $konkrete = new KonkreteController();
-            $res = $konkrete->getContractDetails($project_id);
+        if($project->contract_address) {
+            $res = $this->konkrete->getContractDetails($project_id);
             $contractRes = json_decode($res->getContent());
             $contract = $contractRes->data;
+        }
+        if($project->contract_address && $project->is_wallet_tokenized) {
             $client = new \GuzzleHttp\Client();
             $request = $client->request('GET','http://52.62.205.188:8081/getProjectBalance',[
                 'query'=>['project_id'=>$project->id]

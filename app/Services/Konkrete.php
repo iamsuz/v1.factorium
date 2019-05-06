@@ -36,7 +36,7 @@ class Konkrete {
         }
 
         if ((strtoupper($method) == 'GET') && $data) {
-            $endPoint .= http_build_query($data);
+            $endPoint .= '?' . http_build_query($data);
         }
         if (strtoupper($method) == 'POST') {
             $options['json'] = $data;

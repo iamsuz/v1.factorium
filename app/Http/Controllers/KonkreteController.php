@@ -236,4 +236,72 @@ class KonkreteController extends Controller
             return false;
         }
     }
+
+    /**
+     * Verify smart contract
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyContract(Request $request)
+    {
+        $projectId = $request->project_id;
+
+        if($projectId) {
+            $response =  $this->konkreteClient->curlKonkrete('POST', '/api/v1/contracts/verify', [], [
+                                'project_id' => (int)$projectId
+                            ]);
+            $responseResult = json_decode($response);
+
+            if($responseResult->status) {
+                return response([
+                    'status' => true,
+                    'message' => $responseResult->message,
+                    'data' => $responseResult->data
+                ], 200);
+
+            } else {
+                return response([
+                    'status' => false,
+                    'message' => $responseResult->message
+                ], 200);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get user token balance for given project
+     * 
+     * @param walletAddress string
+     * @param projectId int
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserTokenBalance($walletAddress, $projectId)
+    {
+        if($walletAddress && $projectId) {
+            $response =  $this->konkreteClient->curlKonkrete('GET', '/api/v1/accounts/getBalance', [], [
+                                'account' => $walletAddress,
+                                'project_id' => (int)$projectId
+                            ]);
+            $responseResult = json_decode($response);
+
+            if($responseResult->status) {
+                return response([
+                    'status' => true,
+                    'message' => $responseResult->message,
+                    'data' => $responseResult->data
+                ], 200);
+
+            } else {
+                return response([
+                    'status' => false,
+                    'message' => $responseResult->message
+                ], 200);
+            }
+        } else {
+            return false;
+        }
+    }
 }
