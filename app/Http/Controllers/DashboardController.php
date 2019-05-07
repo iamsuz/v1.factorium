@@ -820,6 +820,29 @@ class DashboardController extends Controller
         $project = Project::findOrFail($projectId);
             // send dividend emails to investors
         $failedEmails = [];
+        if($investorList != ''){
+            $investors = explode(',', $investorList);
+            $investments = InvestmentInvestor::findMany($investors);
+            // Add the records to project progress table
+            if($project->share_vs_unit) {
+                ProjectProg::create([
+                    'project_id' => $projectId,
+                    'updated_date' => Carbon::now(),
+                    'progress_description' => 'Repurchase Declaration',
+                    'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
+                ]);
+            }else {
+                ProjectProg::create([
+                    'project_id' => $projectId,
+                    'updated_date' => Carbon::now(),
+                    'progress_description' => 'Repurchase Declaration',
+                    'progress_details' => 'Units Repurchased by company at $'.$repurchaseRate.' per unit.'
+                ]);
+            }
+
+            // send dividend email to admins
+            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
+            $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
         if($project->share_vs_unit) {
             $subject = 'Shares for '.$project->title;
         }else {
@@ -884,29 +907,6 @@ class DashboardController extends Controller
                 array_push($failedEmails, $investment->user->email);
             }
         }
-        if($investorList != ''){
-            $investors = explode(',', $investorList);
-            $investments = InvestmentInvestor::findMany($investors);
-            // Add the records to project progress table
-            if($project->share_vs_unit) {
-                ProjectProg::create([
-                    'project_id' => $projectId,
-                    'updated_date' => Carbon::now(),
-                    'progress_description' => 'Repurchase Declaration',
-                    'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
-                ]);
-            }else {
-                ProjectProg::create([
-                    'project_id' => $projectId,
-                    'updated_date' => Carbon::now(),
-                    'progress_description' => 'Repurchase Declaration',
-                    'progress_details' => 'Units Repurchased by company at $'.$repurchaseRate.' per unit.'
-                ]);
-            }
-
-            // send dividend email to admins
-            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
-            $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
 
             if(empty($failedEmails)){
                 return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investors and admins</p>');
