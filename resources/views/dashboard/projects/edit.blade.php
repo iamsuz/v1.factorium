@@ -36,9 +36,9 @@ Edit {{$project->title}} | Dashboard | @parent
 			{!! Form::model($project, array('route'=>['projects.update', $project], 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'PATCH', 'files'=>true)) !!}
 			<section>
 				<div class="row well">
-				@if(!$project->projectspvdetail)
-				<div class="alert alert-danger text-center">Please add the <b>Project SPV Details</b> to make the project <b>Live</b>. You can still make the status of the project as <b>Upcoming</b> or <b>EOI</b>.</div>
-				@endif
+					@if(!$project->projectspvdetail)
+					<div class="alert alert-danger text-center">Please add the <b>Project SPV Details</b> to make the project <b>Live</b>. You can still make the status of the project as <b>Upcoming</b> or <b>EOI</b>.</div>
+					@endif
 					<fieldset>
 						<div class="col-md-12 center-block">
 							<h3 class="text-center"><small>{{-- <a href="{{route('dashboard.projects.show', [$project])}}" class="pull-left hide"><i class="fa fa-chevron-left"></i>  BACK</a> --}}</small> Edit <i>{{$project->title}}</i></h3>
@@ -102,71 +102,79 @@ Edit {{$project->title}} | Dashboard | @parent
 									<br>
 
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
-									      <label class="btn btn-default @if(!$project->active) active @endif">
-									        <input type="radio" name="project_status" value="inactive"> Inactive
-									      </label>
-									      <label class="btn btn-default @if($project->active && !$project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
-									        <input type="radio" name="project_status" value="active"> Live
-									      </label>
-									      <label class="btn btn-default @if($project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button && $project->active) active @endif">
-									        <input type="radio" name="project_status" value="upcoming"> Upcoming
-									      </label>
-									      <label class="btn btn-default @if(!$project->is_coming_soon && $project->eoi_button && !$project->is_funding_closed && $project->active) active @endif">
-									        <input type="radio" name="project_status" value="eoi"> EOI
-									      </label>
-									      <label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && $project->is_funding_closed && $project->active) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
-									        <input type="radio" name="project_status" value="funding_closed"> Close Funding
-									      </label>
+										<label class="btn btn-default @if(!$project->active) active @endif">
+											<input type="radio" name="project_status" value="inactive"> Inactive
+										</label>
+										<label class="btn btn-default @if($project->active && !$project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+											<input type="radio" name="project_status" value="active"> Live
+										</label>
+										<label class="btn btn-default @if($project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button && $project->active) active @endif">
+											<input type="radio" name="project_status" value="upcoming"> Upcoming
+										</label>
+										<label class="btn btn-default @if(!$project->is_coming_soon && $project->eoi_button && !$project->is_funding_closed && $project->active) active @endif">
+											<input type="radio" name="project_status" value="eoi"> EOI
+										</label>
+										<label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && $project->is_funding_closed && $project->active) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+											<input type="radio" name="project_status" value="funding_closed"> Close Funding
+										</label>
 									</div>
 									<br>
 									<h3>Select a type of Shares</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->share_vs_unit == 1) active @endif">
-									        <input type="radio" name="share_vs_unit" value="1">Redeemable preference Share
-									      </label>
-									      <label class="btn btn-default @if($project->share_vs_unit == 0) active @endif" >
-									        <input type="radio" name="share_vs_unit" value="0"> Unit
-									      </label>
-									      <label class="btn btn-default @if($project->share_vs_unit == 2) active @endif" >
-									        <input type="radio" name="share_vs_unit" value="2"> Preference shares
-									      </label>
-									      <label class="btn btn-default @if($project->share_vs_unit == 3) active @endif" >
-									        <input type="radio" name="share_vs_unit" value="3"> Ordinary shares
-									      </label>
+											<input type="radio" name="share_vs_unit" value="1">Redeemable preference Share
+										</label>
+										<label class="btn btn-default @if($project->share_vs_unit == 0) active @endif" >
+											<input type="radio" name="share_vs_unit" value="0"> Unit
+										</label>
+										<label class="btn btn-default @if($project->share_vs_unit == 2) active @endif" >
+											<input type="radio" name="share_vs_unit" value="2"> Preference shares
+										</label>
+										<label class="btn btn-default @if($project->share_vs_unit == 3) active @endif" >
+											<input type="radio" name="share_vs_unit" value="3"> Ordinary shares
+										</label>
 									</div>
 									<br><br>
 									<h3>MD vs Trustee</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->md_vs_trustee == 1) active @endif">
-									        <input type="radio" name="md_vs_trustee" value="1"> MD
-									      </label>
-									      <label class="btn btn-default @if($project->md_vs_trustee == 0) active @endif" >
-									        <input type="radio" name="md_vs_trustee" value="0"> Trustee
-									      </label>
+											<input type="radio" name="md_vs_trustee" value="1"> MD
+										</label>
+										<label class="btn btn-default @if($project->md_vs_trustee == 0) active @endif" >
+											<input type="radio" name="md_vs_trustee" value="0"> Trustee
+										</label>
 									</div>
 
 									<br><br>
 									<h3>Retail project vs Wholesale project</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->retail_vs_wholesale == 1) active @endif">
-									        <input type="radio" name="retail_vs_wholesale" value="1"> Retail
-									      </label>
-									      <label class="btn btn-default @if($project->retail_vs_wholesale == 0) active @endif" >
-									        <input type="radio" name="retail_vs_wholesale" value="0"> Wholesale
-									      </label>
+											<input type="radio" name="retail_vs_wholesale" value="1"> Retail
+										</label>
+										<label class="btn btn-default @if($project->retail_vs_wholesale == 0) active @endif" >
+											<input type="radio" name="retail_vs_wholesale" value="0"> Wholesale
+										</label>
 									</div>
 
 									<br><br>
 									<h3>Show interested to buy property checkbox</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 1) active @endif">
-									        <input type="radio" name="show_interested_to_buy_checkbox" value="1"> On
-									      </label>
-									      <label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 0) active @endif" >
-									        <input type="radio" name="show_interested_to_buy_checkbox" value="0"> Off
-									      </label>
+											<input type="radio" name="show_interested_to_buy_checkbox" value="1"> On
+										</label>
+										<label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 0) active @endif" >
+											<input type="radio" name="show_interested_to_buy_checkbox" value="0"> Off
+										</label>
 									</div>
-
+									<h3>Use AUDK Tokens</h3>
+									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+										<label class="btn btn-default @if($project->use_tokens == 1) active @endif">
+											<input type="radio" name="use_tokens" value="1"> On
+										</label>
+										<label class="btn btn-default @if($project->use_tokens == 0) active @endif" >
+											<input type="radio" name="use_tokens" value="0"> Off
+										</label>
+									</div>
 									<br><br><br>
 									<div class="row">
 										<div class="form-group">
@@ -679,7 +687,7 @@ Edit {{$project->title}} | Dashboard | @parent
 							</div>
 							<div class="row hide">
 								<div class="form-group @if($errors->first('bank_reference') && $errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
-<!-- 									{!!Form::label('bank_reference', 'Reference', array('class'=>'col-sm-2 control-label'))!!} -->
+									<!-- 									{!!Form::label('bank_reference', 'Reference', array('class'=>'col-sm-2 control-label'))!!} -->
 									<div class="col-sm-9">
 <!-- 										<div class="row">
 											<div class="col-sm-5 @if($errors->first('bank_reference')){{'has-error'}} @endif">
@@ -1775,375 +1783,404 @@ Edit {{$project->title}} | Dashboard | @parent
 												<div class="col-sm-6">
 													<div class="form-group">
 														<label for="token_symbol">Token Symbol:</label>
-										                <input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" required minlength="3" maxlength="4" style="text-transform:uppercase">
-										                <small><small class="text-info">** Symbol length must be 3 to 4 chars.</small></small>
+														<input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" required minlength="3" maxlength="4" style="text-transform:uppercase">
+														<small><small class="text-info">** Symbol length must be 3 to 4 chars.</small></small>
 													</div>
 												</div>
 												<div class="col-sm-6">
 													<label for="number_of_tokens">Number of tokens</label>
-										                <input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->goal_amount }}" min="100" >
-										            </div>
+													<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->goal_amount }}" min="100" >
 												</div>
 											</div>
-											<br>
-											<div class="form-group text-center">
-												<input type="hidden" name="project_id" value="{{ $project->id }}">
-												<button type="submit" class="btn btn-primary btn-block"> Generate {{$project->title}} Tokens </button>
-											</div>
-										</form>
-									</div>
-
-									@else
-
-										@if(!$project->is_wallet_tokenized)
-											<!-- START: Tokenize project wallet -->
-											<div class="alert alert-warning text-center">
-												Check your contract on Blockchain by clicking on below link -<br> <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to view contract</a>.
-												<br><strong>Ignore if already done!</strong>
-											</div>
-											<div class="text-center">
-												<p>Click on below button to fill your project wallet with alloted tokens.</p>
-												<p><small>{{$project->wallet_address}}</small></p>
-												<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
-											</div>
-											<!-- END: Tokenize project wallet -->
-										@else
-
-										<div class="alert alert-success text-center">
-											<h4>Tokenization process is done!</h4>
-											@if($contract)
-											<small>
-												<p>
-													<label>Token Name: </label><br>
-													<span>{{$contract->name}}</span>
-												</p>
-												<p>
-													<label>Token Symbol: </label><br>
-													<span>{{$contract->symbol}}</span>
-												</p>
-												<p>
-													<label>Total supply: </label><br>
-													<span>{{$contract->totalSupply}}</span>
-												</p>
-												<p>
-													<label>Available supply: </label><br>
-													<span style="font-size: 20px;">{{$balance->balance}}</span>
-												</p>
-											</small>
-											@endif
 										</div>
+										<br>
+										<div class="form-group text-center">
+											<input type="hidden" name="project_id" value="{{ $project->id }}">
+											<button type="submit" class="btn btn-primary btn-block"> Generate {{$project->title}} Tokens </button>
+										</div>
+									</form>
+								</div>
 
-										@endif
+								@if(!$project->is_wallet_tokenized)
+									<!-- START: Tokenize project wallet -->
+									<div class="alert alert-warning text-center">
+										Check your contract on Blockchain by clicking on below link -<br> <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to view contract</a>.
+										<br><strong>Ignore if already done!</strong>
+									</div>
+									<div class="text-center">
+										<p>Click on below button to fill your project wallet with alloted tokens.</p>
+										<p><small>{{$project->wallet_address}}</small></p>
+										<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
+									</div>
+									<!-- END: Tokenize project wallet -->
+								@else
+
+								@if(!$project->is_wallet_tokenized)
+								<!-- START: Tokenize project wallet -->
+								<div class="alert alert-warning text-center">
+									You will have to verify your contract to proceed further. Please <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to verify</a>.
+									<br><strong>Ignore if already done!</strong>
+								</div>
+								<div class="text-center">
+									<p>Click on below button to fill your project wallet with alloted tokens.</p>
+									<p><small>{{$project->wallet_address}}</small></p>
+									<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
+								</div>
+								<!-- END: Tokenize project wallet -->
+								@else
+
+								<div class="alert alert-success text-center">
+									<h4>Tokenization process is done!</h4>
+									@if($contract)
+									<small>
+										<p>
+											<label>Token Name: </label><br>
+											<span>{{$contract->name}}</span>
+										</p>
+										<p>
+											<label>Token Symbol: </label><br>
+											<span>{{$contract->symbol}}</span>
+										</p>
+										<p>
+											<label>Total supply: </label><br>
+											<span>{{$contract->totalSupply}}</span>
+										</p>
+										<p>
+											<label>Available supply: </label><br>
+											<span style="font-size: 20px;">{{$balance->balance}}</span>
+										</p>
+									</small>
+									@if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)
+									@if(!$project->issueTokens)
+									<button class="btn btn-primary" id="issue_tokens">Issue Tokens to existing Shareholder</button>
+									@elseif(!$project->investors->last()->pivot->transaction_hash)
+									<i>Issueing Tokens to investors is under Process </i> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Issueing tokens to investors will take more than 24 hours."></i>
 
 									@endif
-
+									@endif
+									@endif
 								</div>
+
+								@endif
+
+								@endif
+
 							</div>
 						</div>
-
-						@endif
-						@endif
-
-						<!-- --------------------------------- -->
-						<!-- END: Project tokenization process -->
-						<!-- --------------------------------- -->
-
 					</div>
+					@else
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<div class="well text-center">
+								<h2>Create Wallet</h2>
+								<button class="btn btn-primary" id="create_wallet">Create Wallet</button>
+							</div>
+						</div>
+					</div>
+					@endif
+					@endif
+
+					<!-- --------------------------------- -->
+					<!-- END: Project tokenization process -->
+					<!-- --------------------------------- -->
+
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Main Image 1366 X 500
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'main_image')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Main Image 1366 X 500
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'main_image')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Marketability Image</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Marketability Image</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhoto', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhoto', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Marketability
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'marketability')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Marketability
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'marketability')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Marketability Image</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Marketability Image</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhotoMarketability', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhotoMarketability', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Developer
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'project_developer')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Developer
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'project_developer')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Marketability Image</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Marketability Image</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhotoProjectDeveloper', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhotoProjectDeveloper', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Investment Structure
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'investment_structure')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Investment Structure
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'investment_structure')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Marketability Image</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Marketability Image</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhotoInvestmentStructure', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhotoInvestmentStructure', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Exit
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'exit_image')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Exit
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'exit_image')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Exit Image</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Exit Image</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhotoExit', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhotoExit', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Project Thumbnail 1024 X 683
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'project_thumbnail')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Project Thumbnail 1024 X 683
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'project_thumbnail')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Marketability Image</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Marketability Image</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhotoProjectThumbnail', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhotoProjectThumbnail', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-			<section style="display: none;">
-				<div class="row well">
-					Add Image For Residents
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-12">
-								@foreach($project->media->chunk(1) as $set)
-								<div class="row">
-									@foreach($set as $photo)
-									@if($photo->type === 'residents')
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
-											<div class="caption">
-												{{$photo->type}}
-												<a href="#" class="pull-right">Delete</a>
-											</div>
+			</div>
+		</section>
+		<section style="display: none;">
+			<div class="row well">
+				Add Image For Residents
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-12">
+							@foreach($project->media->chunk(1) as $set)
+							<div class="row">
+								@foreach($set as $photo)
+								@if($photo->type === 'residents')
+								<div class="col-md-4">
+									<div class="thumbnail">
+										<img src="/{{$photo->path}}" alt="{{$photo->caption}}" class="img-responsive">
+										<div class="caption">
+											{{$photo->type}}
+											<a href="#" class="pull-right">Delete</a>
 										</div>
 									</div>
-									@else
-									{{-- <h4>Add a Residents Image 2</h4> --}}
-									@endif
-									@endforeach
 								</div>
+								@else
+								{{-- <h4>Add a Residents Image 2</h4> --}}
+								@endif
 								@endforeach
 							</div>
+							@endforeach
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.storePhotoResidents1', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
-								{!! Form::close() !!}
-							</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::open(array('route'=>['projects.storePhotoResidents1', $project->id], 'class'=>'form-horizontal dropzone', 'role'=>'form', 'files'=>true)) !!}
+							{!! Form::close() !!}
 						</div>
 					</div>
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	</div>
+</div>
 </div>
 
 <div class="row">
-    <div class="text-center">
-    	<!-- Project SPV Logo Crop modal -->
-        <div class="modal fade" id="image_crop_modal" role="dialog" style="overflow: scroll;">
-            <div class="modal-dialog" style="min-width: 800px;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Crop Image</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-center" id="image_cropbox_container" style="display: inline-block;">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
-                        <!-- Hidden Fields to refer for JCrop -->
-                        <input type="hidden" name="image_crop" id="image_crop" value="" action="">
-                        <input type="hidden" name="image_action" id="image_action" value="">
-                        <input type="hidden" name="x_coord" id="x_coord" value="">
-                        <input type="hidden" name="y_coord" id="y_coord" value="">
-                        <input type="hidden" name="w_target" id="w_target" value="">
-                        <input type="hidden" name="h_target" id="h_target" value="">
-                        <input type="hidden" name="orig_width" id="orig_width" value="">
-                        <input type="hidden" name="orig_height" id="orig_height" value="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="text-center">
+		<!-- Project SPV Logo Crop modal -->
+		<div class="modal fade" id="image_crop_modal" role="dialog" style="overflow: scroll;">
+			<div class="modal-dialog" style="min-width: 800px;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Crop Image</h4>
+					</div>
+					<div class="modal-body">
+						<div class="text-center" id="image_cropbox_container" style="display: inline-block;">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="perform_crop_btn">Perform Crop</button>
+						<!-- Hidden Fields to refer for JCrop -->
+						<input type="hidden" name="image_crop" id="image_crop" value="" action="">
+						<input type="hidden" name="image_action" id="image_action" value="">
+						<input type="hidden" name="x_coord" id="x_coord" value="">
+						<input type="hidden" name="y_coord" id="y_coord" value="">
+						<input type="hidden" name="w_target" id="w_target" value="">
+						<input type="hidden" name="h_target" id="h_target" value="">
+						<input type="hidden" name="orig_width" id="orig_width" value="">
+						<input type="hidden" name="orig_height" id="orig_height" value="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @stop
 
 @section('js-section')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="/assets/js/konkrete.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#invite-only-label').click(function() {
@@ -2163,7 +2200,7 @@ Edit {{$project->title}} | Dashboard | @parent
 		var setVal = $(this).val() == 1? 0 : 1;
 		$(this).val(setVal);
 		$('#active').val(setVal);
-		});*/
+	});*/
 
 		/*$("#venture-checkbox").bootstrapSwitch();
 		$('#venture-checkbox').on('switchChange.bootstrapSwitch', function () {
@@ -2270,42 +2307,44 @@ Edit {{$project->title}} | Dashboard | @parent
 		previewShareCertificate();
 		projectTokenization();
 		loadProjectWallet();
+		createWallet();
+		issueTokens();
 	});
 
-	function uploadProjectSPVLogo(){
-		$('#spv_logo').change(function(){
-			$('.spv_logo_error').html('');
-			var file = $('#spv_logo')[0].files[0];
-			if (file){
-				fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
-				if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
-					$('#spv_logo_name').val(file.name);
+function uploadProjectSPVLogo(){
+	$('#spv_logo').change(function(){
+		$('.spv_logo_error').html('');
+		var file = $('#spv_logo')[0].files[0];
+		if (file){
+			fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
+			if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
+				$('#spv_logo_name').val(file.name);
 
-					var formData = new FormData();
-	                formData.append('spv_logo', $('#spv_logo')[0].files[0]);
-	                $('.loader-overlay').show();
-	                $.ajax({
-	                    url: '/configuration/updateProjectSpvLogo',
-	                    type: 'POST',
-	                    dataType: 'JSON',
-	                    data: formData,
-	                    headers: {
-	                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	                    },
-	                    contentType: false,
-	                    processData: false
-	                }).done(function(data){
-	                	if(data.status == 1){
-                            console.log(data);
-                            var imgPath = data.destPath+data.fileName;
-                            var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_logo_img" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
+				var formData = new FormData();
+				formData.append('spv_logo', $('#spv_logo')[0].files[0]);
+				$('.loader-overlay').show();
+				$.ajax({
+					url: '/configuration/updateProjectSpvLogo',
+					type: 'POST',
+					dataType: 'JSON',
+					data: formData,
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+					contentType: false,
+					processData: false
+				}).done(function(data){
+					if(data.status == 1){
+						console.log(data);
+						var imgPath = data.destPath+data.fileName;
+						var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_logo_img" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
 
-                            $('#image_cropbox_container').html(str1);
-                            $('#favicon_edit_modal').modal('hide');
-                            $('#image_crop_modal').modal({
-                                'show': true,
-                                'backdrop': false,
-                            });
+						$('#image_cropbox_container').html(str1);
+						$('#favicon_edit_modal').modal('hide');
+						$('#image_crop_modal').modal({
+							'show': true,
+							'backdrop': false,
+						});
 
                             $('#image_crop').val(imgPath); //set hidden image value
                             $('#image_crop').attr('action', 'spv_logo_image');
@@ -2314,40 +2353,40 @@ Edit {{$project->title}} | Dashboard | @parent
                             var origWidth = data.origWidth;
                             var origHeight = data.origHeight;
                             $('#image_cropbox').Jcrop({
-                                boxWidth: 530,
+                            	boxWidth: 530,
                                 // aspectRatio: 3/1,
                                 keySupport: false,
                                 setSelect: [0, 0, target_width, target_height],
                                 bgColor: '',
                                 onSelect: function(c) {
-                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                	updateCoords(c, target_width, target_height, origWidth, origHeight);
                                 },
                                 onChange: function(c) {
-                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                	updateCoords(c, target_width, target_height, origWidth, origHeight);
                                 },onRelease: setSelect,
                                 minSize: [target_width, target_height],
                             });
                             $('.loader-overlay').hide();
                         }
                         else{
-                          $('.loader-overlay').hide();
-                          $('#spv_logo, #spv_logo_name').val('');
-                          $('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
+                        	$('.loader-overlay').hide();
+                        	$('#spv_logo, #spv_logo_name').val('');
+                        	$('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
                         }
-	                });
-				}
-				else{
-					$('#spv_logo').val('');
-					$('#spv_logo_name').val('');
-					$('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
-				}
+                    });
 			}
-		});
-	}
+			else{
+				$('#spv_logo').val('');
+				$('#spv_logo_name').val('');
+				$('.spv_logo_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
+			}
+		}
+	});
+}
 
-	function updateCoords(coords, w, h, origWidth, origHeight){
-	    var target_width= w;
-	    var target_height=h;
+function updateCoords(coords, w, h, origWidth, origHeight){
+	var target_width= w;
+	var target_height=h;
         //Set New Coordinates
         $('#x_coord').val(coords.x);
         $('#y_coord').val(coords.y);
@@ -2358,61 +2397,61 @@ Edit {{$project->title}} | Dashboard | @parent
 
         // showPreview(coordinates)
         $("<img>").attr("src", $('#image_cropbox').attr("src")).load(function(){
-            var rx = target_width / coords.w;
-            var ry = target_height / coords.h;
+        	var rx = target_width / coords.w;
+        	var ry = target_height / coords.h;
 
-            var realWidth = this.width;
-            var realHeight = this.height;
+        	var realWidth = this.width;
+        	var realHeight = this.height;
 
-            var newWidth = 530;
-            var newHeight = (realHeight/realWidth)*newWidth;
+        	var newWidth = 530;
+        	var newHeight = (realHeight/realWidth)*newWidth;
 
-            $('#preview_image').css({
-                width: Math.round(rx*newWidth)+'px',
-                height: Math.round(ry*newHeight)+'px',
-                marginLeft: '-'+Math.round(rx*coords.x)+'px',
-                marginTop: '-'+Math.round(ry*coords.y)+'px',
-            });
+        	$('#preview_image').css({
+        		width: Math.round(rx*newWidth)+'px',
+        		height: Math.round(ry*newHeight)+'px',
+        		marginLeft: '-'+Math.round(rx*coords.x)+'px',
+        		marginTop: '-'+Math.round(ry*coords.y)+'px',
+        	});
 
         });
     }
 
     function setSelect(coords){
-        jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
+    	jcrop_api.setSelect([coords.x,coords.y,coords.w,coords.h]);
     }
 
     function performCropOnImage(){
-        $('#perform_crop_btn').click(function(e){
-            $('.loader-overlay').show();
-            var imageName = $('#image_crop').val();
-            var imgAction = $('#image_crop').attr('action');
-            var xValue = $('#x_coord').val();
-            var yValue = $('#y_coord').val();
-            var wValue = $('#w_target').val();
-            var hValue = $('#h_target').val();
-            var origWidth = $('#orig_width').val();
-            var origHeight = $('#orig_height').val();
-            var hiwImgAction = $('#image_action').val();
-            var currentProjectId = $('#current_project_id').val();
-            console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
-            $.ajax({
-                url: '/configuration/cropUploadedImage',
-                type: 'POST',
-                data: {
-                    imageName: imageName,
-                    imgAction: imgAction,
-                    xValue: xValue,
-                    yValue: yValue,
-                    wValue: wValue,
-                    hValue: hValue,
-                    origWidth: origWidth,
-                    origHeight: origHeight,
-                    hiwImgAction: hiwImgAction,
-                    currentProjectId: currentProjectId,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+    	$('#perform_crop_btn').click(function(e){
+    		$('.loader-overlay').show();
+    		var imageName = $('#image_crop').val();
+    		var imgAction = $('#image_crop').attr('action');
+    		var xValue = $('#x_coord').val();
+    		var yValue = $('#y_coord').val();
+    		var wValue = $('#w_target').val();
+    		var hValue = $('#h_target').val();
+    		var origWidth = $('#orig_width').val();
+    		var origHeight = $('#orig_height').val();
+    		var hiwImgAction = $('#image_action').val();
+    		var currentProjectId = $('#current_project_id').val();
+    		console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+    		$.ajax({
+    			url: '/configuration/cropUploadedImage',
+    			type: 'POST',
+    			data: {
+    				imageName: imageName,
+    				imgAction: imgAction,
+    				xValue: xValue,
+    				yValue: yValue,
+    				wValue: wValue,
+    				hValue: hValue,
+    				origWidth: origWidth,
+    				origHeight: origHeight,
+    				hiwImgAction: hiwImgAction,
+    				currentProjectId: currentProjectId,
+    			},
+    			headers: {
+    				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			},
                 // success: {
                 // 	$('#img').attr('src', document.location.origin + '/' + data.imageSource);
                 // },
@@ -2420,17 +2459,17 @@ Edit {{$project->title}} | Dashboard | @parent
              //    	$('#img').attr('src', document.location.origin + '/' + data.imageSource);
             	// },
             }).done(function(data){
-                console.log(data);
-                $('#image_crop_modal').modal('toggle');
-                $('.loader-overlay').hide();
-                if(data.status){
-                    $('#image_crop').val(data.imageSource);
-                    if (imgAction == 'spv_logo_image'){
-                    	$('#spv_logo_image_path').val(data.imageSource);
-                    	$('#spv_logo_full_path').val(data.imageSource + '?date=' + new Date().getTime());
-                    }
-                    else if(imgAction == 'spv_md_sign_image'){
-                    	$('#spv_md_sign_image_path').val(data.imageSource);
+            	console.log(data);
+            	$('#image_crop_modal').modal('toggle');
+            	$('.loader-overlay').hide();
+            	if(data.status){
+            		$('#image_crop').val(data.imageSource);
+            		if (imgAction == 'spv_logo_image'){
+            			$('#spv_logo_image_path').val(data.imageSource);
+            			$('#spv_logo_full_path').val(data.imageSource + '?date=' + new Date().getTime());
+            		}
+            		else if(imgAction == 'spv_md_sign_image'){
+            			$('#spv_md_sign_image_path').val(data.imageSource);
                     	//Force browser(due to cache) to refresh the image by passing extra date query string
                     	$('#spv_md_sign_full_path').val(data.imageSource + '?date=' + new Date().getTime());
                     }
@@ -2438,51 +2477,51 @@ Edit {{$project->title}} | Dashboard | @parent
                 else{
                     // $('#image_crop_modal').modal('toggle');
                     if (imgAction == 'spv_logo_image'){
-                      	$('#spv_logo, #spv_logo_name').val('');
-                  	}
-                  	else if(imgAction == 'spv_md_sign_image'){
-                  		$('#spv_md_sign, #spv_md_sign_name').val('');
-                  	}
-                  	alert(data.message);
+                    	$('#spv_logo, #spv_logo_name').val('');
+                    }
+                    else if(imgAction == 'spv_md_sign_image'){
+                    	$('#spv_md_sign, #spv_md_sign_name').val('');
+                    }
+                    alert(data.message);
                 }
-        	});
+            });
         });
     }
 
     function uploadProjectSpvMDSign(){
     	$('#spv_md_sign').change(function(){
-			$('.spv_md_sign_error').html('');
-			var file = $('#spv_md_sign')[0].files[0];
-			if (file){
-				fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
-				if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
-					$('#spv_md_sign_name').val(file.name);
+    		$('.spv_md_sign_error').html('');
+    		var file = $('#spv_md_sign')[0].files[0];
+    		if (file){
+    			fileExtension = (file.name).substr(((file.name).lastIndexOf('.') + 1)).toLowerCase();
+    			if(fileExtension == 'png' || fileExtension == 'jpg' || fileExtension == 'jpeg'){
+    				$('#spv_md_sign_name').val(file.name);
 
-					var formData = new FormData();
-	                formData.append('spv_md_sign', $('#spv_md_sign')[0].files[0]);
-	                $('.loader-overlay').show();
-	                $.ajax({
-	                    url: '/configuration/updateProjectSpvMDSign',
-	                    type: 'POST',
-	                    dataType: 'JSON',
-	                    data: formData,
-	                    headers: {
-	                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	                    },
-	                    contentType: false,
-	                    processData: false
-	                }).done(function(data){
-	                	if(data.status == 1){
-                            console.log(data);
-                            var imgPath = data.destPath+data.fileName;
-                            var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_md_sign_image" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
+    				var formData = new FormData();
+    				formData.append('spv_md_sign', $('#spv_md_sign')[0].files[0]);
+    				$('.loader-overlay').show();
+    				$.ajax({
+    					url: '/configuration/updateProjectSpvMDSign',
+    					type: 'POST',
+    					dataType: 'JSON',
+    					data: formData,
+    					headers: {
+    						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    					},
+    					contentType: false,
+    					processData: false
+    				}).done(function(data){
+    					if(data.status == 1){
+    						console.log(data);
+    						var imgPath = data.destPath+data.fileName;
+    						var str1 = $('<div class="col-sm-9"><img src="../../../'+imgPath+'" width="530" id="image_cropbox" style="max-width:none !important"><br><span style="font-style: italic; font-size: 13px"><small>Select The Required Area To Crop Logo.</small></span></div><div class="col-sm-2" id="preview_spv_md_sign_image" style="float: right;"><img width="530" src="../../../'+imgPath+'" id="preview_image"></div>');
 
-                            $('#image_cropbox_container').html(str1);
-                            $('#favicon_edit_modal').modal('hide');
-                            $('#image_crop_modal').modal({
-                                'show': true,
-                                'backdrop': false,
-                            });
+    						$('#image_cropbox_container').html(str1);
+    						$('#favicon_edit_modal').modal('hide');
+    						$('#image_crop_modal').modal({
+    							'show': true,
+    							'backdrop': false,
+    						});
 
                             $('#image_crop').val(imgPath); //set hidden image value
                             $('#image_crop').attr('action', 'spv_md_sign_image');
@@ -2491,35 +2530,35 @@ Edit {{$project->title}} | Dashboard | @parent
                             var origWidth = data.origWidth;
                             var origHeight = data.origHeight;
                             $('#image_cropbox').Jcrop({
-                                boxWidth: 530,
+                            	boxWidth: 530,
                                 // aspectRatio: 4/3,
                                 keySupport: false,
                                 setSelect: [0, 0, target_width, target_height],
                                 bgColor: '',
                                 onSelect: function(c) {
-                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                	updateCoords(c, target_width, target_height, origWidth, origHeight);
                                 },
                                 onChange: function(c) {
-                                    updateCoords(c, target_width, target_height, origWidth, origHeight);
+                                	updateCoords(c, target_width, target_height, origWidth, origHeight);
                                 },onRelease: setSelect,
                                 minSize: [target_width, target_height],
                             });
                             $('.loader-overlay').hide();
                         }
                         else{
-                          $('.loader-overlay').hide();
-                          $('#spv_md_sign, #spv_md_sign_name').val('');
-                          $('.spv_md_sign_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
+                        	$('.loader-overlay').hide();
+                        	$('#spv_md_sign, #spv_md_sign_name').val('');
+                        	$('.spv_md_sign_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>'+data.message+'</h6></div>');
                         }
-	                });
-				}
-				else{
-					$('#spv_md_sign').val('');
-					$('#spv_md_sign_name').val('');
-					$('.spv_md_sign_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
-				}
-			}
-		});
+                    });
+    			}
+    			else{
+    				$('#spv_md_sign').val('');
+    				$('#spv_md_sign_name').val('');
+    				$('.spv_md_sign_error').html('<div style="color:#ea0000; border-radius:5px; width:80%"><h6>Not a valid file extension. Valid extension: png, jpg, jpeg</h6></div>');
+    			}
+    		}
+    	});
     }
 
     function previewShareCertificate(){
@@ -2567,25 +2606,25 @@ Edit {{$project->title}} | Dashboard | @parent
     		$('.loader-overlay').show();
     		$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait while your request is processed. Please do not refresh or reload the page.</p><br></div>');
 
-            $.ajax({
-                url: "{{route('konkrete.tokenize')}}",
-                type: 'POST',
-                dataType: 'JSON',
-                data: form.serialize(),
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                	console.log(data);
-        			alert(data.message);
-            		location.reload();
-            		$('.loader-overlay').hide();
-                },
-                error: function(error) {
+    		$.ajax({
+    			url: "{{route('konkrete.tokenize')}}",
+    			type: 'POST',
+    			dataType: 'JSON',
+    			data: form.serialize(),
+    			headers: {
+    				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			},
+    			success: function(data) {
+    				console.log(data);
+    				alert(data.message);
+    				location.reload();
+    				$('.loader-overlay').hide();
+    			},
+    			error: function(error) {
                 	// Error
                 	console.log(error);
                 	alert('Something went wrong!');
-            		$('.loader-overlay').hide();
+                	$('.loader-overlay').hide();
                 }
             });
     	});
@@ -2602,26 +2641,51 @@ Edit {{$project->title}} | Dashboard | @parent
     			url: "{{ route('konkrete.loadWallet', $project->id) }}",
     			type: 'GET',
     			dataType: 'JSON',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                	console.log(data);
-        			alert(data.message);
-            		location.reload();
-            		$('.loader-overlay').hide();
-                },
-                error: function(error) {
+    			headers: {
+    				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			},
+    			success: function(data) {
+    				console.log(data);
+    				alert(data.message);
+    				location.reload();
+    				$('.loader-overlay').hide();
+    			},
+    			error: function(error) {
                 	// Error
                 	console.log(error);
                 	alert('Something went wrong!');
-            		$('.loader-overlay').hide();
+                	$('.loader-overlay').hide();
                 }
-    		});
+            });
 
     	});
     }
+    function createWallet() {
+    	$('#create_wallet').on('click', function (e) {
+    		var project_id = '{{ $project->id }}';
+    		$('.loader-overlay').show();
+    		$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait while your project <i>Wallet</i> is created. Please do not refresh or reload the page.</p><br></div>');
+    		$.ajax({
+    			url: "{{route('konkrete.createWallet')}}",
+    			type: 'POST',
+    			dataType: 'JSON',
+    			data: {project_id:project_id},
+    			headers: {
+    				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			},
+    			success: function(data) {
+    				console.log(data);
+    				alert(data.message);
+    				location.reload();
+    				$('.loader-overlay').hide();
+    			},
+    			error: function(error) {
+    				console.log(error);
+    				alert('Something went wrong!');
+    				$('.loader-overlay').hide();
+    			}
 
+<<<<<<< HEAD
     function checkContractVerification() {
     	var projectId = '{{ $project->id }}';
     	$.ajax({
@@ -2637,5 +2701,38 @@ Edit {{$project->title}} | Dashboard | @parent
 		});
     }
 
+=======
+    		});
+    	});
+    }
+    @if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)
+    	function issueTokens(argument) {
+    		$('#issue_tokens').on('click',function (e) {
+    			var project_id = '{{ $project->id }}';
+    			$.ajax({
+    			url: "{{route('konkrete.issueTokens')}}",
+    			type: 'POST',
+    			dataType: 'JSON',
+    			data: {project_id:project_id},
+    			headers: {
+    				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    			},
+    			success: function(data) {
+    				console.log(data);
+    				alert(data.message);
+    				location.reload();
+    				$('.loader-overlay').hide();
+    			},
+    			error: function(error) {
+    				console.log(error);
+    				alert('Something went wrong!');
+    				$('.loader-overlay').hide();
+    			}
+
+    		});
+    		});
+    	}
+    @endif
+>>>>>>> 5681852e3e27352c50581a7a8476f64d11122a67
 </script>
 @stop

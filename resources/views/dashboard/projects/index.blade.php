@@ -25,7 +25,7 @@ Projects | Dashboard | @parent
 						<tr>
 							<th></th>
 							<th>Title</th>
-							<th>Description</th>
+							{{-- <th>Description</th> --}}
 							<th>Active</th>
 							<th>Goal</th>
 							<th>Collected</th>
@@ -36,10 +36,11 @@ Projects | Dashboard | @parent
 						<tr class="@if(!$project->active) inactive @endif">
 							<td>{{$project->id}}</td>
 							<td>
-							<a href="{{route('dashboard.projects.edit', [$project])}}">{{$project->title}}</a><br><br>
+							<a href="{{route('dashboard.projects.edit', [$project])}}">{{$project->title}}</a><br>
+							@if($project->activated_on && $project->active == '1')<a href="{{route('dashboard.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a> @endif <br>
 							<a href="{{route('dashboard.projects.investors', [$project])}}">Investors <i class="fa fa-angle-double-right"></i></a>
 							</td>
-							<td>{!!substr($project->description, 0, 50)!!}...</td>
+							{{-- <td>{!!substr($project->description, 0, 50)!!}...</td> --}}
 							@if(!$project->projectspvdetail && $project->is_coming_soon == '0')
 							<td>Submitted <br> <a href="#" id="alert">Activate</a></td>
 							@else
@@ -47,7 +48,6 @@ Projects | Dashboard | @parent
 									<time datetime="{{$project->activated_on}}">
 									{{$project->activated_on->diffForHumans()}}
 									</time>
-									<br><a href="{{route('dashboard.projects.deactivate', [$project])}}">Deactivate</a>
 								@elseif($project->activated_on && $project->active == '2') Private
 								@elseif($project->activated_on && $project->active == '0') Deactivate <br> <a href="{{route('dashboard.projects.activate', [$project])}}"> Activate </a>
 								@else($project->active == '0') Submitted <br> <a href="{{route('dashboard.projects.activate', [$project])}}">Activate</a>

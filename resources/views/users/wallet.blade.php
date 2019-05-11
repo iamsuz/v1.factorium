@@ -39,7 +39,7 @@
 										@foreach($project_balance as $key => $balance)
 										<tr>
 											<td>{{$key}}</td>
-											<td>{{$balance->balance}}</td>
+											<td>@if(isset($balance)){{$balance->balance}}@else Na @endif</td>
 										</tr>
 										@endforeach
 									</tbody>

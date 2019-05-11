@@ -649,7 +649,7 @@ class PagesController extends Controller
     public function konkreteGuzzle(Request $request)
     {
         $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET','http://localhost:5050/getBalance',[
+        $request = $client->request('GET','http://52.62.205.188:8081/getBalance',[
             'query' => ['user_id' => '70','project_id'=>'13','securityTokens'=>'30']
         ]);
         $response = $request->getBody()->getContents();

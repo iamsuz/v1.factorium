@@ -424,16 +424,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-         $role = Role::whereRole('investor')->firstOrFail();
+           $role = Role::whereRole('investor')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * delete Developer role from user
@@ -449,16 +449,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-         $role = Role::whereRole('developer')->firstOrFail();
+           $role = Role::whereRole('developer')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * get user investments
@@ -493,12 +493,18 @@ class UsersController extends Controller
         $investing = InvestingJoint::where('investment_investor_id', $investment->id)->get()->last();
         $project = $investment->project;
         $user = $investment->user;
-        $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET','http://52.62.205.188:8081/getBalance',[
-            'query' => ['user_id' => $user->id,'project_id'=>$project->id]
-        ]);
-        $response = $request->getBody()->getContents();
-        $result = json_decode($response);
+        $result = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('GET','http://52.62.205.188:8081/getBalance',[
+                'query' => ['user_id' => $user->id,'project_id'=>$project->id]
+            ]);
+            $response = $request->getBody()->getContents();
+            $result = json_decode($response);
+            if(!isset($result->balance)){
+                $result = false;
+            }
+        }
         return view('pdf.invoiceHtml',compact('investment','color','user','project','investing','shareEnd','shareStart','result'));
         // $pdf->setPaper('a4', 'landscape');
         // $pdf->setOptions(['Content-Type' => 'application/pdf','images' => true]);
@@ -697,7 +703,7 @@ class UsersController extends Controller
             $user->save();
         }
         $investments = InvestmentInvestor::select('project_id')->distinct()->where('user_id', $user->id)
-        ->where('project_site', url())->where('accepted', '1')->get();
+        ->where('accepted', '1')->get();
         if($investments){
             $project_balance = [];
             foreach ($investments as $investment) {
@@ -709,6 +715,7 @@ class UsersController extends Controller
                 $response = $request->getBody()->getContents();
                 $balance = json_decode($response);
                 $project_balance[$projectName->title] = $balance;
+                // dd($project_balance);
             }
         }
         return view('users.wallet',compact('user','color','project_balance'));
@@ -729,7 +736,16 @@ class UsersController extends Controller
         $user = Auth::user();
         $color = Color::where('project_site',url())->first();
         $request['user_id'] = $user->id;
+        $project = Project::findOrFail($request->project_id);
+        if($project->use_tokens){
+            $client = new \GuzzleHttp\Client();
+            $requestBalance = $client->request('GET','http://52.62.205.188:8081/getBalance',[
+                'query' => ['user_id' => $user->id,'project_id'=>58]
+            ]);
+            $responseBalance = $requestBalance->getBody()->getContents();
+            $result = json_decode($responseBalance);
+        }
         $market = Market::create($request->all());
-        return redirect()->back()->withMessage('Your Order for BID is succesfully placed');
+        return redirect()->back()->withMessage('Your Order is succesfully placed');
     }
 }

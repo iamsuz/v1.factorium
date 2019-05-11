@@ -190,8 +190,15 @@
 							</div>
 							<span class="font-regular" style="font-size:1em;color:#fff; margin-top:-10px;">
 								@if($project->investment)
-								${{number_format($pledged_amount)}} raised of $<span class="project-goal-amount-field">
-									<input type="text" name="project_goal_amount" class="form-control" style="width:30%" value="{{round($project->investment->goal_amount)}}" style="padding-left: 2px; padding-right: 2px;" required="required"></span>
+								${{number_format($pledged_amount)}} raised of $
+								<span class="project-goal-amount-field">
+									@if($project->is_wallet_tokenized)
+									<span style="font-size: 1.5em" data-toggle="tooltip" title="Project is Tokenized, you can not edit the Goal Amount.">{{round($project->investment->goal_amount)}}</span>
+									@else
+									<input type="text" name="project_goal_amount" class="form-control" style="width:30%" value="{{round($project->investment->goal_amount)}}" style="padding-left: 2px; padding-right: 2px;" required="required">
+									@endif
+								</span>
+
 									@endif
 								</span>
 							</div>

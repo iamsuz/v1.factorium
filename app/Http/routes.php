@@ -260,6 +260,9 @@ Route::post('/configuration/project/toggleProjectElementVisibility', ['as'=>'con
 Route::post('/configuration/project/editProjectPageLabelText', ['as'=>'configuration.project.editProjectPageLabelText', 'uses'=>'SiteConfigurationsController@editProjectPageLabelText']);
 Route::post('/configuration/edit/visibilityOfSiteItems', ['as'=> 'configuration.edit.visibilityOfSiteItems', 'uses'=>'SiteConfigurationsController@editVisibilityOfSiteConfigItems']);
 Route::post('/configuration/updateInterestFormLink', ['as'=> 'configuration.updateInterestFormLink', 'uses'=>'SiteConfigurationsController@updateInterestFormLink']);
+Route::get('/configuration/progress/{id}/upvote',['as'=>'configuration.upvote','uses'=>'SiteConfigurationsController@upvote']);
+Route::get('/configuration/progress/{id}/downvote',['as'=>'configuration.downvote','uses'=>'SiteConfigurationsController@downvote']);
+
 Route::get('/dashboard/broadcastMail', ['as'=>'dashboard.broadcastMail', 'uses'=>'DashboardController@createBroadcastMailForm']);
 Route::post('/dashboard/mail/broadcast', ['as'=>'dashboard.mail.broadcast', 'uses'=>'DashboardController@sendBroadcastMail']);
 Route::get('/dashboard/import/contacts', ['as'=>'dashboard.import.contacts', 'uses'=>'DashboardController@showImportContacts']);
@@ -320,6 +323,8 @@ Route::group(['prefix' => 'konkrete'], function () {
 		Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'KonkreteController@tokenize' ]);
 		Route::get('/dashboard/project/{project_id}/loadWallet', [ 'as' => 'konkrete.loadWallet', 'uses' => 'KonkreteController@loadProjectWallet' ]);
 		Route::post('/dashboard/project/verify', [ 'as' => 'konkrete.verify', 'uses' => 'KonkreteController@verifyContract' ]);
+		Route::post('/dashboard/project/createWallet', [ 'as' => 'konkrete.createWallet', 'uses' => 'KonkreteController@createWallet']);
+		Route::post('/dashboard/project/issueTokens',['as'=>'konkrete.issueTokens','uses'=>'KonkreteController@issueTokens']);
 	});
 });
 
