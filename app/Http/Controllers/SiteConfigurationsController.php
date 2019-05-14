@@ -40,7 +40,7 @@ class SiteConfigurationsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('admin');
+        $this->middleware('admin',['except'=>['upvote','downvote']]);
         // $this->middleware('admin',['only'=>['addProgressDetails']]);
     }
 
@@ -673,10 +673,13 @@ class SiteConfigurationsController extends Controller
         $project_prog = new ProjectProg;
         $project_prog->project_id = $project_id;
         $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
+        $project_prog->start_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
+        $project_prog->end_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
         $project_prog->progress_description = trim(preg_replace('/\s+/', ' ', $request->progress_description));
         $project_prog->progress_details = trim(preg_replace('/\s+/', ' ', $request->progress_details));
         $project_prog->request_funds = $request->request_funds;
         $project_prog->amount = $request->amount;
+        $project_prog->percent = $request->percent;
         $project_prog->video_url = $request->video_url;
         $project_prog->image_path = $imagePath;
         $project_prog->save();
@@ -1597,7 +1600,7 @@ class SiteConfigurationsController extends Controller
         $request['project_id']= $project->id;
         $request['project_prog_id']= $id;
         $request['user_id']= Auth::id();
-        $request['value']=-1;
+        $request['value']= -1;
         $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
         if($vote) {
             $vote->update($request->all());

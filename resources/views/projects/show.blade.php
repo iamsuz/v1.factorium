@@ -1828,8 +1828,10 @@
 					<th></th>
 					<th style="width: 140px;">Date of Progress</th>
 					{{-- <th>Description</th> --}}
+					@if($project->is_funding_closed)
 					<th>Request Funds</th>
 					<th>Amount</th>
+					@endif
 					<th>Details</th>
 				</tr>
 			</thead>
@@ -1837,12 +1839,25 @@
 				@foreach($project_prog as $project_progs)
 				<tr>
 					<td>
-						@if($project_progs->is_voting)<a href="{{route('configuration.upvote', [$project_progs->id])}}"><span class="vote @if(Auth::user()->votes->value === 1) on @endif"></span></a><br><br><span class="text-center" style="margin-left: 30%">{{$project_progs->votes()->sum('value')}}</span><br><br><a href="{{route('configuration.upvote', [$project_progs->id])}}"><span class="downvote @if(Auth::user()->votes->value === -1) on @endif"></span></a> <br> <p>Votes {{$project_progs->votes()->count()}}</p>@endif</td>
+						@if($project->is_funding_closed)
+						@if($project_progs->is_voting)
+						<a href="{{route('configuration.upvote', [$project_progs->id])}}"><span class="vote @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === 1) on @endif"></span></a><br><br>
+						<span class="text-center" style="margin-left: 30%">{{$project_progs->votes()->sum('value')}}</span>
+						<br><br>
+						<a href="{{route('configuration.downvote', [$project_progs->id])}}">
+							<span class="downvote @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === -1) on @endif"></span>
+						</a>
+						<br>
+						<p>Votes {{$project_progs->votes()->count()}}</p>@endif
+						@endif
+					</td>
 					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 					</td>
 					{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
+					@if($project->is_funding_closed)
 					<td>{{$project_progs->request_funds}}</td>
 					<td>{{$project_progs->amount}}</td>
+					@endif
 					<td>
 						@if(Auth::user())
 						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
@@ -1883,6 +1898,7 @@
 								</div>
 							</div>
 						</td>
+						@if($project->is_funding_closed)
 						<td>
 							<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
 								<div class="col-sm-12 <?php if($errors->first('progress_description')){echo 'has-error';}?>">
@@ -1900,6 +1916,7 @@
 								</div>
 							</div>
 						</td>
+						@endif
 						<td>
 							<div class="row">
 								<div class="form-group <?php if($errors->first('progress_details')){echo 'has-error';}?>">
@@ -1909,6 +1926,21 @@
 									</div>
 								</div>
 							</div>
+							<br>
+							@if($project->is_funding_closed)
+							<div class="row">
+								<div class="form-group <?php if($errors->first('end_date')){echo 'has-error';}?>">
+								<div class="col-sm-6 <?php if($errors->first('end_date')){echo 'has-error';}?>">
+									{!! Form::text('end_date', null, array('placeholder'=>'End Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker1')) !!}
+									{!! $errors->first('end_date', '<small class="text-danger">:message</small>') !!}
+								</div>
+								<div class="col-sm-6 <?php if($errors->first('percent')){echo 'has-error';}?>">
+									{!! Form::text('percent', null, array('placeholder'=>'Percent', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+									{!! $errors->first('percent', '<small class="text-danger">:message</small>') !!}
+								</div>
+							</div>
+							</div>
+							@endif
 							<br>
 							<div class="row">
 								<div class="form-group <?php if($errors->first('video_url')){echo 'has-error';}?>">
@@ -2239,6 +2271,10 @@
 			$('#containernav').addClass('container-fluid');
 		}
 		$( "#datepicker" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+		$( "#datepicker1" ).datepicker({
 			changeMonth: true,
 			changeYear: true
 		});

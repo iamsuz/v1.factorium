@@ -10,7 +10,7 @@ class Market extends Model
 
     public $timestamps = true;
 
-    protected $fillable = ['project_id','user_id','price','amount_of_shares','accepted','type','is_money_received','is_order_changed','original_shares'];
+    protected $fillable = ['project_id','user_id','price','amount_of_shares','accepted','type','is_money_received','is_order_changed','original_shares','market_id'];
 
     public function project()
     {

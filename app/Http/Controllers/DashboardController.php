@@ -237,8 +237,8 @@ class DashboardController extends Controller
         $balanceAudk = false;
         if($project->is_wallet_tokenized){
             $client = new \GuzzleHttp\Client();
-            $requestAudk = $client->request('GET','http://52.62.205.188:8081/getProjectBalance/audk',[
-                'query'=>['project_contract_id'=>58,'project_id'=>$project->id]
+            $requestAudk = $client->request('GET','http://localhost:5050/getProjectBalance/audk',[
+                'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
             ]);
             $responseAudk = $requestAudk->getBody()->getContents();
             $balanceAudk = json_decode($responseAudk);
@@ -271,7 +271,7 @@ class DashboardController extends Controller
         }
         if($project->contract_address && $project->is_wallet_tokenized) {
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://52.62.205.188:8081/getProjectBalance',[
+            $request = $client->request('GET','http://localhost:5050/getProjectBalance',[
                 'query'=>['project_contract_id'=>$project->id,'project_id'=>$project->id]
             ]);
             $response = $request->getBody()->getContents();
@@ -397,7 +397,7 @@ class DashboardController extends Controller
             if($investment->project->is_wallet_tokenized)
             {
                 $client = new \GuzzleHttp\Client();
-                $requestInvest = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
+                $requestInvest = $client->request('GET','http://localhost:5050/investment/transaction',[
                     'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
                 ]);
                 $responseInvest = $requestInvest->getBody()->getContents();
@@ -468,8 +468,8 @@ class DashboardController extends Controller
                     if($linkedInvestment->project->is_wallet_tokenized)
                     {
                         $client = new \GuzzleHttp\Client();
-                        $requestLinked = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
-                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>58,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
+                        $requestLinked = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>27,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
                         ]);
                         $responseLinked = $requestLinked->getBody()->getContents();
                         $result = json_decode($responseLinked);
@@ -806,7 +806,18 @@ class DashboardController extends Controller
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
-
+            if($project->use_tokens){
+                $totalBalance = $investments->sum('amount');
+                $client = new \GuzzleHttp\Client();
+                $requestAudk = $client->request('GET','http://localhost:5050/getProjectBalance/audk',[
+                    'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
+                ]);
+                $responseAudk = $requestAudk->getBody()->getContents();
+                $balanceAudk = json_decode($responseAudk);
+                if($balanceAudk->balance < $totalBalance){
+                    return redirect()->back()->withMessage('Your project doesnt have enough AUDK tokens to make this transaction');
+                }
+            }
             // Add the records to project progress table
             ProjectProg::create([
                 'project_id' => $projectId,
@@ -827,6 +838,15 @@ class DashboardController extends Controller
                 $dividendAmount = round($investment->amount * ((int)$dividendPercent/100));
                 $shareNumber = explode('-', $investment->share_number);
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                if($project->use_tokens){
+                    if($balanceAudk->balance >= $totalBalance){
+                        $dividendAUDK = $client->request('GET','http://localhost:5050/investment/transaction',[
+                            'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>(int)$dividendAmount,'project_address'=>$investment->project->wallet_address]
+                        ]);
+                        $responseDividendAudk = $dividendAUDK->getBody()->getContents();
+                        $balance = json_decode($responseDividendAudk);
+                    }
+                }
                 Transaction::create([
                     'user_id' => $investment->user_id,
                     'project_id' => $investment->project_id,
@@ -861,8 +881,7 @@ class DashboardController extends Controller
         $investorList = $request->investors_list;
         $repurchaseRate = $request->repurchase_rate;
         $project = Project::findOrFail($projectId);
-            // send dividend emails to investors
-        $failedEmails = [];
+
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
@@ -886,71 +905,74 @@ class DashboardController extends Controller
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
             $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
-        if($project->share_vs_unit) {
-            $subject = 'Shares for '.$project->title;
-        }else {
-            $subject = 'Units for '.$project->title;
-        }
-        foreach ($investments as $investment) {
-            InvestmentInvestor::where('id', $investment->id)->update([
-                'is_cancelled' => 1,
-                'is_repurchased' => 1
-            ]);
+
+            // send dividend emails to investors
+            $failedEmails = [];
+            if($project->share_vs_unit) {
+                $subject = 'Shares for '.$project->title;
+            }else {
+                $subject = 'Units for '.$project->title;
+            }
+            foreach ($investments as $investment) {
+                InvestmentInvestor::where('id', $investment->id)->update([
+                    'is_cancelled' => 1,
+                    'is_repurchased' => 1
+                ]);
+
                 // Save details to transaction table
-            $repurchaseAmount = round(($investment->amount * $repurchaseRate), 2);
-            $shareNumber = explode('-', $investment->share_number);
-            $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
-            if($project->is_wallet_tokenized){
-                if($project->use_tokens){
-                    $client = new \GuzzleHttp\Client();
-                    $requestAudk = $client->request('GET','http://52.62.205.188:8081/getProjectBalance/audk',[
-                        'query'=>['project_contract_id'=>58,'project_id'=>$project->id]
-                    ]);
-                    $responseAudk = $requestAudk->getBody()->getContents();
-                    $balanceAudk = json_decode($responseAudk);
-                    if($balanceAudk < $repurchaseAmount){
-                        return redirect()->back()->withMessage('Your Project doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
+                $repurchaseAmount = round(($investment->amount * $repurchaseRate), 2);
+                $shareNumber = explode('-', $investment->share_number);
+                $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
+                if($project->is_wallet_tokenized){
+                    if($project->use_tokens){
+                        $client = new \GuzzleHttp\Client();
+                        $requestAudk = $client->request('GET','http://localhost:5050/getProjectBalance/audk',[
+                            'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
+                        ]);
+                        $responseAudk = $requestAudk->getBody()->getContents();
+                        $balanceAudk = json_decode($responseAudk);
+                        if($balanceAudk < $repurchaseAmount){
+                            return redirect()->back()->withMessage('Your Project doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
+                        }
+                        $client = new \GuzzleHttp\Client();
+                        $requestRepurchase = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                            'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                        ]);
+                        $responseRepurchase = $requestRepurchase->getBody()->getContents();
+                        $result = json_decode($responseRepurchase);
+                        $requestRepurchaseAudk = $client->request('GET','http://localhost:5050/investment/transaction',[
+                            'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                        ]);
+                        $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
+                        $balance = json_decode($responseRepurchaseAudk);
+                    }else{
+                        $client = new \GuzzleHttp\Client();
+                        $requestRepurchase = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                            'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                        ]);
+                        $responseRepurchase = $requestRepurchase->getBody()->getContents();
+                        $result = json_decode($responseRepurchase);
                     }
-                    $client = new \GuzzleHttp\Client();
-                    $requestRepurchase = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
-                        'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
-                    ]);
-                    $responseRepurchase = $requestRepurchase->getBody()->getContents();
-                    $result = json_decode($responseRepurchase);
-                    $requestRepurchaseAudk = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
-                        'query'=>['user_id'=> $investment->user_id,'project_id'=>58,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
-                    ]);
-                    $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
-                    $balance = json_decode($responseRepurchaseAudk);
-                }else{
-                    $client = new \GuzzleHttp\Client();
-                    $requestRepurchase = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
-                        'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
-                    ]);
-                    $responseRepurchase = $requestRepurchase->getBody()->getContents();
-                    $result = json_decode($responseRepurchase);
+                }
+
+                Transaction::create([
+                    'user_id' => $investment->user_id,
+                    'project_id' => $investment->project_id,
+                    'investment_investor_id' => $investment->id,
+                    'transaction_type' => 'REPURCHASE',
+                    'transaction_date' => Carbon::now(),
+                    'amount' => $repurchaseAmount,
+                    'rate' => $repurchaseRate,
+                    'number_of_shares' => $noOfShares,
+                ]);
+
+                $shareNumber = explode('-', $investment->share_number);
+                $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
+                $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+                if($result->http_response_code != 200){
+                    array_push($failedEmails, $investment->user->email);
                 }
             }
-
-            Transaction::create([
-                'user_id' => $investment->user_id,
-                'project_id' => $investment->project_id,
-                'investment_investor_id' => $investment->id,
-                'transaction_type' => 'REPURCHASE',
-                'transaction_date' => Carbon::now(),
-                'amount' => $repurchaseAmount,
-                'rate' => $repurchaseRate,
-                'number_of_shares' => $noOfShares,
-            ]);
-
-            $shareNumber = explode('-', $investment->share_number);
-            $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
-            $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
-            if($result->http_response_code != 200){
-                array_push($failedEmails, $investment->user->email);
-            }
-        }
-
             if(empty($failedEmails)){
                 return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investors and admins</p>');
             }
@@ -1713,17 +1735,21 @@ class DashboardController extends Controller
         $order = Market::find($request->market_id);
         $user = User::find($order->user_id);
         if($order->type === 'BID'){
-            $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://52.62.205.188:8081/investment/transaction',[
-                'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
-            ]);
-            $response = $request->getBody()->getContents();
-            $balance = json_decode($response);
-            $order->is_money_received = 1;
-            $order->save();
+            if($project->use_tokens){
+
+            }else{
+                $client = new \GuzzleHttp\Client();
+                $request = $client->request('GET','http://localhost:5050/investment/transaction',[
+                    'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
+                ]);
+                $response = $request->getBody()->getContents();
+                $balance = json_decode($response);
+                $order->is_money_received = 1;
+                $order->save();
+            }
         }else{
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('POST','http://52.62.205.188:8081/investment/transaction/repurchase',[
+            $request = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
                 'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
             ]);
             $response = $request->getBody()->getContents();
