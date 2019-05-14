@@ -38,6 +38,7 @@ class OfferController extends Controller
     {
       $this->middleware('auth');
       $this->middleware('admin', ['only' => ['requestForm', 'cancelRequestForm']]);
+      $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
 
     /**
@@ -252,7 +253,7 @@ class OfferController extends Controller
       $investor->save();
       if($project->use_tokens){
         $client = new \GuzzleHttp\Client();
-        $requestBalance = $client->request('GET','http://localhost:5050/getBalance',[
+        $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
           'query'=>['user_id'=> $user->id,'project_id'=>27]
         ]);
         $responseBalance = $requestBalance->getBody()->getContents();
@@ -260,7 +261,7 @@ class OfferController extends Controller
         $transactionAUDK = false;
         if($balance->balance >= $amount){
           $client = new \GuzzleHttp\Client();
-          $requestTransaction = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
+          $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
         ]);
           $responseTransact = $requestTransaction->getBody()->getContents();
           $result = json_decode($responseTransact);
@@ -277,7 +278,7 @@ class OfferController extends Controller
         }else{
           $remainingAmount = $amount - (int)$balance->balance;
           if((int)$balance->balance != 0){
-            $requestTransaction = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+            $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
               'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$balance->balance,'project_address'=>$project->wallet_address]
             ]);
             $responseTransact = $requestTransaction->getBody()->getContents();

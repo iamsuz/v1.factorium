@@ -40,6 +40,7 @@ class UserAuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['only' => ['login','authenticate','authenticateCheck']]);
+        $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
 
     /**
@@ -395,7 +396,7 @@ class UserAuthController extends Controller
             if(!Auth::user()->wallet_address){
                 $user = Auth::user();
                 $client = new \GuzzleHttp\Client();
-                $requestG = $client->request('GET','http://localhost:5050/userWallet',[
+                $requestG = $client->request('GET',$this->uri.'/userWallet',[
                     'query'=> ['user_id'=> $user->id]
                 ]);
                 $response = $requestG->getBody()->getContents();

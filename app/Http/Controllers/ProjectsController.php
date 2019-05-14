@@ -44,6 +44,7 @@ class ProjectsController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest','showInterest']]);
+        $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
 
     /**
@@ -195,7 +196,7 @@ class ProjectsController extends Controller
             $projectConfigurationPartial->save();
         }
         $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET','http://localhost:5050/createProject',[
+        $request = $client->request('GET',$this->uri.'/createProject',[
             'query' => ['project_id' => $project->id]
         ]);
         $response = $request->getBody()->getContents();

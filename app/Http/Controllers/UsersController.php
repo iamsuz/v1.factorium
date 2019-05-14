@@ -37,6 +37,7 @@ class UsersController extends Controller
     {
         $this->middleware('auth', ['except' => ['create', 'login', 'store', 'authenticate']]);
         $this->middleware('guest', ['only' => ['create', 'login']]);
+        $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
     /**
      * Display a listing of the resource.
@@ -496,7 +497,7 @@ class UsersController extends Controller
         $result = false;
         if($project->is_wallet_tokenized){
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/getBalance',[
+            $request = $client->request('GET',$this->uri.'/getBalance',[
                 'query' => ['user_id' => $user->id,'project_id'=>$project->id]
             ]);
             $response = $request->getBody()->getContents();
@@ -694,7 +695,7 @@ class UsersController extends Controller
         $user = Auth::user();
         if(!$user->wallet_address){
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/userWallet',[
+            $request = $client->request('GET',$this->uri.'/userWallet',[
                 'query'=> ['user_id'=> $user->id]
             ]);
             $response = $request->getBody()->getContents();
@@ -709,7 +710,7 @@ class UsersController extends Controller
             foreach ($investments as $investment) {
                 $projectName = Project::find($investment->project_id);
                 $client = new \GuzzleHttp\Client();
-                $requestBalance = $client->request('GET','http://localhost:5050/getBalance',[
+                $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
                     'query'=>['user_id'=> $user->id,'project_id'=>$investment->project_id]
                 ]);
                 $responseBalance = $requestBalance->getBody()->getContents();
@@ -740,14 +741,14 @@ class UsersController extends Controller
         $project = Project::findOrFail($request->project_id);
         if($project->use_tokens && $request->type === 'BID'){
             $client = new \GuzzleHttp\Client();
-            $requestBalance = $client->request('GET','http://localhost:5050/getBalance',[
+            $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
                 'query' => ['user_id' => $user->id,'project_id'=>27]
             ]);
             $responseBalance = $requestBalance->getBody()->getContents();
             $result = json_decode($responseBalance);
             if($result->balance >= (int)$request->amount_of_shares){
                 $client = new \GuzzleHttp\Client();
-                $requestTransaction = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$request->amount_of_shares,'project_address'=>$project->wallet_address]]);
+                $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$request->amount_of_shares,'project_address'=>$project->wallet_address]]);
                 $responseTransact = $requestTransaction->getBody()->getContents();
                 $result = json_decode($responseTransact);
                 $market = Market::create($request->all());

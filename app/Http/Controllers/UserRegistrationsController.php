@@ -45,6 +45,7 @@ class UserRegistrationsController extends Controller
      */
     public function __construct() {
         $this->sendgrid = new Sendgrid();
+        $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
 
     /**
@@ -497,7 +498,7 @@ class UserRegistrationsController extends Controller
             // return view('users.registrationFinish', compact('user','color'));
             $user = Auth::user();
             $client = new \GuzzleHttp\Client();
-            $req = $client->request('GET','http://localhost:5050/userWallet',[
+            $req = $client->request('GET',$this->uri.'/userWallet',[
                 'query' => ['user_id' => $user->id]
             ]);
             $res = $req->getBody()->getContents();

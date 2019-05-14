@@ -62,6 +62,7 @@ class DashboardController extends Controller
 
         $this->siteConfiguration = SiteConfiguration::where('project_site', url())->first();
         $this->konkrete = new KonkreteController();
+        $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
 
     /**
@@ -237,7 +238,7 @@ class DashboardController extends Controller
         $balanceAudk = false;
         if($project->is_wallet_tokenized){
             $client = new \GuzzleHttp\Client();
-            $requestAudk = $client->request('GET','http://localhost:5050/getProjectBalance/audk',[
+            $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
                 'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
             ]);
             $responseAudk = $requestAudk->getBody()->getContents();
@@ -271,7 +272,7 @@ class DashboardController extends Controller
         }
         if($project->contract_address && $project->is_wallet_tokenized) {
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET','http://localhost:5050/getProjectBalance',[
+            $request = $client->request('GET',$this->uri.'/getProjectBalance',[
                 'query'=>['project_contract_id'=>$project->id,'project_id'=>$project->id]
             ]);
             $response = $request->getBody()->getContents();
@@ -397,7 +398,7 @@ class DashboardController extends Controller
             if($investment->project->is_wallet_tokenized)
             {
                 $client = new \GuzzleHttp\Client();
-                $requestInvest = $client->request('GET','http://localhost:5050/investment/transaction',[
+                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
                     'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
                 ]);
                 $responseInvest = $requestInvest->getBody()->getContents();
@@ -468,7 +469,7 @@ class DashboardController extends Controller
                     if($linkedInvestment->project->is_wallet_tokenized)
                     {
                         $client = new \GuzzleHttp\Client();
-                        $requestLinked = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                        $requestLinked = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
                             'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>27,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
                         ]);
                         $responseLinked = $requestLinked->getBody()->getContents();
@@ -809,7 +810,7 @@ class DashboardController extends Controller
             if($project->use_tokens){
                 $totalBalance = $investments->sum('amount');
                 $client = new \GuzzleHttp\Client();
-                $requestAudk = $client->request('GET','http://localhost:5050/getProjectBalance/audk',[
+                $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
                     'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
                 ]);
                 $responseAudk = $requestAudk->getBody()->getContents();
@@ -840,7 +841,7 @@ class DashboardController extends Controller
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
                 if($project->use_tokens){
                     if($balanceAudk->balance >= $totalBalance){
-                        $dividendAUDK = $client->request('GET','http://localhost:5050/investment/transaction',[
+                        $dividendAUDK = $client->request('GET',$this->uri.'/investment/transaction',[
                             'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>(int)$dividendAmount,'project_address'=>$investment->project->wallet_address]
                         ]);
                         $responseDividendAudk = $dividendAUDK->getBody()->getContents();
@@ -926,7 +927,7 @@ class DashboardController extends Controller
                 if($project->is_wallet_tokenized){
                     if($project->use_tokens){
                         $client = new \GuzzleHttp\Client();
-                        $requestAudk = $client->request('GET','http://localhost:5050/getProjectBalance/audk',[
+                        $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
                             'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
                         ]);
                         $responseAudk = $requestAudk->getBody()->getContents();
@@ -935,19 +936,19 @@ class DashboardController extends Controller
                             return redirect()->back()->withMessage('Your Project doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
                         }
                         $client = new \GuzzleHttp\Client();
-                        $requestRepurchase = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                        $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
                             'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
                         ]);
                         $responseRepurchase = $requestRepurchase->getBody()->getContents();
                         $result = json_decode($responseRepurchase);
-                        $requestRepurchaseAudk = $client->request('GET','http://localhost:5050/investment/transaction',[
+                        $requestRepurchaseAudk = $client->request('GET',$this->uri.'/investment/transaction',[
                             'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
                         ]);
                         $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
                         $balance = json_decode($responseRepurchaseAudk);
                     }else{
                         $client = new \GuzzleHttp\Client();
-                        $requestRepurchase = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+                        $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
                             'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
                         ]);
                         $responseRepurchase = $requestRepurchase->getBody()->getContents();
@@ -1739,7 +1740,7 @@ class DashboardController extends Controller
 
             }else{
                 $client = new \GuzzleHttp\Client();
-                $request = $client->request('GET','http://localhost:5050/investment/transaction',[
+                $request = $client->request('GET',$this->uri.'/investment/transaction',[
                     'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
                 ]);
                 $response = $request->getBody()->getContents();
@@ -1749,7 +1750,7 @@ class DashboardController extends Controller
             }
         }else{
             $client = new \GuzzleHttp\Client();
-            $request = $client->request('POST','http://localhost:5050/investment/transaction/repurchase',[
+            $request = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
                 'query'=>['user_id'=> $user->id,'project_id'=>$order->project_id,'securityTokens'=>$order->amount_of_shares,'project_address'=>$order->project->wallet_address]
             ]);
             $response = $request->getBody()->getContents();

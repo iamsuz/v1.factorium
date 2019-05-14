@@ -41,6 +41,7 @@ class PagesController extends Controller
     {
         $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
         $this->middleware('admin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
+        $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
     /**
     * returns home page
@@ -649,7 +650,7 @@ class PagesController extends Controller
     public function konkreteGuzzle(Request $request)
     {
         $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET','http://localhost:5050/getBalance',[
+        $request = $client->request('GET',$this->uri.'/getBalance',[
             'query' => ['user_id' => '70','project_id'=>'13','securityTokens'=>'30']
         ]);
         $response = $request->getBody()->getContents();
