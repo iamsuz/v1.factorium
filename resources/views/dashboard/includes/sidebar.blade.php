@@ -3,6 +3,7 @@
 	<a href="{{route('dashboard.index')}}" class="list-group-item @if($active == 1) active @endif">Dashboard <i class="fa fa-tachometer pull-right"></i></a>
 	<a href="{{route('dashboard.users')}}" class="list-group-item @if($active == 2) active @endif">Users <i class="fa fa-users pull-right"></i></a>
 	<a href="{{route('dashboard.projects')}}" class="list-group-item @if($active == 3) active @endif">Projects <i class="fa fa-paperclip pull-right"></i></a>
+	<a href="{{route('dashboard.thirdPartyListings')}}" class="list-group-item @if($active == 11) active @endif">Third Party <br> Listings <i class="fa fa-user-plus pull-right"></i></a>
 	<a href="{{route('dashboard.market')}}" class="list-group-item @if($active == 11) active @endif">Market <i class="fa fa-paperclip pull-right"></i></a>
 	<a href="{{route('dashboard.kyc')}}" class="list-group-item @if($active == 9) active @endif">KYC Requests <i class="fa fa-file pull-right"></i></a>
 	<a href="{{route('dashboard.configurations')}}" class="list-group-item @if($active == 4) active @endif">Configurations <i class="fa fa-edit pull-right"></i></a>

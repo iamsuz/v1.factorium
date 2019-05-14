@@ -36,6 +36,9 @@ use App\ProjectEOI;
 use App\ProspectusDownload;
 use App\ProjectSpvDetail;
 use App\UserRegistration;
+use App\ThirdPartyListing;
+use App\InvestorProjectToken;
+use App\SchedulerJob;
 use App\Http\Controllers\KonkreteController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -47,6 +50,7 @@ class DashboardController extends Controller
 {
 
     protected $siteConfiguration;
+    protected $konkrete;
 
     /**
      * constructor for DashboardController
@@ -57,6 +61,7 @@ class DashboardController extends Controller
         $this->middleware('admin');
 
         $this->siteConfiguration = SiteConfiguration::where('project_site', url())->first();
+        $this->konkrete = new KonkreteController();
     }
 
     /**
@@ -119,6 +124,41 @@ class DashboardController extends Controller
         $pledged_investments = InvestmentInvestor::where('hide_investment', '0')->get();
 
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
+    }
+
+    //Projects from other estatebaron subdomains
+    public function thirdPartyListings()
+    {
+        $color = Color::where('project_site',url())->first();
+        $all_projects = Project::where('active', 1)->whereNotIn('project_site', [url()])->get();
+
+        return view('dashboard.third_party_projects.allProjects', compact('all_projects','color'));
+    }
+
+    //Projects from other estatebaron subdomains
+    public function showThirdPartyProject(Request $request)
+    {
+        if ($request->ajax()) {
+            $third_party_listing = ThirdPartyListing::all();
+            $project_id = $request->project_id;
+            $third_party_listing = $third_party_listing->where('list_on_site',url())->where('project_id', $project_id)->first();
+            if(!$third_party_listing)
+            {
+                $third_party_listing = new ThirdPartyListing;
+                $third_party_listing->project_id = $project_id;
+                $third_party_listing->list_on_site = url();
+                $third_party_listing->save();
+                $third_party_listing = ThirdPartyListing::all();
+                $third_party_listing = $third_party_listing->where('list_on_site',url())->first();
+            }
+            if($request->checkValue == "1") {
+                $status = $third_party_listing->update(['active'=> 1, 'updated_at'=>Carbon::now()]);
+            }
+            else {
+                $status = $third_party_listing->update(['active'=> 0, 'updated_at'=>Carbon::now()]);
+            }
+            return 1;
+        }
     }
 
     public function test()
@@ -190,6 +230,8 @@ class DashboardController extends Controller
         $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
         $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
         $projectsEois = ProjectEOI::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
+        $investorTokens = InvestorProjectToken::with(['user', 'project', 'scheduler_job'])->where('project_id', $project_id)->get();
+        $investorTokensJobDetails = SchedulerJob::where('type', 'investor_project_tokens')->orderBy('created_at', 'desc')->first();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
         $balanceAudk = false;
@@ -201,7 +243,7 @@ class DashboardController extends Controller
             $responseAudk = $requestAudk->getBody()->getContents();
             $balanceAudk = json_decode($responseAudk);
         }
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois','balanceAudk'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'balanceAudk', 'investorTokens', 'investorTokensJobDetails'));
     }
 
     public function editProject($project_id)
@@ -222,11 +264,12 @@ class DashboardController extends Controller
         }
 
         $contract = array();
-        if($project->contract_address && $project->is_wallet_tokenized) {
-            $konkrete = new KonkreteController();
-            $res = $konkrete->getContractDetails($project_id);
+        if($project->contract_address) {
+            $res = $this->konkrete->getContractDetails($project_id);
             $contractRes = json_decode($res->getContent());
             $contract = $contractRes->data;
+        }
+        if($project->contract_address && $project->is_wallet_tokenized) {
             $client = new \GuzzleHttp\Client();
             $request = $client->request('GET','http://52.62.205.188:8081/getProjectBalance',[
                 'query'=>['project_contract_id'=>$project->id,'project_id'=>$project->id]

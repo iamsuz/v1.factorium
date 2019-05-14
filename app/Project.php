@@ -191,6 +191,17 @@ class Project extends Model
     {
         return $this->hasMany('App\Market');
     }
+
+    public function investor_project_token()
+    {
+        return $this->hasMany('App\InvestorProjectToken');
+    }
+
+    public function third_party_listing()
+    {
+        return $this->hasOne('App\ThirdPartyListing');
+    }
+    
     public function issueTokens()
     {
         return $this->hasMany('App\IssueingToken');

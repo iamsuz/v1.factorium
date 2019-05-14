@@ -40,6 +40,8 @@ Route::get('/gformredirect','ProjectsController@gformRedirects');
 
 Route::get('/dashboard/users', ['as'=>'dashboard.users', 'uses'=>'DashboardController@users']);
 Route::get('/dashboard/projects', ['as'=>'dashboard.projects', 'uses'=>'DashboardController@projects']);
+Route::get('/dashboard/thirdPartyListings', ['as'=>'dashboard.thirdPartyListings', 'uses'=>'DashboardController@thirdPartyListings']);
+Route::post('/dashboard/showThirdPartyProject', ['as'=>'dashboard.showThirdPartyProject', 'uses'=>'DashboardController@showThirdPartyProject']);
 Route::get('/dashboard/configurations', ['as'=>'dashboard.configurations', 'uses'=>'DashboardController@siteConfigurations']);
 Route::post('/dashboard/configurations/uploadSiteLogo', ['as'=>'dashboard.configurations.uploadSiteLogo', 'uses'=>'DashboardController@uploadSiteLogo']);
 Route::post('/configuration/changecolor/footer/home',['as'=>'configuration.footercolor.home','uses'=>'PagesController@changeColorFooter']);
@@ -313,12 +315,14 @@ Route::post('/dashboard/project/upload/offerdoc', ['as' => 'dashboard.upload.off
 Route::get('/dashboard/market',['as'=>'dashboard.market','uses'=>'DashboardController@market']);
 Route::post('/dashboard/market/order',['as'=>'dashboard.market.accept','uses'=>'DashboardController@marketStore']);
 Route::post('/dashboard/market/moneyReceived',['as'=>'dashboard.market.money','uses'=>'DashboardController@marketMoneyReceived']);
+
 /* Konkrete Routes */
 
 Route::group(['prefix' => 'konkrete'], function () {
 	Route::group(['middleware' => 'master'], function() {
 		Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'KonkreteController@tokenize' ]);
 		Route::get('/dashboard/project/{project_id}/loadWallet', [ 'as' => 'konkrete.loadWallet', 'uses' => 'KonkreteController@loadProjectWallet' ]);
+		Route::post('/dashboard/project/verify', [ 'as' => 'konkrete.verify', 'uses' => 'KonkreteController@verifyContract' ]);
 		Route::post('/dashboard/project/createWallet', [ 'as' => 'konkrete.createWallet', 'uses' => 'KonkreteController@createWallet']);
 		Route::post('/dashboard/project/issueTokens',['as'=>'konkrete.issueTokens','uses'=>'KonkreteController@issueTokens']);
 	});

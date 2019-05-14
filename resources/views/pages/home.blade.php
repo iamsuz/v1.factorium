@@ -914,6 +914,291 @@
 					@endforeach
 					@endif
 					@endif
+					<br><br>
+					
+					{{-- Third Party projects from different subdomains --}}
+					@if(count($third_party_listings)==1)
+						@foreach($third_party_listings->chunk(1) as $sets)
+							<div class="row">
+								@foreach($sets as $third_party_listing)
+								<?php
+								$pledged_amount = $investments->where('project_id', $third_party_listing->project->id)->sum('amount');
+								if($third_party_listing->project->investment) {
+									$completed_percent = ($pledged_amount/$third_party_listing->project->investment->goal_amount)*100;
+									$remaining_amount = $third_party_listing->project->investment->goal_amount - $pledged_amount;
+								} else {
+									$completed_percent = 0;
+									$remaining_amount = 0;
+								}
+								?>
+								<div class="col-md-8 col-md-offset-2" id="circle{{$third_party_listing->project->id}}">
+									<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
+										<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+											<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
+												<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
+												@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
+												<div class="project-thumb-overflow text-center">
+													<span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
+													<input type="text" class="form-control project-{{$third_party_listing->project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+													<input type="text" class="form-control project-{{$third_party_listing->project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+													<br>
+													<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$third_party_listing->project->id}}">
+												</div>
+												@endif
+											</div>
+											<br>
+											<p><small><small>@if($third_party_listing->project->project_thumbnail_text){{$third_party_listing->project->project_thumbnail_text}}
+												@else
+												@if($third_party_listing->project->projectspvdetail)Securities are being offered in a
+												@if($third_party_listing->project->project_prospectus_text!='') {{$third_party_listing->project->project_prospectus_text}}
+												@elseif($siteConfiguration !== NULL)@if($siteConfiguration->prospectus_text !== NULL) {{$siteConfiguration->prospectus_text}}@endif
+												@else Prospectus
+												@endif for issue of {{$third_party_listing->project->projectspvdetail->spv_name}}
+												@endif
+											@endif</small></small></p>
+											<div class="caption">
+												<div class="row text-left">
+													<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
+														<h4 class="text-left first_color listing-heading" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$third_party_listing->project->title}}</b></h4>
+													</div>
+													<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
+														<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+													</div>
+													<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+													</div>
+													<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; padding: 0px 0px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->projected_returns}}%@endif<small><small><br>@if($config=$third_party_listing->project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
+													</div>
+												</div>
+											</div>
+											<br>
+											<div style="@if($third_party_listing->project->projectconfiguration) @if(!$third_party_listing->project->projectconfiguration->show_project_progress) display: none; @endif @endif">
+												<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
+													<div class="progress-bar progress-bar-info second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+													</div>
+												</div>
+												<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($third_party_listing->project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($third_party_listing->project->investment->goal_amount)}} @endif</p>
+											</div>
+										</div>
+									</a>
+								</div>
+								@endforeach
+							</div>
+						@endforeach
+						@else
+						@if(count($third_party_listings)>2)
+						{{-- @if(Auth::guest())
+						@else
+						@if(Auth::user()->roles->contains('role', 'admin') && (Auth::user()->registration_site == url()))
+						<div class="row" style="margin-bottom: 20px;">
+							<input type="button" class="btn btn-default col-md-2 col-md-offset-5 enable-swap-btn" value="Enable Swap">
+							&nbsp;&nbsp;&nbsp;<button style="background: none; border: none;"><i class="fa fa-refresh swap-projects-btn" aria-hidden="true" style="font-size: 2em; cursor: pointer;color: #000; vertical-align: -webkit-baseline-middle;" data-toggle="tooltip" title="Swap"></i></button><br>
+							<div style="text-align: center;"><span class="projects-swap-guide-msg" style="font-size: 0.7em; color: #ce1e1e;"></span></div>
+						</div>
+						@endif
+						@endif --}}
+						@foreach($third_party_listings->chunk(3) as $sets)
+						<div class="row">
+							@foreach($sets as $third_party_listing)
+							<?php
+							$pledged_amount = $investments->where('project_id', $third_party_listing->project->id)->sum('amount');
+							if($third_party_listing->project->investment) {
+								$completed_percent = ($pledged_amount/$third_party_listing->project->investment->goal_amount)*100;
+								$remaining_amount = $third_party_listing->project->investment->goal_amount - $pledged_amount;
+							} else {
+								$completed_percent = 0;
+								$remaining_amount = 0;
+							}
+							?>
+							<div class="col-md-4 swap-select-overlay" id="circle{{$third_party_listing->project->id}}">
+								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$third_party_listing->project->eb_project_rank}}" style="display: none;"></div>
+								<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+										<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs-3 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
+											<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
+											@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
+											<div class="project-thumb-overflow text-center">
+												<span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
+												<input type="text" class="form-control project-{{$third_party_listing->project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+												<input type="text" class="form-control project-{{$third_party_listing->project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+												<br>
+												<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$third_party_listing->project->id}}">
+											</div>
+											@endif
+											<div class="@if($third_party_listing->project->invite_only) invite-only-overlay @endif thn">
+												<div class="content">
+													<div class="row">
+														<div class="col-md-12">
+															@if($third_party_listing->project->invite_only)
+															<div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
+																@if(Auth::user())
+																<h3>
+																	Invite Only Project
+																</h3>
+																@else
+																<h3>
+																	<a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
+																	<small style="color:white;">
+																		<br> to access Private Project
+																	</small>
+																</h3>
+																@endif
+															</div>
+															@endif
+
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<br>
+										<p><small><small>@if($third_party_listing->project->project_thumbnail_text){{$third_party_listing->project->project_thumbnail_text}}
+											@else
+											@if($third_party_listing->project->projectspvdetail)Securities are being offered in a
+											@if($third_party_listing->project->project_prospectus_text!='') {{$third_party_listing->project->project_prospectus_text}}
+											@elseif($siteConfiguration !== NULL)@if($siteConfiguration->prospectus_text !== NULL) {{$siteConfiguration->prospectus_text}}@endif
+											@else Prospectus
+											@endif for issue of {{$third_party_listing->project->projectspvdetail->spv_name}}
+											@endif
+										@endif</small></small></p>
+										<div class="caption" style="height: 80px;">
+											<div class="row text-left">
+												<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0 " data-wow-duration="1.5s" data-wow-delay="0.7s" style="width: 35%;">
+													<h4 class="text-left first_color listing-heading" style="color:#282a73;margin-top:1px;margin-bottom:1px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$third_party_listing->project->title}}</b></h4>
+												</div>
+												<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s" style="margin: 0 0; width: 22%;">
+													<h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+												</div>
+												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 18%; padding: 0px 0px;" ><h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+												</div>
+												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 21%; padding: 0px 0px;"><h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;"><span style="white-space: nowrap;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->projected_returns}}%@endif</span><small><small><br>@if($config=$third_party_listing->project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
+												</div>
+											</div>
+										</div>
+										<br>
+										<div style="@if($third_party_listing->project->projectconfiguration) @if(!$third_party_listing->project->projectconfiguration->show_project_progress) display: none; @endif @endif">
+											<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
+												<div class="progress-bar progress-bar-info second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+												</div>
+											</div>
+											<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($third_party_listing->project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($third_party_listing->project->investment->goal_amount)}} @endif</p>
+										</div>
+									</div>
+								</a>
+							</div>
+							@endforeach
+						</div>
+						<br><br>
+						@endforeach
+						@else
+						{{-- @if(Auth::guest())
+						@else
+						@if(Auth::user()->roles->contains('role', 'admin') && (Auth::user()->registration_site == url()))
+						<div class="row" style="margin-bottom: 20px;">
+							<input type="button" class="btn btn-default col-md-2 col-md-offset-5 enable-swap-btn" value="Enable Swap">
+							&nbsp;&nbsp;&nbsp;<button style="background: none; border: none;"><i class="fa fa-refresh swap-projects-btn" aria-hidden="true" style="font-size: 2em; cursor: pointer;color: #000; vertical-align: -webkit-baseline-middle;" data-toggle="tooltip" title="Swap"></i></button><br>
+							<div style="text-align: center;"><span class="projects-swap-guide-msg" style="font-size: 0.7em; color: #ce1e1e;"></span></div>
+						</div>
+						@endif
+						@endif --}}
+						@foreach($third_party_listings->chunk(2)->reverse() as $sets)
+						<div class="row">
+							@foreach($sets as $third_party_listing)
+							<?php
+							$pledged_amount = $investments->where('project_id', $third_party_listing->project->id)->sum('amount');
+							if($third_party_listing->project->investment) {
+								$completed_percent = ($pledged_amount/$third_party_listing->project->investment->goal_amount)*100;
+								$remaining_amount = $third_party_listing->project->investment->goal_amount - $pledged_amount;
+							} else {
+								$completed_percent = 0;
+								$remaining_amount = 0;
+							}
+							?>
+							<div class="col-sm-6 col-md-6 swap-select-overlay" id="circle{{$third_party_listing->project->id}}">
+								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$third_party_listing->project->eb_project_rank}}" style="display: none;"></div>
+								<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+										<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs-2 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
+											<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
+											@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
+											<div class="project-thumb-overflow text-center">
+												<span class="project-interest-error-text" style="font-size: 10px; color: #ff0000;"></span>
+												<input type="text" class="form-control project-{{$third_party_listing->project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+												<input type="text" class="form-control project-{{$third_party_listing->project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+												<br>
+												<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$third_party_listing->project->id}}">
+											</div>
+											@endif
+											<div class="@if($third_party_listing->project->invite_only) invite-only-overlay @endif thn">
+												<div class="content">
+													<div class="row">
+														<div class="col-md-12">
+															@if($third_party_listing->project->invite_only)
+															<div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
+																@if(Auth::user())
+																<h3>
+																	Invite Only Project
+																</h3>
+																@else
+																<h3>
+																	<a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
+																	<small style="color:white;">
+																		<br> to access Private Project
+																	</small>
+																</h3>
+																@endif
+															</div>
+															@endif
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<br>
+										<p><small><small>
+											@if($third_party_listing->project->project_thumbnail_text){{$third_party_listing->project->project_thumbnail_text}}
+											@else
+											@if($third_party_listing->project->projectspvdetail)Securities are being offered in a
+											@if($third_party_listing->project->project_prospectus_text!='') {{$third_party_listing->project->project_prospectus_text}}
+											@elseif($siteConfiguration !== NULL)@if($siteConfiguration->prospectus_text !== NULL) {{$siteConfiguration->prospectus_text}}@endif
+											@else Prospectus
+											@endif for issue of {{$third_party_listing->project->projectspvdetail->spv_name}}
+											@endif
+											@endif
+										</small></small></p>
+										<div class="caption">
+											<div class="row text-left">
+												<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
+													<h4 class="text-left first_color listing-heading" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:20px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$third_party_listing->project->title}}</b></h4>
+												</div>
+												<div class="col-xs-3 col-sm-3 col-md-2 listing1" data-wow-duration="1.5s" data-wow-delay="0.5s">
+													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+												</div>
+												<div class="col-xs-2 col-sm-2 col-md-2 listings2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 12%;" >
+													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+												</div>
+												<div class="col-xs-2 col-sm-2 col-md-1 listings3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 20%">
+													<h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->projected_returns}}%@endif<small><small><br>@if($config=$third_party_listing->project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
+												</div>
+											</div>
+										</div>
+										<br>
+										<div style="@if($third_party_listing->project->projectconfiguration) @if(!$third_party_listing->project->projectconfiguration->show_project_progress) display: none; @endif @endif">
+											<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
+												<div class="progress-bar progress-bar-info second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+												</div>
+											</div>
+											<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($third_party_listing->project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($third_party_listing->project->investment->goal_amount)}} @endif</p>
+										</div>
+									</div>
+								</a>
+							</div>
+							@endforeach
+						</div>
+						<br><br>
+						@endforeach
+						@endif
+						@endif
+						{{-- End of third party listings --}}
 				</div>
 			</div>
 			<br><br>

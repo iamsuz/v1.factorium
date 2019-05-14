@@ -239,6 +239,38 @@ class KonkreteController extends Controller
         }
     }
 
+    /**
+     * Verify smart contract
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyContract(Request $request)
+    {
+        $projectId = $request->project_id;
+
+        if($projectId) {
+            $response =  $this->konkreteClient->curlKonkrete('POST', '/api/v1/contracts/verify', [], [
+                                'project_id' => (int)$projectId
+                            ]);
+            $responseResult = json_decode($response);
+
+            if($responseResult->status) {
+                return response([
+                    'status' => true,
+                    'message' => $responseResult->message,
+                    'data' => $responseResult->data
+                ], 200);
+
+            } else {
+                return response([
+                    'status' => false,
+                    'message' => $responseResult->message
+                ], 200);
+            }
+        }
+    }
+
     public function createWallet(Request $request)
     {
         $project = Project::findOrFail($request->project_id);
@@ -254,11 +286,42 @@ class KonkreteController extends Controller
                 'message' => $result->message
             ],200);
         } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get user token balance for given project
+     * 
+     * @param walletAddress string
+     * @param projectId int
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserTokenBalance($walletAddress, $projectId)
+    {
+        if($walletAddress && $projectId) {
+            $response =  $this->konkreteClient->curlKonkrete('GET', '/api/v1/accounts/getBalance', [], [
+                                'account' => $walletAddress,
+                                'project_id' => (int)$projectId
+                            ]);
+            $responseResult = json_decode($response);
+
+            if($responseResult->status) {
+                return response([
+                    'status' => true,
+                    'message' => $responseResult->message,
+                    'data' => $responseResult->data
+                ], 200);
+
+            } else {
                 return response([
                     'status' => false,
                     'message' => $responseResult->message
                 ], 200);
             }
+        } else {
+            return false;
+        }
     }
 
     public function issueTokens(Request $request)
@@ -267,8 +330,8 @@ class KonkreteController extends Controller
         $data = Transaction::where('project_id', $project->id)->select(['user_id','project_id','investment_investor_id','transaction_type','transaction_date','amount','rate','number_of_shares'])->get();
         IssueingToken::insert($data->toArray());
         return response([
-                'status' => true,
-                'message' => 'Process has been initiated to issue tokens to existing Investors!'
-            ],200);
+            'status' => true,
+            'message' => 'Process has been initiated to issue tokens to existing Investors!'
+        ],200);
     }
 }

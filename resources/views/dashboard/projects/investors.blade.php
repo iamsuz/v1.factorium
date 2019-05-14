@@ -47,14 +47,13 @@
 				</div>
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
-				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h4 class="text-center">Applications</h4></a></li>
-				{{-- <li style="width: 30%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h4 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h4></a></li> --}}
-				<li style="width: 30%;"><a data-toggle="tab" href="#accepted_applications" style="padding: 0em 2em"><h4 class="text-center">Accepted Applications</h4></a></li>
-				<li style="width: 30%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h4 class="text-center">Share Registry</h4></a></li>
-				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h4 class="text-center">Transactions</h4></a></li>
-				<li style="width: 30%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h4 class="text-center">Position records</h4></a></li>
-				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h4 class="text-center">EOI (Coming Soon)</h4></a></li>
-				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h4 class="text-center">Project EOI</h4></a></li>
+				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Applications</h3></a></li>
+				<li style="width: 30%;"><a data-toggle="tab" href="#share_registry_tab" style="padding: 0em 2em"><h3 class="text-center">@if($project->share_vs_unit) Share @else Unit @endif registry</h3></a></li>
+				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
+				<li style="width: 30%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
+				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
+				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
+				<li><a data-toggle="tab" href="#share_registry_new_tab" style="padding: 0em 2em"><h3 class="text-center">Share Registry</h3></a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
@@ -698,6 +697,37 @@
 					</div>
 				</div>
 
+				<div id="share_registry_new_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+					<div>
+						<div>
+							<i><strong>Records last updated on:</strong> @if($investorTokensJobDetails){{$investorTokensJobDetails->created_at}}@endif</i>
+						</div>
+						<br>
+						<table class="table table-bordered table-striped" id="newShareRegistryTable">
+							<thead>
+								<tr>
+									<th>Investor Name</th>
+									<th>Phone</th>
+									<th>Email</th>
+									<th>Project SPV Name</th>
+									<th>Token Balance</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($investorTokens as $investorRecord)
+								<tr>
+									<td>{{$investorRecord->user->first_name}} {{$investorRecord->user->last_name}}</td>
+									<td>{{$investorRecord->user->phone_number}}</td>
+									<td>{{$investorRecord->user->email}}</td>
+									<td>@if($investorRecord->project->projectspvdetail){{$investorRecord->project->projectspvdetail->spv_name}}@endif</td>
+									<td>{{$investorRecord->tokens}} {{$investorRecord->symbol}}</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -904,6 +934,10 @@
 			     	'aTargets': ['nosort']
 			  	}
 			]
+		});
+		var newShareRegistryTable = $('#newShareRegistryTable').DataTable({
+			"order": [[0, 'asc']],
+			"iDisplayLength": 50
 		});
 		var investorsTable = $('#investorsTable').DataTable({
 			"order": [[5, 'desc'], [0, 'desc']],

@@ -1801,6 +1801,18 @@ Edit {{$project->title}} | Dashboard | @parent
 									</form>
 								</div>
 
+								@if(!$project->is_wallet_tokenized)
+									<!-- START: Tokenize project wallet -->
+									<div class="alert alert-warning text-center">
+										Check your contract on Blockchain by clicking on below link -<br> <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to view contract</a>.
+										<br><strong>Ignore if already done!</strong>
+									</div>
+									<div class="text-center">
+										<p>Click on below button to fill your project wallet with alloted tokens.</p>
+										<p><small>{{$project->wallet_address}}</small></p>
+										<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
+									</div>
+									<!-- END: Tokenize project wallet -->
 								@else
 
 								@if(!$project->is_wallet_tokenized)
@@ -2284,6 +2296,10 @@ Edit {{$project->title}} | Dashboard | @parent
 			$('input[name="certificate_frame"][value="' + selectedImg + '"]').prop('checked', true);
 		});
 
+		@if(isset($contract->isVerified) && !$contract->isVerified)
+		var checkContractInterval = setInterval(checkContractVerification, 30000);
+		@endif
+
 		//Upload Project SPV Logo
 		uploadProjectSPVLogo();
 		performCropOnImage();
@@ -2669,6 +2685,23 @@ function updateCoords(coords, w, h, origWidth, origHeight){
     				$('.loader-overlay').hide();
     			}
 
+<<<<<<< HEAD
+    function checkContractVerification() {
+    	var projectId = '{{ $project->id }}';
+    	$.ajax({
+			url: "{{ route('konkrete.verify') }}",
+			type: 'POST',
+			dataType: 'JSON',
+			data: { project_id: projectId },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) { console.log(data); },
+            error: function(error) { console.log(error); }
+		});
+    }
+
+=======
     		});
     	});
     }
@@ -2700,5 +2733,6 @@ function updateCoords(coords, w, h, origWidth, origHeight){
     		});
     	}
     @endif
+>>>>>>> 5681852e3e27352c50581a7a8476f64d11122a67
 </script>
 @stop
