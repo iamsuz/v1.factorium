@@ -63,6 +63,7 @@ class DashboardController extends Controller
         $this->siteConfiguration = SiteConfiguration::where('project_site', url())->first();
         $this->konkrete = new KonkreteController();
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
+        $this->audkID = env('AUDK_PROJECT_ID',27);
     }
 
     /**
@@ -239,7 +240,7 @@ class DashboardController extends Controller
         if($project->is_wallet_tokenized){
             $client = new \GuzzleHttp\Client();
             $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
-                'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
+                'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
             ]);
             $responseAudk = $requestAudk->getBody()->getContents();
             $balanceAudk = json_decode($responseAudk);
@@ -470,7 +471,7 @@ class DashboardController extends Controller
                     {
                         $client = new \GuzzleHttp\Client();
                         $requestLinked = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
-                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>27,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
+                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
                         ]);
                         $responseLinked = $requestLinked->getBody()->getContents();
                         $result = json_decode($responseLinked);
@@ -811,7 +812,7 @@ class DashboardController extends Controller
                 $totalBalance = $investments->sum('amount');
                 $client = new \GuzzleHttp\Client();
                 $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
-                    'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
+                    'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
                 ]);
                 $responseAudk = $requestAudk->getBody()->getContents();
                 $balanceAudk = json_decode($responseAudk);
@@ -842,7 +843,7 @@ class DashboardController extends Controller
                 if($project->use_tokens){
                     if($balanceAudk->balance >= $totalBalance){
                         $dividendAUDK = $client->request('GET',$this->uri.'/investment/transaction',[
-                            'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>(int)$dividendAmount,'project_address'=>$investment->project->wallet_address]
+                            'query'=>['user_id'=> $investment->user_id,'project_id'=>$this->audkID,'securityTokens'=>(int)$dividendAmount,'project_address'=>$investment->project->wallet_address]
                         ]);
                         $responseDividendAudk = $dividendAUDK->getBody()->getContents();
                         $balance = json_decode($responseDividendAudk);
@@ -928,7 +929,7 @@ class DashboardController extends Controller
                     if($project->use_tokens){
                         $client = new \GuzzleHttp\Client();
                         $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
-                            'query'=>['project_contract_id'=>27,'project_id'=>$project->id]
+                            'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
                         ]);
                         $responseAudk = $requestAudk->getBody()->getContents();
                         $balanceAudk = json_decode($responseAudk);
@@ -942,7 +943,7 @@ class DashboardController extends Controller
                         $responseRepurchase = $requestRepurchase->getBody()->getContents();
                         $result = json_decode($responseRepurchase);
                         $requestRepurchaseAudk = $client->request('GET',$this->uri.'/investment/transaction',[
-                            'query'=>['user_id'=> $investment->user_id,'project_id'=>27,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                            'query'=>['user_id'=> $investment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
                         ]);
                         $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
                         $balance = json_decode($responseRepurchaseAudk);

@@ -38,6 +38,7 @@ class UsersController extends Controller
         $this->middleware('auth', ['except' => ['create', 'login', 'store', 'authenticate']]);
         $this->middleware('guest', ['only' => ['create', 'login']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
+        $this->audkID = env('AUDK_PROJECT_ID',27);
     }
     /**
      * Display a listing of the resource.
@@ -742,13 +743,13 @@ class UsersController extends Controller
         if($project->use_tokens && $request->type === 'BID'){
             $client = new \GuzzleHttp\Client();
             $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
-                'query' => ['user_id' => $user->id,'project_id'=>27]
+                'query' => ['user_id' => $user->id,'project_id'=>$this->audkID]
             ]);
             $responseBalance = $requestBalance->getBody()->getContents();
             $result = json_decode($responseBalance);
             if($result->balance >= (int)$request->amount_of_shares){
                 $client = new \GuzzleHttp\Client();
-                $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>27,'securityTokens'=>$request->amount_of_shares,'project_address'=>$project->wallet_address]]);
+                $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$request->amount_of_shares,'project_address'=>$project->wallet_address]]);
                 $responseTransact = $requestTransaction->getBody()->getContents();
                 $result = json_decode($responseTransact);
                 $market = Market::create($request->all());
@@ -756,7 +757,7 @@ class UsersController extends Controller
                 $market->save();
             }else{
                 $market = Market::create($request->all());
-                $marketAUDK = Market::create(['user_id'=>$user->id,'project_id'=>27,'type'=>$request->type,'price'=>$request->amount_of_shares,'market_id'=>$market->id]);
+                $marketAUDK = Market::create(['user_id'=>$user->id,'project_id'=>$this->audkID,'type'=>$request->type,'price'=>$request->amount_of_shares,'market_id'=>$market->id]);
             }
         }else{
             $market = Market::create($request->all());
