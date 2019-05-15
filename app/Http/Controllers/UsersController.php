@@ -757,7 +757,7 @@ class UsersController extends Controller
                 $market->save();
             }else{
                 $market = Market::create($request->all());
-                $marketAUDK = Market::create(['user_id'=>$user->id,'project_id'=>$this->audkID,'type'=>$request->type,'price'=>$request->amount_of_shares,'market_id'=>$market->id]);
+                $marketAUDK = Market::create(['user_id'=>$user->id,'project_id'=>$this->audkID,'type'=>$request->type,'price'=>$request->price,'amount_of_shares'=>$request->amount_of_shares,'market_id'=>$market->id]);
             }
         }else{
             $market = Market::create($request->all());

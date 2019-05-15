@@ -1736,6 +1736,7 @@ class DashboardController extends Controller
     {
         $order = Market::find($request->market_id);
         $user = User::find($order->user_id);
+        $project = Project::findOrFail($order->project_id);
         if($order->type === 'BID'){
             if($project->use_tokens){
 
