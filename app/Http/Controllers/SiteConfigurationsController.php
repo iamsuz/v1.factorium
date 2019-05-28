@@ -1600,7 +1600,12 @@ class SiteConfigurationsController extends Controller
         $request['project_id']= $project->id;
         $request['project_prog_id']= $id;
         $request['user_id']= Auth::id();
-        $request['value']= -1;
+        $investor = User::findOrFail(Auth::id());
+        $invest = \App\InvestmentInvestor::where('user_id',Auth::id())
+                                        ->where('project_id',$project->id)
+                                        ->where('accepted',1)
+                                        ->get();
+        $request['value']= -(int)$invest->sum('amount');
         $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
         if($vote) {
             $vote->update($request->all());

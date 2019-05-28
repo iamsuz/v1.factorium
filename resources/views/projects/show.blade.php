@@ -1665,14 +1665,14 @@
 <!-- <h4 class="text-center">More questions/comments/concerns? You can post them here or chat with us</h4> -->
 <br>
 <div class="row">
-			<div class="col-md-offset-1 col-md-10">
-				<hr style="margin-top:0px;">
-			</div>
-		</div>
-		<section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
-			<div class="container">
-				<h3 class="text-center">More questions/comments/concerns? You can post them here</h3>
-				<br>
+	<div class="col-md-offset-1 col-md-10">
+		<hr style="margin-top:0px;">
+	</div>
+</div>
+<section id="comments-form" class="chunk-box " style="padding-bottom:0px;">
+	<div class="container">
+		<h3 class="text-center">More questions/comments/concerns? You can post them here</h3>
+		<br>
 		<div class="row">
 			<div class="col-md-offset-1 col-md-3"><b> {{$project->comments->count()}} @if($project->comments->count() == 1) Comment @else Comments @endif</b></div>
 			<div class="col-md-8"></div>
@@ -1830,7 +1830,7 @@
 					{{-- <th>Description</th> --}}
 					@if($project->is_funding_closed)
 					<th>Request Funds</th>
-					<th>Amount</th>
+					<th>Time Remaining</th>
 					@endif
 					<th>Details</th>
 				</tr>
@@ -1841,8 +1841,7 @@
 					<td>
 						@if($project->is_funding_closed)
 						@if($project_progs->is_voting)
-						<a href="{{route('configuration.upvote', [$project_progs->id])}}"><span class="vote @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === 1) on @endif"></span></a><br><br>
-						<span class="text-center" style="margin-left: 30%">{{$project_progs->votes()->sum('value')}}</span>
+						<span class="text-center" style="">{{$project_progs->votes()->sum('value')}}</span>
 						<br><br>
 						<a href="{{route('configuration.downvote', [$project_progs->id])}}">
 							<span class="downvote @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === -1) on @endif"></span>
@@ -1856,7 +1855,7 @@
 					{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
 					@if($project->is_funding_closed)
 					<td>{{$project_progs->request_funds}}</td>
-					<td>{{$project_progs->amount}}</td>
+					<td><div class="lead" id="clock{{$project_progs->id}}" data="{{date('Y,m,d', strtotime($project_progs->end_date))}}" progress-id="{{$project_progs->id}}"></div></td>
 					@endif
 					<td>
 						@if(Auth::user())
@@ -1909,13 +1908,6 @@
 
 							</div>
 						</td>
-						<td>
-							<div class="form-group <?php if($errors->first('progress_description')){echo 'has-error';}?>">
-								<div class="col-sm-12">
-									<input type="integer" name="amount" placeholder="Amount" class="form-control">
-								</div>
-							</div>
-						</td>
 						@endif
 						<td>
 							<div class="row">
@@ -1930,15 +1922,15 @@
 							@if($project->is_funding_closed)
 							<div class="row">
 								<div class="form-group <?php if($errors->first('end_date')){echo 'has-error';}?>">
-								<div class="col-sm-6 <?php if($errors->first('end_date')){echo 'has-error';}?>">
-									{!! Form::text('end_date', null, array('placeholder'=>'End Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker1')) !!}
-									{!! $errors->first('end_date', '<small class="text-danger">:message</small>') !!}
+									<div class="col-sm-6 <?php if($errors->first('end_date')){echo 'has-error';}?>">
+										{!! Form::text('end_date', null, array('placeholder'=>'End Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker1')) !!}
+										{!! $errors->first('end_date', '<small class="text-danger">:message</small>') !!}
+									</div>
+									<div class="col-sm-6 <?php if($errors->first('percent')){echo 'has-error';}?>">
+										{!! Form::text('percent', null, array('placeholder'=>'Percent', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+										{!! $errors->first('percent', '<small class="text-danger">:message</small>') !!}
+									</div>
 								</div>
-								<div class="col-sm-6 <?php if($errors->first('percent')){echo 'has-error';}?>">
-									{!! Form::text('percent', null, array('placeholder'=>'Percent', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
-									{!! $errors->first('percent', '<small class="text-danger">:message</small>') !!}
-								</div>
-							</div>
 							</div>
 							@endif
 							<br>
@@ -2041,11 +2033,33 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/3.1.2/jquery.bootstrap-touchspin.js"></script> -->
+<script type="text/javascript" src="//cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js"></script>
 <!-- Summernote editor -->
 {!! Html::script('/assets/plugins/summernote/summernote.min.js') !!}
 <script src="https://unpkg.com/sweetalert2@7.1.2/dist/sweetalert2.all.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(e){
+		// Turn on Bootstrap
+		$('[data-toggle="tooltip"]').tooltip();
+		$('div.lead').each(function (i,d) {
+			var id = d.id
+			var date = new Date($('#'+id+'').attr('data'));
+			$('#'+id+'').countdown(date,function (event) {
+				console.log(event.type);
+				if(event.type === 'finish'){
+					updateProjectProg(id)
+				}
+				$(this).html(event.strftime('%D days %H:%M:%S'));
+			})
+		});
+  		// 15 days from now!
+  		function get15dayFromNow(endDate,id) {
+  			return new Date({{date('Y,m-1,d', strtotime($project->project_progs->last()->end_date))}});
+  		}
+  		var $clock = $('#clock');
+  		$clock.countdown(get15dayFromNow(), function(event) {
+  			$(this).html(event.strftime('%D days %H:%M:%S'));
+  		});
 		// Track users downloading prospectus
 		$('.download-prospectus-btn').click(function(e){
 			e.preventDefault();
@@ -3138,6 +3152,22 @@ function deleteCarouselImage(){
 					location.reload();
 				}
 			});
+		});
+	}
+
+	function updateProjectProg(id) {
+		var projectId = '{{$project->id}}';
+		var progressId = $('#'+id).attr('progress-id');
+		$.ajax({
+			url:'/project/progress/transact',
+			type:'POST',
+			dataType:'JSON',
+			data:{projectId,progressId},
+			headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+		}).done(function(data) {
+			console.log(data);
 		});
 	}
 

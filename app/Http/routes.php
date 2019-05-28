@@ -78,6 +78,7 @@ Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.u
 Route::get('/dashboard/application/{id}',['as'=>'dashboard.application.view','uses'=>'DashboardController@viewApplication']);
 Route::post('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
 
+
 Route::pattern('notes', '[0-9]+');
 Route::resource('notes', 'NotesController');
 
@@ -315,6 +316,8 @@ Route::post('/dashboard/project/upload/offerdoc', ['as' => 'dashboard.upload.off
 Route::get('/dashboard/market',['as'=>'dashboard.market','uses'=>'DashboardController@market']);
 Route::post('/dashboard/market/order',['as'=>'dashboard.market.accept','uses'=>'DashboardController@marketStore']);
 Route::post('/dashboard/market/moneyReceived',['as'=>'dashboard.market.money','uses'=>'DashboardController@marketMoneyReceived']);
+
+Route::post('/project/progress/transact',['as'=>'project.progress.transact','uses'=>'PagesController@projectProgressTransact']);
 
 /* Konkrete Routes */
 

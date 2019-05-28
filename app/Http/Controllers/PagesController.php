@@ -10,6 +10,7 @@ use App\Color;
 use App\Http\Requests;
 use GuzzleHttp\Client;
 use App\Mailers\AppMailer;
+use App\ProjectProg;
 use App\InvestmentInvestor;
 use Illuminate\Http\Request;
 use PulkitJalan\GeoIP\GeoIP;
@@ -656,5 +657,22 @@ class PagesController extends Controller
         $response = $request->getBody()->getContents();
         $result = json_decode($response);
         dd($result->hash);
+    }
+    public function projectProgressTransact(Request $request)
+    {
+        $project = Project::findOrFail($request->projectId);
+        $project_prog = ProjectProg::findOrFail($request->progressId);
+        $totalVotes = $project_prog->votes()->sum('value');
+        $percentVotes = $totalVotes / $project->investment->goal_amount * 100;
+        if($percentVotes < $project_prog->percetage){
+            $client = new \GuzzleHttp\Client();
+                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
+                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+                ]);
+                $responseInvest = $requestInvest->getBody()->getContents();
+                $resultInvest = json_decode($responseInvest);
+        }else{
+
+        }
     }
 }
