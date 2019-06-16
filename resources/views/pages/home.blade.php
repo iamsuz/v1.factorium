@@ -915,7 +915,7 @@
 					@endif
 					@endif
 					<br><br>
-					
+
 					{{-- Third Party projects from different subdomains --}}
 					@if(count($third_party_listings)==1)
 						@foreach($third_party_listings->chunk(1) as $sets)

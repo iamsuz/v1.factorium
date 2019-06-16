@@ -14,7 +14,6 @@ class AddColumnRequestFundsAndAmountToProjectProgTable extends Migration
     {
         Schema::table('project_progs', function($table) {
             $table->string('request_funds')->nullable();
-            $table->integer('amount');
             $table->boolean('is_voting');
         });
     }
@@ -28,7 +27,6 @@ class AddColumnRequestFundsAndAmountToProjectProgTable extends Migration
     {
         Schema::table('project_progs', function($table) {
             $table->dropColumn('request_funds');
-            $table->dropColumn('amount');
             $table->dropColumn('is_voting');
         });
     }

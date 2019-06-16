@@ -663,11 +663,12 @@ class PagesController extends Controller
         $project = Project::findOrFail($request->projectId);
         $project_prog = ProjectProg::findOrFail($request->progressId);
         $totalVotes = $project_prog->votes()->sum('value');
+        dd($totalVotes);
         $percentVotes = $totalVotes / $project->investment->goal_amount * 100;
         if($percentVotes < $project_prog->percetage){
             $client = new \GuzzleHttp\Client();
-                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction/requestFund',[
+                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address,'votes'=>$totalVotes]
                 ]);
                 $responseInvest = $requestInvest->getBody()->getContents();
                 $resultInvest = json_decode($responseInvest);

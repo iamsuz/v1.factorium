@@ -678,7 +678,6 @@ class SiteConfigurationsController extends Controller
         $project_prog->progress_description = trim(preg_replace('/\s+/', ' ', $request->progress_description));
         $project_prog->progress_details = trim(preg_replace('/\s+/', ' ', $request->progress_details));
         $project_prog->request_funds = $request->request_funds;
-        $project_prog->amount = $request->amount;
         $project_prog->percent = $request->percent;
         $project_prog->video_url = $request->video_url;
         $project_prog->image_path = $imagePath;
@@ -1606,6 +1605,7 @@ class SiteConfigurationsController extends Controller
                                         ->where('accepted',1)
                                         ->get();
         $request['value']= -(int)$invest->sum('amount');
+        dd($invest);
         $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
         if($vote) {
             $vote->update($request->all());

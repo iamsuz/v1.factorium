@@ -73,7 +73,6 @@ class OfferController extends Controller
     public function store(Request $request)
     {
       $request = new Request(array_except($request->all(),['password']));
-
       $project = Project::findOrFail($request->project_id);
       $min_amount_invest = $project->investment->minimum_accepted_amount;
       if((int)$request->amount_to_invest < (int)$min_amount_invest)
