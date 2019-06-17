@@ -2082,14 +2082,6 @@
 				$(this).html(event.strftime('%D days %H:%M:%S'));
 			})
 		});
-  		// 15 days from now!
-  		function get15dayFromNow(endDate,id) {
-  			return new Date({{date('Y,m-1,d', strtotime($project->project_progs->last()->end_date))}});
-  		}
-  		var $clock = $('#clock');
-  		$clock.countdown(get15dayFromNow(), function(event) {
-  			$(this).html(event.strftime('%D days %H:%M:%S'));
-  		});
 		// Track users downloading prospectus
 		$('.download-prospectus-btn').click(function(e){
 			e.preventDefault();
