@@ -1605,7 +1605,6 @@ class SiteConfigurationsController extends Controller
                                         ->where('accepted',1)
                                         ->get();
         $request['value']= -(int)$invest->sum('amount');
-        dd($invest);
         $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
         if($vote) {
             $vote->update($request->all());
