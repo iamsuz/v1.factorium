@@ -663,17 +663,18 @@ class PagesController extends Controller
         $project = Project::findOrFail($request->projectId);
         $project_prog = ProjectProg::findOrFail($request->progressId);
         $totalVotes = $project_prog->votes()->sum('value');
-        dd($totalVotes);
         $percentVotes = $totalVotes / $project->investment->goal_amount * 100;
-        if($percentVotes < $project_prog->percetage){
+        $user = \App\User::where('registration_site',url())->roles->contains('role','admin');
+        dd($user);
+        if((int)$percentVotes < $project_prog->percent){
             $client = new \GuzzleHttp\Client();
-                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction/requestFund',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address,'votes'=>$totalVotes]
-                ]);
-                $responseInvest = $requestInvest->getBody()->getContents();
-                $resultInvest = json_decode($responseInvest);
+            $requestInvest = $client->request('GET',$this->uri.'/investment/transaction/requestFund',[
+                'query' => ['user_id' => $$project_prog->user_id,'project_id'=>$project_prog->project_id,'securityTokens'=>$project_prog->request_funds,'project_address'=>$project->wallet_address,'votes'=>$totalVotes]
+            ]);
+            $responseInvest = $requestInvest->getBody()->getContents();
+            $resultInvest = json_decode($responseInvest);
         }else{
-
+            return redirect()->back()->withMessage('Sorry your request to withdraw fund has not been approved');
         }
     }
 }

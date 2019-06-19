@@ -1828,166 +1828,166 @@
 		<div class="row text-center">
 			<h5><b>Toggle for Funding Request</b></h5>
 			<div class="btn-group" id="project_prog_request" data-toggle="buttons">
-              <label class="btn project-prog-request btn-default btn-on btn-lg active" id="project_prog_btn">
-              <input type="radio" value="1" name="project_prog_refund" checked="checked">Project Progress</label>
-              <label class="btn project-prog-request-fund btn-default btn-off btn-lg" id="request_fund_btn">
-              <input type="radio" value="0" name="project_prog_refund">Request Fund</label>
-            </div>
-		</div>
-		@endif
-		@endif
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th></th>
-					<th style="width: 140px;">Date of Progress</th>
-					{{-- <th>Description</th> --}}
-					<th class="request-fund" style="display: none;">Request Funds</th>
-					<th class="time-remaining" style="display: none;">Time Remaining</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach($project_prog as $project_progs)
-				<tr>
-					<td>
-						@if($project_progs->is_voting)
-						<span class="text-center" style="">{{$project_progs->votes()->sum('value')}}</span>
-						<br><br>
-						<a href="{{route('configuration.downvote', [$project_progs->id])}}">
-							<span class="downvote @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === -1) on @endif">
-							</span>
-						</a>
-						<br>
-						<p>Votes {{$project_progs->votes()->count()}}</p>
-						@endif
-					</td>
-					<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
-					</td>
-					{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
-					<td class="request-fund" style="display: none;">{{$project_progs->request_funds}}</td>
-					<td class="time-remaining" style="display: none;"><div class="lead" id="clock{{$project_progs->id}}" data="{{date('Y,m,d', strtotime($project_progs->end_date))}}" progress-id="{{$project_progs->id}}"></div></td>
-					<td>
-						@if(Auth::user())
-						@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-						<a href="{{route('configuration.deleteProgress', [$project_progs->id])}}" class="pull-right" data-method="delete"> <i class="fa fa-times" aria-hidden="true" style="margin: 0 5px;" data-toggle="tooltip" title="Delete"></i></a>
-						{{-- <span class="pull-right"><i class="fa fa-pencil" aria-hidden="true" data-toggle="tooltip" title="Edit"></i> </span> --}}
-						@endif
-						@endif
-						{!!$project_progs->progress_details!!}
-						<br>
-						<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
-						@if($project_progs->image_path != '')
-						<div class="row">
-							<div class="col-md-10 change_column">
-								<div class="thumbnail">
-									<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
-								</div>
-							</div>
-						</div>
-						@endif
-						@if($project_progs->video_url != '')
-						<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
-						@endif
-					</td>
-				</tr>
-				@endforeach
-				<tr>
-					<td></td>
-					@if(Auth::user())
-					@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-					<h3 style="color: #000;">Add new Update</h3>
-					{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'id'=>'project_progress_form', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
-					<div class="row">
-						<td>
-							<div class="form-group <?php if($errors->first('updated_date')){echo 'has-error';}?>">
-								<div class="col-sm-12 <?php if($errors->first('updated_date')){echo 'has-error';}?>">
-									{!! Form::text('updated_date', null, array('placeholder'=>'Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker')) !!}
-									{!! $errors->first('updated_date', '<small class="text-danger">:message</small>') !!}
-								</div>
-							</div>
-						</td>
-						<td class="request-fund" style="display: none;">
-							<div class="form-group <?php if($errors->first('request_funds')){echo 'has-error';}?>">
-								<div class="col-sm-12 <?php if($errors->first('request_funds')){echo 'has-error';}?>">
-									{{-- {!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!} --}}
-									<input type="integer" name="request_funds" placeholder="Request Funds" class="form-control">
-									{!! $errors->first('request_funds', '<small class="text-danger">:message</small>') !!}
-								</div>
-
-							</div>
-						</td>
-						<td class="time-remaining" style="display: none;">
-							<div class="row" id="end_date">
-								<div class="form-group <?php if($errors->first('end_date')){echo 'has-error';}?>">
-									<div class="col-sm-12 <?php if($errors->first('end_date')){echo 'has-error';}?>">
-										{!! Form::text('end_date', null, array('placeholder'=>'End Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker1')) !!}
-										{!! $errors->first('end_date', '<small class="text-danger">:message</small>') !!}
-									</div>
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="row">
-								<div class="form-group <?php if($errors->first('progress_details')){echo 'has-error';}?>">
-									<div class="col-sm-12 <?php if($errors->first('progress_details')){echo 'has-error';}?>">
-										{!! Form::textarea('progress_details', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!}
-										{!! $errors->first('progress_details', '<small class="text-danger">:message</small>') !!}
-									</div>
-								</div>
-							</div>
-							<br>
-							<div class="row" id="percent" style="display: none;">
-								<div class="col-sm-12 <?php if($errors->first('percent')){echo 'has-error';}?>">
-									{!! Form::text('percent', null, array('placeholder'=>'Percent', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
-									{!! $errors->first('percent', '<small class="text-danger">:message</small>') !!}
-								</div>
-							</div>
-						</div>
-						<br>
-						<div class="row" id="video_url_prog">
-							<div class="form-group <?php if($errors->first('video_url')){echo 'has-error';}?>">
-								<div class="col-sm-12 <?php if($errors->first('video_url')){echo 'has-error';}?>">
-									{!! Form::text('video_url', null, array('placeholder'=>'Video url', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
-									{!! $errors->first('video_url', '<small class="text-danger">:message</small>') !!}
-								</div>
-							</div>
-						</div>
-						<br>
-						<div class="row" id="project_prog_image">
-							<div class="form-group <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
-								<div class="col-sm-12 <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
-
-									<div class="input-group">
-										<label class="input-group-btn">
-											<span class="btn btn-primary" style="padding: 10px 12px;">Browse&hellip;
-												<input type="file" name="project_progress_image" id="project_progress_image" class="form-control" style="display: none;">
-											</span>
-										</label>
-										<input type="text" class="form-control" id="progress_image_name" name="progress_image_name" readonly placeholder="Select Image">
-									</div>
-									{!! $errors->first('project_progress_image', '<small class="text-danger">:message</small>') !!}
-								</div>
-							</div>
-						</div>
-						<br>
-						<div class="col-md-12">
-							<div class="row">
-								<div class="form-group">
-									<div class="col-sm-6">
-										{!! Form::submit('Add new Update', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
-									</div>
-								</div>
-							</div>
-						</div>
-					</td>
-					{!! Form::close() !!}
-					@endif
-					@endif
+				<label class="btn project-prog-request btn-default btn-on btn-lg active" id="project_prog_btn">
+					<input type="radio" value="1" name="project_prog_refund" checked="checked">Project Progress</label>
+					<label class="btn project-prog-request-fund btn-default btn-off btn-lg" id="request_fund_btn">
+						<input type="radio" value="0" name="project_prog_refund">Request Fund</label>
+					</div>
 				</div>
-			</tr>
-		</tbody>
-	</table>
+				@endif
+				@endif
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th style="width: 140px;">Date of Progress</th>
+							{{-- <th>Description</th> --}}
+							<th class="request-fund" style="display: none;">Request Funds</th>
+							<th class="time-remaining" style="display: none;">Time Remaining</th>
+							<th>Details</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($project_prog as $project_progs)
+						<tr>
+							<td>
+								@if($project_progs->is_voting)
+								<span class="text-center" style="">{{$project_progs->votes()->sum('value')}}</span>
+								<br><br>
+								<a href="{{route('configuration.downvote', [$project_progs->id])}}">
+									<span class="downvote downvotebtn @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === -1) on @endif" data-toggle="tooltip" data-placement="top" title="you are putting votes against this proposal">
+									</span>
+								</a>
+								<br>
+								<p>Votes {{$project_progs->votes()->count()}}</p>
+								@endif
+							</td>
+							<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
+							</td>
+							{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
+							<td class="request-fund" style="display: none;">{{$project_progs->request_funds}}</td>
+							<td class="time-remaining" style="display: none;"><div class="lead" id="clock{{$project_progs->id}}" data="{{date('Y,m,d', strtotime($project_progs->end_date))}}" progress-id="{{$project_progs->id}}"></div></td>
+							<td>
+								@if(Auth::user())
+								@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+								<a href="{{route('configuration.deleteProgress', [$project_progs->id])}}" class="pull-right" data-method="delete"> <i class="fa fa-times" aria-hidden="true" style="margin: 0 5px;" data-toggle="tooltip" title="Delete"></i></a>
+								{{-- <span class="pull-right"><i class="fa fa-pencil" aria-hidden="true" data-toggle="tooltip" title="Edit"></i> </span> --}}
+								@endif
+								@endif
+								{!!$project_progs->progress_details!!}
+								<br>
+								<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
+								@if($project_progs->image_path != '')
+								<div class="row">
+									<div class="col-md-10 change_column">
+										<div class="thumbnail">
+											<img src="{{asset($project_progs->image_path)}}" class="img-responsive">
+										</div>
+									</div>
+								</div>
+								@endif
+								@if($project_progs->video_url != '')
+								<iframe class="embed-responsive-item" width="100%" height="100%" src="{{$project_progs->video_url}}" frameborder="0" allowfullscreen></iframe>
+								@endif
+							</td>
+						</tr>
+						@endforeach
+						<tr>
+							<td></td>
+							@if(Auth::user())
+							@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+							<h3 style="color: #000;">Add new Update</h3>
+							{!! Form::open(array('route'=>['configuration.addprogress', $project->id], 'class'=>'form-horizontal', 'id'=>'project_progress_form', 'role'=>'form', 'method'=>'POST', 'enctype'=>'multipart/form-data')) !!}
+							<div class="row">
+								<td>
+									<div class="form-group <?php if($errors->first('updated_date')){echo 'has-error';}?>">
+										<div class="col-sm-12 <?php if($errors->first('updated_date')){echo 'has-error';}?>">
+											{!! Form::text('updated_date', null, array('placeholder'=>'Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker')) !!}
+											{!! $errors->first('updated_date', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</td>
+								<td class="request-fund" style="display: none;">
+									<div class="form-group <?php if($errors->first('request_funds')){echo 'has-error';}?>">
+										<div class="col-sm-12 <?php if($errors->first('request_funds')){echo 'has-error';}?>">
+											{{-- {!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!} --}}
+											<input type="integer" name="request_funds" placeholder="Request Funds" class="form-control">
+											{!! $errors->first('request_funds', '<small class="text-danger">:message</small>') !!}
+										</div>
+
+									</div>
+								</td>
+								<td class="time-remaining" style="display: none;">
+									<div class="row" id="end_date">
+										<div class="form-group <?php if($errors->first('end_date')){echo 'has-error';}?>">
+											<div class="col-sm-12 <?php if($errors->first('end_date')){echo 'has-error';}?>">
+												{!! Form::text('end_date', null, array('placeholder'=>'End Date', 'class'=>'form-control ', 'tabindex'=>'1','id'=>'datepicker1')) !!}
+												{!! $errors->first('end_date', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="row">
+										<div class="form-group <?php if($errors->first('progress_details')){echo 'has-error';}?>">
+											<div class="col-sm-12 <?php if($errors->first('progress_details')){echo 'has-error';}?>">
+												{!! Form::textarea('progress_details', null, array('placeholder'=>'Description', 'class'=>'form-control ', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!}
+												{!! $errors->first('progress_details', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<br>
+									<div class="row" id="percent" style="display: none;">
+										<div class="col-sm-12 <?php if($errors->first('percent')){echo 'has-error';}?>">
+											{!! Form::text('percent', null, array('placeholder'=>'Percent', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+											{!! $errors->first('percent', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="row" id="video_url_prog">
+									<div class="form-group <?php if($errors->first('video_url')){echo 'has-error';}?>">
+										<div class="col-sm-12 <?php if($errors->first('video_url')){echo 'has-error';}?>">
+											{!! Form::text('video_url', null, array('placeholder'=>'Video url', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+											{!! $errors->first('video_url', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="row" id="project_prog_image">
+									<div class="form-group <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
+										<div class="col-sm-12 <?php if($errors->first('project_progress_image')){echo 'has-error';}?>">
+
+											<div class="input-group">
+												<label class="input-group-btn">
+													<span class="btn btn-primary" style="padding: 10px 12px;">Browse&hellip;
+														<input type="file" name="project_progress_image" id="project_progress_image" class="form-control" style="display: none;">
+													</span>
+												</label>
+												<input type="text" class="form-control" id="progress_image_name" name="progress_image_name" readonly placeholder="Select Image">
+											</div>
+											{!! $errors->first('project_progress_image', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="col-md-12">
+									<div class="row">
+										<div class="form-group">
+											<div class="col-sm-6">
+												{!! Form::submit('Add new Update', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10')) !!}
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+							{!! Form::close() !!}
+							@endif
+							@endif
+						</div>
+					</tr>
+				</tbody>
+			</table>
 			{{-- @if(Auth::user())
 			@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
 			<h3 style="color: #000;">Upload a Images</h3>

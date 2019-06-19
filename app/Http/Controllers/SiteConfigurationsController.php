@@ -672,6 +672,7 @@ class SiteConfigurationsController extends Controller
         $project = Project::findOrFail($project_id);
         $project_prog = new ProjectProg;
         $project_prog->project_id = $project_id;
+        $project_prog->user_id = Auth::user()->id;
         $project_prog->updated_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
         $project_prog->start_date = \DateTime::createFromFormat('m/d/Y', $request->updated_date);
         $project_prog->end_date = \DateTime::createFromFormat('m/d/Y', $request->end_date);
@@ -1604,7 +1605,7 @@ class SiteConfigurationsController extends Controller
                                         ->where('project_id',$project->id)
                                         ->where('accepted',1)
                                         ->get();
-        $request['value']= -(int)$invest->sum('amount');
+        $request['value']= (int)$invest->sum('amount');
         $vote = ProjectProgVote::where('project_id', $project->id)->where('user_id', Auth::id())->where('project_prog_id', $id)->first();
         if($vote) {
             $vote->update($request->all());
