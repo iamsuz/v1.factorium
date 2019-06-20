@@ -15,6 +15,7 @@ class AddUserIdColumnToProjectProgTable extends Migration
         Schema::table('project_progs', function($table) {
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->text('transaction_hash')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddUserIdColumnToProjectProgTable extends Migration
     public function down()
     {
         Schema::table('project_progs', function($table) {
-            $table-dropColumn('user_id');
+            $table->dropColumn('user_id');
+            $table->dropColumn('transaction_hash');
         });
     }
 }

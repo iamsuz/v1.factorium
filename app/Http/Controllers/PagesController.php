@@ -664,16 +664,23 @@ class PagesController extends Controller
         $project_prog = ProjectProg::findOrFail($request->progressId);
         $totalVotes = $project_prog->votes()->sum('value');
         $percentVotes = $totalVotes / $project->investment->goal_amount * 100;
-        $user = \App\User::where('registration_site',url())->roles->contains('role','admin');
-        dd($user);
+        if($project_prog->fund_status !== 0){
+            return redirect()->back()->withMessage('This request is already completed');
+        }
         if((int)$percentVotes < $project_prog->percent){
             $client = new \GuzzleHttp\Client();
-            $requestInvest = $client->request('GET',$this->uri.'/investment/transaction/requestFund',[
-                'query' => ['user_id' => $$project_prog->user_id,'project_id'=>$project_prog->project_id,'securityTokens'=>$project_prog->request_funds,'project_address'=>$project->wallet_address,'votes'=>$totalVotes]
+            $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/requestFund',[
+                'query' => ['user_id' => $project_prog->user_id,'project_id'=>$project_prog->project_id,'securityTokens'=>$project_prog->request_funds,'project_address'=>$project->wallet_address,'votes'=>$totalVotes]
             ]);
             $responseInvest = $requestInvest->getBody()->getContents();
             $resultInvest = json_decode($responseInvest);
+            $project_prog->transaction_hash = $resultInvest->hash;
+            $project_prog->fund_status = 1;
+            $project_prog->save();
+            return redirect()->back()->withMessage('Your transaction for request fund has been approved and processed');
         }else{
+            $project_prog->fund_status = -1;
+            $project_prog->save();
             return redirect()->back()->withMessage('Sorry your request to withdraw fund has not been approved');
         }
     }
