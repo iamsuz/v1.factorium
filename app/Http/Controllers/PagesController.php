@@ -44,6 +44,11 @@ class PagesController extends Controller
         $this->middleware('admin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
+    public function something()
+    {
+        $monolog = \Log::getMonolog();
+        dd($monolog);
+    }
     /**
     * returns home page
     * @return view [home page is returned]

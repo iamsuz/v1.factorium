@@ -60,11 +60,10 @@ class UpdateInvestorsTokenBalance extends Command
             ->where('projects.contract_address', '<>', '')
             ->groupBy(['user_id', 'project_id'])
             ->get();
-
         foreach ($investorsProjects as $key => $value) {
             $result = $this->konkrete->getUserTokenBalance($value->wallet_address, $value->project_id);
             $resultArr = json_decode($result->getContent());
-            
+            \Log::info($result);
             if($resultArr->status) {
                 $resultData = $resultArr->data;
 
