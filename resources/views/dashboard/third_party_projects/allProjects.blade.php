@@ -23,7 +23,7 @@ Projects | Dashboard | @parent
 	<br>
 	<div class="row">
 		<div class="col-md-2">
-			@include('dashboard.includes.sidebar', ['active'=>11])
+			@include('dashboard.includes.sidebar', ['active'=>12])
 		</div>
 		<div class="col-md-10">
 			@if (Session::has('message'))

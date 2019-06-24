@@ -22,7 +22,7 @@
 			{!! Session::get('message') !!}
 			@endif
 			<ul class="list-group">
-				<li class="list-group-item">
+				<li class="list-group">
 					<dl class="dl-horizontal">
 						<dd style="margin-left: 0px;">
 							<div class="col-md-10 col-md-offset-1 wow fadeIn text-center" >
