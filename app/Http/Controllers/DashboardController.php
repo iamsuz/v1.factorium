@@ -1762,4 +1762,26 @@ class DashboardController extends Controller
         }
         return redirect()->back()->withMessage('Transaction is Complete');
     }
+    public function viewShareCertificate($investorRecord_id)
+    {
+        $color = Color::where('project_site',url())->first();
+        $investRecordId = base64_decode($investorRecord_id);
+        $investProjectToken = InvestorProjectToken::findOrFail($investRecordId);
+        $project = Project::findOrFail($investProjectToken->project_id);
+        $user = User::findOrFail($investProjectToken->user_id);
+        $investment = InvestmentInvestor::where('user_id',$user->id)->where('project_id',$project->id)->get()->last();
+        $result = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('GET',$this->uri.'/getBalance',[
+                'query' => ['user_id' => $user->id,'project_id'=>$project->id]
+            ]);
+            $response = $request->getBody()->getContents();
+            $result = json_decode($response);
+            if(!isset($result->balance)){
+                $result = false;
+            }
+        }
+        return view('dashboard.users.invoiceCertificate',compact('investment','color','user','project','investing','shareEnd','shareStart','result'));
+    }
 }
