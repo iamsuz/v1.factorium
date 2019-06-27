@@ -412,9 +412,14 @@ class UserRegistrationsController extends Controller
     public function activate($token,Request $request)
     {
         $color = Color::where('project_site',url())->first();
-        $user = UserRegistration::whereToken($token)->firstOrFail();
-        if($user->active) {
-            // return redirect()->route('users.login')->withMessage('<p class="alert alert-info text-center">User Already Activated</p>');
+        $user = UserRegistration::whereToken($token)->first();
+        if(!$user) {
+            $existUser = User::whereActivationToken($token)->first();
+            if($existUser){
+                return redirect()->route('users.login')->withMessage('<p class="alert alert-info text-center">User Already Activated</p>');
+            }else{
+                return redirect()->route('users.create')->withMessage('<p class="alert alert-info text-center">Invalid token please Register here</p>');
+            }
         }
         if($request->has('ref'))
         {
@@ -794,67 +799,105 @@ class UserRegistrationsController extends Controller
                 // $pdf->save($pdfPath);
                 // $investor->application_path = $pdfBasePath;
                     $investor->save();
-
-                    $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
-                    $this->dispatch(new SendReminderEmail($user,$project,$investor));
-
-                    return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+                    if($project->use_tokens){
+                        $client = new \GuzzleHttp\Client();
+                        $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
+                          'query'=>['user_id'=> $user->id,'project_id'=>$this->audkID]
+                      ]);
+                        $responseBalance = $requestBalance->getBody()->getContents();
+                        $balance = json_decode($responseBalance);
+                        $transactionAUDK = false;
+                        if($balance->balance >= $amount){
+                          $client = new \GuzzleHttp\Client();
+                          $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
+                      ]);
+                          $responseTransact = $requestTransaction->getBody()->getContents();
+                          $result = json_decode($responseTransact);
+                          $transactionAUDK = true;
+                          $investment = $investor;
+                          $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
+                          ->where('accepted', 1)
+                          ->orderBy('share_certificate_issued_at','DESC')->get()
+                          ->first();
+            //Update current investment and with the share certificate details
+                          $investment->money_received = 1;
+                          $investment->save();
+                          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK'));
+                      }else{
+                          $remainingAmount = $amount - (int)$balance->balance;
+                          if((int)$balance->balance != 0){
+                            $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
+                              'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$balance->balance,'project_address'=>$project->wallet_address]
+                          ]);
+                            $responseTransact = $requestTransaction->getBody()->getContents();
+                            $result = json_decode($responseTransact);
+                        }
+                        $audkProject = Project::findOrFail($this->audkID);
+                        $amount = $remainingAmount;
+                        $user->investments()->attach($audkProject, ['investment_id'=>$audkProject->investment->id,'amount'=>$remainingAmount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,'investment_completion'=>1,'pay_investment_id'=>$investor->id]);
+                        return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK','audkProject'));
+                    }
                 }
+                $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+                $this->dispatch(new SendReminderEmail($user,$project,$investor));
 
+                return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
             }
 
         }
-        return view('users.details', compact('user','color'))->withMessage('Successfully Activated, please fill the details');
-    }
 
-    public function acceptedInvitation($token)
-    {
-        $color = Color::where('project_site',url())->first();
-        $invite = Invite::whereToken($token)->firstOrFail();
-        if($invite->accepted){
-            return view('users.alreadyAcceptedInvitation', compact('token','color'));
-        }
+    }
+    return view('users.details', compact('user','color'))->withMessage('Successfully Activated, please fill the details');
+}
+
+public function acceptedInvitation($token)
+{
+    $color = Color::where('project_site',url())->first();
+    $invite = Invite::whereToken($token)->firstOrFail();
+    if($invite->accepted){
+        return view('users.alreadyAcceptedInvitation', compact('token','color'));
+    }
         // $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);
         // $invite = Credit::create(['user_id'=>$invite->user_id, 'invite_id'=>$invite->id, 'amount'=>25, 'type'=>'accepted invite']);
 
-        return view('users.acceptedInvitation', compact('token','color'));
+    return view('users.acceptedInvitation', compact('token','color'));
+}
+
+
+public function storeDetailsInvite(Request $request)
+{
+    $this->validate($request, [
+        'first_name' => 'required|alpha_dash|min:1|max:50',
+        'last_name' => 'required|alpha_dash|min:1|max:50',
+        'phone_number' => 'required',
+        'password' => 'required',
+        'token'=>'required',
+    ]);
+
+    $userReg = Invite::whereToken($request->token)->firstOrFail();
+    $color = Color::where('project_site',url())->first();
+    if (!$request['username']) {
+        $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
     }
+    $request['email'] = $userReg->email;
+    $request['active'] = true;
+    $request['activated_on'] = $userReg->accepted_on;
+    $role = Role::whereRole('investor')->firstOrFail();
 
+    $user = User::create($request->all());
+    $time_now = Carbon::now();
+    $user->roles()->attach($role);
+    if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
+        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
+    }
+    else {
+        $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
+    };
+    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
 
-    public function storeDetailsInvite(Request $request)
-    {
-        $this->validate($request, [
-            'first_name' => 'required|alpha_dash|min:1|max:50',
-            'last_name' => 'required|alpha_dash|min:1|max:50',
-            'phone_number' => 'required',
-            'password' => 'required',
-            'token'=>'required',
-        ]);
-
-        $userReg = Invite::whereToken($request->token)->firstOrFail();
-        $color = Color::where('project_site',url())->first();
-        if (!$request['username']) {
-            $request['username']= str_slug($request->first_name.' '.$request->last_name.' '.rand(1, 9999));
-        }
-        $request['email'] = $userReg->email;
-        $request['active'] = true;
-        $request['activated_on'] = $userReg->accepted_on;
-        $role = Role::whereRole('investor')->firstOrFail();
-
-        $user = User::create($request->all());
-        $time_now = Carbon::now();
-        $user->roles()->attach($role);
-        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete) {
-            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->user_sign_up_konkrete;
-        }
-        else {
-            $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
-        };
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
-
-        $invite = Invite::whereToken($request->token)->firstOrFail();
-        $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);
-        $mailer->sendRegistrationNotificationAdmin($user);
+    $invite = Invite::whereToken($request->token)->firstOrFail();
+    $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);
+    $mailer->sendRegistrationNotificationAdmin($user);
         //intercom create user
         // $intercom = IntercomBasicAuthClient::factory(array(
         //     'app_id' => 'refan8ue',
@@ -872,66 +915,66 @@ class UserRegistrationsController extends Controller
         //         "activated_on_at" => $user->activated_on->timestamp
         //         ),
         //     ));
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
-            Auth::user()->update(['last_login'=> Carbon::now()]);
-            return view('users.registrationFinish', compact('user','color'));
-        }
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
+        Auth::user()->update(['last_login'=> Carbon::now()]);
+        return view('users.registrationFinish', compact('user','color'));
     }
+}
 
-    public function thanks()
-    {
-        $color = Color::where('project_site',url())->first();
-        return view('users.registrationFinish',compact('color'));
+public function thanks()
+{
+    $color = Color::where('project_site',url())->first();
+    return view('users.registrationFinish',compact('color'));
+}
+
+public function requestFormFillingRegistration($id, Request $request, AppMailer $mailer)
+{
+    $color = Color::where('project_site',url())->first();
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password'=>'required|min:6|max:60'
+    ]);
+    if(isset($request->reg_first_name) && isset($request->reg_last_name)) {
+     $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'first_name' => 'required',
+        'last_name' => 'required'
+    ]);
+ }
+ $validator1 = Validator::make($request->all(), [
+    'email' => 'unique:users,email||unique:user_registrations,email',
+]);
+
+ if ($validator->fails()) {
+    return Response::json(['success' => false, 'errors' => $validator->errors()]);
+}
+if($validator1->fails()){
+    $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
+    $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
+    if(!$res1 && !$res2){
+        $originSite="";
+        if($user=User::where('email', $request->email)->first()){
+            $originSite = $user->registration_site;
+        }
+        if($userReg=UserRegistration::where('email', $request->email)->first()){
+            $originSite = $userReg->registration_site;
+        }
+        $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
+        return redirect()->back()->withErrors(['email'=> $errorMessage])->withInput();
     }
-
-    public function requestFormFillingRegistration($id, Request $request, AppMailer $mailer)
-    {
-        $color = Color::where('project_site',url())->first();
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password'=>'required|min:6|max:60'
-        ]);
-        if(isset($request->reg_first_name) && isset($request->reg_last_name)) {
-           $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'first_name' => 'required',
-                'last_name' => 'required'
-            ]);
-        }
-        $validator1 = Validator::make($request->all(), [
-            'email' => 'unique:users,email||unique:user_registrations,email',
-        ]);
-
-        if ($validator->fails()) {
-            return Response::json(['success' => false, 'errors' => $validator->errors()]);
-        }
-        if($validator1->fails()){
-            $res1 = User::where('email', $request->email)->where('registration_site', url())->first();
-            $res2 = UserRegistration::where('email', $request->email)->where('registration_site', url())->first();
-            if(!$res1 && !$res2){
-                $originSite="";
-                if($user=User::where('email', $request->email)->first()){
-                    $originSite = $user->registration_site;
-                }
-                if($userReg=UserRegistration::where('email', $request->email)->first()){
-                    $originSite = $userReg->registration_site;
-                }
-                $errorMessage = 'This email is already registered on '.$originSite.' which is an EstateBaron.com powered site, you can use the same login id and password on this site.';
-                return redirect()->back()->withErrors(['email'=> $errorMessage])->withInput();
-            }
-            else{
-                $errorMessage = 'This email is already registered but seems its not activated please activate email';
-                return redirect()->back()->withMessage('This email is already registered but seems its not activated please activate email');
-            }
-        }
-        $project = Project::findOrFail($id);
-        $ref =false;
-        $color = Color::where('project_site',url())->first();
-        $offerToken = mt_rand(100000, 999999);
-        $user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'role'=>'investor']);
-        $mailer->sendRegistrationConfirmationTo($user,$ref);
-        return Response::json(['success' => true, 'data' => $request->all()]);
+    else{
+        $errorMessage = 'This email is already registered but seems its not activated please activate email';
+        return redirect()->back()->withMessage('This email is already registered but seems its not activated please activate email');
     }
+}
+$project = Project::findOrFail($id);
+$ref =false;
+$color = Color::where('project_site',url())->first();
+$offerToken = mt_rand(100000, 999999);
+$user = UserRegistration::create($request->all()+['eoi_token' => $offerToken,'registration_site'=>url(),'role'=>'investor']);
+$mailer->sendRegistrationConfirmationTo($user,$ref);
+return Response::json(['success' => true, 'data' => $request->all()]);
+}
 
     /**
      * Calls the sendgrid library to save the user details to sendgrid contact

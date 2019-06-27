@@ -358,6 +358,45 @@ class UserAuthController extends Controller
         // $pdf->save($pdfPath);
         // $investor->application_path = $pdfBasePath;
         $investor->save();
+        if($project->use_tokens){
+        $client = new \GuzzleHttp\Client();
+        $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
+          'query'=>['user_id'=> $user->id,'project_id'=>$this->audkID]
+        ]);
+        $responseBalance = $requestBalance->getBody()->getContents();
+        $balance = json_decode($responseBalance);
+        $transactionAUDK = false;
+        if($balance->balance >= $amount){
+          $client = new \GuzzleHttp\Client();
+          $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
+        ]);
+          $responseTransact = $requestTransaction->getBody()->getContents();
+          $result = json_decode($responseTransact);
+          $transactionAUDK = true;
+          $investment = $investor;
+          $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
+          ->where('accepted', 1)
+          ->orderBy('share_certificate_issued_at','DESC')->get()
+          ->first();
+            //Update current investment and with the share certificate details
+          $investment->money_received = 1;
+          $investment->save();
+          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK'));
+        }else{
+          $remainingAmount = $amount - (int)$balance->balance;
+          if((int)$balance->balance != 0){
+            $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
+              'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$balance->balance,'project_address'=>$project->wallet_address]
+            ]);
+            $responseTransact = $requestTransaction->getBody()->getContents();
+            $result = json_decode($responseTransact);
+          }
+          $audkProject = Project::findOrFail($this->audkID);
+          $amount = $remainingAmount;
+          $user->investments()->attach($audkProject, ['investment_id'=>$audkProject->investment->id,'amount'=>$remainingAmount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,'investment_completion'=>1,'pay_investment_id'=>$investor->id]);
+          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK','audkProject'));
+        }
+      }
         $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
         $this->dispatch(new SendReminderEmail($user,$project,$investor));
         $viewHtml = view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'))->render();
