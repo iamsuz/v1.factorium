@@ -46,6 +46,7 @@ class UserRegistrationsController extends Controller
     public function __construct() {
         $this->sendgrid = new Sendgrid();
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
+        $this->audkID = env('AUDK_PROJECT_ID',27);
     }
 
     /**

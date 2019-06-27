@@ -41,6 +41,7 @@ class UserAuthController extends Controller
     {
         $this->middleware('guest', ['only' => ['login','authenticate','authenticateCheck']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
+        $this->audkID = env('AUDK_PROJECT_ID',27);
     }
 
     /**
