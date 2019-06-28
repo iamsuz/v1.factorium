@@ -75,6 +75,12 @@ class OfferController extends Controller
       $request = new Request(array_except($request->all(),['password']));
       $project = Project::findOrFail($request->project_id);
       $min_amount_invest = $project->investment->minimum_accepted_amount;
+      $investments = InvestmentInvestor::where('project_id',$project->id)
+      ->where('accepted',1)
+      ->get();
+      $acceptedAmount = $investments->sum('amount');
+      $goalAmount = $project->investment->goal_amount;
+      $maxAmount = $goalAmount - $acceptedAmount;
       if((int)$request->amount_to_invest < (int)$min_amount_invest)
       {
         return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
@@ -82,6 +88,9 @@ class OfferController extends Controller
       if((int)$request->amount_to_invest % 5 != 0)
       {
         return redirect()->back()->withErrors(['Please enter amount in increments of $5 only']);
+      }
+      if((int)$maxAmount < (int)$request->amount_to_invest){
+        return redirect()->back()->withErrors(['The amount to invest must be less than '.$maxAmount]);
       }
       $validation_rules = array(
         'amount_to_invest'   => 'required|integer',

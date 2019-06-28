@@ -499,26 +499,27 @@ class ProjectsController extends Controller
         if(!$project->show_invest_now_button) {
             return redirect()->route('projects.show', $project);
         }
+        $investments = InvestmentInvestor::where('project_id',$project->id)
+                                        ->where('accepted',1)
+                                        ->get();
+        $acceptedAmount = $investments->sum('amount');
+        $goalAmount = $project->investment->goal_amount;
+        $maxAmount = $goalAmount - $acceptedAmount;
         // if(Auth::user()->verify_id != 2){
         //     return redirect()->route('users.verification', Auth::user())->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> As part of our commitment to meeting Australian Securities Law we are required to do some additional user verification to meet Anti Money Laundering and Counter Terror Financing requirements.<br> This wont take long, promise!</p>');
         // }
 
         if($project->investment){
             $user = Auth::user();
-            // $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>'0']);
-            // // $mailer->sendInterestNotificationInvestor($user, $project);
-            // // $mailer->sendInterestNotificationDeveloper($project, $user);
-            // // $mailer->sendInterestNotificationAdmin($project, $user);
-            // $this->dispatch(new SendInvestorNotificationEmail($user,$project));
-            // $this->dispatch(new SendReminderEmail($user,$project));
-            // $this->dispatch(new SendDeveloperNotificationEmail($user,$project));
             if($request->source == 'eoi'){
+                dd('EOI');
                 $user = User::find($request->uid);
                 $eoi = ProjectEOI::find($request->id);
-                return view('projects.offer', compact('project','color','action','projects_spv','user', 'eoi'));
+                return view('projects.offer', compact('project','color','action','projects_spv','user', 'eoi','maxAmount'));
             }
             if(!$project->eoi_button){
-                return view('projects.offer', compact('project','color','action','projects_spv','user'));
+
+                return view('projects.offer', compact('project','color','action','projects_spv','user','maxAmount'));
             } else{
                 return response()->view('errors.404', [], 404);
             }
