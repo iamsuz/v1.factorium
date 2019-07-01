@@ -933,7 +933,7 @@ class DashboardController extends Controller
                         ]);
                         $responseAudk = $requestAudk->getBody()->getContents();
                         $balanceAudk = json_decode($responseAudk);
-                        if($balanceAudk < $repurchaseAmount){
+                        if($balanceAudk->balance < $repurchaseAmount){
                             return redirect()->back()->withMessage('Your Project doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
                         }
                         $client = new \GuzzleHttp\Client();
