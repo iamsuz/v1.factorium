@@ -43,6 +43,7 @@ Route::get('/dashboard/projects', ['as'=>'dashboard.projects', 'uses'=>'Dashboar
 Route::get('/dashboard/thirdPartyListings', ['as'=>'dashboard.thirdPartyListings', 'uses'=>'DashboardController@thirdPartyListings']);
 Route::post('/dashboard/showThirdPartyProject', ['as'=>'dashboard.showThirdPartyProject', 'uses'=>'DashboardController@showThirdPartyProject']);
 Route::get('/dashboard/configurations', ['as'=>'dashboard.configurations', 'uses'=>'DashboardController@siteConfigurations']);
+Route::post('/dashboard/configurations/audkProject',['as'=>'configuration.updateAudkProject','uses'=>'SiteConfigurationsController@changeAUDKProject']);
 Route::post('/dashboard/configurations/uploadSiteLogo', ['as'=>'dashboard.configurations.uploadSiteLogo', 'uses'=>'DashboardController@uploadSiteLogo']);
 Route::post('/configuration/changecolor/footer/home',['as'=>'configuration.footercolor.home','uses'=>'PagesController@changeColorFooter']);
 Route::get('/dashboard/kyc/requests', ['as'=>'dashboard.kyc', 'uses'=>'DashboardController@kycRequests']);

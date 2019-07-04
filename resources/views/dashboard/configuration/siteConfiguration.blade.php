@@ -305,6 +305,29 @@ Configuration | Dashboard | @parent
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="thumbnail text-center">
+                                @if (Session::has('message'))
+                                @if(Session::get('action') == 'selectAUDKProject')
+                                <div style="background-color: #c9ffd5;color: #027039;width: 100%;padding: 1px;">
+                                    <h5>{!! Session::get('message') !!}</h5>
+                                </div>
+                                @endif
+                                @endif
+                                <div class="caption">
+                                    <h3><b>Default Token</b></h3>
+                                    <p><small>Select the project for default <br>token.  </small></p>
+                                    <hr>
+                                    <p>
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary btn-sm selectAUDKProject-btn " style="cursor: pointer;">
+                                                <strong>Select Project </strong>
+                                            </span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -832,7 +855,40 @@ Configuration | Dashboard | @parent
         </div>
     </div>
 </div>
+<!-- Modal for Changing Konkrete Bonus Allocation -->
+<div class="modal fade" id="selectAUDKProject" role="dialog">
+    <div class="modal-dialog" style="margin-top: 10%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change Konkrete Bonus Allocation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center" id="modal_body_container">
+                    <div class="col-md-10 col-md-offset-1">
+                        {!! Form::open(array('route'=>['configuration.updateAudkProject'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+                        <h5><i><small>Select a project to make default AUDK tokens for all transactions on site.</small></i></h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="tokenProject" style="text-align: left;" class="pull-left">Select Project</label>
+                                <select class="form-control" id="tokenProject" required="required" name="audkProject">
+                                    @foreach($projects as $project)
+                                    <option value="{{$project->id}}" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id === $project->id) selected @endif >{{$project->title}} </option>
+                                    @endforeach
+                                </select>
+                                <br>
+                            </div>
+                        </div>
 
+                        {!! Form::submit('Select default Project for AUDK', array('class'=>'btn btn-primary col-md-6 col-md-offset-3', 'tabindex'=>'7', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </div>
 @stop
@@ -1015,6 +1071,7 @@ Configuration | Dashboard | @parent
         editLegalDetails();
         changeKonkreteBonusAllocation();
         changeSendgridAPIKey();
+        selectAUDKProject();
     });
 
 function updateCoords(coords, w, h, origWidth, origHeight){
@@ -1129,6 +1186,16 @@ function updateCoords(coords, w, h, origWidth, origHeight){
                 'backdrop': false,
             });
             $('#daily_login_bonus').select();
+        });
+    }
+
+    function selectAUDKProject() {
+         $('.selectAUDKProject-btn').click(function(){
+            $('#selectAUDKProject').modal({
+                'show': true,
+                'backdrop': false,
+            });
+            // $('#daily_login_bonus').select();
         });
     }
 

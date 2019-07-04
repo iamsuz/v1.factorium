@@ -577,9 +577,10 @@ class DashboardController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $siteconfiguration = SiteConfiguration::where('project_site',url())->first();
+        $projects = Project::where('active',1)->where('is_wallet_tokenized',1)->where('use_tokens',1)->get();
         $mail_setting = $siteconfiguration->mailSetting;
         $siteConfigurationHelper = SiteConfigurationHelper::getConfigurationAttr();
-        return view('dashboard.configuration.siteConfiguration',compact('color','siteconfiguration','mail_setting', 'siteConfigurationHelper'));
+        return view('dashboard.configuration.siteConfiguration',compact('color','siteconfiguration','mail_setting', 'siteConfigurationHelper','projects'));
     }
 
     public function investmentMoneyReceived(Request $request, AppMailer $mailer, $investment_id)

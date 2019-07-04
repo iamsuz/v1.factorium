@@ -1614,4 +1614,11 @@ class SiteConfigurationsController extends Controller
         }
         return redirect()->back()->withMessage('Thanks for your vote!');
     }
+    public function changeAUDKProject(Request $request)
+    {
+        $siteConfig = SiteConfiguration::where('project_site', url())->first();
+        $siteConfig->audk_default_project_id = $request->audkProject;
+        $siteConfig->save();
+        return redirect()->back()->withMessage('You have successfully added a default AUDK project');
+    }
 }
