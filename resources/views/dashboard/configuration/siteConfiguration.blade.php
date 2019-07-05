@@ -862,13 +862,13 @@ Configuration | Dashboard | @parent
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" id="modal_close_btn" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Change Konkrete Bonus Allocation</h4>
+                <h4 class="modal-title">Change payment token project</h4>
             </div>
             <div class="modal-body">
                 <div class="row text-center" id="modal_body_container">
                     <div class="col-md-10 col-md-offset-1">
                         {!! Form::open(array('route'=>['configuration.updateAudkProject'], 'method'=>'POST', 'class'=>'form-horizontal', 'role'=>'form')) !!}
-                        <h5><i><small>Select a project to make default AUDK tokens for all transactions on site.</small></i></h5>
+                        <h5><i><small>Select a project to make payment tokens for all transactions on site.</small></i></h5>
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="tokenProject" style="text-align: left;" class="pull-left">Select Project</label>
@@ -881,7 +881,7 @@ Configuration | Dashboard | @parent
                             </div>
                         </div>
 
-                        {!! Form::submit('Select default Project for AUDK', array('class'=>'btn btn-primary col-md-6 col-md-offset-3', 'tabindex'=>'7', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
+                        {!! Form::submit('Select', array('class'=>'btn btn-primary col-md-6 col-md-offset-3', 'tabindex'=>'7', 'style'=>'margin-bottom: 20px; margin-top: 10px;')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>
