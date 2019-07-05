@@ -38,7 +38,11 @@ class UsersController extends Controller
         $this->middleware('auth', ['except' => ['create', 'login', 'store', 'authenticate']]);
         $this->middleware('guest', ['only' => ['create', 'login']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
-        $this->audkID = env('AUDK_PROJECT_ID',27);
+        if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
+            $this->audkID = SiteConfiguration::where('project_site', url())->first()->audk_default_project_id;
+        }else{
+            $this->audkID = env('AUDK_PROJECT_ID',27);
+        }
     }
     /**
      * Display a listing of the resource.

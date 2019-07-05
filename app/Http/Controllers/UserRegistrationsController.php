@@ -32,6 +32,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Response;
 use ReCaptcha\ReCaptcha;
 use App\Services\Sendgrid;
+use App\SiteConfiguration;
 
 class UserRegistrationsController extends Controller
 {
@@ -46,7 +47,11 @@ class UserRegistrationsController extends Controller
     public function __construct() {
         $this->sendgrid = new Sendgrid();
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
-        $this->audkID = env('AUDK_PROJECT_ID',27);
+        if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
+            $this->audkID = SiteConfiguration::where('project_site', url())->first()->audk_default_project_id;
+        }else{
+            $this->audkID = env('AUDK_PROJECT_ID',27);
+        }
     }
 
     /**

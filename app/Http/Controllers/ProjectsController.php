@@ -45,6 +45,11 @@ class ProjectsController extends Controller
     {
         $this->middleware('auth', ['except' => ['index', 'show','redirectingfromproject', 'gform', 'gformRedirects','showEoiInterest','showInterest']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
+        if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
+            $this->audkID = SiteConfiguration::where('project_site', url())->first()->audk_default_project_id;
+        }else{
+            $this->audkID = env('AUDK_PROJECT_ID',27);
+        }
     }
 
     /**

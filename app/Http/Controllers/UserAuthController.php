@@ -30,6 +30,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Credit;
 use App\Helpers\SiteConfigurationHelper;
+use App\SiteConfiguration;
 
 
 class UserAuthController extends Controller
@@ -41,7 +42,11 @@ class UserAuthController extends Controller
     {
         $this->middleware('guest', ['only' => ['login','authenticate','authenticateCheck']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
-        $this->audkID = env('AUDK_PROJECT_ID',27);
+        if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
+            $this->audkID = SiteConfiguration::where('project_site', url())->first()->audk_default_project_id;
+        }else{
+            $this->audkID = env('AUDK_PROJECT_ID',27);
+        }
     }
 
     /**
