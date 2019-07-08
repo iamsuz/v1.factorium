@@ -1789,4 +1789,67 @@ class DashboardController extends Controller
         }
         return view('dashboard.users.invoiceCertificate',compact('investment','color','user','project','investing','shareEnd','shareStart','result'));
     }
+    public function tokenize(Request $request)
+    {
+        # code...
+        $validator = Validator::make($request->all(), [
+            'number_of_tokens' => 'required|integer|min:100',
+            'token_symbol' => 'required|alpha|between:3,4'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        if($request->project_id) {
+
+            // Valid request
+            $projectId = (int)$request->project_id;
+            $numberOfTokens = $request->number_of_tokens;
+            $tokenSymbol = $request->token_symbol;
+
+            $projectDetails = Project::findOrFail($projectId);
+            $projectHash = $projectDetails->project_site;
+
+            // $response =  $this->konkreteClient->curlKonkrete('POST', '/api/v1/contracts/deploy', [], [
+            //     'project_id' => $projectId,
+            //     'project_name' => $projectHash,
+            //     'token_symbol' => $tokenSymbol,
+            //     'number_of_tokens' =>$numberOfTokens
+            // ]);
+            $client = new \GuzzleHttp\Client();
+            $request = $client->request('POST',$this->uri.'/contract/deploy',[
+                'query'=>['project_id'=> $projectId,'project_name'=>$projectHash,'token_symbol'=>$tokenSymbol,'number_of_tokens'=>$numberOfTokens]
+            ]);
+            $response = $request->getBody()->getContents();
+            $balance = json_decode($response);
+
+            $responseResult = json_decode($response);
+
+            if($responseResult->status) {
+
+                // Update contract address in DB
+                $projectDetails->contract_address = $responseResult->data->contract_address;
+                $projectDetails->save();
+
+                return response([
+                    'status' => true,
+                    'message' => 'Contract deployed successfully! Please verify the contract once page is reloaded!',
+                    'data' => $responseResult->data
+                ], 200);
+
+            } else {
+                return response([
+                    'status' => false,
+                    'message' => $responseResult->message
+                ], 200);
+            }
+
+        } else {
+            return response()->status(400);
+        }
+    }
 }

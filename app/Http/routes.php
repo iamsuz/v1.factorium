@@ -321,12 +321,12 @@ Route::post('/dashboard/market/order',['as'=>'dashboard.market.accept','uses'=>'
 Route::post('/dashboard/market/moneyReceived',['as'=>'dashboard.market.money','uses'=>'DashboardController@marketMoneyReceived']);
 
 Route::post('/project/progress/transact',['as'=>'project.progress.transact','uses'=>'PagesController@projectProgressTransact']);
-
+Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'DashboardController@tokenize' ]);
 /* Konkrete Routes */
 
 Route::group(['prefix' => 'konkrete'], function () {
 	Route::group(['middleware' => 'master'], function() {
-		Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'KonkreteController@tokenize' ]);
+		// Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'KonkreteController@tokenize' ]);
 		Route::get('/dashboard/project/{project_id}/loadWallet', [ 'as' => 'konkrete.loadWallet', 'uses' => 'KonkreteController@loadProjectWallet' ]);
 		Route::post('/dashboard/project/verify', [ 'as' => 'konkrete.verify', 'uses' => 'KonkreteController@verifyContract' ]);
 		Route::post('/dashboard/project/createWallet', [ 'as' => 'konkrete.createWallet', 'uses' => 'KonkreteController@createWallet']);

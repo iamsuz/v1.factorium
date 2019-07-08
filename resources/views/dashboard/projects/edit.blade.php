@@ -2299,7 +2299,9 @@ Edit {{$project->title}} | Dashboard | @parent
 		projectTokenization();
 		loadProjectWallet();
 		createWallet();
+		@if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)
 		issueTokens();
+		@endif
 	});
 
 function uploadProjectSPVLogo(){
