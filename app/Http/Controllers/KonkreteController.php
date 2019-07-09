@@ -241,7 +241,7 @@ class KonkreteController extends Controller
 
     /**
      * Verify smart contract
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
@@ -292,7 +292,7 @@ class KonkreteController extends Controller
 
     /**
      * Get user token balance for given project
-     * 
+     *
      * @param walletAddress string
      * @param projectId int
      * @return \Illuminate\Http\Response

@@ -256,6 +256,12 @@ class DashboardController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $project = Project::findOrFail($project_id);
+        $siteConfig = SiteConfiguration::where('project_site', url())->first();
+        if(isset($siteConfig->audk_default_project_id)){
+            $projectPayToken = Project::findOrFail($siteConfig->audk_default_project_id)->token_symbol;
+        }else{
+            $projectPayToken = NULL;
+        }
         if($project->project_site != url()){
             return redirect()->route('dashboard.projects')->withMessage('<p class="alert alert-warning text-center">Access Denied</p>');
         }
@@ -284,7 +290,7 @@ class DashboardController extends Controller
             $balance = json_decode($response);
         }
 
-        return view('dashboard.projects.edit', compact('project', 'investments','color', 'contract','balance'));
+        return view('dashboard.projects.edit', compact('project', 'investments','color', 'contract','balance','projectPayToken'));
     }
 
     public function activateUser($user_id)
@@ -1833,6 +1839,7 @@ class DashboardController extends Controller
 
                 // Update contract address in DB
                 $projectDetails->contract_address = $responseResult->data->contract_address;
+                $projectDetails->token_symbol = $tokenSymbol;
                 $projectDetails->save();
 
                 return response([

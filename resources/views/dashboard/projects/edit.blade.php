@@ -166,7 +166,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="show_interested_to_buy_checkbox" value="0"> Off
 										</label>
 									</div>
-									<h3>Use AUDK Tokens</h3>
+									<h3>Use @if($projectPayToken) {{$projectPayToken}} @else AUDK @endif Tokens</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->use_tokens == 1) active @endif">
 											<input type="radio" name="use_tokens" value="1"> On
