@@ -258,7 +258,7 @@ class DashboardController extends Controller
         $project = Project::findOrFail($project_id);
         $siteConfig = SiteConfiguration::where('project_site', url())->first();
         if(isset($siteConfig->audk_default_project_id)){
-            $projectPayToken = Project::findOrFail($siteConfig->audk_default_project_id)->token_symbol;
+            $projectPayToken = Project::findOrFail($siteConfig->audk_default_project_id);
         }else{
             $projectPayToken = NULL;
         }

@@ -166,8 +166,12 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="show_interested_to_buy_checkbox" value="0"> Off
 										</label>
 									</div>
-									<h3>Use @if($projectPayToken) {{$projectPayToken}} @else AUDK @endif Tokens</h3>
-									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+									<h3>Use @if($projectPayToken->token_symbol) {{$projectPayToken->token_symbol}} @else AUDK @endif Tokens</h3>
+									@if($projectPayToken->id === $project->id || !$project->is_wallet_tokenized)
+									<br>
+									<p><i>disabled</i> &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="This feature has been disabled because either this project has not been tokenized yet or it is a default payment token!"><i class="fa fa-question-circle"></i></a></p>
+									@else
+									<div class="btn-group project-progress-3way-switch disabled" data-toggle="buttons">
 										<label class="btn btn-default @if($project->use_tokens == 1) active @endif">
 											<input type="radio" name="use_tokens" value="1"> On
 										</label>
@@ -175,6 +179,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="use_tokens" value="0"> Off
 										</label>
 									</div>
+									@endif
 									<br><br><br>
 									<div class="row">
 										<div class="form-group">

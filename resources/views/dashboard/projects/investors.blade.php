@@ -46,7 +46,7 @@
 							</small>
 						</address>
 					</h3>
-					@if($balanceAudk) <h4 class="text-center">AUDK Balance: {{$balanceAudk->balance}}</h4> @endif
+					@if($balanceAudk) <h4 class="text-center">@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} @else AUDK @endif Balance: {{$balanceAudk->balance}}</h4> @endif
 				</div>
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">

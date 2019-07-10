@@ -1618,6 +1618,7 @@ class SiteConfigurationsController extends Controller
     {
         $siteConfig = SiteConfiguration::where('project_site', url())->first();
         $siteConfig->audk_default_project_id = $request->audkProject;
+        $siteConfig->token_symbol = Project::find($request->audkProject)->token_symbol;
         $siteConfig->save();
         return redirect()->back()->withMessage('You have successfully added a default Token Payment project');
     }
