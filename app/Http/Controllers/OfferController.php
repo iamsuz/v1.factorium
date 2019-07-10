@@ -25,6 +25,7 @@ use Intervention\Image\Facades\Image;
 use App\Jobs\SendInvestorNotificationEmail;
 use App\Jobs\SendDeveloperNotificationEmail;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\SiteConfiguration;
 
 
 class OfferController extends Controller
