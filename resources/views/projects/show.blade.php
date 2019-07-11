@@ -1854,7 +1854,7 @@
 								@if($project_progs->is_voting)
 								<span class="text-center" style="">{{$project_progs->votes()->sum('value')}}</span>
 								<br><br>
-								<a href="{{route('configuration.downvote', [$project_progs->id])}}">
+								<a href="{{route('configuration.downvote', [$project_progs->id])}}" id="downVote">
 									<span class="downvote downvotebtn @if(!Auth::guest() && Auth::user()->votes && Auth::user()->votes->value === -1) on @endif" data-toggle="tooltip" data-placement="top" title="you are putting votes against this proposal">
 									</span>
 								</a>
@@ -1911,7 +1911,7 @@
 									<div class="form-group <?php if($errors->first('request_funds')){echo 'has-error';}?>">
 										<div class="col-sm-12 <?php if($errors->first('request_funds')){echo 'has-error';}?>">
 											{{-- {!! Form::textarea('progress_description', null, array('placeholder'=>'Description', 'class'=>'form-control', 'title'=>'You can use html and css here for basic formatting of text', 'tabindex'=>'1')) !!} --}}
-											<input type="integer" name="request_funds" placeholder="Request Funds" class="form-control">
+											<input type="integer" name="request_funds" placeholder="Amount" class="form-control">
 											{!! $errors->first('request_funds', '<small class="text-danger">:message</small>') !!}
 										</div>
 
@@ -1939,7 +1939,7 @@
 									<br>
 									<div class="row" id="percent" style="display: none;">
 										<div class="col-sm-12 <?php if($errors->first('percent')){echo 'has-error';}?>">
-											{!! Form::text('percent', null, array('placeholder'=>'Percent', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+											{!! Form::text('percent', null, array('placeholder'=>'Percentage veto votes to block transaction', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
 											{!! $errors->first('percent', '<small class="text-danger">:message</small>') !!}
 										</div>
 									</div>
@@ -2077,7 +2077,8 @@
 			$('#'+id+'').countdown(date,function (event) {
 				console.log(event.type);
 				if(event.type === 'finish'){
-					updateProjectProg(id)
+					updateProjectProg(id);
+					$('#downVote').css({'pointer-events':'none','cursor': 'default'});
 				}
 				$(this).html(event.strftime('%D days %H:%M:%S'));
 			})
