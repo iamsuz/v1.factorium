@@ -64,7 +64,6 @@ class PagesController extends Controller
         $geoIpArray = [];
         $investments = InvestmentInvestor::all();
         $role = Role::findOrFail(3);
-        $investors = $role->users->count();
         $color = Color::all();
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';
@@ -127,7 +126,7 @@ class PagesController extends Controller
 
         $testimonials = Testimonial::where('project_site', url())->get();
         $isiosDevice = stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'iphone');
-        return view('pages.home', compact('geoIpArray', 'investments', 'investors', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings'));
     }
 
     /**
