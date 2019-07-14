@@ -63,7 +63,7 @@ class PagesController extends Controller
         $url = url();
         $geoIpArray = [];
         $investments = InvestmentInvestor::all();
-        $role = Role::findOrFail(3);
+        // $role = Role::findOrFail(3);
         $color = Color::all();
         $color = $color->where('project_site',url())->first();
         $currentUserRole = '';

@@ -1842,11 +1842,11 @@ Edit {{$project->title}} | Dashboard | @parent
 																		</p>
 																		<p>
 																			<label>Total supply: </label><br>
-																			<span>{{$contract->totalSupply}}</span>
+																			<span>{{number_format($contract->totalSupply)}}</span>
 																		</p>
 																		<p>
 																			<label>Available supply: </label><br>
-																			<span style="font-size: 20px;">{{$balance->balance}}</span>
+																			<span style="font-size: 20px;">{{number_format($balance->balance)}}</span>
 																		</p>
 																	</small>
 																		@if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)
