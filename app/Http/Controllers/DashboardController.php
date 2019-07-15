@@ -241,7 +241,7 @@ class DashboardController extends Controller
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
         $balanceAudk = false;
-        if($project->is_wallet_tokenized){
+        if($project->is_wallet_tokenized && $project->use_tokens){
             $client = new \GuzzleHttp\Client();
             $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
                 'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
