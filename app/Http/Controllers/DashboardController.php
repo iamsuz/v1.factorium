@@ -260,7 +260,7 @@ class DashboardController extends Controller
         if(isset($siteConfig->audk_default_project_id)){
             $projectPayToken = Project::findOrFail($siteConfig->audk_default_project_id);
         }else{
-            $projectPayToken = NULL;
+            $projectPayToken = false;
         }
         if($project->project_site != url()){
             return redirect()->route('dashboard.projects')->withMessage('<p class="alert alert-warning text-center">Access Denied</p>');
