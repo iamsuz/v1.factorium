@@ -579,10 +579,13 @@
 									href="javascript:void(0);"
 									@endif
 									@else href="{{route('projects.show', [$project])}}"
-									@endif name="project-link">
+									@endif name="project-link" style="display: none;">
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
+											<div class="" style="padding: 10px 10px 0px 10px;">
+												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
 												<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
@@ -2646,7 +2649,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 		function editProjectThumbnailText(){
 			$('.show-project-thumbnail-text-edit-box').click(function(){
-				$('.project-thumbnail-txt').replaceWith('<input type="text" name="project_thumbnail_text" class="form-control" placeholder="Enter the text here" required><br><button type="Submit" class="btn btn-primary col-md-offset-10">Save</button>');
+				$('.project-thumbnail-txt').replaceWith('<input type="text" name="project_thumbnail_text" class="form-control" placeholder="Enter the text here" required ><br><button type="Submit" class="btn btn-primary col-md-offset-10">Save</button>');
 			});
 		}
 
