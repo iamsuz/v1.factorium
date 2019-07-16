@@ -90,6 +90,7 @@ class ProjectsController extends Controller
 
         //TODO::add transation
         $request['project_site'] = url();
+        $request['project_thumbnail_text'] = "Buy this invoice at a discount and make a return when the invoice is paid";
         $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
         $response = \Geocoder::geocode('json', $param);
         if(json_decode($response)->status != 'ZERO_RESULTS') {

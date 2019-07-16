@@ -241,7 +241,7 @@ class DashboardController extends Controller
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
         $balanceAudk = false;
-        if($project->is_wallet_tokenized){
+        if($project->is_wallet_tokenized && $project->use_tokens){
             $client = new \GuzzleHttp\Client();
             $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
                 'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
@@ -260,7 +260,7 @@ class DashboardController extends Controller
         if(isset($siteConfig->audk_default_project_id)){
             $projectPayToken = Project::findOrFail($siteConfig->audk_default_project_id);
         }else{
-            $projectPayToken = NULL;
+            $projectPayToken = false;
         }
         if($project->project_site != url()){
             return redirect()->route('dashboard.projects')->withMessage('<p class="alert alert-warning text-center">Access Denied</p>');

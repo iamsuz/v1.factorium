@@ -144,16 +144,18 @@ Offer Doc
 									<div class="row" id="section-1">
 										<div class="col-md-12">
 											<div>
-												<label class="form-label">Project Name</label><br>
-												<input class="form-control" type="text" name="project_spv_name" placeholder="Project Name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" disabled @endif >
+												<label class="form-label">Receivable Name</label><br>
+												<input class="form-control" type="text" name="project_spv_name" placeholder="Receivable name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" disabled @endif >
 												{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
 												<br>
-												<p>
-													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif.
+												<p><small>
+													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form.
+													</small>
+													{{-- This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. --}}
 												</p>
 												<label>I/We apply for *</label>
-												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif">
-												@if($project->share_vs_unit == 1)
+												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required value="@if(isset($eoi)) {{$eoi->investment_amount}} @endif"><br>
+												{{-- @if($project->share_vs_unit == 1)
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@elseif($project->share_vs_unit == 2)
 												<h5>Number of Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
@@ -161,9 +163,9 @@ Offer Doc
 												<h5>Number of Ordinary Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@else
 												<h5>Number of Units at $1 per Unit or such lesser number of Units which may be allocated to me/us</h5>
-												@endif
-												<label>I/We lodge full Application Money</label>
-												<input type="text" name="apply_for" class="form-control" placeholder="$5000" value="A$ @if(isset($eoi)) {{number_format(round($eoi->investment_amount, 2))}} @else 0.00 @endif" disabled="" style="width: 60%; background-color: #fff" id="application_money">
+												@endif --}}
+												<label style="display: none;">I/We lodge full Application Money</label>
+												<input type="text" name="apply_for" class="form-control hidden" placeholder="$5000" value="A$ @if(isset($eoi)) {{number_format(round($eoi->investment_amount, 2))}} @else 0.00 @endif" disabled="" style="width: 60%; background-color: #fff" id="application_money">
 												<input type="text" name="project_id" @if($projects_spv) value="{{$projects_spv->project_id}}" @endif hidden >
 
 												{{-- <div class="row">
@@ -174,8 +176,7 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-									<br><br>
-									<div class="row">
+									<div class="row hidden">
 										<div class="col-md-12">
 											<div>
 												<h4 class="aml-requirements-link cursor-pointer">AML/CTF requirements &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></h4>
@@ -239,13 +240,11 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-									<br><br>
 									@if(!Auth::guest() && !$user->idDoc)
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
-												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
-												<br>
+												<h5 class="hidden">Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
 												<h4>Are you Investing as</h4>
 												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
 												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
@@ -299,8 +298,7 @@ Offer Doc
 									<div class="row " id="section-2">
 										<div class="col-md-12">
 											<div >
-												<h5>Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
-												<br>
+												<h5 class="hidden">Individual/Joint applications - refer to naming standards for correct forms of registrable title(s)</h5>
 												<h4>Are you Investing as</h4>
 												<input type="radio" name="investing_as" value="Individual Investor" checked> Individual Investor<br>
 												<input type="radio" name="investing_as" value="Joint Investor" > Joint Investor<br>
@@ -581,8 +579,9 @@ Offer Doc
 									<div class="row " id="section-8">
 										<div class="col-md-12">
 											<div>
-												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
-												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
+												<input type="checkbox" name="confirm" checked>	I/We confirm that I/We have not been provided Personal or General Financial Advice by Konkrete Distributed Registries Ltd (or any of its employees) which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to purchase the receivable and will seek independent adviser from my financial adviser if needed. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and acknowledge that neither Konkrete Distributed Registries Ltd nor any of its employees guarantees the performance of any offers, the payment of the receivable. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes.
+												{{-- I/We confirm that I/We have not been provided Personal or General Financial Advice by Tech Baron PTY LTD which provides Technology services as platform operator. I/We have relied only on the contents of this @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif in deciding to invest and will seek independent adviser from my financial adviser if needed.
+												I/we as Applicant declare (i) that I/we have read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, (ii) that if an electronic copy of the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif has been used, that I/we obtained the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif, not just the application form; and (iii) that I/we have not obtained any personal financial advice from Tech Baron Pty Ltd or any of its employees. I/we agree to be bound by the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif (as amended from time to time) and acknowledge that neither Tech Baron Pty Ltd nor any of its employees guarantees the performance of any offers, the payment of distributions or the repayment of capital. I/we acknowledge that any investment is subject to investment risk (as detailed in the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif). I/we confirm that we have provided accurate and complete documentation requested for AML/CTF investor identification and verification purposes. --}}
 
 												@if($project->add_additional_form_content)
 												<p style="margin-top: 0.3em;">{{$project->add_additional_form_content}}</p>

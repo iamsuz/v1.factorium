@@ -166,8 +166,8 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="show_interested_to_buy_checkbox" value="0"> Off
 										</label>
 									</div>
-									<h3>Use @if($projectPayToken->token_symbol) {{$projectPayToken->token_symbol}} @else AUDK @endif Tokens</h3>
-									@if($projectPayToken->id === $project->id || !$project->is_wallet_tokenized)
+									<h3>Use @if(isset($projectPayToken))@if($projectPayToken && $projectPayToken->token_symbol) {{$projectPayToken->token_symbol}} @else AUDK @endif @endif Tokens</h3>
+									@if(isset($projectPayToken)) @if($projectPayToken && $projectPayToken->id === $project->id || !$project->is_wallet_tokenized)
 									<br>
 									<p><i>disabled</i> &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="This feature has been disabled because either this project has not been tokenized yet or it is a default payment token!"><i class="fa fa-question-circle"></i></a></p>
 									@else
@@ -179,6 +179,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="use_tokens" value="0"> Off
 										</label>
 									</div>
+									@endif
 									@endif
 									<br><br><br>
 									<div class="row">
@@ -1842,11 +1843,11 @@ Edit {{$project->title}} | Dashboard | @parent
 																		</p>
 																		<p>
 																			<label>Total supply: </label><br>
-																			<span>{{$contract->totalSupply}}</span>
+																			<span>{{number_format($contract->totalSupply)}}</span>
 																		</p>
 																		<p>
 																			<label>Available supply: </label><br>
-																			<span style="font-size: 20px;">{{$balance->balance}}</span>
+																			<span style="font-size: 20px;">{{number_format($balance->balance)}}</span>
 																		</p>
 																	</small>
 																		@if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)

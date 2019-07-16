@@ -583,10 +583,13 @@
 									href="javascript:void(0);"
 									@endif
 									@else href="{{route('projects.show', [$project])}}"
-									@endif name="project-link">
+									@endif name="project-link" style="display: none;">
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
+											<div class="" style="padding: 20px 20px 0px 20px;">
+												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
 												<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
@@ -646,9 +649,9 @@
 													<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
 												</div>
 												<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
-													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Min Invest</small></small></h4>
+													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 												</div>
-												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Days</small></small></h4>
 												</div>
 												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->projected_returns}}%@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
 												</div>
@@ -706,11 +709,14 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}"
+									@else href="{{route('projects.show', [$project])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+											<div class="" style="padding: 20px 20px 0px 20px;">
+												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
 												<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
@@ -770,9 +776,9 @@
 													<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
 												</div>
 												<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s" style="margin: 0 0; width: 23%">
-													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Min Invest</small></small></h4>
+													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 												</div>
-												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; width: 15%; padding: 0px 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; width: 15%; padding: 0px 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Days</small></small></h4>
 												</div>
 												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000; padding: 0 3%;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment){{$project->investment->projected_returns}}%@endif</span><small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
 												</div>
@@ -829,11 +835,14 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}"
+									@else href="{{route('projects.show', [$project])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+											<div class="" style="padding: 20px 20px 0px 20px;">
+												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
 												<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
@@ -892,10 +901,10 @@
 												<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
 											</div>
 											<div class="col-xs-3 col-sm-3 col-md-2 listing1" data-wow-duration="1.5s" data-wow-delay="0.5s">
-												<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Min Invest</small></small></h4>
+												<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 											</div>
 											<div class="col-xs-2 col-sm-2 col-md-2 listings2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" >
-												<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+												<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->hold_period}}@endif<small><small><br>Days</small></small></h4>
 											</div>
 											<div class="col-xs-2 col-sm-2 col-md-1 listings3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000;">
 												<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->projected_returns}}%@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
@@ -966,9 +975,9 @@
 														<h4 class="text-left first_color listing-heading" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$third_party_listing->project->title}}</b></h4>
 													</div>
 													<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
-														<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+														<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Asking Price</small></small></h4>
 													</div>
-													<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+													<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Days</small></small></h4>
 													</div>
 													<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; padding: 0px 0px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->projected_returns}}%@endif<small><small><br>@if($config=$third_party_listing->project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
 													</div>
@@ -1070,9 +1079,9 @@
 													<h4 class="text-left first_color listing-heading" style="color:#282a73;margin-top:1px;margin-bottom:1px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$third_party_listing->project->title}}</b></h4>
 												</div>
 												<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s" style="margin: 0 0; width: 22%;">
-													<h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+													<h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Asking Price</small></small></h4>
 												</div>
-												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 18%; padding: 0px 0px;" ><h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 18%; padding: 0px 0px;" ><h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Days</small></small></h4>
 												</div>
 												<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 21%; padding: 0px 0px;"><h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;"><span style="white-space: nowrap;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->projected_returns}}%@endif</span><small><small><br>@if($config=$third_party_listing->project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
 												</div>
@@ -1175,10 +1184,10 @@
 													<h4 class="text-left first_color listing-heading" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:20px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$third_party_listing->project->title}}</b></h4>
 												</div>
 												<div class="col-xs-3 col-sm-3 col-md-2 listing1" data-wow-duration="1.5s" data-wow-delay="0.5s">
-													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Min Invest</small></small></h4>
+													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment) ${{(int)$third_party_listing->project->investment->minimum_accepted_amount}} @endif<small><small><br>Asking Price</small></small></h4>
 												</div>
 												<div class="col-xs-2 col-sm-2 col-md-2 listings2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 12%;" >
-													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Months</small></small></h4>
+													<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->hold_period}}@endif<small><small><br>Days</small></small></h4>
 												</div>
 												<div class="col-xs-2 col-sm-2 col-md-1 listings3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="border-left: thin solid #000; width: 20%">
 													<h4 class="first_color text-center" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:20px;">@if($third_party_listing->project->investment){{$third_party_listing->project->investment->projected_returns}}%@endif<small><small><br>@if($config=$third_party_listing->project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Target Return @endif @else Target Return @endif</small></small></h4>
@@ -2677,7 +2686,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 		function editProjectThumbnailText(){
 			$('.show-project-thumbnail-text-edit-box').click(function(){
-				$('.project-thumbnail-txt').replaceWith('<input type="text" name="project_thumbnail_text" class="form-control" placeholder="Enter the text here" required><br><button type="Submit" class="btn btn-primary col-md-offset-10">Save</button>');
+				$('.project-thumbnail-txt').replaceWith('<input type="text" name="project_thumbnail_text" class="form-control" placeholder="Enter the text here" required ><br><button type="Submit" class="btn btn-primary col-md-offset-10">Save</button>');
 			});
 		}
 
