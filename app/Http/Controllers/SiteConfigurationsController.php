@@ -1622,4 +1622,22 @@ class SiteConfigurationsController extends Controller
         $siteConfig->save();
         return redirect()->back()->withMessage('You have successfully added a default Token Payment project');
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function changeHomePageFoldColor(Request $request)
+    {
+        $this->validate($request, [
+            'fold_text_color' => 'required'
+        ]);
+
+        Color::where('project_site', url())
+            ->update([
+                'fold_text_color' => $request->fold_text_color
+            ]);
+
+        return $resultArray = array('status' => 1, 'message' => 'Successfully Updated color');
+    }
 }

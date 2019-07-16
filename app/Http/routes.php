@@ -46,6 +46,7 @@ Route::get('/dashboard/configurations', ['as'=>'dashboard.configurations', 'uses
 Route::post('/dashboard/configurations/audkProject',['as'=>'configuration.updateAudkProject','uses'=>'SiteConfigurationsController@changeAUDKProject']);
 Route::post('/dashboard/configurations/uploadSiteLogo', ['as'=>'dashboard.configurations.uploadSiteLogo', 'uses'=>'DashboardController@uploadSiteLogo']);
 Route::post('/configuration/changecolor/footer/home',['as'=>'configuration.footercolor.home','uses'=>'PagesController@changeColorFooter']);
+Route::post('/configuration/changecolor/fold/home',['as'=>'configuration.foldcolor.home','uses'=>'SiteConfigurationsController@changeHomePageFoldColor']);
 Route::get('/dashboard/kyc/requests', ['as'=>'dashboard.kyc', 'uses'=>'DashboardController@kycRequests']);
 
 Route::get('/dashboard/getUsers', ['as'=>'dashboard.getUsers', 'uses'=>'DashboardController@getDashboardUsers']);

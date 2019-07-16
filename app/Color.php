@@ -11,7 +11,7 @@ class Color extends Model
      *
      * @var array
      */
-    protected $fillable = ['nav_footer_color', 'heading_color'];
+    protected $fillable = ['nav_footer_color', 'heading_color', 'fold_text_color'];
 
     /**
      * belongs to relationship with users

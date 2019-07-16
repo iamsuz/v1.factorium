@@ -188,20 +188,20 @@
 					</div>
 					<div id="navbar" class="collapse navbar-collapse navbar-right" style="margin-top:10px;">
 						<ul class="nav navbar-nav">
-						 <li class="active nav-item"><a href="{{route('home')}}/#promo" data-href="{{route('home')}}/#promo" class="scrollto hide scroll-links reference-link-with-js" id="nav_home">Home</a></li>
-						 <li class="nav-item"><a href="{{route('home')}}/#how-it-works" data-href="{{route('home')}}/#how-it-works" class="scrollto scroll-links reference-link-with-js">How it works</a></li>
-						 <li class="nav-item"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js">Investments</a></li>
+						 <li class="active nav-item"><a href="{{route('home')}}/#promo" data-href="{{route('home')}}/#promo" class="scrollto hide scroll-links reference-link-with-js fold-text-color" id="nav_home">Home</a></li>
+						 <li class="nav-item"><a href="{{route('home')}}/#how-it-works" data-href="{{route('home')}}/#how-it-works" class="scrollto scroll-links reference-link-with-js fold-text-color">How it works</a></li>
+						 <li class="nav-item"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js fold-text-color">Investments</a></li>
 						 @if($siteConfiguration->show_funding_options != '')
-						 <li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
+						 <li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js fold-text-color">Funding</a></li>
 						 @endif
-						 <li class="nav-item"><a href="/pages/team">About us</a></li>
+						 <li class="nav-item"><a href="/pages/team" class="fold-text-color">About us</a></li>
 						 <!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
 						 @if (Auth::guest())
-						 <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
-						 <li class="nav-item">{!! Html::linkRoute('users.login', 'Sign in') !!}</li>
+						 <li class="nav-item"><a href="{{route('users.create')}}" class="fold-text-color">Register</a></li>
+						 <li class="nav-item">{!! Html::linkRoute('users.login', 'Sign in', array(), array('class' => 'fold-text-color')) !!}</li>
 						 @else
 						 <li class="nav-item last dropdown" role="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+							<a href="#" class="dropdown-toggle fold-text-color" data-toggle="dropdown" role="button" aria-expanded="false">
 							 My Account <span class="caret"></span>
 						 </a>
 						 <ul class="dropdown-menu" role="menu">
@@ -297,7 +297,7 @@
 					<br><br><br><br>
 					<div class="row">
 						<div class="homepg-text1 text-center form-group col-md-6 col-md-offset-3">
-							<h2 class="text-center font-regular" style="color: white; font-size:32px;">
+							<h2 style="color: white; font-size:32px;" class="text-center font-regular fold-text-color">
 								@if(!empty($siteConfiguration))
 								@if($siteConfiguration->homepg_text1 != '')
 								{!! nl2br(e($siteConfiguration->homepg_text1)) !!}
@@ -311,6 +311,10 @@
 							@if(Auth::guest())
 							@else
 							@if($admin_access == 1)
+							<div>
+								<input id="homepg_text1_color" class="jscolor {onFineChange:'updateHomePgText1Color(this)'}" value="{{$color->fold_text_color}}">
+								<button name="save_homepg_text1_color" class="btn btn-sm btn-primary" onclick="changeFoldTextColor();">Save Color</button>
+							</div>
 							<div class="text-align" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style edit-homepg-text1" style="font-size: 20px;" data-toggle="tooltip" title="Edit Text" data-placement="right"></i></div>
 							@endif
 							@endif
@@ -2037,6 +2041,7 @@
 			$('.first_color').attr('style','color: #{{$color->nav_footer_color}}');
 			$('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
 			$('.second_color').css('color','#{{$color->heading_color}}');
+			$('.fold-text-color').css('color','#{{$color->fold_text_color}}');
 			$("a").mouseover(function() {
 				$(this).css('color', '#{{$color->heading_color}}');
 			}).mouseout(function() {
@@ -2046,6 +2051,9 @@
 				$(this).css('color', '#{{$color->heading_color}}');
 			}).mouseout(function() {
 				$(this).css('color', '#fff');
+			});
+			$('.fold-text-color').mouseout(function () {
+				$(this).css('color', '#{{$color->fold_text_color}}');
 			});
 			@endif
 			$('.scrollto').click(function(e) {
@@ -2356,7 +2364,8 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			$('.edit-homepg-text1').click(function(){
 				var str1 = $.trim($('.homepg-text1 h2').html()).replace(/\r?\n|\r/g, "");
 				console.log(str1);
-				$('.homepg-text1').html('<textarea class="form-control text-textarea" name="homepg_text1_text" id="homepg_text1_text" rows="3" placeholder="You Can Add Description Here"></textarea><br><button type="button" class="btn btn-default text1-update-btn" style="margin-bottom:67px;"><small>Update<small></button>');
+				$('.homepg-text1').html('<textarea class="form-control text-textarea" name="homepg_text1_text" id="homepg_text1_text" rows="3" placeholder="You Can Add Description Here"></textarea>' +
+						'<br><button type="button" class="btn btn-default text1-update-btn" style="margin-bottom:67px;"><small>Update<small></button>');
 				$('#homepg_text1_text').val(str1.replace(/<br ?\/?>/g, "\n"));
 				$('#homepg_text1_text').select();
 				$('.text1-update-btn').click(function(){
@@ -2511,6 +2520,10 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			$('#second_color_venture, #second_color').attr('style', 'background-color:#'+jscolor);
 			$('#second_color_venture, #second_color').attr('value', jscolor);
 		}
+		function updateHomePgText1Color(jscolor) {
+			$('.fold-text-color').css('color', '#' + jscolor);
+			$('#homepg_text1_color').attr('value', jscolor);
+		}
 		function changeColor(){
 			var first_color_code = $('#footer_color').attr('value');
 			var second_color_code = $('#second_color').attr('value');
@@ -2525,6 +2538,24 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			}).done(function(data){
 				console.log(data);
 				alert(data.message);
+			});
+		}
+
+		function changeFoldTextColor() {
+			let foldTextColor = $('#homepg_text1_color').attr('value');
+			$.ajax({
+				url: '/configuration/changecolor/fold/home',
+				type: 'POST',
+				dataType: 'JSON',
+				data: {
+					fold_text_color: foldTextColor
+				},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function(data){
+				alert(data.message);
+				location.reload();
 			});
 		}
 
