@@ -583,7 +583,7 @@
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
-											<div class="" style="padding: 10px 10px 0px 10px;">
+											<div class="" style="padding: 20px 20px 0px 20px;">
 												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -705,11 +705,14 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}"
+									@else href="{{route('projects.show', [$project])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+											<div class="" style="padding: 20px 20px 0px 20px;">
+												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
 												<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
@@ -828,11 +831,14 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}"
+									@else href="{{route('projects.show', [$project])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;box-shadow: 3px 3px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+											<div class="" style="padding: 20px 20px 0px 20px;">
+												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
 												<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
