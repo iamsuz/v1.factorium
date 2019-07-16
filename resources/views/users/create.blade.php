@@ -75,10 +75,10 @@ Sign up for free Australia's top Venture Crowdfunding
 								<div class="row">
 									<div class="col-md-12 wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="1s" style="margin-bottom: 10px;">
 										<input type="submit" value="Register" id="submit1" name="submit"  class="btn btn-block font-bold hide" hidden style="height:40px; width:50%; font-size: 1.125em; background-color:#fed405; border-radius:0px;color:#2d2d4b;" tabindex="8">
-										<button type="button" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform"  style="width:243px; background-color: #fed405; font-size:1em; color:#fff;border-radius:50px; border: 0px;"><img class="pull-left" src="{{asset('assets/images/estatebaronLogo.png')}}" style="width: 20px;"> Register</button>
+										<button type="button" class='btn btn-lg btn-danger font-semibold text-right second_color_btn' id="submitform"  style="width:243px; background-color: #fed405; font-size:1em; color:#fff;border-radius:50px; border: 0px;"><img class="pull-left" src="{{asset('assets/images/konkrete.png')}}" style="width: 20px;"> Register</button>
 									</div>
 									<div class="col-md-12">
-										<span><small>** If you are an existing EstateBaron.com user you can use the same username and password here without having to sign up again.</small></span>
+										<span><small>** If you are an existing EstateBaron.com or Konkrete.io user you can use the same username and password here without having to sign up again.</small></span>
 									</div>
 								</div>
 								{!! Form::close() !!}

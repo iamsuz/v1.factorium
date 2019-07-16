@@ -160,12 +160,12 @@
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff;">
 									<h4 class="font-bold project-min-investment-field" style="font-size:1.375em;color:#fff; display: -webkit-box;">
 										$<input type="number" name="project_min_investment_txt" class="form-control" value="{{(int)$project->investment->minimum_accepted_amount}}" @if($project->eoi_button) step="5" @else step="100" @endif style="width: 60px; padding-left: 2px; padding-right: 2px;" @if($project->eoi_button) min="5" @else min="100" @endif>
-									</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Min Invest</h6>
+									</h4><h6 class="font-regular" style="font-size: 0.875em;color: #fff">Asking Price</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3" style="border-right: thin solid #ffffff;">
 									<h4 class="font-bold project-hold-period-field" style="font-size:1.375em;color:#fff;">
 										<input type="text" name="project_hold_period_txt" class="form-control" value="{{$project->investment->hold_period}}" style="padding-left: 2px; padding-right: 2px;">
-									</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Months</h6>
+									</h4><h6 class="font-regular" style="font-size: 0.875em; color: #fff;">Days</h6>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-3" style="@if($project->projectconfiguration->show_project_investor_count)border-right: thin solid #ffffff; @endif">
 									<h4 class="font-bold project-returns-field" style="width: 55px; font-size:1.375em;color:#fff; display: -webkit-box;">
