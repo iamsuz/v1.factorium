@@ -112,7 +112,12 @@
 		color: #23527c !important;
 		text-decoration: underline !important;
 	}
-
+	.buy-now-btn {
+		font-family: {{$siteConfiguration->font_family}};
+		background-color: transparent;
+		color: #23527c;
+		border-radius: 20px;
+	}
 </style>
 
 <!-- Google tag manager header script if set  -->
@@ -584,11 +589,11 @@
 									@endif
 									@else href="{{route('projects.show', [$project])}}"
 									@endif name="project-link" style="display: none;">
-									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
-											<div class="" style="padding: 20px 20px 0px 20px;">
-												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											<div class="" style="padding: 10px 10px 0px 10px;">
+												<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
@@ -711,11 +716,11 @@
 									@endif
 									@else href="{{route('projects.show', [$project])}}" style="display: none;"
 									@endif>
-									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
-											<div class="" style="padding: 20px 20px 0px 20px;">
-												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											<div class="" style="padding: 10px 10px 0px 10px;">
+												<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
 											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
@@ -837,11 +842,11 @@
 									@endif
 									@else href="{{route('projects.show', [$project])}}" style="display: none;"
 									@endif>
-									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden;box-shadow: 3px 3px 5px #ccc;">
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
-											<div class="" style="padding: 20px 20px 0px 20px;">
-												<a class="btn btn-block second_color_btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											<div class="" style="padding: 10px 10px 0px 10px;">
+												<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
@@ -946,7 +951,7 @@
 								?>
 								<div class="col-md-8 col-md-offset-2" id="circle{{$third_party_listing->project->id}}">
 									<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
-										<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+										<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 											<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
 												<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
 												@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
@@ -1025,7 +1030,7 @@
 							<div class="col-md-4 swap-select-overlay" id="circle{{$third_party_listing->project->id}}">
 								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$third_party_listing->project->eb_project_rank}}" style="display: none;"></div>
 								<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
-									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs-3 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
 											<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
 											@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
@@ -1129,7 +1134,7 @@
 							<div class="col-sm-6 col-md-6 swap-select-overlay" id="circle{{$third_party_listing->project->id}}">
 								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$third_party_listing->project->eb_project_rank}}" style="display: none;"></div>
 								<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
-									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 3px 3px 5px #ccc;">
+									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs-2 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
 											<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
 											@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
@@ -2049,6 +2054,8 @@
 			$('p').attr('style','color: #{{$color->nav_footer_color}}');
 			$('.first_color').attr('style','color: #{{$color->nav_footer_color}}');
 			$('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
+			$('.buy-now-btn').css('border-color','#{{$color->heading_color}}');
+			$('.buy-now-btn').css('color','#{{$color->nav_footer_color}} !important');
 			$('.second_color').css('color','#{{$color->heading_color}}');
 			$('.fold-text-color').css('color','#{{$color->fold_text_color}}');
 			$("a").mouseover(function() {

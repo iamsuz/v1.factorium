@@ -1030,6 +1030,16 @@ a:hover {
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%)
 }
+.project-btn-overflow {
+  transition: .5s ease;
+  opacity: 1;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 70%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
 .project-details:hover .project-image-style {
   opacity: 0.5;
 }
