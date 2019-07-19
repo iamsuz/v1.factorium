@@ -719,8 +719,13 @@
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
-											<div class="" style="padding: 10px 10px 0px 10px;">
-												<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
+												<div class="col-md-6">
+													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;">{{$project->token_symbol}}</a>
+												</div>
+												<div class="col-md-6">
+													<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+												</div>
 											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
