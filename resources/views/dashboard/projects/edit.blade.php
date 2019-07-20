@@ -186,6 +186,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-8">
 												{!! Form::submit('Update', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
+												<input type="hidden" name="description" value="{{ $project->description ?? '' }}">
 											</div>
 										</div>
 									</div>

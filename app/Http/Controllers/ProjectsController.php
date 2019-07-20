@@ -85,31 +85,39 @@ class ProjectsController extends Controller
     public function store(ProjectRequest $request, AppMailer $mailer)
     {
         $user = Auth::user();
+
+        // Prefilled Data
         $request['user_id'] = $request->user()->id;
         $request['project_type'] = 1;
+        $request['line_1'] = isset($request->line_1) ? $request->line_1 : '20 Queen st,';
+        $request['line_2'] = isset($request->line_2) ? $request->line_2 : 'Level 1,';
+        $request['city'] = isset($request->city) ? $request->city : 'Melbourne';
+        $request['state'] = isset($request->state) ? $request->state : 'Victoria';
+        $request['postal_code'] = isset($request->postal_code) ? $request->postal_code : '3000';
+        $request['country'] = isset($request->country) ? $request->country : 'Australia';
         $request['minimum_accepted_amount'] = $request->goal_amount;
         $request['maximum_accepted_amount'] = $request->goal_amount;
 
         //TODO::add transation
         $request['project_site'] = url();
         $request['project_thumbnail_text'] = "Buy this invoice at a discount and make a return when the invoice is paid";
-//        $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
-//        $response = \Geocoder::geocode('json', $param);
-//        if(json_decode($response)->status != 'ZERO_RESULTS') {
-//            $latitude =json_decode(($response))->results[0]->geometry->location->lat;
-//            $longitude =json_decode(($response))->results[0]->geometry->location->lng;
-//            $request['latitude'] = $latitude;
-//            $request['longitude'] = $longitude;
-//        } else {
-//            return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
-//        }
+        $param = array("address"=>$request->line_1.' '.$request->line_2.' '.$request->city.' '.$request->state.' '.$request->country);
+        $response = \Geocoder::geocode('json', $param);
+        if(json_decode($response)->status != 'ZERO_RESULTS') {
+            $latitude =json_decode(($response))->results[0]->geometry->location->lat;
+            $longitude =json_decode(($response))->results[0]->geometry->location->lng;
+            $request['latitude'] = $latitude;
+            $request['longitude'] = $longitude;
+        } else {
+            return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
+        }
         $project = Project::create($request->all());
         $project->project_rank = $project->id;
         $project->eb_project_rank = $project->id;
         $project->save();
 
-//        $location = new \App\Location($request->all());
-//        $location = $project->location()->save($location);
+        $location = new \App\Location($request->all());
+        $location = $project->location()->save($location);
 
         if (!file_exists('assets/documents/projects/'.$project->id)) {
             File::makeDirectory('assets/documents/projects/'.$project->id, 0775, true);
