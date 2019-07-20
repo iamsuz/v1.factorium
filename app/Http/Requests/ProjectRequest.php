@@ -25,12 +25,23 @@ class ProjectRequest extends Request
     {
         return [
             'title'=>'required|min:3|max:50',
-            'line_1'=>'required',
-            'line_2'=>'',
-            'city'=>'required|regex:/^[(a-zA-Z\s)]+$/u',
-            'state'=>'required|alpha',
-            'postal_code'=>'required|digits_between:4,8',
-            'country'=>'required|alpha'
+            'description'=>'required',
+            'goal_amount'=>'required|integer'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'Receivable Name is required!',
+            'title.min' => 'The Receivable Name must be at least 3 characters.',
+            'title.max' => 'The Receivable Name may not be greater than 50 characters.',
+            'description.required' => 'Invoice issued to is required!',
+            'goal_amount.required' => 'Amount is required!',
+            'goal_amount.integer' => 'Amount should be integer'
         ];
     }
 }

@@ -15,7 +15,7 @@ Thank You | @parent
 			<div class="row" id="section-1">
 				<div class="col-md-12">
 					<div style="padding:10em 0;">
-						<h1 class="text-center wow fadeIn animated h1-faq first_color">Thank you for submitting your Project <br>
+						<h1 class="text-center wow fadeIn animated h1-faq first_color">Thank you for submitting your Receivable. <br>
 							<small class="first_color">we will review the details and contact you shortly.</small>
 						</h1>
 					</div>
