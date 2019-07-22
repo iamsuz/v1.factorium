@@ -820,7 +820,7 @@
 							</div>
 							@endforeach
 						</div>
-						<br><br>
+						<br>
 						@endforeach
 						@else
 						@if(Auth::guest())
