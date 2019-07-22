@@ -714,7 +714,7 @@
 								$remaining_amount = 0;
 							}
 							?>
-							<div class="col-md-4 swap-select-overlay" style="" id="circle{{$project->id}}">
+							<div class="col-md-4 swap-select-overlay" style="padding-top: 15px;" id="circle{{$project->id}}">
 								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
 								@if(Auth::guest())
 								@else
