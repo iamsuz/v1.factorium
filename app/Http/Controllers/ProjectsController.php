@@ -207,8 +207,9 @@ class ProjectsController extends Controller
         $projectConfigurationPartial = $projectConfigurationPartial->where('project_id', $project->id)->first();
         if(!$projectConfigurationPartial)
         {
-            $projectConfigurationPartial = new ProjectConfigurationPartial;
+            $projectConfigurationPartial = new ProjectConfigurationPartial();
             $projectConfigurationPartial->project_id = $project->id;
+            $projectConfigurationPartial->show_project_progress = 0;
             $projectConfigurationPartial->save();
         }
         $client = new \GuzzleHttp\Client();
