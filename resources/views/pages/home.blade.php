@@ -592,8 +592,13 @@
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
-											<div class="" style="padding: 10px 10px 0px 10px;">
-												<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
+												<div class="col-md-6">
+													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
+												</div>
+												<div class="col-md-6">
+													<a class="btn btn-block buy-now-btn" href="{{route('projects.interest', [$project->id])}}">Buy Now</a>
+												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
@@ -710,11 +715,11 @@
 								@endif
 								@endif
 								<a @if($project->is_coming_soon) @if(Auth::user())
-									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
+									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}" style="display: none;"
+									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -724,7 +729,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+													<a class="btn btn-block buy-now-btn" href="{{route('projects.interest', [$project->id])}}">Buy Now</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -774,11 +779,11 @@
 											<div class="project-thumbnail-txt"></div>
 										</form>
 										<a @if($project->is_coming_soon) @if(Auth::user())
-											@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
+											@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
 											@else
 											href="javascript:void(0);"
 											@endif
-											@else href="{{route('projects.show', [$project])}}"
+											@else href="{{route('projects.interest', [$project->id])}}"
 											@endif>
 											<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 											<div class="row text-left">
@@ -841,17 +846,22 @@
 								@endif
 								@endif
 								<a @if($project->is_coming_soon) @if(Auth::user())
-									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
+									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}" style="display: none;"
+									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
-											<div class="" style="padding: 10px 10px 0px 10px;">
-												<a class="btn btn-block buy-now-btn" href="/projects/{{$project->id}}/interest">Buy Now</a>
+											<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
+												<div class="col-md-6">
+													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
+												</div>
+												<div class="col-md-6">
+													<a class="btn btn-block buy-now-btn" href="{{route('projects.interest', [$project->id])}}">Buy Now</a>
+												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
 												<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
@@ -899,11 +909,11 @@
 										<div class="project-thumbnail-txt"></div>
 									</form>
 									<a @if($project->is_coming_soon) @if(Auth::user())
-										@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
+										@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
 										@else
 										href="javascript:void(0);"
 										@endif
-										@else href="{{route('projects.show', [$project])}}"
+										@else href="{{route('projects.interest', [$project->id])}}"
 										@endif>
 										<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 										<div class="row text-left">
