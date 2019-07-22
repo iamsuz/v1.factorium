@@ -10,95 +10,95 @@ Offer Doc
 @section('css-section')
 @parent
 <style type="text/css">
-.navbar{
-	display: none;
-}
-.content{
-	margin-top: 1em;
-}
-.check1{
-	padding: 2px !important;
-}
-.check1, .wholesale_invest_checkbox {
-	display: inline;
-	vertical-align: middle;
-}
-.switch-field {
-	font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
-	padding: 40px;
-	overflow: hidden;
-}
-
-.switch-title {
-	margin-bottom: 6px;
-}
-
-.switch-field input {
-	position: absolute !important;
-	clip: rect(0, 0, 0, 0);
-	height: 1px;
-	width: 1px;
-	border: 0;
-	overflow: hidden;
-}
-
-.switch-field label {
-	float: left;
-}
-
-.switch-field label {
-	display: inline-block;
-	width: 130px;
-	background-color: #e4e4e4;
-	color: rgba(0, 0, 0, 0.6);
-	font-size: 14px;
-	font-weight: normal;
-	text-align: center;
-	text-shadow: none;
-	padding: 6px 14px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
-	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
-	-webkit-transition: all 0.1s ease-in-out;
-	-moz-transition:    all 0.1s ease-in-out;
-	-ms-transition:     all 0.1s ease-in-out;
-	-o-transition:      all 0.1s ease-in-out;
-	transition:         all 0.1s ease-in-out;
-}
-
-.switch-field label:hover {
-	cursor: pointer;
-}
-
-.switch-field input:checked + label {
-	background-color: #A5DC86;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-}
-
-.switch-field label:first-of-type {
-	border-radius: 4px 0 0 4px;
-}
-
-.switch-field label:last-of-type {
-	border-radius: 0 4px 4px 0;
-}
-.scribd_iframe_embed{
-	height: 75vh;
-}
-@media screen and (max-width: 768px) {
-	#terms_accepted_button{
-		font-size: 11px;
+	.navbar{
+		display: none;
 	}
-}
-@media screen and (max-width: 320px){
-	#terms_accepted_button{
-		font-size: 9px;
+	.content{
+		margin-top: 1em;
 	}
-}
-#footer{
-    display: none;
-}
+	.check1{
+		padding: 2px !important;
+	}
+	.check1, .wholesale_invest_checkbox {
+		display: inline;
+		vertical-align: middle;
+	}
+	.switch-field {
+		font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
+		padding: 40px;
+		overflow: hidden;
+	}
+
+	.switch-title {
+		margin-bottom: 6px;
+	}
+
+	.switch-field input {
+		position: absolute !important;
+		clip: rect(0, 0, 0, 0);
+		height: 1px;
+		width: 1px;
+		border: 0;
+		overflow: hidden;
+	}
+
+	.switch-field label {
+		float: left;
+	}
+
+	.switch-field label {
+		display: inline-block;
+		width: 130px;
+		background-color: #e4e4e4;
+		color: rgba(0, 0, 0, 0.6);
+		font-size: 14px;
+		font-weight: normal;
+		text-align: center;
+		text-shadow: none;
+		padding: 6px 14px;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+		-webkit-transition: all 0.1s ease-in-out;
+		-moz-transition:    all 0.1s ease-in-out;
+		-ms-transition:     all 0.1s ease-in-out;
+		-o-transition:      all 0.1s ease-in-out;
+		transition:         all 0.1s ease-in-out;
+	}
+
+	.switch-field label:hover {
+		cursor: pointer;
+	}
+
+	.switch-field input:checked + label {
+		background-color: #A5DC86;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+
+	.switch-field label:first-of-type {
+		border-radius: 4px 0 0 4px;
+	}
+
+	.switch-field label:last-of-type {
+		border-radius: 0 4px 4px 0;
+	}
+	.scribd_iframe_embed{
+		height: 75vh;
+	}
+	@media screen and (max-width: 768px) {
+		#terms_accepted_button{
+			font-size: 11px;
+		}
+	}
+	@media screen and (max-width: 320px){
+		#terms_accepted_button{
+			font-size: 9px;
+		}
+	}
+	#footer{
+		display: none;
+	}
 </style>
 @stop
 @section('content-section')
@@ -150,11 +150,11 @@ Offer Doc
 												<br>
 												<p><small>
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form.
-													</small>
-													{{-- This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. --}}
-												</p>
-												<label>Purchase price</label>
-												<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required @if(isset($eoi)) value="{{$eoi->investment_amount}}" @endif value="{{$project->investment->minimum_accepted_amount}}" readonly="readonly"><br>
+												</small>
+												{{-- This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. --}}
+											</p>
+											<label>Purchase price</label>
+											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required @if(isset($eoi)) value="{{$eoi->investment_amount}}" @endif value="{{$project->investment->minimum_accepted_amount}}" readonly="readonly"><br>
 												{{-- @if($project->share_vs_unit == 1)
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@elseif($project->share_vs_unit == 2)
@@ -176,7 +176,7 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-									<div class="row hidden">
+									<div class="row ">
 										<div class="col-md-12">
 											<div>
 												<h4 class="aml-requirements-link cursor-pointer">AML/CTF requirements &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></h4>
@@ -447,13 +447,14 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-
-									<div class="row" >
+									<br>
+									<h4 class="contact-details">
+										Contact Details &nbsp;<i class="fa  @if(Auth::guest()) fa-minus @else @if(Auth::user()->line_1) fa-plus @else fa-minus @endif @endif" aria-hidden="true"></i>
+									</h4>
+									<small>** Expand to update the details</small>
+									<div class="row contact-details-section" @if(Auth::guest()) @else @if(Auth::user()->line_1) style="display: none;" @else @endif @endif >
 										<div class="col-md-12">
 											<div style="">
-												<h3>
-													Contact Details
-												</h3>
 												<hr>
 												<label>Enter your Postal Address</label>
 												<div class="row">
@@ -521,7 +522,7 @@ Offer Doc
 										</div>
 									</div>
 									<br>
-									<div class="row " id="section-6">
+									<div class="row contact-details-section " id="section-6" @if(Auth::guest()) @else @if(Auth::user()->line_1) style="display: none;" @else @endif @endif>
 										<div class="col-md-12">
 											<div>
 												<label>Tax File Number (applicable to Australian investors only)</label>
@@ -541,9 +542,9 @@ Offer Doc
 										</div>
 									</div>
 									<br>
-									<div class="row " id="section-7">
+									<div class="row" id="section-7" >
 										<div class="col-md-12">
-											<h3>Nominated Bank Account</h3>
+											<h4>Nominated Bank Account</h4>
 											<h5 style="color: #000">Please enter your bank account details where you would like to receive any Dividend or other payments related to this investment</h5>
 											<hr>
 											<div>
@@ -926,6 +927,18 @@ Offer Doc
 				$('.aml-requirements-link i').addClass('fa-plus');
 			}
 		});
+		// Slide and show the aml requirements section
+		$('.contact-details').click(function(e){
+			$('.contact-details-section').slideToggle();
+			if($('.contact-details i').hasClass('fa-plus')){
+				$('.contact-details i').removeClass('fa-plus');
+				$('.contact-details i').addClass('fa-minus');
+			}
+			else{
+				$('.contact-details i').removeClass('fa-minus');
+				$('.contact-details i').addClass('fa-plus');
+			}
+		});
 		// Submit Request for Form Filling
 		$('.send-form-filling-request').click(function(e){
 			@if(Auth::guest())
@@ -1077,9 +1090,9 @@ Offer Doc
     							}
     						});
 						});
-					}
-				});
-			});
+}
+});
+});
 @else
 if (confirm('This will raise a request for form filling. Do you want to continue ?')) {
 	console.log('confirmed');
@@ -1254,7 +1267,7 @@ $(document).ready(function(){
     			});
 
     			$('#submitform').unbind('click');
-				$('#submitform').on('click', function(){
+    			$('#submitform').on('click', function(){
     				$('#submit1').trigger('click');
     			});
 
