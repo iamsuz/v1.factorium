@@ -118,6 +118,7 @@ class PagesController extends Controller
         {
             $siteConfiguration = new SiteConfiguration;
             $siteConfiguration->project_site = url();
+            $siteConfiguration->prospectus_text = 'Factoring Arrangement';
             $siteConfiguration->save();
             $siteConfiguration = SiteConfiguration::all();
             $siteConfiguration = $siteConfiguration->where('project_site',url())->first();
