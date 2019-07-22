@@ -1835,7 +1835,7 @@ Edit {{$project->title}} | Dashboard | @parent
 																	@if($contract)
 																	<small>
 																		<p>
-																			<label>Token Name: </label><br>
+																			<label>Legals: </label><br>
 																			<span>{{$contract->name}}</span>
 																		</p>
 																		<p>
