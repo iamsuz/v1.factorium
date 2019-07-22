@@ -590,14 +590,14 @@
 									@else href="{{route('projects.show', [$project])}}"
 									@endif name="project-link" style="display: none;">
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
-										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
 											<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 												<div class="col-md-6">
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" href="{{route('projects.interest', [$project->id])}}">Buy Now</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -698,6 +698,14 @@
 							@foreach($sets as $project)
 							<?php
 							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+							$invoice_sold = '0';
+							if($paid->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '1';
+							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '2';
+							}
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -722,14 +730,14 @@
 									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
-										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
 											<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 												<div class="col-md-6">
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" href="{{route('projects.interest', [$project->id])}}">Buy Now</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -812,6 +820,7 @@
 							</div>
 							@endforeach
 						</div>
+						<br><br>
 						@endforeach
 						@else
 						@if(Auth::guest())
@@ -829,6 +838,14 @@
 							@foreach($sets as $project)
 							<?php
 							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+							$invoice_sold = '0';
+							if($paid->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '1';
+							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '2';
+							}
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -853,14 +870,14 @@
 									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;">
-										<div style="width: 100%; position: relative;" class="project-back project-thn img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 											<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
 											<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 												<div class="col-md-6">
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" href="{{route('projects.interest', [$project->id])}}">Buy Now</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -956,6 +973,14 @@
 								@foreach($sets as $third_party_listing)
 								<?php
 								$pledged_amount = $investments->where('project_id', $third_party_listing->project->id)->sum('amount');
+								$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+							$invoice_sold = '0';
+							if($paid->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '1';
+							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '2';
+							}
 								if($third_party_listing->project->investment) {
 									$completed_percent = ($pledged_amount/$third_party_listing->project->investment->goal_amount)*100;
 									$remaining_amount = $third_party_listing->project->investment->goal_amount - $pledged_amount;
@@ -967,7 +992,7 @@
 								<div class="col-md-8 col-md-offset-2" id="circle{{$third_party_listing->project->id}}">
 									<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
 										<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
-											<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
+											<div style="width: 100%;" class="project-back  img-responsive bg-imgs @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
 												<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
 												@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
 												<div class="project-thumb-overflow text-center">
@@ -1046,7 +1071,7 @@
 								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$third_party_listing->project->eb_project_rank}}" style="display: none;"></div>
 								<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
-										<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs-3 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
+										<div style="width: 100%;" class="project-back  img-responsive bg-imgs-3 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
 											<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
 											@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
 											<div class="project-thumb-overflow text-center">
@@ -1150,7 +1175,7 @@
 								<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$third_party_listing->project->eb_project_rank}}" style="display: none;"></div>
 								<a @if($third_party_listing->project->is_coming_soon) href="javascript:void(0);" @else href="{{$third_party_listing->project->project_site}}/projects/{{$third_party_listing->project->id}}" @endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
-										<div style="width: 100%;" class="project-back project-thn img-responsive bg-imgs-2 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
+										<div style="width: 100%;" class="project-back  img-responsive bg-imgs-2 @if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url()) project-details @endif">
 											<img src="@if($mediaImg=$third_party_listing->project->media->where('type', 'project_thumbnail')->where('project_site', $third_party_listing->project->project_site)->last()) {{$third_party_listing->project->project_site.'/'.$mediaImg->path}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style">
 											@if($third_party_listing->project->is_coming_soon && $third_party_listing->project->project_site!=url())
 											<div class="project-thumb-overflow text-center">
