@@ -31,6 +31,7 @@ Route::get('/pages/terms', ['as'=>'pages.terms', 'uses'=>'PagesController@terms'
 Route::get('/pages/subdivide', ['as'=>'pages.subdivide', 'uses'=>'PagesController@subdivide']);
 Route::post('/pages/subdivide', ['as'=>'pages.subdivide.store', 'uses'=>'PagesController@storeSubdivide']);
 Route::get('/pages/subdivide/thankyou', ['as'=>'pages.subdivide.thankyou', 'uses'=>'PagesController@subdivideThankyou']);
+Route::get('/pages/dispute', ['as'=>'pages.dispute', 'uses'=>'PagesController@disputeResolution']);
 
 Route::pattern('dashboard', '[0-9]+');
 Route::resource('dashboard', 'DashboardController');

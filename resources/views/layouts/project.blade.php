@@ -323,8 +323,18 @@ $_SESSION['code'] = md5(microtime(true));
                         569/585 Little Collins Street Melbourne VIC 3000.
                     </p>
                 </address> -->
-                <br>
             </div>
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
+                    <li class="footer-list-item">
+                        <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+                    </li>
+                    <li class="footer-list-item">
+                        <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+                    </li>
+                </ul>
+            </div>
+            <br>
         </div>
         <div class="row text-center @if(!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_powered_by_estatebaron) hide @endif" style="padding-top: 20px;">
           <img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo_white.png')}}">
