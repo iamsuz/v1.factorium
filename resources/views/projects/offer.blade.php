@@ -99,6 +99,10 @@ Offer Doc
 	#footer{
 		display: none;
 	}
+
+	.compliance-text-style {
+		color: #888 !important;
+	}
 </style>
 @stop
 @section('content-section')
@@ -664,6 +668,16 @@ Offer Doc
 								<img src="{{asset('assets/images/estate_baron_hat1.png')}}" alt="Estate Baron Masoct" class="pull-right img-responsive" style="padding-top:23em;position: fixed;width: 150px;">
 							</div>
 						</div>
+						<hr>
+						<div class="row">
+							<div class="col-md-12">
+								<p class="text-justify well compliance-text-style" style="font-size:16px;">
+									<small><small>@if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->compliance_description != '')
+												{!!html_entity_decode(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->compliance_description)!!} @else
+												The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not party to the offers made on the website.
+											@endif</small></small>
+							</div>
+						</div>
 					</div>
 
 					@if ($project->show_download_pdf_page)
@@ -783,9 +797,9 @@ Offer Doc
 @include('projects.offer.terms')
 @endif
 @if(Auth::guest())
-@include('partials.loginModal');
-@include('partials.registerModal');
-@include('partials.emailCheck');
+@include('partials.loginModal')
+@include('partials.registerModal')
+@include('partials.emailCheck')
 @endif
 @stop
 @section('js-section')
