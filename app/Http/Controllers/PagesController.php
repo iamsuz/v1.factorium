@@ -689,4 +689,13 @@ class PagesController extends Controller
             return redirect()->back()->withMessage('Sorry your request to withdraw fund has not been approved');
         }
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function disputeResolution()
+    {
+        $color = Color::where('project_site',url())->first();
+        return view('pages.dispute',compact('color'));
+    }
 }
