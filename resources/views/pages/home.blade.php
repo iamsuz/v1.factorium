@@ -571,6 +571,14 @@
 							@foreach($sets as $project)
 							<?php
 							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+							$invoice_sold = '0';
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+								$invoice_sold = '1';
+							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '2';
+							}
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -705,7 +713,7 @@
 							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount && !$repurchased->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
@@ -845,7 +853,7 @@
 							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
@@ -980,7 +988,7 @@
 								$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
