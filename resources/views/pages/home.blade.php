@@ -90,6 +90,10 @@
 		color: #888 !important;
 	}
 
+	.compliance-text-style {
+		color: #FFF !important;
+	}
+
 	/*Center align sweetalert continue to site button*/
 	.swal-footer {
 		text-align: center;
@@ -567,6 +571,14 @@
 							@foreach($sets as $project)
 							<?php
 							$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+							$invoice_sold = '0';
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+								$invoice_sold = '1';
+							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+								$invoice_sold = '2';
+							}
 							if($project->investment) {
 								$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 								$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -587,7 +599,7 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}"
+									@else @if($invoice_sold === '1') href="{{route('projects.show', [$project])}}" @endif
 									@endif name="project-link" style="display: none;">
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -597,7 +609,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -702,7 +714,7 @@
 							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
@@ -728,7 +740,7 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
+									@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -738,7 +750,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold ==='1') Invoice Sold @elseif($invoice_sold === '2') Investors Repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -792,7 +804,7 @@
 											@else
 											href="javascript:void(0);"
 											@endif
-											@else href="{{route('projects.interest', [$project->id])}}"
+											@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}} @endif"
 											@endif>
 											<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 											<div class="row text-left">
@@ -842,7 +854,7 @@
 							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
@@ -868,7 +880,7 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
+									@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" style="display: none;" @endif
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -878,7 +890,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -931,7 +943,7 @@
 										@else
 										href="javascript:void(0);"
 										@endif
-										@else href="{{route('projects.interest', [$project->id])}}"
+										@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
 										@endif>
 										<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 										<div class="row text-left">
@@ -977,7 +989,7 @@
 								$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
@@ -1285,7 +1297,7 @@
 				<p class="col-md-12  investment-title1-description-section text-justify" style="font-size:16px;">
 					<small>@if($siteConfiguration->compliance_description != '')
 						{!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
-						The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative @if($siteConfiguration->car_no != '') {{$siteConfiguration->car_no}} @else 001264952 @endif of AFSL @if($siteConfiguration->afsl_no != '') {{$siteConfiguration->afsl_no}} @else 275444 @endif provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href="@if($siteConfiguration->financial_service_guide_link){{$siteConfiguration->financial_service_guide_link}}@else https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0 @endif" target="_blank"><span style="text-decoration: none; color: #888;">Financial Services Guide</span></a>.
+							The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not party to the offers made on the website.
 					@endif</small>
 				</p>
 				@if(Auth::guest())
@@ -1294,7 +1306,6 @@
 				<i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit Above Description" data-placement="right"></i>
 				@endif
 				@endif
-				<p class="col-md-12  csef-text text-justify"><small>In particular note that this website does not rely on the Crowd Sourced Equity Funding (CSEF) regulation (RG261) and does not have an ASIC authorization to act as a Crowdfunding intermediary platform. Any use of the term crowdfunding anywhere on this site should not be be construed to mean that such an authorization exists. Investment offers listed here typically rely on RG228 to provide effective disclosure to Retail investors using a Prospectus. We believe the CSEF regulation is unsuited for Property development investment opportunities and have hence relied on providing a full prospectus to provide clear concise and effective disclosure.</small></p>
 				<input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @else {!!  "The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001264952 of AFSL 275444) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href='"!!} @if($siteConfiguration->financial_service_guide_link){{$siteConfiguration->financial_service_guide_link}} @else{!!"https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0"!!}@endif{!!"' target='_blank'><span style='text-decoration: none; color: #888;'>Financial Services Guide<span></a>." !!} @endif">
 				</div>
 			</div>
@@ -1725,6 +1736,16 @@
 						</li> -->
 					</ul>
 				</div>
+				<div class="col-md-6 col-md-offset-3 text-center">
+					<ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
+						<li class="footer-list-item">
+							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+						</li>
+						<li class="footer-list-item">
+							<a href="{{ route('pages.dispute') }}" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+						</li>
+					</ul>
+				</div>
 			</div>
 			@if(Auth::guest())
 			@else
@@ -1738,6 +1759,13 @@
 					<span style="color: #fff;">Powered by </span><a href="https://estatebaron.com/whitelabel-property-crowdfunding" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>
 				</p>
 			</div>
+			<br>
+			<p class="investment-title1-description-section text-justify compliance-text-style" style="font-size:16px; color:#fff;">
+				<small><small>@if($siteConfiguration->compliance_description != '')
+							{!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
+							The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not party to the offers made on the website.
+						@endif</small></small>
+			</p>
 		</div>
 	</footer>
 	<div class="row">
