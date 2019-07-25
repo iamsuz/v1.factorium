@@ -591,7 +591,7 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.show', [$project])}}"
+									@else @if($invoice_sold === '1') href="{{route('projects.show', [$project])}}" @endif
 									@endif name="project-link" style="display: none;">
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -601,7 +601,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -705,7 +705,7 @@
 							$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 							$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 							$invoice_sold = '0';
-							if($paid->sum('amount') === $project->investment->goal_amount){
+							if($paid->sum('amount') === $project->investment->goal_amount && !$repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '1';
 							}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
 								$invoice_sold = '2';
@@ -731,7 +731,7 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
+									@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif style="display: none;"
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -741,7 +741,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold ==='1') Invoice Sold @elseif($invoice_sold === '2') Investors Repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -795,7 +795,7 @@
 											@else
 											href="javascript:void(0);"
 											@endif
-											@else href="{{route('projects.interest', [$project->id])}}"
+											@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}} @endif"
 											@endif>
 											<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 											<div class="row text-left">
@@ -871,7 +871,7 @@
 									@else
 									href="javascript:void(0);"
 									@endif
-									@else href="{{route('projects.interest', [$project->id])}}" style="display: none;"
+									@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" style="display: none;" @endif
 									@endif>
 									<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;">
 										<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -881,7 +881,7 @@
 													<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 												</div>
 												<div class="col-md-6">
-													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold) Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+													<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 												</div>
 											</div>
 											<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -934,7 +934,7 @@
 										@else
 										href="javascript:void(0);"
 										@endif
-										@else href="{{route('projects.interest', [$project->id])}}"
+										@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
 										@endif>
 										<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 										<div class="row text-left">
