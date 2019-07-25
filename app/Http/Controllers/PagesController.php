@@ -69,6 +69,8 @@ class PagesController extends Controller
         $currentUserRole = '';
         $admin_access = 0;
         $third_party_listings = ThirdPartyListing::where(['list_on_site'=>url(), 'active'=>1])->orderBy('id', 'asc')->get();
+        // $listingProjects = new Collection(['foo']);
+        // dd($listingProjects);
         if(Auth::guest()) {
             $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             $currentUserRole = 'guest';

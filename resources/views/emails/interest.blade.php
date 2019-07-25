@@ -568,7 +568,7 @@
                                                 </td>
                                                 <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">Funds received</p>
                                                 </td>
-                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">@if($project->share_vs_unit) Shares @else Units @endif not issued</p>
+                                                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">@if($project->share_vs_unit) Receivable @else Units @endif not issued</p>
                                                 </td>
                                               </tr>
 

@@ -81,7 +81,7 @@ class SendInvestorNotificationEmail extends Job implements SelfHandling, ShouldQ
         $project = $this->project;
         $this->to = $user->email;
         $this->view = 'emails.interest';
-        $this->subject = 'Thank you for investing in '.$project->title;
+        $this->subject = 'Thank you purchasing receivable '.$project->title;
         $this->data = compact('user', 'project','amount','investment');
 
         $mailer->send($this->view, $this->data, function ($message) {

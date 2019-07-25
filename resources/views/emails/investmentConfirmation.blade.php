@@ -537,7 +537,7 @@
                             <tbody><tr>
                               <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
                                 <!-- <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage"> -->
-                                <table  border="0" cellpadding="18" cellspacing="0" align="left"> 
+                                <table  border="0" cellpadding="18" cellspacing="0" align="left">
                                   <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
                                </table>
                                 {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p> --}}
@@ -562,7 +562,7 @@
                                     </td>
                                     <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center; color: #000; font-weight: bold;">Funds received</p>
                                     </td>
-                                    <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">@if($investment->project->share_vs_unit) Shares @else Units @endif not issued</p>
+                                    <td valign="top" style="padding: 0px;mso-line-height-rule: exactly; background-color: white;" class="mcnImageBlockInner"><p style="font-family:helvetica; text-align: center;  color: #000; font-weight: bold;">@if($investment->project->share_vs_unit) Receivable @else Units @endif not issued</p>
                                     </td>
                                   </tr>
                                   <tr style="border: 1px solid #000;">
@@ -672,8 +672,8 @@
                             including on the @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Platform website,
                             is general advice only and has been prepared without taking into account your financial situation, objectives
                             and needs.
-                            Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and consider whether they are right for you. 
-                            The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages. 
+                            Before making any decision in relation to @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif or any products offered by @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif you should read the @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif and consider whether they are right for you.
+                            The @if((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif is available at the Project and Project Application Pages.
                             This email and any attachment is confidential and may be protected by copyright.
                             If you have received it by mistake, please notify us, delete it and do not use, copy or disclose it.
                             @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif accepts no liability for the content of this email, or the consequences of any actions taken on the basis of any information provided.
