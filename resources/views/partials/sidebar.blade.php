@@ -16,7 +16,7 @@
 	<a href="{{route('users.wallet')}}" class="list-group-item @if($active == 12) active @endif">Wallet </a>
 	<a href="{{route('users.market', [$user])}}" class="list-group-item @if($active == 13) active @endif">Market </a>
 	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
-	<a href="{{route('home')}}#projects" class="list-group-item @if($active == 7) active @endif">All Projects</a>
+	<a href="{{route('home')}}#projects" class="list-group-item @if($active == 7) active @endif">All Receivables</a>
 	{{--<a href="{{route('users.invitation', [$user])}}" class="list-group-item @if($active == 6) active @endif">Invite friends </a>--}}
 	@if($user->invite_only_projects->count())
 	<a href="{{route('projects.invite.only')}}" class="list-group-item @if($active == 8) active @endif">Invite for Projects </a>
@@ -29,7 +29,7 @@
 	{{--<a href="{{route('users.book', [$user])}}" class="list-group-item @if($active == 4) active @endif">Book a Meeting </a>--}}
 	<?php $roles = $user->roles; ?>
 	@if($roles->contains('role', 'developer'))
-	<a href="{{route('users.submit', [$user])}}" class="list-group-item @if($active == 5) active @endif">Submit a Project </a>
+	<a href="{{route('users.submit', [$user])}}" class="list-group-item @if($active == 5) active @endif">Submit a Receivable </a>
 	@endif
 	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">Investments </a>
 	<a href="{{route('users.notifications', [$user])}}" class="list-group-item @if($active == 9) active @endif">Notifications </a>

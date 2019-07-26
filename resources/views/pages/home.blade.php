@@ -121,6 +121,10 @@
 		background-color: transparent;
 		color: #23527c;
 		border-radius: 20px;
+		transition: transform .2s;
+	}
+	.buy-now-btn:hover{
+		transform: scale(1.04);
 	}
 </style>
 
@@ -321,7 +325,7 @@
 							@else
 							@if($admin_access == 1)
 							<div>
-								<input id="homepg_text1_color" class="jscolor {onFineChange:'updateHomePgText1Color(this)'}" value="{{$color->fold_text_color}}">
+								<input id="homepg_text1_color" class="jscolor {onFineChange:'updateHomePgText1Color(this)'}" value="@if($color) {{$color->fold_text_color}} @endif">
 								<button name="save_homepg_text1_color" class="btn btn-sm btn-primary" onclick="changeFoldTextColor();">Save Color</button>
 							</div>
 							<div class="text-align" style="margin-top: 10px;"><i class="fa fa-pencil edit-pencil-style edit-homepg-text1" style="font-size: 20px;" data-toggle="tooltip" title="Edit Text" data-placement="right"></i></div>
@@ -645,6 +649,7 @@
 												</div>
 											</div>
 										</div>
+										
 									</a>
 									<br>
 									@if(Auth::guest())
