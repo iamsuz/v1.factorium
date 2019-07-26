@@ -113,7 +113,7 @@ class KonkreteController extends Controller
         # code...
         $validator = Validator::make($request->all(), [
             'number_of_tokens' => 'required|integer|min:100',
-            'token_symbol' => 'required|alpha|between:3,4'
+            'token_symbol' => 'required|between:3,4'
         ]);
 
         if($validator->fails()) {
