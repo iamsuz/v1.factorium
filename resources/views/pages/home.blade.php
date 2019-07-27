@@ -1730,7 +1730,7 @@
 							<a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a>
 						</li><br>
 						<li class="footer-list-item">
-							<a href="@if($siteConfiguration->financial_service_guide_link){{$siteConfiguration->financial_service_guide_link}}@else https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0 @endif" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a>
+							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
 						</li>
 						<li class="footer-list-item">
 							<a href="/pages/faq" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a>
@@ -1738,10 +1738,6 @@
 						<!-- <li class="footer-list-item">
 							<a href="{{$siteConfiguration->media_kit_link}}" download class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a>
 						</li> -->
-					</ul>
-				</div>
-				<div class="col-md-6 col-md-offset-3 text-center">
-					<ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
 						<li class="footer-list-item">
 							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
 						</li>

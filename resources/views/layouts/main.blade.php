@@ -306,9 +306,15 @@ $_SESSION['code'] = md5(microtime(true));
                         <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold"  style="color:#fff; style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
                         <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff; target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->financial_service_guide_link){{$siteConfiguration->financial_service_guide_link}}@else https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0 @endif"  style="color:#fff; target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Financial Service Guide</span></a></li>
+                        <li class="footer-list-item"><a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a></li>
                         <li class="footer-list-item"><a href="/pages/faq" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a></li>
                         <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
+                        <li class="footer-list-item">
+                            <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+                        </li>
+                        <li class="footer-list-item">
+                            <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+                        </li>
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
                         <a href="mailto:info@vestabyte.com" style="color:#fed405; font-size: 14px;" class="font-semibold second_color">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61398117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61398117015</a>
@@ -318,16 +324,6 @@ $_SESSION['code'] = md5(microtime(true));
                         569/585 Little Collins Street Melbourne VIC 3000.
                     </p>
                 </address> -->
-            </div>
-            <div class="col-md-6 col-md-offset-3 text-center">
-                <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
-                    <li class="footer-list-item">
-                        <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
-                    </li>
-                    <li class="footer-list-item">
-                        <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
-                    </li>
-                </ul>
             </div>
             <br>
         </div>
