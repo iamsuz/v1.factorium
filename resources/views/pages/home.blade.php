@@ -1758,9 +1758,9 @@
 			@endif
 			@endif
 			<div class="row text-center @if(!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_powered_by_estatebaron) hide @endif" style="padding-top: 20px;">
-				<img style="width: 50px;" src="{{asset('assets/images/estatebaronLogo_white.png')}}">
+				<a href="https://konkrete.io" target="_blank"><img style="width: 50px;" src="{{asset('assets/images/konkrete.png')}}"></a>
 				<p>
-					<span style="color: #fff;">Powered by </span><a href="https://estatebaron.com/whitelabel-property-crowdfunding" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Estate Baron</a>
+					<span style="color: #fff;">Built on </span><a href="https://konkrete.io" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Konkrete</a>
 				</p>
 			</div>
 			<br>

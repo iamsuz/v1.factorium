@@ -349,7 +349,7 @@ Configuration | Dashboard | @parent
                 </div>
                 <div class="col-md-offset-1 col-md-10">
                     <div class="row" style="padding: 0px 10px;">
-                        <div class="col-md-6">Powered by Estate Baron</div>
+                        <div class="col-md-6">Built on Konkrete</div>
                         <div class="col-md-6 text-right"><input type="checkbox" class="common-switch-class" autocomplete="off" data-label-text="Show" action="show_powered_by_estatebaron" @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_powered_by_estatebaron) value="1" checked @else value="0" @endif></div>
                     </div>
                     <hr>
