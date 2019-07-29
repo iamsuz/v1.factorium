@@ -721,7 +721,6 @@ class UsersController extends Controller
                 $responseBalance = $requestBalance->getBody()->getContents();
                 $balance = json_decode($responseBalance);
                 $project_balance[$projectName->title] = $balance;
-                // dd($project_balance);
             }
         }
         return view('users.wallet',compact('user','color','project_balance'));
