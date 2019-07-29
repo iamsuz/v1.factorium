@@ -83,7 +83,8 @@ class PagesController extends Controller
             $user = Auth::user();
             $roles = $user->roles;
             if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
-                $projects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
+                $siteProjects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
+                $projects = $siteProjects->merge($listingProjects);
                 // dd($projects);
                 if($user->registration_site == url()){
                     $admin_access = 1;
@@ -93,7 +94,8 @@ class PagesController extends Controller
                         $admin_access = 1;
                 }
             } else {
-                $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
+                $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
+                $projects = $siteProjects->merge($listingProjects);
             }
         }
         $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
