@@ -41,10 +41,10 @@ class OfferController extends Controller
       $this->middleware('admin', ['only' => ['requestForm', 'cancelRequestForm']]);
       $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
       if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
-            $this->audkID = SiteConfiguration::where('project_site', url())->first()->audk_default_project_id;
-        }else{
-            $this->audkID = env('AUDK_PROJECT_ID',27);
-        }
+        $this->audkID = SiteConfiguration::where('project_site', url())->first()->audk_default_project_id;
+      }else{
+        $this->audkID = env('AUDK_PROJECT_ID',27);
+      }
     }
 
     /**
@@ -288,6 +288,8 @@ class OfferController extends Controller
             //Update current investment and with the share certificate details
           $investment->money_received = 1;
           $investment->save();
+          $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+          $this->dispatch(new SendReminderEmail($user,$project,$investor));
           return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK'));
         }else{
           $remainingAmount = $amount - (int)$balance->balance;
@@ -301,6 +303,8 @@ class OfferController extends Controller
           $audkProject = Project::findOrFail($this->audkID);
           $amount = $remainingAmount;
           $user->investments()->attach($audkProject, ['investment_id'=>$audkProject->investment->id,'amount'=>$remainingAmount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,'investment_completion'=>1,'pay_investment_id'=>$investor->id]);
+          $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+          $this->dispatch(new SendReminderEmail($user,$project,$investor));
           return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK','audkProject'));
         }
       }
