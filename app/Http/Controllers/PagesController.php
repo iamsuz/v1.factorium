@@ -18,6 +18,7 @@ use Illuminate\Cookie\CookieJar;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 use App\Http\Requests\SubdivideRequest;
 use App\Jobs\SendReminderEmail;
 use App\Jobs\SendInvestorNotificationEmail;
@@ -69,10 +70,14 @@ class PagesController extends Controller
         $currentUserRole = '';
         $admin_access = 0;
         $third_party_listings = ThirdPartyListing::where(['list_on_site'=>url(), 'active'=>1])->orderBy('id', 'asc')->get();
-        // $listingProjects = new Collection(['foo']);
-        // dd($listingProjects);
+        $listingProjects = new Collection();
+        foreach ($third_party_listings as $listing) {
+            $listingProject = Project::find($listing->project_id);
+            $listingProjects = $listingProjects->merge([$listingProject]);
+        }
         if(Auth::guest()) {
-            $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
+            $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
+            $projects = $siteProjects->merge($listingProjects);
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
