@@ -71,7 +71,7 @@ Edit {{$project->title}} | Dashboard | @parent
 								</div>
 							</div>
 							<div class="text-center">
-								<h3 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s">Change the Status of Project <br>
+								<h3 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s">Change the Status of Receivable <br>
 									{{-- <small class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:.5em">Activate or Deactivate | Deactivated projects are only seen by admins</small> --}}
 								</h3>
 							</div>
@@ -118,9 +118,8 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="project_status" value="funding_closed"> Close Funding
 										</label>
 									</div>
-									<br>
-									<h3>Select a type of Shares</h3>
-									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+									<h3 class="hide">Select a type of Shares</h3>
+									<div class="btn-group project-progress-3way-switch hide" data-toggle="buttons">
 										<label class="btn btn-default @if($project->share_vs_unit == 1) active @endif">
 											<input type="radio" name="share_vs_unit" value="1">Redeemable preference Share
 										</label>
@@ -134,9 +133,8 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="share_vs_unit" value="3"> Ordinary shares
 										</label>
 									</div>
-									<br><br>
-									<h3>MD vs Trustee</h3>
-									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+									<h3 class="hide">MD vs Trustee</h3>
+									<div class="btn-group project-progress-3way-switch hide" data-toggle="buttons">
 										<label class="btn btn-default @if($project->md_vs_trustee == 1) active @endif">
 											<input type="radio" name="md_vs_trustee" value="1"> MD
 										</label>
@@ -144,10 +142,8 @@ Edit {{$project->title}} | Dashboard | @parent
 											<input type="radio" name="md_vs_trustee" value="0"> Trustee
 										</label>
 									</div>
-
-									<br><br>
-									<h3>Retail project vs Wholesale project</h3>
-									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+									<h3 class="hide">Retail project vs Wholesale project</h3>
+									<div class="btn-group project-progress-3way-switch hide" data-toggle="buttons">
 										<label class="btn btn-default @if($project->retail_vs_wholesale == 1) active @endif">
 											<input type="radio" name="retail_vs_wholesale" value="1"> Retail
 										</label>
@@ -156,7 +152,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										</label>
 									</div>
 
-									<br><br>
+									<br>
 									<h3>Show interested to buy property checkbox</h3>
 									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
 										<label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 1) active @endif">
@@ -1560,6 +1556,7 @@ Edit {{$project->title}} | Dashboard | @parent
 			<section>
 				<div class="row well">
 					<div class="col-md-12">
+						{{--
 						<div class="row">
 							<div class="col-md-12">
 								{!! Form::open(array('route'=>['projects.projectSPVDetails', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
@@ -1766,6 +1763,7 @@ Edit {{$project->title}} | Dashboard | @parent
 								{!! Form::close() !!}
 							</div>
 						</div>
+						--}}
 
 						<!-- ----------------------------------- -->
 						<!-- START: Project tokenization process -->

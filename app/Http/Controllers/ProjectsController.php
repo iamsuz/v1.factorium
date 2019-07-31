@@ -119,6 +119,9 @@ class ProjectsController extends Controller
         $location = new \App\Location($request->all());
         $location = $project->location()->save($location);
 
+        // Save SPV to default
+        $this->setSpvToDefault($project->id);
+
         if (!file_exists('assets/documents/projects/'.$project->id)) {
             File::makeDirectory('assets/documents/projects/'.$project->id, 0775, true);
         }
@@ -1091,5 +1094,44 @@ class ProjectsController extends Controller
             }
             return $data;
         }
+    }
+
+    /**
+     * @param $projectId
+     */
+    protected function setSpvToDefault($projectId)
+    {
+        $projectSpv = new ProjectSpvDetail;
+        $projectSpv->project_id = $projectId;
+        $projectSpv->spv_name = 'Test Invoice';
+        $projectSpv->spv_line_1 = '20 Queen st';
+        $projectSpv->spv_line_2 = 'Level 1';
+        $projectSpv->spv_city = 'Melbourne';
+        $projectSpv->spv_state = 'Victoria';
+        $projectSpv->spv_postal_code = '3000';
+        $projectSpv->spv_country = 'au';
+        $projectSpv->spv_contact_number = '1 300 033 221';
+        $projectSpv->spv_md_name = 'Moresh Kokane';
+        $projectSpv->certificate_frame = 'frame1.jpg';
+        $projectSpv->spv_email = 'info@estatebaron.com';
+        $projectSpv->save();
+
+        $projectMedia = new Media;
+        $projectMedia->project_id = $projectId;
+        $projectMedia->type = 'spv_logo_image';
+        $projectMedia->project_site = url();
+        $projectMedia->caption = 'Project SPV Logo Image';
+        $projectMedia->filename = 'spv_logo_dummy.png';
+        $projectMedia->path = 'assets/images/media/project_page/spv_logo_dummy.png';
+        $projectMedia->save();
+
+        $projectMedia = new Media;
+        $projectMedia->project_id = $projectId;
+        $projectMedia->type = 'spv_md_sign_image';
+        $projectMedia->project_site = url();
+        $projectMedia->caption = 'Project SPV Logo Image';
+        $projectMedia->filename = 'spv_md_sign_dummy.png';
+        $projectMedia->path = 'assets/images/media/project_page/spv_md_sign_dummy.png';
+        $projectMedia->save();
     }
 }
