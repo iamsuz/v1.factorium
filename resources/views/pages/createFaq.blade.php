@@ -35,7 +35,7 @@ Create FAQ | @parent
 			<br>
 			{!! Form::open(array('route'=>'pages.faq.store')) !!}
 				<div class="row" style="background-color: #f2f3f4; padding: 20px; border-radius: 5px;">
-					<div class="row form-group">
+					{{-- <div class="row form-group">
 						{!!Form::label('category', 'Category:', array('class'=>'col-sm-3 control-label'))!!}
 						<div class="col-sm-9">
 							<select name="category" id="category" class="form-control">
@@ -52,7 +52,7 @@ Create FAQ | @parent
 							<select name="sub_category" id="sub_category" class="form-control" disabled="true">
 							</select>
 						</div>
-					</div>
+					</div> --}}
 					<div class="row form-group">
 						{!!Form::label('question', 'Question:', array('class'=>'col-sm-3 control-label'))!!}
 						<div class="col-sm-9">

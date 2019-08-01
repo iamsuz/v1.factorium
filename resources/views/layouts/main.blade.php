@@ -204,7 +204,7 @@ $_SESSION['code'] = md5(microtime(true));
                     <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding">Funding</a></li>
                     @endif
                     <li class="nav-item"><a href="/pages/team">About us</a></li>
-                    <!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
+                    <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
                     @if (Auth::guest())
                     <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
                     <li class="nav-item"><a href="{{route('users.login')}}">Sign in</a></li>
@@ -303,11 +303,11 @@ $_SESSION['code'] = md5(microtime(true));
                         <!-- @if($siteConfiguration->show_funding_options != '')
                         <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold"  style="color:#fff; style="font-size: 16px;">Terms & conditions</span></a></li>
+                        <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold"  style="color:#fff;" style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff; target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
+                        <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
                         <li class="footer-list-item"><a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a></li>
-                        <li class="footer-list-item"><a href="/pages/faq" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a></li>
+                        {{-- <li class="footer-list-item"><a href="/pages/faq" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a></li> --}}
                         <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                         <li class="footer-list-item">
                             <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>

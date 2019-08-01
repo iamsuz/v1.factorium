@@ -208,7 +208,7 @@
 							<li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js fold-text-color">Funding</a></li>
 							@endif
 							<li class="nav-item"><a href="/pages/team" class="fold-text-color">About us</a></li>
-							<!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
+							<li class="nav-item"><a href="/pages/faq">FAQ</a></li>
 							@if (Auth::guest())
 							<li class="nav-item"><a href="{{route('users.create')}}" class="fold-text-color">Register</a></li>
 							<li class="nav-item">{!! Html::linkRoute('users.login', 'Sign in', array(), array('class' => 'fold-text-color')) !!}</li>
@@ -272,7 +272,7 @@
 							<li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
 							@endif
 							<li class="nav-item"><a href="/pages/team">About us</a></li>
-							<!-- <li class="nav-item"><a href="/pages/faq">FAQ</a></li> -->
+							<li class="nav-item"><a href="/pages/faq">FAQ</a></li>
 							@if (Auth::guest())
 							<li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
 							<li class="nav-item"><a href="{{route('users.login')}}">Sign in</a></li>
@@ -1439,9 +1439,9 @@
 						<li class="footer-list-item">
 							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
 						</li>
-						<li class="footer-list-item">
+						{{-- <li class="footer-list-item">
 							<a href="/pages/faq" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a>
-						</li>
+						</li> --}}
 						<!-- <li class="footer-list-item">
 							<a href="{{$siteConfiguration->media_kit_link}}" download class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a>
 						</li> -->

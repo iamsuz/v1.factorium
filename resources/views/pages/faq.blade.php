@@ -23,7 +23,7 @@ What is Property or Real Estate Crowdfunding?
 
 	<h1 class="text-center first_color" id="general" style="font-size:2.625em;">Frequently Asked Questions</h1>
 	<div class="row">
-		<div class="col-md-4 col-sm-12 text-right" style="padding-top:70px;">
+		{{-- <div class="col-md-4 col-sm-12 text-right" style="padding-top:70px;">
 			<h4 class="font-regular">
 				<a href="/pages/faq/#general" class="scrollto-faq font-regular first_color" style="color:#fed405; font-size:1.375em;">General</a>
 			</h4>
@@ -33,9 +33,9 @@ What is Property or Real Estate Crowdfunding?
 			<h4 class="font-regular" style="margin-left:-2em;">
 				<a href="/pages/faq/#pdv" class="scrollto-faq font-regular first_color" style="color: #282a73; font-size:1.375em;">Property Development & Venture</a>
 			</h4>
-		</div>
+		</div> --}}
 		<div class="col-md-8 col-sm-8">
-			<h1 class="h1-faq first_color" style="font-size:3.25em;color:#2d2d4b;">General</h1>
+			{{-- <h1 class="h1-faq first_color" style="font-size:3.25em;color:#2d2d4b;">General</h1>
 			<h3 class="font-regular first_color" style="font-size:1.375em;color:#282a73;">Basics</h3>
 			<div class="panel-group" id="accordion">
 				@if (count($faqGeneralBasics) > 0)
@@ -284,7 +284,27 @@ What is Property or Real Estate Crowdfunding?
 				@else
 					<div class="alert alert-danger"><strong>No FAQ available for this category</strong></div>
 				@endif
-
+ --}}
+ 				@if (count($faq) > 0)
+					@foreach($faq as $venture)
+					<div class="panel panel-info">
+						<div data-toggle="collapse" data-target="#collapse{{$venture->id}}" class="panel-heading collapse-header" style="display: inline-block; border-color: #fff;"><i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>
+							<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="font-bold panel-title first_color">
+								{{$venture->question}}
+							</h4>
+						</div>
+						@if($isAdmin)
+						<span class="faq-delete" value="{{$venture->id}}" style="display: inline-block;"><i class="fa fa-trash" aria-hidden="true" style="color:#f75733; cursor: pointer;"></i></span>
+						@endif
+						<div id="collapse{{$venture->id}}" class="panel-collapse collapse">
+							<div class="panel-body" style="padding-left:45px;"><p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">{!! nl2br(e($venture->answer)) !!}</p>
+							</div>
+						</div>
+					</div>
+					@endforeach	
+				@else
+					<div class="alert alert-danger"><strong>No FAQ available for this category</strong></div>
+				@endif
 				@if($isAdmin)
 				<button type="button" name="add_new_faq" id="add_new_faq" onclick="location.href='{{ URL::route('pages.faq.create') }}'" class="btn btn-primary btn-block" style="margin: 30px 0px 30px 0px;">Add New FAQ</button>
 				@endif
