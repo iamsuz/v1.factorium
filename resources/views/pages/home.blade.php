@@ -1125,7 +1125,7 @@
 					<input type="hidden" id="hidden_funding_section_title1" value="@if($siteConfiguration->funding_section_title1 != '') {!! nl2br(e($siteConfiguration->funding_section_title1)) !!} @endif">
 					<br>
 					<div class="text-center funding-section-btn1-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-						<a id="second_color_venture" href="{{route('projects.create')}}" class="btn text-center buy-now-btn" style="padding: 8px 24px;font-size:22px; border-radius:50px; letter-spacing:1px;">
+						<a id="second_color_venture" href="{{route('projects.create')}}" class="btn text-center buy-now-btn" style="padding: 8px 24px;font-size:22px; border-radius:50px; letter-spacing:1px; border:2px solid;">
 							@if($siteConfiguration->funding_section_btn1_text != ''){!!$siteConfiguration->funding_section_btn1_text!!}@endif
 						</a>
 					</div>
