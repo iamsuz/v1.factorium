@@ -116,11 +116,22 @@
 			color: #23527c !important;
 			text-decoration: underline !important;
 		}
+		.venture-btn{
+			font-family: {{$siteConfiguration->font_family}};
+			background-color: transparent;
+			color: #23527c;
+			border-radius: 30px;
+			transition: transform .2s;
+			border: 2px solid !important;
+		}
+		.venture-btn:hover{
+			transform: scale(1.04);
+		}
 		.buy-now-btn {
 			font-family: {{$siteConfiguration->font_family}};
 			background-color: transparent;
 			color: #23527c;
-			border-radius: 20px;
+			border-radius: 30px;
 			transition: transform .2s;
 		}
 		.buy-now-btn:hover{
@@ -337,7 +348,7 @@
 								<br><br><br>
 								<div class="row">
 									<div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
-										<a href="@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects'){!!$siteConfiguration->homepg_btn1_gotoid!!} @else /#projects @endif" @if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects') class=" @else data-href="/#{{'projects'}}" class="scrollto scroll-links @endif btn btn-red btn-lg font-regular red-btn-style second_color_btn  reference-link-with-js" role="button" style="font-size:22px; border-color: transparent;z-index: 99999;">
+										<a href="@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects'){!!$siteConfiguration->homepg_btn1_gotoid!!} @else /#projects @endif" @if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects') class=" @else data-href="/#{{'projects'}}" class="scrollto scroll-links @endif btn btn-lg font-regular buy-now-btn reference-link-with-js" role="button" style="font-size:22px;z-index: 99999;border:2px solid;">
 											@if(!empty($siteConfiguration))
 											@if($siteConfiguration->homepg_btn1_text != '')
 											{!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
@@ -1114,7 +1125,7 @@
 					<input type="hidden" id="hidden_funding_section_title1" value="@if($siteConfiguration->funding_section_title1 != '') {!! nl2br(e($siteConfiguration->funding_section_title1)) !!} @endif">
 					<br>
 					<div class="text-center funding-section-btn1-field" data-wow-duration="1.5s" data-wow-delay="0.4s">
-						<a id="second_color_venture" href="{{route('projects.create')}}" class="btn btn-default text-center font-regular second_color_btn btn-hover-default-color" style="padding: 8px 24px;font-size:22px;background-color:#fed405; border-radius:50px; letter-spacing:1px; color: #fff !important">
+						<a id="second_color_venture" href="{{route('projects.create')}}" class="btn text-center buy-now-btn" style="padding: 8px 24px;font-size:22px; border-radius:50px; letter-spacing:1px;">
 							@if($siteConfiguration->funding_section_btn1_text != ''){!!$siteConfiguration->funding_section_btn1_text!!}@endif
 						</a>
 					</div>
