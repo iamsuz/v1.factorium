@@ -111,6 +111,7 @@ $_SESSION['code'] = md5(microtime(true));
         @endif
         .investment-title1-description-section, .csef-text {
             color: #fff !important;
+            text-align: center;
         }
 
         /*Center align sweetalert continue to site button*/
@@ -342,7 +343,7 @@ $_SESSION['code'] = md5(microtime(true));
         <p class="investment-title1-description-section text-justify" style="font-size:16px;">
         <small><small>@if($siteConfiguration->compliance_description != '')
         {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
-                    The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not party to the offers made on the website.
+                    The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
         @endif</small></small>
         </p>
     </div>
