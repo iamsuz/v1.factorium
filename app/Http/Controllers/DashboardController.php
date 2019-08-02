@@ -13,6 +13,8 @@ use App\Invite;
 use App\Mailers\AppMailer;
 use App\Note;
 use App\Project;
+use App\ProjectConfiguration;
+use App\ProjectConfigurationPartial;
 use App\User;
 use App\Market;
 use Carbon\Carbon;
@@ -1858,5 +1860,62 @@ class DashboardController extends Controller
         } else {
             return response()->status(400);
         }
+    }
+
+    /**
+     * @param $projectId
+     * @return mixed
+     */
+    public function duplicateProject($projectId)
+    {
+        // Copy Project model
+        $project = Project::find($projectId);
+        $projectCopy = $project->replicate(['id', 'wallet_address', 'contract_address', 'is_wallet_tokenized', 'use_tokens', 'token_symbol']);
+        $projectCopy->title = $project->title . ' Copy';
+        $projectCopy->slug = str_slug($project->title.' '.rand(1, 999));
+        $projectCopy->created_at = Carbon::now();
+        $projectCopy->updated_at = Carbon::now();
+        if($project->activated_on) {
+            $projectCopy->activated_on = Carbon::now();
+        }
+        $projectCopy->save();
+
+        // Copy Project location
+        $location = \App\Location::where('project_id', $project->id)->get()->first();
+        $locationCopy = $location->replicate(['id']);
+        $locationCopy->project_id = $projectCopy->id;
+        $locationCopy->created_at = Carbon::now();
+        $locationCopy->updated_at = Carbon::now();
+        $locationCopy->save();
+
+        // Save SPV to default
+        ProjectsController::setSpvToDefault($projectCopy->id);
+
+        // Create project media directory
+        if (!file_exists('assets/documents/projects/'.$projectCopy->id)) {
+            File::makeDirectory('assets/documents/projects/'.$projectCopy->id, 0775, true);
+        }
+
+        // Duplicate Investment
+        $investment = Investment::where('project_id', $project->id)->get()->first();
+        $investmentCopy = $investment->replicate(['id']);
+        $investmentCopy->project_id = $projectCopy->id;
+        $investmentCopy->created_at = Carbon::now();
+        $investmentCopy->updated_at = Carbon::now();
+        $investmentCopy->save();
+
+        // Duplicate Project Configurations
+        $config = ProjectConfiguration::where('project_id', $project->id)->get()->first();
+        $configCopy = $config->replicate(['id']);
+        $configCopy->project_id = $projectCopy->id;
+        $configCopy->save();
+
+        // Duplicate Project Configurations Partial
+        $configPartial = ProjectConfigurationPartial::where('project_id', $project->id)->get()->first();
+        $configPartialCopy = $configPartial->replicate(['id']);
+        $configPartialCopy->project_id = $projectCopy->id;
+        $configPartialCopy->save();
+
+        return redirect()->back()->withMessage("<div class=\"alert alert-success text-center\">Project Duplicated Successfully with name '" . $projectCopy->title . "'.</div>");
     }
 }

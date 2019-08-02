@@ -1099,7 +1099,7 @@ class ProjectsController extends Controller
     /**
      * @param $projectId
      */
-    protected function setSpvToDefault($projectId)
+    public static function setSpvToDefault($projectId)
     {
         $projectSpv = new ProjectSpvDetail;
         $projectSpv->project_id = $projectId;

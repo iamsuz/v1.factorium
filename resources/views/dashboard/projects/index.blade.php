@@ -29,6 +29,7 @@ Projects | Dashboard | @parent
 							<th>Active</th>
 							<th>Goal</th>
 							<th>Collected</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -56,6 +57,7 @@ Projects | Dashboard | @parent
 							<td>@if($project->investment)${{number_format($project->investment->goal_amount)}} @else Not Specified @endif</td>
 							<?php $pledged_amount = $pledged_investments->where('project_id', $project->id)->sum('amount');?>
 							<td>@if($project->investment)${{ number_format($pledged_amount)}} @else Not Specified @endif</td>
+							<td><button class="btn btn-default btn-sm" onclick="duplicateProject({{$project->id}})">Duplicate</button></td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -78,5 +80,11 @@ Projects | Dashboard | @parent
 	$(document).on("click","#alert",function(){
 	 swal ( "Oops !" ,  "Please add the Project SPV Details first." ,  "error" );
 	});
+
+	function duplicateProject(projectId) {
+		if(confirm('Are you sure you want to duplicate the project?')) {
+			location.href = '{{ route("home") }}/dashboard/project/' + projectId + '/copy';
+		}
+	}
 </script>
 @stop

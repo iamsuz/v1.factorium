@@ -41,6 +41,7 @@ Route::get('/gformredirect','ProjectsController@gformRedirects');
 
 Route::get('/dashboard/users', ['as'=>'dashboard.users', 'uses'=>'DashboardController@users']);
 Route::get('/dashboard/projects', ['as'=>'dashboard.projects', 'uses'=>'DashboardController@projects']);
+Route::get('/dashboard/project/{project_id}/copy', ['as' => 'dashboard.project.duplicate', 'uses' => 'DashboardController@duplicateProject']);
 Route::get('/dashboard/thirdPartyListings', ['as'=>'dashboard.thirdPartyListings', 'uses'=>'DashboardController@thirdPartyListings']);
 Route::post('/dashboard/showThirdPartyProject', ['as'=>'dashboard.showThirdPartyProject', 'uses'=>'DashboardController@showThirdPartyProject']);
 Route::get('/dashboard/configurations', ['as'=>'dashboard.configurations', 'uses'=>'DashboardController@siteConfigurations']);
