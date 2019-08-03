@@ -220,7 +220,7 @@
 							<li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js fold-text-color">Funding</a></li>
 							@endif
 							<li class="nav-item"><a href="/pages/team" class="fold-text-color">About us</a></li>
-							<li class="nav-item"><a href="/pages/faq">FAQ</a></li>
+							<li class="nav-item"><a href="/pages/faq" class="fold-text-color">FAQ</a></li>
 							@if (Auth::guest())
 							<li class="nav-item"><a href="{{route('users.create')}}" class="fold-text-color">Register</a></li>
 							<li class="nav-item">{!! Html::linkRoute('users.login', 'Sign in', array(), array('class' => 'fold-text-color')) !!}</li>
@@ -1429,10 +1429,10 @@
 				<div class="col-md-4 col-md-offset-4 text-center">
 					<ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
 						<li class="footer-list-item">
-							<a href="/#promo" data-href="/#promo" class="scrollto a-link scroll-links  "><span class="font-semibold" style="font-size: 16px;">Home</span></a>
+							<a href="/#promo" data-href="/#promo" class="scrollto a-link scroll-links fold-text-color "><span class="font-semibold" style="font-size: 16px;">Home</span></a>
 						</li>
 						<li class="footer-list-item">
-							<a href="{{$siteConfiguration->blog_link_new}}" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
+							<a href="{{$siteConfiguration->blog_link_new}}" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Blog</span></a>
 						</li>
 						{{-- @if($siteConfiguration->show_funding_options != '')
 						<li class="footer-list-item">
@@ -1441,15 +1441,15 @@
 						@endif --}}
 						<li class="footer-list-item">
 							{{-- <a href="{{$siteConfiguration->terms_conditions_link}}" target="_blank"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a> --}}
-							<a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a>
+							<a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a>
 						</li>
 						<span style="color:#fff;"> </span>
 						<!-- <li class="footer-list-item"><a href="#"><span>Venture Finance</span></a></li> -->
 						<li class="footer-list-item">
-							<a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a>
+							<a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a>
 						</li><br>
 						<li class="footer-list-item">
-							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
 						</li>
 						{{-- <li class="footer-list-item">
 							<a href="/pages/faq" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a>
@@ -1458,10 +1458,10 @@
 							<a href="{{$siteConfiguration->media_kit_link}}" download class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a>
 						</li> -->
 						<li class="footer-list-item">
-							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+							<a href="https://www.legislation.gov.au/Details/F2017L01198" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
 						</li>
 						<li class="footer-list-item">
-							<a href="{{ route('pages.dispute') }}" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+							<a href="{{ route('pages.dispute') }}" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
 						</li>
 					</ul>
 				</div>
