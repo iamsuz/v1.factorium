@@ -153,8 +153,8 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 
 									<br>
-									<h3>Show interested to buy property checkbox</h3>
-									<div class="btn-group project-progress-3way-switch" data-toggle="buttons">
+									<h3 class="hidden">Show interested to buy property checkbox</h3>
+									<div class="btn-group project-progress-3way-switch hidden" data-toggle="buttons">
 										<label class="btn btn-default @if($project->show_interested_to_buy_checkbox == 1) active @endif">
 											<input type="radio" name="show_interested_to_buy_checkbox" value="1"> On
 										</label>
@@ -1555,7 +1555,7 @@ Edit {{$project->title}} | Dashboard | @parent
 			</section> -->
 			<section>
 				<div class="row well">
-					<div class="col-md-12">
+					<div class="col-md-8">
 						{{--
 						<div class="row">
 							<div class="col-md-12">
@@ -1771,8 +1771,8 @@ Edit {{$project->title}} | Dashboard | @parent
 
 						@if(App\Helpers\SiteConfigurationHelper::isMasterRole())
 							@if($project->wallet_address)
-								<div class="row" id="tokenization_section" style="padding: 80px 0;">
-									<div class="col-md-8 col-md-offset-2">
+								<div class="" id="tokenization_section" style="padding: 0px 0;">
+									<div class="">
 										<div class="row well">
 											<h2 class="text-center">Tokenization</h2>
 											<p class="text-center"><small><strong>Project Wallet Address:</strong><br>{{$project->wallet_address}}</small></p>
@@ -1866,7 +1866,7 @@ Edit {{$project->title}} | Dashboard | @parent
 								</div>
 							@else
 								<div class="row">
-									<div class="col-md-8 col-md-offset-2">
+									<div class="">
 										<div class="well text-center">
 											<h2>Create Wallet</h2>
 											<button class="btn btn-primary" id="create_wallet">Create Wallet</button>
