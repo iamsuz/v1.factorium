@@ -553,97 +553,6 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							</div>
-							{{--<div class="row">
-								<div class="form-group @if($errors->first('security_long')){{'has-error'}} @endif">
-									{!!Form::label('security_long', 'Security Long', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('security_long')){{'has-error'}} @endif">
-												{!! Form::textarea('security_long', $project->investment?$project->investment->security_long:null, array('placeholder'=>'Security Long', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('security_long', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('rationale')){{'has-error'}} @endif">
-									{!!Form::label('rationale', 'Rationale', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('rationale')){{'has-error'}} @endif">
-												{!! Form::textarea('rationale', $project->investment?$project->investment->rationale:null, array('placeholder'=>'rationale', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('rationale', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('current_status')){{'has-error'}} @endif">
-									{!!Form::label('current_status', 'Current Status', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('current_status')){{'has-error'}} @endif">
-												{!! Form::textarea('current_status', $project->investment?$project->investment->current_status:null, array('placeholder'=>'Current Status', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('current_status', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('marketability')){{'has-error'}} @endif">
-									{!!Form::label('marketability', 'Marketability', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('marketability')){{'has-error'}} @endif">
-												{!! Form::textarea('marketability', $project->investment?$project->investment->marketability:null, array('placeholder'=>'marketability', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('marketability', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('residents')){{'has-error'}} @endif">
-									{!!Form::label('residents', 'Residents', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('residents')){{'has-error'}} @endif">
-												{!! Form::textarea('residents', $project->investment?$project->investment->residents:null, array('placeholder'=>'residents', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('residents', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('risk')){{'has-error'}} @endif">
-									{!!Form::label('risk', 'Risk', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('risk')){{'has-error'}} @endif">
-												{!! Form::textarea('risk', $project->investment?$project->investment->risk:null, array('placeholder'=>'risk', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('risk', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="form-group @if($errors->first('how_to_invest')){{'has-error'}} @endif">
-									{!!Form::label('how_to_invest', 'How To Invest', array('class'=>'col-sm-2 control-label'))!!}
-									<div class="col-sm-9">
-										<div class="row">
-											<div class="col-sm-12 @if($errors->first('how_to_invest')){{'has-error'}} @endif">
-												{!! Form::textarea('how_to_invest', $project->investment?$project->investment->how_to_invest:null, array('placeholder'=>'how to invest', 'class'=>'form-control', 'tabindex'=>'5', 'rows'=>'3')) !!}
-												{!! $errors->first('how_to_invest', '<small class="text-danger">:message</small>') !!}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>--}}
 							<div class="row" style="display: none;">
 								<div class="form-group @if($errors->first('bank') && $errors->first('bank_account_name')){{'has-error'}} @endif">
 									{!!Form::label('bank', 'Bank', array('class'=>'col-sm-2 control-label'))!!}
@@ -692,11 +601,11 @@ Edit {{$project->title}} | Dashboard | @parent
 								<div class="form-group @if($errors->first('bank_reference') && $errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
 									<!-- 									{!!Form::label('bank_reference', 'Reference', array('class'=>'col-sm-2 control-label'))!!} -->
 									<div class="col-sm-9">
-<!-- 										<div class="row">
+										<div class="row">
 											<div class="col-sm-5 @if($errors->first('bank_reference')){{'has-error'}} @endif">
 												{!! Form::text('bank_reference', $project->investment?$project->investment->bank_reference:null, array('placeholder'=>'Bank Reference', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 												{!! $errors->first('bank_reference', '<small class="text-danger">:message</small>') !!}
-											</div> -->
+											</div> 
 											{!!Form::label('embedded_offer_doc_link', 'Embedded Offer Doc link', array('class'=>'col-sm-3 control-label'))!!}
 											<div class="col-sm-5 @if($errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
 												{!! Form::text('embedded_offer_doc_link', $project->investment?$project->investment->embedded_offer_doc_link:null, array('placeholder'=>'embedded offer doc link', 'class'=>'form-control', 'tabindex'=>'5')) !!}
@@ -1555,215 +1464,7 @@ Edit {{$project->title}} | Dashboard | @parent
 			</section> -->
 			<section>
 				<div class="row well">
-					<div class="col-md-8">
-						{{--
-						<div class="row">
-							<div class="col-md-12">
-								{!! Form::open(array('route'=>['projects.projectSPVDetails', $project->id], 'class'=>'form-horizontal', 'role'=>'form')) !!}
-								<fieldset>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_name')){{'has-error'}} @endif">
-											{!!Form::label('spv_name', 'Project SPV Name', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-12 @if($errors->first('spv_name')){{'has-error'}} @endif">
-														{!! Form::text('spv_name', $project->projectspvdetail?$project->projectspvdetail->spv_name:null, array('placeholder'=>'SPV Name', 'class'=>'form-control', 'tabindex'=>'21', 'id'=>'spv_name')) !!}
-														{!! $errors->first('spv_name', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_line_1') || $errors->first('spv_line_2')){{'has-error'}} @endif">
-											{!!Form::label('spv_line_1', 'Address Lines', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-6 @if($errors->first('spv_line_1')){{'has-error'}} @endif">
-														{!! Form::text('spv_line_1', $project->projectspvdetail?$project->projectspvdetail->spv_line_1:null, array('placeholder'=>'line 1', 'class'=>'form-control', 'tabindex'=>'22', 'id'=>'spv_line_1')) !!}
-														{!! $errors->first('spv_line_1', '<small class="text-danger">:message</small>') !!}
-													</div>
-													<div class="col-sm-6 @if($errors->first('spv_line_2')){{'has-error'}} @endif">
-														{!! Form::text('spv_line_2', $project->projectspvdetail?$project->projectspvdetail->spv_line_2:null, array('placeholder'=>'line 2', 'class'=>'form-control', 'tabindex'=>'23', 'id'=>'spv_line_2')) !!}
-														{!! $errors->first('spv_line_2', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_city') && $errors->first('spv_state')){{'has-error'}} @endif">
-											{!!Form::label('spv_city', 'City', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-6 @if($errors->first('spv_city')){{'has-error'}} @endif">
-														{!! Form::text('spv_city', $project->projectspvdetail?$project->projectspvdetail->spv_city:null, array('placeholder'=>'City', 'class'=>'form-control', 'tabindex'=>'24', 'id'=>'spv_city')) !!}
-														{!! $errors->first('spv_city', '<small class="text-danger">:message</small>') !!}
-													</div>
-													<div class="col-sm-6 @if($errors->first('spv_state')){{'has-error'}} @endif">
-														{!! Form::text('spv_state', $project->projectspvdetail?$project->projectspvdetail->spv_state:null, array('placeholder'=>'State', 'class'=>'form-control', 'tabindex'=>'25', 'id'=>'spv_state')) !!}
-														{!! $errors->first('spv_state', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_postal_code') || $errors->first('spv_country')){{'has-error'}} @endif">
-											{!!Form::label('spv_postal_code', 'Postal Code', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-6 @if($errors->first('spv_postal_code')){{'has-error'}} @endif">
-														{!! Form::text('spv_postal_code', $project->projectspvdetail?$project->projectspvdetail->spv_postal_code:null, array('placeholder'=>'Postal Code', 'class'=>'form-control', 'tabindex'=>'26', 'id'=>'spv_postal_code')) !!}
-														{!! $errors->first('spv_postal_code', '<small class="text-danger">:message</small>') !!}
-													</div>
-													<div class="col-sm-6 @if($errors->first('spv_country')){{'has-error'}} @endif">
-														<select name="spv_country" class="form-control" tabindex="27" id="spv_country">
-															@foreach(\App\Http\Utilities\Country::aus() as $country => $code)
-															<option value="{{$code}}" @if($project->projectspvdetail)@if($project->projectspvdetail->spv_country == $code) selected @endif @endif>{{$country}}</option>
-															@endforeach
-														</select>
-														{!! $errors->first('spv_country', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
-											{!!Form::label('spv_contact_number', 'Project SPV Contact Number', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-12 @if($errors->first('spv_contact_number')){{'has-error'}} @endif">
-														{!! Form::input('text', 'spv_contact_number', $project->projectspvdetail?$project->projectspvdetail->spv_contact_number:null, array('placeholder'=>'Contact Number', 'class'=>'form-control', 'tabindex'=>'28', 'id'=>'spv_contact_number')) !!}
-														{!! $errors->first('spv_contact_number', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_email')){{'has-error'}} @endif">
-											{!!Form::label('spv_email', 'Project SPV Email', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-12 @if($errors->first('spv_email')){{'has-error'}} @endif">
-														{!! Form::email('spv_email', $project->projectspvdetail?$project->projectspvdetail->spv_email:null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'29', 'id'=>'spv_email')) !!}
-														{!! $errors->first('spv_email', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-											@if($project->md_vs_trustee)
-											{!!Form::label('spv_md_name', 'Project MD Name', array('class'=>'col-sm-2 control-label'))!!}
-											@else
-											{!!Form::label('spv_md_name', 'Project Trustee Name', array('class'=>'col-sm-2 control-label'))!!}
-											@endif
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-12 @if($errors->first('spv_md_name')){{'has-error'}} @endif">
-														{!! Form::Text('spv_md_name', $project->projectspvdetail?$project->projectspvdetail->spv_md_name:null, array('placeholder'=>'Project SPV MD Name', 'class'=>'form-control', 'tabindex'=>'30', 'id'=>'spv_md_name')) !!}
-														{!! $errors->first('spv_md_name', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_logo')){{'has-error'}} @endif">
-											{!!Form::label('spv_logo', 'Logo Image', array('class'=>'col-sm-2 control-label'))!!}
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-12 @if($errors->first('spv_logo')){{'has-error'}} @endif">
-														<div class="input-group">
-															<label class="input-group-btn">
-																<span class="btn btn-primary" style="padding: 10px 12px;">
-																	Browse&hellip; <input type="file" name="spv_logo" id="spv_logo" class="form-control" style="display: none;">
-																</span>
-															</label>
-															<input type="text" class="form-control" id="spv_logo_name" name="spv_logo_name" value="@if(!$project->media->where('type', 'spv_logo_image')->isEmpty()){{$project->media->where('type', 'spv_logo_image')->first()->filename}}@endif" readonly>
-															<input type="hidden" name="spv_logo_image_path" id="spv_logo_image_path" value="">
-															<input type="hidden" id="spv_logo_full_path" value="@if(!$project->media->where('type', 'spv_logo_image')->isEmpty()){{$project->media->where('type', 'spv_logo_image')->first()->path}}@endif">
-														</div>
-														<div class="row spv_logo_error" style="text-align: -webkit-center;"></div>
-														{!! $errors->first('spv_logo', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
-											@if($project->md_vs_trustee)
-											{!!Form::label('spv_md_sign', 'Project SPV MD Signature', array('class'=>'col-sm-2 control-label'))!!}
-											@else
-											{!!Form::label('spv_md_sign', 'Project Trustee Signature', array('class'=>'col-sm-2 control-label'))!!}
-											@endif
-											<div class="col-sm-9">
-												<div class="row">
-													<div class="col-sm-12 @if($errors->first('spv_md_sign')){{'has-error'}} @endif">
-														<div class="input-group">
-															<label class="input-group-btn">
-																<span class="btn btn-primary" style="padding: 10px 12px;">
-																	Browse&hellip; <input type="file" name="spv_md_sign" id="spv_md_sign" class="form-control" style="display: none;">
-																</span>
-															</label>
-															<input type="text" class="form-control" id="spv_md_sign_name" name="spv_md_sign_name" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->filename}}@endif" readonly>
-															<input type="hidden" name="spv_md_sign_image_path" id="spv_md_sign_image_path" value="">
-															<input type="hidden" name="spv_md_sign_full_path" id="spv_md_sign_full_path" value="@if(!$project->media->where('type', 'spv_md_sign_image')->isEmpty()){{$project->media->where('type', 'spv_md_sign_image')->first()->path}}@endif">
-														</div>
-														<div class="row spv_md_sign_error" style="text-align: -webkit-center;"></div>
-														{!! $errors->first('spv_md_sign', '<small class="text-danger">:message</small>') !!}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="form-group">
-											<div class="col-sm-11">
-												<div class="row">
-													<div class="col-sm-12">
-														<div class="input-group certi-frames" style="float: right;">
-															<input type="radio" name="certificate_frame" value="frame1.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame1.jpg") checked @endif @endif>
-															<input type="radio" name="certificate_frame" value="frame2.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame2.jpg") checked @endif @endif>
-															<input type="radio" name="certificate_frame" value="frame3.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") checked @endif @endif>
-															<input type="radio" name="certificate_frame" value="frame4.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") checked @endif @endif>
-															<input type="radio" name="certificate_frame" value="frame5.jpg" class="hide" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") checked @endif @endif>
-															<input type="radio" name="certificate_frame" value="" class="hide" @if($project->projectspvdetail) @if(!$project->projectspvdetail->certificate_frame) checked @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame1_thumb.jpg')}}" width="160px" height="120" selection="frame1.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame1.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame2_thumb.jpg')}}" width="160px" height="120" selection="frame2.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame2.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame3_thumb.jpg')}}" width="160px" height="120" selection="frame3.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame3.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame4_thumb.jpg')}}" width="160px" height="120" selection="frame4.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame4.jpg") style="border: 1px solid #666;" @endif @endif>
-															<img class="certificate-thumb" src="{{asset('assets/images/certificate_frames/frame5_thumb.jpg')}}" width="160px" height="120" selection="frame5.jpg" @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="frame5.jpg") style="border: 1px solid #666;" @endif @endif>
-															<div class="certificate-thumb text-center" selection="" style="width: 160px; height: 120px; background-color: #fff; float: left; border: 1px dotted #ddd; padding: 45px; @if($project->projectspvdetail) @if($project->projectspvdetail->certificate_frame=="") border: 1px solid #666; @endif @endif"><span><b>None</b></span></div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row text-center">
-										<p><button id="show_certificate_preview" class="btn btn-primary">Preview</button></p>
-										<div class="col-md-10 col-md-offset-1 certificate-preview" style=" border: 1px solid #eee; display: none; background-color: #fff; font-size: 13px;"></div>
-									</div>
-									<br>
-									<div class="row">
-										<div class="form-group">
-											<div class="col-sm-offset-2 col-sm-8">
-												{!! Form::submit('Update Certificate details', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
-											</div>
-										</div>
-									</div>
-									<input type="hidden" name="current_project_id" id="current_project_id" value="{{$project->id}}">
-								</fieldset>
-								{!! Form::close() !!}
-							</div>
-						</div>
-						--}}
+					<div class="col-md-12">
 
 						<!-- ----------------------------------- -->
 						<!-- START: Project tokenization process -->
@@ -1773,12 +1474,12 @@ Edit {{$project->title}} | Dashboard | @parent
 							@if($project->wallet_address)
 								<div class="" id="tokenization_section" style="padding: 0px 0;">
 									<div class="">
-										<div class="row well">
+										<div class="row">
 											<h2 class="text-center">Tokenization</h2>
 											<p class="text-center"><small><strong>Project Wallet Address:</strong><br>{{$project->wallet_address}}</small></p>
 											<hr>
 											@if(!$project->contract_address)
-												<div class="col-sm-8 col-sm-offset-2">
+												<div class="col-sm-12">
 													<form action="#" method="POST" name="tokenization_form">
 														{!! csrf_field() !!}
 														<div class="row">
@@ -1865,9 +1566,9 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 								</div>
 							@else
-								<div class="row">
-									<div class="">
-										<div class="well text-center">
+								<div class="row text-center">
+									<div class="col-md-12">
+										<div class="text-center">
 											<h2>Create Wallet</h2>
 											<button class="btn btn-primary" id="create_wallet">Create Wallet</button>
 										</div>
