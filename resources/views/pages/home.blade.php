@@ -763,7 +763,7 @@
 																<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
 																<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 																	<div class="col-md-6" style="padding-top: 10px;">
-																		<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" target="_blank"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;">{{$project->token_symbol}}</a>
+																		<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" target="_blank"><img src="/assets/images/etherium_logo.png" width="10%" style="margin-right: 20px;height: 20px;">{{$project->token_symbol}}</a>
 																	</div>
 																	<div class="col-md-6" style="padding-top: 10px;">
 																		<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold ==='1') Invoice Sold @elseif($invoice_sold === '2') Investors Repaid @else Buy Now @endif</a>
