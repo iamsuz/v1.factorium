@@ -1916,6 +1916,15 @@ class DashboardController extends Controller
         $configPartialCopy->project_id = $projectCopy->id;
         $configPartialCopy->save();
 
+        $client = new \GuzzleHttp\Client();
+        $request = $client->request('GET',$this->uri.'/createProject',[
+            'query' => ['project_id' => $projectCopy->id]
+        ]);
+        $response = $request->getBody()->getContents();
+        $result = json_decode($response);
+        $projectCopy->wallet_address = $result->signingKey->address;
+        $projectCopy->save();
+
         return redirect()->back()->withMessage("<div class=\"alert alert-success text-center\">Project Duplicated Successfully with name '" . $projectCopy->title . "'.</div>");
     }
 }
