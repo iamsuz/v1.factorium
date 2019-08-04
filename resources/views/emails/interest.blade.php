@@ -624,7 +624,8 @@ Australia’s leading venture crowdfunding investment platform --></span></span>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account Name <b> {!!$project->investment->bank_account_name!!} </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">BSB <b> {!!$project->investment->bsb!!} </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account No <b> {!!$project->investment->bank_account_number!!} </b>.</span></span></span><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Reference <b> {!!$project->investment->bank_reference!!} </b>.</span></span></span><br><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">SWIFT Code <b> {!!$project->investment->swift_code!!} </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Reference <b> INV{{ $investment->id }} </b>.</span></span></span><br><br>
 &nbsp;</div>
 
 </td>

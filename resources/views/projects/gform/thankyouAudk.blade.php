@@ -40,7 +40,7 @@
 								<tr><td>BSB </td><td>{!!$audkProject->investment->bsb!!}</td></tr>
 								<tr><td>Account No</td><td>{!!$audkProject->investment->bank_account_number!!}</td></tr>
 								<tr><td>SWIFT Code</td><td>{!!$audkProject->investment->swift_code!!}</td></tr>
-								<tr><td>Reference</td><td>{!!$audkProject->investment->bank_reference!!}</td></tr>
+								<tr><td>Reference</td><td>INV{{ $investor->id }}</td></tr>
 							</table>
 							@endif
 						</div>

@@ -196,6 +196,11 @@ class ProjectsController extends Controller
         $investmentDetails->fund_raising_start_date = Carbon::now()->toDateTimeString();
         $investmentDetails->fund_raising_close_date = Carbon::now()->addDays(30)->toDateTimeString();
         $investmentDetails->project_site = url();
+        $investmentDetails->bank = 'Westpac';
+        $investmentDetails->bank_account_name = 'Konkrete Distributed Registries Ltd';
+        $investmentDetails->bsb = '033002';
+        $investmentDetails->bank_account_number = '968825';
+        $investmentDetails->swift_code = 'WPACAU2S';
         $investmentDetails->save();
         $projectConfiguration = ProjectConfiguration::all();
         $projectConfiguration = $projectConfiguration->where('project_id', $project->id)->first();
