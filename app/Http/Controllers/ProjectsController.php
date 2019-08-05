@@ -218,6 +218,7 @@ class ProjectsController extends Controller
             $projectConfigurationPartial = new ProjectConfigurationPartial();
             $projectConfigurationPartial->project_id = $project->id;
             $projectConfigurationPartial->show_project_progress = 0;
+            $projectConfigurationPartial->expected_return_label_text = 'Invoice Amount';
             $projectConfigurationPartial->save();
         }
         $client = new \GuzzleHttp\Client();
