@@ -84,6 +84,13 @@ class ProjectsController extends Controller
      */
     public function store(ProjectRequest $request, AppMailer $mailer)
     {
+        $request['asking_amount'] = (int)$request->asking_amount;
+        $request['invoice_amount'] = (int)$request->invoice_amount;
+
+        if($request->asking_amount > $request->invoice_amount) {
+            return redirect()->back()->withInput()->withErrors(['asking_amount' => 'Asking price cannot be greater than Amount.']);
+        }
+
         $user = Auth::user();
 
         // Prefilled Data
@@ -95,8 +102,8 @@ class ProjectsController extends Controller
         $request['state'] = isset($request->state) ? $request->state : 'Victoria';
         $request['postal_code'] = isset($request->postal_code) ? $request->postal_code : '3000';
         $request['country'] = isset($request->country) ? $request->country : 'Australia';
-        $request['minimum_accepted_amount'] = $request->goal_amount;
-        $request['maximum_accepted_amount'] = $request->goal_amount;
+        $request['minimum_accepted_amount'] = $request->asking_amount;
+        $request['maximum_accepted_amount'] = $request->asking_amount;
 
         //TODO::add transation
         $request['project_site'] = url();
@@ -184,17 +191,17 @@ class ProjectsController extends Controller
         }
         $investmentDetails = new Investment;
         $investmentDetails->project_id = $project->id;
-        $investmentDetails->goal_amount = $request->goal_amount;
+        $investmentDetails->goal_amount = $request->asking_amount;
         $investmentDetails->minimum_accepted_amount = $request->minimum_accepted_amount;
         $investmentDetails->maximum_accepted_amount = $request->maximum_accepted_amount;
-        $investmentDetails->total_projected_costs = $request->goal_amount;
+        $investmentDetails->total_projected_costs = $request->invoice_amount;
         $investmentDetails->total_debt = 500;
         $investmentDetails->total_equity = 100;
-        $investmentDetails->projected_returns = 100;
+        $investmentDetails->projected_returns = $request->invoice_amount;
         $investmentDetails->hold_period = '24';
         $investmentDetails->developer_equity = 100;
         $investmentDetails->fund_raising_start_date = Carbon::now()->toDateTimeString();
-        $investmentDetails->fund_raising_close_date = Carbon::now()->addDays(30)->toDateTimeString();
+        $investmentDetails->fund_raising_close_date = $request->due_date;
         $investmentDetails->project_site = url();
         $investmentDetails->bank = 'Westpac';
         $investmentDetails->bank_account_name = 'Konkrete Distributed Registries Ltd';

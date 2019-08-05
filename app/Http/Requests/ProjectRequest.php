@@ -26,7 +26,10 @@ class ProjectRequest extends Request
         return [
             'title'=>'required|min:3|max:50',
             'description'=>'required',
-            'goal_amount'=>'required|integer'
+            'invoice_amount'=>'required|integer',
+            'asking_amount'=>'required|integer',
+            'due_date'=>'required|date|after:today',
+            'invoice_issued_from'=>'required'
         ];
     }
 
@@ -40,8 +43,10 @@ class ProjectRequest extends Request
             'title.min' => 'The Receivable Name must be at least 3 characters.',
             'title.max' => 'The Receivable Name may not be greater than 50 characters.',
             'description.required' => 'Invoice issued to is required!',
-            'goal_amount.required' => 'Amount is required!',
-            'goal_amount.integer' => 'Amount should be integer'
+            'invoice_amount.required' => 'Invoice amount is required!',
+            'invoice_amount.integer' => 'Invoice amount should be integer',
+            'asking_amount.required' => 'Asking Price is required!',
+            'asking_amount.integer' => 'Asking Price should be integer'
         ];
     }
 }
