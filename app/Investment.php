@@ -18,6 +18,19 @@ class Investment extends Model
      * @return project instance
      */
     protected $dates = ['fund_raising_start_date','fund_raising_close_date'];
+
+    /**
+     * @return int
+     */
+    public function getInvoiceDaysRemainingAttribute()
+    {
+        $from = \Carbon\Carbon::now();
+        $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this->fund_raising_close_date);
+        $diff_in_days = $to->diffInDays($from);
+
+        return $diff_in_days;
+    }
+
     public function project()
     {
         return $this->belongsTo('App\Project');
