@@ -107,7 +107,7 @@ class Project extends Model
      */
     public function investors()
     {
-        return $this->belongsToMany('App\User', 'investment_investor')->withPivot(['amount','transaction_hash'])->withTimestamps();
+        return $this->belongsToMany('App\User', 'investment_investor')->withPivot(['amount','transaction_hash','accepted','money_received','is_repurchased'])->withTimestamps();
     }
 
     /**
@@ -201,7 +201,7 @@ class Project extends Model
     {
         return $this->hasOne('App\ThirdPartyListing');
     }
-    
+
     public function issueTokens()
     {
         return $this->hasMany('App\IssueingToken');

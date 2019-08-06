@@ -26,7 +26,7 @@ Projects | Dashboard | @parent
 							<th></th>
 							<th>Title</th>
 							{{-- <th>Description</th> --}}
-							<th>Active</th>
+							<th>Status</th>
 							<th>Goal</th>
 							<th>Collected</th>
 							<th></th>
@@ -38,22 +38,29 @@ Projects | Dashboard | @parent
 							<td>{{$project->id}}</td>
 							<td>
 							<a href="{{route('dashboard.projects.edit', [$project])}}">{{$project->title}}</a><br>
-							@if($project->activated_on && $project->active == '1')<a href="{{route('dashboard.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a> @endif <br>
-							<a href="{{route('dashboard.projects.investors', [$project])}}">Investors <i class="fa fa-angle-double-right"></i></a>
-							</td>
-							{{-- <td>{!!substr($project->description, 0, 50)!!}...</td> --}}
 							@if(!$project->projectspvdetail && $project->is_coming_soon == '0')
-							<td>Submitted <br> <a href="#" id="alert">Activate</a></td>
+							Submitted <br> <a href="#" id="alert">Activate</a>
 							@else
-							<td> @if($project->activated_on && $project->active == '1')
+							@if($project->activated_on && $project->active == '1')<a href="{{route('dashboard.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a><br> @endif
+								@if($project->activated_on && $project->active == '1')
 									<time datetime="{{$project->activated_on}}">
 									{{$project->activated_on->diffForHumans()}}
-									</time>
-								@elseif($project->activated_on && $project->active == '2') Private
-								@elseif($project->activated_on && $project->active == '0') Deactivate <br> <a href="{{route('dashboard.projects.activate', [$project])}}"> Activate </a>
-								@else($project->active == '0') Submitted <br> <a href="{{route('dashboard.projects.activate', [$project])}}">Activate</a>
-								@endif</td>
+									</time><br>
+								@elseif($project->activated_on && $project->active == '2') Private<br>
+								@elseif($project->activated_on && $project->active == '0') Deactivate <br> <a href="{{route('dashboard.projects.activate', [$project])}}"> Activate </a><br>
+								@else($project->active == '0') Submitted <br> <a href="{{route('dashboard.projects.activate', [$project])}}">Activate</a><br>
+								@endif
+							<a href="{{route('dashboard.projects.investors', [$project])}}">Investors <i class="fa fa-angle-double-right"></i></a>
 							@endif
+							</td>
+							{{-- <td>{!!substr($project->description, 0, 50)!!}...</td> --}}
+							<td>
+								@if($project->is_funding_closed == '1') Funding Closed <br>
+									@if($project->investors->first()->pivot->is_repurchased == '1') Repurchased @elseif($project->investors->first()->pivot->money_received != '1') Application received @elseif($project->investors->first()->pivot->money_received == '1') Money Received @endif
+								@elseif($project->eoi_button == '1') EOI @elseif($project->is_coming_soon == '1') Upcoming @elseif($project->active == '1') Active <br>
+								@if($project->investors->first()->pivot->is_repurchased == '1') Repurchased @elseif($project->investors->first()->pivot->money_received != '1') Application received @elseif($project->investors->first()->pivot->money_received == '1') Money Received @endif
+								@else Inactive @endif
+								</td>
 							<td>@if($project->investment)${{number_format($project->investment->goal_amount)}} @else Not Specified @endif</td>
 							<?php $pledged_amount = $pledged_investments->where('project_id', $project->id)->sum('amount');?>
 							<td>@if($project->investment)${{ number_format($pledged_amount)}} @else Not Specified @endif</td>
