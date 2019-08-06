@@ -505,6 +505,12 @@ class ProjectsController extends Controller
             }
         }
         $investment = $project->investment;
+        $request['projected_returns'] = $request->invoice_amount;
+        $request['total_projected_costs'] = $request->invoice_amount;
+        $request['goal_amount'] = $request->asking_amount;
+        $request['minimum_accepted_amount'] = $request->asking_amount;
+        $request['maximum_accepted_amount'] = $request->asking_amount;
+        $request['fund_raising_close_date'] = $request->due_date;
         $investment->update($request->all());
 
         //TODO::refactor

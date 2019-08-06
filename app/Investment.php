@@ -31,6 +31,16 @@ class Investment extends Model
         return $diff_in_days;
     }
 
+    public function getInvoiceAmountAttribute()
+    {
+        return $this->projected_returns;
+    }
+
+    public function getAskingAmountAttribute()
+    {
+        return $this->goal_amount;
+    }
+
     public function project()
     {
         return $this->belongsTo('App\Project');

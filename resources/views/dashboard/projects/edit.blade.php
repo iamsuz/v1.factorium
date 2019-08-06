@@ -177,7 +177,62 @@ Edit {{$project->title}} | Dashboard | @parent
 									</div>
 									@endif
 									@endif
-									<br><br><br>
+									<br><br>
+									<div class="row">
+										<div class="form-group @if($errors->first('title')){{'has-error'}} @endif">
+											{!!Form::label('title', 'Receivable Name', array('class'=>'col-sm-3 control-label'))!!}
+											<div class="col-sm-8">
+												{!! Form::text('title', null, array('placeholder'=>'Receivable Name', 'class'=>'form-control')) !!}
+												{!! $errors->first('title', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('invoice_amount')){{'has-error'}} @endif">
+											{!!Form::label('invoice_amount', 'Amount', array('class'=>'col-sm-3 control-label'))!!}
+											<div class="col-sm-8">
+												{!! Form::input('number', 'invoice_amount', $project->investment->invoice_amount, array('placeholder'=>'Amount', 'class'=>'form-control')) !!}
+												{!! $errors->first('invoice_amount', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('asking_amount')){{'has-error'}} @endif">
+											{!!Form::label('asking_amount', 'Asking price', array('class'=>'col-sm-3 control-label'))!!}
+											<div class="col-sm-8">
+												{!! Form::input('number', 'asking_amount', $project->investment->asking_amount, array('placeholder'=>'Asking price', 'class'=>'form-control')) !!}
+												{!! $errors->first('asking_amount', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('due_date')){{'has-error'}} @endif">
+											{!!Form::label('due_date', 'Invoice due date', array('class'=>'col-sm-3 control-label'))!!}
+											<div class="col-sm-8">
+												{!! Form::input('date', 'due_date', \Carbon\Carbon::make($project->investment->fund_raising_close_date)->toDateString(), array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'min'=>\Carbon\Carbon::now()->toDateString())) !!}
+												{!! $errors->first('due_date', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('description')){{'has-error'}} @endif">
+											{!!Form::label('description', 'Invoice issued to', array('class'=>'col-sm-3 control-label'))!!}
+											<div class="col-sm-8">
+												{!! Form::text('description', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control')) !!}
+												{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group @if($errors->first('invoice_issued_from')){{'has-error'}} @endif">
+											{!!Form::label('invoice_issued_from', 'Invoice issued from', array('class'=>'col-sm-3 control-label'))!!}
+											<div class="col-sm-8">
+												{!! Form::text('invoice_issued_from', null, array('placeholder'=>'Invoice issued from', 'class'=>'form-control')) !!}
+												{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
+											</div>
+										</div>
+									</div>
+									<br><br>
 									<div class="row">
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-8">
