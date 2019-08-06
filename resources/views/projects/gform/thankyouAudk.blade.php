@@ -35,11 +35,11 @@
 						<div class="col-md-offset-2 col-md-8 text-justify">
 							@if($audkProject->investment)
 							<table class="table table-bordered">
-								<tr><td>Bank</td><td>{!!$audkProject->investment->bank!!}</td></tr>
-								<tr><td>Account Name</td><td>{!!$audkProject->investment->bank_account_name!!}</td></tr>
-								<tr><td>BSB </td><td>{!!$audkProject->investment->bsb!!}</td></tr>
-								<tr><td>Account No</td><td>{!!$audkProject->investment->bank_account_number!!}</td></tr>
-								<tr><td>SWIFT Code</td><td>{!!$audkProject->investment->swift_code!!}</td></tr>
+								<tr><td>Bank</td><td>@if($audkProject->investment->bank){!!$audkProject->investment->bank!!}@else Westpac @endif</td></tr>
+								<tr><td>Account Name</td><td>@if($audkProject->investment->bank_account_name){!!$audkProject->investment->bank_account_name!!}@else Konkrete Distributed Registries Ltd @endif</td></tr>
+								<tr><td>BSB </td><td>@if($audkProject->investment->bsb){!!$audkProject->investment->bsb!!}@else 033002 @endif</td></tr>
+								<tr><td>Account No</td><td>@if($audkProject->investment->bank_account_number){!!$audkProject->investment->bank_account_number!!}@else 968825 @endif</td></tr>
+								<tr><td>SWIFT Code</td><td>@if($audkProject->investment->swift_code){!!$audkProject->investment->swift_code!!}@else WPACAU2S @endif</td></tr>
 								<tr><td>Reference</td><td>INV{{ $investor->id }}</td></tr>
 							</table>
 							@endif

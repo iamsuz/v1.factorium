@@ -36,11 +36,11 @@
 							@else
 
 							<table class="table table-bordered">
-								<tr><td>Bank</td><td>{!!$project->investment->bank!!}</td></tr>
-								<tr><td>Account Name</td><td>{!!$project->investment->bank_account_name!!}</td></tr>
-								<tr><td>BSB </td><td>{!!$project->investment->bsb!!}</td></tr>
-								<tr><td>Account No</td><td>{!!$project->investment->bank_account_number!!}</td></tr>
-								<tr><td>SWIFT Code</td><td>{!!$project->investment->swift_code!!}</td></tr>
+								<tr><td>Bank</td><td>@if($project->investment->bank){!!$project->investment->bank!!}@else Westpac @endif</td></tr>
+								<tr><td>Account Name</td><td>@if($project->investment->bank_account_name){!!$project->investment->bank_account_name!!}@else Konkrete Distributed Registries Ltd @endif</td></tr>
+								<tr><td>BSB </td><td>@if($project->investment->bsb){!!$project->investment->bsb!!}@else 033002 @endif</td></tr>
+								<tr><td>Account No</td><td>@if($project->investment->bank_account_number){!!$project->investment->bank_account_number!!}@else 968825 @endif</td></tr>
+								<tr><td>SWIFT Code</td><td>@if($project->investment->swift_code){!!$project->investment->swift_code!!}@else WPACAU2S @endif</td></tr>
 								<tr><td>Reference</td><td>INV{{ $investor->id }}</td></tr>
 							</table>
 
