@@ -290,7 +290,7 @@ class OfferController extends Controller
           $investment->save();
           $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
           $this->dispatch(new SendReminderEmail($user,$project,$investor));
-          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK'));
+          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK', 'investor'));
         }else{
           $remainingAmount = $amount - (int)$balance->balance;
           if((int)$balance->balance != 0){
@@ -305,14 +305,14 @@ class OfferController extends Controller
           $user->investments()->attach($audkProject, ['investment_id'=>$audkProject->investment->id,'amount'=>$remainingAmount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,'investment_completion'=>1,'pay_investment_id'=>$investor->id]);
           $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
           $this->dispatch(new SendReminderEmail($user,$project,$investor));
-          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK','audkProject'));
+          return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK','audkProject', 'investor'));
         }
       }
 
       $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
       $this->dispatch(new SendReminderEmail($user,$project,$investor));
 
-      return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount','transactionAUDK'));
+      return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount','transactionAUDK', 'investor'));
     }
 
     /**
