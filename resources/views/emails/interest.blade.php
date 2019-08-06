@@ -620,11 +620,11 @@
 Australia’s leading venture crowdfunding investment platform --></span></span></span>
 <br><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Please deposit <b>${{$amount}}</b> to <br></span></span></span>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Bank <b> {!!$project->investment->bank!!} </b>.</span></span></span><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account Name <b> {!!$project->investment->bank_account_name!!} </b>.</span></span></span><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">BSB <b> {!!$project->investment->bsb!!} </b>.</span></span></span><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account No <b> {!!$project->investment->bank_account_number!!} </b>.</span></span></span><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">SWIFT Code <b> {!!$project->investment->swift_code!!} </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Bank <b> @if($project->investment->bank){!!$project->investment->bank!!}@else Westpac @endif </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account Name <b> @if($project->investment->bank_account_name){!!$project->investment->bank_account_name!!}@else Konkrete Distributed Registries Ltd @endif </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">BSB <b> @if($project->investment->bsb){!!$project->investment->bsb!!}@else 033002 @endif </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Account No <b> @if($project->investment->bank_account_number){!!$project->investment->bank_account_number!!}@else 968825 @endif </b>.</span></span></span><br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">SWIFT Code <b> @if($project->investment->swift_code){!!$project->investment->swift_code!!}@else WPACAU2S @endif </b>.</span></span></span><br>
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Reference <b> INV{{ $investment->id }} </b>.</span></span></span><br><br>
 &nbsp;</div>
 
