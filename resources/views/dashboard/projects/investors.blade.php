@@ -52,11 +52,11 @@
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
 				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Applications</h3></a></li>
 				<li style="width: 30%;"><a data-toggle="tab" href="#accepted_applications" style="padding: 0em 2em"><h3 class="text-center">Accepted applications</h3></a></li>
-				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
-				<li style="width: 30%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
-				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
-				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
-				<li><a data-toggle="tab" href="#share_registry_new_tab" style="padding: 0em 2em"><h3 class="text-center">Share Registry</h3></a></li>
+				<li style="width: 20%;" class="hide"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
+				<li style="width: 30%;" class="hide"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
+				<li class="hide"><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
+				<li class="hide"><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
+				<li class="hide"><a data-toggle="tab" href="#share_registry_new_tab" style="padding: 0em 2em"><h3 class="text-center">Share Registry</h3></a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
