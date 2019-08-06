@@ -345,8 +345,8 @@
 					<div id="accepted_applications" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
 						<!-- <ul class="list-group">Hello</ul> -->
 						<div class="share-registry-actions">
-							<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend Annualized</button>
-							<button class="btn btn-primary issue-fixed-dividend-btn" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
+							<button class="btn btn-primary issue-dividend-btn hide" action="dividend">Issue Dividend Annualized</button>
+							<button class="btn btn-primary issue-fixed-dividend-btn hide" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
 							<button class="btn btn-primary repurchase-shares-btn" action="repurchase">Repurchase</button>
 						</div>
 						<form id="declare_dividend_form" action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
@@ -364,9 +364,9 @@
 							<span class="repurchase-statement hide"><small>Repurchase @if($project->share_vs_unit) shares @else units @endif at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per @if($project->share_vs_unit) share @else unit @endif: <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
 							<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 						</form>
-						<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right">
+						<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right ">
 							{{csrf_field()}}
-							<button type="submit" class="btn btn-default" id="generate_investor_statement"><b>Generate Investor Statement</b></button>
+							<button type="submit" class="btn btn-default hide" id="generate_investor_statement"><b>Generate Investor Statement</b></button>
 						</form>
 						<br><br>
 						<div class="">
