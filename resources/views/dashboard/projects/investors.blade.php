@@ -52,11 +52,11 @@
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
 				<li class="active" style="width: 20%;"><a data-toggle="tab" href="#investors_tab" style="padding: 0em 2em"><h3 class="text-center">Applications</h3></a></li>
 				<li style="width: 30%;"><a data-toggle="tab" href="#accepted_applications" style="padding: 0em 2em"><h3 class="text-center">Accepted applications</h3></a></li>
-				<li style="width: 20%;"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
-				<li style="width: 30%;"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
-				<li><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
-				<li><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
-				<li><a data-toggle="tab" href="#share_registry_new_tab" style="padding: 0em 2em"><h3 class="text-center">Share Registry</h3></a></li>
+				<li style="width: 20%;" class="hide"><a data-toggle="tab" href="#transactions_tab" style="padding: 0em 2em"><h3 class="text-center">Transactions</h3></a></li>
+				<li style="width: 30%;" class="hide"><a data-toggle="tab" href="#positions_tab" style="padding: 0em 2em"><h3 class="text-center">Position records</h3></a></li>
+				<li class="hide"><a data-toggle="tab" href="#eoi_tab" style="padding: 0em 2em"><h3 class="text-center">EOI (Coming Soon)</h3></a></li>
+				<li class="hide"><a data-toggle="tab" href="#expression_of_interest_tab" style="padding: 0em 2em"><h3 class="text-center">Project EOI</h3></a></li>
+				<li class="hide"><a data-toggle="tab" href="#share_registry_new_tab" style="padding: 0em 2em"><h3 class="text-center">Share Registry</h3></a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">
@@ -345,8 +345,8 @@
 					<div id="accepted_applications" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
 						<!-- <ul class="list-group">Hello</ul> -->
 						<div class="share-registry-actions">
-							<button class="btn btn-primary issue-dividend-btn" action="dividend">Issue Dividend Annualized</button>
-							<button class="btn btn-primary issue-fixed-dividend-btn" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
+							<button class="btn btn-primary issue-dividend-btn hide" action="dividend">Issue Dividend Annualized</button>
+							<button class="btn btn-primary issue-fixed-dividend-btn hide" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
 							<button class="btn btn-primary repurchase-shares-btn" action="repurchase">Repurchase</button>
 						</div>
 						<form id="declare_dividend_form" action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
@@ -364,9 +364,9 @@
 							<span class="repurchase-statement hide"><small>Repurchase @if($project->share_vs_unit) shares @else units @endif at $<input type="number" name="repurchase_rate" id="repurchase_rate" value="1" step="0.01"> per @if($project->share_vs_unit) share @else unit @endif: <input type="submit" class="btn btn-primary declare-repurchase-btn" value="Declare"></small></span>
 							<input type="hidden" class="investors-list" id="investors_list" name="investors_list">
 						</form>
-						<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right">
+						<form action="{{route('dashboard.investment.statement', [$project->id])}}" method="POST" class="text-right ">
 							{{csrf_field()}}
-							<button type="submit" class="btn btn-default" id="generate_investor_statement"><b>Generate Investor Statement</b></button>
+							<button type="submit" class="btn btn-default hide" id="generate_investor_statement"><b>Generate Investor Statement</b></button>
 						</form>
 						<br><br>
 						<div class="">
