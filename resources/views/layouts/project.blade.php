@@ -204,7 +204,7 @@ $_SESSION['code'] = md5(microtime(true));
                     <li class="nav-item"><a href="{{route('home')}}" class="scrollto hide" id="nav_home">Home</a></li>
                     <!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
                     <li class="nav-item"><a href="{{route('home')}}#how-it-works">How it works</a></li>
-                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects">Investments</a></li>
+                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects">Invoices</a></li>
                     @if($siteConfiguration->show_funding_options != '')
                     <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding">Funding</a></li>
                     @endif
