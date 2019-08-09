@@ -624,7 +624,7 @@
 													@endif
 													@else @if($invoice_sold === '1') href="{{route('projects.show', [$project])}}" @endif
 													@endif name="project-link" style="display: none;">
-													<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 50px;">
+													<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
 														<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 															<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
 															<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
@@ -765,7 +765,7 @@
 													@endif
 													@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif style="display: none;"
 													@endif>
-													<div class="" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 50px;">
+													<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
 														<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
 															<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
 															<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
