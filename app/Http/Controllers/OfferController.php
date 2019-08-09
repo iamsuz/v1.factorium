@@ -90,10 +90,7 @@ class OfferController extends Controller
       {
         return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
       }
-      if((int)$request->amount_to_invest % 5 != 0)
-      {
-        return redirect()->back()->withErrors(['Please enter amount in increments of $5 only']);
-      }
+     
       if((int)$maxAmount < (int)$request->amount_to_invest){
         return redirect()->back()->withErrors(['The amount to invest must be less than '.$maxAmount]);
       }
