@@ -34,7 +34,7 @@ What is Property or Real Estate Crowdfunding?
 				<a href="/pages/faq/#pdv" class="scrollto-faq font-regular first_color" style="color: #282a73; font-size:1.375em;">Property Development & Venture</a>
 			</h4>
 		</div> --}}
-		<div class="col-md-8 col-sm-8">
+		<div class="col-md-12 col-sm-12">
 			{{-- <h1 class="h1-faq first_color" style="font-size:3.25em;color:#2d2d4b;">General</h1>
 			<h3 class="font-regular first_color" style="font-size:1.375em;color:#282a73;">Basics</h3>
 			<div class="panel-group" id="accordion">
