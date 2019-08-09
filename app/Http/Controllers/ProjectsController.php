@@ -593,10 +593,6 @@ class ProjectsController extends Controller
         {
             return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
         }
-        if((int)$request->investment_amount % 5 != 0)
-        {
-            return redirect()->back()->withErrors(['Please enter amount in increments of $5 only']);
-        }
 
         $this->validate($request, [
             'first_name' => 'required',
