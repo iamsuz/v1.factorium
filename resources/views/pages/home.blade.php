@@ -222,7 +222,7 @@
 						<ul class="nav navbar-nav">
 							<li class="active nav-item"><a href="{{route('home')}}/#promo" data-href="{{route('home')}}/#promo" class="scrollto hide scroll-links reference-link-with-js fold-text-color" id="nav_home">Home</a></li>
 							<li class="nav-item"><a href="{{route('home')}}/#how-it-works" data-href="{{route('home')}}/#how-it-works" class="scrollto scroll-links reference-link-with-js fold-text-color">How it works</a></li>
-							<li class="nav-item"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js fold-text-color">Investments</a></li>
+							<li class="nav-item"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js fold-text-color">Invoices</a></li>
 							@if($siteConfiguration->show_funding_options != '')
 							<li class="nav-item"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js fold-text-color">Funding</a></li>
 							@endif
@@ -286,7 +286,7 @@
 							<li class="nav-item"><a href="{{route('home')}}" data-href="{{route('home')}}" class="scrollto hide scroll-links reference-link-with-js" id="nav_home">Home</a></li>
 							<!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
 							<li class="nav-item"><a href="{{route('home')}}/#how-it-works" data-href="{{route('home')}}/#how-it-works" class="scrollto scroll-links reference-link-with-js">How it works</a></li>
-							<li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js">Investments</a></li>
+							<li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#projects" data-href="{{route('home')}}/#projects" class="scrollto scroll-links reference-link-with-js">Invoices</a></li>
 							@if($siteConfiguration->show_funding_options != '')
 							<li class="nav-item" style="color: #eee;"><a href="{{route('home')}}/#funding" data-href="{{route('home')}}/#funding" class="scrollto scroll-links reference-link-with-js">Funding</a></li>
 							@endif
