@@ -168,7 +168,7 @@ class AppMailer
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.projectSubmit';
-        $this->subject = 'New Project Submitted';
+        $this->subject = 'New Receivable Submitted';
         $this->data = compact('investor', 'project');
 
         $this->deliver();
