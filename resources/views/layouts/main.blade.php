@@ -81,78 +81,78 @@ $_SESSION['code'] = md5(microtime(true));
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/Html5shiv/3.7.0/Html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+<![endif]-->
 
 
+@if($siteConfiguration->font_family != '')
+<link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
+@endif
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
+<style type="text/css">
     @if($siteConfiguration->font_family != '')
-    <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
-    @endif
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
-    <style type="text/css">
-        @if($siteConfiguration->font_family != '')
-        /*Override fonts*/
-        body, .font-regular, p {
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 400;
-        }
-        .heading-font-light, .h1-faq, h1>small, h2>small, h3>small, h4>small{
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 300;
-        }
-        .font-semibold{
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 600;
-        }
-        h1, h2, h3, h4, a, .font-bold {
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 700;
-        }
-        @endif
-        .investment-title1-description-section, .csef-text {
-            color: #fff !important;
-            text-align: center;
-        }
-        .swal-footer{
-            text-align: center;
-        }
+    /*Override fonts*/
+    body, .font-regular, p {
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 400;
+  }
+  .heading-font-light, .h1-faq, h1>small, h2>small, h3>small, h4>small{
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 300;
+  }
+  .font-semibold{
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 600;
+  }
+  h1, h2, h3, h4, a, .font-bold {
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 700;
+  }
+  @endif
+  .investment-title1-description-section, .csef-text {
+    color: #fff !important;
+    text-align: center;
+}
+.swal-footer{
+    text-align: center;
+}
 
-        .konkrete-slide-link {
-            color: #337ab7;
-        }
+.konkrete-slide-link {
+    color: #337ab7;
+}
 
-        .konkrete-slide-link:hover {
-            color: #23527c !important;
-            text-decoration: underline !important;
-        }
+.konkrete-slide-link:hover {
+    color: #23527c !important;
+    text-decoration: underline !important;
+}
 
-        .konkrete-slide-link:visited {
-            color: #23527c !important;
-        }
+.konkrete-slide-link:visited {
+    color: #23527c !important;
+}
 
-        .konkrete-slide-link:focus {
-            color: #23527c !important;
-            text-decoration: underline !important;
-        }
+.konkrete-slide-link:focus {
+    color: #23527c !important;
+    text-decoration: underline !important;
+}
 
-    </style>
+</style>
 
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<!-- Google Analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', 'UA-73934803-1', 'auto');
-        ga('send', 'pageview');
-    </script>
+    ga('create', 'UA-73934803-1', 'auto');
+    ga('send', 'pageview');
+</script>
 </head>
 <body data-spy="scroll">
     <?php
-  if(isset($_SESSION['code'])){
+    if(isset($_SESSION['code'])){
     // echo 'code:'.$_SESSION['code'];
-  }
-  ?>
+    }
+    ?>
     <!-- Google tag manager body script if set  -->
     @if($siteConfiguration->tag_manager_body)
     {!!$siteConfiguration->tag_manager_body!!}
@@ -199,27 +199,27 @@ $_SESSION['code'] = md5(microtime(true));
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item"><a href="{{route('home')}}" class="scrollto hide" id="nav_home">Home</a></li>
                     <!-- <li class="nav-item"><a href="{{route('home')}}#what-is-this" class="scrollto">WHAT IS THIS</a></li> -->
-                    <li class="nav-item"><a href="{{route('home')}}#how-it-works">How it works</a></li>
-                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects">Invoices</a></li>
+                    <li class="nav-item "><a href="{{route('home')}}#how-it-works" class="fold-text-color">How it works</a></li>
+                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#projects" class="fold-text-color">Invoices</a></li>
                     @if($siteConfiguration->show_funding_options != '')
-                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding">Funding</a></li>
+                    <li class="nav-item" style="color: #eee;"><a href="{{route('home')}}#funding" class="fold-text-color">Funding</a></li>
                     @endif
-                    <li class="nav-item"><a href="/pages/team">About us</a></li>
-                    <li class="nav-item"><a href="/pages/faq">FAQ</a></li>
+                    <li class="nav-item"><a href="/pages/team" class="fold-text-color">About us</a></li>
+                    <li class="nav-item"><a href="/pages/faq" class="fold-text-color">FAQ</a></li>
                     @if (Auth::guest())
-                    <li class="nav-item"><a href="{{route('users.create')}}">Register</a></li>
-                    <li class="nav-item"><a href="{{route('users.login')}}">Sign in</a></li>
+                    <li class="nav-item"><a href="{{route('users.create')}}" class="fold-text-color">Register</a></li>
+                    <li class="nav-item"><a href="{{route('users.login')}}" class="fold-text-color">Sign in</a></li>
                     @else
                     <li class="dropdown nav-item last">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            My Account <span class="caret"></span>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" >
+                            <span class="fold-text-color">My Account</span> <span class="caret fold-text-color"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             @if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master'))
-                            <li class="nav-item"><a href="{{route('dashboard.index')}}">Dashboard</a></li>
+                            <li class="nav-item"><a href="{{route('dashboard.index')}}" class="fold-text-color">Dashboard</a></li>
                             @endif
-                            <li class="nav-item"><a href="{{route('users.show',[Auth::user()])}}">Profile</a></li>
-                            <li class="nav-item"><a href="{{route('users.logout')}}">Logout</a></li>
+                            <li class="nav-item"><a href="{{route('users.show',[Auth::user()])}}" class="fold-text-color">Profile</a></li>
+                            <li class="nav-item"><a href="{{route('users.logout')}}" class="fold-text-color">Logout</a></li>
                         </ul>
                     </li>
                     <li class="hide"><a href="#"><i class="fa fa-bell"></i></a></li>
@@ -299,22 +299,22 @@ $_SESSION['code'] = md5(microtime(true));
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 text-center">
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
-                        <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
-                        <li class="footer-list-item"><a href="{{$siteConfiguration->blog_link_new}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
+                        <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Home</span></a></li>
+                        <li class="footer-list-item"><a href="{{$siteConfiguration->blog_link_new}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Blog</span></a></li>
                         <!-- @if($siteConfiguration->show_funding_options != '')
                         <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold"  style="color:#fff;" style="font-size: 16px;">Terms & conditions</span></a></li>
+                        <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold fold-text-color"  style="color:#fff;" style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
-                        <li class="footer-list-item"><a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a></li>
+                        <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Privacy</span></a></li><br>
+                        <li class="footer-list-item"><a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a></li>
                         {{-- <li class="footer-list-item"><a href="/pages/faq" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a></li> --}}
                         <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                         <li class="footer-list-item">
-                            <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+                            <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
                         </li>
                         <li class="footer-list-item">
-                            <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+                            <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
                         </li>
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
@@ -331,15 +331,15 @@ $_SESSION['code'] = md5(microtime(true));
         <div class="row text-center @if(!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_powered_by_estatebaron) hide @endif" style="padding-top: 20px;">
             <a href="https://konkrete.io" target="_blank"><img style="width: 50px;" src="{{asset('assets/images/konkrete.png')}}"></a>
             <p>
-                <span style="color: #fff;">Built on </span><a href="https://konkrete.io" target="_blank" style="cursor: pointer; color: #fff;" class="a-link">Konkrete</a>
+                <span style="" class="fold-text-color">Built on </span><a href="https://konkrete.io" target="_blank" style="cursor: pointer; color: #fff;" class="a-link fold-text-color">Konkrete</a>
             </p>
         </div>
         <br>
         <p class="investment-title1-description-section text-justify" style="font-size:16px;">
-        <small><small>@if($siteConfiguration->compliance_description != '')
-        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
-                    The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
-        @endif</small></small>
+            <small><small class="fold-text-color">@if($siteConfiguration->compliance_description != '')
+                {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
+                The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
+            @endif</small></small>
         </p>
     </div>
 </footer>
@@ -370,23 +370,23 @@ $_SESSION['code'] = md5(microtime(true));
 <script type="text/javascript">
 
     // Signin bonus message
-        @if (Session::has('loginaction'))
-        @if(\Cookie::get('login_bonus'))
-        swal("Welcome back {{Auth::user()->first_name}}", "We have added {{\Cookie::get('login_bonus')}} KONKRETE as a sign in bonus", "success", {
-            buttons: {
-                start_over: "Continue to site >>"
-            }
-        });
-        $('.swal-icon').replaceWith('<div style="margin-top: 25px;"><center><a href="https://konkrete.io" target="_blank"><img src="{{asset('assets/images/konkrete_logo_dark.png')}}" width="100px"></a></center></div>');
-        $('.swal-text').replaceWith('<div class="swal-text text-center"><p>We have added {{\Cookie::get("login_bonus")}} KONKRETE as a sign in bonus</p><a href="https://www.konkrete.io" target="_blank" class="konkrete-slide-link">What is the KONKRETE crypto token?</a><br><small class="text-grey">Login everyday to receive bonus KONKRETE every 24 hours</small></div>');
-        @else
-        $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
-        $('#session_flash_message').show()
-        setInterval(function() {
-            $('#session_flash_message').fadeOut(500);
-        }, 2500);
-        @endif
-        @endif
+    @if (Session::has('loginaction'))
+    @if(\Cookie::get('login_bonus'))
+    swal("Welcome back {{Auth::user()->first_name}}", "We have added {{\Cookie::get('login_bonus')}} KONKRETE as a sign in bonus", "success", {
+        buttons: {
+            start_over: "Continue to site >>"
+        }
+    });
+    $('.swal-icon').replaceWith('<div style="margin-top: 25px;"><center><a href="https://konkrete.io" target="_blank"><img src="{{asset('assets/images/konkrete_logo_dark.png')}}" width="100px"></a></center></div>');
+    $('.swal-text').replaceWith('<div class="swal-text text-center"><p>We have added {{\Cookie::get("login_bonus")}} KONKRETE as a sign in bonus</p><a href="https://www.konkrete.io" target="_blank" class="konkrete-slide-link">What is the KONKRETE crypto token?</a><br><small class="text-grey">Login everyday to receive bonus KONKRETE every 24 hours</small></div>');
+    @else
+    $('body').append('<div id="session_flash_message" style=" position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 10000;background-color: rgba(255,255,255,0.7); display: none;"><div class="text-center" style="position: absolute; background-color: rgba(0, 0, 0, 0.7); border-radius: 10px; padding: 30px 30px; color: #fff; top: 50%; left:20%; border: 1px solid rgba(0, 0, 0, 0.2); font-size: 250%; width: 60%"><span>Welcome {{Auth::user()->first_name}}</span></div></div>');
+    $('#session_flash_message').show()
+    setInterval(function() {
+        $('#session_flash_message').fadeOut(500);
+    }, 2500);
+    @endif
+    @endif
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -410,6 +410,7 @@ $_SESSION['code'] = md5(microtime(true));
         $('.first_color').css('color', '#{{$color->nav_footer_color}}');
         $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
         $('.second_color').css('color','#{{$color->heading_color}}');
+        $('.fold-text-color').css('color','#{{$color->fold_text_color}}');
         $("a").mouseover(function() {
             $(this).css('color', '#{{$color->heading_color}}');
         }).mouseout(function() {
@@ -419,6 +420,9 @@ $_SESSION['code'] = md5(microtime(true));
             $(this).css('color', '#{{$color->heading_color}}');
         }).mouseout(function() {
             $(this).css('color', '#fff');
+        });
+        $('.fold-text-color').mouseout(function () {
+            $(this).css('color', '#{{$color->fold_text_color}}');
         });
         @endif
 
