@@ -211,15 +211,15 @@ $_SESSION['code'] = md5(microtime(true));
                     <li class="nav-item"><a href="{{route('users.login')}}" class="fold-text-color">Sign in</a></li>
                     @else
                     <li class="dropdown nav-item last">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" >
-                            <span class="fold-text-color">My Account</span> <span class="caret fold-text-color"></span>
+                        <a href="#" class="dropdown-toggle fold-text-color" data-toggle="dropdown" role="button" aria-expanded="false">
+                            My Account <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             @if(Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master'))
-                            <li class="nav-item"><a href="{{route('dashboard.index')}}" class="fold-text-color">Dashboard</a></li>
+                            <li class="nav-item"><a href="{{route('dashboard.index')}}">Dashboard</a></li>
                             @endif
-                            <li class="nav-item"><a href="{{route('users.show',[Auth::user()])}}" class="fold-text-color">Profile</a></li>
-                            <li class="nav-item"><a href="{{route('users.logout')}}" class="fold-text-color">Logout</a></li>
+                            <li class="nav-item"><a href="{{route('users.show',[Auth::user()])}}">Profile</a></li>
+                            <li class="nav-item"><a href="{{route('users.logout')}}">Logout</a></li>
                         </ul>
                     </li>
                     <li class="hide"><a href="#"><i class="fa fa-bell"></i></a></li>
@@ -300,21 +300,21 @@ $_SESSION['code'] = md5(microtime(true));
                 <div class="col-md-4 col-md-offset-4 text-center">
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
                         <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Home</span></a></li>
-                        <li class="footer-list-item"><a href="{{$siteConfiguration->blog_link_new}}" target="_blank" style="color:#fff;" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Blog</span></a></li>
+                        <li class="footer-list-item"><a href="{{$siteConfiguration->blog_link_new}}" target="_blank" style="color:#fff;" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
                         <!-- @if($siteConfiguration->show_funding_options != '')
                         <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>
                         @endif -->
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link"><span class="font-semibold fold-text-color"  style="color:#fff;" style="font-size: 16px;">Terms & conditions</span></a></li>
+                        <li class="footer-list-item"><a href="@if($siteConfiguration->terms_conditions_link){{$siteConfiguration->terms_conditions_link}}@else{{route('site.termsConditions')}}@endif" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Terms & conditions</span></a></li>
                         <span style="color:#fff;"> </span>
-                        <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Privacy</span></a></li><br>
-                        <li class="footer-list-item"><a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a></li>
+                        <li class="footer-list-item"><a href="@if($siteConfiguration->privacy_link){{$siteConfiguration->privacy_link}}@else https://estatebaron.com/pages/privacy @endif"  style="color:#fff;" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Privacy</span></a></li><br>
+                        <li class="footer-list-item"><a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a></li>
                         {{-- <li class="footer-list-item"><a href="/pages/faq" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">FAQ</span></a></li> --}}
                         <!-- <li class="footer-list-item"><a href="{{$siteConfiguration->media_kit_link}}" download style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Media Kit</span></a></li> -->
                         <li class="footer-list-item">
-                            <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
+                            <a href="https://www.legislation.gov.au/Details/F2017L01198" style="color:#fff;" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">EXPLANATORY STATEMENT for ASIC Corporations (Factoring Arrangements) Instrument 2017/794</span></a>
                         </li>
                         <li class="footer-list-item">
-                            <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+                            <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
                         </li>
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
@@ -331,7 +331,7 @@ $_SESSION['code'] = md5(microtime(true));
         <div class="row text-center @if(!App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->show_powered_by_estatebaron) hide @endif" style="padding-top: 20px;">
             <a href="https://konkrete.io" target="_blank"><img style="width: 50px;" src="{{asset('assets/images/konkrete.png')}}"></a>
             <p>
-                <span style="" class="fold-text-color">Built on </span><a href="https://konkrete.io" target="_blank" style="cursor: pointer; color: #fff;" class="a-link fold-text-color">Konkrete</a>
+                <span style="color: #fff;" class="fold-text-color">Built on </span><a href="https://konkrete.io" target="_blank" style="cursor: pointer; color: #fff;" class="a-link fold-text-color">Konkrete</a>
             </p>
         </div>
         <br>
