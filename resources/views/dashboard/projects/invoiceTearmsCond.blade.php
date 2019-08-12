@@ -1,8 +1,8 @@
 <div class="row">
-	<div class="col-md-12 text-center">
+	<div class="col-md-12">
 		<h3>INVOICE FACTORING TERMS AND CONDITIONS</h3>
 
-		<p>This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b>{{$investment->created_at}}</b> (“<b>Effective Date</b>”);</p>
+		<p>This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b>{{Carbon\Carbon::now()}}</b> (“<b>Effective Date</b>”);</p>
 		<p>
 			Factorium operates an online technology platform, <a href="https://factorium.co">www.factorium.co</a> (the “Platform”), which facilitates invoice discounting and reverse invoice discounting transactions between sellers, customers and Financiers registered on the Platform. The Seller, the Customer and the Financier are registered on the Platform.
 		</p>
@@ -286,7 +286,7 @@
 			ANNEXURE A<br>
 			<b>DETAILS OF THE INVOICE AND DETAILS OF INVOICE RECEIVABLE</b>
 		</p>
-		<table class="table table-bordered" width="60%;" style="margin-left: 20%" >
+		<table class="table table-bordered" width="100%;" >
 			<thead>
 			</thead>
 			<tbody>

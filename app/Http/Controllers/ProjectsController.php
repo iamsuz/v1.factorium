@@ -118,9 +118,11 @@ class ProjectsController extends Controller
         } else {
             return redirect()->back()->withInput()->withMessage('<p class="alert alert-danger text-center">Enter the correct address</p>');
         }
+        $request['title'] = 'Invoice';
         $project = Project::create($request->all());
         $project->project_rank = $project->id;
         $project->eb_project_rank = $project->id;
+        $project->title = 'Invoice '.$project->id;
         $project->save();
 
         $location = new \App\Location($request->all());

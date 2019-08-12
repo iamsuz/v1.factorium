@@ -24,7 +24,7 @@ class ProjectRequest extends Request
     public function rules()
     {
         return [
-            'title'=>'required|min:3|max:50',
+            'title'=>'min:3|max:50',
             'description'=>'required',
             'invoice_amount'=>'required|integer',
             'asking_amount'=>'required|integer',

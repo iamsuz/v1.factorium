@@ -28,7 +28,7 @@ Create New Project | @parent
 				</div>
 				@endif
 				{!! Form::open(array('route'=>'projects.store', 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true)) !!}
-				<fieldset>
+				{{-- <fieldset>
 					<br>
 					<div class="row">
 						<div class=" @if($errors->first('title')){{'has-error'}} @endif">
@@ -39,7 +39,7 @@ Create New Project | @parent
 							</div>
 						</div>
 					</div>
-				</fieldset>
+				</fieldset> --}}
 
 				<fieldset>
 					<br>
