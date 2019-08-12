@@ -299,7 +299,7 @@ $_SESSION['code'] = md5(microtime(true));
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 text-center">
                     <ul class="list-inline footer-list " data-wow-duration="1.5s" data-wow-delay="0.4s" style="margin:0px;">
-                        <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link"><span class="font-semibold fold-text-color" style="font-size: 16px;">Home</span></a></li>
+                        <li class="footer-list-item"><a href="{{route('home')}}" style="color:#fff;" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Home</span></a></li>
                         <li class="footer-list-item"><a href="{{$siteConfiguration->blog_link_new}}" target="_blank" style="color:#fff;" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Blog</span></a></li>
                         <!-- @if($siteConfiguration->show_funding_options != '')
                         <li class="footer-list-item"><a href="{{$siteConfiguration->funding_link}}" style="color:#fff;" class="a-link"><span class="font-semibold" style="font-size: 16px;">Funding</span></a></li><br>

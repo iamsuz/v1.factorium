@@ -16,9 +16,9 @@ What is Property or Real Estate Crowdfunding?
 <div class="container">
 	<br>
 	@if (Session::has('message'))
-		<div class="alert alert-success text-center" role="alert">
-			{!! Session::get('message') !!}
-		</div>
+	<div class="alert alert-success text-center" role="alert">
+		{!! Session::get('message') !!}
+	</div>
 	@endif
 
 	<h1 class="text-center first_color" id="general" style="font-size:2.625em;">Frequently Asked Questions</h1>
@@ -284,26 +284,26 @@ What is Property or Real Estate Crowdfunding?
 				@else
 					<div class="alert alert-danger"><strong>No FAQ available for this category</strong></div>
 				@endif
- --}}
- 				@if (count($faq) > 0)
-					@foreach($faq as $venture)
-					<div class="panel panel-info">
-						<div data-toggle="collapse" data-target="#collapse{{$venture->id}}" class="panel-heading collapse-header" style="display: inline-block; border-color: #fff;"><i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>
-							<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="font-bold panel-title first_color">
-								{{$venture->question}}
-							</h4>
-						</div>
-						@if($isAdmin)
-						<span class="faq-delete" value="{{$venture->id}}" style="display: inline-block;"><i class="fa fa-trash" aria-hidden="true" style="color:#f75733; cursor: pointer;"></i></span>
-						@endif
-						<div id="collapse{{$venture->id}}" class="panel-collapse collapse">
-							<div class="panel-body" style="padding-left:45px;"><p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">{!! nl2br(e($venture->answer)) !!}</p>
-							</div>
+				--}}
+				@if (count($faq) > 0)
+				@foreach($faq as $venture)
+				<div class="panel panel-info">
+					<div data-toggle="collapse" data-target="#collapse{{$venture->id}}" class="panel-heading collapse-header" style="display: inline-block; border-color: #fff;"><i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>
+						<h4 style="padding-left:30px; font-size:1em;" class="font-bold panel-title first_color second_color">
+							{{$venture->question}}
+						</h4>
+					</div>
+					@if($isAdmin)
+					<span class="faq-delete" value="{{$venture->id}}" style="display: inline-block;"><i class="fa fa-trash" aria-hidden="true" style="color:#f75733; cursor: pointer;"></i></span>
+					@endif
+					<div id="collapse{{$venture->id}}" class="panel-collapse collapse">
+						<div class="panel-body" style="padding-left:45px;"><p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color second_color">{!! nl2br(e($venture->answer)) !!}</p>
 						</div>
 					</div>
-					@endforeach	
+				</div>
+				@endforeach	
 				@else
-					<div class="alert alert-danger"><strong>No FAQ available for this category</strong></div>
+				<div class="alert alert-danger"><strong>No FAQ available for this category</strong></div>
 				@endif
 				@if($isAdmin)
 				<button type="button" name="add_new_faq" id="add_new_faq" onclick="location.href='{{ URL::route('pages.faq.create') }}'" class="btn btn-primary btn-block" style="margin: 30px 0px 30px 0px;">Add New FAQ</button>
@@ -311,148 +311,148 @@ What is Property or Real Estate Crowdfunding?
 			</div> 
 		</div>
 		<br><br>
-{{--		<div class="panel-group col-md-8 col-md-offset-2 text-justify" id="accordion">--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse1"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">What does this site do--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse1" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">This site lists various opportunities to invest in primarily real estate related projects.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse2"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">How does this work?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse2" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Various property related investment opportunities are listed on this site. You can read through the details which will be provided on the Project details page in the form of a Prospectus (or a similar offer document such as an Information Memorandum or Product Disclosure Statement.</p>--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">It will have all the details regarding the project such as location, duration, expected return and  potential risks. You should read through it carefully and determine if this is an appropriate investment for you and if necessary consult your financial adviser. If you decide the specific project is something you wish to invest in then you can click on the invest now or express interest button and fill up the application form online which will be listed there with your details and the amount you wish to invest.</p>--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">You will be provided Bank account details of the project company where you should then proceed to transfer the required funds. If your application is accepted then you will be issued a share or unit certificate indicating your investment in the project.</p>--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">You will also be provided regular updates in the form of pictures, videos etc as the project progresses on the website as well as via email.</p>--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Once the project concludes you will be paid your promised return based on the Projects performance and in accordance with the offer documents terms.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse3"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">What is the expected Return, Duration?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse3" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Every project is different and details of the projects expected returns and duration can be found on that particular projects detail page and on the Prospectus or other offer document.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse4"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Who owns this site?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse4" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">This site is owned by {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!}. </p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse5"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Who operates this site?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse5" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Tech Baron PTY LTD (ABN 67617252909) (TB) provides technology infrastructure and support services to operate this site. TB is a Corporate Authorised Representative {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->car_no !!} of AFSL {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->afsl_no !!} and is authorized to deal in securities. TB is however not responsible for the content of this website which is the responsibility of {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!}. The responsibility of the specific offers made on this website is that of the specific Project principals whose details can be found on the Prospectus or the Offer document.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse6"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Can everyone invest in the opportunities listed here?</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse6" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Typically most offers here will be made on the back of a Prospectus and will be open to Retail investors across Australia.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse7"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Can international investors invest?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse7" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">The offers are made to only investors in Australia and are not made in other jurisdictions such as the USA where it may not be valid to do so.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse8"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Can I invest using my SMSF?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse8" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Investments typically take the form of shares in a Public Unlisted companies. If your SMSF allows investment in securities then it may be suitable. Please consult your financial adviser.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse9"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Are the returns guaranteed or is the investment risky?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse9" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Every investment carries risk, you should consider loss of entire invested capital. You should also review the Prospectus or other offer documents in detail for a list of potential risks and if necessary consult a financial adviser to determine if this is a suitable investment for you.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--			<div class="panel panel-info">--}}
-{{--				<div data-toggle="collapse" data-target="#collapse10"  class="panel-heading collapse-header" style="display: inline-block;">--}}
-{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
-{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">What are the tax implications of this investment?--}}
-{{--					</h4>--}}
-{{--				</div>--}}
-{{--				<div id="collapse10" class="panel-collapse collapse">--}}
-{{--					<div class="panel-body" style="padding-left:45px;">--}}
-{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">We cannot give you Tax advice, please consult your Tax adviser. You should also review the Prospectus which may have details about the tax impact of that particular investment.</p>--}}
-{{--					</div>--}}
-{{--				</div>--}}
-{{--			</div>--}}
-{{--		</div>--}}
-{{--	</div>--}}
+		{{--		<div class="panel-group col-md-8 col-md-offset-2 text-justify" id="accordion">--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse1"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">What does this site do--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse1" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">This site lists various opportunities to invest in primarily real estate related projects.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse2"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">How does this work?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse2" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Various property related investment opportunities are listed on this site. You can read through the details which will be provided on the Project details page in the form of a Prospectus (or a similar offer document such as an Information Memorandum or Product Disclosure Statement.</p>--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">It will have all the details regarding the project such as location, duration, expected return and  potential risks. You should read through it carefully and determine if this is an appropriate investment for you and if necessary consult your financial adviser. If you decide the specific project is something you wish to invest in then you can click on the invest now or express interest button and fill up the application form online which will be listed there with your details and the amount you wish to invest.</p>--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">You will be provided Bank account details of the project company where you should then proceed to transfer the required funds. If your application is accepted then you will be issued a share or unit certificate indicating your investment in the project.</p>--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">You will also be provided regular updates in the form of pictures, videos etc as the project progresses on the website as well as via email.</p>--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Once the project concludes you will be paid your promised return based on the Projects performance and in accordance with the offer documents terms.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse3"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">What is the expected Return, Duration?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse3" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Every project is different and details of the projects expected returns and duration can be found on that particular projects detail page and on the Prospectus or other offer document.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse4"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Who owns this site?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse4" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">This site is owned by {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!}. </p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse5"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Who operates this site?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse5" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Tech Baron PTY LTD (ABN 67617252909) (TB) provides technology infrastructure and support services to operate this site. TB is a Corporate Authorised Representative {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->car_no !!} of AFSL {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->afsl_no !!} and is authorized to deal in securities. TB is however not responsible for the content of this website which is the responsibility of {!! App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->client_name !!}. The responsibility of the specific offers made on this website is that of the specific Project principals whose details can be found on the Prospectus or the Offer document.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse6"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Can everyone invest in the opportunities listed here?</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse6" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Typically most offers here will be made on the back of a Prospectus and will be open to Retail investors across Australia.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse7"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Can international investors invest?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse7" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">The offers are made to only investors in Australia and are not made in other jurisdictions such as the USA where it may not be valid to do so.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse8"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Can I invest using my SMSF?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse8" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Investments typically take the form of shares in a Public Unlisted companies. If your SMSF allows investment in securities then it may be suitable. Please consult your financial adviser.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse9"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">Are the returns guaranteed or is the investment risky?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse9" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">Every investment carries risk, you should consider loss of entire invested capital. You should also review the Prospectus or other offer documents in detail for a list of potential risks and if necessary consult a financial adviser to determine if this is a suitable investment for you.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+			{{--			<div class="panel panel-info">--}}
+				{{--				<div data-toggle="collapse" data-target="#collapse10"  class="panel-heading collapse-header" style="display: inline-block;">--}}
+					{{--					<i class="indicator second_color glyphicon glyphicon-plus  pull-left" style="color:#fed405;"></i>--}}
+					{{--					<h4 style="padding-left:30px; color:#282a73; font-size:1em;" class="panel-title font-bold first_color">What are the tax implications of this investment?--}}
+					{{--					</h4>--}}
+				{{--				</div>--}}
+				{{--				<div id="collapse10" class="panel-collapse collapse">--}}
+					{{--					<div class="panel-body" style="padding-left:45px;">--}}
+						{{--						<p style="font-size:0.875em; color:#2d2a6e;" class="font-regular first_color">We cannot give you Tax advice, please consult your Tax adviser. You should also review the Prospectus which may have details about the tax impact of that particular investment.</p>--}}
+					{{--					</div>--}}
+				{{--				</div>--}}
+			{{--			</div>--}}
+		{{--		</div>--}}
+	{{--	</div>--}}
 	<br><br>
 	<a href="#" class="go-top font-regular" style="z-index:1000;"> <i class="fa fa-chevron-up" aria-hidden="true"></i> Go Top</a>
-<!--inner pages end -->
+	<!--inner pages end -->
 </div>
 
 @if($isAdmin)
 <div id="confirm" class="hide" style="display: block;">
-  <div id="confirm_faq_delete" class="modal" style="background-color: #FFFFFF; border: 10px; max-height: 150px; max-width: 380px; left: 35%;top: 20%; text-align: center; border-radius: 5px; padding: 20px 0px 0px 0px;">
-	  <div class="modal-body">
-	    Are you sure, you want to delete the FAQ?
-	  </div>
-	  <div class="modal-footer">
-	    <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
-	    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-	  </div>
-  </div>
+	<div id="confirm_faq_delete" class="modal" style="background-color: #FFFFFF; border: 10px; max-height: 150px; max-width: 380px; left: 35%;top: 20%; text-align: center; border-radius: 5px; padding: 20px 0px 0px 0px;">
+		<div class="modal-body">
+			Are you sure, you want to delete the FAQ?
+		</div>
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+			<button type="button" data-dismiss="modal" class="btn">Cancel</button>
+		</div>
+	</div>
 </div>
 @endif
 
@@ -497,16 +497,22 @@ What is Property or Real Estate Crowdfunding?
 		window.scrollTo(0, 1);
 		reflowFixedPositions();
 
+		$(function () {
+			@if($color)
+			$('.second_color').css('color','#{{$color->heading_color}}');
+			@endif
+		});
+
 		$('.faq-delete').on('click',function(){
 			var faq_id = $(this).attr('value');
 			$('#confirm').removeClass('hide');
 			$('#confirm_faq_delete').modal({ backdrop: 'static', keyboard: false })
-        		.one('click', '#delete', function() {
-        			var newRoute = "{{ URL::route('pages.faq.delete', ['%faq_id%']) }}";
-        			newRoute = newRoute.replace('%faq_id%', faq_id);
-        			console.log(newRoute);
-        			document.location.href = newRoute;
-        	});
+			.one('click', '#delete', function() {
+				var newRoute = "{{ URL::route('pages.faq.delete', ['%faq_id%']) }}";
+				newRoute = newRoute.replace('%faq_id%', faq_id);
+				console.log(newRoute);
+				document.location.href = newRoute;
+			});
 		});
 	});
 </script>
