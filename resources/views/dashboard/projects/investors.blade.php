@@ -347,7 +347,6 @@
 						<div class="share-registry-actions">
 							<button class="btn btn-primary issue-dividend-btn hide" action="dividend">Issue Dividend Annualized</button>
 							<button class="btn btn-primary issue-fixed-dividend-btn hide" action="fixed-dividend" style="margin: 0 1rem;">Issue Fixed Dividend</button>
-							<button class="btn btn-primary repurchase-shares-btn" action="repurchase">Repurchase</button>
 						</div>
 						<form id="declare_dividend_form" action="{{route('dashboard.investment.declareDividend', [$project->id])}}" method="POST">
 							{{csrf_field()}}
@@ -443,14 +442,16 @@
 										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
 										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
 										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
-										<td>
+										<td class="text-center">
 											@if($shareInvestment->is_repurchased)
 											<strong>Repurchased</strong>
 											@else
 											@if($shareInvestment->is_cancelled)
 											<strong>Cancelled</strong>
 											@else
-											<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a>
+											<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a><br><br>
+											<button class="btn btn-primary" action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}">Repay</button><br><br>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}">Partial Repay</button>
 											@endif
 											@endif
 										</td>
@@ -740,12 +741,12 @@
 						</table>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
 </div>
-
+@include('dashboard.includes.repayModal')
+@include('dashboard.includes.partialRepayModal')
 <!--Dividend confirm Modal -->
 <div id="dividend_confirm_modal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
@@ -801,7 +802,12 @@
 			$(this).hide();
 			dad.find('input[type="text"]').show().focus();
 		});
-
+		$('#repayBtn').on('click',function (e) {
+			$('#repayInvestor').val($('#repayBtn').attr('data-id'));
+		});
+		$('#partialRepayBtn').on('click',function (e) {
+			$('#partialInvestor_list').val($('#partialRepayBtn').attr('data-id'));
+		})
 		$('input[type=text]').focusout(function() {
 			var dad = $(this).parent();
 			dad.submit();
@@ -972,8 +978,8 @@
 
 		// show select checkbox for share registry
 		$('.issue-dividend-btn, .repurchase-shares-btn, .issue-fixed-dividend-btn').click(function(e){
-			$('.select-check').removeClass('hide');
-			$('.share-registry-actions').addClass('hide');
+			// $('.select-check').removeClass('hide');
+			// $('.share-registry-actions').addClass('hide');
 			if($(this).attr('action') == "dividend"){
 				$('.declare-statement').removeClass('hide');
 			}else if($(this).attr('action') == "fixed-dividend"){

@@ -100,6 +100,7 @@
 			<p style="font-size: 80px;height: 100px;font-family: 'Mr De Haviland' !important; font-style: italic; font-variant: normal; font-weight: 100; line-height: 15px; ">{{$investment->signature_data_type}}</p>
 			@endif
 		</div>
+		@include('dashboard.projects.invoiceTearmsCond')
 	</div>
 
 </body>

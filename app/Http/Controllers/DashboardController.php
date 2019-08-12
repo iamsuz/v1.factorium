@@ -850,7 +850,7 @@ class DashboardController extends Controller
             $subject = 'Fixed Dividend declared for '.$project->title;
             foreach ($investments as $investment) {
                 // Save details to transaction table
-                $dividendAmount = round($investment->amount * ((int)$dividendPercent/100));
+                $dividendAmount = round($investment->total_projected_costs * ((int)$dividendPercent/100));
                 $shareNumber = explode('-', $investment->share_number);
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
                 if($project->use_tokens){
