@@ -3,29 +3,36 @@
 <head>
 	<title></title>
 	<style type="text/css">
-	body{
-		padding: 2em 6em;
-	}
-	*{
-		font-family: 'Open Sans', sans-serif;
-		text-align: justify;
-	}
-	input[type="text"]{
-		width: 100% !important;
-		min-height: 32px !important;
-		padding: 0.5em 1em;
-		font-size: 16px;
-		/*border-radius: 5px;*/
-	}
-	hr{
-		width: 100% !important;
-	}
-	input[type=checkbox]:before {
-		font-family: DejaVu Sans;
-	}
-	input[type=checkbox] { display: inline; }
-</style>
-<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
+		body{
+			padding: 2em 6em;
+		}
+		*{
+			font-family: 'Open Sans', sans-serif;
+			text-align: justify;
+		}
+		input[type="text"]{
+			width: 100% !important;
+			min-height: 32px !important;
+			padding: 0.5em 1em;
+			font-size: 16px;
+			/*border-radius: 5px;*/
+		}
+		hr{
+			width: 100% !important;
+		}
+		input[type=checkbox]:before {
+			font-family: DejaVu Sans;
+		}
+		input[type=checkbox] { display: inline; }
+		table {
+			border-collapse: collapse;
+		}
+
+		table, th, td {
+			border: 1px solid black;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
 </head>
 <body>
 	<?php

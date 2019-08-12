@@ -286,37 +286,37 @@
 			ANNEXURE A<br>
 			<b>DETAILS OF THE INVOICE AND DETAILS OF INVOICE RECEIVABLE</b>
 		</p>
-		<table class="table table-bordered">
+		<table class="table table-bordered" width="60%;" style="margin-left: 20%" >
 			<thead>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Invoice Name</td>
-					<td></td>
+					<td><b>Invoice Name</b></td>
+					<td>{{$project->title}}</td>
 				</tr>
 				<tr>
 					<td>
-						Asking price for Invoice
+						<b>Asking price for Invoice</b>
 					</td>
 					<td>{{$project->investment->goal_amount}}</td>
 				</tr>
 				<tr>
 					<td>
-						Amount due under the Invoice
-					</td>
-					<td>Dooley</td>
-				</tr>
-				<tr>
-					<td>
-						Due Date
+						<b>Amount due under the Invoice</b>
 					</td>
 					<td>{{$project->investment->fund_raising_close_date}}</td>
 				</tr>
 				<tr>
 					<td>
-						Invoice issued to
+						<b>Due Date</b>
 					</td>
-					<td></td>
+					<td>{{$project->investment->fund_raising_close_date}}</td>
+				</tr>
+				<tr>
+					<td>
+						<b>Invoice issued to</b>
+					</td>
+					<td>{{$project->description}}</td>
 				</tr>
 			</tbody>
 		</table>
