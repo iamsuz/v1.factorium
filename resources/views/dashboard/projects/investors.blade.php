@@ -74,7 +74,7 @@
 								<th>Investment Date</th>
 								<th>Amount</th>
 								<th>Is Money Received</th>
-								<th>@if($project->share_vs_unit) Share @else Unit @endif Certificate</th>
+								<th>@if($project->share_vs_unit)  @else  @endif Receivable</th>
 								<th>Send Reminder Email</th>
 								<th>Investment Confirmation</th>
 								<th>Investor Document</th>
@@ -146,9 +146,9 @@
 
 															{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
 															@if($investment->accepted)
-															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">@if($project->share_vs_unit) Share @else Unit @endif certificate issued</small></i>
+															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">@if($project->share_vs_unit)  @else  @endif Receivable issued</small></i>
 															@else
-															<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit) share @else unit @endif certificate">
+															<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable">
 															@endif
 															<input type="hidden" name="investor" value="{{$investment->user->id}}">
 														</form>
