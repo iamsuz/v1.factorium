@@ -77,14 +77,14 @@ class PagesController extends Controller
         }
         if(Auth::guest()) {
             $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
-            $projects = $siteProjects->merge($listingProjects);
+            $projects = $siteProjects->merge($listingProjects)->reverse();
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
             $roles = $user->roles;
             if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
                 $siteProjects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
-                $projects = $siteProjects->merge($listingProjects);
+                $projects = $siteProjects->merge($listingProjects)->reverse();
                 // dd($projects);
                 if($user->registration_site == url()){
                     $admin_access = 1;
@@ -95,7 +95,7 @@ class PagesController extends Controller
                 }
             } else {
                 $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
-                $projects = $siteProjects->merge($listingProjects);
+                $projects = $siteProjects->merge($listingProjects)->reverse();
             }
         }
         $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
@@ -182,7 +182,7 @@ class PagesController extends Controller
         // $faqInvestorInvestmentRisks = Faq::where(['category'=>'Investor', 'sub_category'=> 'Investment Risks', 'show'=>1,'project_site'=>url() ])->get();
         // $faqPropertyDevelopmentVenture = Faq::where(['category'=>'Property Development & Venture', 'show'=>1,'project_site'=>url() ])->get();
         $faq = Faq::where(['show'=>1,'project_site'=>url() ])->get();
-        
+
         $isAdmin = false;
         if(Auth::user()){
             if(SiteConfigurationHelper::isSiteAdmin()){
