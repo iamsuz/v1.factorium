@@ -274,15 +274,6 @@
 			9.8 <b>Counterparts.</b> This Agreement may be executed simultaneously in any number of counterparts, each of which shall be deemed an original, but all of which shall constitute one and the same instrument.
 		</p>
 		<p>
-			IN WITNESS WHEREOF, WE THE PARTIES HERETO HAVE SET OUR HANDS TO THESE PRESENTS ON THE DAY, MONTH AND YEAR FIRST ABOVE WRITTEN IN THE PRESENCE OF THE FOLLOWING WITNESSES:
-		</p>
-		<p>
-			For and on behalf of the Seller<br>
-			For and on behalf of the Purchaser<br>
-			For and on behalf of Customer<br>
-			For and on behalf of Factorium<br>
-		</p>
-		<p>
 			ANNEXURE A<br>
 			<b>DETAILS OF THE INVOICE AND DETAILS OF INVOICE RECEIVABLE</b>
 		</p>
@@ -304,7 +295,7 @@
 					<td>
 						<b>Amount due under the Invoice</b>
 					</td>
-					<td>{{$project->investment->fund_raising_close_date}}</td>
+					<td>{{$project->investment->total_projected_costs}}</td>
 				</tr>
 				<tr>
 					<td>

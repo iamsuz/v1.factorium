@@ -583,8 +583,8 @@
                                       <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span></td>
                                       <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span></td>
                                       <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->account_number}} @else {{$investment->user->account_number}} @endif</span></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{$investment->amount}}</span><br></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{round($investment->amount * $repurchaseRate, 2)}}</span><br></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{$project->investment->total_projected_costs}}</span><br></td>
+                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{round($project->investment->total_projected_costs * $repurchaseRate, 2)}}</span><br></td>
                                       </tr>
                                       @endforeach
                                     </tbody>
