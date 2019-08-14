@@ -454,7 +454,7 @@ class AppMailer
         }
         $this->to = $recipients;
         $this->view = 'emails.adminFixedDividendDistributioNotify';
-        $this->subject = 'Distribute fixed dividend amount to investors';
+        $this->subject = 'Distribute partial repurchase amount to financiers for '.$project->title;
         $this->data = compact('investments', 'dividendPercent', 'project');
         $this->pathToFile = $csvPath;
 
