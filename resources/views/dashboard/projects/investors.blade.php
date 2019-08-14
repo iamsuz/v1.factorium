@@ -88,7 +88,7 @@
 						<tbody>
 							@foreach($investments as $investment)
 							@if(!$investment->hide_investment)
-							<tr id="application{{$investment->id}}">
+							<tr id="application{{$investment->id}}" @if(in_array('1',$investments->pluck('accepted')->toArray())) @if(!$investment->accepted) style="color: #ccc;" @endif  @endif>
 								<td>INV{{$investment->id}}
 									<a href="{{route('dashboard.application.view', [$investment->id])}}" class="edit-application" style="margin-top: 1.2em;"><br>
 										<i class="fa fa-edit" aria-hidden="true"></i>
@@ -127,6 +127,10 @@
 												</td>
 												<td>
 													<div class="col-md-2">
+														@if(in_array('1',$investments->pluck('accepted')->toArray())) 
+														@if(!$investment->accepted)
+														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
+														@else
 														<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
@@ -136,10 +140,16 @@
 															<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
 															@endif
 														</form>
+														@endif  
+														@endif
 													</div>
 												</td>
 												<td>
 													<div class="col-md-2">
+														@if(in_array('1',$investments->pluck('accepted')->toArray())) 
+														@if(!$investment->accepted)
+														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
+														@else
 														<form action="{{route('dashboard.investment.accept', $investment->id)}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
@@ -152,6 +162,8 @@
 															@endif
 															<input type="hidden" name="investor" value="{{$investment->user->id}}">
 														</form>
+														@endif  
+														@endif
 													</div>
 												</td>
 												<td>
@@ -171,6 +183,10 @@
 													@endif
 												</td>
 												<td>
+													@if(in_array('1',$investments->pluck('accepted')->toArray())) 
+														@if(!$investment->accepted)
+														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
+														@else
 													@if($investment->money_received || $investment->accepted)
 													@else
 													<div class="col-md-1" style="text-align: right;">
@@ -193,6 +209,8 @@
 															});
 														</script>
 													</div>
+													@endif
+													@endif
 													@endif
 												</td>
 												<td>
@@ -396,471 +414,473 @@
 								<tbody>
 									@foreach($shareInvestments as $shareInvestment)
 									<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
-										<td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
-										<td>INV{{$shareInvestment->id}}</td>
-										{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
-										<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
-										<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
-										<td>{{$shareInvestment->investing_as}}</td>
-										<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
-										<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
-										<td>{{$shareInvestment->user->phone_number}}</td>
-										<td>{{$shareInvestment->user->email}}</td>
-										<td>
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
+										<td class="text-center select-check hide">
 
+											@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
+											<td>INV{{$shareInvestment->id}}</td>
+											{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
+											<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
+											<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
+											<td>{{$shareInvestment->investing_as}}</td>
+											<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
+											<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
+											<td>{{$shareInvestment->user->phone_number}}</td>
+											<td>{{$shareInvestment->user->email}}</td>
+											<td>
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
+
+											</td>
+											<td>{{$shareInvestment->amount}}</td>
+											<td>
+												@if($shareInvestment->is_repurchased)
+												<strong>Investment is repurchased</strong>
+												@else
+												@if($shareInvestment->is_cancelled)
+												<strong>Investment record is cancelled</strong>
+												@else
+												@if($project->share_vs_unit)
+												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Share Certificate
+												</a>
+												@else
+												<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Unit Certificate
+												</a>
+												@endif
+												@endif
+												@endif
+											</td>
+											<td>
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
+											</td>
+											<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
+											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
+											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
+											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
+											<td class="text-center">
+												@if($shareInvestment->is_repurchased)
+												<strong>Repurchased</strong>
+												@else
+												@if($shareInvestment->is_cancelled)
+												<strong>Cancelled</strong>
+												@else
+												<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a><br><br>
+												<button class="btn btn-primary" action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}">Repay</button><br><br>
+												<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}">Partial Repay</button>
+												@endif
+												@endif
+											</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+						<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+							<!-- <ul class="list-group">Hello</ul> -->
+							<br><br>
+							<div class="">
+								<table class="table table-bordered table-striped" id="shareRegistryTable">
+									<thead>
+										<tr>
+											<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
+											{{-- <th>Unique ID</th> --}}
+											{{-- <th>@if($project->share_vs_unit) Share @else Unit @endif numbers</th> --}}
+											<th>Project SPV Name</th>
+											<th>Investor Name</th>
+											<th>Investment type</th>
+											<th>Joint Investor Name</th>
+											<th>Entity details</th>
+											<th>Phone</th>
+											<th>Email</th>
+											<th>Address</th>
+											<th>@if($project->share_vs_unit) Share @else Unit @endif face value</th>
+											<th>Link to @if($project->share_vs_unit) share @else unit @endif certificate</th>
+											<th>TFN</th>
+											<th>Investment Documents</th>
+											<th>Account Name</th>
+											<th>BSB</th>
+											<th>Account Number</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach($shareInvestments as $shareInvestment)
+										<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
+											{{-- <td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td> --}}
+											{{-- <td>INV{{$shareInvestment->id}}</td> --}}
+											{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
+											<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
+											<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
+											<td>{{$shareInvestment->investing_as}}</td>
+											<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
+											<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
+											<td>{{$shareInvestment->user->phone_number}}</td>
+											<td>{{$shareInvestment->user->email}}</td>
+											<td>
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
+
+											</td>
+											<td>{{$shareInvestment->amount}}</td>
+											<td>
+												@if($shareInvestment->is_repurchased)
+												<strong>Investment is repurchased</strong>
+												@else
+												@if($shareInvestment->is_cancelled)
+												<strong>Investment record is cancelled</strong>
+												@else
+												@if($project->share_vs_unit)
+												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Share Certificate
+												</a>
+												@else
+												<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
+													Unit Certificate
+												</a>
+												@endif
+												@endif
+												@endif
+											</td>
+											<td>
+												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
+											</td>
+											<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
+											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
+											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
+											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
+											<td>
+												@if($shareInvestment->is_repurchased)
+												<strong>Repurchased</strong>
+												@else
+												@if($shareInvestment->is_cancelled)
+												<strong>Cancelled</strong>
+												@else
+												<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a>
+												@endif
+												@endif
+											</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+
+						<div id="transactions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+							<div>
+								<table class="table table-bordered table-striped text-center" id="transactionTable">
+									<thead>
+										<tr>
+											<th>Investor Name</th>
+											<th>Project SPV Name</th>
+											<th>Transaction type</th>
+											<th>Date</th>
+											<th>Amount</th>
+											<th>Rate</th>
+											<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach($transactions as $transaction)
+										{{-- cpunt {{count($transaction)}} --}}
+										{{-- {{ $transaction->sum('number_of_shares') }} --}}
+										<tr>
+											<td>{{$transaction->first()->user->first_name}} {{$transaction->first()->user->last_name}}</td>
+											<td>@if($transaction->first()->project->projectspvdetail){{$transaction->first()->project->projectspvdetail->spv_name}}@endif</td>
+											<td class="text-center">@if($transaction->first()->transaction_type == "DIVIDEND") {{"ANNUALIZED DIVIDEND"}} @else {{$transaction->first()->transaction_type}} @endif</td>
+											<td>{{date('m-d-Y', strtotime($transaction->first()->transaction_date))}}</td>
+											<td>${{ $transaction->sum('amount') }}</td>
+											<td>{{$transaction->first()->rate}}</td>
+											<td>{{ $transaction->sum('number_of_shares') }}</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div id="positions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+							<div>
+								@if(!$positions->isempty())
+								<p class="text-center"><b>Effective Date:</b> {{date('m-d-Y', strtotime($positions->first()->first()->effective_date))}}</p>
+								<p class="text-center"><a href="{{route('dashboard.investment.statement.send', [$project->id])}}" class="btn btn-primary" id="confirm_and_send_btn">CONFIRM AND SEND</a></p>
+								@endif
+								<table class="table table-bordered table-striped" id="positionTable">
+									<thead>
+										<tr>
+											<th>Investor Name</th>
+											<th>Project SPV Name</th>
+											<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
+											<th>Current Value</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach($positions as $userId=>$position)
+										<tr>
+											<td>{{$position->first()->user->first_name}} {{$position->first()->user->last_name}}</td>
+											<td>@if($position->first()->project->projectspvdetail){{$position->first()->project->projectspvdetail->spv_name}}@endif</td>
+											<td>{{$position->first()->number_of_shares}}</td>
+											<td>{{$position->first()->current_value}}</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div id="eoi_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+							<div>
+								<table class="table table-bordered table-striped" id="eoiTable">
+									<thead>
+										<tr>
+											<th>User Email</th>
+											<th>User Phone Number</th>
+											<th>EOI Timestamp</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach($projectsInterests as $projectsInterest)
+										<tr>
+											<td>{{$projectsInterest->email}}</td>
+											<td>{{$projectsInterest->phone_number}}</td>
+											<td>{{date('Y-m-d h:m:s', strtotime($projectsInterest->created_at))}}</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div id="expression_of_interest_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+							<div>
+								<table class="table table-bordered table-striped" id="expression_of_interest_table">
+									<thead>
+										<tr>
+											<th class="text-center">User Name</th>
+											<th>Application Link</th>
+											<th>Offer Document</th>
+											<th class="text-center">User Email</th>
+											<th class="text-center">User Phone Number</th>
+											<th class="text-center">Amount</th>
+											<th class="text-center">Investment Expected</th>
+											<th class="text-center">EOI Timestamp</th>
+											<th>Interested to buy</th>
+										</tr>
+									</thead>
+									<tbody class="text-center">
+										@foreach($projectsEois as $projectsEoi)
+										<tr>
+											<td>{{$projectsEoi->user_name}}</td>
+											<td id="offer_link{{$projectsEoi->id}}">
+												@if($projectsEoi->offer_doc_path)
+												@if($projectsEoi->is_link_sent)
+												<a class="send-app-form-link" id="send_link{{$projectsEoi->id}}" href="javascript:void(0);" data="{{$projectsEoi->id}}"{{--  onclick="sendEOIAppFormLink()" --}}><b>Resend link</b></a>
+												@else
+												<a class="send-app-form-link" id="send_link{{$projectsEoi->id}}" href="javascript:void(0);" data="{{$projectsEoi->id}}"{{--  onclick="sendEOIAppFormLink()" --}}><b>Send link</b></a>
+												@endif
+												@else
+												<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
+												@endif
+											</td>
+											<td>
+												@if($projectsEoi->offer_doc_path)
+												<a href="{{$projectsEoi->offer_doc_path}}" id="uploaded_offer_doc_link{{$projectsEoi->id}}" target="_blank" download>
+													{{$projectsEoi->offer_doc_name}}
+												</a>
+												@endif
+												<div id="new_offer_doc_link{{$projectsEoi->id}}"></div>
+												<form{{--  action="{{route('dashboard.upload.offerDoc')}}" --}} class="upload_form" id="upload_form" rel="form" method="POST" enctype="multipart/form-data">
+												{!! csrf_field() !!}
+												<input type="file" name="offer_doc" id="offer_doc" required="required">
+												{!! $errors->first('offer_doc', '<small class="text-danger">:message</small>') !!}
+												<input type="hidden" name="eoi_id" value="{{$projectsEoi->id}}">
+												<input type="submit" name="upload_offer_doc" id="upload_offer_doc" value="Upload" class="btn btn-primary upload-offer-doc upload_offer_doc" data="{{$projectsEoi->id}}">
+											</form>
 										</td>
-										<td>{{$shareInvestment->amount}}</td>
+										<td>{{$projectsEoi->user_email}}</td>
+										<td>{{$projectsEoi->phone_number}}</td>
+										<td>${{number_format($projectsEoi->investment_amount)}}</td>
+										<td>{{$projectsEoi->invesment_period}}</td>
+										<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
 										<td>
-											@if($shareInvestment->is_repurchased)
-											<strong>Investment is repurchased</strong>
-											@else
-											@if($shareInvestment->is_cancelled)
-											<strong>Investment record is cancelled</strong>
-											@else
-											@if($project->share_vs_unit)
-											<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
-												Share Certificate
-											</a>
-											@else
-											<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
-												Unit Certificate
-											</a>
-											@endif
-											@endif
-											@endif
-										</td>
-										<td>
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
-										</td>
-										<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
-										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
-										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
-										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
-										<td class="text-center">
-											@if($shareInvestment->is_repurchased)
-											<strong>Repurchased</strong>
-											@else
-											@if($shareInvestment->is_cancelled)
-											<strong>Cancelled</strong>
-											@else
-											<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a><br><br>
-											<button class="btn btn-primary" action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}">Repay</button><br><br>
-											<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}">Partial Repay</button>
-											@endif
-											@endif
+											@if($projectsEoi->interested_to_buy) Yes @else No @endif
 										</td>
 									</tr>
 									@endforeach
 								</tbody>
 							</table>
 						</div>
-
 					</div>
-					<div id="share_registry_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
-						<!-- <ul class="list-group">Hello</ul> -->
-						<br><br>
-						<div class="">
-							<table class="table table-bordered table-striped" id="shareRegistryTable">
+
+					<div id="share_registry_new_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
+						<div>
+							<div>
+								<i><strong>Records last updated on:</strong> @if($investorTokensJobDetails){{$investorTokensJobDetails->created_at}}@endif</i>
+							</div>
+							<br>
+							<table class="table table-bordered table-striped" id="newShareRegistryTable">
 								<thead>
 									<tr>
-										<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
-										{{-- <th>Unique ID</th> --}}
-										{{-- <th>@if($project->share_vs_unit) Share @else Unit @endif numbers</th> --}}
-										<th>Project SPV Name</th>
 										<th>Investor Name</th>
-										<th>Investment type</th>
-										<th>Joint Investor Name</th>
-										<th>Entity details</th>
-										<th>Phone</th>
+										<th>Share Certificate</th>
 										<th>Email</th>
-										<th>Address</th>
-										<th>@if($project->share_vs_unit) Share @else Unit @endif face value</th>
-										<th>Link to @if($project->share_vs_unit) share @else unit @endif certificate</th>
-										<th>TFN</th>
-										<th>Investment Documents</th>
-										<th>Account Name</th>
-										<th>BSB</th>
-										<th>Account Number</th>
-										<th>Action</th>
+										<th>Project SPV Name</th>
+										<th>Token Balance</th>
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($shareInvestments as $shareInvestment)
-									<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
-										{{-- <td class="text-center select-check hide">@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td> --}}
-										{{-- <td>INV{{$shareInvestment->id}}</td> --}}
-										{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
-										<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
-										<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
-										<td>{{$shareInvestment->investing_as}}</td>
-										<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
-										<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
-										<td>{{$shareInvestment->user->phone_number}}</td>
-										<td>{{$shareInvestment->user->email}}</td>
+									@foreach($investorTokens as $investorRecord)
+									<tr>
+										<td>{{$investorRecord->user->first_name}} {{$investorRecord->user->last_name}}</td>
 										<td>
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_1}},@else{{$shareInvestment->user->line_1}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->line_2}},@else{{$shareInvestment->user->line_2}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->city}},@else{{$shareInvestment->user->city}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->state}},@else{{$shareInvestment->user->state}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->country}},@else{{$shareInvestment->user->country}},@endif
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
-
-										</td>
-										<td>{{$shareInvestment->amount}}</td>
-										<td>
-											@if($shareInvestment->is_repurchased)
-											<strong>Investment is repurchased</strong>
-											@else
-											@if($shareInvestment->is_cancelled)
-											<strong>Investment record is cancelled</strong>
-											@else
 											@if($project->share_vs_unit)
-											<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+											<a href="{{route('admin.view.share', [base64_encode($investorRecord->id)])}}" target="_blank">
 												Share Certificate
 											</a>
 											@else
-											<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
+											<a href="{{route('admin.view.unit', [base64_encode($investorRecord->id)])}}" target="_blank">
 												Unit Certificate
 											</a>
 											@endif
-											@endif
-											@endif
 										</td>
-										<td>
-											@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->tfn}} @else{{$shareInvestment->user->tfn}} @endif
-										</td>
-										<td>{{-- @if($shareInvestment->userInvestmentDoc) <a href="{{$shareInvestment->userInvestmentDoc->path}}"> {{$shareInvestment->userInvestmentDoc->type}} @else NA @endif</a> --}}</td>
-										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
-										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
-										<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
-										<td>
-											@if($shareInvestment->is_repurchased)
-											<strong>Repurchased</strong>
-											@else
-											@if($shareInvestment->is_cancelled)
-											<strong>Cancelled</strong>
-											@else
-											<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a>
-											@endif
-											@endif
-										</td>
+										<td>{{$investorRecord->user->email}}</td>
+										<td>@if($investorRecord->project->projectspvdetail){{$investorRecord->project->projectspvdetail->spv_name}}@endif</td>
+										<td>{{$investorRecord->tokens}} {{$investorRecord->symbol}}</td>
 									</tr>
 									@endforeach
 								</tbody>
 							</table>
 						</div>
-
-					</div>
-
-					<div id="transactions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
-						<div>
-							<table class="table table-bordered table-striped text-center" id="transactionTable">
-								<thead>
-									<tr>
-										<th>Investor Name</th>
-										<th>Project SPV Name</th>
-										<th>Transaction type</th>
-										<th>Date</th>
-										<th>Amount</th>
-										<th>Rate</th>
-										<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach($transactions as $transaction)
-									{{-- cpunt {{count($transaction)}} --}}
-									{{-- {{ $transaction->sum('number_of_shares') }} --}}
-									<tr>
-										<td>{{$transaction->first()->user->first_name}} {{$transaction->first()->user->last_name}}</td>
-										<td>@if($transaction->first()->project->projectspvdetail){{$transaction->first()->project->projectspvdetail->spv_name}}@endif</td>
-										<td class="text-center">@if($transaction->first()->transaction_type == "DIVIDEND") {{"ANNUALIZED DIVIDEND"}} @else {{$transaction->first()->transaction_type}} @endif</td>
-										<td>{{date('m-d-Y', strtotime($transaction->first()->transaction_date))}}</td>
-										<td>${{ $transaction->sum('amount') }}</td>
-										<td>{{$transaction->first()->rate}}</td>
-										<td>{{ $transaction->sum('number_of_shares') }}</td>
-									</tr>
-									@endforeach
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<div id="positions_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
-						<div>
-							@if(!$positions->isempty())
-							<p class="text-center"><b>Effective Date:</b> {{date('m-d-Y', strtotime($positions->first()->first()->effective_date))}}</p>
-							<p class="text-center"><a href="{{route('dashboard.investment.statement.send', [$project->id])}}" class="btn btn-primary" id="confirm_and_send_btn">CONFIRM AND SEND</a></p>
-							@endif
-							<table class="table table-bordered table-striped" id="positionTable">
-								<thead>
-									<tr>
-										<th>Investor Name</th>
-										<th>Project SPV Name</th>
-										<th>Number of @if($project->share_vs_unit) shares @else units @endif</th>
-										<th>Current Value</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach($positions as $userId=>$position)
-									<tr>
-										<td>{{$position->first()->user->first_name}} {{$position->first()->user->last_name}}</td>
-										<td>@if($position->first()->project->projectspvdetail){{$position->first()->project->projectspvdetail->spv_name}}@endif</td>
-										<td>{{$position->first()->number_of_shares}}</td>
-										<td>{{$position->first()->current_value}}</td>
-									</tr>
-									@endforeach
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<div id="eoi_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
-						<div>
-							<table class="table table-bordered table-striped" id="eoiTable">
-								<thead>
-									<tr>
-										<th>User Email</th>
-										<th>User Phone Number</th>
-										<th>EOI Timestamp</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach($projectsInterests as $projectsInterest)
-									<tr>
-										<td>{{$projectsInterest->email}}</td>
-										<td>{{$projectsInterest->phone_number}}</td>
-										<td>{{date('Y-m-d h:m:s', strtotime($projectsInterest->created_at))}}</td>
-									</tr>
-									@endforeach
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<div id="expression_of_interest_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
-						<div>
-							<table class="table table-bordered table-striped" id="expression_of_interest_table">
-								<thead>
-									<tr>
-										<th class="text-center">User Name</th>
-										<th>Application Link</th>
-										<th>Offer Document</th>
-										<th class="text-center">User Email</th>
-										<th class="text-center">User Phone Number</th>
-										<th class="text-center">Amount</th>
-										<th class="text-center">Investment Expected</th>
-										<th class="text-center">EOI Timestamp</th>
-										<th>Interested to buy</th>
-									</tr>
-								</thead>
-								<tbody class="text-center">
-									@foreach($projectsEois as $projectsEoi)
-									<tr>
-										<td>{{$projectsEoi->user_name}}</td>
-										<td id="offer_link{{$projectsEoi->id}}">
-											@if($projectsEoi->offer_doc_path)
-											@if($projectsEoi->is_link_sent)
-											<a class="send-app-form-link" id="send_link{{$projectsEoi->id}}" href="javascript:void(0);" data="{{$projectsEoi->id}}"{{--  onclick="sendEOIAppFormLink()" --}}><b>Resend link</b></a>
-											@else
-											<a class="send-app-form-link" id="send_link{{$projectsEoi->id}}" href="javascript:void(0);" data="{{$projectsEoi->id}}"{{--  onclick="sendEOIAppFormLink()" --}}><b>Send link</b></a>
-											@endif
-											@else
-											<span class="text-danger"><small><small>Offer document must be uploaded before accepting the EOI request</small></small></span>
-											@endif
-										</td>
-										<td>
-											@if($projectsEoi->offer_doc_path)
-											<a href="{{$projectsEoi->offer_doc_path}}" id="uploaded_offer_doc_link{{$projectsEoi->id}}" target="_blank" download>
-												{{$projectsEoi->offer_doc_name}}
-											</a>
-											@endif
-											<div id="new_offer_doc_link{{$projectsEoi->id}}"></div>
-											<form{{--  action="{{route('dashboard.upload.offerDoc')}}" --}} class="upload_form" id="upload_form" rel="form" method="POST" enctype="multipart/form-data">
-											{!! csrf_field() !!}
-											<input type="file" name="offer_doc" id="offer_doc" required="required">
-											{!! $errors->first('offer_doc', '<small class="text-danger">:message</small>') !!}
-											<input type="hidden" name="eoi_id" value="{{$projectsEoi->id}}">
-											<input type="submit" name="upload_offer_doc" id="upload_offer_doc" value="Upload" class="btn btn-primary upload-offer-doc upload_offer_doc" data="{{$projectsEoi->id}}">
-										</form>
-									</td>
-									<td>{{$projectsEoi->user_email}}</td>
-									<td>{{$projectsEoi->phone_number}}</td>
-									<td>${{number_format($projectsEoi->investment_amount)}}</td>
-									<td>{{$projectsEoi->invesment_period}}</td>
-									<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
-									<td>
-										@if($projectsEoi->interested_to_buy) Yes @else No @endif
-									</td>
-								</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-				<div id="share_registry_new_tab" class="tab-pane fade" style="margin-top: 2em;overflow: auto;">
-					<div>
-						<div>
-							<i><strong>Records last updated on:</strong> @if($investorTokensJobDetails){{$investorTokensJobDetails->created_at}}@endif</i>
-						</div>
-						<br>
-						<table class="table table-bordered table-striped" id="newShareRegistryTable">
-							<thead>
-								<tr>
-									<th>Investor Name</th>
-									<th>Share Certificate</th>
-									<th>Email</th>
-									<th>Project SPV Name</th>
-									<th>Token Balance</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach($investorTokens as $investorRecord)
-								<tr>
-									<td>{{$investorRecord->user->first_name}} {{$investorRecord->user->last_name}}</td>
-									<td>
-										@if($project->share_vs_unit)
-										<a href="{{route('admin.view.share', [base64_encode($investorRecord->id)])}}" target="_blank">
-											Share Certificate
-										</a>
-										@else
-										<a href="{{route('admin.view.unit', [base64_encode($investorRecord->id)])}}" target="_blank">
-											Unit Certificate
-										</a>
-										@endif
-									</td>
-									<td>{{$investorRecord->user->email}}</td>
-									<td>@if($investorRecord->project->projectspvdetail){{$investorRecord->project->projectspvdetail->spv_name}}@endif</td>
-									<td>{{$investorRecord->tokens}} {{$investorRecord->symbol}}</td>
-								</tr>
-								@endforeach
-							</tbody>
-						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-@include('dashboard.includes.repayModal')
-@include('dashboard.includes.partialRepayModal')
-<!--Dividend confirm Modal -->
-<div id="dividend_confirm_modal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">CONFIRM DIVIDEND</h4>
-			</div>
-			<div class="modal-body" style="padding: 15px 30px;">
-				<p class="text-center">
-					<i><small>** Please check and confirm the below dividend details.</small></i>
-				</p><br>
-				<div class="text-center">
-					<h2>{{$project->title}}</h2>
-					<small>{{$project->location->line_1}}, {{$project->location->line_2}}, {{$project->location->city}}, {{$project->location->postal_code}},{{$project->location->country}}</small>
-				</div><br>
-				<table class="table-striped dividend-confirm-table" border="0" cellpadding="10">
-					<tbody>
-						<tr>
-							<td><b>Dividend Rate: </b></td>
-							<td><small><span id="modal_dividend_rate"></span>%</small></td>
-						</tr>
-						<tr>
-							<td><b>Start Date <small>(DD/MM/YYYY)</small>: </b></td>
-							<td><small><span id="modal_dividend_start_date"></span></small></td>
-						</tr>
-						<tr>
-							<td>End Date <small>(DD/MM/YYYY)</small>:</td>
-							<td><small><span id="modal_dividend_end_date"></span></small></td>
-						</tr>
-					</tbody>
-				</table>
-				<br>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="submit_dividend_confirmation">Confirm</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	@include('dashboard.includes.repayModal')
+	@include('dashboard.includes.partialRepayModal')
+	<!--Dividend confirm Modal -->
+	<div id="dividend_confirm_modal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">CONFIRM DIVIDEND</h4>
+				</div>
+				<div class="modal-body" style="padding: 15px 30px;">
+					<p class="text-center">
+						<i><small>** Please check and confirm the below dividend details.</small></i>
+					</p><br>
+					<div class="text-center">
+						<h2>{{$project->title}}</h2>
+						<small>{{$project->location->line_1}}, {{$project->location->line_2}}, {{$project->location->city}}, {{$project->location->postal_code}},{{$project->location->country}}</small>
+					</div><br>
+					<table class="table-striped dividend-confirm-table" border="0" cellpadding="10">
+						<tbody>
+							<tr>
+								<td><b>Dividend Rate: </b></td>
+								<td><small><span id="modal_dividend_rate"></span>%</small></td>
+							</tr>
+							<tr>
+								<td><b>Start Date <small>(DD/MM/YYYY)</small>: </b></td>
+								<td><small><span id="modal_dividend_start_date"></span></small></td>
+							</tr>
+							<tr>
+								<td>End Date <small>(DD/MM/YYYY)</small>:</td>
+								<td><small><span id="modal_dividend_end_date"></span></small></td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="submit_dividend_confirmation">Confirm</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-@stop
+	@stop
 
-@section('js-section')
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/fnAddDataAndDisplay.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('a.edit').click(function () {
-			var dad = $(this).parent();
-			$(this).hide();
-			dad.find('input[type="text"]').show().focus();
-		});
-		$('#repayBtn').on('click',function (e) {
-			$('#repayInvestor').val($('#repayBtn').attr('data-id'));
-		});
-		$('#partialRepayBtn').on('click',function (e) {
-			$('#partialInvestor_list').val($('#partialRepayBtn').attr('data-id'));
-		})
-		$('input[type=text]').focusout(function() {
-			var dad = $(this).parent();
-			dad.submit();
-		});
+	@section('js-section')
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/fnAddDataAndDisplay.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('a.edit').click(function () {
+				var dad = $(this).parent();
+				$(this).hide();
+				dad.find('input[type="text"]').show().focus();
+			});
+			$('#repayBtn').on('click',function (e) {
+				$('#repayInvestor').val($('#repayBtn').attr('data-id'));
+			});
+			$('#partialRepayBtn').on('click',function (e) {
+				$('#partialInvestor_list').val($('#partialRepayBtn').attr('data-id'));
+			})
+			$('input[type=text]').focusout(function() {
+				var dad = $(this).parent();
+				dad.submit();
+			});
 
-		$('.issue-share-certi-btn').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-				$('.loader-overlay').show();
-			} else {
-				e.preventDefault();
-			}
-		});
+			$('.issue-share-certi-btn').click(function(e){
+				if (confirm('Are you sure ?')) {
+					console.log('confirmed');
+					$('.loader-overlay').show();
+				} else {
+					e.preventDefault();
+				}
+			});
 
-		$('.money-received-btn').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-		});
+			$('.money-received-btn').click(function(e){
+				if (confirm('Are you sure ?')) {
+					console.log('confirmed');
+				} else {
+					e.preventDefault();
+				}
+			});
 
-		$('.send-investment-reminder').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-		});
+			$('.send-investment-reminder').click(function(e){
+				if (confirm('Are you sure ?')) {
+					console.log('confirmed');
+				} else {
+					e.preventDefault();
+				}
+			});
 
-		$('.cancel-investment').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-		});
+			$('.cancel-investment').click(function(e){
+				if (confirm('Are you sure ?')) {
+					console.log('confirmed');
+				} else {
+					e.preventDefault();
+				}
+			});
 
-		$('#generate_investor_statement').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-		});
+			$('#generate_investor_statement').click(function(e){
+				if (confirm('Are you sure ?')) {
+					console.log('confirmed');
+				} else {
+					e.preventDefault();
+				}
+			});
 
-		$('#confirm_and_send_btn').click(function(e){
-			if (confirm('Are you sure ?')) {
-				console.log('confirmed');
-			} else {
-				e.preventDefault();
-			}
-		});
+			$('#confirm_and_send_btn').click(function(e){
+				if (confirm('Are you sure ?')) {
+					console.log('confirmed');
+				} else {
+					e.preventDefault();
+				}
+			});
 
 		//Ajax call for sending eoi application form link to user (for both send link and resend link buttons)
 		$('#expression_of_interest_tab').on('click', '.send-app-form-link', function(e){

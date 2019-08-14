@@ -919,7 +919,7 @@ class DashboardController extends Controller
 
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
-            $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
+            // $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
 
             // send dividend emails to investors
             $failedEmails = [];
