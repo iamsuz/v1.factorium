@@ -83,7 +83,8 @@ Projects | Dashboard | @parent
 <script type="text/javascript">
 	$(document).ready(function(){
 		var projectsTable = $('#projectsTable').DataTable({
-			"iDisplayLength": 10
+			"iDisplayLength": 10,
+			"order": [[ 0, "desc" ]]
 		});
 	});
 	$(document).on("click","#alert",function(){
