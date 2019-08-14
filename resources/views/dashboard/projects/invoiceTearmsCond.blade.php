@@ -2,7 +2,7 @@
 	<div class="col-md-12">
 		<h3>INVOICE FACTORING TERMS AND CONDITIONS</h3>
 
-		<p>This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b>{{Carbon\Carbon::now()}}</b> (“<b>Effective Date</b>”);</p>
+		<p>This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b> @if(isset($investment)) {{$investment->created_at->toDateString()}} @else {{Carbon\Carbon::now()->toDateString()}} @endif </b> (“<b>Effective Date</b>”);</p>
 		<p>
 			Factorium operates an online technology platform, <a href="https://factorium.co">www.factorium.co</a> (the “Platform”), which facilitates invoice discounting and reverse invoice discounting transactions between sellers, customers and Financiers registered on the Platform. The Seller, the Customer and the Financier are registered on the Platform.
 		</p>
@@ -301,7 +301,7 @@
 					<td>
 						<b>Due Date</b>
 					</td>
-					<td>{{$project->investment->fund_raising_close_date}}</td>
+					<td>{{$project->investment->fund_raising_close_date->toDateString()}}</td>
 				</tr>
 				<tr>
 					<td>

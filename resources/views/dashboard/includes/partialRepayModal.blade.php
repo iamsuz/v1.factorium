@@ -9,7 +9,7 @@
         <h4 class="modal-title">Repay</h4>
       </div>
       <div class="modal-body">
-        <p style="font-size: 20px;">You are about to partial repay <b><i>{{$project->title}}</i></b> for <b>{{$project->investment->total_projected_costs}}</b></p>
+        <p style="font-size: 20px;">You are about to partial repay <b><i>{{$project->title}}</i></b> for <b>${{$project->investment->total_projected_costs}}</b></p>
       </div>
       <div class="modal-footer">
         <form action=" {{route('dashboard.investment.declareFixedDividend', [$project->id])}}" method="POST">
