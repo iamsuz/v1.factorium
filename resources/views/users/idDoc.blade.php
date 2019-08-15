@@ -53,14 +53,16 @@
 								@endif
 								<hr>
 								@if($user->idDoc->verified == '1')
-								Verified <i class="fa fa-check-circle" aria-hidden="true"></i>
+								<span class="text-success"><strong>Verified <i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>
 								@elseif($user->idDoc->verified == '-1')
-								<span style="color: red;">Verification Failed</span>
+									<span class="text-danger"><strong>Verification Failed</strong></span>
 								@else
-								Not-Verified
+								<span><strong>Not-Verified</strong></span>
 								@endif
+								<br><br>
 								@endif
-								@if(!$user->idDoc || $user->idDoc->verified == '-1')
+								@if(!$user->idDoc || $user->idDoc->verified == '-1' || $user->idDoc->verified == '1')
+
 								<form class="form-group" action="{{route('users.document.upload',[$user->id])}}" method="POST" enctype="multipart/form-data" rel="form">
 									{{ csrf_field() }}
 									<div class="row " id="section-2">
