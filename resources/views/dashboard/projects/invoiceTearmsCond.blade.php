@@ -289,13 +289,13 @@
 					<td>
 						<b>Asking price for Invoice</b>
 					</td>
-					<td>{{$project->investment->goal_amount}}</td>
+					<td>${{$project->investment->goal_amount}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Amount due under the Invoice</b>
 					</td>
-					<td>{{$project->investment->total_projected_costs}}</td>
+					<td>${{$project->investment->total_projected_costs}}</td>
 				</tr>
 				<tr>
 					<td>
@@ -308,6 +308,12 @@
 						<b>Invoice issued to</b>
 					</td>
 					<td>{{$project->description}}</td>
+				</tr>
+				<tr>
+					<td>
+						<b>Invoice issued from</b>
+					</td>
+					<td>{{$project->invoice_issued_from}}</td>
 				</tr>
 			</tbody>
 		</table>
