@@ -27,8 +27,8 @@ Projects | Dashboard | @parent
 							<th>Title</th>
 							{{-- <th>Description</th> --}}
 							<th>Status</th>
-							<th>Goal</th>
-							<th>Collected</th>
+							<th>Asking Amount</th>
+							<th>Invoice Amount</th>
 							<th></th>
 						</tr>
 					</thead>

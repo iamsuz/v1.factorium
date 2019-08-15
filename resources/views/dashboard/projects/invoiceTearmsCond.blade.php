@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-12" style="padding: 30px 38px 0px 60px;">
+	<div class="col-md-12" style="padding: 30px 48px 0px 60px;">
 		<h3>INVOICE FACTORING TERMS AND CONDITIONS</h3>
 
 		<p class="justify">This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b> @if(isset($investment)) {{$investment->created_at->toDateString()}} @else {{Carbon\Carbon::now()->toDateString()}} @endif </b> (“<b>Effective Date</b>”);</p>
