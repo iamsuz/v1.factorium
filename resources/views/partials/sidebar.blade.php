@@ -31,6 +31,6 @@
 	@if($roles->contains('role', 'developer'))
 	<a href="{{route('users.submit', [$user])}}" class="list-group-item @if($active == 5) active @endif">Submit a Receivable </a>
 	@endif
-	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">Investments </a>
+	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">Receivables bought by me </a>
 	<a href="{{route('users.notifications', [$user])}}" class="list-group-item @if($active == 9) active @endif">Notifications </a>
 </div>

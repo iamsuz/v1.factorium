@@ -37,10 +37,10 @@
 					<thead>
 						<tr>
 							<th>Project Name</th>
-							<th>Investment Amount</th>
+							<th>Invoice purchased for</th>
 							<th>Investment Date</th>
 							<th>Investment status</th>
-							<th>Link to share certificate</th>
+							<th>Invoice amount which will have its $ value</th>
 							<th>Link to application form</th>
 							<th>Returns received</th>
 							<th>Tax and Accounting Docs</th>
@@ -55,7 +55,7 @@
 								<td>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
 									@if($investment->accepted)
-									Shares issued
+									Receivable issued
 									@elseif($investment->money_received)
 									Funds committed
 									@elseif($investment->investment_confirmation)
