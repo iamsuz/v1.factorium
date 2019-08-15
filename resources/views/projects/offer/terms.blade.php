@@ -4,10 +4,10 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-body">
+        <div class="modal-body" style="max-height: calc(100vh - 210px); overflow-y: auto;">
           @include('dashboard.projects.invoiceTearmsCond')
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-right: 38px;">
           <button type="button" class="btn btn-primary" data-dismiss="modal" id="terms_accepted_button">I have read the @if($project->project_prospectus_text) <abbr title="{{$project->project_prospectus_text}}"><span id="abbrev"></span></abbr>@else<span>Factoring Arrangement</span>@endif, take me to the application form</button>
         </div>
       </div>
