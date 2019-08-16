@@ -42,8 +42,18 @@ Sign up for free Australia's top Venture Crowdfunding
 						<div class="row form-group">
 							<!-- <div> -->
 								<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+									
+									
 									{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'email', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
-									{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
+									{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}<br>
+									
+									{!! Form::text('invite code', null, array('placeholder'=>'invite code(optional) ', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'')) !!}
+									@if(session()->has('invite_code_error'))
+									    <div class="alert alert-danger">
+									        {{ session()->get('invite_code_error') }}
+									    </div>
+									@endif
+									
 								</div>
 								<!-- </div> -->
 							</div>
@@ -121,6 +131,16 @@ Sign up for free Australia's top Venture Crowdfunding
 <script>
 	$(document).ready(function(){
 		$('#submitform').click(function(){
+			/*var invite_code = $('#invite_code').val();
+			 $("#invite_error").html("");
+			if(!invite_code==""){
+				if(invite_code.toLowerCase()=="factorium" || invite_code.toLowerCase()=="estatebaron" || invite_code.toLowerCase()=="konkrete"){
+					return true;
+				}else{
+					 $("#invite_error").append("Invalid invite code ");
+					 return false;
+				}
+			}*/
 			$('#submit1').trigger('click');
 		});
 	});
