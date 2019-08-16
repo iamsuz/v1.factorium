@@ -1060,7 +1060,7 @@ class DashboardController extends Controller
                 $investment->investingJoint ? $investment->investingJoint->account_number : $investment->user->account_number,
                 $project->investment->total_projected_costs,
                 $dividendPercent,
-                round($project->investment->total_projected_costs * ((int)$dividendPercent/100))
+                $project->investment->total_projected_costs * ((int)$dividendPercent/100)
             ));
         }
 

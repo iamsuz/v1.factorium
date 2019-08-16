@@ -1,8 +1,8 @@
 <div class="row">
 	<div class="col-md-12" style="padding: 30px 48px 0px 60px;">
 		<h3>INVOICE FACTORING TERMS AND CONDITIONS</h3>
-
-		<p class="justify">This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b> @if(isset($investment)) {{$investment->created_at->toDateString()}} @else {{Carbon\Carbon::now()->toDateString()}} @endif </b> (“<b>Effective Date</b>”);</p>
+		<p class="text-justify">This agreement for a Factoring arrangement (“<b>Agreement</b>”) is entered into on this <b> @if(isset($investment)) {{date('d-m-Y', strtotime($investment->created_at->toDateString()))}} @else {{date('d-m-Y', strtotime(Carbon\Carbon::now()->toDateString()))}} @endif </b> (“<b>Effective Date</b>”);
+		</p>
 		<p class="text-justify">
 			Factorium operates an online technology platform, <a href="https://factorium.co">www.factorium.co</a> (the “Platform”), which facilitates invoice discounting and reverse invoice discounting transactions between sellers, customers and Financiers registered on the Platform. The Seller, the Customer and the Financier are registered on the Platform.
 		</p>
@@ -101,7 +101,7 @@
 		<p class="text-justify">
 			(a) The Customer shall, at all times, ensure compliance with the applicable laws and is not bound by any contract, which may restrict its right or ability to enter into or perform this Agreement, or which would be breached as a result of execution and performance of this Agreement.
 		</p>
-		<p class="text-justify"> 
+		<p class="text-justify">
 			(b) The Invoice which forms the basis of the creation of rights in favor of Financier under this Agreement is an unpaid, genuine invoice raised by the Seller on the Customer and the Invoice has not been previously listed on the Platform, either by the Customer or the Seller.
 		</p>
 		<p class="text-justify">
@@ -301,7 +301,7 @@
 					<td>
 						<b>Due Date</b>
 					</td>
-					<td>{{$project->investment->fund_raising_close_date->toDateString()}}</td>
+					<td>{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date->toDateString()))}}</td>
 				</tr>
 				<tr>
 					<td>
