@@ -82,6 +82,16 @@ class UserRegistrationsController extends Controller
      */
     public function store(Request $request, AppMailer $mailer)
     {
+        if(($request->invite_code)){
+            $invite_code=$request->invite_code;
+             $code=strtolower($invite_code);   
+             $checkVars = array("factorium", "estatebaron", "konkrete");        
+             
+             if(!in_array($code, $checkVars)){
+                     return redirect()->back()->with('invite_code_error', 'Invalid invite code');
+             }   
+            
+        }
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email'
