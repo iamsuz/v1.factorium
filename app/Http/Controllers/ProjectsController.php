@@ -83,7 +83,7 @@ class ProjectsController extends Controller
      * @return Response
      */
     public function store(ProjectRequest $request, AppMailer $mailer)
-    {
+    { 
         $request['asking_amount'] = (int)$request->asking_amount;
         $request['invoice_amount'] = (int)$request->invoice_amount;
 
@@ -238,7 +238,7 @@ class ProjectsController extends Controller
         $result = json_decode($response);
         $project->wallet_address = $result->signingKey->address;
         $project->save();
-        $mailer->sendProjectSubmit($user, $project);
+        $mailer->sendProjectSubmit($user, $project,$investmentDetails);
         return redirect()->route('projects.confirmation', $project)->withMessage('<p class="alert alert-success text-center">Successfully Added New Project.</p>');
     }
 

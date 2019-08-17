@@ -580,7 +580,12 @@
 Name: <b>{{$investor['first_name']}} {{$investor['last_name']}}</b><br><br>
 Email: <b>{{$investor['email']}}</b><br><br>
 Phone Number: <b>{{$investor['phone_number']}}</b><br><br>
-Receivable Name: <b>{{$project['title']}}</b></span></span></span>
+Receivable Name: <b>{{$project['title']}}</b><br><br>
+Amount: <b>{{$investmentDetails['total_projected_costs']}}</b><br><br>
+Asking price: <b>{{$investmentDetails['goal_amount']}}</b><br><br>
+Invoice due date: <b>{{date('d-m-Y', strtotime($investmentDetails['fund_raising_close_date']))}}</b><br><br>
+Invoice issued to: <b>{{$project['description']}}</b><br><br>
+Invoice issued from: <b>{{$project['invoice_issued_from']}}</b></span></span></span>
 &nbsp;</div>
 
                          </td>

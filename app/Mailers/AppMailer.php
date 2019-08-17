@@ -15,6 +15,7 @@ use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Mail\TransportManager;
 use App\Helpers\SiteConfigurationHelper;
 use Swift_MailTransport as MailTransport;
+use App\Investment;
 
 class AppMailer
 {
@@ -156,7 +157,7 @@ class AppMailer
 
         $this->deliver();
     }
-    public function sendProjectSubmit(User $investor, Project $project)
+    public function sendProjectSubmit(User $investor, Project $project, Investment $investmentDetails)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -169,7 +170,7 @@ class AppMailer
         $this->to = $recipients;
         $this->view = 'emails.projectSubmit';
         $this->subject = 'New Receivable Submitted';
-        $this->data = compact('investor', 'project');
+        $this->data = compact('investor', 'project','investmentDetails');
 
         $this->deliver();
     }
