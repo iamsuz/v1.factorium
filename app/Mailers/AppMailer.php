@@ -243,18 +243,18 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendInvoiceToUser($investment,$formLink)
+    public function sendInvoiceToUser($investment,$formLink,Investment $investmentDetails)
     {
         $this->to = $investment->user->email;
         $this->view = 'emails.invoice';
 
         if($investment->project->share_vs_unit) {
-            $this->subject = 'Share certificate for '.$investment->project->title;
+            $this->subject = 'Thank you for purchasing '.$investment->project->title;
         }else {
             $this->subject = 'Unit certificate for '.$investment->project->title;
 
         }
-        $this->data = compact('investment','formLink');
+        $this->data = compact('investment','formLink','investmentDetails');
 
         if($investment->project->share_vs_unit) {
             $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
