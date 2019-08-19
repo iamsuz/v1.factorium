@@ -40,7 +40,7 @@
 							<th>Invoice purchased for</th>
 							<th>Investment Date</th>
 							<th>Investment status</th>
-							<th>Invoice amount which will have its $ value</th>
+							<th>Invoice amount</th>
 							<th>Link to application form</th>
 							<th>Returns received</th>
 							<th>Tax and Accounting Docs</th>
@@ -51,7 +51,7 @@
 						@foreach($investments as $investment)
 							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
-								<td>${{number_format($investment->amount)}}</td>
+								<td>${{number_format($investment->investment->goal_amount)}}</td>
 								<td>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
 									@if($investment->accepted)
@@ -65,7 +65,8 @@
 									@endif
 								</td>
 								<td>
-									@if($investment->is_repurchased)
+									{{number_format($investment->investment->total_projected_costs)}}
+									{{-- @if($investment->is_repurchased)
 									<strong>Investment is repurchased</strong>
 									@else
 									@if($investment->is_cancelled)
@@ -77,7 +78,7 @@
 									NA
 									@endif
 									@endif
-									@endif
+									@endif --}}
 								</td>
 								<td><a href="{{route('user.view.application', [base64_encode($investment->id)])}}" target="_blank">Application form</a></td>
 								<td></td>
