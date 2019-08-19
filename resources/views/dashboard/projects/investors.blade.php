@@ -127,10 +127,10 @@
 												</td>
 												<td>
 													<div class="col-md-2">
-														{{-- @if(in_array('1',$investments->pluck('accepted')->toArray()))
+														@if(in_array('1',$investments->pluck('accepted')->toArray()))
 														@if(!$investment->accepted)
 														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
-														@else --}}
+														@else 
 														<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
@@ -140,16 +140,26 @@
 															<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
 															@endif
 														</form>
-														{{-- @endif  
-														@endif --}}
+														@endif
+														@else
+														<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
+															{{method_field('PATCH')}}
+															{{csrf_field()}}
+															@if($investment->money_received || $investment->accepted)
+															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
+															@else
+															<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
+															@endif
+														</form>
+														@endif
 													</div>
 												</td>
 												<td>
 													<div class="col-md-2">
-														{{-- @if(in_array('1',$investments->pluck('accepted')->toArray())) 
+														@if(in_array('1',$investments->pluck('accepted')->toArray())) 
 														@if(!$investment->accepted)
 														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
-														@else --}}
+														@else
 														<form action="{{route('dashboard.investment.accept', $investment->id)}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
@@ -162,8 +172,21 @@
 															@endif
 															<input type="hidden" name="investor" value="{{$investment->user->id}}">
 														</form>
-														{{-- @endif  
-														@endif --}}
+														@endif
+														@else
+														<form action="{{route('dashboard.investment.accept', $investment->id)}}" method="POST">
+															{{method_field('PATCH')}}
+															{{csrf_field()}}
+
+															{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
+															@if($investment->accepted)
+															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">@if($project->share_vs_unit)  @else  @endif Receivable issued</small></i>
+															@else
+															<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable">
+															@endif
+															<input type="hidden" name="investor" value="{{$investment->user->id}}">
+														</form>  
+														@endif
 													</div>
 												</td>
 												<td>
