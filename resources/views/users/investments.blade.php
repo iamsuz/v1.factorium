@@ -65,20 +65,20 @@
 									@endif
 								</td>
 								<td>
-									{{number_format($investment->investment->total_projected_costs)}}
-									{{-- @if($investment->is_repurchased)
+									@if($investment->is_repurchased)
 									<strong>Investment is repurchased</strong>
 									@else
 									@if($investment->is_cancelled)
 									<strong>Investment record is cancelled</strong>
 									@else
 									@if($investment->accepted)
-									<a href="{{route('user.view.share', [base64_encode($investment->id)])}}" target="_blank">Share Certificate</a>
+									${{number_format($investment->investment->total_projected_costs)}}
+									{{-- <a href="{{route('user.view.share', [base64_encode($investment->id)])}}" target="_blank">Share Certificate</a> --}}
 									@else
 									NA
 									@endif
 									@endif
-									@endif --}}
+									@endif
 								</td>
 								<td><a href="{{route('user.view.application', [base64_encode($investment->id)])}}" target="_blank">Application form</a></td>
 								<td></td>
