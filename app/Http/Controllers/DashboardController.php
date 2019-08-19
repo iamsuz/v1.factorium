@@ -406,7 +406,10 @@ class DashboardController extends Controller
         $this->validate($request, [
             'investor' => 'required',
         ]);
+
         $investment = InvestmentInvestor::findOrFail($investment_id);
+        $investmentDetails = Investment::findOrFail($investment->project_id);
+        // dd($investmentDetails);
         if($investment){
             if($investment->project->is_wallet_tokenized)
             {
@@ -465,57 +468,57 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-                 if($investment->project->share_vs_unit) {
+               if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                     $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-                 }else {
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+               }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                     $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-                 }
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+               }
 
-                 $mailer->sendInvoiceToUser($investment,$formLink);
-                 $mailer->sendInvoiceToAdmin($investment,$formLink);
-            }
-            if(isset($investment->pay_investment_id)){
-                $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
-                if($linkedInvestment){
-                    if($linkedInvestment->project->is_wallet_tokenized)
-                    {
-                        $client = new \GuzzleHttp\Client();
-                        $requestLinked = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
-                            'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
-                        ]);
-                        $responseLinked = $requestLinked->getBody()->getContents();
-                        $result = json_decode($responseLinked);
-                    }
-                    $investmentShares = InvestmentInvestor::where('project_id', $linkedInvestment->project_id)
-                    ->where('accepted', 1)
-                    ->orderBy('share_certificate_issued_at','DESC')->get()
-                    ->first();
-                    //Update current investment and with the share certificate details
-                    $linkedInvestment->money_received = 1;
-                    $linkedInvestment->save();
-
-                    $investing = InvestingJoint::where('investment_investor_id', $linkedInvestment->id)->get()->last();
+               $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+                 // $mailer->sendInvoiceToAdmin($investment,$formLink);
+           }
+           if(isset($investment->pay_investment_id)){
+            $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
+            if($linkedInvestment){
+                if($linkedInvestment->project->is_wallet_tokenized)
+                {
+                    $client = new \GuzzleHttp\Client();
+                    $requestLinked = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
+                        'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
+                    ]);
+                    $responseLinked = $requestLinked->getBody()->getContents();
+                    $result = json_decode($responseLinked);
                 }
+                $investmentShares = InvestmentInvestor::where('project_id', $linkedInvestment->project_id)
+                ->where('accepted', 1)
+                ->orderBy('share_certificate_issued_at','DESC')->get()
+                ->first();
+                    //Update current investment and with the share certificate details
+                $linkedInvestment->money_received = 1;
+                $linkedInvestment->save();
+
+                $investing = InvestingJoint::where('investment_investor_id', $linkedInvestment->id)->get()->last();
             }
-            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
         }
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
     }
+}
 
-    public function activateProject($project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $status = $project->update(['active'=> 1, 'activated_on'=>Carbon::now()]);
-        return redirect()->back();
-    }
+public function activateProject($project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $status = $project->update(['active'=> 1, 'activated_on'=>Carbon::now()]);
+    return redirect()->back();
+}
 
-    public function deactivateProject($project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
-        return redirect()->back();
-    }
+public function deactivateProject($project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
+    return redirect()->back();
+}
 
     /**
      * Show the form for creating a new resource.
@@ -1215,8 +1218,8 @@ class DashboardController extends Controller
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-               return new TransportManager($app);
-           });
+             return new TransportManager($app);
+         });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);

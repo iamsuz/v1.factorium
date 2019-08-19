@@ -572,11 +572,11 @@
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 
                             <br> <br>
-<strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi {{$investment->user->first_name}},</span></span></span></strong>
+<strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear {{$investment->user->first_name}},</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Thank you for investing in <b>{{$investment->project->title}}.</b><br><br><br>
-<a href="{{$formLink}}" style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#fff;text-decoration:none;padding:15px;cursor:pointer; background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><b>View your @if($investment->project->share_vs_unit) share @else unit @endif certificate.</b></a>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">You have purchased <b>{{$investment->project->title}} </b>for <b>${{$investmentDetails['goal_amount']}}</b>. This invoice is due to be paid for the full amount of<b> {{$investmentDetails['total_projected_costs']}}</b> by<b> {{date('d-m-Y', strtotime($investmentDetails['fund_raising_close_date']))}}</b>.<br><br>You can moniter the progress of the payments on the investor profile.<br><br>Thank you for being a member of Factorium.
+{{-- <a href="{{$formLink}}" style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#fff;text-decoration:none;padding:15px;cursor:pointer; background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><b>View your @if($investment->project->share_vs_unit) share @else unit @endif certificate.</b></a> --}}
 </span></span></span>
 &nbsp;
 
@@ -660,12 +660,10 @@
         <![endif]-->
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"
 <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Regards,<br>
-                            <br>
-                            <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_md_name}}@else Estate Baron @endif<br>
+                            <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">{{-- @if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_md_name}}@else Estate Baron @endif --}}
                             <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Team<br><br>
                         </td>
                     </tr>
