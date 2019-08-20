@@ -601,7 +601,7 @@ class UsersController extends Controller
         $validation_rules = array(
             'joint_investor_id_doc'   => 'mimes:jpeg,jpg,png,pdf',
             'trust_or_company_docs'   => 'mimes:jpeg,jpg,png,pdf',
-            'user_id_doc' => 'mimes:jpeg,jpg,png,pdf'
+            'user_id_doc' => 'mimes:jpeg,jpg,png,pdf|max:2058'
         );
         $validator = Validator::make($request->all(), $validation_rules);
         if ($validator->fails()) {
