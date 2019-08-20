@@ -71,7 +71,7 @@ Fill the user details | @parent
 							<div class="form-group">
 								<div class="col-sm-offset-1 col-sm-10" data-wow-delay="0.2s">
 									{!! Form::checkbox('is_interested_investment_offers', 'on', true); !!} &nbsp;
-									<small>I am interested in receiving investment offers from @if($siteConfiguration->website_name) {{$siteConfiguration->website_name}} @else Estate Baron @endif</small>
+									<small>I am interested in receiving offers to buy Receivables from @if($siteConfiguration->website_name) {{$siteConfiguration->website_name}} @else FACTORIUM @endif</small>
 								</div>
 							</div>
 						</div>

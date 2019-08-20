@@ -46,14 +46,37 @@ Sign up for free Australia's top Venture Crowdfunding
 									
 									{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'email', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 									{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}<br>
-									
+
 									{!! Form::text('invite code', null, array('placeholder'=>'invite code(optional) ', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'')) !!}
 									@if(session()->has('invite_code_error'))
-									    <div class="alert alert-danger">
-									        {{ session()->get('invite_code_error') }}
-									    </div>
+										<div class="alert alert-danger">
+											{{ session()->get('invite_code_error') }}
+										</div>
 									@endif
-									
+									<br>
+								</div>
+
+								<div class="col-md-12 <?php if($errors->first('user_type')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s">
+									<p>Who you are?</p>
+									<div class="user-info-section">
+										@if($errors->has('user_type'))
+											{!! $errors->first('user_type', '<div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><small class="text-danger">:message</small></div>') !!}
+										@endif
+										<div class="user-type-info"></div>
+										<span>
+											{!! Form::radio('user_type', 'buyer', true, array('id'=>'user_type_0')) !!} &nbsp;
+											{!! Form::label('user_type_0', 'I am a Buyer') !!} &nbsp; <i class="fa fa-info-circle cursor-pointer" onclick="showUserTypeInfo('buyer');" aria-hidden="true"></i><br>
+										</span>
+										<span>
+											{!! Form::radio('user_type', 'seller', false, array('id'=>'user_type_1')) !!} &nbsp;
+											{!! Form::label('user_type_1', 'I am a Seller') !!} &nbsp; <i class="fa fa-info-circle cursor-pointer" onclick="showUserTypeInfo('seller')" aria-hidden="true"></i> <br>
+										</span>
+										<span>
+											{!! Form::radio('user_type', 'financier', false, array('id'=>'user_type_2')) !!} &nbsp;
+											{!! Form::label('user_type_2', 'I am a Financier') !!} &nbsp; <i class="fa fa-info-circle cursor-pointer" onclick="showUserTypeInfo('financier')" aria-hidden="true"></i> <br>
+										</span>
+									</div>
+									<br>
 								</div>
 								<!-- </div> -->
 							</div>
@@ -135,5 +158,30 @@ Sign up for free Australia's top Venture Crowdfunding
 			$('#submit1').trigger('click');
 		});
 	});
+
+	function showUserTypeInfo(userType) {
+		switch (userType) {
+			case 'buyer':
+				$('.user-type-info').html('<div class="alert alert-info alert-dismissible">\n' +
+						'  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
+						'  <small>Select this if you are someone to whom invoices are typically issued and you want terms on paying them.</small>' +
+						'</div>');
+				break;
+			case 'seller':
+				$('.user-type-info').html('<div class="alert alert-info alert-dismissible">\n' +
+						'  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
+						'  <small>Select this if you are someone who sells goods or services on terms and want the invoices for them to be factored.</small>' +
+						'</div>');
+				break;
+			case 'financier':
+				$('.user-type-info').html('<div class="alert alert-info alert-dismissible">\n' +
+						'  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
+						'  <small>Select this if you are someone looking to buy and sell receivables at a discount.</small>' +
+						'</div>');
+				break;
+			default:
+				// Do nothing
+		}
+	}
 </script>
 @stop

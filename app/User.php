@@ -27,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['first_name','last_name', 'username', 'email', 'password', 'phone_number', 'date_of_birth', 'gender', 'last_login', 'active','verify_id','activated_on','registration_site','account_name','bsb','account_number','line_1','line_2','city','state','postal_code','country','country_code','bank_name','withdraw_account_name','withdraw_bsb','withdraw_account_number','withdraw_bank_name','tfn','swift_code','wallet_address'];
+    protected $fillable = ['first_name','last_name', 'username', 'email', 'password', 'phone_number', 'date_of_birth', 'gender', 'last_login', 'active','verify_id','activated_on','registration_site','account_name','bsb','account_number','line_1','line_2','city','state','postal_code','country','country_code','bank_name','withdraw_account_name','withdraw_bsb','withdraw_account_number','withdraw_bank_name','tfn','swift_code','wallet_address', 'factorium_user_type'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -227,5 +227,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function votes()
     {
         return $this->hasOne('App\ProjectProgVote');
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getFactoriumUserTypeAttribute($value)
+    {
+        return $value ? ucfirst($value) : $value;
     }
 }
