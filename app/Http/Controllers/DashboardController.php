@@ -408,8 +408,8 @@ class DashboardController extends Controller
         ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $investmentDetails = Investment::findOrFail($investment->project_id);
-        // dd($investmentDetails);
+        $investmentDetails = Investment::where('project_id', $investment->project_id)->first();
+        // dd($investment_id);
         if($investment){
             if($investment->project->is_wallet_tokenized)
             {
