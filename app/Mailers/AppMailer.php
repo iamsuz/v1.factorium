@@ -474,7 +474,7 @@ class AppMailer
         $this->to = $recipients;
         $this->view = 'emails.adminRepurchaseNotify';
         if($project->share_vs_unit) {
-            $this->subject = 'Shares Repurchase';
+            $this->subject = 'Receivable Repurchase';
         } else {
             $this->subject = 'Units Repurchase';
         }
