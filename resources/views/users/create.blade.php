@@ -42,12 +42,11 @@ Sign up for free Australia's top Venture Crowdfunding
 						<div class="row form-group">
 							<!-- <div> -->
 								<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-									
-									
+
+
 									{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'email', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 									{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}<br>
-
-									{!! Form::text('invite code', null, array('placeholder'=>'invite code(optional) ', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'')) !!}
+									{!! Form::text('invite_code', null, array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
 									@if(session()->has('invite_code_error'))
 										<div class="alert alert-danger">
 											{{ session()->get('invite_code_error') }}
@@ -154,7 +153,7 @@ Sign up for free Australia's top Venture Crowdfunding
 <script>
 	$(document).ready(function(){
 		$('#submitform').click(function(){
-			
+
 			$('#submit1').trigger('click');
 		});
 	});

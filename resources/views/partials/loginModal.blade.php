@@ -35,6 +35,14 @@
 												{!! Form::password('password', array('placeholder'=>'password', 'class'=>'form-control', 'tabindex'=>'2','id'=>'loginPwdEoi')) !!}
 												{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 											</div>
+											<div class="form-group">
+												{!! Form::text('invite_code', null, array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
+												@if(session()->has('invite_code_error'))
+												<div class="alert alert-danger">
+													{{ session()->get('invite_code_error') }}
+												</div>
+												@endif
+											</div>
 											@if($project->eoi_button)
 											<input type="hidden" value="projects/{{$project->id}}/eoi" id="next" name="next">
 											<input type="hidden" value="eoiLogin" id="eoiLogin" name="eoiLogin">

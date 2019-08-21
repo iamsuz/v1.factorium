@@ -1,51 +1,51 @@
 <div class="container">
-	<div class="modal fade" id="registerModal" role="dialog" style="overflow: auto;	>
-		<div class="modal-dialog modal-lg">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-10 col-md-offset-1">
-							<div class="row">
-								<div class="col-md-12">
-									<div id="session_message">
+	<div class="modal fade" id="registerModal" role="dialog" style="overflow: auto;	">
+	<div class="modal-dialog modal-lg">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+						<div class="row">
+							<div class="col-md-12">
+								<div id="session_message">
 									<br>
 									@if (Session::has('message'))
 									{!! Session::get('message') !!}
 									@endif
 									<br>
 								</div>
-									<div class="text-left">
-										<h3 class="font-bold first_color" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;visibility: visible;">You are almost there!</h3>
-										<h4 class="font-regular first_color" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;visibility: visible;"><br>Please set a password for your account to complete the process</h4>
-										<br>
-									</div>
+								<div class="text-left">
+									<h3 class="font-bold first_color" style="font-weight:600 !important; font-size:2.625em; color:#2d2a6e;visibility: visible;">You are almost there!</h3>
+									<h4 class="font-regular first_color" style=" margin-top:-20px; font-size:1.375em; color:#2d2a6e;visibility: visible;"><br>Please set a password for your account to complete the process</h4>
+									<br>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<section id="registerForm" style="padding:0 10px;">
-										<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
-										{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'regForm', 'name'=>'offer_user_registration_form'))!!}
-										<div class="row form-group hide user-name-details-section">
-											<div class="col-md-6 <?php if($errors->first('reg_first_name')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-												{!! Form::text('reg_first_name', null, array('placeholder'=>'First Name', 'class'=>'form-control input-box', 'tabindex'=>'1', 'id'=>'reg_first_name')) !!}
-												{!! $errors->first('reg_first_name', '<small class="text-danger">:message</small>') !!}
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<section id="registerForm" style="padding:0 10px;">
+									<h4 class="font-bold first_color hide" style="font-weight:500 !important; font-size:1.125em; color:#2d2d4b;">Register with an email</h4>
+									{!! Form::open(array('route'=>'registrations.store', 'class'=>'form-horizontal', 'role'=>'form','id'=>'regForm', 'name'=>'offer_user_registration_form'))!!}
+									<div class="row form-group hide user-name-details-section">
+										<div class="col-md-6 <?php if($errors->first('reg_first_name')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+											{!! Form::text('reg_first_name', null, array('placeholder'=>'First Name', 'class'=>'form-control input-box', 'tabindex'=>'1', 'id'=>'reg_first_name')) !!}
+											{!! $errors->first('reg_first_name', '<small class="text-danger">:message</small>') !!}
+										</div>
+										<div class="col-md-6 <?php if($errors->first('reg_last_name')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+											{!! Form::text('reg_last_name', null, array('placeholder'=>'Last Name', 'class'=>'form-control input-box', 'tabindex'=>'1', 'id'=>'reg_last_name')) !!}
+											{!! $errors->first('reg_last_name', '<small class="text-danger">:message</small>') !!}
+										</div>
+									</div>
+									<div class="row form-group">
+										<!-- <div> -->
+											<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
+												{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
+												{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
 											</div>
-											<div class="col-md-6 <?php if($errors->first('reg_last_name')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-												{!! Form::text('reg_last_name', null, array('placeholder'=>'Last Name', 'class'=>'form-control input-box', 'tabindex'=>'1', 'id'=>'reg_last_name')) !!}
-												{!! $errors->first('reg_last_name', '<small class="text-danger">:message</small>') !!}
-											</div>
+											<!-- </div> -->
 										</div>
 										<div class="row form-group">
-											<!-- <div> -->
-												<div class="col-md-12 <?php if($errors->first('email')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
-													{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'eoiREmail', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
-													{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
-												</div>
-												<!-- </div> -->
-											</div>
-											<div class="row form-group">
 											<!-- <div> -->
 												<div class="col-md-12 <?php if($errors->first('phone_number')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s" style="z-index:3;" id="err_msg">
 													{!! Form::text('request_form_phone_number', null, array('placeholder'=>'Phone number', 'class'=>'form-control', 'tabindex'=>'3', 'id'=>'requestFormPhoneNumber', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','style'=>'display:none;')) !!}
@@ -88,6 +88,17 @@
 														</div>
 													</div>
 												</div><br>
+												<div class="row form-group">
+													<div class="col-md-12" data-wow-delay="0.2s">
+														{!! Form::text('invite_code',NULL, array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
+														@if(session()->has('invite_code_error'))
+														<div class="alert alert-danger">
+															{{ session()->get('invite_code_error') }}
+														</div>
+														@endif
+													</div>
+												</div>
+												<br>
 												<div class="row">
 													<div class="col-md-12">
 														<div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>

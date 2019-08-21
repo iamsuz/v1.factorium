@@ -29,7 +29,8 @@ class ProjectRequest extends Request
             'invoice_amount'=>'required|integer',
             'asking_amount'=>'required|integer',
             'due_date'=>'required|date|after:today',
-            'invoice_issued_from'=>'required'
+            'invoice_issued_from'=>'required',
+            'invoice_issue_from_email'=>'required|email'
         ];
     }
 

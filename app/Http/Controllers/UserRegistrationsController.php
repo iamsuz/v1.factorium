@@ -84,13 +84,13 @@ class UserRegistrationsController extends Controller
     {
         if(($request->invite_code)){
             $invite_code=$request->invite_code;
-             $code=strtolower($invite_code);   
-             $checkVars = array("factorium", "estatebaron", "konkrete");        
-             
+             $code=strtolower($invite_code);
+             $checkVars = array("factorium", "estatebaron", "konkrete");
              if(!in_array($code, $checkVars)){
                      return redirect()->back()->with('invite_code_error', 'Invalid invite code');
-             }   
-            
+             }
+        }else{
+            return redirect()->back()->with('invite_code_error', 'Invite Code Required');
         }
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [

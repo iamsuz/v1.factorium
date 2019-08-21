@@ -50,6 +50,7 @@ class ProjectsController extends Controller
         }else{
             $this->audkID = env('AUDK_PROJECT_ID',27);
         }
+        $this->userRegistration = new UserRegistrationsController();
     }
 
     /**
@@ -124,7 +125,11 @@ class ProjectsController extends Controller
         $project->eb_project_rank = $project->id;
         $project->title = 'Invoice '.$project->id;
         $project->save();
-
+        if(!User::where('email',$request->invoice_issue_from_email)){
+            $request['invite_code'] = 'factorium';
+            $request['email'] = $request->invoice_issue_from_email;
+            $this->userRegistration->store($request->all());
+        }
         $location = new \App\Location($request->all());
         $location = $project->location()->save($location);
 
@@ -541,8 +546,8 @@ class ProjectsController extends Controller
             return redirect()->route('projects.show', $project);
         }
         $investments = InvestmentInvestor::where('project_id',$project->id)
-                                        ->where('accepted',1)
-                                        ->get();
+        ->where('accepted',1)
+        ->get();
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
         $maxAmount = $goalAmount - $acceptedAmount;
@@ -603,7 +608,7 @@ class ProjectsController extends Controller
             'phone_number' => 'required',
             'investment_amount' => 'required|numeric',
             'investment_period' => 'required',
-            ]);
+        ]);
         $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
         if($project){
             if($project->eoi_button){
@@ -620,7 +625,7 @@ class ProjectsController extends Controller
                     'country_code' => $request->country_code,
                     'country'=>$request->country,
                     'project_site' => url(),
-                    ]);
+                ]);
                 $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
                 $mailer->sendProjectEoiEmailToUser($project, $user_info);
             }
@@ -818,7 +823,7 @@ class ProjectsController extends Controller
         $project = Project::where('id', $id);
         $result = $project->update([
             'add_additional_form_content' => $request->add_additional_form_content,
-            ]);
+        ]);
 
         return redirect()->back()->withMessage('Successfully Added Additional Form Content.');
     }
@@ -828,7 +833,7 @@ class ProjectsController extends Controller
         $project = Project::where('id', $id);
         $result = $project->update([
             'project_thumbnail_text' => $request->project_thumbnail_text,
-            ]);
+        ]);
         return redirect()->back();
     }
 
@@ -940,7 +945,7 @@ class ProjectsController extends Controller
             'spv_contact_number' => 'required',
             'spv_md_name' => 'required',
             // 'spv_logo_image_path' => 'required',
-            ]);
+        ]);
         //validate SPV logo
         $projectMedia = Media::where('project_id', $project_id)
         ->where('project_site', url())
@@ -949,7 +954,7 @@ class ProjectsController extends Controller
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_logo' => 'required',
-                ]);
+            ]);
         }
         //Validate SPV MD Signature
         $projectMedia = Media::where('project_id', $project_id)
@@ -959,7 +964,7 @@ class ProjectsController extends Controller
         if(!$projectMedia){
             $this->validate($request, [
                 'spv_md_sign' => 'required',
-                ]);
+            ]);
         }
         $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
         if(!$projectSpv)
@@ -981,7 +986,7 @@ class ProjectsController extends Controller
             'spv_md_name' => $request->spv_md_name,
             'certificate_frame' => $request->certificate_frame,
             'spv_email' => $request->spv_email,
-            ]);
+        ]);
         if($spv_result)
         {
             if($request->spv_logo_image_path && $request->spv_logo_image_path != ''){
@@ -1041,7 +1046,7 @@ class ProjectsController extends Controller
     {
         $validation_rules = array(
             'project_sub_heading_image'   => 'required|mimes:jpeg,png,jpg',
-            );
+        );
         $validator = Validator::make($request->all(), $validation_rules);
         if($validator->fails()){
             return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');

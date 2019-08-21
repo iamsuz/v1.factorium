@@ -82,9 +82,14 @@ Create New Project | @parent
 					<br>
 					<div class="row">
 						<div class="@if($errors->first('description')){{'has-error'}} @endif">
-							<div class="col-sm-12">
+							<div class="col-sm-6">
 								<h4 class="first_color">Invoice issued to</h4>
 								{!! Form::text('description', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
+							</div>
+							<div class="col-sm-6">
+								<h4 class="invoice_issue_from_email">Email</h4>
+								{!! Form::email('invoice_issue_from_email', null, array('placeholder'=>'Invoice issued to Email', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>

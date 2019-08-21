@@ -48,6 +48,14 @@ Login | @parent
 								{!! Form::password('password', array('placeholder'=>'password', 'class'=>'form-control', 'tabindex'=>'2')) !!}
 								{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 							</div>
+							<div class="form-group">
+								{!! Form::text('invite_code', null, array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
+								@if(session()->has('invite_code_error'))
+								<div class="alert alert-danger">
+									{{ session()->get('invite_code_error') }}
+								</div>
+								@endif
+							</div>
 							<input type="hidden" value="" id="next" name="next">
 							<div class="form-group" style="width:75%;">
 								{!! Form::submit('Login with Konkrete account', array('class'=>'btn btn-block second_color_btn hide', 'tabindex'=>'4', 'style'=>'border-radius:50px; background-color:#fed405;font-size:1.125em;color:#fff;')) !!}

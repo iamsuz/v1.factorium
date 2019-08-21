@@ -984,15 +984,19 @@ Offer Doc
     							datatype: 'json',
     							success: function (data) {
     								if(data.success == true){
+    									console.log('Inside true');
     									$('#loginModal').modal('hide');
     									window.location.href = "/projects/"+projectId+"/interest/request";
     								}else{
+    									console.log('Inside else');
     									$('.loader-overlay').hide();
     									$('#loginErrors').html();
     									$('#loginErrors').html('<div class="alert alert-danger">Authentication failed! Please check your password.</div>');
     								}
     							},
     							error: function (data) {
+    								console.log('Inside error');
+    								console.log(data);
     								$('.loader-overlay').hide();
     								$('#session_message').html(data);
     								return false;
@@ -1206,7 +1210,7 @@ $(document).ready(function(){
     					success: function (data) {
     						if(!data.success){
     							$('.loader-overlay').hide();
-    							$('#loginModal #loginErrors').html('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password</div>');
+    							$('#loginModal #loginErrors').html('<div class="alert alert-danger text-center" style="color:red;">Authentication failed please check your password or Invite code</div>');
     							return false;
     						}
     						$('.loader-overlay').hide();

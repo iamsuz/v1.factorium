@@ -116,6 +116,16 @@ class UserAuthController extends Controller
     public function authenticateEoi(UserAuthRequest $request,AppMailer $mailer)
     {
         $auth = false;
+        if(($request->invite_code)){
+            $invite_code=$request->invite_code;
+            $code=strtolower($invite_code);
+            $checkVars = array("factorium", "estatebaron", "konkrete");
+            if(!in_array($code, $checkVars)){
+                return redirect()->back()->withInput()->with('invite_code_error', 'Invalid invite code');
+            }
+        }else{
+            return redirect()->back()->withInput()->with('invite_code_error', 'Invite Code Required');
+        }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $loginBonus = 0;
             $auth = true;
@@ -201,6 +211,16 @@ class UserAuthController extends Controller
     public function authenticateOffer(UserAuthRequest $request)
     {
         $auth = false;
+        if(($request->invite_code)){
+            $invite_code=$request->invite_code;
+            $code=strtolower($invite_code);
+            $checkVars = array("factorium", "estatebaron", "konkrete");
+            if(!in_array($code, $checkVars)){
+                return response()->json(array('success'=>false,'auth'=>$auth));
+            }
+        }else{
+            return response()->json(array('success'=>false,'auth'=>$auth));
+        }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $request->merge([
                 'password'=>bcrypt($request->password)
@@ -243,13 +263,13 @@ class UserAuthController extends Controller
             );
             $validator = Validator::make($request->all(), $validation_rules);
 
-        // Return back to form w/ validation errors & session data as input
+            // Return back to form w/ validation errors & session data as input
             if($validator->fails()) {
                 return  redirect()->back()->withErrors($validator);
             }
             $user = Auth::user();
 
-        // If application store request received from request form
+            // If application store request received from request form
             if($request->investment_request_id)
             {
                 $investmentRequest = InvestmentRequest::find($request->investment_request_id);
@@ -432,6 +452,16 @@ return response()->json(array('success'=>false,'auth'=>$auth));
         else {
             $daily_bonus_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->daily_login_bonus_konkrete;
         };
+        if(($request->invite_code)){
+            $invite_code=$request->invite_code;
+            $code=strtolower($invite_code);
+            $checkVars = array("factorium", "estatebaron", "konkrete");
+            if(!in_array($code, $checkVars)){
+                return redirect()->back()->with('invite_code_error', 'Invalid invite code');
+            }
+        }else{
+            return redirect()->back()->with('invite_code_error', 'Invite Code Required');
+        }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1)) && $daily_bonus_konkrete != 0){
@@ -519,6 +549,16 @@ return response()->json(array('success'=>false,'auth'=>$auth));
     public function requestFormFilling(UserAuthRequest $request,AppMailer $mailer)
     {
         $auth = false;
+        if(($request->invite_code)){
+            $invite_code=$request->invite_code;
+            $code=strtolower($invite_code);
+            $checkVars = array("factorium", "estatebaron", "konkrete");
+            if(!in_array($code, $checkVars)){
+                return response()->json(array('success'=>false,'auth'=>$auth));
+            }
+        }else{
+            return response()->json(array('success'=>false,'auth'=>$auth));
+        }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active'=>1], $request->remember)) {
             $auth = true;
             $user = Auth::user();
