@@ -85,7 +85,7 @@ class UserRegistrationsController extends Controller
         if(($request->invite_code)){
             $invite_code=$request->invite_code;
              $code=strtolower($invite_code);
-             $checkVars = array("factorium", "estatebaron", "konkrete");
+             $checkVars = array("factorium");
              if(!in_array($code, $checkVars)){
                      return redirect()->back()->with('invite_code_error', 'Invalid invite code');
              }
