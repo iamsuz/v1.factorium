@@ -82,7 +82,7 @@
 								<th>Company or Trust</th>
 								@if(!$project->retail_vs_wholesale)<th>Wholesale Investment</th>@endif
 								<th>Application Form</th>
-								<th>Interested to Buy</th>
+								{{-- <th>Interested to Buy</th> --}}
 							</tr>
 						</thead>
 						<tbody>
@@ -295,9 +295,9 @@
 														View Application Form
 													</a>
 												</td>
-												<td>
+												{{-- <td>
 													@if($investment->interested_to_buy) Yes @else No @endif
-												</td>
+												</td> --}}
 											</tr>
 
 											<!-- Modal for wholesale investments-->
