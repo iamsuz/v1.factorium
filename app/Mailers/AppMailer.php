@@ -249,7 +249,7 @@ class AppMailer
         $this->view = 'emails.invoice';
 
         if($investment->project->share_vs_unit) {
-            $this->subject = 'Thank you for purchasing '.$investment->project->title;
+            $this->subject = 'You have purchased '.$investment->project->title.' receivable';
         }else {
             $this->subject = 'Unit certificate for '.$investment->project->title;
 

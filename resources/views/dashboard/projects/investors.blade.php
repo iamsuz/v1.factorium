@@ -82,7 +82,7 @@
 								<th>Company or Trust</th>
 								@if(!$project->retail_vs_wholesale)<th>Wholesale Investment</th>@endif
 								<th>Application Form</th>
-								<th>Interested to Buy</th>
+								{{-- <th>Interested to Buy</th> --}}
 							</tr>
 						</thead>
 						<tbody>
@@ -295,9 +295,9 @@
 														View Application Form
 													</a>
 												</td>
-												<td>
+												{{-- <td>
 													@if($investment->interested_to_buy) Yes @else No @endif
-												</td>
+												</td> --}}
 											</tr>
 
 											<!-- Modal for wholesale investments-->
@@ -416,7 +416,7 @@
 										<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
 										<th>Unique ID</th>
 										{{-- <th>@if($project->share_vs_unit) Share @else Unit @endif numbers</th> --}}
-										<th>Project SPV Name</th>
+										<th>Invoice name</th>
 										<th>Investor Name</th>
 										<th>Investment type</th>
 										<th>Joint Investor Name</th>
@@ -424,8 +424,8 @@
 										<th>Phone</th>
 										<th>Email</th>
 										<th>Address</th>
-										<th>@if($project->share_vs_unit) Share @else Unit @endif face value</th>
-										<th>Link to @if($project->share_vs_unit) share @else unit @endif certificate</th>
+										<th>@if($project->share_vs_unit) Invoice @else Unit @endif asking amount</th>
+										<th>@if($project->share_vs_unit) Invoice @else unit @endif amount</th>
 										<th>TFN</th>
 										<th>Investment Documents</th>
 										<th>Account Name</th>
@@ -458,8 +458,8 @@
 												@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->postal_code}}@else{{$shareInvestment->user->postal_code}}@endif
 
 											</td>
-											<td>{{$shareInvestment->amount}}</td>
-											<td>
+											<td class="text-center">${{$shareInvestment->amount}}</td>
+											<td class="text-center">
 												@if($shareInvestment->is_repurchased)
 												<strong>Investment is repurchased</strong>
 												@else
@@ -467,9 +467,10 @@
 												<strong>Investment record is cancelled</strong>
 												@else
 												@if($project->share_vs_unit)
-												<a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
+												${{ $shareInvestment->investment->total_projected_costs }}
+												{{-- <a href="{{route('user.view.share', [base64_encode($shareInvestment->id)])}}" target="_blank">
 													Share Certificate
-												</a>
+												</a> --}}
 												@else
 												<a href="{{route('user.view.unit', [base64_encode($shareInvestment->id)])}}" target="_blank">
 													Unit Certificate

@@ -150,7 +150,7 @@ Offer Doc
 										<div class="col-md-12">
 											<div>
 												<label class="form-label">Receivable Name</label><br>
-												<input class="form-control" type="text" name="project_spv_name" placeholder="Receivable name" style="width: 60%;" @if($projects_spv) value="{{$projects_spv->spv_name}}" disabled @endif >
+												<input class="form-control" type="text" name="project_spv_name" placeholder="Receivable name" style="width: 60%;" @if($projects_spv) value="{{$project->title}}" disabled @endif >
 												{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
 												<br>
 												<p><small>
