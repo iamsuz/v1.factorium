@@ -6,6 +6,7 @@ Create New Project | @parent
 
 @section('css-section')
 {!! Html::style('plugins/animate.css') !!}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @stop
 
 @section('content-section')
@@ -75,7 +76,7 @@ Create New Project | @parent
 						<div class="@if($errors->first('due_date')){{'has-error'}} @endif">
 							<div class="col-sm-12">
 								<h4 class="first_color">Invoice due date</h4>
-								{!! Form::input('date', 'due_date', \Carbon\Carbon::now()->toDateString(), array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'tabindex'=>'4', 'min'=>\Carbon\Carbon::now()->toDateString())) !!}
+								{!! Form::text('due_date', null, array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'tabindex'=>'4', 'min'=>\Carbon\Carbon::now()->toDateString(), 'id'=>'datepicker')) !!}
 								{!! $errors->first('due_date', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
@@ -131,4 +132,12 @@ Create New Project | @parent
 @stop
 @section('js-section')
 {!! Html::script('js/konkrete.js') !!}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+	$( "#datepicker" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: "yy-mm-dd"
+		});
+</script>
 @stop
