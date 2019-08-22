@@ -181,70 +181,6 @@ Offer Doc
 											</div>
 										</div>
 									</div>
-									<div class="row ">
-										<div class="col-md-12">
-											<div>
-												<h4 class="aml-requirements-link cursor-pointer">AML/CTF requirements &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></h4>
-												<small>** Expand to read the Requirements</small>
-												<div class="row aml-requirements-section">
-													<div class="col-md-12">
-														<div class="aml-requirements-content text-justify">
-															<small class="text-dark-grey">
-																If investing via a Financial Adviser please provide the @if($project->md_vs_trustee)Managing Director @else Trustee @endif the necessary verification otherwise you need to lodge the following information.
-																<br>
-																<h4><small><b>Individuals</b></small></h4>
-																Original or Certified Copy of <b>one</b> of the following :
-																<ul>
-																	<li>Australian or Foreign Drivers License (containing photograph).</li>
-																	<li>Australian or Foreign Passport.</li>
-																</ul>
-																<b>OR</b><br>
-																Original or Certified Copy of <b>one</b> of the following :
-																<ul>
-																	<li>Australian or Foreign Birth Certificate</li>
-																	<li>Australian or Foreign Citizenship Certificate <b>plus</b> an Original of one of the following that are not more than 12 months old</li>
-																	<li>a notice from the Australian Taxation Office containing your name and address</li>
-																	<li>a rates notice from local government or utilities provider</li>
-																</ul>
-																<i>Foreign documents must be accompanied by Accredited Translation into English</i>
-																<h4><small><b>Partnerships</b></small></h4>
-																Original or Certified Copy of
-																<ul>
-																	<li>the Partnership Agreement</li>
-																	<li>minutes of a Partnership Meeting</li>
-																	<li>for one of the Partners, the Individual documents (see above)</li>
-																</ul>
-																<h4><small><b>Company</b></small></h4>
-																A Full ASIC Extract i.e. including Director and Shareholder details
-																<h4><small><b>Trust</b></small></h4>
-																Original or Certified Copy of
-																<ul>
-																	<li>the Trust Deed</li>
-																	<li>list of Beneficiaries</li>
-																	<li>Individual or Company details for the Trustee (see above)</li>
-																</ul>
-																<h4><small><b>Document Certification</b></small></h4>
-																People that can certify documents include the following
-																<ul style="list-style: none;">
-																	<li>Lawyer</li>
-																	<li>Judge</li>
-																	<li>Magistrate</li>
-																	<li>Registrar or Deputy Registrar of a Court</li>
-																	<li>Justice of the Peace</li>
-																	<li>Notary</li>
-																	<li>Police Officer</li>
-																	<li>Postmaster</li>
-																	<li>Australian Consular or Diplomatic Officer</li>
-																	<li>Financial Services Licensee or Authorised Representative with at least two years of continuous service</li>
-																	<li>Accountant - CA, CPA or NIA with at least two years of continuous membership</li>
-																</ul>
-															</small>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
 									@if(!Auth::guest() && !$user->idDoc)
 									<div class="row " id="section-2">
 										<div class="col-md-12">
@@ -662,6 +598,71 @@ Offer Doc
 										</div>
 									</div>
 									<textarea class="g-recaptcha-response hide" name="g-recaptcha-response"></textarea>
+									<br><br>
+									<div class="row ">
+										<div class="col-md-12">
+											<div>
+												<h4 class="aml-requirements-link cursor-pointer">AML/CTF requirements &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></h4>
+												<small>** Expand to read the Requirements</small>
+												<div class="row aml-requirements-section">
+													<div class="col-md-12">
+														<div class="aml-requirements-content text-justify">
+															<small class="text-dark-grey">
+																If investing via a Financial Adviser please provide the @if($project->md_vs_trustee)Managing Director @else Trustee @endif the necessary verification otherwise you need to lodge the following information.
+																<br>
+																<h4><small><b>Individuals</b></small></h4>
+																Original or Certified Copy of <b>one</b> of the following :
+																<ul>
+																	<li>Australian or Foreign Drivers License (containing photograph).</li>
+																	<li>Australian or Foreign Passport.</li>
+																</ul>
+																<b>OR</b><br>
+																Original or Certified Copy of <b>one</b> of the following :
+																<ul>
+																	<li>Australian or Foreign Birth Certificate</li>
+																	<li>Australian or Foreign Citizenship Certificate <b>plus</b> an Original of one of the following that are not more than 12 months old</li>
+																	<li>a notice from the Australian Taxation Office containing your name and address</li>
+																	<li>a rates notice from local government or utilities provider</li>
+																</ul>
+																<i>Foreign documents must be accompanied by Accredited Translation into English</i>
+																<h4><small><b>Partnerships</b></small></h4>
+																Original or Certified Copy of
+																<ul>
+																	<li>the Partnership Agreement</li>
+																	<li>minutes of a Partnership Meeting</li>
+																	<li>for one of the Partners, the Individual documents (see above)</li>
+																</ul>
+																<h4><small><b>Company</b></small></h4>
+																A Full ASIC Extract i.e. including Director and Shareholder details
+																<h4><small><b>Trust</b></small></h4>
+																Original or Certified Copy of
+																<ul>
+																	<li>the Trust Deed</li>
+																	<li>list of Beneficiaries</li>
+																	<li>Individual or Company details for the Trustee (see above)</li>
+																</ul>
+																<h4><small><b>Document Certification</b></small></h4>
+																People that can certify documents include the following
+																<ul style="list-style: none;">
+																	<li>Lawyer</li>
+																	<li>Judge</li>
+																	<li>Magistrate</li>
+																	<li>Registrar or Deputy Registrar of a Court</li>
+																	<li>Justice of the Peace</li>
+																	<li>Notary</li>
+																	<li>Police Officer</li>
+																	<li>Postmaster</li>
+																	<li>Australian Consular or Diplomatic Officer</li>
+																	<li>Financial Services Licensee or Authorised Representative with at least two years of continuous service</li>
+																	<li>Accountant - CA, CPA or NIA with at least two years of continuous membership</li>
+																</ul>
+															</small>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</form>
 								<br><br>
 							</div>
