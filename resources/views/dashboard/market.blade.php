@@ -34,7 +34,7 @@
 										<table class="table table-striped">
 											<thead>
 												<tr>
-													<th class="text-center">Project</th>
+													<th class="text-center">Receivable</th>
 													<th class="text-center">User</th>
 													<th class="text-center">Price/Share</th>
 													<th class="text-center">No Of Shares</th>
@@ -61,7 +61,7 @@
 										<table class="table table-striped">
 											<thead>
 												<tr>
-													<th class="text-center">Project</th>
+													<th class="text-center">Receivable</th>
 													<th class="text-center">User</th>
 													<th class="text-center">Price/Share</th>
 													<th class="text-center">No Of Shares</th>
@@ -103,7 +103,7 @@
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3 text-center">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-								<p style="font-size: 26px;">Project- <b><span id="project_name">Project Name</span></b></p>
+								<p style="font-size: 26px;">Receivable- <b><span id="project_name">Receivable Name</span></b></p>
 							</div>
 						</div>
 						<br><br>

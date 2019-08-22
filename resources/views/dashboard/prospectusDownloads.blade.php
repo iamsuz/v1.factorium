@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title-section')
-Projects | Dashboard | @parent
+Receivables | Dashboard | @parent
 @stop
 
 @section('css-section')
@@ -21,7 +21,7 @@ Projects | Dashboard | @parent
 					<thead>
 						<tr>
 							<th>Applicant Name</th>
-							<th>Project Name</th>
+							<th>Receivable Name</th>
 							<th>Downloaded On</th>
 						</tr>
 					</thead>
