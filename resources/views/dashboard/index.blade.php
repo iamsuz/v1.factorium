@@ -29,9 +29,9 @@ Dashboard | @parent
 							<div class="thumbnail text-center">
 								<div class="caption">
 									<h3><b>{{$projects->count()}}</b></h3>
-									<h4><small>Projects</small> </h4>
-									<P><small>({{$projects->where('active', '0')->count()}} Inactive &amp; {{$projects->where('active', '2')->count()}} Private Projects)</small></P>
-									<p><a href="{{route('dashboard.projects')}}" class="btn btn-primary btn-sm" role="button">All Projects</a></p>
+									<h4><small>Receivables</small> </h4>
+									<P><small>({{$projects->where('active', '0')->count()}} Inactive &amp; {{$projects->where('active', '2')->count()}} Private Receivables)</small></P>
+									<p><a href="{{route('dashboard.projects')}}" class="btn btn-primary btn-sm" role="button">All Receivables</a></p>
 								</div>
 							</div>
 						</div>

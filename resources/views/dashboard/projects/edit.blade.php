@@ -37,7 +37,7 @@ Edit {{$project->title}} | Dashboard | @parent
 			<section>
 				<div class="row well">
 					@if(!$project->projectspvdetail)
-					<div class="alert alert-danger text-center">Please add the <b>Project SPV Details</b> to make the project <b>Live</b>. You can still make the status of the project as <b>Upcoming</b> or <b>EOI</b>.</div>
+					<div class="alert alert-danger text-center">Please add the <b>Receivable SPV Details</b> to make the receivable <b>Live</b>. You can still make the status of the receivable as <b>Upcoming</b> or <b>EOI</b>.</div>
 					@endif
 					<fieldset>
 						<div class="col-md-12 center-block">
@@ -47,7 +47,7 @@ Edit {{$project->title}} | Dashboard | @parent
 								<div class="form-group @if($errors->first('title')){{'has-error'}} @endif">
 									{!!Form::label('title', 'Title', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
-										{!! Form::text('title', null, array('placeholder'=>'Project Title', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
+										{!! Form::text('title', null, array('placeholder'=>'Receivable Title', 'class'=>'form-control ', 'tabindex'=>'1')) !!}
 										{!! $errors->first('title', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
@@ -165,7 +165,7 @@ Edit {{$project->title}} | Dashboard | @parent
 									<h3>Use @if(isset($projectPayToken))@if($projectPayToken && $projectPayToken->token_symbol) {{$projectPayToken->token_symbol}} @else AUDK @endif @endif Tokens</h3>
 									@if(isset($projectPayToken)) @if($projectPayToken && $projectPayToken->id === $project->id || !$project->is_wallet_tokenized)
 									<br>
-									<p><i>disabled</i> &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="This feature has been disabled because either this project has not been tokenized yet or it is a default payment token!"><i class="fa fa-question-circle"></i></a></p>
+									<p><i>disabled</i> &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="This feature has been disabled because either this receivable has not been tokenized yet or it is a default payment token!"><i class="fa fa-question-circle"></i></a></p>
 									@else
 									<div class="btn-group project-progress-3way-switch disabled" data-toggle="buttons">
 										<label class="btn btn-default @if($project->use_tokens == 1) active @endif">
@@ -237,7 +237,7 @@ Edit {{$project->title}} | Dashboard | @parent
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-8">
 												{!! Form::submit('Update', array('class'=>'btn btn-danger btn-block', 'tabindex'=>'7')) !!}
-												<input type="hidden" name="description" value="{{ $project->description ?? '' }}">
+												<input type="hidden" name="description" value="{{ $project->description }}">
 											</div>
 										</div>
 									</div>
