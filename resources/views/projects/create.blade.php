@@ -76,7 +76,7 @@ Create New Project | @parent
 						<div class="@if($errors->first('due_date')){{'has-error'}} @endif">
 							<div class="col-sm-12">
 								<h4 class="first_color">Invoice due date</h4>
-								{!! Form::text('due_date', null, array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'tabindex'=>'4', 'min'=>\Carbon\Carbon::now()->toDateString(), 'id'=>'datepicker')) !!}
+								{!! Form::input('date','due_date', null, array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'tabindex'=>'4', 'min'=>\Carbon\Carbon::now()->toDateString(), 'id'=>'datepicker')) !!}
 								{!! $errors->first('due_date', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
