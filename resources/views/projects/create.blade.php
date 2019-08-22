@@ -10,23 +10,27 @@ Create New Project | @parent
 
 @section('content-section')
 <div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<br><br>
+			@if (Session::has('message'))
+			<br>
+			{!! Session::get('message') !!}
+			<br>
+			@endif
+			@if ($errors->has())
+			<br>
+			<div class="alert alert-danger">
+				@foreach ($errors->all() as $error)
+				{{ $error }}<br>
+				@endforeach
+			</div>
+			@endif
+		</div>
+	</div>
 	<section id="project-form">
 		<div class="row ">
 			<div class="col-md-6 col-md-offset-3 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
-				<br><br>
-				@if (Session::has('message'))
-				<br>
-				{!! Session::get('message') !!}
-				<br>
-				@endif
-				@if ($errors->has())
-				<br>
-				<div class="alert alert-danger">
-					@foreach ($errors->all() as $error)
-					{{ $error }}<br>
-					@endforeach
-				</div>
-				@endif
 				{!! Form::open(array('route'=>'projects.store', 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true)) !!}
 				{{-- <fieldset>
 					<br>
@@ -75,6 +79,7 @@ Create New Project | @parent
 								{!! $errors->first('due_date', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
+					</div>
 				</fieldset>
 
 
@@ -93,6 +98,7 @@ Create New Project | @parent
 								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
+					</div>
 				</fieldset>
 
 				<fieldset>
@@ -105,6 +111,7 @@ Create New Project | @parent
 								{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
+					</div>
 				</fieldset>
 
 				<fieldset>

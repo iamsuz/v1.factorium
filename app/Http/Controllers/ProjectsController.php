@@ -244,7 +244,8 @@ class ProjectsController extends Controller
         $project->wallet_address = $result->signingKey->address;
         $project->save();
         $mailer->sendProjectSubmit($user, $project,$investmentDetails);
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Added New Receivable.</p>');
+        return redirect()->back()->withMessage('<h1 class="alert alert-success text-center" style="font-size:16 px;">Thank you for submitting your Receivable. <br><small class="first_color">we will review the details and contact you shortly.</small></h1>');
+
     }
 
     public function confirmation($projects)
