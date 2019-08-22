@@ -41,10 +41,10 @@
 					{!! Session::get('message') !!}
 					@endif
 					<h3 class="text-center">{{$project->title}}
-						<address class="text-center">
+						{{-- <address class="text-center">
 							<small>{{$project->location->line_1}}, {{$project->location->line_2}}, {{$project->location->city}}, {{$project->location->postal_code}},{{$project->location->country}}
 							</small>
-						</address>
+						</address> --}}
 					</h3>
 					@if($balanceAudk) <h4 class="text-center">@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} @else AUDK @endif Balance: {{$balanceAudk->balance}}</h4> @endif
 				</div>
@@ -72,7 +72,8 @@
 								<th>Unique ID</th>
 								<th>Investors Details</th>
 								<th>Investment Date</th>
-								<th>Amount</th>
+								<th>Invoice Asking Amount</th>
+								<th>Invoice Amount</th>
 								<th>Is Money Received</th>
 								<th>@if($project->share_vs_unit)  @else  @endif Receivable</th>
 								<th>Send Reminder Email</th>
@@ -123,6 +124,12 @@
 															<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}" style="width: 100px;">
 															<input type="hidden" name="investor" value="{{$investment->user->id}}">
 														</form>
+													</div>
+												</td>
+												<td>
+													<div class="col-md-1">
+														{{-- <a href="#invoice_amount">${{number_format($investment->amount) }}</a> --}}
+														<div href="#invoice_amount">@if($project->investment)${{number_format($project->investment->total_projected_costs)}} @else Not Specified @endif</div>
 													</div>
 												</td>
 												<td>
