@@ -852,6 +852,9 @@ public function deactivateProject($project_id)
             $failedEmails = [];
             $subject = 'Partial repurchase declared for '.$project->title;
             foreach ($investments as $investment) {
+                InvestmentInvestor::where('id', $investment->id)->update([
+                    'is_partial_repay' => 1
+                ]);
                 // Save details to transaction table
                 $dividendAmount = round($investment->total_projected_costs * ((int)$dividendPercent/100));
                 $shareNumber = explode('-', $investment->share_number);

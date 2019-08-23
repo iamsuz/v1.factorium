@@ -501,7 +501,7 @@
 												<strong>Cancelled</strong>
 												@else
 												<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a><br><br>
-												<button class="btn btn-primary" action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}">Repay</button><br><br>
+												<button class="btn btn-primary @if($shareInvestment->is_partial_repay) disabled @endif " action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}">Repay</button><br><br>
 												<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}">Partial Repay</button>
 												@endif
 												@endif
