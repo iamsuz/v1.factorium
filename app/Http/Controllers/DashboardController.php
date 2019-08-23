@@ -820,7 +820,6 @@ public function deactivateProject($project_id)
         $investorList = $request->investors_list;
         $dividendPercent = $request->fixed_dividend_percent;
         $project = Project::findOrFail($projectId);
-
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
@@ -852,9 +851,6 @@ public function deactivateProject($project_id)
             $failedEmails = [];
             $subject = 'Partial repurchase declared for '.$project->title;
             foreach ($investments as $investment) {
-                InvestmentInvestor::where('id', $investment->id)->update([
-                    'is_partial_repay' => 1
-                ]);
                 // Save details to transaction table
                 $dividendAmount = round($investment->total_projected_costs * ((int)$dividendPercent/100));
                 $shareNumber = explode('-', $investment->share_number);
@@ -878,6 +874,13 @@ public function deactivateProject($project_id)
                     'rate' => $dividendPercent,
                     'number_of_shares' => $noOfShares,
                 ]);
+                $investment->is_partial_repay = 1;
+                if(isset($investment->partial_repay_percentage)){
+                    $investment->partial_repay_percentage = $investment->partial_repay_percentage + $dividendPercent;
+                }else{
+                    $investment->partial_repay_percentage = $dividendPercent;
+                }
+                $investment->save();
 
                 $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project));
                 $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
@@ -886,7 +889,7 @@ public function deactivateProject($project_id)
                 }
             }
             if(empty($failedEmails)){
-                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Fixed Dividend distribution have been mailed to Investors and admins</p>');
+                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Partial Repay distribution have been mailed to Investors and admins</p>');
             }
             else{
                 $emails = '';

@@ -443,7 +443,7 @@
 								</thead>
 								<tbody>
 									@foreach($shareInvestments as $shareInvestment)
-									<tr @if($shareInvestment->is_cancelled) style="color: #CCC;" @endif>
+									<tr @if($shareInvestment->is_cancelled || $shareInvestment->partial_repay_percentage == '100') style="color: #CCC;" @endif>
 										<td class="text-center select-check hide">
 
 											@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
@@ -494,15 +494,15 @@
 											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
 											<td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
 											<td class="text-center">
-												@if($shareInvestment->is_repurchased)
+												@if($shareInvestment->is_repurchased || $shareInvestment->partial_repay_percentage == '100')
 												<strong>Repurchased</strong>
 												@else
 												@if($shareInvestment->is_cancelled)
 												<strong>Cancelled</strong>
 												@else
 												<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a><br><br>
-												<button class="btn btn-primary @if($shareInvestment->is_partial_repay) disabled @endif " action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}">Repay</button><br><br>
-												<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}">Partial Repay</button>
+												<button class="btn btn-primary" @if($shareInvestment->is_partial_repay) disabled="disabled" @else  action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}"  @endif>Repay</button><br><br>
+												<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}" data-max="{{ $shareInvestment->partial_repay_percentage }}">Partial Repay</button>
 												@endif
 												@endif
 											</td>
@@ -858,6 +858,8 @@
 			});
 			$('#partialRepayBtn').on('click',function (e) {
 				$('#partialInvestor_list').val($('#partialRepayBtn').attr('data-id'));
+				var remainPerc = 100 - $('#partialRepayBtn').attr('data-max');
+				$('#fixedDividendPercent').attr('max',remainPerc.toString());
 			})
 			$('input[type=text]').focusout(function() {
 				var dad = $(this).parent();
