@@ -98,15 +98,14 @@ class PagesController extends Controller
                 $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
                 $projects = $siteProjects->merge($listingProjects)->reverse();
             }
-        }
-        $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
-        $blog_posts_attachments = DB::connection('mysql2')->select('select * from wp_posts where post_type="attachment"');
 
             // Check if user type is set
             if (!$user->factorium_user_type) {
                 return redirect(route('users.user.type'))->withMessage('<div class="alert alert-warning">Please select user type and proceed!</div>');
             }
         }
+        $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
+        $blog_posts_attachments = DB::connection('mysql2')->select('select * from wp_posts where post_type="attachment"');
 
         $BannerCities = ['Adelaide', 'Auckland', 'Brisbane', 'Canberra', 'Darwin', 'Hobart', 'Melbourne', 'Perth', 'Sydney'];
         $siteConfiguration = SiteConfiguration::all();
