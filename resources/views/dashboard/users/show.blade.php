@@ -16,7 +16,7 @@
 				<li class="list-group-item"><dl class="dl-horizontal">
 					<dt></dt>
 					<dd><h2>{{$user->first_name}} {{$user->last_name}}</h2> <a href="/dashboard/users/{{$user->id}}/edit">Edit</a></dd>
-					@if($user->factorium_user_type) <dd><h4>[{{ $user->factorium_user_type }}]</h4></dd> @endif
+					@if($user->factorium_user_type) <dd><h4>[{{ ucfirst($user->factorium_user_type) }}]</h4></dd> @endif
 					<dt></dt>
 					<dd>{{$user->email}}</dd>
 					<dt></dt>

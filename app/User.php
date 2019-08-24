@@ -228,13 +228,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasOne('App\ProjectProgVote');
     }
-
-    /**
-     * @param $value
-     * @return string
-     */
-    public function getFactoriumUserTypeAttribute($value)
-    {
-        return $value ? ucfirst($value) : $value;
-    }
 }

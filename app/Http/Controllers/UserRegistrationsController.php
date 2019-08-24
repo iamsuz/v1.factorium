@@ -94,8 +94,7 @@ class UserRegistrationsController extends Controller
         }
         $color = Color::where('project_site',url())->first();
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'user_type' => 'required|in:buyer,seller,financier'
+            'email' => 'required|email'
         ]);
         $request['role'] = 'investor';
         $validator1 = Validator::make($request->all(), [
@@ -156,9 +155,6 @@ class UserRegistrationsController extends Controller
                 ->withInput();
             }
         }
-
-        if (isset($request->user_type))
-            $request->request->add(['factorium_user_type' => $request->user_type]);
 
         if($request->has('ref'))
         {
@@ -487,7 +483,6 @@ class UserRegistrationsController extends Controller
         $request['active'] = true;
         $request['activated_on'] = $userReg->activated_on;
         $request['registration_site'] = $userReg->registration_site;
-        $request['factorium_user_type'] = $userReg->factorium_user_type;
         // Modify the is interested investment offers flag to boolean
         ($request->is_interested_investment_offers && ($request->is_interested_investment_offers == 'on'))
         ? $request->merge(['is_interested_investment_offers' => 1])
@@ -532,9 +527,7 @@ class UserRegistrationsController extends Controller
             $result = json_decode($res);
             $user->wallet_address = $result->signingKey->address;
             $user->save();
-            return ($request->country_code == 'au')
-            ? redirect('/#projects')->withCookie(\Cookie::forget('referrer'))
-            : redirect('/users/' . Auth::user()->id)->withCookie(\Cookie::forget('referrer'));
+            return redirect(\route('pages.explainer'))->withCookie(\Cookie::forget('referrer'));
         }
     }
 

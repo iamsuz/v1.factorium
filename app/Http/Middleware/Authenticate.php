@@ -49,6 +49,13 @@ class Authenticate
                 return redirect()->guest('users/login?next='.$path)->withMessage('<p class="alert alert-warning text-center ">please login</p>');
             }
         }
+
+        // Check if user type is set
+        $user = $this->auth->user();
+        if (!$user->factorium_user_type) {
+            return redirect(route('users.user.type'))->withMessage('<div class="alert alert-warning">Please select user type and proceed!</div>');
+        }
+
         return $next($request);
     }
 }

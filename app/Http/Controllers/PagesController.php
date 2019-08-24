@@ -8,6 +8,7 @@ use App\Project;
 use App\Aboutus;
 use App\Color;
 use App\Http\Requests;
+use App\User;
 use GuzzleHttp\Client;
 use App\Mailers\AppMailer;
 use App\ProjectProg;
@@ -41,7 +42,7 @@ class PagesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
+        $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage', 'factoriumExplainer']]);
         $this->middleware('admin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
@@ -101,6 +102,11 @@ class PagesController extends Controller
         $blog_posts = DB::connection('mysql2')->select('select * from wp_posts where post_type="post" ORDER BY post_date DESC LIMIT 3');
         $blog_posts_attachments = DB::connection('mysql2')->select('select * from wp_posts where post_type="attachment"');
 
+            // Check if user type is set
+            if (!$user->factorium_user_type) {
+                return redirect(route('users.user.type'))->withMessage('<div class="alert alert-warning">Please select user type and proceed!</div>');
+            }
+        }
 
         $BannerCities = ['Adelaide', 'Auckland', 'Brisbane', 'Canberra', 'Darwin', 'Hobart', 'Melbourne', 'Perth', 'Sydney'];
         $siteConfiguration = SiteConfiguration::all();
@@ -706,5 +712,71 @@ class PagesController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         return view('pages.dispute',compact('color'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function factoriumExplainer()
+    {
+        // Explainer slides for user onboarding
+        $color = Color::where('project_site',url())->first();
+        return view('pages.factoriumExplainer',compact('color'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function selectUserType()
+    {
+        if (!Auth::user()) {
+            $url_array = parse_url($request->fullUrl());
+            if(isset($url_array['query'])){
+                $newPath = $url_array['path'] .'?'. $url_array['query'];
+            } else{
+                $newPath = $url_array['path'];
+            }
+            $path = ltrim($newPath, '/');
+            return redirect()->guest('users/login?next='.$path)->withMessage('<p class="alert alert-warning text-center ">please login</p>');
+        }
+
+        // Redirect if already set
+        $user = Auth::user();
+        if ($user->factorium_user_type) {
+            return redirect('/users/' . $user->id);
+        }
+
+        $color = Color::where('project_site',url())->first();
+        return view('pages.userType',compact('color', 'user'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function saveUserType(Request $request)
+    {
+        if (!Auth::user()) {
+            $url_array = parse_url($request->fullUrl());
+            if(isset($url_array['query'])){
+                $newPath = $url_array['path'] .'?'. $url_array['query'];
+            } else{
+                $newPath = $url_array['path'];
+            }
+            $path = ltrim($newPath, '/');
+            return redirect()->guest('users/login?next='.$path)->withMessage('<p class="alert alert-warning text-center ">please login</p>');
+        }
+
+        $this->validate($request, [
+            'user_type' => 'required|in:buyer,seller,financier'
+        ]);
+
+        $user = Auth::user();
+        $user->factorium_user_type = $request->user_type;
+        $user->save();
+
+        return ($user->country_code == 'au')
+            ? redirect('/#projects')
+            : redirect('/users/' . $user->id);
     }
 }

@@ -54,29 +54,6 @@ Sign up for free Australia's top Venture Crowdfunding
 									@endif
 									<br>
 								</div>
-
-								<div class="col-md-12 <?php if($errors->first('user_type')){echo 'has-error';}?> wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.7s">
-									<p>Who you are?</p>
-									<div class="user-info-section">
-										@if($errors->has('user_type'))
-											{!! $errors->first('user_type', '<div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><small class="text-danger">:message</small></div>') !!}
-										@endif
-										<div class="user-type-info"></div>
-										<span>
-											{!! Form::radio('user_type', 'buyer', true, array('id'=>'user_type_0')) !!} &nbsp;
-											{!! Form::label('user_type_0', 'I am a Buyer') !!} &nbsp; <i class="fa fa-info-circle cursor-pointer" onclick="showUserTypeInfo('buyer');" aria-hidden="true"></i><br>
-										</span>
-										<span>
-											{!! Form::radio('user_type', 'seller', false, array('id'=>'user_type_1')) !!} &nbsp;
-											{!! Form::label('user_type_1', 'I am a Seller') !!} &nbsp; <i class="fa fa-info-circle cursor-pointer" onclick="showUserTypeInfo('seller')" aria-hidden="true"></i> <br>
-										</span>
-										<span>
-											{!! Form::radio('user_type', 'financier', false, array('id'=>'user_type_2')) !!} &nbsp;
-											{!! Form::label('user_type_2', 'I am a Financier') !!} &nbsp; <i class="fa fa-info-circle cursor-pointer" onclick="showUserTypeInfo('financier')" aria-hidden="true"></i> <br>
-										</span>
-									</div>
-									<br>
-								</div>
 								<!-- </div> -->
 							</div>
 							<?php

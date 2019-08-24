@@ -32,6 +32,10 @@ Route::get('/pages/subdivide', ['as'=>'pages.subdivide', 'uses'=>'PagesControlle
 Route::post('/pages/subdivide', ['as'=>'pages.subdivide.store', 'uses'=>'PagesController@storeSubdivide']);
 Route::get('/pages/subdivide/thankyou', ['as'=>'pages.subdivide.thankyou', 'uses'=>'PagesController@subdivideThankyou']);
 Route::get('/pages/dispute', ['as'=>'pages.dispute', 'uses'=>'PagesController@disputeResolution']);
+Route::get('/pages/explainer', ['as'=>'pages.explainer', 'uses'=>'PagesController@factoriumExplainer']);
+Route::get('/pages/user/type',['as'=>'users.user.type','uses'=>'PagesController@selectUserType']);
+Route::post('/pages/user/type',['as'=>'users.user.type.save','uses'=>'PagesController@saveUserType']);
+
 
 Route::pattern('dashboard', '[0-9]+');
 Route::resource('dashboard', 'DashboardController');
