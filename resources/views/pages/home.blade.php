@@ -385,7 +385,7 @@
 								<br><br><br>
 								<div class="row">
 									<div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
-										<a href="@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects'){!!$siteConfiguration->homepg_btn1_gotoid!!} @else /#projects @endif" @if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects') class=" @else data-href="/#{{'projects'}}" class="scrollto scroll-links @endif btn btn-lg font-regular buy-now-btn reference-link-with-js" role="button" style="font-size:22px;z-index: 99999;border:2px solid;">
+										<a href="@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects'){!!$siteConfiguration->homepg_btn1_gotoid!!} @else @if(Auth::check()) /#projects @else /users/login @endif @endif" @if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects') class=" @else @if(Auth::check()) data-href="/#{{'projects'}}" class="scrollto scroll-links @else  class=" @endif @endif btn btn-lg font-regular buy-now-btn reference-link-with-js" role="button" style="font-size:22px;z-index: 99999;border:2px solid;">
 											@if(!empty($siteConfiguration))
 											@if($siteConfiguration->homepg_btn1_text != '')
 											{!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
@@ -618,7 +618,7 @@
 										project_thumb_image" id="project_thumb_image">
 										<input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
 
-										<div id="myBtnContainer">
+										<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
 										  <button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
 										  <button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
 										  <button class="filterbtn" onclick="filterSelection('Sold')"> Invoice Sold</button>
@@ -627,7 +627,8 @@
 
 										@if(count($projects)==1)
 										@foreach($projects->chunk(1) as $sets)
-										<div class="row">
+										<div class="row @if(!Auth::check())
+										hide @endif" >
 											@foreach($sets as $project)
 											<?php
 											$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
@@ -767,7 +768,8 @@
 										@endif
 										@endif
 										@foreach($projects->chunk(3) as $sets)
-										<div class="row" id="project-section-to-reload1">
+										<div class="row @if(!Auth::check())
+										hide @endif" id="project-section-to-reload1">
 											@foreach($sets as $project)
 											<?php
 											$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
@@ -915,7 +917,8 @@
 										@endif
 										@endif
 										@foreach($projects->chunk(2) as $sets)
-										<div class="row" id="project-section-to-reload2">
+										<div class="row @if(!Auth::check())
+										hide @endif" id="project-section-to-reload2">
 											@foreach($sets as $project)
 											<?php
 											$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
