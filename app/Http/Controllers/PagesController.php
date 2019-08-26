@@ -42,7 +42,7 @@ class PagesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage', 'factoriumExplainer']]);
+        $this->middleware('auth', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
         $this->middleware('admin', ['only' => ['editTeam','updateTeam','updateTeam','createTeamMember','changeColorFooter','cropUploadedImage']]);
         $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
     }
