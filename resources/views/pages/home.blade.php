@@ -617,7 +617,13 @@
 										<input class="hide" type="file" name="
 										project_thumb_image" id="project_thumb_image">
 										<input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
-
+										<div class="@if(Auth::check()) hide  @endif row" >
+											<div class="col-md-2 col-md-offset-5" >
+											<a href="/users/login" class="btn btn-block buy-now-btn first_color">
+												sign in
+											</a>
+											</div>
+										</div>
 										<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
 										  <button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
 										  <button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
@@ -1911,7 +1917,7 @@
 			$("a").mouseover(function() {
 				$(this).css('color', '#{{$color->heading_color}}');
 			}).mouseout(function() {
-				$(this).css('color', '');
+				$(this).css('color', '#{{$color->nav_footer_color}}');
 			});
 			$(".a-link").mouseover(function() {
 				$(this).css('color', '#{{$color->heading_color}}');
