@@ -94,7 +94,7 @@ Create New Project | @parent
 								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 							</div>
 							<div class="col-sm-6">
-								<h4 class="invoice_issue_from_email">Email</h4>
+								<h4 class="invoice_issue_from_email first_color">Email</h4>
 								{!! Form::email('invoice_issue_from_email', null, array('placeholder'=>'Invoice issued to Email', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 							</div>
