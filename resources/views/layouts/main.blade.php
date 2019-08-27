@@ -134,6 +134,23 @@ $_SESSION['code'] = md5(microtime(true));
     text-decoration: underline !important;
 }
 
+    .btn-custom-theme {
+        font-family: {{$siteConfiguration->font_family}};
+        background-color: transparent;
+        border-radius: 50px;
+        transition: transform .2s;
+        letter-spacing: 1px;
+        border-color: {{ '#' . $color->heading_color }};
+        color: {{ '#' . $color->nav_footer_color }} !important;
+    }
+    .btn-custom-theme:hover{
+        transform: scale(1.04);
+        background-color: transparent;
+        border-color: {{ '#' . $color->heading_color }};
+        color: {{ '#' . $color->heading_color }} !important;
+    }
+
+
 </style>
 
 <!-- Google Analytics -->

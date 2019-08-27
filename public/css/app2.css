@@ -878,3 +878,13 @@ input[type="radio"] {
 		}
 	}
 	/*counter after login ends*/
+
+.edit-button-style a {
+	vertical-align: -webkit-baseline-middle;
+	font-size: 14px;
+	color: #fff;
+}
+.project-progress-3way-switch .active {
+	background-color: #428BCA !important;
+	color: #fff !important;
+}

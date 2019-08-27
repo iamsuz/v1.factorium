@@ -23,9 +23,34 @@
             justify-content: space-between;
         }
 
-         .explainer-carousel .item img {
-            max-height: 50vh;
-         }
+        .explainer-carousel .item img {
+            max-height: 45vh;
+        }
+
+        @media (max-width: 375px) {
+            .explainer-carousel .item img {
+                max-height: 30vh;
+                margin-bottom: 15px;
+            }
+            h1, h2, h3, h4 {
+                font-size: 0.9em !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .explainer-carousel .item img {
+                max-height: 35vh;
+                margin-bottom: 20px;
+            }
+
+            h1, h2, h3, h4 {
+                font-size: 1.2em;
+            }
+        }
+
+        h1, h2, h3, h4 {
+            color: {{ '#' . $color->nav_footer_color }};
+        }
 
     </style>
 @stop
@@ -38,7 +63,7 @@
             <div class="carousel-inner">
                 <div class="item active">
                     <img src="{{ asset('assets/images/explainer/1.png') }}">
-                    <h3>Welcome to Factorium, an invoice factoring market place</h3>
+                    <h3 class="">Welcome to Factorium, an invoice factoring market place</h3>
                 </div>
                 <div class="item">
                     <img src="{{ asset('assets/images/explainer/2.png') }}">
@@ -121,9 +146,11 @@
 
                 <hr>
                 <div class="text-center carousel-nav-buttons">
-                    <button type="button" class="btn btn-primary left" onclick="slideLeft()"> < Previous </button> &nbsp;
-                    <button type="button" class="btn btn-default skip"> Skip and Select Role... </button> &nbsp;
-                    <button type="button" class="btn btn-primary right" onclick="slideRight()"> Next > </button>
+                    <button type="button" class="btn left btn-custom-theme hidden-xs" onclick="slideLeft()" style="width: 100px"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous </button> &nbsp;
+                    <button type="button" class="btn left btn-custom-theme hidden-sm hidden-md hidden-lg" onclick="slideLeft()" style="width: 50px"> <i class="fa fa-arrow-left" aria-hidden="true"></i></button> &nbsp;
+                    <button type="button" class="btn skip btn-custom-theme"> Select Role... </button> &nbsp;
+                    <button type="button" class="btn right btn-custom-theme hidden-xs" onclick="slideRight()" style="width: 100px;"> Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                    <button type="button" class="btn right btn-custom-theme hidden-sm hidden-md hidden-lg" onclick="slideRight()" style="width: 50px;"> <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                 </div>
                 <br><br>
             </div>
@@ -161,14 +188,8 @@
                 $('.carousel-nav-buttons .left').attr('disabled', 'disabled');
             } else if ($('.carousel-indicators li').eq(slidesCount).hasClass('active')) {
                 $('.carousel-nav-buttons .right').attr('disabled', 'disabled');
-                $('.carousel-nav-buttons .skip').html('Select Role...');
-                $('.carousel-nav-buttons .skip').addClass('btn-lg');
-                $('.carousel-nav-buttons .skip').addClass('btn-success');
             } else {
                 $('.carousel-nav-buttons button').removeAttr('disabled');
-                $('.carousel-nav-buttons .skip').html('Skip and Select Role...');
-                $('.carousel-nav-buttons .skip').removeClass('btn-lg');
-                $('.carousel-nav-buttons .skip').removeClass('btn-success');
             }
         }
     </script>
