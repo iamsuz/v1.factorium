@@ -627,7 +627,7 @@
 										<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
 										  <button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
 										  <button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
-										  <button class="filterbtn" onclick="filterSelection('Sold')"> Invoice Sold</button>
+										  <button class="filterbtn" onclick="filterSelection('sold')"> Invoice Sold</button>
 										  <button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>										 
 							        	</div>	
 
@@ -3014,6 +3014,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 		  x = document.getElementsByClassName("filterDiv");
 		  if (c == "all") c = "";
 		  for (i = 0; i < x.length; i++) {
+		  	console.log(x[i]);
 		    w3RemoveClass(x[i], "show");
 		    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
 		  }
