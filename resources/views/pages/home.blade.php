@@ -619,9 +619,9 @@
 										<input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
 										<div class="@if(Auth::check()) hide  @endif row" >
 											<div class="col-md-4 col-md-offset-4 text-center" >
-											<a href="/users/login" class="btn btn-block buy-now-btn first_color">
-												sign in to see invoices up for sale
-											</a>
+												<a href="/users/login" class="btn btn-block buy-now-btn first_color">
+													sign in to see invoices up for sale
+												</a>
 											</div>
 										</div>
 										<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
@@ -1376,14 +1376,21 @@
 	</div>
 </section>
 <br><br><br>
+@if(!Auth::guest())
 <div style="position: fixed;bottom: 1em;left: 1em;">
-	<div id="countdown">
+	<div id="countdown" class="hide">
 		<div id="countdown-number"></div>
 		<svg>
 			<circle r="18" cx="20" cy="20"></circle>
 		</svg>
 	</div>
+	<div id="timer_after_login" class="Timer">
+	</div>
+	<div>
+		{{Auth::user()->credits->where('currency','factor')->sum('amount')}} Factor
+	</div>
 </div>
+@endif
 <footer id="footer" class="chunk-box" @if($color) style="background-color: #{{$color->nav_footer_color}}" @endif>
 	@if(Auth::guest())
 	@else
@@ -1684,13 +1691,27 @@
 
 			<script>
 				jQuery(document).ready(function($) {
+					// overlay timer changes
+					@if(!Auth::guest())
+					var start = new Date("{{Auth::user()->last_login->toDateTimeString()}}");
 					var countdownNumberEl = document.getElementById('countdown-number');
-					var countdown = 60;
-					countdownNumberEl.textContent = countdown;
 					setInterval(function() {
-						countdown = --countdown <= 0 ? 60 : countdown;
-						countdownNumberEl.textContent = countdown;
-					}, 1000);
+						var startdate=new Date();
+						// console.log(startdate);
+						var enddate=new Date("{{Auth::user()->last_login->toDateTimeString()}}");
+						var diff = startdate - enddate;
+						var s = diff/1000;
+						var h = Math.floor(s/3600); //Get whole hours
+						s -= h*3600;
+    					var m = Math.floor(s/60); //Get remaining minutes
+    					s -= m*60;
+    					var s = Math.floor(s);
+    					countdownNumberEl.textContent = s;
+    					$('.Timer').text((h < 10 ? '0'+h : h)+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s));
+    				}, 1000);
+					@endif
+					// overlay timer ends
+
 					$("#owl-demo").owlCarousel({
 						autoPlay : 3000,
 						stopOnHover : true,
