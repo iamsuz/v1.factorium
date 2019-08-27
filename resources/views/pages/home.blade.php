@@ -146,33 +146,33 @@
 			background-repeat: repeat-x;
 		}
 		.filterDiv {
-		  
-		  display: none; /* Hidden by default */
+
+			display: none; /* Hidden by default */
 		}
 
 		/* The "show" class is added to the filtered elements */
 		.show {
-		  display: block;
+			display: block;
 		}
 
 		/* Style the buttons */
 		.filterbtn {
-		  border: none;
-		  outline: none;
-		  padding: 12px 16px;
-		  background-color: #f1f1f1;
-		  cursor: pointer;
+			border: none;
+			outline: none;
+			padding: 12px 16px;
+			background-color: #f1f1f1;
+			cursor: pointer;
 		}
 
 		/* Add a light grey background on mouse-over */
 		.filterbtn:hover {
-		  background-color: #ddd;
+			background-color: #ddd;
 		}
 
 		/* Add a dark background to the active button */
 		.filterbtn.active {
-		  background-color: #666;
-		  color: white;
+			background-color: #666;
+			color: white;
 		}
 	</style>
 
@@ -625,185 +625,185 @@
 											</div>
 										</div>
 										<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
-										  <button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
-										  <button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
-										  <button class="filterbtn" onclick="filterSelection('Sold')"> Invoice Sold</button>
-										  <button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>										 
-							        	</div>	
+											<button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
+											<button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
+											<button class="filterbtn" onclick="filterSelection('Sold')"> Invoice Sold</button>
+											<button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>
+										</div>
 
 										@if(count($projects)==1)
 										@foreach($projects->chunk(1) as $sets)
 										<div class="row @if(!Auth::check())
 										hide @endif" >
-											@foreach($sets as $project)
-											<?php
-											$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
-											$paid = $investments->where('project_id',$project->id)->where('accepted',1);
-											$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
-											$invoice_sold = '0';
-											if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
-												$invoice_sold = '1';
-											}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
-												$invoice_sold = '2';
-											}
-											if($project->investment) {
-												$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
-												$remaining_amount = $project->investment->goal_amount - $pledged_amount;
-											} else {
-												$completed_percent = 0;
-												$remaining_amount = 0;
-											}
-											?>
-											<div class="col-md-8 col-md-offset-2" style="" id="circle{{$project->id}}">
-												@if(Auth::guest())
+										@foreach($sets as $project)
+										<?php
+										$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+										$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+										$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+										$invoice_sold = '0';
+										if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+											$invoice_sold = '1';
+										}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+											$invoice_sold = '2';
+										}
+										if($project->investment) {
+											$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
+											$remaining_amount = $project->investment->goal_amount - $pledged_amount;
+										} else {
+											$completed_percent = 0;
+											$remaining_amount = 0;
+										}
+										?>
+										<div class="col-md-8 col-md-offset-2" style="" id="circle{{$project->id}}">
+											@if(Auth::guest())
+											@else
+											@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+											<div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+											@endif
+											@endif
+											<a @if($project->is_coming_soon) @if(Auth::user())
+												@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
 												@else
-												@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-												<div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+												href="javascript:void(0);"
 												@endif
-												@endif
-												<a @if($project->is_coming_soon) @if(Auth::user())
-													@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
-													@else
-													href="javascript:void(0);"
-													@endif
-													@else @if($invoice_sold === '1') href="{{route('projects.show', [$project])}}" @endif
-													@endif name="project-link" style="display: none;">
-													<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
-														<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
-															<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
-															<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
-																<div class="col-md-6" style="padding-top: 10px;">
-																	<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
-																</div>
-																<div class="col-md-6" style="padding-top: 10px">
-																	<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
-																</div>
+												@else @if($invoice_sold === '1') href="{{route('projects.show', [$project])}}" @endif
+												@endif name="project-link" style="display: none;">
+												<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
+													<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+														<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
+														<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
+															<div class="col-md-6" style="padding-top: 10px;">
+																<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 															</div>
-															<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
-																<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
-																<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
-																<input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
-																<br>
-																<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
+															<div class="col-md-6" style="padding-top: 10px">
+																<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
 															</div>
-															<div class="@if($project->invite_only) invite-only-overlay @endif thn">
-																<div class="content">
-																	<div class="row">
-																		<div class="col-md-12">
-																			@if($project->invite_only)
-																			<div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
-																				@if(Auth::user())
-																				<h3>
-																					Invite Only Project
-																				</h3>
-																				@else
-																				<h3>
-																					<a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
-																					<small style="color:white;">
-																						<br> to access Private Project
-																					</small>
-																				</h3>
-																				@endif
-																			</div>
+														</div>
+														<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+															<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
+															<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+															<input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+															<br>
+															<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
+														</div>
+														<div class="@if($project->invite_only) invite-only-overlay @endif thn">
+															<div class="content">
+																<div class="row">
+																	<div class="col-md-12">
+																		@if($project->invite_only)
+																		<div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
+																			@if(Auth::user())
+																			<h3>
+																				Invite Only Project
+																			</h3>
+																			@else
+																			<h3>
+																				<a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
+																				<small style="color:white;">
+																					<br> to access Private Project
+																				</small>
+																			</h3>
 																			@endif
-
 																		</div>
+																		@endif
+
 																	</div>
 																</div>
 															</div>
 														</div>
+													</div>
 
-													</a>
-													<br>
-													@if(Auth::guest())
-													@else
-													@if($admin_access == 1)
-													<i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
-													@endif
-													@endif
-													<div class="caption">
-														<form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
-															{{csrf_field()}}
-															<div class="project-thumbnail-txt"></div>
-														</form>
-														<a @if($project->is_coming_soon) @if(Auth::user())
-															@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
-															@else
-															href="javascript:void(0);"
-															@endif
-															@else href="{{route('projects.show', [$project])}}"
-															@endif>
-															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
-															<div class="row text-left">
-																<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
-																	<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
-																</div>
-																<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
-																</div>
-																<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
-																</div>
-																<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
-																</div>
+												</a>
+												<br>
+												@if(Auth::guest())
+												@else
+												@if($admin_access == 1)
+												<i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
+												@endif
+												@endif
+												<div class="caption">
+													<form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
+														{{csrf_field()}}
+														<div class="project-thumbnail-txt"></div>
+													</form>
+													<a @if($project->is_coming_soon) @if(Auth::user())
+														@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.show', [$project])}}" @else href="javascript:void(0);"@endif
+														@else
+														href="javascript:void(0);"
+														@endif
+														@else href="{{route('projects.show', [$project])}}"
+														@endif>
+														<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
+														<div class="row text-left">
+															<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
+																<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
 															</div>
-														</div>
-														<br>
-														<div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
-															<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
-																<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
-																</div>
+															<div class="col-xs-3 col-sm-3 col-md-3 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.5s">
+																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 															</div>
-															<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
+															<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
+															</div>
+															<div class="col-xs-2 col-sm-2 col-md-2 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
+															</div>
 														</div>
 													</div>
-												</a>
-											</div>
-											@endforeach
+													<br>
+													<div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
+														<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
+															<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+															</div>
+														</div>
+														<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
+													</div>
+												</div>
+											</a>
 										</div>
 										@endforeach
-										@else
-										@if(count($projects) >2 && count($projects) !== 4)
-										@if(Auth::guest())
-										@else
-										@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-										<div class="row" style="margin-bottom: 20px;">
-											<input type="button" class="btn btn-default col-md-2 col-md-offset-5 enable-swap-btn" value="Enable Swap">
-											&nbsp;&nbsp;&nbsp;<button style="background: none; border: none;"><i class="fa fa-refresh swap-projects-btn" aria-hidden="true" style="font-size: 2em; cursor: pointer;color: #000; vertical-align: -webkit-baseline-middle;" data-toggle="tooltip" title="Swap"></i></button><br>
-											<div style="text-align: center;"><span class="projects-swap-guide-msg" style="font-size: 0.7em; color: #ce1e1e;"></span></div>
-										</div>
-										@endif
-										@endif
-										@foreach($projects->chunk(3) as $sets)
-										<div class="row @if(!Auth::check())
-										hide @endif" id="project-section-to-reload1">
-											@foreach($sets as $project)
-											<?php
-											$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
-											$paid = $investments->where('project_id',$project->id)->where('accepted',1);
-											$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
-											$invoice_sold = '0';
-											if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
-												$invoice_sold = '1';
-											}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
-												$invoice_sold = '2';
-											}
-											if($project->investment) {
-												$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
-												$remaining_amount = $project->investment->goal_amount - $pledged_amount;
-											} else {
-												$completed_percent = 0;
-												$remaining_amount = 0;
-											}
-											?>
-											    @if($invoice_sold ==='1') 
-												
-												<div class="col-md-4 swap-select-overlay filterDiv sold" style="padding-top: 15px;" id="circle{{$project->id}}"> 
-												@elseif($invoice_sold === '2') 
-												
-												<div class="col-md-4 swap-select-overlay filterDiv repaid" style="padding-top: 15px;" id="circle{{$project->id}}">
-												 @else 
-												 <div class="col-md-4 swap-select-overlay filterDiv buy" style="padding-top: 15px;" id="circle{{$project->id}}">
-											    @endif
+									</div>
+									@endforeach
+									@else
+									@if(count($projects) >2 && count($projects) !== 4)
+									@if(Auth::guest())
+									@else
+									@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+									<div class="row" style="margin-bottom: 20px;">
+										<input type="button" class="btn btn-default col-md-2 col-md-offset-5 enable-swap-btn" value="Enable Swap">
+										&nbsp;&nbsp;&nbsp;<button style="background: none; border: none;"><i class="fa fa-refresh swap-projects-btn" aria-hidden="true" style="font-size: 2em; cursor: pointer;color: #000; vertical-align: -webkit-baseline-middle;" data-toggle="tooltip" title="Swap"></i></button><br>
+										<div style="text-align: center;"><span class="projects-swap-guide-msg" style="font-size: 0.7em; color: #ce1e1e;"></span></div>
+									</div>
+									@endif
+									@endif
+									@foreach($projects->chunk(3) as $sets)
+									<div class="row @if(!Auth::check())
+									hide @endif" id="project-section-to-reload1">
+									@foreach($sets as $project)
+									<?php
+									$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+									$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+									$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+									$invoice_sold = '0';
+									if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+										$invoice_sold = '1';
+									}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+										$invoice_sold = '2';
+									}
+									if($project->investment) {
+										$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
+										$remaining_amount = $project->investment->goal_amount - $pledged_amount;
+									} else {
+										$completed_percent = 0;
+										$remaining_amount = 0;
+									}
+									?>
+									@if($invoice_sold ==='1')
+
+									<div class="col-md-4 swap-select-overlay filterDiv sold" style="padding-top: 15px;" id="circle{{$project->id}}">
+										@elseif($invoice_sold === '2')
+
+										<div class="col-md-4 swap-select-overlay filterDiv repaid" style="padding-top: 15px;" id="circle{{$project->id}}">
+											@else
+											<div class="col-md-4 swap-select-overlay filterDiv buy" style="padding-top: 15px;" id="circle{{$project->id}}">
+												@endif
 												<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
 												@if(Auth::guest())
 												@else
@@ -925,182 +925,182 @@
 										@foreach($projects->chunk(2) as $sets)
 										<div class="row @if(!Auth::check())
 										hide @endif" id="project-section-to-reload2">
-											@foreach($sets as $project)
-											<?php
-											$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
-											$paid = $investments->where('project_id',$project->id)->where('accepted',1);
-											$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
-											$invoice_sold = '0';
-											if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
-												$invoice_sold = '1';
-											}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
-												$invoice_sold = '2';
-											}
-											if($project->investment) {
-												$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
-												$remaining_amount = $project->investment->goal_amount - $pledged_amount;
-											} else {
-												$completed_percent = 0;
-												$remaining_amount = 0;
-											}
-											?>
-											 @if($invoice_sold === '1')
-												   Invoice Sold 
-												   <div class="col-sm-6 col-md-6 swap-select-overlay filterDiv sold"  id="circle{{$project->id}}" style=" padding-top: 20px;">
-												 @elseif($invoice_sold === '2') 
-												   Investors repaid
-												   <div class="col-sm-6 col-md-6 swap-select-overlay filterDiv repaid"  id="circle{{$project->id}}" style=" padding-top: 20px;">
-												 @else <div class="col-sm-6 col-md-6 swap-select-overlay filterDiv buy"  id="circle{{$project->id}}" style=" padding-top: 20px;">
-												  @endif
-												<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
-												@if(Auth::guest())
-												@else
-												@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
-												<div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
-												@endif
-												@endif
-												<a style="display: none;" @if($project->is_coming_soon) @if(Auth::user())
-													@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
-													@else
-													href="javascript:void(0);"
+										@foreach($sets as $project)
+										<?php
+										$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+										$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+										$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+										$invoice_sold = '0';
+										if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+											$invoice_sold = '1';
+										}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+											$invoice_sold = '2';
+										}
+										if($project->investment) {
+											$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
+											$remaining_amount = $project->investment->goal_amount - $pledged_amount;
+										} else {
+											$completed_percent = 0;
+											$remaining_amount = 0;
+										}
+										?>
+										@if($invoice_sold === '1')
+										Invoice Sold
+										<div class="col-sm-6 col-md-6 swap-select-overlay filterDiv sold"  id="circle{{$project->id}}" style=" padding-top: 20px;">
+											@elseif($invoice_sold === '2')
+											Investors repaid
+											<div class="col-sm-6 col-md-6 swap-select-overlay filterDiv repaid"  id="circle{{$project->id}}" style=" padding-top: 20px;">
+												@else <div class="col-sm-6 col-md-6 swap-select-overlay filterDiv buy"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 													@endif
-													@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" style="display: none;" @endif
-													@endif>
-													<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
-														<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
-															<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
-															<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
-																<div class="col-md-6" style="padding-top: 10px;">
-																	<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
+													<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
+													@if(Auth::guest())
+													@else
+													@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin())
+													<div class="edit-button-style edit-project-thumb-img" style="z-index: 10; position: inherit;" action="project-img-{{$project->id}}" projectid="{{$project->id}}"><a data-toggle="tooltip" title="Edit Project Image" data-placement="right"><i class="fa fa fa-edit fa-lg"></i></a></div>
+													@endif
+													@endif
+													<a style="display: none;" @if($project->is_coming_soon) @if(Auth::user())
+														@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
+														@else
+														href="javascript:void(0);"
+														@endif
+														@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" style="display: none;" @endif
+														@endif>
+														<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
+															<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
+																<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
+																<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
+																	<div class="col-md-6" style="padding-top: 10px;">
+																		<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
+																	</div>
+																	<div class="col-md-6" style="padding-top: 10px;">
+																		<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+																	</div>
 																</div>
-																<div class="col-md-6" style="padding-top: 10px;">
-																	<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+																<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
+																	<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
+																	<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
+																	<input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
+																	<br>
+																	<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
 																</div>
-															</div>
-															<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
-																<span class="project-interest-error-text" style="font-size: 12px; color: #ff0000; font-weight: 100;"></span>
-																<input type="text" class="form-control project-{{$project->id}}-email" placeholder="Email ID" value="@if(!Auth::guest()){{Auth::user()->email}}@endif">
-																<input type="text" class="form-control project-{{$project->id}}-phone" placeholder="Phone Number" value="@if(!Auth::guest()){{Auth::user()->phone_number}}@endif">
-																<br>
-																<input type="button" class="btn btn-primary btn-block show-upcoming-project-interest-btn" value="Notify me when live" projectId="{{$project->id}}">
-															</div>
-															<div class="@if($project->invite_only) invite-only-overlay @endif thn">
-																<div class="content">
-																	<div class="row">
-																		<div class="col-md-12">
-																			@if($project->invite_only)
-																			<div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
-																				@if(Auth::user())
-																				<h3>
-																					Invite Only Project
-																				</h3>
-																				@else
-																				<h3>
-																					<a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
-																					<small style="color:white;">
-																						<br> to access Private Project
-																					</small>
-																				</h3>
+																<div class="@if($project->invite_only) invite-only-overlay @endif thn">
+																	<div class="content">
+																		<div class="row">
+																			<div class="col-md-12">
+																				@if($project->invite_only)
+																				<div class="pull-left text-left" data-wow-duration="1.5s" data-wow-delay="0.3s" style="color:#fff; padding:16px;">
+																					@if(Auth::user())
+																					<h3>
+																						Invite Only Project
+																					</h3>
+																					@else
+																					<h3>
+																						<a href="/users/signin?next=#opportunities" style="color:white;">Please Sign In</a>
+																						<small style="color:white;">
+																							<br> to access Private Project
+																						</small>
+																					</h3>
+																					@endif
+																				</div>
 																				@endif
 																			</div>
-																			@endif
 																		</div>
 																	</div>
 																</div>
 															</div>
+														</a>
+														<br>
+														@if(Auth::guest())
+														@else
+														@if($admin_access == 1)
+														<i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
+														@endif
+														@endif
+														<div class="caption">
+															<form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
+																{{csrf_field()}}
+																<div class="project-thumbnail-txt"></div>
+															</form>
+															<a @if($project->is_coming_soon) @if(Auth::user())
+																@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
+																@else
+																href="javascript:void(0);"
+																@endif
+																@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
+																@endif>
+																<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
+																<div class="row text-left">
+																	<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
+																		<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
+																	</div>
+																	<div class="col-xs-3 col-sm-3 col-md-2 listing1" data-wow-duration="1.5s" data-wow-delay="0.5s">
+																		<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
+																	</div>
+																	<div class="col-xs-2 col-sm-2 col-md-2 listings2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" >
+																		<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
+																	</div>
+																	<div class="col-xs-2 col-sm-2 col-md-1 listings3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000;">
+																		<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
+																	</div>
+																</div>
+															</div>
+															<br>
+															<div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
+																<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
+																	<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
+																	</div>
+																</div>
+																<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
+															</div>
 														</div>
 													</a>
-													<br>
-													@if(Auth::guest())
-													@else
-													@if($admin_access == 1)
-													<i class="fa fa-pencil edit-pencil-style show-project-thumbnail-text-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the text below" data-placement="right"></i>
-													@endif
-													@endif
-													<div class="caption">
-														<form action="{{route('ProjectThumbnailText', $project->id)}}" method="POST">
-															{{csrf_field()}}
-															<div class="project-thumbnail-txt"></div>
-														</form>
-														<a @if($project->is_coming_soon) @if(Auth::user())
-															@if(App\Helpers\SiteConfigurationHelper::isSiteAdmin()) href="{{route('projects.interest', [$project->id])}}" @else href="javascript:void(0);"@endif
-															@else
-															href="javascript:void(0);"
-															@endif
-															@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
-															@endif>
-															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
-															<div class="row text-left">
-																<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
-																	<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
-																</div>
-																<div class="col-xs-3 col-sm-3 col-md-2 listing1" data-wow-duration="1.5s" data-wow-delay="0.5s">
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
-																</div>
-																<div class="col-xs-2 col-sm-2 col-md-2 listings2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" >
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
-																</div>
-																<div class="col-xs-2 col-sm-2 col-md-1 listings3" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif border-left: thin solid #000;">
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
-																</div>
-															</div>
-														</div>
-														<br>
-														<div style="@if($project->projectconfiguration) @if(!$project->projectconfiguration->show_project_progress) display: none; @endif @endif">
-															<div class="progress" style="height:10px; border-radius:0px;background-color:#cccccc;">
-																<div class="progress-bar progress-bar-warning second_color_btn" role="progressbar" aria-valuenow="{{$completed_percent}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$completed_percent}}%">
-																</div>
-															</div>
-															<p style="color:#282a73; margin-top:-10px; font-size:18px;">@if($project->investment) ${{number_format($pledged_amount)}} raised of ${{number_format($project->investment->goal_amount)}} @endif</p>
-														</div>
-													</div>
-												</a>
+												</div>
+												@endforeach
 											</div>
 											@endforeach
+											@endif
+											@endif
 										</div>
-										@endforeach
-										@endif
-										@endif
 									</div>
-								</div>
-								<br><br>
-								<?php
+									<br><br>
+									<?php
 
-								if($siteConfiguration->prospectus_text != '') {
-									$prospectus = $siteConfiguration->prospectus_text;
-								} else {
-									$prospectus = "Prospectus";
-								}
-								?>
-								@if(Auth::guest())
-								@else
-								@if($admin_access == 1)
-								<div class="row text-left hide">
-									<i class="fa fa-pencil edit-pencil-style show-grey-box-note-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the below content" data-placement="right"></i>
-								</div>
-								@endif
-								@endif
-								<div class="row grey hide" style="padding: 1em 1em; border-radius: 10px;">
-									<form action="{{ route('configuration.updateGreyBoxNote') }}" method="POST">
-										{{csrf_field()}}
-										<p class="col-md-12 text-justify grey-box-note-content"><small style="color: #888;">@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the {{$prospectus}} for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the {{$prospectus}}. You should carefully review the {{$prospectus}} in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the {{$prospectus}}. @endif</small></p>
-									</form>
-									<p class="col-md-12  investment-title1-description-section text-justify" style="font-size:16px;">
-										<small class="fold-text-color">@if($siteConfiguration->compliance_description != '')
-											{!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
-											The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
-										@endif</small>
-									</p>
+									if($siteConfiguration->prospectus_text != '') {
+										$prospectus = $siteConfiguration->prospectus_text;
+									} else {
+										$prospectus = "Prospectus";
+									}
+									?>
 									@if(Auth::guest())
 									@else
 									@if($admin_access == 1)
-									<i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit Above Description" data-placement="right"></i>
-									@endif
-									@endif
-									<input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @else {!!  "The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001264952 of AFSL 275444) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href='"!!} @if($siteConfiguration->financial_service_guide_link){{$siteConfiguration->financial_service_guide_link}} @else{!!"https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0"!!}@endif{!!"' target='_blank'><span style='text-decoration: none; color: #888;'>Financial Services Guide<span></a>." !!} @endif">
+									<div class="row text-left hide">
+										<i class="fa fa-pencil edit-pencil-style show-grey-box-note-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit the below content" data-placement="right"></i>
 									</div>
-								</div>
-							</section>
+									@endif
+									@endif
+									<div class="row grey hide" style="padding: 1em 1em; border-radius: 10px;">
+										<form action="{{ route('configuration.updateGreyBoxNote') }}" method="POST">
+											{{csrf_field()}}
+											<p class="col-md-12 text-justify grey-box-note-content"><small style="color: #888;">@if($siteConfiguration->grey_box_note){{$siteConfiguration->grey_box_note}} @else You can download the {{$prospectus}} for the offer on the Project details page which can be accessed by clicking on the Project listing above. The online Application form will be provided alongside the {{$prospectus}}. You should carefully review the {{$prospectus}} in deciding whether to acquire the securities; and anyone who wants to acquire the securities will need to complete the online application form that will accompany the {{$prospectus}}. @endif</small></p>
+										</form>
+										<p class="col-md-12  investment-title1-description-section text-justify" style="font-size:16px;">
+											<small class="fold-text-color">@if($siteConfiguration->compliance_description != '')
+												{!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
+												The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
+											@endif</small>
+										</p>
+										@if(Auth::guest())
+										@else
+										@if($admin_access == 1)
+										<i class="fa fa-pencil edit-pencil-style show-investment-title1-desc-edit-box" style="font-size: 20px; color: #000; border: 2px solid #000; margin-bottom: 0.7em;" data-toggle="tooltip" title="Edit Above Description" data-placement="right"></i>
+										@endif
+										@endif
+										<input type="hidden" id="hiddent_investment_title1_description" value="@if($siteConfiguration->compliance_description != '') {!! html_entity_decode($siteConfiguration->compliance_description) !!} @else {!!  "The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the prospectus, product disclosure statement, information memorandum or any other offer documents relevant to that offer and consider whether they are right for you. The specific offer document is available at the Project and Project Application Pages. Tech Baron PTY LTD (ABN 67617252909) (Tech Baron) which is a Corporate Authorised Representative 001264952 of AFSL 275444) provides technology, administrative and support services for the operation of this website. Tech Baron is authorised to deal in securities only and is not party to the offers made on the website. Here is a copy of our <a href='"!!} @if($siteConfiguration->financial_service_guide_link){{$siteConfiguration->financial_service_guide_link}} @else{!!"https://www.dropbox.com/s/gux7ly75n4ps4ub/Tech%20Baron%20AusFirst%20Financial%20Services%20Guide.pdf?dl=0"!!}@endif{!!"' target='_blank'><span style='text-decoration: none; color: #888;'>Financial Services Guide<span></a>." !!} @endif">
+										</div>
+									</div>
+								</section>
 {{--<section id="security" class="chunk-box bottom-padding-zero" style="padding:2em 0;">
 	<div class="container">
 		<div class="row" id="pick">
@@ -1376,6 +1376,14 @@
 	</div>
 </section>
 <br><br><br>
+<div style="position: fixed;bottom: 1em;left: 1em;">
+	<div id="countdown">
+		<div id="countdown-number"></div>
+		<svg>
+			<circle r="18" cx="20" cy="20"></circle>
+		</svg>
+	</div>
+</div>
 <footer id="footer" class="chunk-box" @if($color) style="background-color: #{{$color->nav_footer_color}}" @endif>
 	@if(Auth::guest())
 	@else
@@ -1676,6 +1684,13 @@
 
 			<script>
 				jQuery(document).ready(function($) {
+					var countdownNumberEl = document.getElementById('countdown-number');
+					var countdown = 60;
+					countdownNumberEl.textContent = countdown;
+					setInterval(function() {
+						countdown = --countdown <= 0 ? 60 : countdown;
+						countdownNumberEl.textContent = countdown;
+					}, 1000);
 					$("#owl-demo").owlCarousel({
 						autoPlay : 3000,
 						stopOnHover : true,
@@ -1917,7 +1932,7 @@
 			$("a").mouseover(function() {
 				$(this).css('color', '#{{$color->heading_color}}');
 			}).mouseout(function() {
-				$(this).css('color', '#{{$color->nav_footer_color}}');
+				$(this).css('color', '#{{$color->nav_footer_color}} !important');
 			});
 			$(".a-link").mouseover(function() {
 				$(this).css('color', '#{{$color->heading_color}}');
@@ -3008,47 +3023,47 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			@endif
 		}
 
-				filterSelection("all")
+		filterSelection("all")
 		function filterSelection(c) {
-		  var x, i;
-		  x = document.getElementsByClassName("filterDiv");
-		  if (c == "all") c = "";
-		  for (i = 0; i < x.length; i++) {
-		    w3RemoveClass(x[i], "show");
-		    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-		  }
+			var x, i;
+			x = document.getElementsByClassName("filterDiv");
+			if (c == "all") c = "";
+			for (i = 0; i < x.length; i++) {
+				w3RemoveClass(x[i], "show");
+				if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+			}
 		}
 
 		function w3AddClass(element, name) {
-		  var i, arr1, arr2;
-		  arr1 = element.className.split(" ");
-		  arr2 = name.split(" ");
-		  for (i = 0; i < arr2.length; i++) {
-		    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
-		  }
+			var i, arr1, arr2;
+			arr1 = element.className.split(" ");
+			arr2 = name.split(" ");
+			for (i = 0; i < arr2.length; i++) {
+				if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+			}
 		}
 
 		function w3RemoveClass(element, name) {
-		  var i, arr1, arr2;
-		  arr1 = element.className.split(" ");
-		  arr2 = name.split(" ");
-		  for (i = 0; i < arr2.length; i++) {
-		    while (arr1.indexOf(arr2[i]) > -1) {
-		      arr1.splice(arr1.indexOf(arr2[i]), 1);     
-		    }
-		  }
-		  element.className = arr1.join(" ");
+			var i, arr1, arr2;
+			arr1 = element.className.split(" ");
+			arr2 = name.split(" ");
+			for (i = 0; i < arr2.length; i++) {
+				while (arr1.indexOf(arr2[i]) > -1) {
+					arr1.splice(arr1.indexOf(arr2[i]), 1);
+				}
+			}
+			element.className = arr1.join(" ");
 		}
 
 		// Add active class to the current button (highlight it)
 		var btnContainer = document.getElementById("myBtnContainer");
 		var btns = btnContainer.getElementsByClassName("filterbtn");
 		for (var i = 0; i < btns.length; i++) {
-		  btns[i].addEventListener("click", function(){
-		    var current = document.getElementsByClassName("active");
-		    current[0].className = current[0].className.replace(" active", "");
-		    this.className += " active";
-		  });
+			btns[i].addEventListener("click", function(){
+				var current = document.getElementsByClassName("active");
+				current[0].className = current[0].className.replace(" active", "");
+				this.className += " active";
+			});
 		}
 
 	</script>
