@@ -369,7 +369,7 @@ class UserRegistrationsController extends Controller
         else {
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'factor', 'project_site' => url()]);
 
         $this->addUserToSendgridContacts($request->all());  // Add user to sendgrid
     }
@@ -509,7 +509,7 @@ class UserRegistrationsController extends Controller
         if ($request->session()->has('ref')) {
             event(new \App\Events\UserReferred(request()->session()->get('ref'), $user));
         }else{
-            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+            $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'factor', 'project_site' => url()]);
         }
         $mailer->sendRegistrationNotificationAdmin($user,$referrer);
 
@@ -610,7 +610,7 @@ class UserRegistrationsController extends Controller
         else {
             $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
         };
-        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+        $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'factor', 'project_site' => url()]);
         $password = $userReg->password;
         if($userReg->request_form_project_id == NULL && $userReg->eoi_project == NULL){
             $offerRegi = $userReg->offer_registration;
@@ -908,7 +908,7 @@ public function storeDetailsInvite(Request $request)
     else {
         $signup_konkrete = \App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->user_sign_up_konkrete;
     };
-    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'konkrete', 'project_site' => url()]);
+    $credit = Credit::create(['user_id'=>$user->id, 'amount'=>$signup_konkrete, 'type'=>'sign up', 'currency'=>'factor', 'project_site' => url()]);
 
     $invite = Invite::whereToken($request->token)->firstOrFail();
     $invite->update(['accepted'=>1,'accepted_on'=>Carbon::now()]);

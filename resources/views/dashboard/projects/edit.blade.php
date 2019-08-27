@@ -226,8 +226,13 @@ Edit {{$project->title}} | Dashboard | @parent
 									<div class="row">
 										<div class="form-group @if($errors->first('invoice_issued_from')){{'has-error'}} @endif">
 											{!!Form::label('invoice_issued_from', 'Invoice issued from', array('class'=>'col-sm-3 control-label'))!!}
-											<div class="col-sm-8">
+											<div class="col-sm-3">
 												{!! Form::text('invoice_issued_from', null, array('placeholder'=>'Invoice issued from', 'class'=>'form-control')) !!}
+												{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
+											</div>
+											{!!Form::label('invoice_issue_from_email', 'Email', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-3">
+												{!! Form::text('invoice_issue_from_email', null, array('placeholder'=>'Invoice issued from Email', 'class'=>'form-control')) !!}
 												{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
 											</div>
 										</div>
@@ -660,7 +665,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											<div class="col-sm-5 @if($errors->first('bank_reference')){{'has-error'}} @endif">
 												{!! Form::text('bank_reference', $project->investment?$project->investment->bank_reference:null, array('placeholder'=>'Bank Reference', 'class'=>'form-control', 'tabindex'=>'5')) !!}
 												{!! $errors->first('bank_reference', '<small class="text-danger">:message</small>') !!}
-											</div> 
+											</div>
 											{!!Form::label('embedded_offer_doc_link', 'Embedded Offer Doc link', array('class'=>'col-sm-3 control-label'))!!}
 											<div class="col-sm-5 @if($errors->first('embedded_offer_doc_link')){{'has-error'}} @endif">
 												{!! Form::text('embedded_offer_doc_link', $project->investment?$project->investment->embedded_offer_doc_link:null, array('placeholder'=>'embedded offer doc link', 'class'=>'form-control', 'tabindex'=>'5')) !!}
@@ -1547,7 +1552,7 @@ Edit {{$project->title}} | Dashboard | @parent
 															</div>
 															<div class="col-sm-6">
 																<label for="number_of_tokens">Number of tokens</label>
-																<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->goal_amount }}" min="100" >
+																<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->goal_amount }}" >
 															</div>
 														</div>
 														<br>
@@ -2347,10 +2352,6 @@ function projectTokenization() {
     		var token_symbol = $('#token_symbol').val();
     		if($.trim(token_symbol) == '') {
     			alert('Incorrect token symbol.');
-    			return false;
-    		}
-    		if(parseInt(number_of_tokens) < 100) {
-    			alert('Number of tokens should be atleast 100.');
     			return false;
     		}
     		$('form[name=tokenization_form] button[type=submit]').attr('disabled', 'disabled');

@@ -165,7 +165,7 @@
 						<dt></dt>
 						<dd style="margin-left: 0px;">
 							<div class="col-md-10 col-md-offset-1 wow fadeIn text-center" data-wow-duration="1.5s" data-wow-delay="0.2s">
-								<h2 class="text-center wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:3em;"> Earn KONKRETE tokens
+								<h2 class="text-center wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:3em;"> Earn Factor tokens
 								</h2>
 								@forelse(auth()->user()->getReferrals() as $referral)
 								@if($referral->program->uri == 'users/create')
@@ -184,7 +184,7 @@
 								<center>
 									<small class="wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:1.2em;">
 									Share this link with your friends and for every user who signs up using this link we will give you @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referrer_konkrete}}@else{{App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referrer_konkrete}}@endif and the referred user </br> @if(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete){{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->referee_konkrete}}@else{{App\Helpers\SiteConfigurationHelper::getEbConfigurationAttr()->referee_konkrete}}@endif
-									<a href="https://konkrete.io" target="_blank" > KONKRETE </a> cryptotokens each
+									<a href="https://konkrete.io" target="_blank" > Factor </a> cryptotokens each
 								</small>
 							</center>
 						</div>
