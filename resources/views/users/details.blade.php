@@ -79,7 +79,7 @@ Fill the user details | @parent
 						<div class="row">
 							<div class="form-group">
 								<div class="col-sm-offset-1 col-sm-10">
-									{!! Form::submit('Take me to the projects', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'id'=>'submit_button','style'=>'border-radius:0;')) !!}
+									{!! Form::submit('NEXT', array('class'=>'btn btn-warning btn-block', 'tabindex'=>'10', 'id'=>'submit_button','style'=>'border-radius:0;')) !!}
 								</div>
 							</div>
 						</div>

@@ -143,7 +143,7 @@ class UserAuthController extends Controller
                         'amount' => $loginBonus,
                         'type' => 'Daily login bonus',
                         'project_site' => url(),
-                        'currency' => 'konkrete'
+                        'currency' => 'factor'
                     ]);
                 }
             }
@@ -471,7 +471,7 @@ return response()->json(array('success'=>false,'auth'=>$auth));
                         'amount' => $loginBonus,
                         'type' => 'Daily login bonus',
                         'project_site' => url(),
-                        'currency' => 'konkrete'
+                        'currency' => 'factor'
                     ]);
                 }
             }
@@ -586,7 +586,7 @@ return response()->json(array('success'=>false,'auth'=>$auth));
                         'amount' => $loginBonus,
                         'type' => 'Daily login bonus',
                         'project_site' => url(),
-                        'currency' => 'konkrete'
+                        'currency' => 'factor'
                     ]);
                 }
             }

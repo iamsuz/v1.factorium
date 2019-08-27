@@ -4,10 +4,10 @@
 		{{-- @if($user->profile_picture) --}}
 		{{-- <img src="{{asset($user->profile_picture)}}" height="100" style="border-radius: 3px;"> --}}
 		{{-- @else --}}
-		<a href="https://konkrete.io" target="_blank" ><img src="{{-- {{asset('assets/images/default-'.$user->gender.'.png')}} --}}{{ asset('/assets/images/konkrete_logo_dark.png') }}" width="100px" style="border-radius: 3px;"></a>
+		<a href="https://konkrete.io" target="_blank" ><img src="{{-- {{asset('assets/images/default-'.$user->gender.'.png')}} --}}{{ asset('/assets/images/FactoriumIcon.png') }}" width="100px" style="border-radius: 3px;"></a>
 		{{-- @endif --}}
-		<a href="https://konkrete.io" target="_blank" ><h3 class="text-center"><b>KONKRETE Balance</b></h3></a>
-		@foreach($user->credits as $credit)
+		<a href="https://konkrete.io" target="_blank" ><h3 class="text-center"><b>FactorToken Balance</b></h3></a>
+		@foreach($user->credits->where('currency','factor') as $credit)
 			<?php $sum = $sum + $credit->amount; ?>
 		@endforeach
 		<a href="https://konkrete.io" target="_blank" ><h4><b>{{$sum}}</b></h4>
