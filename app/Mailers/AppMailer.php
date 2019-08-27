@@ -76,6 +76,15 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendRepurchaseNotificationToInvestor($investment, $repurchaseRate, $shareNumber, $project){
+        $this->to = $investment->user->email;
+        $this->view = 'emails.userRepurchaseNotify';
+        $this->subject = 'Receivable Repurchase';
+        $this->data = compact('investment','repurchaseRate','shareNumber','project');
+
+        $this->deliver();
+    }
+
     public function sendInterestNotificationDeveloper(Project $project, User $investor)
     {
         $this->to = $project->user->email;

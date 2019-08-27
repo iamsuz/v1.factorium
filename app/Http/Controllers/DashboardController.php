@@ -991,22 +991,23 @@ public function deactivateProject($project_id)
                 ]);
 
                 $shareNumber = explode('-', $investment->share_number);
-                $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
-                $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
-                if($result->http_response_code != 200){
-                    array_push($failedEmails, $investment->user->email);
-                }
+                $mailer->sendRepurchaseNotificationToInvestor($investment, $repurchaseRate, $shareNumber, $project);
+                // $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
+                // $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+            //     if($result->http_response_code != 200){
+            //         array_push($failedEmails, $investment->user->email);
+            //     }
             }
-            if(empty($failedEmails)){
-                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investors and admins</p>');
-            }
-            else{
-                $emails = '';
-                foreach ($failedEmails as $email) {
-                    $emails = $emails.", $email";
-                }
-                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Repurchase distribution email sending failed for investors - '.$emails.'.</p>');
-            }
+            // if(empty($failedEmails)){
+                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investor</p>');
+            // }
+            // else{
+            //     $emails = '';
+            //     foreach ($failedEmails as $email) {
+            //         $emails = $emails.", $email";
+            //     }
+            //     return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Repurchase distribution email sending failed for investors - '.$emails.'.</p>');
+            // }
         }
     }
 
