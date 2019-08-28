@@ -726,7 +726,7 @@ class PagesController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function selectUserType()
+    public function selectUserType(Request $request)
     {
         if (!Auth::user()) {
             $url_array = parse_url($request->fullUrl());

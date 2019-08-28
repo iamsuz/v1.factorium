@@ -146,7 +146,7 @@
 						<dt></dt>
 						<div class="col-md-offset-2 col-xs-offset-3 col-sm-offset-1">
 							<dd{{--  style="margin-left: 230px !important;" --}}><h2>{{$user->first_name}} {{$user->last_name}}</h2></dd>
-							@if($user->factorium_user_type) <dd><h4>[{{ ucfirst($user->factorium_user_type) }}]</h4></dd> @endif
+							@if($user->factorium_user_type) <dd><h4>{{ ucfirst($user->factorium_user_type) }}</h4></dd> @endif
 							<dt></dt>
 							<dd{{--  style="margin-left: 230px !important;" --}}>
 								<div class="row">
