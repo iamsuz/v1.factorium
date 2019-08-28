@@ -70,7 +70,7 @@ Login | @parent
 						</h4>
 					</section>
 				</div>
-				<div class="col-md-3" style="position:relative;">
+				<div class="col-md-3 hide" style="position:relative;">
 					<div style="position: absolute; margin: auto;top:50%;left:50%;margin-top:-25px;margin-left:-25px;">
 						<div class="second_color_btn" style="border-radius: 100%"><img class="img-responsive" src="{{asset('assets/images/Ellipse1.png')}}" style="opacity: 0;" /></div> <p class="text-center" style="margin-top: -70%;font-size: 1.2em;font-weight: 600;color:white !important;" id="or">OR</p>
 					</div>
@@ -78,7 +78,7 @@ Login | @parent
 					<br><br>
 					<br>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-3 hide">
 					<div class="row" style="text-align:center;">
 						<div class="btn-group" style="box-shadow:3px 3px 3px #888888;">
 							<!-- <a class='btn btn-lg btn-danger'><i class="fa fa-google-plus" style="width:16px;"></i></a> -->
