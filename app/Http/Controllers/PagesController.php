@@ -775,7 +775,36 @@ class PagesController extends Controller
         $user->save();
 
         return ($user->country_code == 'au')
-            ? redirect('/#projects')
-            : redirect('/users/' . $user->id);
+        ? redirect('/#projects')
+        : redirect('/users/' . $user->id);
+    }
+    public function tokenDeduction(Request $request,$id)
+    {
+        if(Auth::guest()){
+            return response()->json([
+                'Message'=>'Please login'
+            ]);
+        }
+        $user = Auth::user();
+        if(!$user->credits){
+            return response()->json([
+                'data'=>'Please buy a factor token'
+            ]);
+        }
+        $credits = $user->credits->where('currency','factor');
+        foreach ($credits as  $credit) {
+            if($credit->amount != '0'){
+                $credit->amount -= 1;
+                $credit->save();
+                $credit = $user->credits->where('currency','factor')->sum('amount');
+                return response()->json([
+                    'credit'=> $credit
+                ]);
+            }
+        }
+        return response()->json([
+            'data'=>'Success',
+            'message' => 'Please Buy factor token continue browsing on factorium.co'
+        ]);
     }
 }

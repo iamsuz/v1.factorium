@@ -35,7 +35,7 @@ Route::get('/pages/dispute', ['as'=>'pages.dispute', 'uses'=>'PagesController@di
 Route::get('/pages/explainer', ['as'=>'pages.explainer', 'uses'=>'PagesController@factoriumExplainer']);
 Route::get('/pages/user/type',['as'=>'users.user.type','uses'=>'PagesController@selectUserType']);
 Route::post('/pages/user/type',['as'=>'users.user.type.save','uses'=>'PagesController@saveUserType']);
-
+Route::post('/user/{id}/tokenDeduction',['as'=>'user.token.deduction','uses'=>'PagesController@tokenDeduction']);
 
 Route::pattern('dashboard', '[0-9]+');
 Route::resource('dashboard', 'DashboardController');
