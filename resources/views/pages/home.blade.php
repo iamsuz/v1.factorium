@@ -1384,7 +1384,7 @@
 <br><br><br>
 @if(!Auth::guest())
 <div style="position: fixed;bottom: 1em;left: 1em;">
-	<div id="countdown">
+	<div id="countdown hide">
 		<div id="countdown-number"></div>
 		<svg>
 			<circle r="18" cx="20" cy="20"></circle>
@@ -1725,7 +1725,15 @@
     							},
     							success: function(credit) {
     								console.log(credit.credit);
-    								$('#factor_token').html(credit.credit+' Factor').fadeIn();
+    								if(credit.error){
+    									$('#factor_token').html(credit.error).fadeIn();
+    								}else{
+    									$('#factor_token').html(credit.credit+' Factor').fadeIn();
+    								}
+    							},
+    							error: function (data) {
+    								console.log(data.error);
+    								$('#factor_token').html(data.error).fadeIn();
     							}
     						},function (e) {
     						});
