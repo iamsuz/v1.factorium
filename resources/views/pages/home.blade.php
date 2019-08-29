@@ -1712,7 +1712,7 @@
     					var m = Math.floor(s/60); //Get remaining minutes
     					s -= m*60;
     					var s = Math.floor(s);
-    					countdownNumberEl.textContent = s;
+    					//countdownNumberEl.textContent = s;
     					$id = {{Auth::user()->id}};
     					if(s == 59){
     						console.log('Minute passed and Token deducted');
