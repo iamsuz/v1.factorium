@@ -1384,7 +1384,7 @@
 <br><br><br>
 @if(!Auth::guest())
 <div style="position: fixed;bottom: 1em;left: 1em;">
-	<div id="countdown hide">
+	<div id="countdown hide" style="display: none;">
 		<div id="countdown-number"></div>
 		<svg>
 			<circle r="18" cx="20" cy="20"></circle>
