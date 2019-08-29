@@ -140,8 +140,9 @@ class PagesController extends Controller
         }
 
         $testimonials = Testimonial::where('project_site', url())->get();
+        $users = User::all()->count();
         $isiosDevice = stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'iphone');
-        return view('pages.home', compact('geoIpArray', 'investments', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings','users'));
     }
 
     /**
