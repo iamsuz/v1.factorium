@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Investment;
 use App\ProjectFAQ;
 use App\ProjectProg;
+use App\UserRegistration;
 use App\Http\Requests;
 use App\InvestingJoint;
 use App\ProjectSpvDetail;
@@ -84,7 +85,7 @@ class ProjectsController extends Controller
      * @return Response
      */
     public function store(ProjectRequest $request, AppMailer $mailer)
-    { 
+    {
         $request['asking_amount'] = (int)$request->asking_amount;
         $request['invoice_amount'] = (int)$request->invoice_amount;
 
@@ -125,10 +126,10 @@ class ProjectsController extends Controller
         $project->eb_project_rank = $project->id;
         $project->title = 'Invoice '.$project->id;
         $project->save();
-        if(!User::where('email',$request->invoice_issue_from_email)){
+        if(!User::where('email',$request->invoice_issue_from_email)->first() && !UserRegistration::where('email',$request->invoice_issue_from_email)->first()){
             $request['invite_code'] = 'factorium';
             $request['email'] = $request->invoice_issue_from_email;
-            $this->userRegistration->store($request->all());
+            $this->userRegistration->store($request, $mailer);
         }
         $location = new \App\Location($request->all());
         $location = $project->location()->save($location);
