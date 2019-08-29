@@ -147,19 +147,26 @@ Offer Doc
 								<form action="{{route('offer.store')}}" rel="form" method="POST" enctype="multipart/form-data" id="myform">
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
+										<div class="col-md-4">
+											<label class="form-label">Receivable Name</label>
+											<input class="form-control" type="text" name="project_spv_name" placeholder="Receivable name" style="width: 100%;" @if($projects_spv) value="{{$project->title}}" disabled @endif >
+											{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
+										</div>
+										<div class="col-md-4">
+											<label>Purchase price</label>
+											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 100%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required @if(isset($eoi)) value="{{$eoi->investment_amount}}" @endif value="{{$project->investment->minimum_accepted_amount}}" readonly="readonly">
+										</div>
+									</div>
+									<br>
+									<div class="row">
 										<div class="col-md-12">
 											<div>
-												<label class="form-label">Receivable Name</label><br>
-												<input class="form-control" type="text" name="project_spv_name" placeholder="Receivable name" style="width: 60%;" @if($projects_spv) value="{{$project->title}}" disabled @endif >
-												{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
-												<br>
 												<p><small>
 													This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Factoring Arrangement @endif carefully before completing this form.
 												</small>
 												{{-- This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif carefully before completing this form. To meet the requirements of the Corporations Act, this Application Form must  not be distributed unless included in, or accompanied by, the @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif ((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif. --}}
 											</p>
-											<label>Purchase price</label>
-											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 60%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required @if(isset($eoi)) value="{{$eoi->investment_amount}}" @endif value="{{$project->investment->minimum_accepted_amount}}" readonly="readonly"><br>
+											{{-- <br> --}}
 												{{-- @if($project->share_vs_unit == 1)
 												<h5>Number of Redeemable Preference Shares at $1 per Share or such lesser number of Shares which may be allocated to me/us</h5>
 												@elseif($project->share_vs_unit == 2)
@@ -675,16 +682,16 @@ Offer Doc
 							<div class="col-md-12">
 								<p class="text-justify well compliance-text-style" style="font-size:16px;">
 									<small><small>@if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->compliance_description != '')
-												{!!html_entity_decode(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->compliance_description)!!} @else
-												The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
-											@endif</small></small>
+										{!!html_entity_decode(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->compliance_description)!!} @else
+										The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
+									@endif</small></small>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					@if ($project->show_download_pdf_page)
-					<div class="col-md-5 hide">
-						<br>
+						@if ($project->show_download_pdf_page)
+						<div class="col-md-5 hide">
+							<br>
 						<!-- <p class="" style="font-size:1em;color:#282a73;">Please read the following PDS and Financial Services
 							Guide carefully and when you are ready to invest, fill the application form electronically and transfer your funds to the following account
 						</p> -->
