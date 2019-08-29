@@ -803,7 +803,7 @@ class PagesController extends Controller
             }
         }
         return response()->json([
-            'error' => 'Please Buy factor token continue browsing on factorium.co'
+            'error' => 'Please Buy a factor token to continue browsing on factorium.co'
         ]);
     }
 }
