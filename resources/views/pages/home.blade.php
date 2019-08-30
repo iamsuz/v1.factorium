@@ -444,7 +444,7 @@
 						@endif
 						@endif
 						<br><br>
-						<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif">
+						<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif" style="padding: 8% 5% 5% 5%;">
 							<div class="container">
 								<div class="row">
 									<div class="col-md-offset-1 col-md-10">
