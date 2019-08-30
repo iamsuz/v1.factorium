@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use App\Investment;
 use App\ProjectFAQ;
 use App\ProjectProg;
-use App\UserRegistration;
 use App\Http\Requests;
 use App\InvestingJoint;
 use App\ProjectSpvDetail;
@@ -85,7 +84,7 @@ class ProjectsController extends Controller
      * @return Response
      */
     public function store(ProjectRequest $request, AppMailer $mailer)
-    {
+    { 
         $request['asking_amount'] = (int)$request->asking_amount;
         $request['invoice_amount'] = (int)$request->invoice_amount;
 
@@ -126,6 +125,11 @@ class ProjectsController extends Controller
         $project->eb_project_rank = $project->id;
         $project->title = 'Invoice '.$project->id;
         $project->save();
+        if(!User::where('email',$request->invoice_issue_from_email)){
+            $request['invite_code'] = 'factorium';
+            $request['email'] = $request->invoice_issue_from_email;
+            $this->userRegistration->store($request->all());
+        }
         $location = new \App\Location($request->all());
         $location = $project->location()->save($location);
 
@@ -230,14 +234,6 @@ class ProjectsController extends Controller
             $projectConfigurationPartial->show_project_progress = 0;
             $projectConfigurationPartial->expected_return_label_text = 'Invoice Amount';
             $projectConfigurationPartial->save();
-        }
-        if(!User::where('email',$request->invoice_issue_from_email)->first() && !UserRegistration::where('email',$request->invoice_issue_from_email)->first()){
-            $request['invite_code'] = 'factorium';
-            $request['email'] = $request->invoice_issue_from_email;
-            $this->userRegistration->store($request, $mailer);
-            $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project);
-        }else{
-            $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project);
         }
         $client = new \GuzzleHttp\Client();
         $request = $client->request('GET',$this->uri.'/createProject',[

@@ -140,8 +140,9 @@ class PagesController extends Controller
         }
 
         $testimonials = Testimonial::where('project_site', url())->get();
+        $users = User::all()->count();
         $isiosDevice = stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'iphone');
-        return view('pages.home', compact('geoIpArray', 'investments', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings'));
+        return view('pages.home', compact('geoIpArray', 'investments', 'projects', 'BannerCities', 'blog_posts', 'blog_posts_attachments', 'currentUserRole', 'siteConfiguration','color', 'admin_access', 'testimonials', 'isiosDevice', 'ebConfiguration', 'third_party_listings','users'));
     }
 
     /**
@@ -775,35 +776,7 @@ class PagesController extends Controller
         $user->save();
 
         return ($user->country_code == 'au')
-        ? redirect('/#projects')
-        : redirect('/users/' . $user->id);
-    }
-    public function tokenDeduction(Request $request,$id)
-    {
-        if(Auth::guest()){
-            return response()->json([
-                'Message'=>'Please login'
-            ]);
-        }
-        $user = Auth::user();
-        if(!$user->credits){
-            return response()->json([
-                'data'=>'Please buy a factor token'
-            ]);
-        }
-        $credits = $user->credits->where('currency','factor');
-        foreach ($credits as  $credit) {
-            if($credit->amount != '0'){
-                $credit->amount -= 1;
-                $credit->save();
-                $credit = $user->credits->where('currency','factor')->sum('amount');
-                return response()->json([
-                    'credit'=> $credit
-                ]);
-            }
-        }
-        return response()->json([
-            'error' => 'Please Buy a factor token to continue browsing on factorium.co'
-        ]);
+            ? redirect('/#projects')
+            : redirect('/users/' . $user->id);
     }
 }
