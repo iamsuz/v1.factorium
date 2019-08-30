@@ -625,11 +625,11 @@
 											</div>
 										</div>
 										<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
-										  <button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
-										  <button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
-										  <button class="filterbtn" onclick="filterSelection('sold')"> Invoice Sold</button>
-										  <button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>
-							        	</div>	
+											<button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
+											<button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
+											<button class="filterbtn" onclick="filterSelection('sold')"> Invoice Sold</button>
+											<button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>
+										</div>
 
 										@if(count($projects)==1)
 										@foreach($projects->chunk(1) as $sets)
@@ -1384,7 +1384,7 @@
 <br><br><br>
 @if(!Auth::guest())
 <div style="position: fixed;bottom: 1em;left: 1em;">
-	<div id="countdown" class="hide">
+	<div id="countdown hide" style="display: none;">
 		<div id="countdown-number"></div>
 		<svg>
 			<circle r="18" cx="20" cy="20"></circle>
@@ -1392,7 +1392,7 @@
 	</div>
 	<div id="timer_after_login" class="Timer">
 	</div>
-	<div>
+	<div id="factor_token" class="factor-token">
 		{{Auth::user()->credits->where('currency','factor')->sum('amount')}} Factor
 	</div>
 </div>
@@ -1712,7 +1712,32 @@
     					var m = Math.floor(s/60); //Get remaining minutes
     					s -= m*60;
     					var s = Math.floor(s);
-    					countdownNumberEl.textContent = s;
+    					//countdownNumberEl.textContent = s;
+    					$id = {{Auth::user()->id}};
+    					if(s == 59){
+    						console.log('Minute passed and Token deducted');
+    						$.ajax({
+    							'type': 'POST',
+    							'url': '/user/'+$id+'/tokenDeduction',
+    							data: {test:'test'},
+    							headers: {
+    								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    							},
+    							success: function(credit) {
+    								console.log(credit.credit);
+    								if(credit.error){
+    									$('#factor_token').html(credit.error).fadeIn();
+    								}else{
+    									$('#factor_token').html(credit.credit+' Factor').fadeIn();
+    								}
+    							},
+    							error: function (data) {
+    								console.log(data.error);
+    								$('#factor_token').html(data.error).fadeIn();
+    							}
+    						},function (e) {
+    						});
+    					}
     					$('.Timer').text((h < 10 ? '0'+h : h)+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s));
     				}, 1000);
 					@endif
@@ -3052,14 +3077,14 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 		filterSelection("all")
 		function filterSelection(c) {
-		  var x, i;
-		  x = document.getElementsByClassName("filterDiv");
-		  if (c == "all") c = "";
-		  for (i = 0; i < x.length; i++) {
-		  	console.log(x[i]);
-		    w3RemoveClass(x[i], "show");
-		    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-		  }
+			var x, i;
+			x = document.getElementsByClassName("filterDiv");
+			if (c == "all") c = "";
+			for (i = 0; i < x.length; i++) {
+				console.log(x[i]);
+				w3RemoveClass(x[i], "show");
+				if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+			}
 		}
 
 		function w3AddClass(element, name) {
