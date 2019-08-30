@@ -549,16 +549,6 @@ class AppMailer
            $this->deliver();
         }
     }
-    public function sendInvoiceIssuedToEmail($email, $project)
-    {
-        $project = $project;
-        $user = $project->user;
-        $this->to = $email;
-        $this->view = 'emails.invoiceIssuedToEmail';
-        $this->subject = 'You have requested payment terms from '.$user->first_name.' '.$user->last_name;
-        $this->data = compact('user', 'project');
-        $this->deliver();
-    }
 
     public function overrideMailerConfig()
     {

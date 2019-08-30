@@ -30,6 +30,7 @@
         @media (max-width: 375px) {
             .explainer-carousel .item img {
                 max-height: 30vh;
+                margin-bottom: 15px;
             }
             h1, h2, h3, h4 {
                 font-size: 0.9em !important;
@@ -39,6 +40,7 @@
         @media (max-width: 768px) {
             .explainer-carousel .item img {
                 max-height: 35vh;
+                margin-bottom: 20px;
             }
 
             h1, h2, h3, h4 {
@@ -48,19 +50,6 @@
 
         h1, h2, h3, h4 {
             color: {{ '#' . $color->nav_footer_color }};
-        }
-
-        @keyframes shadow-pulse {
-            0% {
-                box-shadow: 0 0 0 0px {{ '#' . $color->heading_color }};
-            }
-            100% {
-                box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-            }
-        }
-
-        .pulse-effect {
-            animation: shadow-pulse 1s infinite;
         }
 
     </style>
@@ -199,10 +188,8 @@
                 $('.carousel-nav-buttons .left').attr('disabled', 'disabled');
             } else if ($('.carousel-indicators li').eq(slidesCount).hasClass('active')) {
                 $('.carousel-nav-buttons .right').attr('disabled', 'disabled');
-                $('.carousel-nav-buttons .skip').addClass('pulse-effect');
             } else {
                 $('.carousel-nav-buttons button').removeAttr('disabled');
-                $('.carousel-nav-buttons .skip').removeClass('pulse-effect');
             }
         }
     </script>

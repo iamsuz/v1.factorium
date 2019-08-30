@@ -407,6 +407,65 @@
 									</div>
 									<br>
 								</div>
+								<br>
+							</div>
+							<div class="row" style="padding: 20px 0 20px 0;background-color: #2f3b4a; margin-left: 0px; margin-right: 0px;">
+								<div class="col-md-4 text-center">
+									<h1 style="font-size: 4em;"><span style="color: white;">{{ count($projects) }}</span></h1>
+									<h3 style="color: white;">Invoices</h3>
+								</div>
+								<div class="col-md-4 text-center ">
+									<h1 style="font-size: 4em; color: #ffffff;"><span>{{ $users }}</span></h1>
+									<h3 style="color: #ffffff;">Number of Financiers</h3>
+								</div>
+								<div class="col-md-4 text-center ">
+									<h1 style="font-size: 4em; color: #ffffff;"><span>100%</span></h1>
+									<h3 style="color: #ffffff">Repayment Rate</h3>
+								</div>
+							</div>
+							<div class="row" style="background-color: #2f3b4a;  margin-left: 0px; margin-right: 0px;">
+								<div class="col-md-6" style="padding: 0 0 0 0;">
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5b988585c95f29b192f3545d_charter hall-w.png" width="100%">
+									</div>
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5b9b349d6b2ea19018f9e21f_signum-capital-w.png" width="100%">
+									</div>
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5be39a2bc9e49205e149b0ba_STO Global-w.png" width="100%">
+									</div>
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5b9884fb679cb6f3153c9b9c_collcampus-w.png" width="100%">
+									</div>
+								</div>
+								<div class="col-md-6" style="padding: 0 0 0 0;">
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5b9884fd679cb6e3113c9b9e_Cornwall Stodart-w.png" width="100%">
+									</div>
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5b9884fcd1c3d0359e7e4cf0_estate baron-w.png" width="100%">
+									</div>
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5b98b0235a55673804172596_anti-hero-w.png" width="100%">
+									</div>
+									<div class="col-md-3" style="padding: 0 0 0 0;">
+										<img src="/assets/images/spons/5bf22f10de18dd0981434e3b_The Urban Developer-w.png" width="100%">
+									</div>
+								</div>
+							</div>
+							<div class="content container" id="promo-content" style="padding-top:1%;">
+								@if(Auth::guest())
+								@else
+								@if($admin_access == 1)
+								<br><br>
+								<form action="{{route('configuration.uploadVideo')}}" method="POST">
+									{{csrf_field()}}
+									<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em; background: rgba(0, 0, 0, 0.3); padding: 5px 15px 5px 15px; border-radius: 20px;">Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
+									<button class="btn btn-primary btn-sm" type="submit" style="margin-left: 1.5em;">Save</button>
+								</form>
+								@endif
+								@endif
+								<br>
 								@if(Auth::guest())
 								@else
 								@if($admin_access == 1)
@@ -432,17 +491,6 @@
 								</div>
 							</div>
 						</section>
-						@if(Auth::guest())
-						@else
-						@if($admin_access == 1)
-						<br><br>
-						<form action="{{route('configuration.uploadVideo')}}" method="POST">
-							{{csrf_field()}}
-							<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em;">Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
-							<button class="btn btn-primary btn-sm" type="submit" style="margin-left: 1.5em;">Save</button>
-						</form>
-						@endif
-						@endif
 						<br><br>
 						<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif">
 							<div class="container">
@@ -459,8 +507,8 @@
 								</div>
 							</div>
 						</section>
-						<div class="container @if($siteConfiguration->explainer_video_url == '') hide @endif">
-							<hr class="first_color" style="height:2px;border:none;color:#282a73;background-color:#282a73;" />
+						<div class="container ">
+							<hr class="first_color @if($siteConfiguration->explainer_video_url == '') hide @endif" style="height:2px;border:none;color:#282a73;background-color:#282a73;" />
 						</div>
 						<section id="how-it-works" class="chunk-box" style="padding: 2em 0;">
 							<div class="container-fluid">
@@ -734,7 +782,7 @@
 														@else href="{{route('projects.show', [$project])}}"
 														@endif>
 														@if($invoice_sold === '1' || $invoice_sold === '2') @else
-															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
+														<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 														@endif
 														<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
 															<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
@@ -885,7 +933,7 @@
 															@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}} @endif"
 															@endif>
 															@if($invoice_sold === '1' || $invoice_sold === '2') @else
-																<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
+															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 															@endif
 															<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
 																<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
@@ -1034,7 +1082,7 @@
 																@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
 																@endif>
 																@if($invoice_sold === '1' || $invoice_sold === '2') @else
-																	<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
+																<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 																@endif
 																<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
 																	<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
