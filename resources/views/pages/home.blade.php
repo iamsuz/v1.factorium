@@ -492,7 +492,7 @@
 							</div>
 						</section>
 						<br><br>
-						<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif" style="padding: 8% 5% 5% 5%;">
+						<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif" style="@if($admin_access == 1) margin-top: 28em ; position:relative; overflow:visible; @else padding: 8% 5% 5% 5% @endif;">
 							<div class="container">
 								<div class="row">
 									<div class="col-md-offset-1 col-md-10">
