@@ -409,47 +409,47 @@
 								</div>
 								<br>
 							</div>
-							<div class="row" style="padding: 20px 0 20px 0;background-color: #2f3b4a; margin-left: 0px; margin-right: 0px;">
+							<div class="row" style="padding: 10% 0 10% 0;background:rgba(255,255,255,1); margin-left: 0px; margin-right: 0px;">
 								<div class="col-md-4 text-center">
-									<h1 style="font-size: 4em;"><span style="color: white;">{{ count($projects) }}</span></h1>
-									<h3 style="color: white;">Invoices</h3>
+									<h1 style="font-size: 5em;" ><span style="color: #000;">{{ count($projects) }}</span></h1>
+									<h3 style="color: #000;" >Invoices</h3>
 								</div>
-								<div class="col-md-4 text-center ">
-									<h1 style="font-size: 4em; color: #ffffff;"><span>{{ $users }}</span></h1>
-									<h3 style="color: #ffffff;">Number of Financiers</h3>
+								<div class="col-md-4  text-center ">
+									<h1 style="font-size: 5em; color: #000;" ><span>{{ $users }}</span></h1>
+									<h3 style="color: #000;" >Financiers</h3>
 								</div>
-								<div class="col-md-4 text-center ">
-									<h1 style="font-size: 4em; color: #ffffff;"><span>100%</span></h1>
-									<h3 style="color: #ffffff">Repayment Rate</h3>
+								<div class="col-md-4  text-center ">
+									<h1 style="font-size: 5em; color: #000;" ><span>100%</span></h1>
+									<h3 style="color: #000" >Repayment Rate</h3>
 								</div>
 							</div>
-							<div class="row" style="background-color: #2f3b4a;  margin-left: 0px; margin-right: 0px;">
-								<div class="col-md-6" style="padding: 0 0 0 0;">
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5b988585c95f29b192f3545d_charter hall-w.png" width="100%">
+							<div class="row" style="background:rgba(0,0,0,0);  margin-left: 0px; margin-right: 0px;">
+								<div class="col-md-6" style="padding-right: 0px;">
+									<div class="col-md-3 col-xs-6"  >
+										<img src="/assets/images/spons/5b5e697ac3f7cb075a48c0a6_Konkrete logo-dark-500 -comp.png" width="100%" style="padding-top:21px;">
 									</div>
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5b9b349d6b2ea19018f9e21f_signum-capital-w.png" width="100%">
+									<div class="col-md-3 col-xs-6" style="padding:0px">
+										<img src="/assets/images/spons/anti-hero-capital.png" width="100%">
 									</div>
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5be39a2bc9e49205e149b0ba_STO Global-w.png" width="100%">
+									<div class="col-md-3 col-xs-6" style="padding: 0px;">
+										<img src="/assets/images/spons/signum-capital.png" width="100%">
 									</div>
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5b9884fb679cb6f3153c9b9c_collcampus-w.png" width="100%">
+									<div class="col-md-3 col-xs-6" style="padding: 0px;">
+										<img src="/assets/images/spons/5baad0100657c03f43ca6178_AFR.png" width="100%">
 									</div>
 								</div>
-								<div class="col-md-6" style="padding: 0 0 0 0;">
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5b9884fd679cb6e3113c9b9e_Cornwall Stodart-w.png" width="100%">
+								<div class="col-md-6" style="padding-left: 0px;">
+									<div class="col-md-3 col-xs-6" style="padding: 0px;">
+										<img src="/assets/images/spons/5baad00f0657c02052ca6177_Skynews.png" width="100%">
 									</div>
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5b9884fcd1c3d0359e7e4cf0_estate baron-w.png" width="100%">
+									<div class="col-md-3 col-xs-6" style="padding: 0px;" >
+										<img src="/assets/images/spons/5bac21335d3456838f1f1d3d_Thirty K.png" width="100%">
 									</div>
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5b98b0235a55673804172596_anti-hero-w.png" width="100%">
+									<div class="col-md-3 col-xs-6" style="padding: 0px;">
+										<img src="/assets/images/spons/5bac21339e1da03725525ed0_Global banking and finance review.png" width="100%">
 									</div>
-									<div class="col-md-3" style="padding: 0 0 0 0;">
-										<img src="/assets/images/spons/5bf22f10de18dd0981434e3b_The Urban Developer-w.png" width="100%">
+									<div class="col-md-3 col-xs-6" style="padding: 0px;">
+										<img src="/assets/images/spons/5bb16032c110e4dd90804988_CTN.png" width="100%">
 									</div>
 								</div>
 							</div>
