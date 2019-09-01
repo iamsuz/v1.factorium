@@ -177,7 +177,9 @@
 		@media screen and (max-width: 480px) {
 			.chunk-of-vis{
 				overflow: visible !important;
-				padding-top: 2em;
+			}
+			.video-section{
+				padding-top: 2em !important;
 			}
 		}
 	</style>
