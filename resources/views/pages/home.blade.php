@@ -500,10 +500,10 @@
 							</div>
 						</section>
 						<br><br>
-						<section class="chunk-box chunk-of-vis @if($siteConfiguration->explainer_video_url == '') hide @endif" style="@if($admin_access == 1) margin-top: 28em ; position:relative; overflow:visible; @else padding: 8% 5% 5% 5% @endif;">
-							<div class="container">
+						<section class="chunk-box chunk-of-vis @if($siteConfiguration->explainer_video_url == '') hide @endif" style="@if($admin_access == 1) margin-top: 58em ; position:relative; overflow:visible; @else padding: 8% 5% 5% 5% @endif;">
+							<div class="container video-section">
 								<div class="row">
-									<div class="col-md-offset-1 col-md-10 col-xs-12">
+									<div class="col-md-offset-1 col-md-10 col-xs-12 ">
 										<div class="row">
 											<div class="col-md-10 col-md-offset-1 text-center">
 												<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
