@@ -153,7 +153,7 @@ Offer Doc
 											{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
 										</div>
 										<div class="col-md-4">
-											<label>Purchase price</label>
+											<label>Purchase price in AUD</label>
 											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 100%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required @if(isset($eoi)) value="{{$eoi->investment_amount}}" @endif value="{{$project->investment->minimum_accepted_amount}}" readonly="readonly">
 										</div>
 									</div>
