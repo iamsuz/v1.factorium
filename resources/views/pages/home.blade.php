@@ -174,6 +174,11 @@
 			background-color: #666;
 			color: white;
 		}
+		@media screen and (max-width: 480px) {
+			.chunk-of-vis{
+				overflow: visible !important;
+			}
+		}
 	</style>
 
 	<!-- Google tag manager header script if set  -->
@@ -411,7 +416,7 @@
 							</div>
 							<div class="row" style="padding: 10% 0 10% 0;background:rgba(255,255,255,1); margin-left: 0px; margin-right: 0px;">
 								<div class="col-md-4 text-center">
-									<h1 style="font-size: 5em;" ><span style="color: #000;">{{ count($projects) }}</span></h1>
+									<h1 style="font-size: 5em;" ><span style="color: #000;">{{ $totalProjects }}</span></h1>
 									<h3 style="color: #000;" >Invoices</h3>
 								</div>
 								<div class="col-md-4  text-center ">
@@ -492,10 +497,10 @@
 							</div>
 						</section>
 						<br><br>
-						<section class="chunk-box @if($siteConfiguration->explainer_video_url == '') hide @endif" style="@if($admin_access == 1) margin-top: 28em ; position:relative; overflow:visible; @else padding: 8% 5% 5% 5% @endif;">
+						<section class="chunk-box chunk-of-vis @if($siteConfiguration->explainer_video_url == '') hide @endif" style="@if($admin_access == 1) margin-top: 28em ; position:relative; overflow:visible; @else padding: 8% 5% 5% 5% @endif;">
 							<div class="container">
 								<div class="row">
-									<div class="col-md-offset-1 col-md-10">
+									<div class="col-md-offset-1 col-md-10 col-xs-12">
 										<div class="row">
 											<div class="col-md-10 col-md-offset-1 text-center">
 												<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
