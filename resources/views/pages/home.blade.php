@@ -769,6 +769,7 @@
 														</div>
 													</div>
 
+
 												</a>
 												<br>
 												@if(Auth::guest())
@@ -914,7 +915,6 @@
 																				@endif
 																			</div>
 																			@endif
-
 																		</div>
 																	</div>
 																</div>
@@ -944,7 +944,7 @@
 															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 															@endif
 															<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
-																<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
+																<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
 																	<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
 																</div>
 																<div class="col-xs-2 col-sm-2 col-md-2 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 3%; width: 25%;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif</span><small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
@@ -1163,6 +1163,7 @@
 										</div>
 									</div>
 								</section>
+
 {{--<section id="security" class="chunk-box bottom-padding-zero" style="padding:2em 0;">
 	<div class="container">
 		<div class="row" id="pick">
