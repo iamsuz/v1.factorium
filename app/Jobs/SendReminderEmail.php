@@ -93,7 +93,7 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
         $this->view = 'emails.admin';
-        $this->subject = $user->first_name.' '.$user->last_name.'  has applied to purchase Receivable '.$project->title.' for '.$amount;
+        $this->subject = $user->first_name.' '.$user->last_name.'  has applied to purchase Receivable '.$project->title.' for $'.$amount;
         $this->data = compact('project', 'investor' , 'investing_as','investing','user');
         $mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);

@@ -145,10 +145,10 @@
 			background-size: 24px 24px;
 			background-repeat: repeat-x;
 		}
-		.filterDiv {
+		/*.filterDiv {
 
 			display: none; /* Hidden by default */
-		}
+		}*/
 
 		/* The "show" class is added to the filtered elements */
 		.show {
@@ -501,9 +501,9 @@
 						</section>
 						<br><br>
 						<section class="chunk-box chunk-of-vis @if($siteConfiguration->explainer_video_url == '') hide @endif" style="@if($admin_access == 1) margin-top: 58em ; position:relative; overflow:visible; @else padding: 8% 5% 5% 5% @endif;">
-							<div class="container video-section">
+							<div class="container ">
 								<div class="row">
-									<div class="col-md-offset-1 col-md-10 col-xs-12 ">
+									<div class="col-md-offset-1 col-md-10 col-xs-12 video-section">
 										<div class="row">
 											<div class="col-md-10 col-md-offset-1 text-center">
 												<div class="embed-responsive embed-responsive-16by9" style="margin-bottom:4em;position: relative;padding-bottom: 53%;padding-top: 25px;height: 0;">
@@ -685,7 +685,7 @@
 											<button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
 											<button class="filterbtn" onclick="filterSelection('sold')"> Invoice Sold</button>
 											<button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>
-										</div>
+										</div>	
 
 										@if(count($projects)==1)
 										@foreach($projects->chunk(1) as $sets)
@@ -855,12 +855,12 @@
 									?>
 									@if($invoice_sold ==='1')
 
-									<div class="col-md-4 swap-select-overlay filterDiv sold" style="padding-top: 15px;" id="circle{{$project->id}}">
+									<div class="col-md-4 swap-select-overlay  sold" style="padding-top: 15px;" id="circle{{$project->id}}">
 										@elseif($invoice_sold === '2')
 
-										<div class="col-md-4 swap-select-overlay filterDiv repaid" style="padding-top: 15px;" id="circle{{$project->id}}">
+										<div class="col-md-4 swap-select-overlay  repaid" style="padding-top: 15px;" id="circle{{$project->id}}">
 											@else
-											<div class="col-md-4 swap-select-overlay filterDiv buy" style="padding-top: 15px;" id="circle{{$project->id}}">
+											<div class="col-md-4 swap-select-overlay  buy" style="padding-top: 15px;" id="circle{{$project->id}}">
 												@endif
 												<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
 												@if(Auth::guest())
@@ -1006,11 +1006,11 @@
 										?>
 										@if($invoice_sold === '1')
 										Invoice Sold
-										<div class="col-sm-6 col-md-6 swap-select-overlay filterDiv sold"  id="circle{{$project->id}}" style=" padding-top: 20px;">
+										<div class="col-sm-6 col-md-6 swap-select-overlay  sold"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 											@elseif($invoice_sold === '2')
 											Investors repaid
-											<div class="col-sm-6 col-md-6 swap-select-overlay filterDiv repaid"  id="circle{{$project->id}}" style=" padding-top: 20px;">
-												@else <div class="col-sm-6 col-md-6 swap-select-overlay filterDiv buy"  id="circle{{$project->id}}" style=" padding-top: 20px;">
+											<div class="col-sm-6 col-md-6 swap-select-overlay  repaid"  id="circle{{$project->id}}" style=" padding-top: 20px;">
+												@else <div class="col-sm-6 col-md-6 swap-select-overlay  buy"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 													@endif
 													<div class="swap-select-overlay-style" data-toggle="tooltip" title="Select project to swap" projectRank="{{$project->project_rank}}" style="display: none;"></div>
 													@if(Auth::guest())
@@ -3133,37 +3133,19 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 		filterSelection("all")
 		function filterSelection(c) {
-			var x, i;
-			x = document.getElementsByClassName("filterDiv");
-			if (c == "all") c = "";
-			for (i = 0; i < x.length; i++) {
-				console.log(x[i]);
-				w3RemoveClass(x[i], "show");
-				if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-			}
+			console.log(c);
+			$.ajax({
+					url: '/projects/filter',
+					type: 'get',
+					dataType: 'JSON',
+					data: {c},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}).done(function(data){
+					console.log(data);
+				});
 		}
-
-		function w3AddClass(element, name) {
-			var i, arr1, arr2;
-			arr1 = element.className.split(" ");
-			arr2 = name.split(" ");
-			for (i = 0; i < arr2.length; i++) {
-				if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
-			}
-		}
-
-		function w3RemoveClass(element, name) {
-			var i, arr1, arr2;
-			arr1 = element.className.split(" ");
-			arr2 = name.split(" ");
-			for (i = 0; i < arr2.length; i++) {
-				while (arr1.indexOf(arr2[i]) > -1) {
-					arr1.splice(arr1.indexOf(arr2[i]), 1);
-				}
-			}
-			element.className = arr1.join(" ");
-		}
-
 		// Add active class to the current button (highlight it)
 		var btnContainer = document.getElementById("myBtnContainer");
 		var btns = btnContainer.getElementsByClassName("filterbtn");
@@ -3175,6 +3157,10 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			});
 		}
 
+		jQuery('.filterbtn').click(function(){
+			jQuery('.filterbtn').removeClass('active');
+			jQuery(this).addClass('active');
+		});
 	</script>
 </body>
 </Html>
