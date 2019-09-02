@@ -343,3 +343,4 @@ Route::group(['prefix' => 'konkrete'], function () {
 
 /* End Konkrete Routes */
 
+Route::get('/projects/filter',['as'=>'project.filter','uses'=>'PagesController@filterInvoice']);

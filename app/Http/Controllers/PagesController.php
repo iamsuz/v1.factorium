@@ -777,7 +777,40 @@ class PagesController extends Controller
         $user->save();
 
         return ($user->country_code == 'au')
-            ? redirect('/#projects')
-            : redirect('/users/' . $user->id);
+        ? redirect('/#projects')
+        : redirect('/users/' . $user->id);
+    }
+
+    public function filterInvoice(Request $request) {
+
+        switch ($request->c) {
+            case 'buy':{
+                dd('buy now');
+                return redirect()->back();
+                break;
+            }
+            
+            case 'sold':{
+                $sold = InvestmentInvestor::where('accepted', 1)->where('money_received',1)->where('is_repurchased',0)->get();
+                $soldc=count($sold);
+                dd('sold',$soldc,$sold);
+                return redirect()->back();
+                break;
+            }
+            
+            case 'repaid':{
+                $repaid = InvestmentInvestor::where('accepted',1)->where('is_repurchased',1)->get();
+                // $repaid=count($repaid);
+                dd('repaid',$repaid);
+                return redirect()->back();
+                break;
+            }
+            default:{
+                $allProjects = Project::where('active',1)->get()->count();
+                dd('all',$allProjects);
+                return redirect()->back();
+                break;
+            }
+        }    
     }
 }
