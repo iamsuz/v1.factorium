@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Carbon\Carbon;
 
 class ProjectRequest extends Request
 {
@@ -27,8 +28,8 @@ class ProjectRequest extends Request
             'title'=>'min:3|max:50',
             'description'=>'required',
             'invoice_amount'=>'required|integer',
-            'asking_amount'=>'required|integer',
-            'due_date'=>'required|date|after:today',
+            'asking_amount'=>'required',
+            'due_date'=>'required|date|after:today|before:' . Carbon::now()->addDays(60)->format('Y-m-d'),
             'invoice_issued_from'=>'required',
             'invoice_issue_from_email'=>'required|email'
         ];

@@ -59,10 +59,10 @@ Create New Project | @parent
 									</div>
 								</div>
 								<div class="col-sm-6">
-									<div class="@if($errors->first('asking_amount')){{'has-error'}} @endif">
-										<h4 class="first_color">Asking price</h4>
-										{!! Form::input('number', 'asking_amount', null, array('placeholder'=>'Asking Price', 'class'=>'form-control', 'tabindex'=>'3')) !!}
-										{!! $errors->first('asking_amount', '<small class="text-danger">:message</small>') !!}
+									<div class="@if($errors->first('due_date')){{'has-error'}} @endif">
+										<h4 class="first_color">Invoice due date</h4>
+										{!! Form::input('date','due_date', null, array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'tabindex'=>'4', 'min'=>\Carbon\Carbon::now()->toDateString(), 'id'=>'datepicker')) !!}
+										{!! $errors->first('due_date', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
 							</div>
@@ -73,11 +73,11 @@ Create New Project | @parent
 				<fieldset>
 					<br>
 					<div class="row">
-						<div class="@if($errors->first('due_date')){{'has-error'}} @endif">
-							<div class="col-sm-12">
-								<h4 class="first_color">Invoice due date</h4>
-								{!! Form::input('date','due_date', null, array('placeholder'=>'DD/MM/YYYY', 'class'=>'form-control', 'tabindex'=>'4', 'min'=>\Carbon\Carbon::now()->toDateString(), 'id'=>'datepicker')) !!}
-								{!! $errors->first('due_date', '<small class="text-danger">:message</small>') !!}
+						<div class="col-sm-12">
+							<div class="@if($errors->first('asking_amount')){{'has-error'}} @endif">
+								<h4 class="first_color">Asking price</h4>
+								{!! Form::input('text', 'asking_amount', null, array('placeholder'=>'Asking Price', 'class'=>'form-control', 'tabindex'=>'3', 'readonly' => 'readonly')) !!}
+								{!! $errors->first('asking_amount', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
 					</div>
@@ -134,10 +134,51 @@ Create New Project | @parent
 {!! Html::script('js/konkrete.js') !!}
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
-	$( "#datepicker" ).datepicker({
+
+	$(document).ready(function () {
+
+		//Disable default html5 datepicker
+		$('input[type=date]').on('click', function(event) {
+			event.preventDefault();
+		});
+
+		$( "#datepicker" ).datepicker({
 			changeMonth: true,
 			changeYear: true,
-			dateFormat: "yy-mm-dd"
+			dateFormat: "yy-mm-dd",
+			minDate: new Date(),
+			maxDate: '+60D'
 		});
+
+		// Calculate Asking Price
+		$('input[name=invoice_amount], input[name=due_date]').change(function () {
+			let invoiceAmount = $('input[name=invoice_amount]').val();
+			let dueDate = $('input[name=due_date]').val();
+
+			if (invoiceAmount != '' && dueDate != '') {
+				$('.loader-overlay').show();
+				$.ajax({
+					url: '{{ route('invoice.asking.price') }}',
+					type: 'POST',
+					dataType: 'JSON',
+					data: {
+						'invoice_amount': invoiceAmount,
+						'due_date': dueDate
+					},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}).done(function(data){
+					$('.loader-overlay').hide();
+					if (!data.status) {
+						alert(data.message);
+						return;
+					}
+					$('input[name=asking_amount]').val(data.data.asking_amount);
+				});
+			}
+		});
+
+	});
 </script>
 @stop

@@ -343,4 +343,7 @@ Route::group(['prefix' => 'konkrete'], function () {
 
 /* End Konkrete Routes */
 
+/* Factorium Routes */
 Route::get('/projects/filter',['as'=>'project.filter','uses'=>'PagesController@filterInvoice']);
+Route::post('invoice/asking/price', ['as' => 'invoice.asking.price', 'uses' => 'ProjectsController@calculateAskingPrice']);
+/* End Factorium Routes */

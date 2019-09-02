@@ -182,6 +182,12 @@
 				padding-top: 2em !important;
 			}
 		}
+
+		.white-space-wrap {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	</style>
 
 	<!-- Google tag manager header script if set  -->
@@ -732,7 +738,8 @@
 																<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 															</div>
 															<div class="col-md-6" style="padding-top: 10px">
-																<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+																<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Investors repaid' : 'Buy ' . $project->title . ' Now'); ?>
+																<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 															</div>
 														</div>
 														<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -792,15 +799,15 @@
 														@if($invoice_sold === '1' || $invoice_sold === '2') @else
 														<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 														@endif
-														<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
-															<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
-																<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
+														<div class="text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
+{{--															<div class="col-xs-4 col-sm-4 col-md-4" data-wow-duration="1.5s" data-wow-delay="0.7s">--}}
+{{--																<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>--}}
+{{--															</div>--}}
+															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 															</div>
-															<div class="col-xs-2 col-sm-2 col-md-2 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
+															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
 															</div>
-															<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
-															</div>
-															<div class="col-xs-3 col-sm-3 col-md-3 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000;">
+															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 															</div>
 														</div>
@@ -884,7 +891,8 @@
 																	<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" target="_blank" style="padding: 5px; border: 0px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px;height: 20px;">{{$project->token_symbol}}</a>
 																</div>
 																<div class="col-md-6" style="padding-top: 10px;">
-																	<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold ==='1') Invoice Sold @elseif($invoice_sold === '2') Investors Repaid @else Buy Now @endif</a>
+																	<?php $buyBtnText = ($invoice_sold ==='1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Investors Repaid' : 'Buy ' . $project->title . ' Now'); ?>
+																	<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 																</div>
 															</div>
 															<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -944,14 +952,14 @@
 															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 															@endif
 															<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
-																<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">
-																	<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
+{{--																<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">--}}
+{{--																	<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>--}}
+{{--																</div>--}}
+																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif</span><small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 																</div>
-																<div class="col-xs-2 col-sm-2 col-md-2 listing-3-1" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 3%; width: 25%;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif</span><small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
+																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
 																</div>
-																<div class="col-xs-2 col-sm-2 col-md-2 listing-3-2 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; width: 15%; padding: 0px 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
-																</div>
-																<div class="col-xs-3 col-sm-3 col-md-3 listing-3-3" data-wow-duration="1.5s" data-wow-delay="0.5s" style="margin: 0 0; width: 24%; border-left: thin solid #000;">
+																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 																</div>
 															</div>
@@ -1005,10 +1013,8 @@
 										}
 										?>
 										@if($invoice_sold === '1')
-										Invoice Sold
 										<div class="col-sm-6 col-md-6 swap-select-overlay  sold"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 											@elseif($invoice_sold === '2')
-											Investors repaid
 											<div class="col-sm-6 col-md-6 swap-select-overlay  repaid"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 												@else <div class="col-sm-6 col-md-6 swap-select-overlay  buy"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 													@endif
@@ -1034,7 +1040,8 @@
 																		<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 																	</div>
 																	<div class="col-md-6" style="padding-top: 10px;">
-																		<a class="btn btn-block buy-now-btn" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif>@if($invoice_sold === '1') Invoice Sold @elseif($invoice_sold === '2') Investors repaid @else Buy Now @endif</a>
+																		<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Investors repaid' : 'Buy ' . $project->title . ' Now'); ?>
+																		<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 																	</div>
 																</div>
 																<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1093,16 +1100,16 @@
 																<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 																@endif
 																<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
-																	<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">
-																		<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>
-																	</div>
-																	<div class="col-xs-2 col-sm-2 col-md-2 listings1" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif">
+{{--																	<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">--}}
+{{--																		<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>--}}
+{{--																	</div>--}}
+																	<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;">
 																		<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 																	</div>
-																	<div class="col-xs-2 col-sm-2 col-md-2 listings2" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000;" >
+																	<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" >
 																		<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
 																	</div>
-																	<div class="col-xs-3 col-sm-3 col-md-2 listing3" data-wow-duration="1.5s" data-wow-delay="0.5s" style=" border-left: thin solid #000;">
+																	<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style=" border-left: thin solid #000; padding: 0 5px;">
 																		<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
 																	</div>
 																</div>
@@ -1750,6 +1757,7 @@
 			{!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
 			<!-- TinyMCE Rich text editor -->
 			{!! Html::script('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') !!}
+			{!! Html::script(asset('js/jQuery.countdownTimer.min.js')) !!}
 
 			<script>
 				jQuery(document).ready(function($) {

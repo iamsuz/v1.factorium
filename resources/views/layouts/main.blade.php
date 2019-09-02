@@ -25,6 +25,7 @@ $_SESSION['code'] = md5(microtime(true));
     <meta name="author" content="Estate Baron">
     {{-- <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors."> --}}
     <meta name="copyright" content="Estate Baron Crowdinvest Pty Ltd copyright (c) 2016">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <?php
     $siteConfiguration = App\Helpers\SiteConfigurationHelper::getConfigurationAttr();

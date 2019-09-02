@@ -84,13 +84,19 @@ class ProjectsController extends Controller
      * @return Response
      */
     public function store(ProjectRequest $request, AppMailer $mailer)
-    { 
-        $request['asking_amount'] = (int)$request->asking_amount;
+    {
+        $getAskingPrice = $this->calculateAskingPrice($request);
+
+        if (!$getAskingPrice['status']) {
+            return redirect()->back()->withInput()->withErrors(['asking_amount' => $getAskingPrice['message']]);
+        }
+
+        $request['asking_amount'] = $getAskingPrice['data']['asking_amount'];
         $request['invoice_amount'] = (int)$request->invoice_amount;
 
-        if($request->asking_amount > $request->invoice_amount) {
-            return redirect()->back()->withInput()->withErrors(['asking_amount' => 'Asking price cannot be greater than Amount.']);
-        }
+//        if($request->asking_amount > $request->invoice_amount) {
+//            return redirect()->back()->withInput()->withErrors(['asking_amount' => 'Asking price cannot be greater than Amount.']);
+//        }
 
         $user = Auth::user();
 
@@ -1156,5 +1162,46 @@ class ProjectsController extends Controller
         $projectMedia->filename = 'spv_md_sign_dummy.png';
         $projectMedia->path = 'assets/images/media/project_page/spv_md_sign_dummy.png';
         $projectMedia->save();
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function calculateAskingPrice(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'invoice_amount' => 'required|integer',
+            'due_date'=>'required|date|after:today'
+        ]);
+
+
+        if ($validator->fails()) {
+           return array(
+              'status' => false,
+              'message' => $validator->errors()->first()
+           );
+        }
+
+        try {
+            // Get remaining days for invoice due date
+            $dueDate = Carbon::createFromFormat('Y-m-d', $request->due_date);
+            $dateDiff = date_diff(Carbon::now(), $dueDate);
+            $dateDiff = (int)$dateDiff->format("%R%a");
+            // Get asking price
+            $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
+            $askingAmount = round($request->invoice_amount * ( 1 - ( $discountFactor )), 2);
+
+        } catch (\Exception $e) {
+            return array(
+                'status' => false,
+                'message' => $e->getMessage()
+            );
+        }
+
+        return array(
+            'status' => true,
+            'data' => array( 'diff' => $dateDiff, 'asking_amount' => $askingAmount )
+        );
     }
 }
