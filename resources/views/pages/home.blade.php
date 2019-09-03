@@ -366,7 +366,7 @@
 					<section id="promo" style="background: url({{asset('assets/images/main_bg.png')}}); background-size: cover; background-repeat: no-repeat; background-position: center center;" @if(array_key_exists('city', $geoIpArray)) @if(in_array($geoIpArray['city'], $BannerCities))  @endif @endif>
 						@endif
 						<div class="color-overlay main-fold-overlay-color">
-							<div class="content container" id="promo-content" style="padding-top:10%;">
+							<div class="content container" id="promo-content" style="padding-top:5%;">
 								<!-- <img class="img-responsive" src="/assets/images/main_logo.png" alt="Vestabyte" width="250px" class="main-logo" data-wow-duration="1.5s" data-wow-delay="0.2s" style="margin-left:20px; margin-top:20px;"> -->
 								<!-- <h2 class="text-center " data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size: 3.5em; line-height: 1.3em; ">Property Investment starting $2000</h2> -->
 								<br><br><br><br>
