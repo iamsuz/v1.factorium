@@ -26,7 +26,7 @@ Users | Dashboard | @parent
 							<th></th>
 							<th>Details</th>
 							<th>Notes</th>
-							<th>Last Login</th>
+							<th>Type</th>
 							<th>Active</th>
 							<th>Registration</th>
 						</tr>
@@ -59,7 +59,7 @@ Users | Dashboard | @parent
 								{!! Form::hidden('user_id', $user->id) !!}
 								{!! Form::close() !!}
 							</td>
-							<td>@if($user->last_login) <time datetime="{{$user->last_login}}">{{$user->last_login->diffForHumans()}}</time> @else Not yet @endif</td>
+							<td>@if($user->factorium_user_type) {{$user->factorium_user_type}} @else Not yet @endif</td>
 							<td>@if($user->active && $user->activated_on)<time datetime="{{$user->activated_on}}">{{$user->activated_on->toFormattedDateString()}}</time> <br> <a href="{{route('dashboard.users.deactivate', [$user])}}">Deactivate</a>@else Not Active <br> <a href="{{route('dashboard.users.activate', [$user])}}">Activate</a>@endif</td>
 							<td><time datetime="{{$user->created_at}}">{{$user->created_at->toFormattedDateString()}}</time></td>
 							{{-- <td>@foreach($user->roles as $role) {{$role->role}}<br> @endforeach</td> --}}
