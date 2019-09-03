@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Investment extends Model
@@ -28,7 +29,7 @@ class Investment extends Model
         $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $this->fund_raising_close_date);
         $diff_in_days = $to->diffInDays($from);
 
-        return $diff_in_days;
+        return ($diff_in_days < 10) ? '0' . $diff_in_days : $diff_in_days;
     }
 
     public function getInvoiceAmountAttribute()
@@ -44,5 +45,17 @@ class Investment extends Model
     public function project()
     {
         return $this->belongsTo('App\Project');
+    }
+
+    public function getRemainingHoursAttribute()
+    {
+        $currentDate = Carbon::now();
+        $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->fund_raising_close_date);
+        $dateDiff = $currentDate->diff($dueDate)->format('%H:%I:%S');
+        $diffInDays = $currentDate->diffInDays($dueDate);
+        $diffInDays = ($diffInDays < 10) ? '0' . $diffInDays : $diffInDays;
+        $dateDiff = $diffInDays . ':' . $dateDiff;
+
+        return $dateDiff;
     }
 }
