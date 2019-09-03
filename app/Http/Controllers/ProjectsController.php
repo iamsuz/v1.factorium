@@ -1204,4 +1204,21 @@ class ProjectsController extends Controller
             'data' => array( 'diff' => $dateDiff, 'asking_amount' => $askingAmount )
         );
     }
+
+    public function refreshAskingAmount($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        // Get remaining days for invoice due date
+        $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $project->investment->fund_raising_close_date);
+        $dateDiff = Carbon::now()->diffInDays($dueDate);
+
+        // Get asking price
+        $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
+        $askingAmount = round($project->investment->invoice_amount * ( 1 - ( $discountFactor )), 2);
+
+        $project->investment->goal_amount = $askingAmount;
+        $project->investment->save();
+
+        return array('status' => true, 'data' => array('asking_amount' => $askingAmount));
+    }
 }

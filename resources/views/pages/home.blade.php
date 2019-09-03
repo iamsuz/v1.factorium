@@ -1106,11 +1106,10 @@
 																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;">
 																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 																</div>
-																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" >
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
+																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-invoice-due="{{ $project->investment->remaining_hours }}">@if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
 																</div>
-																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style=" border-left: thin solid #000; padding: 0 5px;">
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
+																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
+																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif</span><small><small><br>Asking Price</small></small></h4>
 																</div>
 															</div>
 														</div>
@@ -1825,6 +1824,7 @@
 						backDelay: 500,
 						loop: true
 					});
+
 				});
 			</script>
 			<!-- Begin Inspectlet Embed Code -->
@@ -2189,6 +2189,7 @@
 					'backdrop': false,
 				});
 			});
+
 			//color main Page overlay
 			@if($color)
 			@if($color->nav_footer_color)
@@ -2251,6 +2252,8 @@
 			@endif
 			@endif
 
+			showCountDownOption();
+			refreshAskingPrice();
 		});
 @if(Auth::guest())
 @else
@@ -3169,6 +3172,63 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			jQuery('.filterbtn').removeClass('active');
 			jQuery(this).addClass('active');
 		});
+
+		function showCountDownOption() {
+			$('.invoice-due-date').each(function (index, value) {
+				let projectId = $(this).attr('data-project-id');
+				let dueDate = $(this).attr('data-invoice-due');
+				let date = dueDate.split(':');
+				$('#invoice_due_date_' + projectId).countdowntimer({
+					days: date[0],
+					hours : date[1],
+					minutes : date[2],
+					seconds : date[3],
+					displayFormat : "D:H:M:S"
+				});
+			})
+		}
+
+		function refreshAskingPrice() {
+			setInterval(function() {
+				$('.invoice-asking-amount').each(function (index, value) {
+					let projectId = $(this).attr('data-project-id');
+					$.ajax({
+						url: `/invoice/${projectId}/refresh`,
+						type: 'get',
+						dataType: 'JSON',
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+					}).done(function(data){
+						if (data.status) {
+							$('#invoice_asking_amount_' + projectId).html('$' + number_format(data.data.asking_amount), 2);
+						}
+					});
+				});
+			}, 5000);
+		}
+
+		let number_format = function (number, decimal_pos, decimal_sep, thousand_sep) {
+			let ts = (thousand_sep == null ? ',' : thousand_sep)
+					, ds = (decimal_sep == null ? '.' : decimal_sep)
+					, dp = (decimal_pos == null ? 2 : decimal_pos)
+
+					, n = Math.abs(Math.floor(number)).toString()
+
+					, i = n.length % 3
+					, f = ((number < 0) ? '-' : '') + n.substr(0, i);
+
+			for (; i < n.length; i += 3) {
+				if (i != 0) f += ts;
+				f += n.substr(i, 3);
+			}
+
+			if (dp > 0)
+				f += ds + parseFloat(number).toFixed(dp).split('.')[1]
+
+			return f;
+		}
+
 	</script>
 </body>
 </Html>
