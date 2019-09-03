@@ -1066,7 +1066,7 @@ a:hover {
 			line-height: 40px;
 		}
 
-		svg {
+		/*svg {
 			position: absolute;
 			top: 0;
 			right: 0;
@@ -1083,7 +1083,7 @@ a:hover {
 			stroke: grey;
 			fill: none;
 			animation: countdown 60s linear infinite forwards;
-		}
+		}*/
 
 		@keyframes countdown {
 			from {
