@@ -957,10 +957,10 @@
 															{{--																</div>--}}
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif</span><small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 															</div>
-															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
+															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="{{ $project->investment->fund_raising_close_date }}">@if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
 															</div>
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
-																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
+																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format((int)$project->investment->calculated_asking_price)}} @endif</span><small><small><br>Asking Price</small></small></h4>
 															</div>
 														</div>
 													</div>
@@ -1106,10 +1106,10 @@
 																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;">
 																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 																</div>
-																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-invoice-due="{{ $project->investment->remaining_hours }}">@if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
+																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="{{ $project->investment->fund_raising_close_date }}">@if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
 																</div>
 																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
-																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif</span><small><small><br>Asking Price</small></small></h4>
+																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format((int)$project->investment->calculated_asking_price)}} @endif</span><small><small><br>Asking Price</small></small></h4>
 																</div>
 															</div>
 														</div>
@@ -3176,13 +3176,9 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 		function showCountDownOption() {
 			$('.invoice-due-date').each(function (index, value) {
 				let projectId = $(this).attr('data-project-id');
-				let dueDate = $(this).attr('data-invoice-due');
-				let date = dueDate.split(':');
+				let dueDateTs = $(this).attr('data-due-date');
 				$('#invoice_due_date_' + projectId).countdowntimer({
-					days: date[0],
-					hours : date[1],
-					minutes : date[2],
-					seconds : date[3],
+					dateAndTime: new Date(dueDateTs),
 					displayFormat : "D:H:M:S"
 				});
 			})
@@ -3201,7 +3197,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 						},
 					}).done(function(data){
 						if (data.status) {
-							$('#invoice_asking_amount_' + projectId).html('$' + number_format(data.data.asking_amount), 2);
+							$('#invoice_asking_amount_' + projectId).html('$' + number_format(data.data.asking_amount, 0));
 						}
 					});
 				});

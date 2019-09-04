@@ -154,7 +154,7 @@ Offer Doc
 										</div>
 										<div class="col-md-4">
 											<label>Purchase price in AUD</label>
-											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->minimum_accepted_amount}}" style="width: 100%" id="apply_for" min="{{$project->investment->minimum_accepted_amount}}" max="{{$maxAmount}}" step="100" required @if(isset($eoi)) value="{{$eoi->investment_amount}}" @endif value="{{$project->investment->minimum_accepted_amount}}" readonly="readonly">
+											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->calculated_asking_price}}" style="width: 100%" id="apply_for" min="{{$project->investment->calculated_asking_price}}" max="{{$project->investment->calculated_asking_price}}" step="100" required value="{{$project->investment->calculated_asking_price}}" readonly="readonly">
 										</div>
 									</div>
 									<br>

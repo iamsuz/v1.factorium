@@ -51,6 +51,9 @@ class Investment extends Model
     {
         $currentDate = Carbon::now();
         $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->fund_raising_close_date);
+        if($currentDate >= $dueDate) {
+            return '00:00:00:00';
+        }
         $dateDiff = $currentDate->diff($dueDate)->format('%H:%I:%S');
         $diffInDays = $currentDate->diffInDays($dueDate);
         $diffInDays = ($diffInDays < 10) ? '0' . $diffInDays : $diffInDays;
@@ -58,4 +61,23 @@ class Investment extends Model
 
         return $dateDiff;
     }
+
+    public function getCalculatedAskingPriceAttribute()
+    {
+        // Get remaining days for invoice due date
+        $currentDate = Carbon::now();
+        $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->fund_raising_close_date);
+
+        if ($currentDate >= $dueDate) {
+            return $this->invoice_amount;
+        }
+
+        $dateDiff = $currentDate->diffInDays($dueDate);
+        // Get asking price
+        $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
+        $askingAmount = round($this->invoice_amount * ( 1 - ( $discountFactor )), 2);
+
+        return $askingAmount;
+    }
+
 }
