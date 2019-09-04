@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Investment;
 use App\ProjectFAQ;
 use App\ProjectProg;
+use App\UserRegistration;
 use App\Http\Requests;
 use App\InvestingJoint;
 use App\ProjectSpvDetail;
