@@ -960,7 +960,7 @@
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="{{ $project->investment->fund_raising_close_date }}">@if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
 															</div>
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
-																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format((int)$project->investment->calculated_asking_price)}} @endif</span><small><small><br>Asking Price</small></small></h4>
+																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small></h4>
 															</div>
 														</div>
 													</div>
@@ -3197,7 +3197,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 						},
 					}).done(function(data){
 						if (data.status) {
-							$('#invoice_asking_amount_' + projectId).html('$' + number_format(data.data.asking_amount, 0));
+							$('#invoice_asking_amount_' + projectId).html('$' + number_format(data.data.asking_amount, 2));
 						}
 					});
 				});
