@@ -75,7 +75,7 @@ class Investment extends Model
         $dateDiff = $currentDate->diffInDays($dueDate);
         // Get asking price
         $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
-        $askingAmount = round($this->invoice_amount * ( 1 - ( $discountFactor )), 2);
+        $askingAmount = round($this->invoice_amount * ( 1 - ( $discountFactor )), 3);
 
         return $askingAmount;
     }
