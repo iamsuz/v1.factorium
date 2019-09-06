@@ -6,7 +6,7 @@
 		{{-- @else --}}
 		<a href="https://konkrete.io" target="_blank" ><img src="{{-- {{asset('assets/images/default-'.$user->gender.'.png')}} --}}{{ asset('/assets/images/FactoriumIcon.png') }}" width="100px" style="border-radius: 3px;"></a>
 		{{-- @endif --}}
-		<a href="https://konkrete.io" target="_blank" ><h3 class="text-center"><b>FactorToken Balance</b></h3></a>
+		<a href="https://konkrete.io" target="_blank" ><h3 class="text-center"><b>Factor Token Balance</b></h3></a>
 		@foreach($user->credits->where('currency','factor') as $credit)
 			<?php $sum = $sum + $credit->amount; ?>
 		@endforeach
