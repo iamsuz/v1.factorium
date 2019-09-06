@@ -682,7 +682,7 @@
 									<div class="@if(Auth::check()) hide  @endif row" >
 										<div class="col-md-4 col-md-offset-4 text-center" >
 											<a href="/users/login" class="btn btn-block buy-now-btn first_color">
-												sign in to see invoices up for sale
+												Sign in to see invoices up for sale
 											</a>
 										</div>
 									</div>
