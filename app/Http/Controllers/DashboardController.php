@@ -468,18 +468,18 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-               if($investment->project->share_vs_unit) {
+             if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-               }else {
+                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+             }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-               }
+                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+             }
 
-               $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+             $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
                  // $mailer->sendInvoiceToAdmin($investment,$formLink);
-           }
-           if(isset($investment->pay_investment_id)){
+         }
+         if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
             if($linkedInvestment){
                 if($linkedInvestment->project->is_wallet_tokenized)
@@ -820,6 +820,12 @@ public function deactivateProject($project_id)
         $investorList = $request->investors_list;
         $dividendPercent = $request->fixed_dividend_percent;
         $project = Project::findOrFail($projectId);
+        $investmentDetails = Investment::where('project_id',$projectId)->get();
+        $shareInvestments = InvestmentInvestor::where('project_id', $projectId)
+        ->where('accepted', 1)
+        ->orderBy('share_certificate_issued_at','ASC')
+        ->get();
+        // dd($shareInvestments[0]->partial_repay_amount);
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
@@ -836,11 +842,17 @@ public function deactivateProject($project_id)
                 }
             }
             // Add the records to project progress table
+            $partialRepaid = $project->investment->total_projected_costs * ((int)$dividendPercent/100);
+            if(isset($shareInvestments[0]->partial_repay_amount)){
+                $totalPartialRepaid = $partialRepaid + $shareInvestments[0]->partial_repay_amount;
+            }else{
+                $totalPartialRepaid = $partialRepaid ;
+            }
             ProjectProg::create([
                 'project_id' => $projectId,
                 'updated_date' => Carbon::now(),
                 'progress_description' => 'Fixed Dividend Declaration',
-                'progress_details' => 'A Fixed Dividend of '.$dividendPercent.'% has been declared.'
+                'progress_details' => 'Invoice of $'.$investmentDetails[0]->goal_amount.' purchased for $'.$investmentDetails[0]->total_projected_costs.'. $'.$partialRepaid.' is now repaid. Total repaid so far is $'.$totalPartialRepaid.'.'
             ]);
 
             // send dividend email to admins
@@ -877,8 +889,10 @@ public function deactivateProject($project_id)
                 $investment->is_partial_repay = 1;
                 if(isset($investment->partial_repay_percentage)){
                     $investment->partial_repay_percentage = $investment->partial_repay_percentage + $dividendPercent;
+                    $investment->partial_repay_amount = $investment->partial_repay_amount + $project->investment->total_projected_costs * ((int)$dividendPercent/100);
                 }else{
                     $investment->partial_repay_percentage = $dividendPercent;
+                    $investment->partial_repay_amount = $project->investment->total_projected_costs * ((int)$dividendPercent/100);
                 }
                 $investment->save();
 
@@ -905,7 +919,7 @@ public function deactivateProject($project_id)
         $investorList = $request->investors_list;
         $repurchaseRate = $request->repurchase_rate;
         $project = Project::findOrFail($projectId);
-
+        $investmentDetails = Investment::where('project_id',$projectId)->get();
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
@@ -915,7 +929,7 @@ public function deactivateProject($project_id)
                     'project_id' => $projectId,
                     'updated_date' => Carbon::now(),
                     'progress_description' => 'Repurchase Declaration',
-                    'progress_details' => 'Shares Repurchased by company at $'.$repurchaseRate.' per share.'
+                    'progress_details' => 'Invoice asking amount was $'.$investmentDetails[0]->goal_amount.'. Invoice amount was $'.$investmentDetails[0]->total_projected_costs.'. This invoice has now been fully repaid.'
                 ]);
             }else {
                 ProjectProg::create([
@@ -999,7 +1013,7 @@ public function deactivateProject($project_id)
             //     }
             }
             // if(empty($failedEmails)){
-                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investor</p>');
+            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Repurchase distribution have been mailed to Investor</p>');
             // }
             // else{
             //     $emails = '';
@@ -1225,8 +1239,8 @@ public function deactivateProject($project_id)
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-             return new TransportManager($app);
-         });
+               return new TransportManager($app);
+           });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);
