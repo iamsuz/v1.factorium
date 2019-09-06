@@ -31,9 +31,9 @@
 				<table class="table table-bordered table-striped" id="notificationTable">
 					<thead>
 						<tr>
-							<th>Project Name</th>
-							<th>Date of Progress</th>
-							<th>Description</th>
+							<th>Invoice</th>
+							<th>Date</th>
+							{{-- <th>Description</th> --}}
 							<th>Details</th>
 						</tr>
 					</thead>
@@ -44,7 +44,7 @@
 							<td>{!!$project_progs->project->title!!}</td>
 							<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
 							</td>
-							<td>{!!$project_progs->progress_description!!} </td>
+							{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
 							<td>{!!$project_progs->progress_details!!}
 								<br>
 								<a href="{{$project_progs->video_url}}" target="_blank">{{$project_progs->video_url}}</a>
