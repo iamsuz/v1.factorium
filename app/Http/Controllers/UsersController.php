@@ -430,16 +430,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-           $role = Role::whereRole('investor')->firstOrFail();
+         $role = Role::whereRole('investor')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * delete Developer role from user
@@ -455,16 +455,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-           $role = Role::whereRole('developer')->firstOrFail();
+         $role = Role::whereRole('developer')->firstOrFail();
 
-           $user->roles()->detach($role);
+         $user->roles()->detach($role);
 
-           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-       }
+         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+     }
 
-       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
-   }
+ }
 
     /**
      * get user investments
@@ -773,8 +773,21 @@ class UsersController extends Controller
         $projects = Project::where('invoice_issue_from_email',$user->email)->get();
         return view('users.userInvoices',compact('color','user','projects'));
     }
-    public function userInvoiceConfirm(Request $request)
+    public function userInvoiceConfirm(Request $request, $id)
     {
-        dd($request);
+        $user = Auth::user();
+        $project = Project::findOrFail($id);
+        if(!$project->invoice_issue_from_email == $user->email){
+            response()->json([
+                'status' => '0',
+                'message' => 'You can not confirm this Invoice, Contact admin!',
+            ]);
+        }
+        $project->confirmation = 1;
+        $project->save();
+        return response()->json([
+            'status' => '1',
+            'message' => 'Invoice has been confirmed',
+        ]);
     }
 }

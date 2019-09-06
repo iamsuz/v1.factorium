@@ -12,10 +12,7 @@
         @include('dashboard.projects.invoiceTearmsCond')
       </div>
       <div class="modal-footer">
-        <form action=" {{route('users.invoice.confirm', [$project->id])}}" method="POST">
-          {{csrf_field()}}
-          <input type="submit" class="btn btn-default" value="Confirm">
-        </form>
+          <button class="btn btn-primary" id="confirmInvoiceBtn">Confirm</button>
       </div>
     </div>
 

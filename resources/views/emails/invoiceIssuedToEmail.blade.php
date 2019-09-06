@@ -579,7 +579,7 @@
 <br>
 Kindly confirm this invoice to receive your payment terms by clicking here
 <br><br>
-<a href="{{route('projects.show',[$project])}}"><b><input type="button" value="Confirm Invoice" style="background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;border: none;padding: 1em 2em;color: #fff;cursor: pointer;font-weight: 600;"></b></a>
+<a href="{{route('users.invoice.confirm',[$project])}}"><b><input type="button" value="Confirm Invoice" style="background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;border: none;padding: 1em 2em;color: #fff;cursor: pointer;font-weight: 600;"></b></a>
 </span></span></span>
 &nbsp;</div>
 

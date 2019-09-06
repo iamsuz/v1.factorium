@@ -117,6 +117,9 @@ Edit {{$project->title}} | Dashboard | @parent
 										<label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && $project->is_funding_closed && $project->active) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
 											<input type="radio" name="project_status" value="funding_closed"> Close Funding
 										</label>
+										<label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && !$project->is_funding_closed && $project->active && $project->confirmation) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+											<input type="radio" name="project_status" value="confirmed"> Confirm
+										</label>
 									</div>
 									<h3 class="hide">Select a type of Shares</h3>
 									<div class="btn-group project-progress-3way-switch hide" data-toggle="buttons">

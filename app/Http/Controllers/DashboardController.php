@@ -270,6 +270,7 @@ class DashboardController extends Controller
         $investments = InvestmentInvestor::where('project_id', $project_id)->get();
         if($project->is_coming_soon || $project->eoi_button == '1' || $project->is_funding_closed == '1'){
             $project->active = 1;
+            $project->confirmation = 1;
             $project->save();
         }
         if($project->eoi_button == '0' && $project->is_coming_soon == '0' && !$project->projectspvdetail) {

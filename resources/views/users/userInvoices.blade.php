@@ -16,53 +16,55 @@
 			@include('partials.sidebar', ['active'=>14])
 		</div>
 		<div class="col-md-10"
->			@if (Session::has('message'))
-			{!! Session::get('message') !!}
-			@endif
-			<ul class="list-group">
-				<li class="list-group-item">
-					<div class="text-center">
-						<h3>{{$user->first_name}} {{$user->last_name}}<br><small>{{$user->email}}</small></h3>
-					</div>
-				</li>
-			</ul>
-			<h3 class="text-center">Notifications</h3>
-			<div class="table-responsive">
-				<table class="table table-bordered table-striped" id="notificationTable">
-					<thead>
-						<tr>
-							<th>Project Name</th>
-							<th>Date of Progress</th>
-							<th>Description</th>
-							<th>Details</th>
-						</tr>
-					</thead>
-					<tbody>
-						@if($projects->count())
-						@foreach($projects as $project)
-						<tr>
-							<td>{!!$project->title!!}</td>
-							<td>{{date("d/m/Y",strtotime($project->updated_date))}}
-							</td>
-							<td>{!!$project->description!!} </td>
-							<td>
-								@if($project->confirmation)
-								<i>Confirmed</i>
-								@else
-								<button data-toggle="modal" data-target=".invoiceConfirmationModal" class="btn btn-primary" data="{{$project->id}}" id="project{{$project->id}}">Confirm</button>
-								@endif
-							</td>
-						</tr>
-						@endforeach
-						@endif
-					</tbody>
-				</table>
-			</div>
+		>			@if (Session::has('message'))
+		{!! Session::get('message') !!}
+		@endif
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div class="text-center">
+					<h3>{{$user->first_name}} {{$user->last_name}}<br><small>{{$user->email}}</small></h3>
+				</div>
+			</li>
+		</ul>
+		<h3 class="text-center">Notifications</h3>
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped" id="notificationTable">
+				<thead>
+					<tr>
+						<th>Project Name</th>
+						<th>Date of Progress</th>
+						<th>Description</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if($projects->count())
+					@foreach($projects as $project)
+					<tr>
+						<td>{!!$project->title!!}</td>
+						<td>{{date("d/m/Y",strtotime($project->updated_date))}}
+						</td>
+						<td>{!!$project->description!!} </td>
+						<td>
+							@if($project->confirmation)
+							<i>Confirmed</i>
+							@else
+							<button data-toggle="modal" data-target=".invoiceConfirmationModal" class="btn btn-primary invoiceConfirmationModal" data="{{$project->id}}" id="">Confirm</button>
+							@endif
+						</td>
+					</tr>
+					@endforeach
+					@endif
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<br><br>
 </div>
+<br><br>
+</div>
+@if(isset($project))
 @include('partials.invoiceTermsConfirmationModal')
+@endif
 @stop
 
 @section('js-section')
@@ -70,8 +72,28 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var usersTable = $('#notificationTable').DataTable();
-		$('.invoiceConfirmationModal').on('show.bs.modal',function (e) {
-			console.log(e);
+		$('.invoiceConfirmationModal').on('click',function (temp) {
+			var id = $(this).attr('data');
+			$('#confirmInvoiceBtn').on('click',function (e) {
+				$.ajax({
+					url : '/user/invoice/'+id+'/confirm',
+					type : 'POST',
+					data : {
+						'numberOfWords' : 10
+					},
+					dataType:'json',
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+					success : function(data) {
+						location.reload();
+					},
+					error : function(request,error)
+					{
+						alert("Request: "+JSON.stringify(request));
+					}
+				})
+			})
 		});
 	});
 </script>
