@@ -738,7 +738,6 @@ class UsersController extends Controller
 
     public function marketStore(Request $request)
     {
-        dd($request);
         $user = Auth::user();
         $color = Color::where('project_site',url())->first();
         $request['user_id'] = $user->id;
@@ -766,5 +765,16 @@ class UsersController extends Controller
             $market = Market::create($request->all());
         }
         return redirect()->back()->withMessage('Your Order is succesfully placed');
+    }
+    public function userInvoices()
+    {
+        $user = Auth::user();
+        $color = Color::where('project_site',url())->first();
+        $projects = Project::where('invoice_issue_from_email',$user->email)->get();
+        return view('users.userInvoices',compact('color','user','projects'));
+    }
+    public function userInvoiceConfirm(Request $request)
+    {
+        dd($request);
     }
 }

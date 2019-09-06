@@ -106,6 +106,8 @@ Route::post('/users/login/check', ['as'=>'users.auth.check', 'uses'=>'UserAuthCo
 Route::get('/users/activation/{token}', ['as'=>'users.activation', 'uses'=>'UserAuthController@activate']);
 Route::get('/users/{id}/documents',['as'=>'users.document','uses'=>'UsersController@documents']);
 Route::post('/users/{id}/documents',['as'=>'users.document.upload','uses'=>'UsersController@uploadDocuments']);
+Route::get('/user/invoices',['as'=>'users.invoices','uses'=>'UsersController@userInvoices']);
+Route::post('/user/invoice/{id}/confirm',['as'=>'users.invoice.confirm','uses'=>'UsersController@userInvoiceConfirm']);
 // Password reset link request routes...
 Route::get('/password/email', 'Auth\PasswordController@getEmail');
 Route::post('/password/email', 'Auth\PasswordController@postEmail');
