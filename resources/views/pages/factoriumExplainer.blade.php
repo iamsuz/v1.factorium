@@ -124,6 +124,34 @@
                     <img src="{{ asset('assets/images/explainer/13.png') }}">
                     <h3>And as a financier you may be able to achieve strong returns by buying invoices up for sale at a discount</h3>
                 </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/14.png') }}">
+                    <h3>Once you are setup you will find several invoices up for sale</h3>
+                </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/15.png') }}">
+                    <h3>The Invoice amount is the full amount of the invoice</h3>
+                </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/16.png') }}">
+                    <h3>The days remaining is the time remaining for this invoice to get paid in full</h3>
+                </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/17.png') }}">
+                    <h3>And the Asking amount is the amount the invoice is currently selling for</h3>
+                </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/18.png') }}">
+                    <h3>You can click on the buy now button and fill a small application form to complete your purchase of an invoice</h3>
+                </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/19.png') }}">
+                    <h3>You will notice the Asking amount is usually less than the Invoice amount. Once the days remaining runs out the full Invoice amount will be paid to you assuming you bought the invoice</h3>
+                </div>
+                <div class="item">
+                    <img src="{{ asset('assets/images/explainer/20.png') }}">
+                    <h3>That is all, lets get started by checking some invoices for sale</h3>
+                </div>
             </div>
 
             <!-- Left and right controls -->
@@ -153,13 +181,20 @@
                     <li data-target="#explainer_carousel" data-slide-to="10"></li>
                     <li data-target="#explainer_carousel" data-slide-to="11"></li>
                     <li data-target="#explainer_carousel" data-slide-to="12"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="13"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="14"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="15"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="16"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="17"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="18"></li>
+                    <li data-target="#explainer_carousel" data-slide-to="19"></li>
                 </ol>
 
                 <hr>
                 <div class="text-center carousel-nav-buttons">
                     <button type="button" class="btn left btn-custom-theme hidden-xs" onclick="slideLeft()" style="width: 100px"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous </button> &nbsp;
                     <button type="button" class="btn left btn-custom-theme hidden-sm hidden-md hidden-lg" onclick="slideLeft()" style="width: 50px"> <i class="fa fa-arrow-left" aria-hidden="true"></i></button> &nbsp;
-                    <button type="button" class="btn skip btn-custom-theme"> Select Role... </button> &nbsp;
+                    <button type="button" class="btn skip btn-custom-theme"> Skip... </button> &nbsp;
                     <button type="button" class="btn right btn-custom-theme hidden-xs" onclick="slideRight()" style="width: 100px;"> Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                     <button type="button" class="btn right btn-custom-theme hidden-sm hidden-md hidden-lg" onclick="slideRight()" style="width: 50px;"> <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                 </div>
@@ -200,9 +235,11 @@
             } else if ($('.carousel-indicators li').eq(slidesCount).hasClass('active')) {
                 $('.carousel-nav-buttons .right').attr('disabled', 'disabled');
                 $('.carousel-nav-buttons .skip').addClass('pulse-effect');
+                $('.carousel-nav-buttons .skip').html(' Get Started ');
             } else {
                 $('.carousel-nav-buttons button').removeAttr('disabled');
                 $('.carousel-nav-buttons .skip').removeClass('pulse-effect');
+                $('.carousel-nav-buttons .skip').html(' Skip... ');
             }
         }
     </script>

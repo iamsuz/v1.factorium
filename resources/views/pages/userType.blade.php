@@ -31,16 +31,16 @@
                                     {!! $errors->first('user_type', '<div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><small class="text-danger">:message</small></div>') !!}
                                 @endif
                                 <div class="col-xs-4">
-                                    <input type="radio" name="user_type" id="user_type1" value="buyer" @if($user->factorium_user_type) @if($user->factorium_user_type == 'buyer') checked @endif @else checked @endif>
+                                    <input type="radio" name="user_type" id="user_type3" value="financier" @if($user->factorium_user_type) @if($user->factorium_user_type == 'financier') checked @endif @else checked @endif>
+                                    <h4><label for="user_type3" >Financier</label></h4>
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="radio" name="user_type" id="user_type1" value="buyer" @if($user->factorium_user_type) @if($user->factorium_user_type == 'buyer') checked @endif @endif>
                                     <h4><label for="user_type1" >Buyer</label></h4>
                                 </div>
-                                <div class="col-xs-4">
+                                    <div class="col-xs-4">
                                     <input type="radio" name="user_type" id="user_type2" value="seller" @if($user->factorium_user_type) @if($user->factorium_user_type == 'seller') checked @endif @endif>
                                     <h4><label for="user_type2" >Seller</label></h4>
-                                </div>
-                                <div class="col-xs-4">
-                                    <input type="radio" name="user_type" id="user_type3" value="financier" @if($user->factorium_user_type) @if($user->factorium_user_type == 'financier') checked @endif @endif>
-                                    <h4><label for="user_type3" >Financier</label></h4>
                                 </div>
                             </div>
                         </div>
