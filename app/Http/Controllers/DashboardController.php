@@ -848,7 +848,6 @@ public function deactivateProject($project_id)
             }else{
                 $totalPartialRepaid = $partialRepaid ;
             }
-            
             ProjectProg::create([
                 'project_id' => $projectId,
                 'updated_date' => Carbon::now(),
