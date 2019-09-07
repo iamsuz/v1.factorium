@@ -148,7 +148,7 @@ Create New Project | @parent
 			dateFormat: "yy-mm-dd",
 			minDate: new Date(),
 			maxDate: '+60D'
-		});
+		}).datepicker("setDate", new Date().getDay+14);
 
 		// Calculate Asking Price
 		$('input[name=invoice_amount], input[name=due_date]').change(function () {
