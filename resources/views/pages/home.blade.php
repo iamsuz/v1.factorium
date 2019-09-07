@@ -686,6 +686,7 @@
 											</a>
 										</div>
 									</div>
+										<br>
 									<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
 										<button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
 										<button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
@@ -695,8 +696,7 @@
 
 									@if(count($projects)==1)
 									@foreach($projects->chunk(1) as $sets)
-									<div class="row @if(!Auth::check())
-									hide @endif" >
+									<div class="row" >
 									@foreach($sets as $project)
 									<?php
 									$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
@@ -805,10 +805,10 @@
 														{{--															</div>--}}
 														<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment)${{number_format((int)$project->investment->projected_returns)}}@endif<small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 														</div>
-														<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment){{$project->investment->invoice_days_remaining}}@endif<small><small><br>Days</small></small></h4>
+														<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="{{ $project->investment->fund_raising_close_date }}">@if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
 														</div>
 														<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
-															<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if($project->investment) ${{number_format((int)$project->investment->minimum_accepted_amount)}} @endif<small><small><br>Asking Price</small></small></h4>
+															<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 3)}} @endif</span><small><small><br>Asking Price</small></small></h4>
 														</div>
 													</div>
 												</div>
@@ -839,8 +839,7 @@
 								@endif
 								@endif
 								@foreach($projects->chunk(3) as $sets)
-								<div class="row @if(!Auth::check())
-								hide @endif" id="project-section-to-reload1">
+								<div class="row" id="project-section-to-reload1">
 								@foreach($sets as $project)
 								<?php
 								$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
@@ -991,8 +990,7 @@
 									@endif
 									@endif
 									@foreach($projects->chunk(2) as $sets)
-									<div class="row @if(!Auth::check())
-									hide @endif" id="project-section-to-reload2">
+									<div class="row" id="project-section-to-reload2">
 									@foreach($sets as $project)
 									<?php
 									$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');

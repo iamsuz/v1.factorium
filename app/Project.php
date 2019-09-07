@@ -206,4 +206,9 @@ class Project extends Model
     {
         return $this->hasMany('App\IssueingToken');
     }
+
+    public function repurchased()
+    {
+        return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '1', 'is_repurchased' => '1']);
+    }
 }

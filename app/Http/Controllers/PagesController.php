@@ -78,7 +78,16 @@ class PagesController extends Controller
         }
         if(Auth::guest()) {
             $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
-            $projects = $siteProjects->merge($listingProjects)->reverse();
+            $projectIds = [];
+            foreach ($siteProjects as $item) {
+                if ($item->repurchased->count()) {
+                    if (in_array($item->id, $projectIds) === false) {
+                        array_push($projectIds, $item->id);
+                    }
+                }
+            }
+            $siteProjectsNew = Project::find($projectIds);
+            $projects = $siteProjectsNew->merge($listingProjects)->reverse();
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
