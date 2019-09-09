@@ -105,8 +105,8 @@ Edit {{$project->title}} | Dashboard | @parent
 										<label class="btn btn-default @if(!$project->active) active @endif">
 											<input type="radio" name="project_status" value="inactive"> Inactive
 										</label>
-										<label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && !$project->is_funding_closed && $project->active && $project->confirmation) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
-											<input type="radio" name="project_status" value="confirmed"> Confirm
+										<label class="btn btn-default @if(!$project->is_coming_soon && !$project->eoi_button && !$project->is_funding_closed && $project->confirmation) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
+											<input type="radio" name="project_status" value="confirmed"> Confirmed
 										</label>
 										<label class="btn btn-default @if($project->active && !$project->is_coming_soon && !$project->is_funding_closed && !$project->eoi_button) active @endif" @if(!$project->projectspvdetail) disabled="disabled" style="pointer-events: none;" @endif>
 											<input type="radio" name="project_status" value="active"> Live
