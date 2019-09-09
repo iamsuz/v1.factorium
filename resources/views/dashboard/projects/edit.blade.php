@@ -1555,7 +1555,7 @@ Edit {{$project->title}} | Dashboard | @parent
 															</div>
 															<div class="col-sm-6">
 																<label for="number_of_tokens">Number of tokens</label>
-																<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->goal_amount }}" >
+																<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->invoice_amount }}" >
 															</div>
 														</div>
 														<br>
