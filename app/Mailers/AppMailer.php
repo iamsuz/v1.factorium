@@ -560,6 +560,16 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendPasswordResetEmailToUser($user_info,$token)
+{
+        $token = $token;
+        $this->to = $user_info;
+        $this->view = 'emails.password';
+        $this->subject = 'Your Password Reset Link';
+        $this->data = compact('token');
+        $this->deliver();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
