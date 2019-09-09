@@ -142,7 +142,7 @@ $_SESSION['code'] = md5(microtime(true));
         transition: transform .2s;
         letter-spacing: 1px;
         border-color: {{ '#' . $color->heading_color }};
-        color: {{ '#' . $color->nav_footer_color }} !important;
+        color: {{ '#' . $color->heading_color }} !important;
     }
     .btn-custom-theme:hover{
         transform: scale(1.04);
