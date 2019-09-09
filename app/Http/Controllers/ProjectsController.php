@@ -240,10 +240,14 @@ class ProjectsController extends Controller
         if(!User::where('email',$request->invoice_issue_from_email)->first() && !UserRegistration::where('email',$request->invoice_issue_from_email)->first()){
             $request['invite_code'] = 'factorium';
             $request['email'] = $request->invoice_issue_from_email;
+            $request['project_submission'] = 1;
+            $request['registered_from_invoice'] = 1;
+            $newUser = 1;
             $this->userRegistration->store($request, $mailer);
-            $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project);
+            $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project,$newUser);
         }else{
-            $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project);
+            $newUser = 0;
+            $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project,$newUser);
         }
         $client = new \GuzzleHttp\Client();
         $request = $client->request('GET',$this->uri.'/createProject',[

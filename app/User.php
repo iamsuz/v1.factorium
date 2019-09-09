@@ -27,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['first_name','last_name', 'username', 'email', 'password', 'phone_number', 'date_of_birth', 'gender', 'last_login', 'active','verify_id','activated_on','registration_site','account_name','bsb','account_number','line_1','line_2','city','state','postal_code','country','country_code','bank_name','withdraw_account_name','withdraw_bsb','withdraw_account_number','withdraw_bank_name','tfn','swift_code','wallet_address', 'factorium_user_type'];
+    protected $fillable = ['first_name','last_name', 'username', 'email', 'password', 'phone_number', 'date_of_birth', 'gender', 'last_login', 'active','verify_id','activated_on','registration_site','account_name','bsb','account_number','line_1','line_2','city','state','postal_code','country','country_code','bank_name','withdraw_account_name','withdraw_bsb','withdraw_account_number','withdraw_bank_name','tfn','swift_code','wallet_address', 'factorium_user_type','registered_from_invoice'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -223,7 +223,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\InvestorProjectToken');
     }
-    
+
     public function votes()
     {
         return $this->hasOne('App\ProjectProgVote');

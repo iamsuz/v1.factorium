@@ -549,14 +549,20 @@ class AppMailer
            $this->deliver();
         }
     }
-    public function sendInvoiceIssuedToEmail($email, $project)
+    public function sendInvoiceIssuedToEmail($email, $project,$newUser)
     {
         $project = $project;
-        $user = $project->user;
+        $newUser = $newUser;
+        $fromUser = $project->user;
+        if($newUser == '1'){
+            $user = UserRegistration::where('email',$project->invoice_issue_from_email)->first();
+        }else{
+            $user = User::where('email',$project->invoice_issue_from_email)->first();
+        }
         $this->to = $email;
         $this->view = 'emails.invoiceIssuedToEmail';
-        $this->subject = 'You have requested payment terms from '.$user->first_name.' '.$user->last_name;
-        $this->data = compact('user', 'project');
+        $this->subject = 'You have requested payment terms from '.$fromUser->first_name.' '.$fromUser->last_name;
+        $this->data = compact('fromUser', 'project','newUser','user');
         $this->deliver();
     }
 

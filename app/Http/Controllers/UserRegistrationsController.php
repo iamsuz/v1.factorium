@@ -184,7 +184,9 @@ class UserRegistrationsController extends Controller
         else{
             $ref = false;
             $user = UserRegistration::create($request->all());
-            $mailer->sendRegistrationConfirmationTo($user,$ref);
+            if(!isset($request->project_submission)){
+                $mailer->sendRegistrationConfirmationTo($user,$ref);
+            }
         }
 
         // $intercom = IntercomBasicAuthClient::factory(array(
@@ -483,6 +485,7 @@ class UserRegistrationsController extends Controller
         $request['active'] = true;
         $request['activated_on'] = $userReg->activated_on;
         $request['registration_site'] = $userReg->registration_site;
+        $request['registered_from_invoice'] = $userReg->registered_from_invoice;
         // Modify the is interested investment offers flag to boolean
         ($request->is_interested_investment_offers && ($request->is_interested_investment_offers == 'on'))
         ? $request->merge(['is_interested_investment_offers' => 1])

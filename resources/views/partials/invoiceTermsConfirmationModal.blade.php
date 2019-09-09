@@ -6,7 +6,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Repay</h4>
+        <h4 class="modal-title">Confirm</h4>
       </div>
       <div class="modal-body" style="max-height: calc(100vh - 210px); overflow-y: auto;">
         @include('dashboard.projects.invoiceTearmsCond')

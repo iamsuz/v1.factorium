@@ -29,7 +29,7 @@ class UserRegistration extends Model
      *
      * @var array
      */
-    protected $fillable = ['email', 'password', 'active','token', 'role', 'registration_site','eoi_token','investment_period','investment_amount','first_name','last_name','phone_number','eoi_project','request_form_project_id','invoice_id','factorium_user_type'];
+    protected $fillable = ['email', 'password', 'active','token', 'role', 'registration_site','eoi_token','investment_period','investment_amount','first_name','last_name','phone_number','eoi_project','request_form_project_id','invoice_id','factorium_user_type','registered_from_invoice'];
 
     /**
      * This attributes makes date in Carbon form dates

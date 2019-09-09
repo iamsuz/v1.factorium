@@ -784,7 +784,9 @@ class PagesController extends Controller
         $user = Auth::user();
         $user->factorium_user_type = $request->user_type;
         $user->save();
-
+        if($user->registered_from_invoice){
+            return redirect('/user/invoices');
+        }
         return ($user->country_code == 'au')
         ? redirect('/#projects')
         : redirect('/users/' . $user->id);
@@ -798,7 +800,7 @@ class PagesController extends Controller
                 return redirect()->back();
                 break;
             }
-            
+
             case 'sold':{
                 $sold = InvestmentInvestor::where('accepted', 1)->where('money_received',1)->where('is_repurchased',0)->get();
                 $soldc=count($sold);
@@ -806,7 +808,7 @@ class PagesController extends Controller
                 return redirect()->back();
                 break;
             }
-            
+
             case 'repaid':{
                 $repaid = InvestmentInvestor::where('accepted',1)->where('is_repurchased',1)->get();
                 // $repaid=count($repaid);
@@ -820,6 +822,6 @@ class PagesController extends Controller
                 return redirect()->back();
                 break;
             }
-        }    
+        }
     }
 }
