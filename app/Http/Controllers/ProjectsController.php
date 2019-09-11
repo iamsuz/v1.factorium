@@ -75,7 +75,8 @@ class ProjectsController extends Controller
     public function create()
     {
         $color = Color::where('project_site',url())->first();
-        return view('projects.create',compact('color'));
+        $user = Auth::user();
+        return view('projects.create',compact('color','user'));
     }
 
     /**
@@ -1223,5 +1224,10 @@ class ProjectsController extends Controller
         $askingAmount = $project->investment->calculated_asking_price;
 
         return array('status' => true, 'data' => array('asking_amount' => $askingAmount));
+    }
+    public function getEntittyName(Request $request)
+    {
+        $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
+        return array('status'=> true, 'data' => array('invoice_issued_to'=> $user));
     }
 }
