@@ -783,6 +783,7 @@ class PagesController extends Controller
 
         $user = Auth::user();
         $user->factorium_user_type = $request->user_type;
+        $user->entity_name = $request->entity_name;
         $user->save();
         if($user->registered_from_invoice){
             return redirect('/user/invoices');
