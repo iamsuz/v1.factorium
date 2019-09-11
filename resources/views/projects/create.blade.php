@@ -108,7 +108,7 @@ Create New Project | @parent
 						<div class="@if($errors->first('invoice_issued_from')){{'has-error'}} @endif">
 							<div class="col-sm-12">
 								<h4 class="first_color">Invoice issued from</h4>
-								{!! Form::text('invoice_issued_from', null, array('placeholder'=>'Invoice issued from', 'class'=>'form-control', 'tabindex'=>'6')) !!}
+								{!! Form::text('invoice_issued_from', $user->entity_name, array('placeholder'=>'Invoice issued from', 'class'=>'form-control', 'tabindex'=>'6', 'readonly' => 'readonly')) !!}
 								{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>

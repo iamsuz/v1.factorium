@@ -75,7 +75,8 @@ class ProjectsController extends Controller
     public function create()
     {
         $color = Color::where('project_site',url())->first();
-        return view('projects.create',compact('color'));
+        $user = Auth::user();
+        return view('projects.create',compact('color','user'));
     }
 
     /**
