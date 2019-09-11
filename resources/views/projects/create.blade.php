@@ -86,11 +86,11 @@ Create New Project | @parent
 				<fieldset>
 					<br>
 					<div class="row">
-						<div class="@if($errors->first('invoice_issued_to')){{'has-error'}} @endif">
+						<div class="@if($errors->first('description')){{'has-error'}} @endif">
 							<div class="col-sm-6">
 								<h4 class="first_color">Invoice issued to</h4>
-								{!! Form::text('invoice_issued_to', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control', 'tabindex'=>'5', 'readonly' => 'readonly')) !!}
-								{!! $errors->first('invoice_issued_to', '<small class="text-danger">:message</small>') !!}
+								{!! Form::text('description', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control', 'tabindex'=>'5', 'readonly' => 'readonly')) !!}
+								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 							</div>
 							<div class="col-sm-6">
 								<h4 class="invoice_issue_from_email first_color">Email</h4>
@@ -199,7 +199,7 @@ Create New Project | @parent
 						return;
 					}
 					console.log(data);
-					$('input[name=invoice_issued_to]').val(data.data.invoice_issued_to);
+					$('input[name=description]').val(data.data.description);
 				});
 			}
 		});

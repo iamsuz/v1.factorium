@@ -1228,6 +1228,6 @@ class ProjectsController extends Controller
     public function getEntittyName(Request $request)
     {
         $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
-        return array('status'=> true, 'data' => array('invoice_issued_to'=> $user));
+        return array('status'=> true, 'data' => array('description'=> $user));
     }
 }
