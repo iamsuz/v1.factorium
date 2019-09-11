@@ -43,6 +43,16 @@ Edit {!! $user->first_name !!} | Dashboard | @parent
 							</div>
 							
 							<div class="row">
+								<div class="form-group <?php if($errors->first('entity_name')){echo 'has-error';}?>">
+									{!!Form::label('entity_name', 'Entity Name', array('class'=>'col-sm-2 control-label'))!!}
+									<div class="col-sm-9">
+										{!! Form::text('entity_name', null, array('placeholder'=>'', 'class'=>'form-control', 'tabindex'=>'')) !!}
+										{!! $errors->first('entity_name', '<small class="text-danger">:message</small>') !!}
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
 								<div class="form-group <?php if($errors->first('email')){echo 'has-error';}?>">
 									{!!Form::label('email', 'Email', array('class'=>'col-sm-2 control-label'))!!}
 									<div class="col-sm-9">
