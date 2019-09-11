@@ -211,4 +211,9 @@ class Project extends Model
     {
         return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '1', 'is_repurchased' => '1']);
     }
+
+    public function soldInvoice()
+    {
+        return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '1', 'money_received' => 1, 'is_repurchased' => '0']);
+    }
 }

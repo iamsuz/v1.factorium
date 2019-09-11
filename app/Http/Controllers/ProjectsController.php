@@ -113,7 +113,7 @@ class ProjectsController extends Controller
         $request['postal_code'] = isset($request->postal_code) ? $request->postal_code : '3000';
         $request['country'] = isset($request->country) ? $request->country : 'Australia';
         $request['minimum_accepted_amount'] = $request->asking_amount;
-        $request['maximum_accepted_amount'] = $request->asking_amount;
+        $request['maximum_accepted_amount'] = $request->invoice_amount;
 
         //TODO::add transation
         $request['project_site'] = url();
