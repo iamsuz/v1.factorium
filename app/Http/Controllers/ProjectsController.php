@@ -52,6 +52,7 @@ class ProjectsController extends Controller
             $this->audkID = env('AUDK_PROJECT_ID',27);
         }
         $this->userRegistration = new UserRegistrationsController();
+        $this->offer = new OfferController();
     }
 
     /**
@@ -1229,5 +1230,35 @@ class ProjectsController extends Controller
     {
         $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
         return array('status'=> true, 'data' => array('description'=> $user));
+    }
+
+    public function projectAudc(Request $request)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = Auth::user();
+        $project = Project::findOrFail($this->audkID);
+        return view('users.buyAudc',compact('color','user','project'));
+    }
+    public function projectBuyAudc(Request $request, AppMailer $mailer)
+    {
+        $validation_rules = array(
+            'amount_to_invest'   => 'required'
+        );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        $user = Auth::user();
+        $request['project_id'] = $this->audkID;
+        $request['line_1'] = $user->line_1;
+        $request['state'] = $user->state;
+        $request['postal_code'] = $user->postal_code;
+        $request['interested_to_buy'] = 0;
+        $request['signature_type'] = 0;
+        $this->offer->store($request);
+        return redirect()->back()->withMessage('Your transation has been initiated Successfully');
     }
 }

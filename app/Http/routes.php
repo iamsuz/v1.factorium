@@ -188,7 +188,8 @@ Route::post('projects/storeEOI', ['as'=>'projects.eoiStore', 'uses'=>'ProjectsCo
 Route::post('/FormContent/{id}', ['as'=>'AdditionalFormContent', 'uses'=>'ProjectsController@storeAdditionalFormContent']);
 Route::post('/ProjectThumbnailText/{id}', ['as'=>'ProjectThumbnailText', 'uses'=>'ProjectsController@storeProjectThumbnailText']);
 Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redirectingfromproject']);
-
+Route::get('/project/buy/audc',['as'=>'project.user.audc','uses'=>'ProjectsController@projectAudc']);
+Route::post('/project/buy/audc',['as'=>'project.user.audc.buy','uses'=>'ProjectsController@projectBuyAudc']);
 // Route::get('/news/financialreview', ['as'=>'news.financialreview', 'uses'=>'NewsController@financialreview']);
 // Route::get('/news/startupsmart', ['as'=>'news.startupsmart', 'uses'=>'NewsController@startupsmart']);
 // Route::get('/news/crowdfundinsider', ['as'=>'news.crowdfundinsider', 'uses'=>'NewsController@crowdfundinsider']);

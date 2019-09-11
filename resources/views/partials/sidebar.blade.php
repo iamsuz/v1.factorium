@@ -13,6 +13,7 @@
 		<a href="https://konkrete.io" target="_blank" ><h4><b>{{$sum}}</b></h4>
 	</div></a>
 	<a href="{{route('users.show', [$user])}}" class="list-group-item @if($active == 1) active @endif">Profile </a>
+	<a href="{{route('project.user.audc', [$user])}}" class="list-group-item @if($active == 15) active @endif">Buy an AUDC Token</a>
 	<a href="{{route('users.wallet')}}" class="list-group-item @if($active == 12) active @endif">Wallet </a>
 	<a href="{{route('users.market', [$user])}}" class="list-group-item hide @if($active == 13) active @endif">Market </a>
 	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
