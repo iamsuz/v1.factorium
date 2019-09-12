@@ -786,6 +786,7 @@ class PagesController extends Controller
         $user->entity_name = $request->entity_name;
         $user->save();
         if($user->registered_from_invoice){
+            $project = Project::where('invoice_issue_from_email',$user->email)->update(array('description' => $request->entity_name));
             return redirect('/user/invoices');
         }
         return ($user->country_code == 'au')
