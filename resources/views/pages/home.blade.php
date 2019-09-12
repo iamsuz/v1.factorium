@@ -691,7 +691,7 @@
 										<button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
 										<button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
 										<button class="filterbtn" onclick="filterSelection('sold')"> Invoice Sold</button>
-										<button class="filterbtn" onclick="filterSelection('repaid')">  Investors Repaid </button>
+										<button class="filterbtn" onclick="filterSelection('repaid')">Invoice Paid</button>
 									</div>	
 
 									@if(count($projects)==1)
@@ -738,7 +738,7 @@
 															<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 														</div>
 														<div class="col-md-6" style="padding-top: 10px">
-															<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Investors repaid' : 'Buy ' . $project->title . ' Now'); ?>
+															<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
 															<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 														</div>
 													</div>
@@ -896,7 +896,7 @@
 																<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" target="_blank" style="padding: 5px; border: 0px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px;height: 20px;">{{$project->token_symbol}}</a>
 															</div>
 															<div class="col-md-6" style="padding-top: 10px;">
-																<?php $buyBtnText = ($invoice_sold ==='1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Investors Repaid' : 'Buy ' . $project->title . ' Now'); ?>
+																<?php $buyBtnText = ($invoice_sold ==='1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
 																<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 															</div>
 														</div>
@@ -1050,7 +1050,7 @@
 																	<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 																</div>
 																<div class="col-md-6" style="padding-top: 10px;">
-																	<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Investors repaid' : 'Buy ' . $project->title . ' Now'); ?>
+																	<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
 																	<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 																</div>
 															</div>
