@@ -1630,6 +1630,9 @@
 						<li class="footer-list-item">
 							<a href="{{ route('pages.dispute') }}" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
 						</li>
+						<li class="footer-list-item">
+							<a href="https://download.asic.gov.au/media/3797986/rg185-published-24-march-2016.pdf" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Non Cash Payment Facility</span></a>
+						</li>
 					</ul>
 				</div>
 			</div>

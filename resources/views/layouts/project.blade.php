@@ -82,80 +82,80 @@ $_SESSION['code'] = md5(microtime(true));
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/Html5shiv/3.7.0/Html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+<![endif]-->
 
 
+@if($siteConfiguration->font_family != '')
+<link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
+@endif
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
+<style type="text/css">
     @if($siteConfiguration->font_family != '')
-    <link href="https://fonts.googleapis.com/css?family={{preg_replace('/\s+/', '+', $siteConfiguration->font_family)}}" rel="stylesheet">
-    @endif
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+De+Haviland" />
-    <style type="text/css">
-        @if($siteConfiguration->font_family != '')
-        /*Override fonts*/
-        body, .font-regular, p {
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 400;
-        }
-        .heading-font-light, .h1-faq, h1>small, h2>small, h3>small, h4>small{
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 300;
-        }
-        .font-semibold{
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 600;
-        }
-        h1, h2, h3, h4, a, .font-bold {
-          font-family: {{$siteConfiguration->font_family}};
-          font-weight: 700;
-        }
-        @endif
-        .investment-title1-description-section, .csef-text {
-            color: #fff !important;
-            text-align: center;
-        }
+    /*Override fonts*/
+    body, .font-regular, p {
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 400;
+  }
+  .heading-font-light, .h1-faq, h1>small, h2>small, h3>small, h4>small{
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 300;
+  }
+  .font-semibold{
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 600;
+  }
+  h1, h2, h3, h4, a, .font-bold {
+      font-family: {{$siteConfiguration->font_family}};
+      font-weight: 700;
+  }
+  @endif
+  .investment-title1-description-section, .csef-text {
+    color: #fff !important;
+    text-align: center;
+}
 
-        /*Center align sweetalert continue to site button*/
-        .swal-footer {
-            text-align: center;
-        }
+/*Center align sweetalert continue to site button*/
+.swal-footer {
+    text-align: center;
+}
 
-        .konkrete-slide-link {
-            color: #337ab7;
-        }
+.konkrete-slide-link {
+    color: #337ab7;
+}
 
-        .konkrete-slide-link:hover {
-            color: #23527c !important;
-            text-decoration: underline !important;
-        }
+.konkrete-slide-link:hover {
+    color: #23527c !important;
+    text-decoration: underline !important;
+}
 
-        .konkrete-slide-link:visited {
-            color: #23527c !important;
-        }
+.konkrete-slide-link:visited {
+    color: #23527c !important;
+}
 
-        .konkrete-slide-link:focus {
-            color: #23527c !important;
-            text-decoration: underline !important;
-        }
+.konkrete-slide-link:focus {
+    color: #23527c !important;
+    text-decoration: underline !important;
+}
 
-    </style>
+</style>
 
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<!-- Google Analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', 'UA-73934803-1', 'auto');
-        ga('send', 'pageview');
-    </script>
+    ga('create', 'UA-73934803-1', 'auto');
+    ga('send', 'pageview');
+</script>
 </head>
 <body data-spy="scroll">
     <?php
-  if(isset($_SESSION['code'])){
+    if(isset($_SESSION['code'])){
     // echo 'code:'.$_SESSION['code'];
-  }
-  ?>
+    }
+    ?>
     <!-- Google tag manager body script if set  -->
     @if($siteConfiguration->tag_manager_body)
     {!!$siteConfiguration->tag_manager_body!!}
@@ -321,6 +321,9 @@ $_SESSION['code'] = md5(microtime(true));
                         <li class="footer-list-item">
                             <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
                         </li>
+                        <li class="footer-list-item">
+                            <a href="https://download.asic.gov.au/media/3797986/rg185-published-24-march-2016.pdf" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Non Cash Payment Facility</span></a>
+                        </li>
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
                         <a href="mailto:info@vestabyte.com" style="color:#fed405; font-size: 14px;" class="font-semibold second_color">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61398117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61398117015</a>
@@ -341,10 +344,10 @@ $_SESSION['code'] = md5(microtime(true));
         </div>
         <br>
         <p class="investment-title1-description-section text-justify" style="font-size:16px;">
-        <small><small>@if($siteConfiguration->compliance_description != '')
-        {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
-                    The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
-        @endif</small></small>
+            <small><small>@if($siteConfiguration->compliance_description != '')
+                {!!html_entity_decode($siteConfiguration->compliance_description)!!} @else
+                The content provided on this website has been prepared without taking into account your financial situation, objectives and needs. Before making any decision in relation to any products offered on this website you should read the Factoring Arrangement terms and conditions or any other offer documents relevant to that offer and consider whether they are right for you. Konkrete Distributed Registries Ltd (ABN 67617252909) (Konkrete) provides technology, administrative and support services for the operation of this website. Konkrete is not a party to the offers made on the website.
+            @endif</small></small>
         </p>
     </div>
 </footer>
@@ -360,7 +363,7 @@ $_SESSION['code'] = md5(microtime(true));
 {!! Html::script('/assets/plugins/JCrop/js/jquery.Jcrop.js') !!}
 
 <!-- Sweetalert for daily sign in -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- Begin Inspectlet Embed Code -->
 <script type="text/javascript" id="inspectletjs">
@@ -393,39 +396,39 @@ $_SESSION['code'] = md5(microtime(true));
         @endif
         @endif
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-        $('a[data-disabled]').click(function (e) {
-            e.preventDefault();
-        });
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
+            $('a[data-disabled]').click(function (e) {
+                e.preventDefault();
+            });
 
-        function toggleChevron(e) {
-            $(e.target)
-            .prev('.panel-heading')
-            .find("i.indicator")
-            .toggleClass('glyphicon-plus glyphicon-minus');
-        }
-        $('#accordion').on('hidden.bs.collapse', toggleChevron);
-        $('#accordion').on('shown.bs.collapse', toggleChevron);
-        $("iframe[name ='google_conversion_frame']").attr('style', 'height: 0px; display: none !important;');
-        @if($color)
-        $('p').css('color', '#{{$color->nav_footer_color}}');
-        $('.avoid-p-color').css('color', '#fff')
-        $('.first_color').css('color', '#{{$color->nav_footer_color}}');
-        $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
-        $('.second_color').css('color','#{{$color->heading_color}}');
-        $("a").mouseover(function() {
-            $(this).css('color', '#{{$color->heading_color}}');
-        }).mouseout(function() {
-            $(this).css('color', '');
-        });
-        $(".a-link").mouseover(function() {
-            $(this).css('color', '#{{$color->heading_color}}');
-        }).mouseout(function() {
-            $(this).css('color', '#fff');
-        });
-        @endif
+            function toggleChevron(e) {
+                $(e.target)
+                .prev('.panel-heading')
+                .find("i.indicator")
+                .toggleClass('glyphicon-plus glyphicon-minus');
+            }
+            $('#accordion').on('hidden.bs.collapse', toggleChevron);
+            $('#accordion').on('shown.bs.collapse', toggleChevron);
+            $("iframe[name ='google_conversion_frame']").attr('style', 'height: 0px; display: none !important;');
+            @if($color)
+            $('p').css('color', '#{{$color->nav_footer_color}}');
+            $('.avoid-p-color').css('color', '#fff')
+            $('.first_color').css('color', '#{{$color->nav_footer_color}}');
+            $('.second_color_btn').css('background-color', '#{{$color->heading_color}}');
+            $('.second_color').css('color','#{{$color->heading_color}}');
+            $("a").mouseover(function() {
+                $(this).css('color', '#{{$color->heading_color}}');
+            }).mouseout(function() {
+                $(this).css('color', '');
+            });
+            $(".a-link").mouseover(function() {
+                $(this).css('color', '#{{$color->heading_color}}');
+            }).mouseout(function() {
+                $(this).css('color', '#fff');
+            });
+            @endif
 
         //sidebar active tab color
         @if($color)
