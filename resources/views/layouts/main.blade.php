@@ -135,21 +135,21 @@ $_SESSION['code'] = md5(microtime(true));
     text-decoration: underline !important;
 }
 
-    .btn-custom-theme {
-        font-family: {{$siteConfiguration->font_family}};
-        background-color: transparent;
-        border-radius: 50px;
-        transition: transform .2s;
-        letter-spacing: 1px;
-        border-color: {{ '#' . $color->heading_color }};
-        color: {{ '#' . $color->heading_color }} !important;
-    }
-    .btn-custom-theme:hover{
-        transform: scale(1.04);
-        background-color: transparent;
-        border-color: {{ '#' . $color->heading_color }};
-        color: {{ '#' . $color->heading_color }} !important;
-    }
+.btn-custom-theme {
+    font-family: {{$siteConfiguration->font_family}};
+    background-color: transparent;
+    border-radius: 50px;
+    transition: transform .2s;
+    letter-spacing: 1px;
+    border-color: {{ '#' . $color->heading_color }};
+    color: {{ '#' . $color->heading_color }} !important;
+}
+.btn-custom-theme:hover{
+    transform: scale(1.04);
+    background-color: transparent;
+    border-color: {{ '#' . $color->heading_color }};
+    color: {{ '#' . $color->heading_color }} !important;
+}
 
 
 </style>
@@ -362,6 +362,9 @@ $_SESSION['code'] = md5(microtime(true));
                         </li>
                         <li class="footer-list-item">
                             <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
+                        </li>
+                        <li class="footer-list-item">
+                            <a href="https://download.asic.gov.au/media/3797986/rg185-published-24-march-2016.pdf" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Non Cash Payment Facility</span></a>
                         </li>
                     </ul>
 <!--                     <span style="margin:0 0 1px;">
