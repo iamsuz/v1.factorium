@@ -63,7 +63,7 @@
 								</td>
 								<td>@if($investor->pivot->accepted == 1) <i>Accepted</i> @else Yet to accept @endif</td>
 								<td>
-									@if($investor->pivot->transaction_hash){{$investor->pivot->transaction_hash}} @else Waiting for approval <a href="#" data-toggle="tooltip" data-placement="right" title="For approval please transfer {{$investor->pivot->amount}} AUD to listed bank details"><i class="fa fa-question-circle"></i></a> @endif
+									@if($investor->pivot->transaction_hash){{$investor->pivot->transaction_hash}} @else Waiting for approval &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="For approval please transfer {{$investor->pivot->amount}} AUD to listed bank details"><i class="fa fa-question-circle"></i> </a> &nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#audcBankDetailsModal"><i class="fa fa-bank"></i></a> @endif
 								</td>
 							</tr>
 							@endforeach
@@ -75,9 +75,7 @@
 	</div>
 	<br><br>
 </div>
-@if(isset($project))
-@include('partials.invoiceTermsConfirmationModal')
-@endif
+@include('partials.audcBankDetailsModal')
 @stop
 
 @section('js-section')
