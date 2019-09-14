@@ -111,6 +111,7 @@ Route::post('/user/invoice/{id}/confirm',['as'=>'users.invoice.confirm','uses'=>
 // Password reset link request routes...
 Route::get('/password/email', 'Auth\PasswordController@getEmail');
 Route::post('/password/email', 'Auth\PasswordController@postEmail');
+Route::post('/password/reset/email', 'Auth\PasswordController@sendEmail');
 
 // Password reset routes...
 Route::get('/password/reset/{token}', 'Auth\PasswordController@getReset');
@@ -187,7 +188,8 @@ Route::post('projects/storeEOI', ['as'=>'projects.eoiStore', 'uses'=>'ProjectsCo
 Route::post('/FormContent/{id}', ['as'=>'AdditionalFormContent', 'uses'=>'ProjectsController@storeAdditionalFormContent']);
 Route::post('/ProjectThumbnailText/{id}', ['as'=>'ProjectThumbnailText', 'uses'=>'ProjectsController@storeProjectThumbnailText']);
 Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redirectingfromproject']);
-
+Route::get('/project/buy/audc',['as'=>'project.user.audc','uses'=>'ProjectsController@projectAudc']);
+Route::post('/project/buy/audc',['as'=>'project.user.audc.buy','uses'=>'ProjectsController@projectBuyAudc']);
 // Route::get('/news/financialreview', ['as'=>'news.financialreview', 'uses'=>'NewsController@financialreview']);
 // Route::get('/news/startupsmart', ['as'=>'news.startupsmart', 'uses'=>'NewsController@startupsmart']);
 // Route::get('/news/crowdfundinsider', ['as'=>'news.crowdfundinsider', 'uses'=>'NewsController@crowdfundinsider']);
@@ -349,4 +351,5 @@ Route::group(['prefix' => 'konkrete'], function () {
 Route::get('/projects/filter',['as'=>'project.filter','uses'=>'PagesController@filterInvoice']);
 Route::post('/invoice/asking/price', ['as' => 'invoice.asking.price', 'uses' => 'ProjectsController@calculateAskingPrice']);
 Route::get('/invoice/{invoice_id}/refresh', ['as' => 'invoice.refresh', 'uses' => 'ProjectsController@refreshAskingAmount']);
+Route::post('/invoice/issued/to', ['as' => 'invoice.issued.to', 'uses' => 'ProjectsController@getEntittyName']);
 /* End Factorium Routes */

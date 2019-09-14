@@ -52,6 +52,7 @@ class ProjectsController extends Controller
             $this->audkID = env('AUDK_PROJECT_ID',27);
         }
         $this->userRegistration = new UserRegistrationsController();
+        $this->offer = new OfferController();
     }
 
     /**
@@ -75,7 +76,8 @@ class ProjectsController extends Controller
     public function create()
     {
         $color = Color::where('project_site',url())->first();
-        return view('projects.create',compact('color'));
+        $user = Auth::user();
+        return view('projects.create',compact('color','user'));
     }
 
     /**
@@ -111,7 +113,7 @@ class ProjectsController extends Controller
         $request['postal_code'] = isset($request->postal_code) ? $request->postal_code : '3000';
         $request['country'] = isset($request->country) ? $request->country : 'Australia';
         $request['minimum_accepted_amount'] = $request->asking_amount;
-        $request['maximum_accepted_amount'] = $request->asking_amount;
+        $request['maximum_accepted_amount'] = $request->invoice_amount;
 
         //TODO::add transation
         $request['project_site'] = url();
@@ -1223,5 +1225,40 @@ class ProjectsController extends Controller
         $askingAmount = $project->investment->calculated_asking_price;
 
         return array('status' => true, 'data' => array('asking_amount' => $askingAmount));
+    }
+    public function getEntittyName(Request $request)
+    {
+        $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
+        return array('status'=> true, 'data' => array('description'=> $user));
+    }
+
+    public function projectAudc(Request $request)
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = Auth::user();
+        $project = Project::findOrFail($this->audkID);
+        return view('users.buyAudc',compact('color','user','project'));
+    }
+    public function projectBuyAudc(Request $request, AppMailer $mailer)
+    {
+        $validation_rules = array(
+            'amount_to_invest'   => 'required'
+        );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        $user = Auth::user();
+        $request['project_id'] = $this->audkID;
+        $request['line_1'] = $user->line_1;
+        $request['state'] = $user->state;
+        $request['postal_code'] = $user->postal_code;
+        $request['interested_to_buy'] = 0;
+        $request['signature_type'] = 0;
+        $this->offer->store($request);
+        return redirect()->back()->withMessage('Your transation has been initiated Successfully');
     }
 }

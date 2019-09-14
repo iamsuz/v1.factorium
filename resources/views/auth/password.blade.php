@@ -15,17 +15,15 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
-            @if (session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
+            @if (Session::has('message'))
+            {!! Session::get('message') !!}
             @endif
 
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset/email') }}">
                 {!! csrf_field() !!}
                 <fieldset>
                     <div class="text-center">
-                    <h1 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s">Reset Password! <br>
+                        <h1 class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.2s">Reset Password! <br>
                             <small class="wow fadeIn animated" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:.5em">Enter your email.</small>
                         </h1>
                         <br>
@@ -51,7 +49,7 @@
                 </fieldset>
             </form>
             <br>
-                <p class="text-center">Don't have an account yet? <b>{!! Html::linkRoute('users.create', 'Register here') !!}</b></p>
+            <p class="text-center">Don't have an account yet? <b>{!! Html::linkRoute('users.create', 'Register here') !!}</b></p>
         </div>
     </div>
 </div>

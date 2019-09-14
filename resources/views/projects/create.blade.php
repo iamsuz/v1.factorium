@@ -83,20 +83,19 @@ Create New Project | @parent
 					</div>
 				</fieldset>
 
-
 				<fieldset>
 					<br>
 					<div class="row">
 						<div class="@if($errors->first('description')){{'has-error'}} @endif">
 							<div class="col-sm-6">
 								<h4 class="first_color">Invoice issued to</h4>
-								{!! Form::text('description', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+								{!! Form::text('description', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control', 'tabindex'=>'5', 'readonly' => 'readonly')) !!}
 								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
 							</div>
 							<div class="col-sm-6">
 								<h4 class="invoice_issue_from_email first_color">Email</h4>
-								{!! Form::email('invoice_issue_from_email', null, array('placeholder'=>'Invoice issued to Email', 'class'=>'form-control', 'tabindex'=>'5')) !!}
-								{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
+								{!! Form::input('email','invoice_issue_from_email', null, array('placeholder'=>'Invoice issued to Email', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+								{!! $errors->first('invoice_issue_from_email', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
 					</div>
@@ -108,7 +107,7 @@ Create New Project | @parent
 						<div class="@if($errors->first('invoice_issued_from')){{'has-error'}} @endif">
 							<div class="col-sm-12">
 								<h4 class="first_color">Invoice issued from</h4>
-								{!! Form::text('invoice_issued_from', null, array('placeholder'=>'Invoice issued from', 'class'=>'form-control', 'tabindex'=>'6')) !!}
+								{!! Form::text('invoice_issued_from', $user->entity_name, array('placeholder'=>'Invoice issued from', 'class'=>'form-control', 'tabindex'=>'6', 'readonly' => 'readonly')) !!}
 								{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
@@ -151,7 +150,7 @@ Create New Project | @parent
 		}).datepicker("setDate", new Date().getDay+14);
 
 		// Calculate Asking Price
-		$('input[name=invoice_amount], input[name=due_date]').change(function () {
+		$('input[name=invoice_amount], input[name=due_date]').change(function () { 
 			let invoiceAmount = $('input[name=invoice_amount]').val();
 			let dueDate = $('input[name=due_date]').val();
 
@@ -178,7 +177,32 @@ Create New Project | @parent
 				});
 			}
 		});
-
+		$('input[name=invoice_issue_from_email]').change(function () {
+			let invoiceIssueFromEmail = $('input[name=invoice_issue_from_email]').val();
+			
+			if (invoiceIssueFromEmail != '') {
+				$('.loader-overlay').show();
+				$.ajax({
+					url: '{{ route('invoice.issued.to') }}',
+					type: 'POST',
+					dataType: 'JSON',
+					data: {
+						'invoice_issue_from_email': invoiceIssueFromEmail
+					},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}).done(function(data){
+					$('.loader-overlay').hide();
+					if (!data.status) {
+						alert(data.message);
+						return;
+					}
+					console.log(data);
+					$('input[name=description]').val(data.data.description);
+				});
+			}
+		});
 	});
 </script>
 @stop
