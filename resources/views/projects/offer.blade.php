@@ -154,7 +154,7 @@ Offer Doc
 										</div>
 										<div class="col-md-4">
 											<label>Purchase price in AUD</label>
-											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{$project->investment->calculated_asking_price}}" style="width: 100%" id="apply_for" min="{{$project->investment->calculated_asking_price}}" max="{{$project->investment->calculated_asking_price}}" step="100" required value="{{$project->investment->calculated_asking_price}}" readonly="readonly">
+											<input type="number" name="amount_to_invest" class="form-control" onkeypress="return isNumber(event)" placeholder="Minimum Amount A${{round($project->investment->calculated_asking_price, 2)}}" style="width: 100%" id="apply_for" min="{{round($project->investment->calculated_asking_price, 2)}}" max="{{round($project->investment->calculated_asking_price, 2)}}" step="100" required value="{{round($project->investment->calculated_asking_price, 2)}}" readonly="readonly">
 										</div>
 									</div>
 									<br>

@@ -571,8 +571,8 @@
                                       <th>Financier bank</th>
                                       <th>Financier BSB</th>
                                       <th>Financier Account</th>
-                                      <th>@if($project->share_vs_unit) Share @else Unit @endif amount</th>
-                                      <th>Financier Dividend amount</th>
+                                      <th>Invoice amount</th>
+                                      <th>Partial Repayment</th>
                                     </tr></thead>
                                     <tbody>
                                       @foreach($investments as $investment)
