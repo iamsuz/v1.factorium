@@ -125,27 +125,27 @@
                     <h3>And as a financier you may be able to achieve strong returns by buying invoices up for sale at a discount</h3>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('assets/images/explainer/14.png') }}">
+                    <img src="{{ asset('assets/images/explainer/f-14.png') }}">
                     <h3>Once you are setup you will find several invoices up for sale</h3>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('assets/images/explainer/15.png') }}">
+                    <img src="{{ asset('assets/images/explainer/f-15.png') }}">
                     <h3>The Invoice amount is the full amount of the invoice</h3>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('assets/images/explainer/16.png') }}">
+                    <img src="{{ asset('assets/images/explainer/f-16.png') }}">
                     <h3>The days remaining is the time remaining for this invoice to get paid in full</h3>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('assets/images/explainer/17.png') }}">
+                    <img src="{{ asset('assets/images/explainer/f-17.png') }}">
                     <h3>And the Asking amount is the amount the invoice is currently selling for</h3>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('assets/images/explainer/18.png') }}">
+                    <img src="{{ asset('assets/images/explainer/f-18.png') }}">
                     <h3>You can click on the buy now button and fill a small application form to complete your purchase of an invoice</h3>
                 </div>
                 <div class="item">
-                    <img src="{{ asset('assets/images/explainer/19.png') }}">
+                    <img src="{{ asset('assets/images/explainer/f-19.png') }}">
                     <h3>You will notice the Asking amount is usually less than the Invoice amount. Once the days remaining runs out the full Invoice amount will be paid to you assuming you bought the invoice</h3>
                 </div>
                 <div class="item">
