@@ -798,6 +798,7 @@
 	</div>
 	@include('dashboard.includes.repayModal')
 	@include('dashboard.includes.partialRepayModal')
+
 	<!--Dividend confirm Modal -->
 	<div id="dividend_confirm_modal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
@@ -913,6 +914,26 @@
 				} else {
 					e.preventDefault();
 				}
+			});
+
+			//Partial repay form percent validation and model trigger
+			$('#partialRepayModal').on("click", "#partialRepayPercentBtn", function(e){
+				var f = document.getElementById('fixedDividendPercent');
+				  if(f.checkValidity()) {
+					  	var partialRepayRate = $('#fixedDividendPercent').val();
+						$("#modal_partial_repay_rate").html(partialRepayRate);
+						var partialRepayAmount = ({{$project->investment->total_projected_costs}} * (partialRepayRate/100)).toFixed(2);
+						$("#modal_partial_repay_amount").html(partialRepayAmount);
+				  		$('#partialRepayPercentBtn').attr('data-target', '#partial_repay_confirm_modal');
+				  	} else {
+				    	alert(document.getElementById('fixedDividendPercent').validationMessage);
+				    	$('#partialRepayPercentBtn').removeAttr('data-target', '#partial_repay_confirm_modal');
+				  }
+			});
+
+			// Submit Partial Repayment form
+			$('#submit_partial_repay_confirmation').on('click', function(e) {
+				$('#partialRepayForm').submit();
 			});
 
 		//Ajax call for sending eoi application form link to user (for both send link and resend link buttons)
@@ -1136,6 +1157,16 @@
 					alert('Please select atleast one @if($project->share_vs_unit) share @else unit @endif registry record.');
 				}
 			}
+			// else {
+			// 	// $('#modal_dividend_rate').html(dividendPercent);
+			// 	// $('#modal_dividend_start_date').html($('#start_date').val());
+			// 	// $('#modal_dividend_end_date').html($('#end_date').val());
+
+			// 	$('#partial_repay_confirm_modal').modal({
+			// 		keyboard: false,
+			// 		backdrop: 'static'
+			// 	});
+			// }
 		});
 	}
 

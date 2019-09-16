@@ -85,14 +85,16 @@ class OfferController extends Controller
       ->get();
       $acceptedAmount = $investments->sum('amount');
       $goalAmount = $project->investment->goal_amount;
-      $maxAmount = $project->investment->invoice_amount;
+      $maxAmount = round($project->investment->invoice_amount, 2);
+
       if((int)$request->amount_to_invest < (int)$min_amount_invest)
       {
         return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
-      }
+      }     
       if((int)$maxAmount < (int)$request->amount_to_invest){
         return redirect()->back()->withErrors(['The amount to invest must be less than '.$maxAmount]);
       }
+      
       $validation_rules = array(
         'amount_to_invest'   => 'required',
         'line_1' => 'required',
