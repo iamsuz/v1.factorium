@@ -251,6 +251,14 @@ class ProjectsController extends Controller
             $newUser = 0;
             $mailer->sendInvoiceIssuedToEmail($request->invoice_issue_from_email, $project,$newUser);
         }
+
+        $characters = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $length = strlen($characters);
+        $tokenSymbol = '';
+        for ($i = 0; $i < 4; $i++) {
+            $tokenSymbol .= $characters[rand(0, $length - 1)];
+        }
+
         $client = new \GuzzleHttp\Client();
         $request = $client->request('GET',$this->uri.'/createProject',[
             'query' => ['project_id' => $project->id]
@@ -258,6 +266,7 @@ class ProjectsController extends Controller
         $response = $request->getBody()->getContents();
         $result = json_decode($response);
         $project->wallet_address = $result->signingKey->address;
+        $project->token_symbol = $tokenSymbol;
         $project->save();
         $mailer->sendProjectSubmit($user, $project,$investmentDetails);
         return redirect()->back()->withMessage('<p class="alert alert-success text-center first_color" >Thank you for submitting your Receivable.<br>We will review the details and contact you shortly.</p>');
