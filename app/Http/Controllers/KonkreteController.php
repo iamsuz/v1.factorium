@@ -251,8 +251,8 @@ class KonkreteController extends Controller
 
         if($projectId) {
             $response =  $this->konkreteClient->curlKonkrete('POST', '/api/v1/contracts/verify', [], [
-                                'project_id' => (int)$projectId
-                            ]);
+                'project_id' => (int)$projectId
+            ]);
             $responseResult = json_decode($response);
 
             if($responseResult->status) {
@@ -273,6 +273,13 @@ class KonkreteController extends Controller
 
     public function createWallet(Request $request)
     {
+        $characters = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $length = strlen($characters);
+        $tokenSymbol = '';
+        for ($i = 0; $i < 4; $i++) {
+            $tokenSymbol .= $characters[rand(0, $length - 1)];
+        }
+        
         $project = Project::findOrFail($request->project_id);
         $response = $this->konkreteClient->curlKonkrete('POST','/api/v2/projects/createWallet',[],[
             'projectId' => (int)$request->project_id
@@ -280,10 +287,11 @@ class KonkreteController extends Controller
         $result = json_decode($response);
         if($result->status){
             $project->wallet_address = $result->data->address;
+            $project->token_symbol = $tokenSymbol;
             $project->save();
             return response([
                 'status' => true,
-                'message' => $result->message
+                'message' => $result->message,
             ],200);
         } else {
             return false;
@@ -301,9 +309,9 @@ class KonkreteController extends Controller
     {
         if($walletAddress && $projectId) {
             $response =  $this->konkreteClient->curlKonkrete('GET', '/api/v1/accounts/getBalance', [], [
-                                'account' => $walletAddress,
-                                'project_id' => (int)$projectId
-                            ]);
+                'account' => $walletAddress,
+                'project_id' => (int)$projectId
+            ]);
             $responseResult = json_decode($response);
 
             if($responseResult->status) {

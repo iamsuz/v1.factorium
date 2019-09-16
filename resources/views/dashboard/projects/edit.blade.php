@@ -1549,7 +1549,7 @@ Edit {{$project->title}} | Dashboard | @parent
 															<div class="col-sm-6">
 																<div class="form-group">
 																	<label for="token_symbol">Token Symbol:</label>
-																	<input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" required minlength="3" maxlength="4" style="text-transform:uppercase">
+																	<input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" minlength="3" maxlength="4" value="@if($project->token_symbol){{ $project->token_symbol}}@endif" style="text-transform:uppercase">
 																	<small><small class="text-info">** Symbol length must be 3 to 4 chars.</small></small>
 																</div>
 															</div>

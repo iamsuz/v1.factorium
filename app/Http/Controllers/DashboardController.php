@@ -1827,7 +1827,7 @@ public function deactivateProject($project_id)
         # code...
         $validator = Validator::make($request->all(), [
             'number_of_tokens' => 'required|integer',
-            'token_symbol' => 'required|alpha_num|between:3,4'
+            'token_symbol' => 'alpha_num|between:3,4'
         ]);
 
         if($validator->fails()) {
@@ -1843,7 +1843,7 @@ public function deactivateProject($project_id)
             $projectId = (int)$request->project_id;
             $numberOfTokens = $request->number_of_tokens;
             $tokenSymbol = $request->token_symbol;
-
+            
             $projectDetails = Project::findOrFail($projectId);
             $projectHash = $projectDetails->project_site;
 
@@ -1866,7 +1866,7 @@ public function deactivateProject($project_id)
 
                 // Update contract address in DB
                 $projectDetails->contract_address = $responseResult->data->contract_address;
-                $projectDetails->token_symbol = $tokenSymbol;
+                // $projectDetails->token_symbol = $tokenSymbol;
                 $projectDetails->save();
 
                 return response([
