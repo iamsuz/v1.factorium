@@ -17,6 +17,7 @@ use App\ProjectConfiguration;
 use App\ProjectConfigurationPartial;
 use App\User;
 use App\Market;
+use App\UserKyc;
 use Carbon\Carbon;
 use App\IdDocument;
 use Chumper\Datatable\Datatable;
@@ -347,6 +348,26 @@ class DashboardController extends Controller
         $mailer->sendVerificationNotificationToUser($user, $request->status, $idimages);
         return redirect()->back()->withMessage($message);
     }
+
+    /**
+     * @param Request $request
+     * @param $userId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function kycConfirmByDigitalId(Request $request, $userId)
+    {
+        $userKyc = UserKyc::where(['user_id' => $userId, 'kyc_type' => 'digital_id'])->first();
+        if (!$userKyc) {
+            UserKyc::create([
+               'user_id' => $userId,
+               'kyc_type' => 'digital_id',
+               'response_payload' => json_encode($request->all())
+            ]);
+        }
+
+        return response()->json(['status' => true]);
+    }
+
     public function verification($user_id)
     {
         $color = Color::where('project_site',url())->first();
@@ -414,12 +435,12 @@ class DashboardController extends Controller
         if($investment){
             if($investment->project->is_wallet_tokenized)
             {
-                $client = new \GuzzleHttp\Client();
-                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
-                ]);
-                $responseInvest = $requestInvest->getBody()->getContents();
-                $resultInvest = json_decode($responseInvest);
+//                $client = new \GuzzleHttp\Client();
+//                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
+//                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+//                ]);
+//                $responseInvest = $requestInvest->getBody()->getContents();
+//                $resultInvest = json_decode($responseInvest);
             }
             $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
             ->where('accepted', 1)

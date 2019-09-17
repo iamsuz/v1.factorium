@@ -4,6 +4,14 @@
 {{$user->first_name}} | @parent
 @stop
 
+@section('css-section')
+	<style>
+		.kyc-btn {
+			padding: 10px 20px;
+		}
+	</style>
+@stop
+
 @section('content-section')
 <div class="container">
 	<br><br>
@@ -37,6 +45,18 @@
 							</div>
 						</dd>
 						<hr>
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 well text-center">
+								<h4>If you are citizen of Australia, you can complete the KYC using the Digital ID application.</h4>
+								<h5>You will see a button below if not verified yet.</h5>
+								<br>
+								@if($user->digitalIdKyc)
+								<h4><span class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i> Verified By DigitalID</span></h4>
+								@else
+								<div id="digitalid-verify"></div>
+								@endif
+							</div>
+						</div>
 						<dt></dt>
 						<dd><h4>Please upload your verified id documents so that we have them on record <br>as part of our KYC AML CTF obligations when you do an investment.</h4></dd><br>
 						<dt></dt>
@@ -161,7 +181,49 @@
 	</div>
 	@endsection
 	@section('js-section')
+	<script src="{{ config('services.digitalid_client_url') }}" async defer></script>
 	<script>
+
+		// KYC verification functionality
+		window.digitalIdAsyncInit = function () {
+			digitalId.init({
+				clientId : '{{ config('services.digitalid_client_id') }}',
+				onComplete: kycVerficationHandler,
+				buttonConfig: {
+					type: 'basic', // supported types: basic | branded.
+					classNames: [ 'btn-custom-theme', 'kyc-btn' ], // CSS classname(s) as a string or Array
+				}
+			});
+			
+			function kycVerficationHandler(response) {
+				console.log(response);
+				// Error Action
+				if (response.error) {
+					console.log(`error: ${response.error}`);
+					alert(response.error_description);
+					return;
+				}
+
+				// Success action: Update DB to set KYC verified
+				console.log(`Grant code: ${response.code}`);
+				$.ajax({
+					url: '{{ route('dashboard.users.digitalid', [Auth::user()->id]) }}',
+					type: 'POST',
+					dataType: 'JSON',
+					data: {
+						'code': response.code,
+						'transaction_id': response.transaction_id
+					},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}).done(function (data) {
+					console.log(data);
+					location.reload();
+				});
+			}
+		};
+
 		$(document).ready( function() {
 			$("input[name='investing_as']").on('change',function() {
 				if($(this).is(':checked') && $(this).val() == 'Individual Investor')

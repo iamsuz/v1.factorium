@@ -58,4 +58,8 @@ return [
 
     'sendgrid_key' => env('SENDGRID_KEY'),
 
+    'digitalid_client_id' => env('DIGITALID_CLIENT_ID', 'ctid1jQlgSMxWPbrvFankolC2Y'),
+    'digitalid_client_secret' => env('DIGITALID_CLIENT_SECRET', 'b3c238b8ae3901ec31d8d798e44ee105'),
+    'digitalid_client_url' => env('DIGITALID_CLIENT_URL', 'https://digitalid-sandbox.com/sdk/app.js'),
+
 ];

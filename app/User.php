@@ -228,4 +228,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasOne('App\ProjectProgVote');
     }
+
+    public function userKyc()
+    {
+        return $this->hasOne('App\UserKyc');
+    }
+
+    public function digitalIdKyc()
+    {
+        return $this->hasOne('App\UserKyc')->where('kyc_type', 'digital_id');
+    }
 }
