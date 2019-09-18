@@ -36,6 +36,7 @@ use App\Jobs\SendDeveloperNotificationEmail;
 use App\SiteConfiguration;
 use App\ProjectEOI;
 use App\ProspectusDownload;
+use App\Jobs\AutomateTokenGenerate;
 
 class ProjectsController extends Controller
 {
@@ -102,7 +103,9 @@ class ProjectsController extends Controller
 //        }
 
         $user = Auth::user();
-
+        if($user->email == $request->invoice_issue_from_email){
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >You cannot issue an invoice to yourself.</p>');
+        }
         // Prefilled Data
         $request['user_id'] = $request->user()->id;
         $request['project_type'] = 1;
@@ -545,9 +548,17 @@ class ProjectsController extends Controller
         $request['maximum_accepted_amount'] = $request->asking_amount;
         $request['fund_raising_close_date'] = $request->due_date;
         $investment->update($request->all());
-
         //TODO::refactor
+        if(!($project->contract_address)){
+            if($project->active){
+                $projectId = $id;
+                $numberOfTokens = (int)$project->investment->invoice_amount;
+                $tokenSymbol = $project->token_symbol;
+                $projectHash = $project->project_site;
 
+                $this->dispatch(new AutomateTokenGenerate($projectId,$numberOfTokens,$tokenSymbol,$projectHash));
+            }
+        }
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Updated.</p>');
     }
 
@@ -1196,33 +1207,33 @@ class ProjectsController extends Controller
 
 
         if ($validator->fails()) {
-           return array(
-              'status' => false,
-              'message' => $validator->errors()->first()
-           );
-        }
+         return array(
+          'status' => false,
+          'message' => $validator->errors()->first()
+      );
+     }
 
-        try {
+     try {
             // Get remaining days for invoice due date
-            $dueDate = Carbon::createFromFormat('Y-m-d', $request->due_date);
-            $dateDiff = date_diff(Carbon::now(), $dueDate);
-            $dateDiff = (int)$dateDiff->format("%R%a");
+        $dueDate = Carbon::createFromFormat('Y-m-d', $request->due_date);
+        $dateDiff = date_diff(Carbon::now(), $dueDate);
+        $dateDiff = (int)$dateDiff->format("%R%a");
             // Get asking price
-            $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
-            $askingAmount = round($request->invoice_amount * ( 1 - ( $discountFactor )), 2);
+        $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
+        $askingAmount = round($request->invoice_amount * ( 1 - ( $discountFactor )), 2);
 
-        } catch (\Exception $e) {
-            return array(
-                'status' => false,
-                'message' => $e->getMessage()
-            );
-        }
-
+    } catch (\Exception $e) {
         return array(
-            'status' => true,
-            'data' => array( 'diff' => $dateDiff, 'asking_amount' => $askingAmount )
+            'status' => false,
+            'message' => $e->getMessage()
         );
     }
+
+    return array(
+        'status' => true,
+        'data' => array( 'diff' => $dateDiff, 'asking_amount' => $askingAmount )
+    );
+}
 
     /**
      * @param $projectId
@@ -1237,8 +1248,13 @@ class ProjectsController extends Controller
     }
     public function getEntittyName(Request $request)
     {
-        $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
-        return array('status'=> true, 'data' => array('description'=> $user));
+        $active = Auth::User();
+        if(!($active->email == $request->invoice_issue_from_email)){
+            $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
+            return array('status'=> true, 'data' => array('description'=> $user));
+        }else{
+            return array('status'=> false, 'message' => 'You cannot issue an invoice to yourself');
+        }
     }
 
     public function projectAudc(Request $request)

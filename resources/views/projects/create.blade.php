@@ -179,7 +179,7 @@ Create New Project | @parent
 		});
 		$('input[name=invoice_issue_from_email]').change(function () {
 			let invoiceIssueFromEmail = $('input[name=invoice_issue_from_email]').val();
-			
+
 			if (invoiceIssueFromEmail != '') {
 				$('.loader-overlay').show();
 				$.ajax({
@@ -196,6 +196,7 @@ Create New Project | @parent
 					$('.loader-overlay').hide();
 					if (!data.status) {
 						alert(data.message);
+						$('input[name=invoice_issue_from_email]').val(null);
 						return;
 					}
 					console.log(data);
