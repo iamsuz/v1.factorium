@@ -113,7 +113,6 @@ class DashboardController extends Controller
         $total_goal = array_sum($goal_amount);
         $pledged_investments = array_sum($amount);
         $total_funds_received = array_sum($funds_received);
-        dd((in_array('1',$investments->pluck('accepted')->toArray())));
 
         return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color', 'total_funds_received'));
     }
