@@ -17,6 +17,7 @@ use App\ProjectConfiguration;
 use App\ProjectConfigurationPartial;
 use App\User;
 use App\Market;
+use App\UserKyc;
 use Carbon\Carbon;
 use App\IdDocument;
 use Chumper\Datatable\Datatable;
@@ -112,6 +113,7 @@ class DashboardController extends Controller
         $total_goal = array_sum($goal_amount);
         $pledged_investments = array_sum($amount);
         $total_funds_received = array_sum($funds_received);
+        dd((in_array('1',$investments->pluck('accepted')->toArray())));
 
         return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color', 'total_funds_received'));
     }
@@ -347,6 +349,26 @@ class DashboardController extends Controller
         $mailer->sendVerificationNotificationToUser($user, $request->status, $idimages);
         return redirect()->back()->withMessage($message);
     }
+
+    /**
+     * @param Request $request
+     * @param $userId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function kycConfirmByDigitalId(Request $request, $userId)
+    {
+        $userKyc = UserKyc::where(['user_id' => $userId, 'kyc_type' => 'digital_id'])->first();
+        if (!$userKyc) {
+            UserKyc::create([
+               'user_id' => $userId,
+               'kyc_type' => 'digital_id',
+               'response_payload' => json_encode($request->all())
+            ]);
+        }
+
+        return response()->json(['status' => true]);
+    }
+
     public function verification($user_id)
     {
         $color = Color::where('project_site',url())->first();
@@ -404,9 +426,11 @@ class DashboardController extends Controller
 
     public function acceptInvestment(Request $request, AppMailer $mailer, $investment_id)
     {
-        $this->validate($request, [
-            'investor' => 'required',
-        ]);
+        if ($request->ajax()) {
+            // dd($investment_id);
+        // $this->validate($request, [
+        //     'investor' => 'required',
+        // ]);
 
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investmentDetails = Investment::where('project_id', $investment->project_id)->first();
@@ -414,12 +438,12 @@ class DashboardController extends Controller
         if($investment){
             if($investment->project->is_wallet_tokenized)
             {
-                $client = new \GuzzleHttp\Client();
-                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
-                ]);
-                $responseInvest = $requestInvest->getBody()->getContents();
-                $resultInvest = json_decode($responseInvest);
+//                $client = new \GuzzleHttp\Client();
+//                $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
+//                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+//                ]);
+//                $responseInvest = $requestInvest->getBody()->getContents();
+//                $resultInvest = json_decode($responseInvest);
             }
             $investmentShares = InvestmentInvestor::where('project_id', $investment->project_id)
             ->where('accepted', 1)
@@ -503,23 +527,25 @@ class DashboardController extends Controller
                 $investing = InvestingJoint::where('investment_investor_id', $linkedInvestment->id)->get()->last();
             }
         }
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+        return 1;
+        // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
+        }
     }
 }
 
-public function activateProject($project_id)
-{
-    $project = Project::findOrFail($project_id);
-    $status = $project->update(['active'=> 1, 'activated_on'=>Carbon::now()]);
-    return redirect()->back();
-}
+    public function activateProject($project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        $status = $project->update(['active'=> 1, 'activated_on'=>Carbon::now()]);
+        return redirect()->back();
+    }
 
-public function deactivateProject($project_id)
-{
-    $project = Project::findOrFail($project_id);
-    $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
-    return redirect()->back();
-}
+    public function deactivateProject($project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
+        return redirect()->back();
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -911,7 +937,7 @@ public function deactivateProject($project_id)
                 foreach ($failedEmails as $email) {
                     $emails = $emails.", $email";
                 }
-                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Fixed Dividend distribution email sending failed for investors - '.$emails.'.</p>');
+                return redirect()->back()->withMessage('<p class="alert alert-danger text-center">Partial Repay distribution email sending failed for investors - '.$emails.'.</p>');
             }
         }
     }
@@ -1951,5 +1977,63 @@ public function deactivateProject($project_id)
         $projectCopy->save();
 
         return redirect()->back()->withMessage("<div class=\"alert alert-success text-center\">Project Duplicated Successfully with name '" . $projectCopy->title . "'.</div>");
+    }
+
+    /**
+     * \brief Get Partial Repurchase preview data content.
+     * \details [long description]
+     * \param $request Request
+     * \param $projectId Integer
+     * \return Response JSON
+     */
+    public function getPartialRepurchasePreviewData(Request $request, $projectId)
+    {
+        // if(!$request->start_date || !$request->end_date){
+        //     return response()->json([
+        //         'status' => false,
+        //     ]);
+        // }
+
+        // $investorList = $request->investors_list;
+        // $dividendPercent = $request->dividend_percent;
+        // $strStartDate = (string)$request->start_date;
+        // $startDate = date_create_from_format('d/m/Y', (string)$request->start_date);
+        // $strEndDate = (string)$request->end_date;
+        // $endDate = date_create_from_format('d/m/Y', (string)$request->end_date);
+        // $dateDiff = date_diff($startDate, $endDate);
+        // $dateDiff = (int)$dateDiff->format("%R%a") + 1;
+        $project = Project::findOrFail($projectId);
+
+        $tableContent = '';
+
+        if($investorList != '') {
+            if($dateDiff >=0) {
+                $investors = explode(',', $investorList);
+                $investments = InvestmentInvestor::findMany($investors);
+                $shareType = ($project->share_vs_unit) ? 'Share amount' : 'Unit amount';
+
+                $tableContent .= '<table class="table-striped dividend-confirm-table" border="0" cellpadding="10">';
+                $tableContent .= '<thead><tr style="background: #dcdcdc;"><td>Investor Name</td><td>Investor Bank account name</td><td>Investor bank</td><td>Investor BSB</td><td>Investor Account</td><td>' . $shareType . '</td><td>Investor Dividend amount</td></tr></thead>';
+                $tableContent .= '<tbody>';
+
+                foreach ($investments as $key => $investment) {
+                    $investorAc = ($investment->investingJoint) ? $investment->investingJoint->account_name : $investment->user->account_name;
+                    $bank = ($investment->investingJoint) ? $investment->investingJoint->bank_name : $investment->user->bank_name;
+                    $bsb = ($investment->investingJoint) ? $investment->investingJoint->bsb : $investment->user->bsb;
+                    $acNum = ($investment->investingJoint) ? $investment->investingJoint->account_number : $investment->user->account_number;
+
+                    $tableContent .= '<tr><td>' . $investment->user->first_name . ' ' . $investment->user->last_name . '</td><td>' . $investorAc . '</td><td>' . $bank . '</td><td>' . $bsb . '</td><td>' . $acNum . '</td><td>' . $investment->amount . '<br></td><td>' . round($investment->amount * ((int)$dividendPercent/(365*100)) * $dateDiff, 2) . '<br></td></tr>';
+                }
+
+                $tableContent .= '</tbody></table>';
+
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successful.',
+            'data' => $tableContent
+        ]);
     }
 }

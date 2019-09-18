@@ -70,6 +70,7 @@ Route::get('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.ve
 Route::post('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verify', 'uses'=>'DashboardController@verifyId']);
 Route::get('/dashboard/users/{user_id}/idVerification',['as'=>'dashboard.users.idVerify','uses'=>'DashboardController@idDocVerification']);
 Route::post('/dashboard/users/{user_id}/idVerification',['as'=>'dashboard.users.idVerifying','uses'=>'DashboardController@idDocVerify']);
+Route::post('/dashboard/users/{user_id}/digitalid/verify',['as'=>'dashboard.users.digitalid','uses'=>'DashboardController@kycConfirmByDigitalId']);
 
 Route::pattern('project_id', '[0-9]+');
 /*Route::get('/dashboard/projects/{project_id}', ['as'=>'dashboard.projects.show', 'uses'=>'DashboardController@showProject']);*/

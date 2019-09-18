@@ -145,7 +145,7 @@
 															@if($investment->money_received || $investment->accepted)
 															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
 															@else
-															<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
+															<input type="submit" name="money_received" id="money_received_{{$investment->id}}" class="btn btn-primary money-received-btn" value="Money Received">
 															@endif
 														</form>
 														@endif
@@ -156,7 +156,7 @@
 															@if($investment->money_received || $investment->accepted)
 															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
 															@else
-															<input type="submit" name="money_received" class="btn btn-primary money-received-btn" value="Money Received">
+															<input type="submit" name="money_received" id="money_received_{{$investment->id}}" class="btn btn-primary money-received-btn" value="Money Received">
 															@endif
 														</form>
 														@endif
@@ -174,9 +174,10 @@
 
 															{{-- <input type="checkbox" name="accepted" onChange="this.form.submit()" value={{$investment->accepted ? 0 : 1}} {{$investment->accepted ? 'checked' : '' }}> Money {{$investment->accepted ? 'Received' : 'Not Received' }} --}}
 															@if($investment->accepted)
-															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">@if($project->share_vs_unit)  @else  @endif Receivable issued</small></i>
+															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Receivable issued</small></i>
 															@else
-															<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable">
+															{{-- <input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable"> --}}
+															<button type="button" name="accepted" id="issue_receivable{{$investment->id}}" data="{{$investment->id}}" class="btn btn-primary issue-share-certi-btn">Issue Receivable</button>
 															@endif
 															<input type="hidden" name="investor" value="{{$investment->user->id}}">
 														</form>
@@ -190,9 +191,10 @@
 															@if($investment->accepted)
 															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">@if($project->share_vs_unit)  @else  @endif Receivable issued</small></i>
 															@else
-															<input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable">
+															{{-- <input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable"> --}}
+															<button type="button" name="accepted" id="issue_receivable{{$investment->id}}" data="{{$investment->id}}" class="btn btn-primary issue-share-certi-btn">Issue Receivable</button>
 															@endif
-															<input type="hidden" name="investor" value="{{$investment->user->id}}">
+															{{-- <input type="hidden" name="investor" value="{{$investment->user->id}}"> --}}
 														</form>  
 														@endif
 													</div>
@@ -868,14 +870,14 @@
 				dad.submit();
 			});
 
-			$('.issue-share-certi-btn').click(function(e){
-				if (confirm('Are you sure ?')) {
-					console.log('confirmed');
-					$('.loader-overlay').show();
-				} else {
-					e.preventDefault();
-				}
-			});
+			// $('.issue-share-certi-btn').click(function(e){
+			// 	if (confirm('Are you sure ?')) {
+			// 		console.log('confirmed');
+			// 		$('.loader-overlay').show();
+			// 	} else {
+			// 		e.preventDefault();
+			// 	}
+			// });
 
 			$('.money-received-btn').click(function(e){
 				if (confirm('Are you sure ?')) {
@@ -956,6 +958,33 @@
 					if(data){
 						$('#offer_link'+eoi_id).html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
 						$('.loader-overlay').hide();
+					}
+				});
+			}
+		});
+
+		//Ajax call for sending eoi application form link to user (for both send link and resend link buttons)
+		$('#investors_tab').on('click', '.issue-share-certi-btn', function(e){
+			e.preventDefault();
+			var project_id = {{$project->id}};
+			var investment_id = $(this).attr('data');
+			// alert(investment_id);
+			if (confirm('Are you sure?')) {
+				$('.loader-overlay').show();
+				$.ajax({
+					url: '/dashboard/projects/'+investment_id+'/investments/accept',
+					type: 'PATCH',
+					dataType: 'JSON',
+					data: {project_id, investment_id},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+				}).done(function(data){
+					if(data){
+						$('.loader-overlay').hide();
+						$('#issue_receivable'+investment_id).replaceWith('<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Receivable issued</small></i>')
+						$('#money_received_'+investment_id).replaceWith('<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>')
+						$('.issue-share-certi-btn, .money-received-btn').replaceWith('<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>');
 					}
 				});
 			}

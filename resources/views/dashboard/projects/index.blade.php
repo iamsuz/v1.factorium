@@ -57,12 +57,37 @@ Projects | Dashboard | @parent
 							<td>
 								@if($project->is_funding_closed == '1') Funding Closed <br>
 									@if($project->investors->first())
-									@if($project->investors->first()->pivot->is_repurchased == '1') Repurchased @elseif($project->investors->first()->pivot->money_received != '1') Application received @elseif($project->investors->first()->pivot->money_received == '1') Money Received @endif @endif
+									@if($project->repurchased) @if($project->repurchased->first()) Repurchased
+									@elseif($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
+									@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received
+									@elseif($project->investors->first()->pivot->money_received != '1') Application received
+									@endif @endif @endif @endif
+										{{-- @if($project->investors->first()->pivot->is_repurchased == '1') Repurchased 
+										@elseif($project->investors->first()->pivot->accepted == '1') Invoice Issued 
+										@elseif($project->investors->first()->pivot->money_received != '1') Application received 
+										@elseif($project->investors->first()->pivot->money_received == '1') Money Received 
+										@endif --}}
+									@endif
 								@elseif($project->eoi_button == '1') EOI @elseif($project->is_coming_soon == '1') Upcoming @elseif($project->active == '1') Active <br>
 								@if($project->investors->first())
-								@if($project->investors->first()->pivot->is_repurchased == '1') Repurchased @elseif($project->investors->first()->pivot->money_received != '1') Application received @elseif($project->investors->first()->pivot->money_received == '1') Money Received @endif @endif
+								{{-- @if($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued 
+								@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received @endif @endif @endif --}}
+
+								@if($project->repurchased) @if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) Repurchased
+								@elseif($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
+								@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received
+								@elseif($project->investors->first()->pivot->money_received != '1') Application received
+								@endif @endif @endif @endif
+
+								{{-- @if($project->investors->first()->pivot->is_repurchased == '1') Repurchased 
+								@elseif($project->investors->first()->pivot->accepted == '1') Invoice Issued 
+								@elseif($project->investors->first()->pivot->money_received != '1') Application received 
+								@elseif($project->investors->first()->pivot->money_received == '1') Money Received 
+								@endif  --}}
+								@endif
 								@else Inactive @endif
-								</td>
+							</td>
+
 							<td>@if($project->investment)${{number_format($project->investment->goal_amount)}} @else Not Specified @endif</td>
 							<?php $pledged_amount = $pledged_investments->where('project_id', $project->id)->sum('amount');?>
 							<td>@if($project->investment)${{-- {{ number_format($pledged_amount)}} --}}{{number_format($project->investment->total_projected_costs)}} @else Not Specified @endif</td>
