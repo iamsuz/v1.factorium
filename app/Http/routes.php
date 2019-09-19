@@ -70,7 +70,6 @@ Route::get('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.ve
 Route::post('/dashboard/users/{user_id}/verification', ['as'=>'dashboard.users.verify', 'uses'=>'DashboardController@verifyId']);
 Route::get('/dashboard/users/{user_id}/idVerification',['as'=>'dashboard.users.idVerify','uses'=>'DashboardController@idDocVerification']);
 Route::post('/dashboard/users/{user_id}/idVerification',['as'=>'dashboard.users.idVerifying','uses'=>'DashboardController@idDocVerify']);
-Route::post('/dashboard/users/{user_id}/digitalid/verify',['as'=>'dashboard.users.digitalid','uses'=>'DashboardController@kycConfirmByDigitalId']);
 
 Route::pattern('project_id', '[0-9]+');
 /*Route::get('/dashboard/projects/{project_id}', ['as'=>'dashboard.projects.show', 'uses'=>'DashboardController@showProject']);*/
@@ -144,6 +143,7 @@ Route::get('/users/{users}/book', ['as'=>'users.book', 'uses'=>'UsersController@
 Route::get('/users/{users}/submit', ['as'=>'users.submit', 'uses'=>'UsersController@submit']);
 Route::get('/users/{users}/market', ['as'=>'users.market','uses'=>'UsersController@market']);
 Route::post('/users/market',['as'=>'users.market.store','uses'=>'UsersController@marketStore']);
+Route::post('/users/{user_id}/digitalid/verify',['as'=>'users.digitalid','uses'=>'UsersController@kycConfirmByDigitalId']);
 
 Route::pattern('roles', '[0-9]+');
 Route::resource('roles', 'RolesController');

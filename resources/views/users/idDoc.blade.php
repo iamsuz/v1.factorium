@@ -207,7 +207,7 @@
 				// Success action: Update DB to set KYC verified
 				console.log(`Grant code: ${response.code}`);
 				$.ajax({
-					url: '{{ route('dashboard.users.digitalid', [Auth::user()->id]) }}',
+					url: '{{ route('users.digitalid', [Auth::user()->id]) }}',
 					type: 'POST',
 					dataType: 'JSON',
 					data: {

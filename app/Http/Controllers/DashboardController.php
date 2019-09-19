@@ -17,7 +17,6 @@ use App\ProjectConfiguration;
 use App\ProjectConfigurationPartial;
 use App\User;
 use App\Market;
-use App\UserKyc;
 use Carbon\Carbon;
 use App\IdDocument;
 use Chumper\Datatable\Datatable;
@@ -347,25 +346,6 @@ class DashboardController extends Controller
         }
         $mailer->sendVerificationNotificationToUser($user, $request->status, $idimages);
         return redirect()->back()->withMessage($message);
-    }
-
-    /**
-     * @param Request $request
-     * @param $userId
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function kycConfirmByDigitalId(Request $request, $userId)
-    {
-        $userKyc = UserKyc::where(['user_id' => $userId, 'kyc_type' => 'digital_id'])->first();
-        if (!$userKyc) {
-            UserKyc::create([
-               'user_id' => $userId,
-               'kyc_type' => 'digital_id',
-               'response_payload' => json_encode($request->all())
-            ]);
-        }
-
-        return response()->json(['status' => true]);
     }
 
     public function verification($user_id)

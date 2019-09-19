@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\UserKyc;
 use Session;
 use App\Credit;
 use App\Color;
@@ -796,4 +797,24 @@ class UsersController extends Controller
         $projects = Project::where('invoice_issued_from',$user->entity_name)->get();
         return view('users.userInvoiceSubmitted',compact('color','user','projects'));
     }
+
+    /**
+     * @param Request $request
+     * @param $userId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function kycConfirmByDigitalId(Request $request, $userId)
+    {
+        $userKyc = UserKyc::where(['user_id' => $userId, 'kyc_type' => 'digital_id'])->first();
+        if (!$userKyc) {
+            UserKyc::create([
+                'user_id' => $userId,
+                'kyc_type' => 'digital_id',
+                'response_payload' => json_encode($request->all())
+            ]);
+        }
+
+        return response()->json(['status' => true]);
+    }
+
 }
