@@ -588,7 +588,7 @@
                          </td>
                     </tr>
                     <tr>
-                        <td style="padding-top: 0;padding-right: 18px;padding-bottom: 18px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="left" class="mcnButtonBlockInner">
+                        <td style="padding-top: 9px;padding-right: 18px;padding-left: 18px; padding-bottom: 9px; mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="left" class="mcnButtonBlockInner">
                             <table border="0" cellpadding="0" cellspacing="0" class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 0px;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                 <tbody>
                                 <tr>
@@ -630,39 +630,6 @@
     </tbody>
 </table> -->
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-    <tbody class="mcnTextBlockOuter">
-        <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                <!--[if mso]>
-        <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
-        <tr>
-        <![endif]-->
-
-        <!--[if mso]>
-        <td valign="top" width="600" style="width:600px;">
-        <![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
-                    <tbody><tr>
-
-                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;">
-
-{{-- <span style="color:#282a73><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">For any queries contact us via;<br /><br />Email:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="mailto:@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_email}}@else info@estatebaron.com @endif" target="_blank">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_email}}@else info@estatebaron.com @endif</a><br><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Phone no:&nbsp;&nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +61398117015 @endif" target="_blank">@if($investment->project->projectspvdetail){{$investment->project->projectspvdetail->spv_contact_number}}@else +61398117015 @endif</a><!-- <br />Phone: &nbsp;<a style="mso-line-height-rule: exactly; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #282a73; font-weight: normal; text-decoration: underline;" href="callto:+61398117015" target="_blank">+61 3 98117015</a><br /> --></span></span></span></span></div><br> --}}
-
-                        </td>
-                    </tr>
-                </tbody></table>
-        <!--[if mso]>
-        </td>
-        <![endif]-->
-
-        <!--[if mso]>
-        </tr>
-        </table>
-        <![endif]-->
-            </td>
-        </tr>
-    </tbody>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
