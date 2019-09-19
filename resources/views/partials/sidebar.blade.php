@@ -35,4 +35,5 @@
 	<a href="{{route('users.investments', [$user])}}" class="list-group-item @if($active == 6) active @endif">Receivables bought by me </a>
 	<a href="{{route('users.notifications', [$user])}}" class="list-group-item @if($active == 9) active @endif">Notifications </a>
 	<a href="{{route('users.invoices', [$user])}}" class="list-group-item @if($active == 14) active @endif">Invoice issued to me </a>
+	<a href="{{route('users.invoices.submitted', [$user])}}" class="list-group-item @if($active == 16) active @endif">Invoices submitted by me </a>
 </div>

@@ -790,4 +790,10 @@ class UsersController extends Controller
             'message' => 'Invoice has been confirmed',
         ]);
     }
+    public function userInvoicesSubmitted(){
+        $user = Auth::user();
+        $color = Color::where('project_site',url())->first();
+        $projects = Project::where('invoice_issued_from',$user->entity_name)->get();
+        return view('users.userInvoiceSubmitted',compact('color','user','projects'));
+    }
 }
