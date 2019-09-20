@@ -354,4 +354,5 @@ Route::post('/invoice/asking/price', ['as' => 'invoice.asking.price', 'uses' => 
 Route::get('/invoice/{invoice_id}/refresh', ['as' => 'invoice.refresh', 'uses' => 'ProjectsController@refreshAskingAmount']);
 Route::post('/invoice/issued/to', ['as' => 'invoice.issued.to', 'uses' => 'ProjectsController@getEntittyName']);
 Route::get('/user/invoices/submitted',['as'=>'users.invoices.submitted','uses'=>'UsersController@userInvoicesSubmitted']);
+Route::get('/user/projects/{project_id}/deactivate', ['as'=>'user.projects.deactivate', 'uses'=>'UsersController@deactivateProject']);
 /* End Factorium Routes */
