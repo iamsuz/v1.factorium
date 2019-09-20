@@ -43,7 +43,7 @@
 					@if($projects->count())
 					@foreach($projects as $project)
 					<tr>
-						<td>{!!$project->title!!}</td>
+						<td>{!!$project->title!!}<br>@if($project->active) @if(!count($project->investors)) <a href="{{route('user.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a> @endif @endif </td>
 						<td>{{date("d/m/Y",strtotime($project->investment->fund_raising_start_date))}} </td>
 						<td>{{date("d/m/Y",strtotime($project->investment->fund_raising_close_date))}} </td>
 						<td>{!!$project->investment->invoice_amount!!} </td>

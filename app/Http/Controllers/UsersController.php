@@ -816,5 +816,10 @@ class UsersController extends Controller
 
         return response()->json(['status' => true]);
     }
-
+    public function deactivateProject($project_id)
+    {
+        $project = Project::findOrFail($project_id);
+        $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Deactivated Invoice '.$project_id.'.</p>');
+    }
 }
