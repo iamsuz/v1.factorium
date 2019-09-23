@@ -182,9 +182,8 @@ Edit {{$project->title}} | Dashboard | @parent
 									@endif
 									<br><br>
 									<div class="row">
-										{{-- {{ dd($invoiceIssueTo) }} --}}
 										<div class="col-md-2 col-md-offset-1 ">
-											<span class="text-success pull-right"><strong>Verified</strong><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+											<span class="text-success pull-right">@if(($invoic_issuer->idDoc && $invoic_issuer->idDoc->verified == '1')||( $invoic_issuer->digitalIdKyc))<strong>Verified <i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>@else <span class="text-danger">Not verified</span>@endif
 										</div>
 										<div class="col-md-3 ">
 											<span class="pull-left">
@@ -192,7 +191,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											</span>
 										</div>
 										<div class="col-md-2 ">
-											<span class="text-success pull-right"><strong>Verified<i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>
+											<span class="text-success pull-right">@if(($invice_issed_to->idDoc && $invice_issed_to->idDoc->verified == '1')||($invice_issed_to->digitalIdKyc))<strong>Verified <i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>@else <span class="text-danger"> Not verified</span> @endif
 										</div>
 										<div class="col-md-3 ">
 											<span class="pull-left">
