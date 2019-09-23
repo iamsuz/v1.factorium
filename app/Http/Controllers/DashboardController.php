@@ -292,8 +292,10 @@ class DashboardController extends Controller
             $response = $request->getBody()->getContents();
             $balance = json_decode($response);
         }
-
-        return view('dashboard.projects.edit', compact('project', 'investments','color', 'contract','balance','projectPayToken'));
+        $invoic_issuer = user::findOrFail($project->user_id);
+        $invice_issed_to = User::where('email',$project->invoice_issue_from_email)->first();
+        // dd($invice_issed_to->digitalIdKyc);
+        return view('dashboard.projects.edit', compact('project', 'investments','color', 'contract','balance','projectPayToken','invoic_issuer','invice_issed_to'));
     }
 
     public function activateUser($user_id)
