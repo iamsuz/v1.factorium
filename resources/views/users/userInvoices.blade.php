@@ -26,15 +26,18 @@
 				</div>
 			</li>
 		</ul>
-		<h3 class="text-center">Notifications</h3>
+		{{-- <h3 class="text-center">Notifications</h3> --}}
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped" id="notificationTable">
 				<thead>
 					<tr>
-						<th>Project Name</th>
-						<th>Date of Progress</th>
-						<th>Description</th>
-						<th>Details</th>
+						<th>Invoice Name</th>
+						<th>Invoice Submitted Date</th>
+						<th>Invoice Due Date</th>
+						<th>Invoice Amount</th>
+						<th>Invoice Asking Amount</th>
+						<th>Invoice submitted from</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -42,9 +45,11 @@
 					@foreach($projects as $project)
 					<tr>
 						<td>{!!$project->title!!}</td>
-						<td>{{date("d/m/Y",strtotime($project->updated_date))}}
-						</td>
-						<td>{!!$project->description!!} </td>
+						<td>{{date("d/m/Y",strtotime($project->investment->fund_raising_start_date))}} </td>
+						<td>{{date("d/m/Y",strtotime($project->investment->fund_raising_close_date))}} </td>
+						<td>{!!$project->investment->invoice_amount!!} </td>
+						<td>{!!$project->investment->asking_amount!!}</td>
+						<td>{!!$project->invoice_issued_from!!} </td>
 						<td>
 							@if($project->confirmation)
 							<i>Confirmed</i>
