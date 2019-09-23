@@ -56,8 +56,6 @@ class PagesController extends Controller
     * @return view [home page is returned]
     */
     public function home(CookieJar $cookieJar, Request $request) {
-        // $geoip = new GeoIP();
-        // $geoIpArray = $geoip->get();
         $request->referrer = \Request::server('HTTP_REFERER');
         if($request->referrer){
             $cookieJar->queue(cookie('referrer', $request->referrer));

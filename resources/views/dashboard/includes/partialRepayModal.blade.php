@@ -3,11 +3,11 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header text-center">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Repay</h4>
+        <h4 class="modal-title">Partial Repay</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         <p style="font-size: 20px;">You are about to partial repay <b><i>{{$project->title}}</i></b> for <b>${{$project->investment->total_projected_costs}}</b></p>
       </div>
       <div class="modal-footer">
@@ -18,10 +18,10 @@
               <button class="btn btn-primary declare-partial-repay-btn" type="button" data-toggle="modal" data-target="#partial_repay_confirm_modal" id="partialRepayPercentBtn">Repay</button>
           <input type="submit" id="validation_partial_repay" class="btn btn-default" value="Repay" style="display: none;">
         </form>
-      </div>
     </div>
-
   </div>
+
+</div>
 </div>
 
 <!--Partial Repay confirm Modal -->
@@ -50,7 +50,7 @@
         </table>
         <br>
         <h2 class="text-center">Dividend calculation preview</h2><br>
-        <div id="calculation_preview_table" style="width: 100%; overflow-x: auto;">          
+        <div id="calculation_preview_table" style="width: 100%; overflow-x: auto;">
           @foreach($shareInvestments as $shareInvestment)
             <table class="table">
             <thead>

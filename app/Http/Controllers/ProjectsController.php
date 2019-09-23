@@ -575,19 +575,33 @@ class ProjectsController extends Controller
 
     public function showInterest($project_id, AppMailer $mailer, Request $request)
     {
+        $user = AUth::user();
+        $project = Project::findOrFail($project_id);
         $action = '/offer/submit/'.$project_id.'/step1';
         $projects_spv = ProjectSpvDetail::where('project_id',$project_id)->first();
         $color = Color::where('project_site',url())->first();
-        $project = Project::findOrFail($project_id);
         if(!$project->show_invest_now_button) {
             return redirect()->route('projects.show', $project);
         }
         $investments = InvestmentInvestor::where('project_id',$project->id)
         ->where('accepted',1)
         ->get();
+        $amount = $project->investment->calculated_asking_price;
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
         $maxAmount = $goalAmount - $acceptedAmount;
+        if($project->use_tokens){
+            $client = new \GuzzleHttp\Client();
+            $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
+              'query'=>['user_id'=> $user->id,'project_id'=>$this->audkID]
+          ]);
+            $responseBalance = $requestBalance->getBody()->getContents();
+            $balance = json_decode($responseBalance);
+            $transactionAUDK = false;
+            if($balance->balance < $amount){
+              return redirect()->route('project.user.audc')->withMessage('You dont have sufficient AUDC to invest in that invoice please buy AUDC');
+          }
+      }
         // if(Auth::user()->verify_id != 2){
         //     return redirect()->route('users.verification', Auth::user())->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> As part of our commitment to meeting Australian Securities Law we are required to do some additional user verification to meet Anti Money Laundering and Counter Terror Financing requirements.<br> This wont take long, promise!</p>');
         // }

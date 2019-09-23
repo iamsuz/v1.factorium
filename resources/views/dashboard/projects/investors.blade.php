@@ -47,7 +47,13 @@
 						</address> --}}
 					</h3>
 					<p class="text-center"><strong>Project Wallet Address:</strong></p><p class="text-center"><small >{{ $project->wallet_address }}</small></p>
-					@if($balanceAudk) <h4 class="text-center">@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} @else AUDK @endif Balance: {{$balanceAudk->balance}}</h4> @endif
+					@if($balanceAudk)
+					<h4 class="text-center">
+						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}}
+						@else AUDK
+						@endif Balance: {{$balanceAudk->balance}}
+					</h4>
+					@endif
 				</div>
 			</div>
 			<ul class="nav nav-tabs" style="margin-top: 2em; width: 100%;">
@@ -90,7 +96,7 @@
 						<tbody>
 							@foreach($investments as $investment)
 							@if(!$investment->hide_investment)
-							<tr id="application{{$investment->id}}" @if(in_array('1',$investments->pluck('accepted')->toArray())) @if(!$investment->accepted) style="color: #ccc;" @endif  @endif>
+							<tr id="application{{$investment->id}}"  @if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id) @if(!$investment->accepted) style="color: #ccc;" @endif  @endif>
 								<td>INV{{$investment->id}}
 									<a href="{{route('dashboard.application.view', [$investment->id])}}" class="edit-application" style="margin-top: 1.2em;"><br>
 										<i class="fa fa-edit" aria-hidden="true"></i>
@@ -135,10 +141,10 @@
 												</td>
 												<td>
 													<div class="col-md-2">
-														@if(in_array('1',$investments->pluck('accepted')->toArray()))
+														@if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id)
 														@if(!$investment->accepted)
 														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
-														@else 
+														@else
 														<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
@@ -153,7 +159,7 @@
 														<form action="{{route('dashboard.investment.moneyReceived', $investment->id)}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
-															@if($investment->money_received || $investment->accepted)
+															@if($investment->money_received || $investment->accepted )
 															<i class="fa fa-check" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;">Money Received</small></i>
 															@else
 															<input type="submit" name="money_received" id="money_received_{{$investment->id}}" class="btn btn-primary money-received-btn" value="Money Received">
@@ -164,7 +170,7 @@
 												</td>
 												<td>
 													<div class="col-md-2">
-														@if(in_array('1',$investments->pluck('accepted')->toArray())) 
+														@if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id)
 														@if(!$investment->accepted)
 														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
 														@else
@@ -194,8 +200,13 @@
 															{{-- <input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable"> --}}
 															<button type="button" name="accepted" id="issue_receivable{{$investment->id}}" data="{{$investment->id}}" class="btn btn-primary issue-share-certi-btn">Issue Receivable</button>
 															@endif
+<<<<<<< Updated upstream
 															{{-- <input type="hidden" name="investor" value="{{$investment->user->id}}"> --}}
-														</form>  
+														</form>
+=======
+															<input type="hidden" name="investor" value="{{$investment->user->id}}">
+														</form>
+>>>>>>> Stashed changes
 														@endif
 													</div>
 												</td>
@@ -216,10 +227,10 @@
 													@endif
 												</td>
 												<td>
-													@if(in_array('1',$investments->pluck('accepted')->toArray())) 
-														@if(!$investment->accepted)
-														<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
-														@else
+													@if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id)
+													@if(!$investment->accepted)
+													<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
+													@else
 													@if($investment->money_received || $investment->accepted)
 													@else
 													<div class="col-md-1" style="text-align: right;">
@@ -859,6 +870,19 @@
 			});
 			$('#repayBtn').on('click',function (e) {
 				$('#repayInvestor').val($('#repayBtn').attr('data-id'));
+				$('.notifyUser').on('click',function (e) {
+					e.preventDefault;
+					$('.loader-overlay').show();
+					console.log('inside click');
+					$.ajax({
+						url:'/dashboard/investment/'+$('#repayBtn').attr('data-id')+'/audc',
+						type:'GET',
+						data:{},
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
+					})
+				})
 			});
 			$('#partialRepayBtn').on('click',function (e) {
 				$('#partialInvestor_list').val($('#partialRepayBtn').attr('data-id'));

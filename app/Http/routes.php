@@ -85,6 +85,7 @@ Route::get('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document','
 Route::post('/dashboard/users/{id}/documents',['as'=>'dashboard.users.document.upload','uses'=>'DashboardController@uploadDocuments']);
 Route::get('/dashboard/application/{id}',['as'=>'dashboard.application.view','uses'=>'DashboardController@viewApplication']);
 Route::post('/dashboard/application/{investment_id}/update', ['as'=>'dashboard.application.update', 'uses'=>'DashboardController@updateApplication']);
+Route::get('/dashboard/investment/{investment_id}/audc',['as'=>'dashboard.investment.audc','uses'=>'DashboardController@audcDuePayemnt']);
 
 
 Route::pattern('notes', '[0-9]+');

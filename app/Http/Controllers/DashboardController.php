@@ -1848,7 +1848,7 @@ class DashboardController extends Controller
             $projectId = (int)$request->project_id;
             $numberOfTokens = $request->number_of_tokens;
             $tokenSymbol = $request->token_symbol;
-            
+
             $projectDetails = Project::findOrFail($projectId);
             $projectHash = $projectDetails->project_site;
 
@@ -2014,5 +2014,10 @@ class DashboardController extends Controller
             'message' => 'Successful.',
             'data' => $tableContent
         ]);
+    }
+    public function audcDuePayemnt(Request $request, $investment_id)
+    {
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        dd($investment);
     }
 }
