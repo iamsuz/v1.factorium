@@ -273,7 +273,7 @@ class OfferController extends Controller
         $transactionAUDK = false;
         if($balance->balance >= $amount){
           $client = new \GuzzleHttp\Client();
-          $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$amount,'project_address'=>$project->wallet_address]
+          $requestTransaction = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[ 'query' => ['user_id' => $user->id,'project_id'=>$this->audkID,'securityTokens'=>$amount,'project_address'=>$project->user->wallet_address]
         ]);
           $responseTransact = $requestTransaction->getBody()->getContents();
           $result = json_decode($responseTransact);

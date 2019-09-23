@@ -1873,7 +1873,7 @@ class DashboardController extends Controller
 
                 // Update contract address in DB
                 $projectDetails->contract_address = $responseResult->data->contract_address;
-                // $projectDetails->token_symbol = $tokenSymbol;
+                $projectDetails->token_symbol = $tokenSymbol;
                 $projectDetails->save();
 
                 return response([

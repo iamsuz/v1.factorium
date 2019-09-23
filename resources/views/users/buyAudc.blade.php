@@ -56,7 +56,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($project->investors as $investor)
+							@if(count($project->investors->where('id',$user->id)) > 0)
+							@foreach($project->investors->where('id',$user->id) as $investor)
 							<tr>
 								<td>{{date("d/m/Y",strtotime($investor->created_at))}}</td>
 								<td>{{$investor->pivot->amount}}
@@ -67,6 +68,7 @@
 								</td>
 							</tr>
 							@endforeach
+							@endif
 						</tbody>
 					</table>
 				</div>
@@ -75,7 +77,9 @@
 	</div>
 	<br><br>
 </div>
+@if(count($project->investors->where('id',$user->id)) > 0)
 @include('partials.audcBankDetailsModal')
+@endif
 @stop
 
 @section('js-section')
