@@ -182,6 +182,26 @@ Edit {{$project->title}} | Dashboard | @parent
 									@endif
 									<br><br>
 									<div class="row">
+										{{-- {{ dd($invoiceIssueTo) }} --}}
+										<div class="col-md-2 col-md-offset-1 ">
+											<span class="text-success pull-right"><strong>Verified</strong><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+										</div>
+										<div class="col-md-3 ">
+											<span class="pull-left">
+												Invoice issuer KYC
+											</span>
+										</div>
+										<div class="col-md-2 ">
+											<span class="text-success pull-right"><strong>Verified<i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>
+										</div>
+										<div class="col-md-3 ">
+											<span class="pull-left">
+												Invoice issued to KYC
+											</span>
+										</div>
+									</div>
+									<br><br>
+									<div class="row">
 										<div class="form-group @if($errors->first('title')){{'has-error'}} @endif">
 											{!!Form::label('title', 'Receivable Name', array('class'=>'col-sm-3 control-label'))!!}
 											<div class="col-sm-8">
@@ -1534,110 +1554,110 @@ Edit {{$project->title}} | Dashboard | @parent
 						<!-- ----------------------------------- -->
 
 						@if(App\Helpers\SiteConfigurationHelper::isMasterRole())
-							@if($project->wallet_address)
-								<div class="" id="tokenization_section" style="padding: 0px 0;">
-									<div class="">
-										<div class="row">
-											<h2 class="text-center">Tokenization</h2>
-											<p class="text-center"><small><strong>Project Wallet Address:</strong><br>{{$project->wallet_address}}</small></p>
-											<hr>
-											@if(!$project->contract_address)
-												<div class="col-sm-12">
-													<form action="#" method="POST" name="tokenization_form">
-														{!! csrf_field() !!}
-														<div class="row">
-															<div class="col-sm-6">
-																<div class="form-group">
-																	<label for="token_symbol">Token Symbol:</label>
-																	<input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" minlength="3" maxlength="4" value="@if($project->token_symbol){{ $project->token_symbol}}@endif" style="text-transform:uppercase">
-																	<small><small class="text-info">** Symbol length must be 3 to 4 chars.</small></small>
-																</div>
-															</div>
-															<div class="col-sm-6">
-																<label for="number_of_tokens">Number of tokens</label>
-																<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->invoice_amount }}" >
-															</div>
-														</div>
-														<br>
-														<div class="form-group text-center">
-															<input type="hidden" name="project_id" value="{{ $project->id }}">
-															<button type="submit" class="btn btn-primary btn-block"> Generate {{$project->title}} Tokens </button>
-														</div>
-													</form>
+						@if($project->wallet_address)
+						<div class="" id="tokenization_section" style="padding: 0px 0;">
+							<div class="">
+								<div class="row">
+									<h2 class="text-center">Tokenization</h2>
+									<p class="text-center"><small><strong>Project Wallet Address:</strong><br>{{$project->wallet_address}}</small></p>
+									<hr>
+									@if(!$project->contract_address)
+									<div class="col-sm-12">
+										<form action="#" method="POST" name="tokenization_form">
+											{!! csrf_field() !!}
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label for="token_symbol">Token Symbol:</label>
+														<input class="form-control" type="text" name="token_symbol" id="token_symbol" placeholder="Enter token symbol" minlength="3" maxlength="4" value="@if($project->token_symbol){{ $project->token_symbol}}@endif" style="text-transform:uppercase">
+														<small><small class="text-info">** Symbol length must be 3 to 4 chars.</small></small>
+													</div>
 												</div>
-											@else
-												@if(!$project->is_wallet_tokenized)
-													<!-- START: Tokenize project wallet -->
-													<div class="alert alert-warning text-center">
-														Check your contract on Blockchain by clicking on below link -<br> <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to view contract</a>.
-														<br><strong>Ignore if already done!</strong>
-													</div>
-													<div class="text-center">
-														<p>Click on below button to fill your project wallet with alloted tokens.</p>
-														<p><small>{{$project->wallet_address}}</small></p>
-														<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
-													</div>
-													<!-- END: Tokenize project wallet -->
-												@else
-														@if(!$project->is_wallet_tokenized)
-															<!-- START: Tokenize project wallet -->
-															<div class="alert alert-warning text-center">
-																You will have to verify your contract to proceed further. Please <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to verify</a>.
-																<br><strong>Ignore if already done!</strong>
-															</div>
-															<div class="text-center">
-																<p>Click on below button to fill your project wallet with alloted tokens.</p>
-																<p><small>{{$project->wallet_address}}</small></p>
-																<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
-															</div>
-															<!-- END: Tokenize project wallet -->
-														@else
-															<div class="alert alert-success text-center">
-																<h4>Tokenization process is done!</h4>
-																	@if($contract)
-																	<small>
-																		<p>
-																			<label>Legals: </label><br>
-																			<span>{{$contract->name}}</span>
-																		</p>
-																		<p>
-																			<label>Token Symbol: </label><br>
-																			<span>{{$contract->symbol}}</span>
-																		</p>
-																		<p>
-																			<label>Total supply: </label><br>
-																			<span>{{number_format($contract->totalSupply)}}</span>
-																		</p>
-																		<p>
-																			<label>Available supply: </label><br>
-																			<span style="font-size: 20px;">{{number_format($balance->balance)}}</span>
-																		</p>
-																	</small>
-																		@if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)
-																			@if(!$project->issueTokens)
-																			<button class="btn btn-primary" id="issue_tokens">Issue Tokens to existing Shareholder</button>
-																			@elseif(!$project->investors->last()->pivot->transaction_hash)
-																			<i>Issueing Tokens to investors is under Process </i> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Issueing tokens to investors will take more than 24 hours."></i>
-																			@endif
-																		@endif
-																	@endif
-															</div>
-														@endif
-												@endif
-											@endif
-										</div>
+												<div class="col-sm-6">
+													<label for="number_of_tokens">Number of tokens</label>
+													<input class="form-control" type="number" name="number_of_tokens" id="number_of_tokens" placeholder="Enter number of tokens to generate" required value="{{ (int)$project->investment->invoice_amount }}" >
+												</div>
+											</div>
+											<br>
+											<div class="form-group text-center">
+												<input type="hidden" name="project_id" value="{{ $project->id }}">
+												<button type="submit" class="btn btn-primary btn-block"> Generate {{$project->title}} Tokens </button>
+											</div>
+										</form>
 									</div>
-								</div>
-							@else
-								<div class="row text-center">
-									<div class="col-md-12">
-										<div class="text-center">
-											<h2>Create Wallet</h2>
-											<button class="btn btn-primary" id="create_wallet">Create Wallet</button>
-										</div>
+									@else
+									@if(!$project->is_wallet_tokenized)
+									<!-- START: Tokenize project wallet -->
+									<div class="alert alert-warning text-center">
+										Check your contract on Blockchain by clicking on below link -<br> <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to view contract</a>.
+										<br><strong>Ignore if already done!</strong>
 									</div>
+									<div class="text-center">
+										<p>Click on below button to fill your project wallet with alloted tokens.</p>
+										<p><small>{{$project->wallet_address}}</small></p>
+										<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
+									</div>
+									<!-- END: Tokenize project wallet -->
+									@else
+									@if(!$project->is_wallet_tokenized)
+									<!-- START: Tokenize project wallet -->
+									<div class="alert alert-warning text-center">
+										You will have to verify your contract to proceed further. Please <a href="https://ropsten.etherscan.io/address/{{$project->contract_address}}#code" target="_blank">click here to verify</a>.
+										<br><strong>Ignore if already done!</strong>
+									</div>
+									<div class="text-center">
+										<p>Click on below button to fill your project wallet with alloted tokens.</p>
+										<p><small>{{$project->wallet_address}}</small></p>
+										<a href="javascript:void();" class="btn btn-danger" id="load_project_wallet">Load Project Wallet</a>
+									</div>
+									<!-- END: Tokenize project wallet -->
+									@else
+									<div class="alert alert-success text-center">
+										<h4>Tokenization process is done!</h4>
+										@if($contract)
+										<small>
+											<p>
+												<label>Legals: </label><br>
+												<span>{{$contract->name}}</span>
+											</p>
+											<p>
+												<label>Token Symbol: </label><br>
+												<span>{{$contract->symbol}}</span>
+											</p>
+											<p>
+												<label>Total supply: </label><br>
+												<span>{{number_format($contract->totalSupply)}}</span>
+											</p>
+											<p>
+												<label>Available supply: </label><br>
+												<span style="font-size: 20px;">{{number_format($balance->balance)}}</span>
+											</p>
+										</small>
+										@if(!$project->investors && !$project->investors->first()->pivot->transaction_hash)
+										@if(!$project->issueTokens)
+										<button class="btn btn-primary" id="issue_tokens">Issue Tokens to existing Shareholder</button>
+										@elseif(!$project->investors->last()->pivot->transaction_hash)
+										<i>Issueing Tokens to investors is under Process </i> <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" title="Issueing tokens to investors will take more than 24 hours."></i>
+										@endif
+										@endif
+										@endif
+									</div>
+									@endif
+									@endif
+									@endif
 								</div>
-							@endif
+							</div>
+						</div>
+						@else
+						<div class="row text-center">
+							<div class="col-md-12">
+								<div class="text-center">
+									<h2>Create Wallet</h2>
+									<button class="btn btn-primary" id="create_wallet">Create Wallet</button>
+								</div>
+							</div>
+						</div>
+						@endif
 						@endif
 
 						<!-- --------------------------------- -->
