@@ -200,13 +200,8 @@
 															{{-- <input type="submit" name="accepted" class="btn btn-primary issue-share-certi-btn" value="Issue @if($project->share_vs_unit)  @else  @endif Receivable"> --}}
 															<button type="button" name="accepted" id="issue_receivable{{$investment->id}}" data="{{$investment->id}}" class="btn btn-primary issue-share-certi-btn">Issue Receivable</button>
 															@endif
-<<<<<<< Updated upstream
 															{{-- <input type="hidden" name="investor" value="{{$investment->user->id}}"> --}}
 														</form>
-=======
-															<input type="hidden" name="investor" value="{{$investment->user->id}}">
-														</form>
->>>>>>> Stashed changes
 														@endif
 													</div>
 												</td>
