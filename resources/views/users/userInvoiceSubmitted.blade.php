@@ -26,16 +26,16 @@
 				</div>
 			</li>
 		</ul>
-		<h3 class="text-center">Notifications</h3>
+		{{-- <h3 class="text-center">Notifications</h3> --}}
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped" id="notificationTable">
 				<thead>
 					<tr>
-						<th>Invoice name</th>
-						<th>Invoice submitted date</th>
-						<th>Invoice due date</th>
-						<th>Invoice amount</th>
-						<th>Invoice asking amount</th>
+						<th>Invoice Name</th>
+						<th>Invoice Submitted Date</th>
+						<th>Invoice Due Date</th>
+						<th>Invoice Amount</th>
+						<th>Invoice Asking Amount</th>
 						<th>Status</th>
 					</tr>
 				</thead>
