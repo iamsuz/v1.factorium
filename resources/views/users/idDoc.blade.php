@@ -47,7 +47,7 @@
 						<hr>
 						<div class="row">
 							<div class="col-md-10 col-md-offset-1 well text-center">
-								<h4>If you are citizen of Australia, you can complete the KYC using the Digital ID application.</h4>
+								<h4>If you are a resident, citizen or have a valid citizen of Australia, you can complete the KYC using the Digital ID application.</h4>
 								<h5>You will see a button below if not verified yet.</h5>
 								<br>
 								@if($user->digitalIdKyc)
