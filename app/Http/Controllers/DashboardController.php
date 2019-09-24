@@ -242,11 +242,12 @@ class DashboardController extends Controller
         $investorTokensJobDetails = SchedulerJob::where('type', 'investor_project_tokens')->orderBy('created_at', 'desc')->first();
         // dd($positions);
         // dd($shareInvestments->last()->investingJoint);
+        $buyer = User::where('email',$project->invoice_issue_from_email)->first();
         $balanceAudk = false;
         if($project->is_wallet_tokenized && $project->use_tokens){
             $client = new \GuzzleHttp\Client();
-            $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
-                'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
+            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                'query'=>['user_id'=>$buyer->id,'project_id'=>$this->audkID]
             ]);
             $responseAudk = $requestAudk->getBody()->getContents();
             $balanceAudk = json_decode($responseAudk);
@@ -981,13 +982,14 @@ class DashboardController extends Controller
                             return redirect()->back()->withMessage('Your Project doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
                         }
                         $client = new \GuzzleHttp\Client();
+                        $buyer = User::where('email',$project->invoice_issue_from_email)->first();
                         $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
-                            'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                            'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$buyer->wallet_address]
                         ]);
                         $responseRepurchase = $requestRepurchase->getBody()->getContents();
                         $result = json_decode($responseRepurchase);
                         $requestRepurchaseAudk = $client->request('GET',$this->uri.'/investment/transaction',[
-                            'query'=>['user_id'=> $investment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                            'query'=>['user_id'=> $investment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$repurchaseAmount,'project_address'=>$buyer->wallet_address]
                         ]);
                         $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
                         $balance = json_decode($responseRepurchaseAudk);
