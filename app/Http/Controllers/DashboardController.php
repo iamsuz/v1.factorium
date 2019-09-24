@@ -244,14 +244,14 @@ class DashboardController extends Controller
         // dd($shareInvestments->last()->investingJoint);
         $buyer = User::where('email',$project->invoice_issue_from_email)->first();
         $balanceAudk = false;
-        if($project->is_wallet_tokenized && $project->use_tokens){
-            $client = new \GuzzleHttp\Client();
-            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
-                'query'=>['user_id'=>$buyer->id,'project_id'=>$this->audkID]
-            ]);
-            $responseAudk = $requestAudk->getBody()->getContents();
-            $balanceAudk = json_decode($responseAudk);
-        }
+        // if($project->is_wallet_tokenized && $project->use_tokens){
+        //     $client = new \GuzzleHttp\Client();
+        //     $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+        //         'query'=>['user_id'=>$buyer->id,'project_id'=>$this->audkID]
+        //     ]);
+        //     $responseAudk = $requestAudk->getBody()->getContents();
+        //     $balanceAudk = json_decode($responseAudk);
+        // }
         return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'balanceAudk', 'investorTokens', 'investorTokensJobDetails'));
     }
 
