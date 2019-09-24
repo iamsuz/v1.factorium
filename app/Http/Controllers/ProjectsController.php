@@ -1291,6 +1291,7 @@ class ProjectsController extends Controller
             ->withInput();
         }
         $user = Auth::user();
+        $request['investing_as'] = 'Individual Investor';
         $request['project_id'] = $this->audkID;
         $request['line_1'] = $user->line_1;
         $request['state'] = $user->state;
