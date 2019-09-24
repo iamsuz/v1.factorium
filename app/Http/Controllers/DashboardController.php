@@ -422,7 +422,7 @@ class DashboardController extends Controller
             {
                 $client = new \GuzzleHttp\Client();
                 $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investmentDetails->total_projected_costs,'project_address'=>$investment->project->wallet_address]
                 ]);
                 $responseInvest = $requestInvest->getBody()->getContents();
                 $resultInvest = json_decode($responseInvest);
