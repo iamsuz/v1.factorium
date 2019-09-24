@@ -703,10 +703,19 @@
 									$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 									$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 									$invoice_sold = '0';
-									if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+									/*if($paid->sum('amount') == $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 										$invoice_sold = '1';
-									}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+									}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
 										$invoice_sold = '2';
+									}*/
+									if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) 
+									{
+										$invoice_sold = 2;
+									}else if($project->soldInvoice) {
+										if($project->soldInvoice->first())
+										{
+											$invoice_sold = 1;
+										}
 									}
 									if($project->investment) {
 										$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
@@ -728,7 +737,7 @@
 											@else
 											href="javascript:void(0);"
 											@endif
-											@else @if($invoice_sold === '1') href="{{route('projects.show', [$project])}}" @endif
+											@else @if($invoice_sold == '1') href="{{route('projects.show', [$project])}}" @endif
 											@endif name="project-link" style="display: none;">
 											<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
 												<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -738,8 +747,8 @@
 															<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 														</div>
 														<div class="col-md-6" style="padding-top: 10px">
-															<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-															<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+															<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
+															<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 														</div>
 													</div>
 													<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -796,10 +805,10 @@
 													@endif
 													@else href="{{route('projects.show', [$project])}}"
 													@endif>
-													@if($invoice_sold === '1' || $invoice_sold === '2') @else
+													@if($invoice_sold == '1' || $invoice_sold == '2') @else
 													<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 													@endif
-													<div class="text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
+													<div class="text-left" @if($invoice_sold == '1' || $invoice_sold == '2') style="margin-top: 5.7rem;" @endif>
 														{{--															<div class="col-xs-4 col-sm-4 col-md-4" data-wow-duration="1.5s" data-wow-delay="0.7s">--}}
 															{{--																<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>--}}
 														{{--															</div>--}}
@@ -852,11 +861,21 @@
 								$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 								$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 								$invoice_sold = '0';
-								if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+								/*if($paid->sum('amount') == $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 									$invoice_sold = '1';
-								}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+								}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
 									$invoice_sold = '2';
+								}*/
+								if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) 
+								{
+									$invoice_sold = 2;
+								}else if($project->soldInvoice) {
+									if($project->soldInvoice->first())
+									{
+										$invoice_sold = 1;
+									}
 								}
+
 								if($project->investment) {
 									$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
 									$remaining_amount = $project->investment->goal_amount - $pledged_amount;
@@ -865,10 +884,10 @@
 									$remaining_amount = 0;
 								}
 								?>
-								@if($invoice_sold ==='1')
+								@if($invoice_sold =='1')
 
 								<div class="col-md-4 swap-select-overlay  sold" style="padding-top: 15px;" id="circle{{$project->id}}">
-									@elseif($invoice_sold === '2')
+									@elseif($invoice_sold == '2')
 
 									<div class="col-md-4 swap-select-overlay  repaid" style="padding-top: 15px;" id="circle{{$project->id}}">
 										@else
@@ -886,7 +905,7 @@
 												@else
 												href="javascript:void(0);"
 												@endif
-												@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif style="display: none;"
+												@else @if($invoice_sold == '1') @elseif($invoice_sold == '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif style="display: none;"
 												@endif>
 												<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden; box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
 													<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -896,8 +915,8 @@
 																<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" target="_blank" style="padding: 5px; border: 0px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px;height: 20px;">{{$project->token_symbol}}</a>
 															</div>
 															<div class="col-md-6" style="padding-top: 10px;">
-																<?php $buyBtnText = ($invoice_sold ==='1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-																<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+																<?php $buyBtnText = ($invoice_sold =='1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
+																<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 															</div>
 														</div>
 														<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -951,12 +970,12 @@
 														@else
 														href="javascript:void(0);"
 														@endif
-														@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}} @endif"
+														@else @if($invoice_sold == '1') @elseif($invoice_sold == '2')  @else href="{{route('projects.interest', [$project->id])}} @endif"
 														@endif>
-														@if($invoice_sold === '1' || $invoice_sold === '2') @else
+														@if($invoice_sold == '1' || $invoice_sold == '2') @else
 														<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 														@endif
-														<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
+														<div class="row text-left" @if($invoice_sold == '1' || $invoice_sold == '2') style="margin-top: 5.7rem;" @endif>
 															{{--																<div class="col-xs-4 col-sm-4 col-md-4 listing-3-0" data-wow-duration="1.5s" data-wow-delay="0.7s">--}}
 																{{--																	<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>--}}
 															{{--																</div>--}}
@@ -1009,10 +1028,19 @@
 									$paid = $investments->where('project_id',$project->id)->where('accepted',1);
 									$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
 									$invoice_sold = '0';
-									if($paid->sum('amount') === $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
+									/*if($paid->sum('amount') == $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 										$invoice_sold = '1';
-									}elseif($repurchased->sum('amount') === $project->investment->goal_amount){
+									}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
 										$invoice_sold = '2';
+									}*/
+									if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) 
+									{
+										$invoice_sold = 2;
+									}else if($project->soldInvoice) {
+										if($project->soldInvoice->first())
+										{
+											$invoice_sold = 1;
+										}
 									}
 									if($project->investment) {
 										$completed_percent = ($pledged_amount/$project->investment->goal_amount)*100;
@@ -1022,9 +1050,9 @@
 										$remaining_amount = 0;
 									}
 									?>
-									@if($invoice_sold === '1')
+									@if($invoice_sold == '1')
 									<div class="col-sm-6 col-md-6 swap-select-overlay  sold"  id="circle{{$project->id}}" style=" padding-top: 20px;">
-										@elseif($invoice_sold === '2')
+										@elseif($invoice_sold == '2')
 										<div class="col-sm-6 col-md-6 swap-select-overlay  repaid"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 											@else <div class="col-sm-6 col-md-6 swap-select-overlay  buy"  id="circle{{$project->id}}" style=" padding-top: 20px;">
 												@endif
@@ -1040,7 +1068,7 @@
 													@else
 													href="javascript:void(0);"
 													@endif
-													@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" style="display: none;" @endif
+													@else @if($invoice_sold == '1') @elseif($invoice_sold == '2')  @else href="{{route('projects.interest', [$project->id])}}" style="display: none;" @endif
 													@endif>
 													<div class="" id="borderB" data-wow-duration="1.5s" data-wow-delay="0.2s" style="padding: 0px 10px; overflow:hidden;box-shadow: 1px 3px 20px 5px #ccc;border-top-left-radius: 30px;">
 														<div style="width: 100%; position: relative;" class="project-back  img-responsive bg-imgs @if($project->is_coming_soon) project-details @endif">
@@ -1050,8 +1078,8 @@
 																	<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 																</div>
 																<div class="col-md-6" style="padding-top: 10px;">
-																	<?php $buyBtnText = ($invoice_sold === '1') ? 'Invoice Sold' : (($invoice_sold === '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-																	<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold === '1' || $invoice_sold === '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+																	<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
+																	<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 																</div>
 															</div>
 															<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1104,12 +1132,12 @@
 															@else
 															href="javascript:void(0);"
 															@endif
-															@else @if($invoice_sold === '1') @elseif($invoice_sold === '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
+															@else @if($invoice_sold == '1') @elseif($invoice_sold == '2')  @else href="{{route('projects.interest', [$project->id])}}" @endif
 															@endif>
-															@if($invoice_sold === '1' || $invoice_sold === '2') @else
+															@if($invoice_sold == '1' || $invoice_sold == '2') @else
 															<p><small><small>@if($project->project_thumbnail_text){{$project->project_thumbnail_text}} @else @if($project->projectspvdetail)Securities are being offered in a @if($project->project_prospectus_text!='') {{$project->project_prospectus_text}} @elseif((App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)) {{(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->prospectus_text)}} @else Prospectus @endif for issue of {{$project->projectspvdetail->spv_name}}@endif @endif</small></small></p>
 															@endif
-															<div class="row text-left" @if($invoice_sold === '1' || $invoice_sold === '2') style="margin-top: 5.7rem;" @endif>
+															<div class="row text-left" @if($invoice_sold == '1' || $invoice_sold == '2') style="margin-top: 5.7rem;" @endif>
 																{{--																	<div class="col-xs-5 col-sm-5 col-md-6 " data-wow-duration="1.5s" data-wow-delay="0.7s">--}}
 																	{{--																		<h4 class="text-left first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px; font-size:22px;" data-wow-duration="1.5s" data-wow-delay="0.4s"><b>{{$project->title}}</b></h4>--}}
 																{{--																	</div>--}}
