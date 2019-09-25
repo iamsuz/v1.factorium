@@ -408,7 +408,7 @@ class DashboardController extends Controller
 
     public function acceptInvestment(Request $request, AppMailer $mailer, $investment_id)
     {
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
             // dd($investment_id);
         // $this->validate($request, [
         //     'investor' => 'required',
@@ -511,7 +511,7 @@ class DashboardController extends Controller
         }
         return 1;
         // return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully updated.</p>');
-        }
+        // }
     }
 }
 
