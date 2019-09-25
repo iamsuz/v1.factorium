@@ -556,7 +556,7 @@ class ProjectsController extends Controller
                 $tokenSymbol = $project->token_symbol;
                 $projectHash = $project->project_site;
 
-                $this->dispatch(new AutomateTokenGenerate($projectId,$numberOfTokens,$tokenSymbol,$projectHash));
+                // $this->dispatch(new AutomateTokenGenerate($projectId,$numberOfTokens,$tokenSymbol,$projectHash));
             }
         }
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Updated.</p>');
