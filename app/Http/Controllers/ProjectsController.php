@@ -1298,7 +1298,7 @@ class ProjectsController extends Controller
         $request['postal_code'] = $user->postal_code;
         $request['interested_to_buy'] = 0;
         $request['signature_type'] = 0;
-        $this->offer->store($request);
+        $this->offer->store($request,$mailer);
         return redirect()->back()->withMessage('Your transation has been initiated Successfully');
     }
 }
