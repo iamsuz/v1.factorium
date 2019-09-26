@@ -599,7 +599,7 @@ class ProjectsController extends Controller
             $balance = json_decode($responseBalance);
             $transactionAUDK = false;
             if($balance->balance < $amount){
-              return redirect()->route('project.user.audc')->withMessage('You dont have sufficient AUDC to invest in that invoice please buy AUDC');
+              return redirect()->route('project.user.audc')->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
           }
       }
         // if(Auth::user()->verify_id != 2){
