@@ -972,17 +972,17 @@ class DashboardController extends Controller
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
                 if($project->is_wallet_tokenized){
                     if($project->use_tokens){
+                        $buyer = User::where('email',$project->invoice_issue_from_email)->first();
                         $client = new \GuzzleHttp\Client();
-                        $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
-                            'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
+                        $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                            'query'=>['project_id'=>$this->audkID,'user_id'=>$buyer->id]
                         ]);
                         $responseAudk = $requestAudk->getBody()->getContents();
                         $balanceAudk = json_decode($responseAudk);
                         if($balanceAudk->balance < $repurchaseAmount){
-                            return redirect()->back()->withMessage('Your Project doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
+                            return redirect()->back()->withMessage('Buyer doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
                         }
                         $client = new \GuzzleHttp\Client();
-                        $buyer = User::where('email',$project->invoice_issue_from_email)->first();
                         $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
                             'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$buyer->wallet_address]
                         ]);
