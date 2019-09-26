@@ -876,7 +876,12 @@
 						headers: {
 							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 						},
-					})
+					}).done(function(data){
+					if(data){
+						$('#offer_link'+eoi_id).html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
+						$('.loader-overlay').hide();
+					}
+				});
 				})
 			});
 			$('#partialRepayBtn').on('click',function (e) {

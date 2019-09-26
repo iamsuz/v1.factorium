@@ -191,7 +191,7 @@ Edit {{$project->title}} | Dashboard | @parent
 											</span>
 										</div>
 										<div class="col-md-2 ">
-											<span class="text-success pull-right">@if(($invice_issed_to->idDoc && $invice_issed_to->idDoc->verified == '1')||($invice_issed_to->digitalIdKyc))<strong>Verified <i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>@else <span class="text-danger"> Not verified</span> @endif
+											<span class="text-success pull-right">@if(($invice_issed_to && $invice_issed_to->idDoc && $invice_issed_to->idDoc->verified == '1')||($invice_issed_to && $invice_issed_to->digitalIdKyc))<strong>Verified <i class="fa fa-check-circle" aria-hidden="true"></i></strong></span>@else <span class="text-danger"> Not verified</span> @endif
 										</div>
 										<div class="col-md-3 ">
 											<span class="pull-left">

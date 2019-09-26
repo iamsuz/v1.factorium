@@ -59,7 +59,7 @@
 							@if(count($project->investors->where('id',$user->id)) > 0)
 							@foreach($project->investors->where('id',$user->id) as $investor)
 							<tr>
-								<td>{{date("d/m/Y",strtotime($investor->created_at))}}</td>
+								<td>{{date("d/m/Y",strtotime($investor->pivot->created_at))}}</td>
 								<td>{{$investor->pivot->amount}}
 								</td>
 								<td>@if($investor->pivot->accepted == 1) <i>Accepted</i> @else Yet to accept @endif</td>

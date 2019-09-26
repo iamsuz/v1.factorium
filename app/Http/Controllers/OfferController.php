@@ -76,7 +76,7 @@ class OfferController extends Controller
      */
 
 
-    public function store(Request $request)
+    public function store(Request $request, AppMailer $mailer)
     {
       $request = new Request(array_except($request->all(),['password']));
       $project = Project::findOrFail($request->project_id);

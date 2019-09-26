@@ -575,11 +575,11 @@
 <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Hi,</span></span></span></strong>
 
 <div style="font-size: 13px;text-align:left; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">An invoice has been issued to you for {{$project->investment->total_projected_costs}} by {{$project->invoice_issued_from}} and you have requested payment terms till {{date('d-m-Y', strtotime($project->investment->fund_raising_close_date))}}.<br>
+<span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">test<br>
 <br>
 Kindly confirm this invoice to receive your payment terms by clicking here
 <br><br>
-<a @if($newUser == '1') href="{{route('registration.activation', $user->token)}}" @else href="{{route('users.invoices',[$project])}}" @endif><b><input type="button" value="Confirm Invoice" style="background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;border: none;padding: 1em 2em;color: #fff;cursor: pointer;font-weight: 600;"></b></a>
+<a href="#"><b><input type="button" value="Buy AUDC" style="background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;border: none;padding: 1em 2em;color: #fff;cursor: pointer;font-weight: 600;"></b></a>
 </span></span></span>
 &nbsp;</div>
 

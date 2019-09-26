@@ -9,6 +9,7 @@ use App\Project;
 use App\IdImage;
 use App\Market;
 use App\IdDocument;
+use App\InvestmentInvestor;
 use App\MailSetting;
 use App\UserRegistration;
 use Illuminate\Contracts\Mail\Mailer;
@@ -573,6 +574,15 @@ class AppMailer
         $this->view = 'emails.password';
         $this->subject = 'Your Password Reset Link';
         $this->data = compact('token');
+        $this->deliver();
+    }
+    public function audcDuePayemntToSeller($investment_id)
+    {
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $this->to = $investment->user->email;
+        $this->view = 'emails.audcDuePayment';
+        $this->subject = 'Please buy more AUDC token to complete the Repayemnt';
+        $this->data = compact('investment');
         $this->deliver();
     }
 
