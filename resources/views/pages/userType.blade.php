@@ -32,15 +32,15 @@ User Type
                             @endif
                             <div class="col-xs-4">
                                 <input type="radio" name="user_type" id="user_type3" value="financier" @if($user->factorium_user_type) @if($user->factorium_user_type == 'financier') checked @endif @else checked @endif>
-                                <h4><label for="user_type3" >Financier</label></h4>
+                                <h4><label for="user_type3" >Invoice Buyer</label></h4>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-4 hide">
                                 <input type="radio" name="user_type" id="user_type1" value="buyer" @if($user->factorium_user_type) @if($user->factorium_user_type == 'buyer') checked @endif @endif>
                                 <h4><label for="user_type1" >Buyer</label></h4>
                             </div>
                             <div class="col-xs-4">
                                 <input type="radio" name="user_type" id="user_type2" value="seller" @if($user->factorium_user_type) @if($user->factorium_user_type == 'seller') checked @endif @endif>
-                                <h4><label for="user_type2" >Seller</label></h4>
+                                <h4><label for="user_type2" >Invoice Issuer</label></h4>
                             </div>
                         </div>
                     </div>
