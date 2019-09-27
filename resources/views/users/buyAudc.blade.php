@@ -40,8 +40,8 @@
 							<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
 						</div>
 					</div>
-					<p><small><small>Your AUDC purchase is operated as an exempt Non Cash internal payment facility. Each AUDC represents 1 Australian Cent or 1/100th of an Australian Dollar. No more than 1000 Million AUDC (or $10 Million AUD) are under circulation and no user is allowed to hold more than $1000 worth of AUDC.
-						We use AUDC to enable cash equivalent movements within the platform. You may redeem any AUDC held by you from us in favor of Australian Dollars at any time. We will process any payments promptly after any AML/CTF/KYC obligations are met. We hold an equivalent amount of Australian Dollars in trust with us to the value of AUDC under circulation ensuring it is always maintained at a one to one peg. We also publish bank statements confirming the balance every 7 days.</small></small></p>
+					<p><small><small>Your AUDC purchase is operated as an exempt Non Cash internal payment facility. Each AUDC represents 1 Australian Dollar. No more than 10 Million AUDC (or $10 Million AUD) are under circulation and no user is allowed to hold more than $1000 worth of AUDC.
+					We use AUDC to enable cash equivalent movements within the platform. You may redeem any AUDC held by you from us in favor of Australian Dollars at any time. We will process any payments promptly after any AML/CTF/KYC obligations are met. We hold an equivalent amount of Australian Dollars in trust with us to the value of AUDC under circulation ensuring it is always maintained at a one to one peg. We also publish bank statements confirming the balance every 7 days.</small></small></p>
 				</form>
 			</div>
 			<div>
