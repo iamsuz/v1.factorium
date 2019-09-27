@@ -32,7 +32,7 @@
 									<thead>
 										<tr>
 											<th class="text-center">Project Name</th>
-											<th class="text-center">Security Tokens</th>
+											<th class="text-center">Tokens</th>
 										</tr>
 									</thead>
 									<tbody>
