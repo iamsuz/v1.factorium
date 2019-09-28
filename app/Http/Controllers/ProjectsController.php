@@ -1282,7 +1282,7 @@ class ProjectsController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $project = Project::findOrFail($this->audkID);
-        $exchanges = CryptoExchangeTransaction::orderBy('created_at', 'DESC')->get();
+        $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
 
         return view('users.buyAudc',compact('color','user','project', 'exchanges'));
     }
