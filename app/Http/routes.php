@@ -192,6 +192,7 @@ Route::post('/ProjectThumbnailText/{id}', ['as'=>'ProjectThumbnailText', 'uses'=
 Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redirectingfromproject']);
 Route::get('/project/buy/audc',['as'=>'project.user.audc','uses'=>'ProjectsController@projectAudc']);
 Route::post('/project/buy/audc',['as'=>'project.user.audc.buy','uses'=>'ProjectsController@projectBuyAudc']);
+Route::post('/project/dai/audc',['as'=>'project.user.dai.audc','uses'=>'ProjectsController@projectBuyDaiAudc']);
 // Route::get('/news/financialreview', ['as'=>'news.financialreview', 'uses'=>'NewsController@financialreview']);
 // Route::get('/news/startupsmart', ['as'=>'news.startupsmart', 'uses'=>'NewsController@startupsmart']);
 // Route::get('/news/crowdfundinsider', ['as'=>'news.crowdfundinsider', 'uses'=>'NewsController@crowdfundinsider']);

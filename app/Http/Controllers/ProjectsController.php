@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\CryptoExchangeTransaction;
+use Illuminate\Support\Str;
 use Session;
 use App\User;
 use App\Color;
@@ -37,9 +39,12 @@ use App\SiteConfiguration;
 use App\ProjectEOI;
 use App\ProspectusDownload;
 use App\Jobs\AutomateTokenGenerate;
+use App\Services\Konkrete as KonkreteClient;
 
 class ProjectsController extends Controller
 {
+    protected $konkreteClient;
+
     /**
      * constructor for UsersController
      */
@@ -54,6 +59,7 @@ class ProjectsController extends Controller
         }
         $this->userRegistration = new UserRegistrationsController();
         $this->offer = new OfferController();
+        $this->konkreteClient = new KonkreteClient();
     }
 
     /**
@@ -1276,7 +1282,9 @@ class ProjectsController extends Controller
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
         $project = Project::findOrFail($this->audkID);
-        return view('users.buyAudc',compact('color','user','project'));
+        $exchanges = CryptoExchangeTransaction::orderBy('created_at', 'DESC')->get();
+
+        return view('users.buyAudc',compact('color','user','project', 'exchanges'));
     }
     public function projectBuyAudc(Request $request, AppMailer $mailer)
     {
@@ -1300,5 +1308,52 @@ class ProjectsController extends Controller
         $request['signature_type'] = 0;
         $this->offer->store($request,$mailer);
         return redirect()->back()->withMessage('Your transation has been initiated Successfully');
+    }
+
+    public function projectBuyDaiAudc(Request $request)
+    {
+        $daiAmount = $request->dai_amount;
+        $daiUserId = Auth::user()->id;
+        $audcProjectId = $this->audkID;
+
+        // Create a transaction entry in DB
+        $transaction = CryptoExchangeTransaction::create([
+            'user_id' => $daiUserId,
+            'source_token' => 'DAI',
+            'source_token_amount' => $daiAmount,
+            'dest_token' => 'AUDC'
+        ]);
+
+        try {
+            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/dai/centralisedTransfer', [], [
+                'dai_amount' => (int)$daiAmount,
+                'dai_user_id' => (int)$daiUserId,
+                'audc_project_id' => $audcProjectId,
+                'transaction_id' => $transaction->id
+            ]);
+            $responseResult = json_decode($response);
+        } catch (\Exception $e) {
+            return array( 'status' => false, 'message' => $e->getMessage() );
+        }
+
+        if(!$responseResult->status) {
+            if ($responseResult->data) {
+                $transaction->update([
+                    'transaction_hash' => $responseResult->data->transaction_hash,
+                    'transaction_response1' => json_encode($responseResult->data->transaction1)
+                ]);
+            }
+            return array( 'status' => false, 'message' => $responseResult->message );
+        }
+
+        // Update transaction record
+        $transaction->update([
+            'dest_token_amount' => $responseResult->data->audc_amount,
+            'transaction_hash' => $responseResult->data->transaction_hash,
+            'transaction_response1' =>  json_encode($responseResult->data->transaction1),
+            'transaction_response2' =>  json_encode($responseResult->data->transaction2)
+        ]);
+
+        return array( 'status' => true, 'message' => 'Transfer was successfull.' );
     }
 }
