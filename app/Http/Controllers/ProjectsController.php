@@ -1299,6 +1299,9 @@ class ProjectsController extends Controller
             ->withInput();
         }
         $user = Auth::user();
+        if(!$user->line_1 || !$user->state || !$user->postal_code){
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Please update your <a href="/users/'.$user->id.'/edit">address</a> to buy AUDC</p>')->withInput();
+        }
         $request['investing_as'] = 'Individual Investor';
         $request['project_id'] = $this->audkID;
         $request['line_1'] = $user->line_1;
@@ -1307,7 +1310,7 @@ class ProjectsController extends Controller
         $request['interested_to_buy'] = 0;
         $request['signature_type'] = 0;
         $this->offer->store($request,$mailer);
-        return redirect()->back()->withMessage('Your transation has been initiated Successfully');
+        return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>');
     }
 
     public function projectBuyDaiAudc(Request $request)

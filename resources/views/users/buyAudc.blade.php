@@ -78,16 +78,16 @@
 			<hr>
 			<h3 class="text-center">Buy AUDC Token</h3>
 			<div class="">
-				<form class="" action="{{route('project.user.audc.buy')}}" method="POST">
+				<form class="" action="{{route('project.user.audc.buy')}}" method="POST" name="audcForm" id="audcForm">
 					{{ csrf_field() }}
 					<div class="row">
 						<div class="col-md-6 form-group">
 							<label>Amount</label>
-							<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter a amount to buy an AUDC" max="10000">
+							<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter a amount to buy an AUDC" max="10000" required="required">
 						</div>
 						<div class="col-md-6 form-group">
 							<label>&nbsp;</label>
-							<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
+							<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy" id="buyAudcBtn">
 						</div>
 					</div>
 					<p><small><small>Your AUDC purchase is operated as an exempt Non Cash internal payment facility. Each AUDC represents 1 Australian Dollar. No more than 10 Million AUDC (or $10 Million AUD) are under circulation and no user is allowed to hold more than $1000 worth of AUDC.
@@ -168,7 +168,10 @@
 				alert(data.message);
 				location.reload();
 			});
-		})
+		});
+		$('#audcForm').submit(function (e) {
+			$('.loader-overlay').show();
+		});
 	});
 </script>
 @stop

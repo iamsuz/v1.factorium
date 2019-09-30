@@ -3,6 +3,14 @@
  * Application Routes
  * -------------------------------------------------------------------------------------------------------------------
  */
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
+Route::get('/error',function ()
+{
+	throw new Exception('My first Sentry error!');
+});
+Route::get('/try-catch',['as'=>'try.catch','uses'=>'PagesController@tryCatch']);
 Route::get('/', ['as'=>'home', 'uses'=>'PagesController@home']);
 Route::get('/konkrete',['as'=>'konkrete','uses'=>'PagesController@konkrete']);
 Route::get('/konkreteG',['as'=>'konkreteGuzzle','uses'=>'PagesController@konkreteGuzzle']);
@@ -333,6 +341,7 @@ Route::post('/dashboard/project/upload/offerdoc', ['as' => 'dashboard.upload.off
 Route::get('/dashboard/market',['as'=>'dashboard.market','uses'=>'DashboardController@market']);
 Route::post('/dashboard/market/order',['as'=>'dashboard.market.accept','uses'=>'DashboardController@marketStore']);
 Route::post('/dashboard/market/moneyReceived',['as'=>'dashboard.market.money','uses'=>'DashboardController@marketMoneyReceived']);
+Route::get('/dashboard/audc',['as'=>'dashboard.audc','uses'=>'DashboardController@audcProject']);
 
 Route::post('/project/progress/transact',['as'=>'project.progress.transact','uses'=>'PagesController@projectProgressTransact']);
 Route::post('/dashboard/project/tokenize', [ 'as' => 'konkrete.tokenize', 'uses' => 'DashboardController@tokenize' ]);

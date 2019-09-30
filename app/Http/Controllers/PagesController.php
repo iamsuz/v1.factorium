@@ -824,4 +824,12 @@ class PagesController extends Controller
             }
         }
     }
+    public function tryCatch()
+    {
+        try{
+            dd('i am in try');
+        } catch(Exception $e){
+            dd($e);
+        }
+    }
 }
