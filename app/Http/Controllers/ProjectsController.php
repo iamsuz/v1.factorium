@@ -1340,7 +1340,7 @@ class ProjectsController extends Controller
         }
 
         if(!$responseResult->status) {
-            if ($responseResult->data) {
+            if (isset($responseResult->data)) {
                 $transaction->update([
                     'transaction_hash' => $responseResult->data->transaction_hash,
                     'transaction_response1' => json_encode($responseResult->data->transaction1)
@@ -1357,6 +1357,6 @@ class ProjectsController extends Controller
             'transaction_response2' =>  json_encode($responseResult->data->transaction2)
         ]);
 
-        return array( 'status' => true, 'message' => 'Transfer was successfull.' );
+        return array( 'status' => true, 'message' => 'Transfer was successfull. This may take some while to reflect the balance.' );
     }
 }

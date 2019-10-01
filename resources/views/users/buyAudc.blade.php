@@ -51,6 +51,7 @@
 							<p><small><small>** Make sure you have enough DAI in your wallet.</small></small></p>
 						</form>
 					</div>
+					<br>
 					<div class="table-responsive">
 						<table class="table table-bordered table-striped" id="exchangeTable">
 							<thead>
@@ -152,7 +153,7 @@
 	$(document).ready(function(){
 		$('#transactionTable').DataTable();
 		$('#exchangeTable').DataTable({
-			"order": [[0, 'DESC'], [5, 'DESC']],
+			"bSort" : false
 		});
 
 		$('#dai_audc_exchange_form').on('submit', function (e) {
