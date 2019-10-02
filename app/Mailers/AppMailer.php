@@ -579,7 +579,7 @@ class AppMailer
     public function audcDuePayemntToSeller($investment_id)
     {
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $this->to = $investment->user->email;
+        $this->to = $investment->project->invoice_issue_from_email;
         $this->view = 'emails.audcDuePayment';
         $this->subject = 'Please buy more AUDC token to complete the Repayemnt';
         $this->data = compact('investment');

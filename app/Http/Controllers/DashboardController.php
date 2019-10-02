@@ -2025,7 +2025,7 @@ class DashboardController extends Controller
         $mailer->audcDuePayemntToSeller($investment_id);
         return response()->json([
             'status' => true,
-            'message' => 'Issued notified successfully'
+            'message' => 'Issuer notified successfully'
         ]);
     }
     public function audcProject()

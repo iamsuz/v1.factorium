@@ -877,11 +877,13 @@
 							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 						},
 					}).done(function(data){
-					if(data){
-						$('#offer_link'+eoi_id).html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
-						$('.loader-overlay').hide();
-					}
-				});
+						console.log(data);
+						if(data){
+							$('#offer_link').html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
+							$('.loader-overlay').hide();
+							$('#repayModal').modal('hide');
+						}
+					});
 				})
 			});
 			$('#partialRepayBtn').on('click',function (e) {
@@ -946,16 +948,16 @@
 			//Partial repay form percent validation and model trigger
 			$('#partialRepayModal').on("click", "#partialRepayPercentBtn", function(e){
 				var f = document.getElementById('fixedDividendPercent');
-				  if(f.checkValidity()) {
-					  	var partialRepayRate = $('#fixedDividendPercent').val();
-						$("#modal_partial_repay_rate").html(partialRepayRate);
-						var partialRepayAmount = ({{$project->investment->total_projected_costs}} * (partialRepayRate/100)).toFixed(2);
-						$("#modal_partial_repay_amount").html(partialRepayAmount);
-				  		$('#partialRepayPercentBtn').attr('data-target', '#partial_repay_confirm_modal');
-				  	} else {
-				    	alert(document.getElementById('fixedDividendPercent').validationMessage);
-				    	$('#partialRepayPercentBtn').removeAttr('data-target', '#partial_repay_confirm_modal');
-				  }
+				if(f.checkValidity()) {
+					var partialRepayRate = $('#fixedDividendPercent').val();
+					$("#modal_partial_repay_rate").html(partialRepayRate);
+					var partialRepayAmount = ({{$project->investment->total_projected_costs}} * (partialRepayRate/100)).toFixed(2);
+					$("#modal_partial_repay_amount").html(partialRepayAmount);
+					$('#partialRepayPercentBtn').attr('data-target', '#partial_repay_confirm_modal');
+				} else {
+					alert(document.getElementById('fixedDividendPercent').validationMessage);
+					$('#partialRepayPercentBtn').removeAttr('data-target', '#partial_repay_confirm_modal');
+				}
 			});
 
 			// Submit Partial Repayment form
