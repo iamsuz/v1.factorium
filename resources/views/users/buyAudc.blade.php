@@ -34,7 +34,11 @@
 
 			<div class="tab-content">
 				<div id="buy_using_dai" class="tab-pane fade in active">
-					<h3 class="text-center">Buy AUDC Token using DAI</h3>
+					<br>
+					<div class="alert alert-warning text-center">
+						<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">----------</span>" so that you can buy AUDC using it.</p>
+					</div>
+					<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">--</span> DAI )</h3>
 					<div>
 						<form action="#" method="POST" id="dai_audc_exchange_form">
 							{{ csrf_field() }}
@@ -188,6 +192,26 @@
 			$('.loader-overlay').show();
 		});
 
+		// Methods
+		getDAIAccountBalance();
 	});
+
+	function  getDAIAccountBalance() {
+		$.ajax({
+			url: '{{ route('user.dai.balance') }}',
+			type: 'GET',
+			dataType: 'JSON',
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function (data) {
+			if (!data.status) {
+				alert(data.message);
+				return;
+			}
+			$('.dai-user-account').html(data.data.daiAccount);
+			$('.dai-user-balance').html(data.data.daiBalance);
+		});
+	}
 </script>
 @stop

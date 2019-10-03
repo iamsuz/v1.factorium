@@ -1286,6 +1286,35 @@ class ProjectsController extends Controller
 
         return view('users.buyAudc',compact('color','user','project', 'exchanges'));
     }
+
+    /**
+     * Get DAI user balance from blockchain
+     * @param Request $request
+     * @return array
+     */
+    public function getDAIUserBalance(Request $request)
+    {
+        $user = Auth::user();
+
+        try {
+            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/dai/user/balance', [], [ 'dai_user_id' => (int)$user->id ]);
+            $responseResult = json_decode($response);
+        } catch (\Exception $e) {
+            return array( 'status' => false, 'message' => 'Problem occured while fetching DAI balance.' );
+        }
+        $daiBalance = $responseResult->data->balance;
+        $daiAccount = $responseResult->data->account;
+
+        return array(
+            'status' => true,
+            'message' => 'DAI balance fetched',
+            'data' => array(
+                'daiAccount' => $daiAccount,
+                'daiBalance' => $daiBalance
+            )
+        );
+    }
+
     public function projectBuyAudc(Request $request, AppMailer $mailer)
     {
         $validation_rules = array(
