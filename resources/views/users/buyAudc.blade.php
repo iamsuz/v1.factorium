@@ -35,58 +35,73 @@
 			<div class="tab-content">
 				<div id="buy_using_dai" class="tab-pane fade in active">
 					<br>
-					<div class="alert alert-warning text-center">
-						<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">----------</span>" so that you can buy AUDC using it.</p>
-					</div>
-					<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">--</span> DAI )</h3>
-					<div>
-						<form action="#" method="POST" id="dai_audc_exchange_form">
-							{{ csrf_field() }}
-							<div class="row">
-								<div class="col-md-6 form-group">
-									<label>Amount</label>
-									<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000">
-								</div>
-								<div class="col-md-6 form-group">
-									<label>&nbsp;</label>
-									<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
-								</div>
+					<div class="gas-check-progress text-center">
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div><img src="{{ asset('/assets/images/loader.GIF') }}" height="50px" width="50px"></div><br>
+								<p>Please wait while we check for available GAS to perform DAI exchange.</p><br>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-sm active" role="progressbar"
+                                         aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%"></div>
+                                </div>
 							</div>
-							<p><small><small>** Make sure you have enough DAI in your wallet.</small></small></p>
-						</form>
+						</div>
 					</div>
-					<br>
-					<div class="table-responsive">
-						<table class="table table-bordered table-striped" id="exchangeTable">
-							<thead>
-							<tr>
-								<th>Transaction ID</th>
-								<th>From token</th>
-								<th>To token</th>
-								<th>Status</th>
-								<th>Transaction Hash</th>
-								<th>Created at</th>
-							</tr>
-							</thead>
-							<tbody>
-							@foreach($exchanges as $exchange)
+					<div class="dai-audc-section hide">
+						<div class="alert alert-warning text-center">
+							<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">----------</span>" so that you can buy AUDC using it.</p>
+						</div>
+						<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">--</span> DAI )</h3>
+						<div>
+							<form action="#" method="POST" id="dai_audc_exchange_form">
+								{{ csrf_field() }}
+								<div class="row">
+									<div class="col-md-6 form-group">
+										<label>Amount</label>
+										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000">
+									</div>
+									<div class="col-md-6 form-group">
+										<label>&nbsp;</label>
+										<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
+									</div>
+								</div>
+								<p><small><small>** Make sure you have enough DAI in your wallet.</small></small></p>
+							</form>
+						</div>
+						<br>
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped" id="exchangeTable">
+								<thead>
 								<tr>
-									<td>TRX{{ $exchange->id }}</td>
-									<td>{{ $exchange->source_token_amount . ' ' . $exchange->source_token }}</td>
-									<td>{{ $exchange->dest_token_amount . ' ' . $exchange->dest_token }}</td>
-									<td>
-										@if($exchange->transaction_response1 && $exchange->transaction_response2)
-											Success
-										@else
-											Failed
-										@endif
-									</td>
-									<td class="text-center">@if($exchange->transaction_hash) {{ $exchange->transaction_hash }} @else - @endif</td>
-									<td>{{ date("d/m/Y", strtotime($exchange->created_at)) }}</td>
+									<th>Transaction ID</th>
+									<th>From token</th>
+									<th>To token</th>
+									<th>Status</th>
+									<th>Transaction Hash</th>
+									<th>Created at</th>
 								</tr>
-							@endforeach
-							</tbody>
-						</table>
+								</thead>
+								<tbody>
+								@foreach($exchanges as $exchange)
+									<tr>
+										<td>TRX{{ $exchange->id }}</td>
+										<td>{{ $exchange->source_token_amount . ' ' . $exchange->source_token }}</td>
+										<td>{{ $exchange->dest_token_amount . ' ' . $exchange->dest_token }}</td>
+										<td>
+											@if($exchange->transaction_response1 && $exchange->transaction_response2)
+												Success
+											@else
+												Failed
+											@endif
+										</td>
+										<td class="text-center">@if($exchange->transaction_hash) {{ $exchange->transaction_hash }} @else - @endif</td>
+										<td>{{ date("d/m/Y", strtotime($exchange->created_at)) }}</td>
+									</tr>
+								@endforeach
+								</tbody>
+							</table>
+						</div>
+
 					</div>
 
 				</div>
@@ -197,6 +212,7 @@
 	});
 
 	function  getDAIAccountBalance() {
+		updateProgressBar(10);
 		$.ajax({
 			url: '{{ route('user.dai.balance') }}',
 			type: 'GET',
@@ -211,7 +227,40 @@
 			}
 			$('.dai-user-account').html(data.data.daiAccount);
 			$('.dai-user-balance').html(data.data.daiBalance);
+
+			if (data.data.daiBalance >= 1) {
+				updateProgressBar(20);
+				transferGasToUserWallet();
+			}
 		});
+	}
+
+	function  transferGasToUserWallet() {
+		updateProgressBar(30);
+		$.ajax({
+			url: '{{ route('user.dai.transfer.gas') }}',
+			type: 'GET',
+			dataType: 'JSON',
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function (data) {
+			console.log(data);
+			updateProgressBar(50);
+			if (!data.status) {
+				alert('Something went wrong!');
+				return;
+			}
+			updateProgressBar(100);
+			setTimeout(function () {
+				$('.gas-check-progress').hide('slow');
+				$('.dai-audc-section').removeClass('hide');
+			}, 1000);
+		})
+	}
+
+	function updateProgressBar(width, message = '') {
+		$('.progress-bar').css('width', width+'%').attr('aria-valuenow', width).html(width + "%");
 	}
 </script>
 @stop

@@ -1388,4 +1388,21 @@ class ProjectsController extends Controller
 
         return array( 'status' => true, 'message' => 'Transfer was successfull. This may take some while to reflect the balance.' );
     }
+
+    public function daiUserTransferGas(Request $request) {
+        $user = Auth::user();
+
+        try {
+            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/dai/transfer/gas', [], [ 'dai_user_id' => (int)$user->id ]);
+            $responseResult = json_decode($response);
+        } catch (\Exception $e) {
+            return array( 'status' => false, 'message' => 'Problem occured while checking gas.' );
+        }
+
+        return array(
+            'status' => true,
+            'message' => 'Gas is Ok!',
+            'data' => isset($responseResult->data) ? $responseResult->data : []
+        );
+    }
 }
