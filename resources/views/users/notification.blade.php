@@ -42,8 +42,7 @@
 						@foreach($project_prog as $project_progs)
 						<tr>
 							<td>{!!$project_progs->project->title!!}</td>
-							<td>{{$project_progs->created_at->toFormattedDateString()}}
-							</td>
+							<td><span class="hide">{{$project_progs->updated_date}}</span>{{$project_progs->updated_date->toFormattedDateString()}}
 							{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
 							<td>{!!$project_progs->progress_details!!}
 								<br>
