@@ -44,8 +44,8 @@
 					@foreach($projects as $project)
 					<tr>
 						<td>{!!$project->title!!}<br>@if($project->active) @if(!count($project->investors)) <a href="{{route('user.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a> @endif @endif </td>
-						<td>{{date("d/m/Y",strtotime($project->investment->fund_raising_start_date))}} </td>
-						<td>{{date("d/m/Y",strtotime($project->investment->fund_raising_close_date))}} </td>
+						<td>{{$project->investment->fund_raising_start_date->toFormattedDateString()}} </td>
+						<td>{{$project->investment->fund_raising_close_date->toFormattedDateString()}} </td>
 						<td>{!!$project->investment->invoice_amount!!} </td>
 						<td>{!!$project->investment->asking_amount!!}</td>
 						<td>
@@ -91,7 +91,10 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		var usersTable = $('#notificationTable').DataTable();
+		var usersTable = $('#notificationTable').DataTable({
+			"order": [[1, 'desc']],
+			"iDisplayLength": 50
+		});
 		$('.invoiceConfirmationModal').on('click',function (temp) {
 			var id = $(this).attr('data');
 			$('#confirmInvoiceBtn').on('click',function (e) {

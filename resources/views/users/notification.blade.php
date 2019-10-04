@@ -42,7 +42,7 @@
 						@foreach($project_prog as $project_progs)
 						<tr>
 							<td>{!!$project_progs->project->title!!}</td>
-							<td>{{date("d/m/Y",strtotime($project_progs->updated_date))}}
+							<td>{{$project_progs->created_at->toFormattedDateString()}}
 							</td>
 							{{-- <td>{!!$project_progs->progress_description!!} </td> --}}
 							<td>{!!$project_progs->progress_details!!}
@@ -77,7 +77,10 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		var usersTable = $('#notificationTable').DataTable();
+		var usersTable = $('#notificationTable').DataTable({
+			"order": [[1, 'desc']],
+			"iDisplayLength": 50
+		});
 	});
 </script>
 @stop

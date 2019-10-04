@@ -109,7 +109,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var usersTable = $('#investmentsTable').DataTable({
-			"order": [[5, 'desc'], [0, 'desc']],
+			"order": [[2, 'desc']],
 			"iDisplayLength": 50
 		});
 	});
