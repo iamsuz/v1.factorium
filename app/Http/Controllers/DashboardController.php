@@ -420,9 +420,14 @@ class DashboardController extends Controller
         if($investment){
             if($investment->project->is_wallet_tokenized)
             {
+                if($investment->project->id === $this->audkID){
+                    $tokens = $investment->amount;
+                }else{
+                    $tokens = $investment->project->investment->total_projected_costs;
+                }
                 $client = new \GuzzleHttp\Client();
                 $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
-                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$investment->amount,'project_address'=>$investment->project->wallet_address]
+                    'query' => ['user_id' => $investment->user_id,'project_id'=>$investment->project_id,'securityTokens'=>$tokens,'project_address'=>$investment->project->wallet_address]
                 ]);
                 $responseInvest = $requestInvest->getBody()->getContents();
                 $resultInvest = json_decode($responseInvest);
@@ -475,25 +480,30 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-             if($investment->project->share_vs_unit) {
+               if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-             }else {
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+               }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-             }
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+               }
 
-             $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+               $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
                  // $mailer->sendInvoiceToAdmin($investment,$formLink);
-         }
-         if(isset($investment->pay_investment_id)){
+           }
+           if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
             if($linkedInvestment){
                 if($linkedInvestment->project->is_wallet_tokenized)
                 {
+                    if($investment->project->id === $this->audkID){
+                        $tokens = $investment->amount;
+                    }else{
+                        $tokens = $investment->project->investment->total_projected_costs;
+                    }
                     $client = new \GuzzleHttp\Client();
                     $requestLinked = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
-                        'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$investment->amount,'project_address'=>$linkedInvestment->project->wallet_address]
+                        'query' => ['user_id' => $linkedInvestment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$tokens,'project_address'=>$linkedInvestment->project->wallet_address]
                     ]);
                     $responseLinked = $requestLinked->getBody()->getContents();
                     $result = json_decode($responseLinked);
@@ -515,19 +525,19 @@ class DashboardController extends Controller
     }
 }
 
-    public function activateProject($project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $status = $project->update(['active'=> 1, 'activated_on'=>Carbon::now()]);
-        return redirect()->back();
-    }
+public function activateProject($project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $status = $project->update(['active'=> 1, 'activated_on'=>Carbon::now()]);
+    return redirect()->back();
+}
 
-    public function deactivateProject($project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
-        return redirect()->back();
-    }
+public function deactivateProject($project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $status = $project->update(['active'=> 0, 'activated_on'=>Carbon::now()]);
+    return redirect()->back();
+}
 
     /**
      * Show the form for creating a new resource.
@@ -1249,8 +1259,8 @@ class DashboardController extends Controller
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-               return new TransportManager($app);
-           });
+             return new TransportManager($app);
+         });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);
