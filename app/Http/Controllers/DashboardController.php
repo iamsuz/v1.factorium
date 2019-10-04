@@ -2022,7 +2022,7 @@ class DashboardController extends Controller
     public function audcDuePayemnt(Request $request, $investment_id, AppMailer $mailer)
     {
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $mailer->audcDuePayemntToSeller($investment_id);
+        $mailer->audcDuePayemntToBuyer($investment_id);
         return response()->json([
             'status' => true,
             'message' => 'Issuer notified successfully'

@@ -579,6 +579,8 @@
 You had previously requested payment terms  from {{$seller->entity_name}}.<br><br>
 You can find the terms for them <a href="{{route('users.invoices')}}?withTerms=yes&project_id={{$investment->project->id}}">here</a>.
 <br><br>
+Please load {{$investment->project->investment->total_projected_costs}}AUDC in your wallet to complete the repayment.
+<br><br>
 <a href="{{route('project.user.audc')}}"><b><input type="button" value="Buy AUDC" style="background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif;border: none;padding: 1em 2em;color: #fff;cursor: pointer;font-weight: 600;"></b></a>
 </span></span></span>
 &nbsp;</div>

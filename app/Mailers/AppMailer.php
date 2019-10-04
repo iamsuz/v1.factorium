@@ -576,7 +576,7 @@ class AppMailer
         $this->data = compact('token');
         $this->deliver();
     }
-    public function audcDuePayemntToSeller($investment_id)
+    public function audcDuePayemntToBuyer($investment_id)
     {
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $buyer = User::where('email',$investment->project->invoice_issue_from_email)->first();
