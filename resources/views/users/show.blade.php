@@ -148,6 +148,8 @@
 							<dd{{--  style="margin-left: 230px !important;" --}}><h2>{{$user->first_name}} {{$user->last_name}}</h2></dd>
 							@if($user->factorium_user_type) <dd><h4>{{ ucfirst($user->factorium_user_type) }}</h4></dd> @endif
 							<dt></dt>
+							<dd>{{ $user->entity_name }}</dd>
+							<dt></dt>
 							<dd{{--  style="margin-left: 230px !important;" --}}>
 								<div class="row">
 									<div class="col-md-5">
@@ -160,6 +162,9 @@
 							</dd>
 							<dt></dt>
 							<dd{{--  style="margin-left: 230px !important;" --}}>{{$user->phone_number}}</dd>
+							<dd>{{ $user->gender }}</dd>
+							<dd>{{ $user->date_of_birth->toFormattedDateString() }}</dd><br>
+							<dd>{{ $user->line_1 }}{{ $user->line_2 }},{{ $user->city }},{{ $user->state }} - {{ $user->postal_code }}.<br>{{ $user->country }}</dd>
 						</div>
 						<hr>
 						<dt></dt>

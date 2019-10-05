@@ -26,13 +26,13 @@
 						<dt></dt>
 						<dd style="margin-left: 0px;">
 							<div class="col-md-10 col-md-offset-1 wow fadeIn text-center" data-wow-duration="1.5s" data-wow-delay="0.2s">
-								<h2 class="text-center wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:3em;"> Balance for Investments
+								<h2 class="text-center wow fadeIn hide" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:3em;"> Balance for Investments
 								</h2>
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th class="text-center">Project Name</th>
-											<th class="text-center">Tokens</th>
+											<th class="text-center hide">Project Name</th>
+											<th class="text-center hide">Tokens</th>
 										</tr>
 									</thead>
 									<tbody>

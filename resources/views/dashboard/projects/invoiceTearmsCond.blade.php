@@ -315,6 +315,12 @@
 					</td>
 					<td>{{$project->invoice_issued_from}}</td>
 				</tr>
+				<tr>
+					<td>
+						<b>Financier Entity Name</b>
+					</td>
+					<td>{{$user->entity_name}}</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
