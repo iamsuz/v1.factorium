@@ -8,16 +8,32 @@
         <h4 class="modal-title">Partial Repay</h4>
       </div>
       <div class="modal-body text-center">
+        @if($balanceAudk) <h4 class="text-center">
+          @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id))
+          @if($project->investment->total_projected_costs > $balanceAudk->balance)
+          You dont have sufficient token to repay
+          @endif
+        @endif</h4>
+        @endif
         <p style="font-size: 20px;">You are about to partial repay <b><i>{{$project->title}}</i></b> for <b>${{$project->investment->total_projected_costs}}</b></p>
       </div>
       <div class="modal-footer">
-        <form action=" {{route('dashboard.investment.declareFixedDividend', [$project->id])}}" method="POST" id="partialRepayForm">
+        @if($balanceAudk)
+        <h4 class="text-center">
+          @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id))
+          @if($project->investment->total_projected_costs > $balanceAudk->balance)
+          <button class="btn btn-default notifyUser">Notify invoice issuer to buy more AUDC</button>
+          @else
+          <form action=" {{route('dashboard.investment.declareFixedDividend', [$project->id])}}" method="POST" id="partialRepayForm">
           {{csrf_field()}}
               <span class="declare-fixed-statement "><small><input type="number" name="fixed_dividend_percent" id="fixedDividendPercent" step="0.01" min="1" max="100" required> % </small></span>
               <input type="hidden" class="investors-list" id="partialInvestor_list" name="investors_list">
               <button class="btn btn-primary declare-partial-repay-btn" type="button" data-toggle="modal" data-target="#partial_repay_confirm_modal" id="partialRepayPercentBtn">Repay</button>
           <input type="submit" id="validation_partial_repay" class="btn btn-default" value="Repay" style="display: none;">
         </form>
+          @endif
+        @endif</h4>
+        @endif
     </div>
   </div>
 
@@ -49,7 +65,7 @@
           </tbody>
         </table>
         <br>
-        <h2 class="text-center">Dividend calculation preview</h2><br>
+        {{-- <h2 class="text-center">Dividend calculation preview</h2><br> --}}
         <div id="calculation_preview_table" style="width: 100%; overflow-x: auto;">
           @foreach($shareInvestments as $shareInvestment)
             <table class="table">
