@@ -1,13 +1,8 @@
 <?php
-Use Exception;
 /**
  * Application Routes
  * -------------------------------------------------------------------------------------------------------------------
  */
-Route::get('/debug-sentry', function () {
-    throw new Exception('My first Sentry error!');
-});
-Route::get('/try-catch',['as'=>'try.catch','uses'=>'PagesController@tryCatch']);
 Route::get('/', ['as'=>'home', 'uses'=>'PagesController@home']);
 Route::get('/konkrete',['as'=>'konkrete','uses'=>'PagesController@konkrete']);
 Route::get('/konkreteG',['as'=>'konkreteGuzzle','uses'=>'PagesController@konkreteGuzzle']);
