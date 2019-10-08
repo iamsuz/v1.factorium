@@ -252,7 +252,7 @@ class DashboardController extends Controller
             $responseAudk = $requestAudk->getBody()->getContents();
             $balanceAudk = json_decode($responseAudk);
         }
-        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'balanceAudk', 'investorTokens', 'investorTokensJobDetails'));
+        return view('dashboard.projects.investors', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'balanceAudk', 'investorTokens', 'investorTokensJobDetails','buyer'));
     }
 
     public function editProject($project_id)
@@ -480,18 +480,18 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-               if($investment->project->share_vs_unit) {
+             if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-               }else {
+                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+             }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-               }
+                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+             }
 
-               $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+             $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
                  // $mailer->sendInvoiceToAdmin($investment,$formLink);
-           }
-           if(isset($investment->pay_investment_id)){
+         }
+         if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
             if($linkedInvestment){
                 if($linkedInvestment->project->is_wallet_tokenized)
@@ -848,16 +848,18 @@ public function deactivateProject($project_id)
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
+            $amount = $investmentDetails->first()->total_projected_costs/$dividendPercent;
             if($project->use_tokens){
                 $totalBalance = $investments->sum('amount');
+                $buyer = User::where('email',$project->invoice_issue_from_email)->first();
                 $client = new \GuzzleHttp\Client();
-                $requestAudk = $client->request('GET',$this->uri.'/getProjectBalance/audk',[
-                    'query'=>['project_contract_id'=>$this->audkID,'project_id'=>$project->id]
+                $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                    'query'=>['project_id'=>$this->audkID,'user_id'=>$buyer->id]
                 ]);
                 $responseAudk = $requestAudk->getBody()->getContents();
                 $balanceAudk = json_decode($responseAudk);
-                if($balanceAudk->balance < $totalBalance){
-                    return redirect()->back()->withMessage('Your project doesnt have enough AUDK tokens to make this transaction');
+                if($balanceAudk->balance < $amount){
+                    return redirect()->back()->withMessage('Buyer doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
                 }
             }
             // Add the records to project progress table
@@ -870,7 +872,7 @@ public function deactivateProject($project_id)
             ProjectProg::create([
                 'project_id' => $projectId,
                 'updated_date' => Carbon::now(),
-                'progress_description' => 'Fixed Dividend Declaration',
+                'progress_description' => 'Partial Repay',
                 'progress_details' => 'Invoice of $'.$investmentDetails[0]->goal_amount.' purchased for $'.$investmentDetails[0]->total_projected_costs.'. $'.$partialRepaid.' is now repaid. Total repaid so far is $'.$totalPartialRepaid.'.'
             ]);
 
@@ -880,19 +882,24 @@ public function deactivateProject($project_id)
 
             // send dividend emails to investors
             $failedEmails = [];
-            $subject = 'Partial repurchase declared for '.$project->title;
+            $subject = $project->title.' partial repaid!';
             foreach ($investments as $investment) {
                 // Save details to transaction table
                 $dividendAmount = round($investment->total_projected_costs * ((int)$dividendPercent/100));
                 $shareNumber = explode('-', $investment->share_number);
                 $noOfShares = $shareNumber[1]-$shareNumber[0]+1;
                 if($project->use_tokens){
-                    if($balanceAudk->balance >= $totalBalance){
-                        $dividendAUDK = $client->request('GET',$this->uri.'/investment/transaction',[
-                            'query'=>['user_id'=> $investment->user_id,'project_id'=>$this->audkID,'securityTokens'=>(int)$dividendAmount,'project_address'=>$investment->project->wallet_address]
+                    if($balanceAudk->balance >= $amount){
+                        $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
+                            'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$amount,'project_address'=>$buyer->wallet_address]
                         ]);
-                        $responseDividendAudk = $dividendAUDK->getBody()->getContents();
-                        $balance = json_decode($responseDividendAudk);
+                        $responseRepurchase = $requestRepurchase->getBody()->getContents();
+                        $result = json_decode($responseRepurchase);
+                        $requestRepurchaseAudk = $client->request('GET',$this->uri.'/investment/transaction',[
+                            'query'=>['user_id'=> $investment->user_id,'project_id'=>$this->audkID,'securityTokens'=>$amount,'project_address'=>$buyer->wallet_address]
+                        ]);
+                        $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
+                        $balance = json_decode($responseRepurchaseAudk);
                     }
                 }
                 Transaction::create([
@@ -915,7 +922,7 @@ public function deactivateProject($project_id)
                 }
                 $investment->save();
 
-                $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project));
+                $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project,'dividendAmount'=>$dividendAmount));
                 $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
                 if($result->http_response_code != 200){
                     array_push($failedEmails, $investment->user->email);
@@ -992,7 +999,6 @@ public function deactivateProject($project_id)
                         if($balanceAudk->balance < $repurchaseAmount){
                             return redirect()->back()->withMessage('Buyer doesnt have enough AUDK tokens in Wallet. Buy AUDK tokens before Repurchasing transactions <br> <a href="https://ether.estatebaron.com/projects/58">Here</a> you can buy it.');
                         }
-                        $client = new \GuzzleHttp\Client();
                         $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
                             'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$buyer->wallet_address]
                         ]);
@@ -1004,12 +1010,13 @@ public function deactivateProject($project_id)
                         $responseRepurchaseAudk = $requestRepurchaseAudk->getBody()->getContents();
                         $balance = json_decode($responseRepurchaseAudk);
                     }else{
-                        $client = new \GuzzleHttp\Client();
-                        $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
-                            'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
-                        ]);
-                        $responseRepurchase = $requestRepurchase->getBody()->getContents();
-                        $result = json_decode($responseRepurchase);
+                        return redirect()->back()->withMessage('<p class="alert alert-success text-center">The project is not tokenized or use AUDC is not turned on</p>');
+                        // $client = new \GuzzleHttp\Client();
+                        // $requestRepurchase = $client->request('POST',$this->uri.'/investment/transaction/repurchase',[
+                        //     'query' => ['user_id' => $investment->user_id,'project_id'=>$projectId,'securityTokens'=>$repurchaseAmount,'project_address'=>$investment->project->wallet_address]
+                        // ]);
+                        // $responseRepurchase = $requestRepurchase->getBody()->getContents();
+                        // $result = json_decode($responseRepurchase);
                     }
                 }
 
@@ -1259,8 +1266,8 @@ public function deactivateProject($project_id)
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-             return new TransportManager($app);
-         });
+               return new TransportManager($app);
+           });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);

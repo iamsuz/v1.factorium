@@ -863,12 +863,9 @@
 				$(this).hide();
 				dad.find('input[type="text"]').show().focus();
 			});
-			$('#repayBtn').on('click',function (e) {
-				$('#repayInvestor').val($('#repayBtn').attr('data-id'));
-				$('.notifyUser').on('click',function (e) {
-					e.preventDefault;
+			$('.notifyUser').on('click',function (e) {
+					e.preventDefault();
 					$('.loader-overlay').show();
-					console.log('inside click');
 					$.ajax({
 						url:'/dashboard/investment/'+$('#repayBtn').attr('data-id')+'/audc',
 						type:'GET',
@@ -882,9 +879,12 @@
 							$('#offer_link').html('<div class="text-success"><i class="fa fa-check"></i> Sent</div>');
 							$('.loader-overlay').hide();
 							$('#repayModal').modal('hide');
+							$('#partialRepayModal').modal('hide');
 						}
 					});
 				})
+			$('#repayBtn').on('click',function (e) {
+				$('#repayInvestor').val($('#repayBtn').attr('data-id'));
 			});
 			$('#partialRepayBtn').on('click',function (e) {
 				$('#partialInvestor_list').val($('#partialRepayBtn').attr('data-id'));

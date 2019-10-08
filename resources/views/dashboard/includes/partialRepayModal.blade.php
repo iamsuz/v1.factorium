@@ -72,9 +72,9 @@
             <thead>
               <tr>
                 <th>Financier Name</th>
-                <th>Financier Bank account name</th>
-                <th>Financier bank</th>
-                <th>Financier BSB</th>
+                <th>Financier Wallet address</th>
+                <th>Buyer Entity Name</th>
+                <th>Buyer wallet Address</th>
                 <th>Financier Account</th>
                 <th>Invoice amount</th>
                 <th>Partial Repayment</th>
@@ -83,9 +83,9 @@
             <tbody>
               <tr>
                 <td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
-                <td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_name}} @else {{$shareInvestment->user->account_name}} @endif</td>
-                <td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bsb}} @else {{$shareInvestment->user->bsb}} @endif</td>
-                <td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->bank_name}} @else {{$shareInvestment->user->bank_name}} @endif</td>
+                <td>{{$shareInvestment->user->wallet_address}}</td>
+                <td>{{$buyer->entity_name}}</td>
+                <td>{{$buyer->wallet_address}}</td>
                 <td>@if($shareInvestment->investingJoint) {{$shareInvestment->investingJoint->account_number}} @else {{$shareInvestment->user->account_number}} @endif</td>
                 <td>${{$project->investment->total_projected_costs}}</td>
                 <td>$<span id="modal_partial_repay_amount"></span></td>
