@@ -193,6 +193,7 @@ Route::get('welcome', ['as'=>'pages.welcome', 'uses'=>'ProjectsController@redire
 Route::get('/project/buy/audc',['as'=>'project.user.audc','uses'=>'ProjectsController@projectAudc']);
 Route::post('/project/buy/audc',['as'=>'project.user.audc.buy','uses'=>'ProjectsController@projectBuyAudc']);
 Route::post('/project/dai/audc',['as'=>'project.user.dai.audc','uses'=>'ProjectsController@projectBuyDaiAudc']);
+Route::post('/user/dai/local/balance',['as'=>'user.dai.local.balance','uses'=>'ProjectsController@checkDaiBalance']);
 Route::get('/user/dai/balance',['as'=>'user.dai.balance','uses'=>'ProjectsController@getDAIUserBalance']);
 Route::get('/user/dai/transfer/gas',['as'=>'user.dai.transfer.gas','uses'=>'ProjectsController@daiUserTransferGas']);
 // Route::get('/news/financialreview', ['as'=>'news.financialreview', 'uses'=>'NewsController@financialreview']);
