@@ -28,84 +28,12 @@
 			</ul>
 			<br>
 			<ul class="nav nav-tabs nav-justified">
-				<li class="active"><a data-toggle="tab" href="#buy_using_dai">Buy AUDC using DAI</a></li>
-				<li><a data-toggle="tab" href="#buy_using_cash">Buy AUDC using Cash</a></li>
+				<li class="active"><a data-toggle="tab" href="#buy_using_cash">Buy AUDC using Cash</a></li>
+				<li><a data-toggle="tab" href="#buy_using_dai">Buy AUDC using DAI</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div id="buy_using_dai" class="tab-pane fade in active">
-					<br>
-					<div class="gas-check-progress text-center">
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
-								<div><img src="{{ asset('/assets/images/loader.GIF') }}" height="50px" width="50px"></div><br>
-								<p>Please wait while we check for available GAS to perform DAI exchange.</p><br>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-sm active" role="progressbar"
-                                         aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%"></div>
-                                </div>
-							</div>
-						</div>
-					</div>
-					<div class="dai-audc-section hide">
-						<div class="alert alert-warning text-center">
-							<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">----------</span>" so that you can buy AUDC using it.</p>
-						</div>
-						<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">--</span> DAI )</h3>
-						<div>
-							<form action="#" method="POST" id="dai_audc_exchange_form">
-								{{ csrf_field() }}
-								<div class="row">
-									<div class="col-md-6 form-group">
-										<label>Amount</label>
-										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000">
-									</div>
-									<div class="col-md-6 form-group">
-										<label>&nbsp;</label>
-										<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
-									</div>
-								</div>
-								<p><small><small>** Make sure you have enough DAI in your wallet.</small></small></p>
-							</form>
-						</div>
-						<br>
-						<div class="table-responsive">
-							<table class="table table-bordered table-striped" id="exchangeTable">
-								<thead>
-								<tr>
-									<th>Transaction ID</th>
-									<th>From token</th>
-									<th>To token</th>
-									<th>Status</th>
-									<th>Transaction Hash</th>
-									<th>Created at</th>
-								</tr>
-								</thead>
-								<tbody>
-								@foreach($exchanges as $exchange)
-									<tr>
-										<td>TRX{{ $exchange->id }}</td>
-										<td>{{ $exchange->source_token_amount . ' ' . $exchange->source_token }}</td>
-										<td>{{ $exchange->dest_token_amount . ' ' . $exchange->dest_token }}</td>
-										<td>
-											@if($exchange->transaction_response1 && $exchange->transaction_response2)
-												Success
-											@else
-												Failed
-											@endif
-										</td>
-										<td class="text-center">@if($exchange->transaction_hash) {{ $exchange->transaction_hash }} @else - @endif</td>
-										<td>{{ date("d/m/Y", strtotime($exchange->created_at)) }}</td>
-									</tr>
-								@endforeach
-								</tbody>
-							</table>
-						</div>
-
-					</div>
-
-				</div>
-				<div id="buy_using_cash" class="tab-pane fade">
+				<div id="buy_using_cash" class="tab-pane fade in active">
 					<h3 class="text-center">Buy AUDC Token</h3>
 					<div class="">
 						<form class="" action="{{route('project.user.audc.buy')}}" method="POST" name="audcForm" id="audcForm">
@@ -113,7 +41,7 @@
 							<div class="row">
 								<div class="col-md-6 form-group">
 									<label>Amount</label>
-									<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter a amount to buy an AUDC" max="10000" required="required" value="{{request()->amount}}">
+									<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter a amount to buy an AUDC" max="10000" required="required">
 								</div>
 								<div class="col-md-6 form-group">
 									<label>&nbsp;</label>
@@ -155,6 +83,77 @@
 						</div>
 					</div>
 				</div>
+
+				<div id="buy_using_dai" class="tab-pane fade">
+					<br>
+					<div class="gas-check-progress text-center hide">
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div><img src="{{ asset('/assets/images/loader.GIF') }}" height="50px" width="50px"></div><br>
+								<p>Please wait while we check for available GAS to perform DAI exchange.</p><br>
+								<div class="progress">
+									<div class="progress-bar progress-bar-striped progress-bar-sm active" role="progressbar"
+										 aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dai-audc-section">
+						<div class="alert alert-warning text-center">
+							<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">{{ $user->wallet_address }}</span>" so that you can buy AUDC using it.</p>
+						</div>
+						<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">{{ $user->dai_balance }}</span> DAI )</h3>
+						<div>
+							<form action="#" method="POST" id="dai_audc_exchange_form">
+								{{ csrf_field() }}
+								<div class="row">
+									<div class="col-md-6 form-group">
+										<label>Amount</label>
+										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000">
+									</div>
+									<div class="col-md-6 form-group">
+										<label>&nbsp;</label>
+										<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
+									</div>
+								</div>
+								<p><small><small>** Make sure you have enough DAI in your wallet.</small></small></p>
+							</form>
+						</div>
+						<br>
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped" id="exchangeTable">
+								<thead>
+								<tr>
+									<th>Transaction ID</th>
+									<th>From token</th>
+									<th>To token</th>
+									<th>Status</th>
+									<th>Created at</th>
+								</tr>
+								</thead>
+								<tbody>
+								@foreach($exchanges as $exchange)
+									<tr>
+										<td>TRX{{ $exchange->id }}</td>
+										<td>{{ $exchange->source_token_amount . ' ' . $exchange->source_token }}</td>
+										<td>{{ $exchange->dest_token_amount . ' ' . $exchange->dest_token }}</td>
+										<td>
+											@if($exchange->transaction_response2)
+												Success
+											@else
+												Failed
+											@endif
+										</td>
+										<td>{{ date("d/m/Y", strtotime($exchange->created_at)) }}</td>
+									</tr>
+								@endforeach
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+
+				</div>
 			</div>
 
 		</div>
@@ -183,23 +182,25 @@
 				return;
 			}
 			$('.loader-overlay').show();
+
+			// Check DAI balance
 			$.ajax({
-				url: '{{ route('project.user.dai.audc') }}',
+				url: '{{ route('user.dai.local.balance') }}',
 				type: 'POST',
 				dataType: 'JSON',
 				data: { 'dai_amount': daiAmount },
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
+				}
 			}).done(function (data) {
-				console.log(data);
-				$('.loader-overlay').hide();
 				if (!data.status) {
 					alert(data.message);
+					$('.loader-overlay').hide();
 					return;
 				}
-				alert(data.message);
-				location.reload();
+				let transactionId = data.data.transaction_id;
+				transferDaiToAudc(daiAmount, transactionId);
+				transferAudcToDai(daiAmount, transactionId);
 			});
 		});
 
@@ -210,6 +211,60 @@
 		// Methods
 		getDAIAccountBalance();
 	});
+
+	/**
+	 *
+	 * @param daiAmount
+	 * @param transactionId
+	 */
+	function transferDaiToAudc(daiAmount, transactionId) {
+		$.ajax({
+			url: '{{ route('project.user.dai.audc') }}',
+			type: 'POST',
+			dataType: 'JSON',
+			async: true,
+			data: {
+				'dai_amount': daiAmount,
+				'transaction_id': transactionId,
+				'action': 'dai_to_audc'
+			},
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function (data) {
+			console.log(data);
+		});
+	}
+
+	/**
+	 *
+	 * @param daiAmount
+	 * @param transactionId
+	 */
+	function transferAudcToDai(daiAmount, transactionId) {
+		$.ajax({
+			url: '{{ route('project.user.dai.audc') }}',
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				'dai_amount': daiAmount,
+				'transaction_id': transactionId,
+				'action': 'audc_to_dai'
+			},
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+		}).done(function (data) {
+			console.log(data);
+			$('.loader-overlay').hide();
+			if (!data.status) {
+				alert(data.message);
+				return;
+			}
+			alert('Transfer successful. It may take some time to reflect balance in wallet.');
+			location.reload();
+		});
+	}
 
 	function  getDAIAccountBalance() {
 		updateProgressBar(10);
@@ -228,10 +283,10 @@
 			$('.dai-user-account').html(data.data.daiAccount);
 			$('.dai-user-balance').html(data.data.daiBalance);
 
-			if (data.data.daiBalance >= 1) {
-				updateProgressBar(20);
-				transferGasToUserWallet();
-			}
+			// if (data.data.daiBalance >= 1) {
+				// updateProgressBar(20);
+				// transferGasToUserWallet();
+			// }
 		});
 	}
 

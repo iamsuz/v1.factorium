@@ -1342,53 +1342,167 @@ class ProjectsController extends Controller
         return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>');
     }
 
-    public function projectBuyDaiAudc(Request $request)
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function checkDaiBalance(Request $request)
     {
-        $daiAmount = $request->dai_amount;
-        $daiUserId = Auth::user()->id;
-        $audcProjectId = $this->audkID;
+        $validation_rules = array( 'dai_amount' => 'required' );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()) {
+            return array('status' => false, 'message' => $validator->errors()->first());
+        }
 
-        // Create a transaction entry in DB
+        $user = Auth::user();
+        $balanceSufficient = true;
+        if ($user->dai_balance == 0) $balanceSufficient = false;
+        if ($user->dai_balance < $request->dai_amount) $balanceSufficient = false;
+
+        if(!$balanceSufficient) {
+            $daiBalanceResponse = $this->getDaiBalanceFromBlockchain($user->id);
+            if (!$daiBalanceResponse['status']) {
+                return array('status' => false, 'message' => $daiBalanceResponse['message']);
+            }
+            if ($daiBalanceResponse['data']['balance'] > 0) {
+                $user->dai_balance = $daiBalanceResponse['data']['balance'];
+                $user->save();
+            }
+        }
+
+        if ($user->dai_balance < $request->dai_amount) {
+            return array('status' => false, 'message' => 'Insufficient DAI balance. Please send DAI to your exchange wallet address ' . $user->wallet_address . ' so that you can buy AUDC using it.');
+        }
+
         $transaction = CryptoExchangeTransaction::create([
-            'user_id' => $daiUserId,
+            'user_id' => $user->id,
             'source_token' => 'DAI',
-            'source_token_amount' => $daiAmount,
+            'source_token_amount' => $request->dai_amount,
             'dest_token' => 'AUDC'
         ]);
 
+        return array( 'status' => true, 'data' => array( 'balance' => $user->dai_balance, 'transaction_id' => $transaction->id ) );
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function projectBuyDaiAudc(Request $request)
+    {
+        $user = Auth::user();
+        $audcProjectId = $this->audkID;
+        $transaction = CryptoExchangeTransaction::find($request->transaction_id);
+
+        // If sufficient balance of DAI:
+        if ($request->action == 'dai_to_audc') {
+            $response = $this->transferDaiToAudcWallet($user->id, $request->dai_amount, $transaction->id, $audcProjectId);
+
+            // Update User DAI balance
+            $newUserDaiBalance = $user->dai_balance - $request->dai_amount;
+            $user->dai_balance = $newUserDaiBalance;
+            $user->save();
+        }
+
+
+        // Transfer AUDC to user wallet
+        if ($request->action == 'audc_to_dai') {
+            $audcAmt = $request->dai_amount * 1.48;
+            $response = $this->transferAudcToDaiWallet($user->id, $audcAmt, $transaction->id, $audcProjectId);
+        }
+
+        return array( 'status' => true, 'data' => $response['data'], 'transaction_id' => $transaction->id );
+    }
+
+    /**
+     * @param $userId
+     * @return array
+     */
+    protected function getDaiBalanceFromBlockchain($userId)
+    {
         try {
-            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/dai/centralisedTransfer', [], [
-                'dai_amount' => (int)$daiAmount,
-                'dai_user_id' => (int)$daiUserId,
+            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/dai/user/balance', [], [ 'dai_user_id' => (int)$userId ]);
+            $responseResult = json_decode($response);
+        } catch (\Exception $e) {
+            return array( 'status' => false, 'message' => $e->getMessage() );
+        }
+
+        return array( 'status' => true, 'data' => array('balance' => $responseResult->data->balance) );
+    }
+
+    /**
+     * @param int $userId
+     * @param double $dai
+     * @param int $transactionId
+     */
+    protected function transferDaiToAudcWallet($userId, $dai, $transactionId, $audcProjectId)
+    {
+        // Check or transfer GAS to DAI wallet
+        // Transfer DAI to AUDC wallet
+        try {
+            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/transfer/dai', [], [
+                'dai_amount' => $dai,
+                'dai_user_id' => (int)$userId,
                 'audc_project_id' => $audcProjectId,
-                'transaction_id' => $transaction->id
+                'transaction_id' => $transactionId
             ]);
             $responseResult = json_decode($response);
         } catch (\Exception $e) {
             return array( 'status' => false, 'message' => $e->getMessage() );
         }
 
-        if(!$responseResult->status) {
-            if (isset($responseResult->data)) {
-                $transaction->update([
-                    'transaction_hash' => $responseResult->data->transaction_hash,
-                    'transaction_response1' => json_encode($responseResult->data->transaction1)
-                ]);
-            }
+        if (!$responseResult->status) {
             return array( 'status' => false, 'message' => $responseResult->message );
         }
 
-        // Update transaction record
-        $transaction->update([
-            'dest_token_amount' => $responseResult->data->audc_amount,
-            'transaction_hash' => $responseResult->data->transaction_hash,
-            'transaction_response1' =>  json_encode($responseResult->data->transaction1),
-            'transaction_response2' =>  json_encode($responseResult->data->transaction2)
-        ]);
+        // Update transaction in DB
+        CryptoExchangeTransaction::where('id', $transactionId)
+            ->update([
+                'transaction_hash' => $responseResult->data->transaction_hash,
+                'transaction_response1' => json_encode($responseResult->data->transaction1)
+            ]);
 
-        return array( 'status' => true, 'message' => 'Transfer was successfull. This may take some while to reflect the balance.' );
+        return array( 'status' => true, 'data' => $responseResult->data);
     }
 
+    /**
+     * @param int $userId
+     * @param double $audc
+     * @param int $transactionId
+     */
+    protected function transferAudcToDaiWallet($userId, $audc, $transactionId, $audcProjectId)
+    {
+        // Transfer AUDC
+        try {
+            $response = $this->konkreteClient->curlKonkrete('POST', '/api/v1/accounts/transfer/audc', [], [
+                'audc_amount' => $audc,
+                'dai_user_id' => (int)$userId,
+                'audc_project_id' => $audcProjectId,
+                'transaction_id' => $transactionId
+            ]);
+            $responseResult = json_decode($response);
+        } catch (\Exception $e) {
+            return array( 'status' => false, 'message' => $e->getMessage() );
+        }
+
+        if (!$responseResult->status) {
+            return array( 'status' => false, 'message' => $responseResult->message );
+        }
+
+        // Update transaction in DB
+        CryptoExchangeTransaction::where('id', $transactionId)
+            ->update([
+                'dest_token_amount' => $audc,
+                'transaction_response2' => json_encode($responseResult->data->transaction2)
+            ]);
+
+        return array( 'status' => true, 'data' => $responseResult->data);
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function daiUserTransferGas(Request $request) {
         $user = Auth::user();
 
