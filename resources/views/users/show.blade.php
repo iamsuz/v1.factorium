@@ -163,7 +163,7 @@
 							<dt></dt>
 							<dd{{--  style="margin-left: 230px !important;" --}}>{{$user->phone_number}}</dd>
 							@if($user->gender)<dd>{{ $user->gender }}</dd> @endif
-							@if($user->date_of_birth)<dd>{{ $user->date_of_birth }}</dd><br> @endif
+							@if($user->date_of_birth)<dd>{{ date("d/m/Y",strtotime($user->date_of_birth)) }}</dd><br> @endif
 							@if($user->line_1)<dd>{{ $user->line_1 }} @if($user->line_2) {{ $user->line_2 }} @endif @if($user->city),{{ $user->city }} @endif @if($user->state),{{ $user->state }} @endif @if($user->postal_code) - {{ $user->postal_code }}. @endif @if($user->country) <br>{{ $user->country }} @endif </dd> @endif
 						</div>
 						<hr>
