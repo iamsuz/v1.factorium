@@ -1398,6 +1398,10 @@ class ProjectsController extends Controller
         if ($request->action == 'dai_to_audc') {
             $response = $this->transferDaiToAudcWallet($user->id, $request->dai_amount, $transaction->id, $audcProjectId);
 
+            if (!$response['status']) {
+                return array( 'status' => false, 'message' => $response['message'] );
+            }
+
             // Update User DAI balance
             $newUserDaiBalance = $user->dai_balance - $request->dai_amount;
             $user->dai_balance = $newUserDaiBalance;
@@ -1409,6 +1413,10 @@ class ProjectsController extends Controller
         if ($request->action == 'audc_to_dai') {
             $audcAmt = $request->dai_amount * 1.48;
             $response = $this->transferAudcToDaiWallet($user->id, $audcAmt, $transaction->id, $audcProjectId);
+
+            if (!$response['status']) {
+                return array( 'status' => false, 'message' => $response['message'] );
+            }
         }
 
         return array( 'status' => true, 'data' => $response['data'], 'transaction_id' => $transaction->id );
