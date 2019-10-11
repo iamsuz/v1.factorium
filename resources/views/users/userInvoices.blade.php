@@ -50,11 +50,11 @@
 						<td>{!!$project->investment->invoice_amount!!} </td>
 						<td>{!!$project->investment->asking_amount!!}</td>
 						<td>{!!$project->invoice_issued_from!!} </td>
-						<td>
+						<td id="statusOfConfirmation">
 							@if($project->confirmation)
 							<i>Confirmed</i>
 							@else
-							<button data-toggle="modal" data-target=".invoiceConfirmationModal" class="btn btn-primary invoiceConfirmationModal" data="{{$project->id}}" id="">Confirm</button>
+							<button data-toggle="modal" data-target=".invoiceConfirmationModal" class="btn btn-primary invoiceConfirmationModal1" data="{{$project}}" >Confirm</button>
 							@endif
 						</td>
 					</tr>
@@ -80,11 +80,18 @@
 			"order": [[1, 'desc']],
 			"iDisplayLength": 50
 		});
-		$('.invoiceConfirmationModal').on('click',function (temp) {
-			var id = $(this).attr('data');
+		$('.invoiceConfirmationModal1').on('click',function (temp) {
+			var project = JSON.parse($(this).attr('data'));
+			$('#projectTitle').html(project.title);
+			$('#projectGoalAmount').html(project.investment.goal_amount);
+			$('#totalProjectedCosts').html(project.investment.total_projected_costs);
+			$('#fundRaisingCloseDate').html(project.investment.fund_raising_close_date);
+			$('#projectDescription').html(project.description);
+			$('#invoiceIssuedFrom').html(project.invoice_issued_from);
 			$('#confirmInvoiceBtn').on('click',function (e) {
+				$('.loader-overlay').show();
 				$.ajax({
-					url : '/user/invoice/'+id+'/confirm',
+					url : '/user/invoice/'+project.id+'/confirm',
 					type : 'POST',
 					data : {
 						'numberOfWords' : 10
@@ -92,15 +99,18 @@
 					dataType:'json',
 					headers: {
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					},
-					success : function(data) {
-						location.reload();
-					},
-					error : function(request,error)
-					{
-						alert("Request: "+JSON.stringify(request));
 					}
-				})
+					// success : function(data) {
+					// 	location.reload();
+					// },
+					// error : function(request,error)
+					// {
+					// 	alert("Request: "+JSON.stringify(request));
+					// }
+				}).done(function () {
+					$('.loader-overlay').hide();
+					$('#statusOfConfirmation').html('<i>Pending</i>');
+				});
 			})
 		});
 	});

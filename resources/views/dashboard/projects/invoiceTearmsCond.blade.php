@@ -283,43 +283,43 @@
 			<tbody>
 				<tr>
 					<td><b>Invoice Name</b></td>
-					<td>{{$project->title}}</td>
+					<td id="projectTitle">{{$project->title}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Asking price for Invoice</b>
 					</td>
-					<td>${{$project->investment->goal_amount}}</td>
+					<td id="projectGoalAmount">${{$project->investment->goal_amount}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Amount due under the Invoice</b>
 					</td>
-					<td>${{$project->investment->total_projected_costs}}</td>
+					<td id="totalProjectedCosts">${{$project->investment->total_projected_costs}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Due Date</b>
 					</td>
-					<td>{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date->toDateString()))}}</td>
+					<td id="fundRaisingCloseDate">{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date->toDateString()))}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Invoice issued to</b>
 					</td>
-					<td>{{$project->description}}</td>
+					<td id="projectDescription">{{$project->description}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Invoice issued from</b>
 					</td>
-					<td>{{$project->invoice_issued_from}}</td>
+					<td id="invoiceIssuedFrom">{{$project->invoice_issued_from}}</td>
 				</tr>
 				<tr>
 					<td>
 						<b>Financier Entity Name</b>
 					</td>
-					<td>{{$user->entity_name}}</td>
+					<td id="entityName">{{$user->entity_name}}</td>
 				</tr>
 			</tbody>
 		</table>

@@ -1,5 +1,5 @@
 {{-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#repayModal">Open Modal</button> --}}
-<div id="" class="modal fade invoiceConfirmationModal" role="dialog">
+<div class="modal fade invoiceConfirmationModal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->

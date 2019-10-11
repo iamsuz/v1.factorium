@@ -6,27 +6,29 @@ use App\UserKyc;
 use Session;
 use App\Credit;
 use App\Color;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserAuthRequest;
-use App\Http\Requests\UserRequest;
-use App\InvestmentInvestor;
 use App\Invite;
-use App\Mailers\AppMailer;
 use App\Role;
 use App\User;
+use App\Market;
 use App\Project;
 use Carbon\Carbon;
 use App\IdDocument;
 use App\Investment;
-use App\Market;
 use App\ReferralLink;
 use App\InvestingJoint;
+use App\SiteConfiguration;
+use App\Mailers\AppMailer;
+use App\InvestmentInvestor;
 use Illuminate\Http\Request;
 use App\ReferralRelationship;
+use App\Http\Requests\UserRequest;
+use App\Jobs\AutomateTokenGenerate;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserAuthRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
-use App\SiteConfiguration;
+
 use Barryvdh\DomPDF\Facade as PDF;
 
 class UsersController extends Controller
@@ -784,6 +786,10 @@ class UsersController extends Controller
                 'message' => 'You can not confirm this Invoice, Contact admin!',
             ]);
         }
+        $request['token_symbol'] = $project->token_symbol;
+        $request['number_of_tokens'] = $project->investment->invoice_amount;
+        $request['project_id'] = $project->id;
+        $this->dispatch(new AutomateTokenGenerate($project));
         $project->confirmation = 1;
         $project->save();
         return response()->json([
