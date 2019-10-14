@@ -315,12 +315,14 @@
 					</td>
 					<td>{{$project->invoice_issued_from}}</td>
 				</tr>
+				@if($user->factorium_user_type == 'financier')
 				<tr>
 					<td>
 						<b>Financier Entity Name</b>
 					</td>
 					<td>{{$user->entity_name}}</td>
 				</tr>
+				@endif
 			</tbody>
 		</table>
 	</div>
