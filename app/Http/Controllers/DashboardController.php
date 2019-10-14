@@ -848,7 +848,7 @@ public function deactivateProject($project_id)
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
-            $amount = $investmentDetails->first()->total_projected_costs/$dividendPercent;
+            $amount = ($investmentDetails->first()->total_projected_costs/100)*$dividendPercent;
             if($project->use_tokens){
                 $totalBalance = $investments->sum('amount');
                 $buyer = User::where('email',$project->invoice_issue_from_email)->first();

@@ -17,19 +17,12 @@ class AutomateTokenGenerate extends Job implements SelfHandling,ShouldQueue
      *
      * @return void
      */
-    protected $projectId;
-    protected $numberOfTokens;
-    protected $tokenSymbol;
-    protected $projectHash;
+    protected $project;
     protected $responseResult;
-    protected $url;
-    
-    public function __construct($projectId,$numberOfTokens,$tokenSymbol,$projectHash)
+    public function __construct($project)
     {
-        $this->projectId = $projectId;
-        $this->numberOfTokens = $numberOfTokens;
-        $this->tokenSymbol = $tokenSymbol;
-        $this->projectHash = $projectHash;
+        $this->project = $project;
+        $this->responseResult;
     }
 
     /**
@@ -39,18 +32,18 @@ class AutomateTokenGenerate extends Job implements SelfHandling,ShouldQueue
      */
     public function handle()
     {
-        $this->url = env('KONKRETE_IP', 'http://localhost:5050');
-        
+        $project = $this->project;
+        $tokens = $project->investment->invoice_amount;
+        $url = env('KONKRETE_IP', 'http://localhost:5050');
         $client = new \GuzzleHttp\Client();
-        $request = $client->request('POST',$this->url.'/contract/deploy',[
-            'query'=>['project_id'=> $this->projectId,'project_name'=>$this->projectHash,'token_symbol'=>$this->tokenSymbol,'number_of_tokens'=>$this->numberOfTokens]
+        $request = $client->request('POST',$url.'/contract/deploy',[
+            'query'=>['project_id'=> $project->id,'project_name'=>$project->project_site,'token_symbol'=>$project->token_symbol,'number_of_tokens'=>$tokens]
         ]);
         $response = $request->getBody()->getContents();
 
         $this->responseResult = json_decode($response);
 
         if($this->responseResult->status) {
-            $project = Project::findOrFail($this->projectId);
             // Update contract address in DB
             $project->contract_address = $this->responseResult->data->contract_address;
             $project->save();

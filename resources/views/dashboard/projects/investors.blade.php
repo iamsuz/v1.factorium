@@ -126,7 +126,7 @@
 														<form action="{{route('dashboard.investment.update', [$investment->id])}}" method="POST">
 															{{method_field('PATCH')}}
 															{{csrf_field()}}
-															<a href="#edit" class="edit">${{number_format($investment->amount) }}</a>
+															<a href="#edit" class="edit">${{number_format($investment->amount,2) }}</a>
 
 															<input type="text" class="edit-input form-control" name="amount" id="amount" value="{{$investment->amount}}" style="width: 100px;">
 															<input type="hidden" name="investor" value="{{$investment->user->id}}">
@@ -136,7 +136,7 @@
 												<td>
 													<div class="col-md-1">
 														{{-- <a href="#invoice_amount">${{number_format($investment->amount) }}</a> --}}
-														<div href="#invoice_amount">@if($project->investment)${{number_format($project->investment->total_projected_costs)}} @else Not Specified @endif</div>
+														<div href="#invoice_amount">@if($project->investment)${{number_format($project->investment->total_projected_costs,2)}} @else Not Specified @endif</div>
 													</div>
 												</td>
 												<td>
@@ -748,7 +748,7 @@
 										</td>
 										<td>{{$projectsEoi->user_email}}</td>
 										<td>{{$projectsEoi->phone_number}}</td>
-										<td>${{number_format($projectsEoi->investment_amount)}}</td>
+										<td>${{number_format($projectsEoi->investment_amount,2)}}</td>
 										<td>{{$projectsEoi->invesment_period}}</td>
 										<td>{{date('Y-m-d h:m:s', strtotime($projectsEoi->created_at))}}</td>
 										<td>
