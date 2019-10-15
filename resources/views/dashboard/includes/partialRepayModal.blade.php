@@ -92,11 +92,13 @@
         <br>
       </div>
       <div class="modal-footer">
+        @if($balanceAudk)
         @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id))
         @if($project->investment->total_projected_costs > $balanceAudk->balance)
         <button class="btn btn-default notifyUser">Notify buyer to load his wallet with AUDC to support repayment</button>
         @else
         <button type="button" class="btn btn-primary" id="submit_partial_repay_confirmation">Confirm</button>
+        @endif
         @endif
         @endif
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
