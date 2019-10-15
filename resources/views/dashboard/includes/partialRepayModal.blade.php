@@ -22,7 +22,7 @@
         <h4 class="text-center">
           @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id))
           @if($project->investment->total_projected_costs > $balanceAudk->balance)
-          <button class="btn btn-default notifyUser">Notify invoice issuer to buy more AUDC</button>
+          <button class="btn btn-default notifyUser">Notify buyer to load his wallet with AUDC to support repayment</button>
           @else
           <form action=" {{route('dashboard.investment.declareFixedDividend', [$project->id])}}" method="POST" id="partialRepayForm">
           {{csrf_field()}}
