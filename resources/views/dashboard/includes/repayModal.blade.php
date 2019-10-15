@@ -23,6 +23,7 @@
         <h4 class="text-center">
           @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id))
           @if($project->investment->total_projected_costs > $balanceAudk->balance)
+          <span class="modal_partial_repay_amount hidden">{{$project->investment->total_projected_costs}}</span>
           <button class="btn btn-default notifyUser">Notify buyer to load his wallet with AUDC to support repayment</button>
           @else
           <form action=" {{route('dashboard.investment.declareRepurchase', [$project->id])}}" method="POST">

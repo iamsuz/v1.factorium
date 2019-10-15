@@ -576,8 +576,9 @@ class AppMailer
         $this->data = compact('token');
         $this->deliver();
     }
-    public function audcDuePayemntToBuyer($investment_id)
+    public function audcDuePayemntToBuyer($investment_id,$amount)
     {
+        $amount = $amount;
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $buyer = User::where('email',$investment->project->invoice_issue_from_email)->first();
         $project = $investment->project;
@@ -585,7 +586,7 @@ class AppMailer
         $this->to = $investment->project->invoice_issue_from_email;
         $this->view = 'emails.audcDuePayment';
         $this->subject = 'Your payment for '.$investment->project->title.' is now due';
-        $this->data = compact('investment','buyer','seller');
+        $this->data = compact('investment','buyer','seller','amount');
         $this->deliver();
     }
 

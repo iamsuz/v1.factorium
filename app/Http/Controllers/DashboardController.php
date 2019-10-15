@@ -2040,7 +2040,8 @@ public function deactivateProject($project_id)
     public function audcDuePayemnt(Request $request, $investment_id, AppMailer $mailer)
     {
         $investment = InvestmentInvestor::findOrFail($investment_id);
-        $mailer->audcDuePayemntToBuyer($investment_id);
+        $amount = $request->fixedDividendPercent;
+        $mailer->audcDuePayemntToBuyer($investment_id,$amount);
         return response()->json([
             'status' => true,
             'message' => 'Issuer notified successfully'

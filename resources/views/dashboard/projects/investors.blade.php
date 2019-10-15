@@ -868,7 +868,7 @@
 					e.preventDefault();
 					$('.loader-overlay').show();
 					$.ajax({
-						url:'/dashboard/investment/'+$('.repaySpanForId').attr('data-id')+'/audc',
+						url:'/dashboard/investment/'+$('.repaySpanForId').attr('data-id')+'/audc/?fixedDividendPercent='+$('.modal_partial_repay_amount').html(),
 						type:'GET',
 						data:{},
 						headers: {
@@ -881,6 +881,7 @@
 							$('.loader-overlay').hide();
 							$('#repayModal').modal('hide');
 							$('#partialRepayModal').modal('hide');
+							$('#partial_repay_confirm_modal').modal('hide');
 						}
 					});
 				})
@@ -952,8 +953,8 @@
 				if(f.checkValidity()) {
 					var partialRepayRate = $('#fixedDividendPercent').val();
 					$("#modal_partial_repay_rate").html(partialRepayRate);
-					var partialRepayAmount = ({{$project->investment->total_projected_costs}} * (partialRepayRate/100)).toFixed(2);
-					$("#modal_partial_repay_amount").html(partialRepayAmount);
+					var repayAmount = ({{$project->investment->total_projected_costs}} * (partialRepayRate/100)).toFixed(2);
+					$(".modal_partial_repay_amount").html(repayAmount);
 					$('#partialRepayPercentBtn').attr('data-target', '#partial_repay_confirm_modal');
 				} else {
 					alert(document.getElementById('fixedDividendPercent').validationMessage);
