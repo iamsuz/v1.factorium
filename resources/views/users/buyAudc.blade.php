@@ -100,7 +100,8 @@
 					</div>
 					<div class="dai-audc-section">
 						<div class="alert alert-warning text-center">
-							<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">{{ $user->wallet_address }}</span>" so that you can buy AUDC using it.</p>
+							<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">{{ $user->wallet_address }}</span>" so that you can buy AUDC using it.</p><br>
+							<p><button type="button" class="btn btn-primary btn-sm refresh-dai-balance">I have transferred DAI to {{ $user->wallet_address }}, refresh my balance</button></p>
 						</div>
 						<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">{{ $user->dai_balance }}</span> DAI )</h3>
 						<div>
@@ -109,7 +110,7 @@
 								<div class="row">
 									<div class="col-md-6 form-group">
 										<label>Amount</label>
-										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000">
+										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000" @if(request('amount')) value="{{ ceil((float)request('amount')) }}" @endif>
 									</div>
 									<div class="col-md-6 form-group">
 										<label>&nbsp;</label>
@@ -208,6 +209,25 @@
 
 		$('#audcForm').submit(function (e) {
 			$('.loader-overlay').show();
+		});
+
+		$('.refresh-dai-balance').on('click', function () {
+			$('.loader-overlay').show();
+			$.ajax({
+				url: '{{ route('user.dai.balance') }}',
+				type: 'GET',
+				dataType: 'JSON',
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+			}).done(function (data) {
+				$('.loader-overlay').hide();
+				if (!data.status) {
+					alert(data.message);
+					return;
+				}
+				$('.dai-user-balance').html(data.data.daiBalance);
+			});
 		});
 
 		// Methods
