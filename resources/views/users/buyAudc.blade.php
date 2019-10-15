@@ -49,7 +49,7 @@
 								</div>
 							</div>
 							<p><small><small>Your AUDC purchase is operated as an exempt Non Cash internal payment facility. Each AUDC represents 1 Australian Dollar. No more than 10 Million AUDC (or $10 Million AUD) are under circulation and no user is allowed to hold more than $1000 worth of AUDC.
-										We use AUDC to enable cash equivalent movements within the platform. You may redeem any AUDC held by you from us in favor of Australian Dollars at any time. We will process any payments promptly after any AML/CTF/KYC obligations are met. We hold an equivalent amount of Australian Dollars in trust with us to the value of AUDC under circulation ensuring it is always maintained at a one to one peg. We also publish bank statements confirming the balance every 7 days.</small></small></p>
+							We use AUDC to enable cash equivalent movements within the platform. You may redeem any AUDC held by you from us in favor of Australian Dollars at any time. We will process any payments promptly after any AML/CTF/KYC obligations are met. We hold an equivalent amount of Australian Dollars in trust with us to the value of AUDC under circulation ensuring it is always maintained at a one to one peg. We also publish bank statements confirming the balance every 7 days.</small></small></p>
 						</form>
 					</div>
 					<br><br>
@@ -57,27 +57,27 @@
 						<div class="table-responsive">
 							<table class="table table-bordered table-striped" id="transactionTable">
 								<thead>
-								<tr>
-									<th>Date of purchase</th>
-									<th>Amount</th>
-									<th>accepted</th>
-									<th>Transaction</th>
-								</tr>
+									<tr>
+										<th>Date of purchase</th>
+										<th>Amount</th>
+										<th>accepted</th>
+										<th>Transaction</th>
+									</tr>
 								</thead>
 								<tbody>
-								@if(count($project->investors->where('id',$user->id)) > 0)
+									@if(count($project->investors->where('id',$user->id)) > 0)
 									@foreach($project->investors->where('id',$user->id) as $investor)
-										<tr>
-											<td>{{date("d/m/Y",strtotime($investor->pivot->created_at))}}</td>
-											<td>{{$investor->pivot->amount}}
-											</td>
-											<td>@if($investor->pivot->accepted == 1) <i>Accepted</i> @else Yet to accept @endif</td>
-											<td>
-												@if($investor->pivot->transaction_hash){{$investor->pivot->transaction_hash}} @else Waiting for approval &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="For approval please transfer {{$investor->pivot->amount}} AUD to listed bank details"><i class="fa fa-question-circle"></i> </a> &nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#audcBankDetailsModal"><i class="fa fa-bank"></i></a> @endif
-											</td>
-										</tr>
+									<tr>
+										<td>{{date("d/m/Y",strtotime($investor->pivot->created_at))}}</td>
+										<td>{{$investor->pivot->amount}}
+										</td>
+										<td>@if($investor->pivot->accepted == 1) <i>Accepted</i> @else Yet to accept @endif</td>
+										<td>
+											@if($investor->pivot->transaction_hash){{$investor->pivot->transaction_hash}} @else Waiting for approval &nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="For approval please transfer {{$investor->pivot->amount}} AUD to listed bank details"><i class="fa fa-question-circle"></i> </a> &nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#audcBankDetailsModal"><i class="fa fa-bank"></i></a> @endif
+										</td>
+									</tr>
 									@endforeach
-								@endif
+									@endif
 								</tbody>
 							</table>
 						</div>
@@ -93,7 +93,7 @@
 								<p>Please wait while we check for available GAS to perform DAI exchange.</p><br>
 								<div class="progress">
 									<div class="progress-bar progress-bar-striped progress-bar-sm active" role="progressbar"
-										 aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%"></div>
+									aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%"></div>
 								</div>
 							</div>
 						</div>
@@ -123,30 +123,30 @@
 						<div class="table-responsive">
 							<table class="table table-bordered table-striped" id="exchangeTable">
 								<thead>
-								<tr>
-									<th>Transaction ID</th>
-									<th>From token</th>
-									<th>To token</th>
-									<th>Status</th>
-									<th>Created at</th>
-								</tr>
+									<tr>
+										<th>Transaction ID</th>
+										<th>From token</th>
+										<th>To token</th>
+										<th>Status</th>
+										<th>Created at</th>
+									</tr>
 								</thead>
 								<tbody>
-								@foreach($exchanges as $exchange)
+									@foreach($exchanges as $exchange)
 									<tr>
 										<td>TRX{{ $exchange->id }}</td>
 										<td>{{ $exchange->source_token_amount . ' ' . $exchange->source_token }}</td>
 										<td>{{ $exchange->dest_token_amount . ' ' . $exchange->dest_token }}</td>
 										<td>
 											@if($exchange->transaction_response2)
-												Success
+											Success
 											@else
-												Failed
+											Failed
 											@endif
 										</td>
 										<td>{{ date("d/m/Y", strtotime($exchange->created_at)) }}</td>
 									</tr>
-								@endforeach
+									@endforeach
 								</tbody>
 							</table>
 						</div>
@@ -173,7 +173,9 @@
 		$('#exchangeTable').DataTable({
 			"bSort" : false
 		});
-
+		@if(session()->has('audcBankDetailsModal'))
+			$('#audcBankDetailsModal').modal('show');
+		@endif
 		$('#dai_audc_exchange_form').on('submit', function (e) {
 			e.preventDefault();
 			let daiAmount = $('#dai_audc_exchange_form input[name=amount_to_invest]').val();
@@ -217,105 +219,105 @@
 	 * @param daiAmount
 	 * @param transactionId
 	 */
-	function transferDaiToAudc(daiAmount, transactionId) {
-		$.ajax({
-			url: '{{ route('project.user.dai.audc') }}',
-			type: 'POST',
-			dataType: 'JSON',
-			async: true,
-			data: {
-				'dai_amount': daiAmount,
-				'transaction_id': transactionId,
-				'action': 'dai_to_audc'
-			},
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			},
-		}).done(function (data) {
-			console.log(data);
-		});
-	}
+	 function transferDaiToAudc(daiAmount, transactionId) {
+	 	$.ajax({
+	 		url: '{{ route('project.user.dai.audc') }}',
+	 		type: 'POST',
+	 		dataType: 'JSON',
+	 		async: true,
+	 		data: {
+	 			'dai_amount': daiAmount,
+	 			'transaction_id': transactionId,
+	 			'action': 'dai_to_audc'
+	 		},
+	 		headers: {
+	 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	 		},
+	 	}).done(function (data) {
+	 		console.log(data);
+	 	});
+	 }
 
 	/**
 	 *
 	 * @param daiAmount
 	 * @param transactionId
 	 */
-	function transferAudcToDai(daiAmount, transactionId) {
-		$.ajax({
-			url: '{{ route('project.user.dai.audc') }}',
-			type: 'POST',
-			dataType: 'JSON',
-			data: {
-				'dai_amount': daiAmount,
-				'transaction_id': transactionId,
-				'action': 'audc_to_dai'
-			},
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			},
-		}).done(function (data) {
-			console.log(data);
-			$('.loader-overlay').hide();
-			if (!data.status) {
-				alert(data.message);
-				return;
-			}
-			alert('Transfer successful. It may take some time to reflect balance in wallet.');
-			location.reload();
-		});
-	}
+	 function transferAudcToDai(daiAmount, transactionId) {
+	 	$.ajax({
+	 		url: '{{ route('project.user.dai.audc') }}',
+	 		type: 'POST',
+	 		dataType: 'JSON',
+	 		data: {
+	 			'dai_amount': daiAmount,
+	 			'transaction_id': transactionId,
+	 			'action': 'audc_to_dai'
+	 		},
+	 		headers: {
+	 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	 		},
+	 	}).done(function (data) {
+	 		console.log(data);
+	 		$('.loader-overlay').hide();
+	 		if (!data.status) {
+	 			alert(data.message);
+	 			return;
+	 		}
+	 		alert('Transfer successful. It may take some time to reflect balance in wallet.');
+	 		location.reload();
+	 	});
+	 }
 
-	function  getDAIAccountBalance() {
-		updateProgressBar(10);
-		$.ajax({
-			url: '{{ route('user.dai.balance') }}',
-			type: 'GET',
-			dataType: 'JSON',
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			},
-		}).done(function (data) {
-			if (!data.status) {
-				alert(data.message);
-				return;
-			}
-			$('.dai-user-account').html(data.data.daiAccount);
-			$('.dai-user-balance').html(data.data.daiBalance);
+	 function  getDAIAccountBalance() {
+	 	updateProgressBar(10);
+	 	$.ajax({
+	 		url: '{{ route('user.dai.balance') }}',
+	 		type: 'GET',
+	 		dataType: 'JSON',
+	 		headers: {
+	 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	 		},
+	 	}).done(function (data) {
+	 		if (!data.status) {
+	 			alert(data.message);
+	 			return;
+	 		}
+	 		$('.dai-user-account').html(data.data.daiAccount);
+	 		$('.dai-user-balance').html(data.data.daiBalance);
 
 			// if (data.data.daiBalance >= 1) {
 				// updateProgressBar(20);
 				// transferGasToUserWallet();
 			// }
 		});
-	}
+	 }
 
-	function  transferGasToUserWallet() {
-		updateProgressBar(30);
-		$.ajax({
-			url: '{{ route('user.dai.transfer.gas') }}',
-			type: 'GET',
-			dataType: 'JSON',
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			},
-		}).done(function (data) {
-			console.log(data);
-			updateProgressBar(50);
-			if (!data.status) {
-				alert('Something went wrong!');
-				return;
-			}
-			updateProgressBar(100);
-			setTimeout(function () {
-				$('.gas-check-progress').hide('slow');
-				$('.dai-audc-section').removeClass('hide');
-			}, 1000);
-		})
-	}
+	 function  transferGasToUserWallet() {
+	 	updateProgressBar(30);
+	 	$.ajax({
+	 		url: '{{ route('user.dai.transfer.gas') }}',
+	 		type: 'GET',
+	 		dataType: 'JSON',
+	 		headers: {
+	 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	 		},
+	 	}).done(function (data) {
+	 		console.log(data);
+	 		updateProgressBar(50);
+	 		if (!data.status) {
+	 			alert('Something went wrong!');
+	 			return;
+	 		}
+	 		updateProgressBar(100);
+	 		setTimeout(function () {
+	 			$('.gas-check-progress').hide('slow');
+	 			$('.dai-audc-section').removeClass('hide');
+	 		}, 1000);
+	 	})
+	 }
 
-	function updateProgressBar(width, message = '') {
-		$('.progress-bar').css('width', width+'%').attr('aria-valuenow', width).html(width + "%");
-	}
-</script>
-@stop
+	 function updateProgressBar(width, message = '') {
+	 	$('.progress-bar').css('width', width+'%').attr('aria-valuenow', width).html(width + "%");
+	 }
+	</script>
+	@stop

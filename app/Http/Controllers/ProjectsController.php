@@ -1339,7 +1339,7 @@ class ProjectsController extends Controller
         $request['interested_to_buy'] = 0;
         $request['signature_type'] = 0;
         $this->offer->store($request,$mailer);
-        return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>');
+        return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>')->with(['audcBankDetailsModal'=>'show']);
     }
 
     /**
