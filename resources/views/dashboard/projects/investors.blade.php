@@ -510,6 +510,7 @@
 												<strong>Cancelled</strong>
 												@else
 												<a href="{{route('dashboard.investment.cancel', [$shareInvestment->id])}}" class="cancel-investment">cancel</a><br><br>
+												<span data-id="{{$shareInvestment->id}}" class="hidden repaySpanForId"></span>
 												<button class="btn btn-primary" @if($shareInvestment->is_partial_repay) disabled="disabled" @else  action="repurchase" data-toggle="modal" data-target="#repayModal" id="repayBtn" data-id="{{$shareInvestment->id}}"  @endif>Repay</button><br><br>
 												<button class="btn btn-primary" data-toggle="modal" data-target="#partialRepayModal" id="partialRepayBtn" data-id="{{$shareInvestment->id}}" data-max="{{ $shareInvestment->partial_repay_percentage }}">Partial Repay</button>
 												@endif
@@ -867,7 +868,7 @@
 					e.preventDefault();
 					$('.loader-overlay').show();
 					$.ajax({
-						url:'/dashboard/investment/'+$('#repayBtn').attr('data-id')+'/audc',
+						url:'/dashboard/investment/'+$('.repaySpanForId').attr('data-id')+'/audc',
 						type:'GET',
 						data:{},
 						headers: {
