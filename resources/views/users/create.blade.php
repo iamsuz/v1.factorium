@@ -130,7 +130,7 @@ Sign up for free Australia's top Venture Crowdfunding
 <script>
 	$(document).ready(function(){
 		$('#submitform').click(function(){
-
+			$('.loader-overlay').show();
 			$('#submit1').trigger('click');
 		});
 	});
