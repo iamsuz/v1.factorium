@@ -206,7 +206,6 @@ Create New Project | @parent
 		});
 		$("input[type=submit]").click(function(){
 			$('.loader-overlay').show();
-			$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Processing Application... Do not refresh or reload the page.</p><br></div>');
 		});
 	});
 </script>
