@@ -592,7 +592,7 @@ class ProjectsController extends Controller
         $investments = InvestmentInvestor::where('project_id',$project->id)
         ->where('accepted',1)
         ->get();
-        $amount = $project->investment->calculated_asking_price;
+        $amount = number_format($project->investment->calculated_asking_price,2,'.', '');
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
         $maxAmount = $goalAmount - $acceptedAmount;
