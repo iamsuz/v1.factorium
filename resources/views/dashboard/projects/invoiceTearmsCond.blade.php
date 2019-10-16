@@ -315,7 +315,7 @@
 					</td>
 					<td id="invoiceIssuedFrom">{{$project->invoice_issued_from}}</td>
 				</tr>
-				@if($user->factorium_user_type == 'financier')
+				@if($user->factorium_user_type == 'financier' && $project->confirmation)
 				<tr>
 					<td>
 						<b>Financier Entity Name</b>
