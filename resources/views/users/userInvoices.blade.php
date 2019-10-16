@@ -90,6 +90,7 @@
 			$('#invoiceIssuedFrom').html(project.invoice_issued_from);
 			$('#confirmInvoiceBtn').on('click',function (e) {
 				$('.loader-overlay').show();
+				$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait... your request is processed. Please do not refresh or reload the page.</p><br></div>');
 				$.ajax({
 					url : '/user/invoice/'+project.id+'/confirm',
 					type : 'POST',

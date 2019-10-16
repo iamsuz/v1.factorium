@@ -913,6 +913,8 @@
 				} else {
 					e.preventDefault();
 				}
+				$('.loader-overlay').show();
+				$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait... your request is processed. Do not refresh or reload the page.</p><br></div>');
 			});
 
 			$('.send-investment-reminder').click(function(e){

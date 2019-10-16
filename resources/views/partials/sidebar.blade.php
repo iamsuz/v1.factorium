@@ -14,7 +14,7 @@
 	</div></a>
 	<a href="{{route('users.show', [$user])}}" class="list-group-item @if($active == 1) active @endif">Profile </a>
 	<a href="{{route('project.user.audc', [$user])}}" class="list-group-item @if($active == 15) active @endif">Buy AUDC</a>
-	<a href="{{route('users.wallet')}}" class="list-group-item @if($active == 12) active @endif">Wallet </a>
+	<a href="{{route('users.wallet')}}" class="list-group-item @if($active == 12) active @endif" id="load_wallet">Wallet </a>
 	<a href="{{route('users.market', [$user])}}" class="list-group-item hide @if($active == 13) active @endif">Market </a>
 	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
 	<a href="{{route('home')}}#projects" class="list-group-item @if($active == 7) active @endif">All Receivables</a>
@@ -37,3 +37,12 @@
 	<a href="{{route('users.invoices', [$user])}}" class="list-group-item @if($active == 14) active @endif">Invoice issued to me </a>
 	<a href="{{route('users.invoices.submitted', [$user])}}" class="list-group-item @if($active == 16) active @endif">Invoices submitted by me </a>
 </div>
+<script type="text/javascript">
+	var el = document.getElementById('load_wallet');
+	el.onclick = load_wallet;
+	
+function load_wallet() {
+	$('.loader-overlay').show();
+	$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Reading the Blockchain, please wait... Do not refresh or reload the page.</p><br></div>');
+}
+</script>

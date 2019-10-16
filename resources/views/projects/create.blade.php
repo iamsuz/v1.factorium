@@ -118,7 +118,7 @@ Create New Project | @parent
 					<br><br>
 					<div class="row text-center">
 						<div class="col-sm-offset-3 col-sm-6">
-							{!! Form::submit('Submit Receivable', array('class'=>'btn btn-n3 h1-faq second_color_btn', 'tabindex'=>'15','style'=>'color:#fff;font-size:1em;border-radius:6px !important;')) !!}
+							{!! Form::submit('Submit Receivable', array('class'=>'btn btn-n3 h1-faq second_color_btn', 'tabindex'=>'15','style'=>'color:#fff;font-size:1em;border-radius:6px !important;','id'=>'app_submit')) !!}
 						</div>
 					</div>
 				</fieldset>
@@ -203,6 +203,10 @@ Create New Project | @parent
 					$('input[name=description]').val(data.data.description);
 				});
 			}
+		});
+		$("input[type=submit]").click(function(){
+			$('.loader-overlay').show();
+			$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Processing Application... Do not refresh or reload the page.</p><br></div>');
 		});
 	});
 </script>
