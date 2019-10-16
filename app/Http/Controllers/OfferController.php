@@ -97,10 +97,7 @@ class OfferController extends Controller
       }
 
       $validation_rules = array(
-        'amount_to_invest'   => 'required',
-        'line_1' => 'required',
-        'state' => 'required',
-        'postal_code' => 'required'
+        'amount_to_invest'   => 'required'
       );
       $validator = Validator::make($request->all(), $validation_rules);
 
