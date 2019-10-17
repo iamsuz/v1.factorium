@@ -480,18 +480,18 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-             if($investment->project->share_vs_unit) {
+               if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-             }else {
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+               }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-             }
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+               }
 
-             $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+               $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
                  // $mailer->sendInvoiceToAdmin($investment,$formLink);
-         }
-         if(isset($investment->pay_investment_id)){
+           }
+           if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
             if($linkedInvestment){
                 if($linkedInvestment->project->is_wallet_tokenized)
@@ -812,10 +812,10 @@ public function deactivateProject($project_id)
                     ]);
 
                     $content = \View::make('emails.userDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'startDate' => $strStartDate, 'endDate' => $strEndDate, 'project' => $project));
-                    $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
-                    if($result->http_response_code != 200){
-                        array_push($failedEmails, $investment->user->email);
-                    }
+                    // $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+                    // if($result->http_response_code != 200){
+                    //     array_push($failedEmails, $investment->user->email);
+                    // }
                 }
                 if(empty($failedEmails)){
                     return redirect()->back()->withMessage('<p class="alert alert-success text-center">Dividend distribution have been mailed to Investors and admins</p>');
@@ -923,10 +923,10 @@ public function deactivateProject($project_id)
                 $investment->save();
 
                 $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project,'dividendAmount'=>$dividendAmount));
-                $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
-                if($result->http_response_code != 200){
-                    array_push($failedEmails, $investment->user->email);
-                }
+                // $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
+                // if($result->http_response_code != 200){
+                //     array_push($failedEmails, $investment->user->email);
+                // }
             }
             if(empty($failedEmails)){
                 return redirect()->back()->withMessage('<p class="alert alert-success text-center">Partial Repay distribution have been mailed to Investors and admins</p>');
@@ -1237,10 +1237,10 @@ public function deactivateProject($project_id)
             $subject = 'Investor statement for '.$position->user->first_name.' '.$position->user->last_name.' for '.$projectName;
             $content = \View::make('emails.investorStatement', array('project' => $project, 'position' => $position));
             $attachments = array($pdfPath);
-            $result = $this->queueEmailsUsingMailgun($position->user->email, $subject, $content->render(), $attachments);
-            if($result->http_response_code != 200){
-                array_push($failedEmails, $position->user->email);
-            }
+            // $result = $this->queueEmailsUsingMailgun($position->user->email, $subject, $content->render(), $attachments);
+            // if($result->http_response_code != 200){
+            //     array_push($failedEmails, $position->user->email);
+            // }
         }
         if(empty($failedEmails)){
             return redirect()->back()->withMessage('<p class="alert alert-success text-center">Investor Statement have been successfully mailed to Investors</p>');
@@ -1267,8 +1267,8 @@ public function deactivateProject($project_id)
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-               return new TransportManager($app);
-           });
+             return new TransportManager($app);
+         });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);
@@ -2049,8 +2049,34 @@ public function deactivateProject($project_id)
     }
     public function audcProject()
     {
-        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete) {
-            $kyc_approval_konkrete = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->kyc_approval_konkrete;
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id) {
+            $project_id = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id;
+            $project = Project::findOrFail($project_id);
+            $color = Color::where('project_site',url())->first();
+            $investments = InvestmentInvestor::where('project_id', $project_id)->get();
+            $shareInvestments = InvestmentInvestor::where('project_id', $project_id)
+            ->where('accepted', 1)
+            ->orderBy('share_certificate_issued_at','ASC')
+            ->get();
+            $transactions = Transaction::where('project_id', $project_id)->get();
+            $positions = Position::where('project_id', $project_id)->orderBy('effective_date', 'DESC')->get()->groupby('user_id');
+            $projectsInterests = ProjectInterest::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
+            $projectsEois = ProjectEOI::where('project_id', $project_id)->orderBy('created_at', 'DESC')->get();
+            $investorTokens = InvestorProjectToken::with(['user', 'project', 'scheduler_job'])->where('project_id', $project_id)->get();
+            $investorTokensJobDetails = SchedulerJob::where('type', 'investor_project_tokens')->orderBy('created_at', 'desc')->first();
+        // dd($positions);
+        // dd($shareInvestments->last()->investingJoint);
+            $buyer = User::where('email',$project->invoice_issue_from_email)->first();
+            $balanceAudk = false;
+            if($project->is_wallet_tokenized && $project->use_tokens){
+                $client = new \GuzzleHttp\Client();
+                $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                    'query'=>['user_id'=>$buyer->id,'project_id'=>$this->audkID]
+                ]);
+                $responseAudk = $requestAudk->getBody()->getContents();
+                $balanceAudk = json_decode($responseAudk);
+            }
+            return view('dashboard.projects.audcProject', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'balanceAudk', 'investorTokens', 'investorTokensJobDetails','buyer'));
         }
 
     }

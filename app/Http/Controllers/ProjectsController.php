@@ -44,7 +44,8 @@ use App\Services\Konkrete as KonkreteClient;
 class ProjectsController extends Controller
 {
     protected $konkreteClient;
-
+    protected $userRegistration;
+    protected $offer;
     /**
      * constructor for UsersController
      */

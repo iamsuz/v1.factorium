@@ -12,11 +12,11 @@
         @if($balanceAudk) <h4 class="text-center">
           @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id))
           @if($project->investment->total_projected_costs > $balanceAudk->balance)
-          You dont have sufficient token to repay
+          Buyer does not have sufficient AUDC to repay
           @endif
         @endif</h4>
         @endif
-        <p style="font-size: 20px;" class="text-center">You are about to repay <b><i>{{$project->title}}</i></b> for <b>${{$project->investment->total_projected_costs}}</b></p>
+        <p style="font-size: 20px;" class="text-center">Buyer is about to repay <b><i>{{$project->title}}</i></b> for <b>${{$project->investment->total_projected_costs}}</b></p>
       </div>
       <div class="modal-footer">
         @if($balanceAudk)
