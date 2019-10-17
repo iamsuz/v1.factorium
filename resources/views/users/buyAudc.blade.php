@@ -35,6 +35,13 @@
 			<div class="tab-content">
 				<div id="buy_using_cash" class="tab-pane fade in active">
 					<h3 class="text-center">Buy AUDC Token</h3>
+					@if($balanceAudk)
+					<h4 class="text-center">
+						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}}
+						@else AUDC
+						@endif Balance: {{$balanceAudk->balance}}
+					</h4>
+					@endif
 					<div class="">
 						<form class="" action="{{route('project.user.audc.buy')}}" method="POST" name="audcForm" id="audcForm">
 							{{ csrf_field() }}

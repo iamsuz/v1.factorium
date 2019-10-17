@@ -42,13 +42,13 @@
 					@endif
 					<h3 class="text-center">{{$project->title}}</h3>
 					<p class="text-center"><strong>Project Wallet Address:</strong></p><p class="text-center"><small >{{ $project->wallet_address }}</small></p>
-					{{-- @if($balanceAudk)
+					@if($balanceAudk)
 					<h4 class="text-center">
 						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}}
-						@else AUDK
+						@else AUDC
 						@endif Balance: {{$balanceAudk->balance}}
 					</h4>
-					@endif --}}
+					@endif
 				</div>
 			</div>
 			<div id="investors_tab" class="tab-pane fade in active" style="overflow: auto;">

@@ -613,155 +613,155 @@ class ProjectsController extends Controller
         //     return redirect()->route('users.verification', Auth::user())->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> As part of our commitment to meeting Australian Securities Law we are required to do some additional user verification to meet Anti Money Laundering and Counter Terror Financing requirements.<br> This wont take long, promise!</p>');
         // }
 
-        if($project->investment){
-            $user = Auth::user();
-            if($request->source == 'eoi'){
-                dd('EOI');
-                $user = User::find($request->uid);
-                $eoi = ProjectEOI::find($request->id);
-                return view('projects.offer', compact('project','color','action','projects_spv','user', 'eoi','maxAmount'));
-            }
-            if(!$project->eoi_button){
-
-                return view('projects.offer', compact('project','color','action','projects_spv','user','maxAmount'));
-            } else{
-                return response()->view('errors.404', [], 404);
-            }
-        } else {
-            return redirect()->back()->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Warning!</strong>Project investment plan is not yet done</p>');
+      if($project->investment){
+        $user = Auth::user();
+        if($request->source == 'eoi'){
+            dd('EOI');
+            $user = User::find($request->uid);
+            $eoi = ProjectEOI::find($request->id);
+            return view('projects.offer', compact('project','color','action','projects_spv','user', 'eoi','maxAmount'));
         }
-    }
+        if(!$project->eoi_button){
 
-    public function showEoiInterest($project_id)
-    {
-        $projects_spv = ProjectSpvDetail::where('project_id',$project_id)->first();
-        $color = Color::where('project_site',url())->first();
-        $project = Project::findOrFail($project_id);
-        if($project->investment){
-            $user = Auth::user();
-        }
-        if($project->eoi_button) {
-            return view('projects.eoiForm', compact('project', 'color', 'projects_spv', 'user'));
-        }else {
+            return view('projects.offer', compact('project','color','action','projects_spv','user','maxAmount'));
+        } else{
             return response()->view('errors.404', [], 404);
         }
+    } else {
+        return redirect()->back()->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Warning!</strong>Project investment plan is not yet done</p>');
     }
+}
 
-    public function storeProjectEOI(Request $request, AppMailer $mailer)
-    {
-        $color = Color::where('project_site',url())->first();
-        $project = Project::findOrFail($request->project_id);
+public function showEoiInterest($project_id)
+{
+    $projects_spv = ProjectSpvDetail::where('project_id',$project_id)->first();
+    $color = Color::where('project_site',url())->first();
+    $project = Project::findOrFail($project_id);
+    if($project->investment){
         $user = Auth::user();
-        $user_info = Auth::user();
-        $min_amount_invest = $project->investment->minimum_accepted_amount;
-        if((int)$request->investment_amount < (int)$min_amount_invest)
-        {
-            return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
+    }
+    if($project->eoi_button) {
+        return view('projects.eoiForm', compact('project', 'color', 'projects_spv', 'user'));
+    }else {
+        return response()->view('errors.404', [], 404);
+    }
+}
+
+public function storeProjectEOI(Request $request, AppMailer $mailer)
+{
+    $color = Color::where('project_site',url())->first();
+    $project = Project::findOrFail($request->project_id);
+    $user = Auth::user();
+    $user_info = Auth::user();
+    $min_amount_invest = $project->investment->minimum_accepted_amount;
+    if((int)$request->investment_amount < (int)$min_amount_invest)
+    {
+        return redirect()->back()->withErrors(['The amount to invest must be at least $'.$min_amount_invest]);
+    }
+
+    $this->validate($request, [
+        'first_name' => 'required',
+        'last_name' =>'required',
+        'email' => 'required',
+        'phone_number' => 'required',
+        'investment_amount' => 'required|numeric',
+        'investment_period' => 'required',
+    ]);
+    $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
+    if($project){
+        if($project->eoi_button){
+            $eoi_data = ProjectEOI::create([
+                'project_id' => $request->project_id,
+                'user_id' => $user->id,
+                'user_name' => $request->first_name.' '.$request->last_name,
+                'user_email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'investment_amount' => $request->investment_amount,
+                'invesment_period' => $request->investment_period,
+                'interested_to_buy' => $request->interested_to_buy,
+                'is_accredited_investor' => $request->is_accredited_investor,
+                'country_code' => $request->country_code,
+                'country'=>$request->country,
+                'project_site' => url(),
+            ]);
+            $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
+            $mailer->sendProjectEoiEmailToUser($project, $user_info);
         }
-
-        $this->validate($request, [
-            'first_name' => 'required',
-            'last_name' =>'required',
-            'email' => 'required',
-            'phone_number' => 'required',
-            'investment_amount' => 'required|numeric',
-            'investment_period' => 'required',
-        ]);
-        $request->merge(['country' => array_search($request->country_code, \App\Http\Utilities\Country::all())]);
-        if($project){
-            if($project->eoi_button){
-                $eoi_data = ProjectEOI::create([
-                    'project_id' => $request->project_id,
-                    'user_id' => $user->id,
-                    'user_name' => $request->first_name.' '.$request->last_name,
-                    'user_email' => $request->email,
-                    'phone_number' => $request->phone_number,
-                    'investment_amount' => $request->investment_amount,
-                    'invesment_period' => $request->investment_period,
-                    'interested_to_buy' => $request->interested_to_buy,
-                    'is_accredited_investor' => $request->is_accredited_investor,
-                    'country_code' => $request->country_code,
-                    'country'=>$request->country,
-                    'project_site' => url(),
-                ]);
-                $mailer->sendProjectEoiEmailToAdmins($project, $eoi_data);
-                $mailer->sendProjectEoiEmailToUser($project, $user_info);
-            }
-        }
-        return redirect()->route('users.success.eoi')->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
     }
+    return redirect()->route('users.success.eoi')->withMessage('<p class="alert alert-success text-center" style="margin-top: 30px;">Thank you for expressing interest. We will be in touch with you shortly.</p>');
+}
 
-    public function showInterestOffer($project_id, AppMailer $mailer)
-    {
-        return view('projects.offer');
-    }
-    public function interestCompleted($project_id, AppMailer $mailer)
-    {
-        $project = Project::findOrFail($project_id);
-        return view('projects.shownInterest',compact('project'));
-    }
+public function showInterestOffer($project_id, AppMailer $mailer)
+{
+    return view('projects.offer');
+}
+public function interestCompleted($project_id, AppMailer $mailer)
+{
+    $project = Project::findOrFail($project_id);
+    return view('projects.shownInterest',compact('project'));
+}
 
-    public function storePhoto(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'main_image';
+public function storePhoto(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'main_image';
 
-        $destinationPath = 'assets/images/projects/'.$project_id;
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
-        $photo->resize(1566, 885, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
+    $destinationPath = 'assets/images/projects/'.$project_id;
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
+    $photo->resize(1566, 885, function ($constraint) {
+        $constraint->aspectRatio();
+    })->save();
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
 
-    }
-    public function storePhotoProjectDeveloper(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'project_developer';
+}
+public function storePhotoProjectDeveloper(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'project_developer';
 
-        $destinationPath = 'assets/images/projects/'.$project_id.'/developer';
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
-        $photo->resize(1566, 885, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
+    $destinationPath = 'assets/images/projects/'.$project_id.'/developer';
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
+    $photo->resize(1566, 885, function ($constraint) {
+        $constraint->aspectRatio();
+    })->save();
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
 
-    }
-    public function storePhotoProjectThumbnail(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'project_thumbnail';
+}
+public function storePhotoProjectThumbnail(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'project_thumbnail';
 
-        $destinationPath = 'assets/images/projects/'.$project_id;
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
-        $photo->resize(1024, 683, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
+    $destinationPath = 'assets/images/projects/'.$project_id;
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
+    $photo->resize(1024, 683, function ($constraint) {
+        $constraint->aspectRatio();
+    })->save();
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
 
-    }
-    public function storePhotoResidents1(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'residents';
+}
+public function storePhotoResidents1(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'residents';
         // if($project->media->count()){
         //     $destinationPath = 'assets/images/projects';
         //     $filename = 'residents';
@@ -772,23 +772,23 @@ class ProjectsController extends Controller
         //     $photo->destroy();
         //     // return 1;
         // }
-        $destinationPath = 'assets/images/projects/'.$project_id.'/residents';
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
+    $destinationPath = 'assets/images/projects/'.$project_id.'/residents';
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
         // $photo->resize(1366, null, function ($constraint) {
         //     $constraint->aspectRatio();
         // })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
-    }
-    public function storePhotoMarketability(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'marketability';
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
+}
+public function storePhotoMarketability(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'marketability';
         // if($project->media->count()){
         //     $destinationPath = 'assets/images/projects/marketability';
         //     $filename = 'marketability';
@@ -798,23 +798,23 @@ class ProjectsController extends Controller
         //     $photo->destroy();
         //     return 1;
         // }
-        $destinationPath = 'assets/images/projects/'.$project_id.'/marketability';
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
+    $destinationPath = 'assets/images/projects/'.$project_id.'/marketability';
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
         // $photo->resize(1366, null, function ($constraint) {
             // $constraint->aspectRatio();
         // })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
-    }
-    public function storePhotoInvestmentStructure(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'investment_structure';
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
+}
+public function storePhotoInvestmentStructure(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'investment_structure';
         // if($project->media->count()){
         //     $destinationPath = 'assets/images/projects/marketability';
         //     $filename = 'marketability';
@@ -824,23 +824,23 @@ class ProjectsController extends Controller
         //     $photo->destroy();
         //     return 1;
         // }
-        $destinationPath = 'assets/images/projects/'.$project_id.'/istructure';
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
+    $destinationPath = 'assets/images/projects/'.$project_id.'/istructure';
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
         // $photo->resize(1366, null, function ($constraint) {
             // $constraint->aspectRatio();
         // })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
-    }
-    public function storePhotoExit(Request $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $image_type = 'exit_image';
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
+}
+public function storePhotoExit(Request $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $image_type = 'exit_image';
         // if($project->media->count()){
         //     $destinationPath = 'assets/images/projects/marketability';
         //     $filename = 'marketability';
@@ -850,331 +850,331 @@ class ProjectsController extends Controller
         //     $photo->destroy();
         //     return 1;
         // }
-        $destinationPath = 'assets/images/projects/'.$project_id.'/exit';
-        $filename = $request->file->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->file->getClientOriginalExtension();
-        $photo = $request->file->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
+    $destinationPath = 'assets/images/projects/'.$project_id.'/exit';
+    $filename = $request->file->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->file->getClientOriginalExtension();
+    $photo = $request->file->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
         // $photo->resize(1366, null, function ($constraint) {
             // $constraint->aspectRatio();
         // })->save();
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return 1;
-    }
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return 1;
+}
 
-    public function storeInvestmentInfo(InvestmentRequest $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $investment = new \App\Investment($request->all());
-        $project->investment()->save($investment);
+public function storeInvestmentInfo(InvestmentRequest $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $investment = new \App\Investment($request->all());
+    $project->investment()->save($investment);
 
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Added Investment Info.</p>');
-    }
+    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Added Investment Info.</p>');
+}
 
-    public function storeAdditionalFormContent(Request $request, $id)
-    {
+public function storeAdditionalFormContent(Request $request, $id)
+{
         // $this->validate($request, array(
         //     'add_additional_form_content' => 'required',
         //     ));
-        $project = Project::where('id', $id);
-        $result = $project->update([
-            'add_additional_form_content' => $request->add_additional_form_content,
-        ]);
+    $project = Project::where('id', $id);
+    $result = $project->update([
+        'add_additional_form_content' => $request->add_additional_form_content,
+    ]);
 
-        return redirect()->back()->withMessage('Successfully Added Additional Form Content.');
-    }
+    return redirect()->back()->withMessage('Successfully Added Additional Form Content.');
+}
 
-    public function storeProjectThumbnailText(Request $request, $id)
-    {
-        $project = Project::where('id', $id);
-        $result = $project->update([
-            'project_thumbnail_text' => $request->project_thumbnail_text,
-        ]);
-        return redirect()->back();
-    }
+public function storeProjectThumbnailText(Request $request, $id)
+{
+    $project = Project::where('id', $id);
+    $result = $project->update([
+        'project_thumbnail_text' => $request->project_thumbnail_text,
+    ]);
+    return redirect()->back();
+}
 
-    public function storeProjectFAQ(FAQRequest $request, $project_id)
-    {
-        $project = Project::findOrFail($project_id);
-        $faq = new \App\ProjectFAQ($request->all());
-        $project->projectFAQs()->save($faq);
+public function storeProjectFAQ(FAQRequest $request, $project_id)
+{
+    $project = Project::findOrFail($project_id);
+    $faq = new \App\ProjectFAQ($request->all());
+    $project->projectFAQs()->save($faq);
 
-        Session::flash('editable', 'true');
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Added FAQ</p>');
-    }
-    public function deleteProjectFAQ($faq_id)
-    {
-        $faq = ProjectFAQ::findOrFail($faq_id);
-        $faq->delete();
-        Session::flash('editable', 'true');
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted FAQ</p>');
-    }
+    Session::flash('editable', 'true');
+    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Added FAQ</p>');
+}
+public function deleteProjectFAQ($faq_id)
+{
+    $faq = ProjectFAQ::findOrFail($faq_id);
+    $faq->delete();
+    Session::flash('editable', 'true');
+    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted FAQ</p>');
+}
 
-    public function redirectingfromproject()
-    {
-        return view('pages.welcome');
-    }
+public function redirectingfromproject()
+{
+    return view('pages.welcome');
+}
 
-    public function showInvitation()
-    {
-        $user = Auth::user();
-        return view('projects.invitation', compact('user'));
-    }
+public function showInvitation()
+{
+    $user = Auth::user();
+    return view('projects.invitation', compact('user'));
+}
 
-    public function postInvitation(Request $request)
-    {
-        $user = Auth::user();
-        $project = Project::findOrFail($request->project);
-        $this->validate($request, ['email' => 'required']);
-        $str = $request->email;
-        $email_array = explode(";",$str);
-        $failed_emails = "";
-        $sent_emails = "";
-        foreach ($email_array as $key => $email) {
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $failed_emails = $failed_emails." ".$email;
-            } else {
-                $investor = User::whereEmail($email)->first();
-                if($investor){
-                    $project->invited_users()->attach($investor);
-                }
+public function postInvitation(Request $request)
+{
+    $user = Auth::user();
+    $project = Project::findOrFail($request->project);
+    $this->validate($request, ['email' => 'required']);
+    $str = $request->email;
+    $email_array = explode(";",$str);
+    $failed_emails = "";
+    $sent_emails = "";
+    foreach ($email_array as $key => $email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $failed_emails = $failed_emails." ".$email;
+        } else {
+            $investor = User::whereEmail($email)->first();
+            if($investor){
+                $project->invited_users()->attach($investor);
             }
         }
-        if($failed_emails != "" ) {
-            if($sent_emails != "") {
-                return redirect()->back()->withMessage('<p class="alert alert-success text-center">Your invitation to '.$sent_emails.' was sent succesfully, we will notify when your invite was accepted.</p><br><p class="alert alert-warning text-center">You can not send Invitation to '.$failed_emails.'</p>');
-            } else {
-                return redirect()->back()->withMessage('<p class="alert alert-warning text-center">You can not send Invitation to '.$failed_emails.'</p>');
-            }
-        }
-        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Your invitation to '.$sent_emails.' was sent succesfully, we will notify when your invite was accepted.</p>');
     }
+    if($failed_emails != "" ) {
+        if($sent_emails != "") {
+            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Your invitation to '.$sent_emails.' was sent succesfully, we will notify when your invite was accepted.</p><br><p class="alert alert-warning text-center">You can not send Invitation to '.$failed_emails.'</p>');
+        } else {
+            return redirect()->back()->withMessage('<p class="alert alert-warning text-center">You can not send Invitation to '.$failed_emails.'</p>');
+        }
+    }
+    return redirect()->back()->withMessage('<p class="alert alert-success text-center">Your invitation to '.$sent_emails.' was sent succesfully, we will notify when your invite was accepted.</p>');
+}
 
-    public function gformRedirects(Request $request)
-    {
-        $url = url();
-        $amount = $request->amount_to_invest;
-        $project_id = $request->project_id;
-        $user_id = $request->user_id;
+public function gformRedirects(Request $request)
+{
+    $url = url();
+    $amount = $request->amount_to_invest;
+    $project_id = $request->project_id;
+    $user_id = $request->user_id;
         // if($request->same_account){
         //     $request->withdraw_bank_name = $request->bank_name;
         //     $request->withdraw_account_name = $request->account_name;
         //     $request->withdraw_account_number = $request->account_number;
         //     $request->withdraw_bsb = $request->bsb;
         // }
-        return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number.'&investing_as='.$request->investing_as.'&joint_investor_first='.$request->joint_investor_first.'&joint_investor_last='.$request->joint_investor_last.'&investing_company_name='.$request->investing_company_name.'&bank_name='.$request->bank_name.'&tfn='.$request->tfn);
-    }
+    return redirect($url.'/gform?amount_to_invest='.$amount.'&project_id='.$project_id.'&user_id='.$user_id.'&line_1='.$request->line_1.'&line_2='.$request->line_2.'&city='.$request->city.'&state='.$request->state.'&country='.$request->country.'&postal_code='.$request->postal_code.'&account_name='.$request->account_name.'&bsb='.$request->bsb.'&account_number='.$request->account_number.'&investing_as='.$request->investing_as.'&joint_investor_first='.$request->joint_investor_first.'&joint_investor_last='.$request->joint_investor_last.'&investing_company_name='.$request->investing_company_name.'&bank_name='.$request->bank_name.'&tfn='.$request->tfn);
+}
 
-    public function gform(Request $request)
-    {
-        $project = Project::findOrFail($request->project_id);
-        $user = User::findOrFail($request->user_id);
-        $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
+public function gform(Request $request)
+{
+    $project = Project::findOrFail($request->project_id);
+    $user = User::findOrFail($request->user_id);
+    $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         // $amount_5 = $amount*0.05; //5 percent of investment
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
-        $user->update($request->all());
-        $investor = InvestmentInvestor::get()->last();
-        if($request->investing_as != 'Individual Investor'){
-            $investing_joint = new InvestingJoint;
-            $investing_joint->project_id = $project->id;
-            $investing_joint->investment_investor_id = $investor->id;
-            $investing_joint->joint_investor_first_name = $request->joint_investor_first;
-            $investing_joint->joint_investor_last_name = $request->joint_investor_last;
-            $investing_joint->investing_company = $request->investing_company_name;
-            $investing_joint->save();
-        }
-        $this->dispatch(new SendInvestorNotificationEmail($user,$project));
-        $this->dispatch(new SendReminderEmail($user,$project));
-
-        return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+    $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$request->investing_as]);
+    $user->update($request->all());
+    $investor = InvestmentInvestor::get()->last();
+    if($request->investing_as != 'Individual Investor'){
+        $investing_joint = new InvestingJoint;
+        $investing_joint->project_id = $project->id;
+        $investing_joint->investment_investor_id = $investor->id;
+        $investing_joint->joint_investor_first_name = $request->joint_investor_first;
+        $investing_joint->joint_investor_last_name = $request->joint_investor_last;
+        $investing_joint->investing_company = $request->investing_company_name;
+        $investing_joint->save();
     }
+    $this->dispatch(new SendInvestorNotificationEmail($user,$project));
+    $this->dispatch(new SendReminderEmail($user,$project));
 
-    public function storeProjectSPVDetails(Request $request, $project_id)
-    {
-        $this->validate($request, [
-            'spv_name' => 'required',
-            'spv_line_1' => 'required',
-            'spv_city' => 'required',
-            'spv_state' => 'required',
-            'spv_postal_code' => 'required',
-            'spv_country' => 'required',
-            'spv_contact_number' => 'required',
-            'spv_md_name' => 'required',
+    return view('projects.gform.thankyou', compact('project', 'user', 'amount_5', 'amount'));
+}
+
+public function storeProjectSPVDetails(Request $request, $project_id)
+{
+    $this->validate($request, [
+        'spv_name' => 'required',
+        'spv_line_1' => 'required',
+        'spv_city' => 'required',
+        'spv_state' => 'required',
+        'spv_postal_code' => 'required',
+        'spv_country' => 'required',
+        'spv_contact_number' => 'required',
+        'spv_md_name' => 'required',
             // 'spv_logo_image_path' => 'required',
-        ]);
+    ]);
         //validate SPV logo
-        $projectMedia = Media::where('project_id', $project_id)
-        ->where('project_site', url())
-        ->where('type', 'spv_logo_image')
-        ->first();
-        if(!$projectMedia){
-            $this->validate($request, [
-                'spv_logo' => 'required',
-            ]);
-        }
-        //Validate SPV MD Signature
-        $projectMedia = Media::where('project_id', $project_id)
-        ->where('project_site', url())
-        ->where('type', 'spv_md_sign_image')
-        ->first();
-        if(!$projectMedia){
-            $this->validate($request, [
-                'spv_md_sign' => 'required',
-            ]);
-        }
-        $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
-        if(!$projectSpv)
-        {
-            $projectSpv = new ProjectSpvDetail;
-            $projectSpv->project_id = $project_id;
-            $projectSpv->save();
-            $projectSpv = ProjectSpvDetail::where('project_id',$project_id)->first();
-        }
-        $spv_result = $projectSpv->update([
-            'spv_name' => $request->spv_name,
-            'spv_line_1' => $request->spv_line_1,
-            'spv_line_2' => $request->spv_line_2,
-            'spv_city' => $request->spv_city,
-            'spv_state' => $request->spv_state,
-            'spv_postal_code' => $request->spv_postal_code,
-            'spv_country' => $request->spv_country,
-            'spv_contact_number' => $request->spv_contact_number,
-            'spv_md_name' => $request->spv_md_name,
-            'certificate_frame' => $request->certificate_frame,
-            'spv_email' => $request->spv_email,
+    $projectMedia = Media::where('project_id', $project_id)
+    ->where('project_site', url())
+    ->where('type', 'spv_logo_image')
+    ->first();
+    if(!$projectMedia){
+        $this->validate($request, [
+            'spv_logo' => 'required',
         ]);
-        if($spv_result)
-        {
-            if($request->spv_logo_image_path && $request->spv_logo_image_path != ''){
-                $saveLoc = 'assets/images/media/project_page/';
-                $finalFile = 'spv_logo_'.time().'.png';
-                $finalpath = $saveLoc.$finalFile;
-                Image::make($request->spv_logo_image_path)->save(public_path($finalpath));
-                File::delete($request->spv_logo_image_path);
-
-                $projectMedia = Media::where('project_id', $project_id)
-                ->where('project_site', url())
-                ->where('type', 'spv_logo_image')
-                ->first();
-                if($projectMedia){
-                    File::delete(public_path($projectMedia->path));
-                }
-                else{
-                    $projectMedia = new Media;
-                    $projectMedia->project_id = $project_id;
-                    $projectMedia->type = 'spv_logo_image';
-                    $projectMedia->project_site = url();
-                    $projectMedia->caption = 'Project SPV Logo Image';
-                }
-                $projectMedia->filename = $finalFile;
-                $projectMedia->path = $finalpath;
-                $projectMedia->save();
-            }
-            if($request->spv_md_sign_image_path && $request->spv_md_sign_image_path != ''){
-                $saveLoc = 'assets/images/media/project_page/';
-                $finalFile = 'spv_md_sign'.time().'.png';
-                $finalpath = $saveLoc.$finalFile;
-                Image::make($request->spv_md_sign_image_path)->save(public_path($finalpath));
-                File::delete($request->spv_md_sign_image_path);
-                $projectMedia = Media::where('project_id', $project_id)
-                ->where('project_site', url())
-                ->where('type', 'spv_md_sign_image')
-                ->first();
-                if($projectMedia){
-                    File::delete(public_path($projectMedia->path));
-                }
-                else{
-                    $projectMedia = new Media;
-                    $projectMedia->project_id = $project_id;
-                    $projectMedia->type = 'spv_md_sign_image';
-                    $projectMedia->project_site = url();
-                    $projectMedia->caption = 'Project SPV MD Signature Image';
-                }
-                $projectMedia->filename = $finalFile;
-                $projectMedia->path = $finalpath;
-                $projectMedia->save();
-            }
-            return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Updated Project SPV Details.</p>');
-        }
     }
-
-    public function uploadSubSectionImages(Request $request)
-    {
-        $validation_rules = array(
-            'project_sub_heading_image'   => 'required|mimes:jpeg,png,jpg',
-        );
-        $validator = Validator::make($request->all(), $validation_rules);
-        if($validator->fails()){
-            return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
-        }
-        $project = Project::findOrFail($request->projectId);
-        $image_type = $request->imgType;
-        $destinationPath = 'assets/images/projects/'.$request->projectId;
-        $filename = $request->project_sub_heading_image->getClientOriginalName();
-        $filename = time().'_'.$filename;
-        $extension = $request->project_sub_heading_image->getClientOriginalExtension();
-        $photo = $request->project_sub_heading_image->move($destinationPath, $filename);
-        $photo= Image::make($destinationPath.'/'.$filename);
-        $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
-        $project->media()->save($media);
-        return $resultArray = array('status' => 1, 'message' => 'The Image uploaded Successfully');
+        //Validate SPV MD Signature
+    $projectMedia = Media::where('project_id', $project_id)
+    ->where('project_site', url())
+    ->where('type', 'spv_md_sign_image')
+    ->first();
+    if(!$projectMedia){
+        $this->validate($request, [
+            'spv_md_sign' => 'required',
+        ]);
     }
-
-    public function deleteSubSectionImages(Request $request)
+    $projectSpv = ProjectSpvDetail::where('project_id', $project_id)->first();
+    if(!$projectSpv)
     {
-        $mediaId = $request->mediaId;
-        if($mediaId != '')
+        $projectSpv = new ProjectSpvDetail;
+        $projectSpv->project_id = $project_id;
+        $projectSpv->save();
+        $projectSpv = ProjectSpvDetail::where('project_id',$project_id)->first();
+    }
+    $spv_result = $projectSpv->update([
+        'spv_name' => $request->spv_name,
+        'spv_line_1' => $request->spv_line_1,
+        'spv_line_2' => $request->spv_line_2,
+        'spv_city' => $request->spv_city,
+        'spv_state' => $request->spv_state,
+        'spv_postal_code' => $request->spv_postal_code,
+        'spv_country' => $request->spv_country,
+        'spv_contact_number' => $request->spv_contact_number,
+        'spv_md_name' => $request->spv_md_name,
+        'certificate_frame' => $request->certificate_frame,
+        'spv_email' => $request->spv_email,
+    ]);
+    if($spv_result)
+    {
+        if($request->spv_logo_image_path && $request->spv_logo_image_path != ''){
+            $saveLoc = 'assets/images/media/project_page/';
+            $finalFile = 'spv_logo_'.time().'.png';
+            $finalpath = $saveLoc.$finalFile;
+            Image::make($request->spv_logo_image_path)->save(public_path($finalpath));
+            File::delete($request->spv_logo_image_path);
+
+            $projectMedia = Media::where('project_id', $project_id)
+            ->where('project_site', url())
+            ->where('type', 'spv_logo_image')
+            ->first();
+            if($projectMedia){
+                File::delete(public_path($projectMedia->path));
+            }
+            else{
+                $projectMedia = new Media;
+                $projectMedia->project_id = $project_id;
+                $projectMedia->type = 'spv_logo_image';
+                $projectMedia->project_site = url();
+                $projectMedia->caption = 'Project SPV Logo Image';
+            }
+            $projectMedia->filename = $finalFile;
+            $projectMedia->path = $finalpath;
+            $projectMedia->save();
+        }
+        if($request->spv_md_sign_image_path && $request->spv_md_sign_image_path != ''){
+            $saveLoc = 'assets/images/media/project_page/';
+            $finalFile = 'spv_md_sign'.time().'.png';
+            $finalpath = $saveLoc.$finalFile;
+            Image::make($request->spv_md_sign_image_path)->save(public_path($finalpath));
+            File::delete($request->spv_md_sign_image_path);
+            $projectMedia = Media::where('project_id', $project_id)
+            ->where('project_site', url())
+            ->where('type', 'spv_md_sign_image')
+            ->first();
+            if($projectMedia){
+                File::delete(public_path($projectMedia->path));
+            }
+            else{
+                $projectMedia = new Media;
+                $projectMedia->project_id = $project_id;
+                $projectMedia->type = 'spv_md_sign_image';
+                $projectMedia->project_site = url();
+                $projectMedia->caption = 'Project SPV MD Signature Image';
+            }
+            $projectMedia->filename = $finalFile;
+            $projectMedia->path = $finalpath;
+            $projectMedia->save();
+        }
+        return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Updated Project SPV Details.</p>');
+    }
+}
+
+public function uploadSubSectionImages(Request $request)
+{
+    $validation_rules = array(
+        'project_sub_heading_image'   => 'required|mimes:jpeg,png,jpg',
+    );
+    $validator = Validator::make($request->all(), $validation_rules);
+    if($validator->fails()){
+        return $resultArray = array('status' => 0, 'message' => 'The user image must be a file of type: jpeg,png,jpg');
+    }
+    $project = Project::findOrFail($request->projectId);
+    $image_type = $request->imgType;
+    $destinationPath = 'assets/images/projects/'.$request->projectId;
+    $filename = $request->project_sub_heading_image->getClientOriginalName();
+    $filename = time().'_'.$filename;
+    $extension = $request->project_sub_heading_image->getClientOriginalExtension();
+    $photo = $request->project_sub_heading_image->move($destinationPath, $filename);
+    $photo= Image::make($destinationPath.'/'.$filename);
+    $media = new \App\Media(['type'=>$image_type, 'filename'=>$filename, 'path'=>$destinationPath.'/'.$filename, 'thumbnail_path'=>$destinationPath.'/'.$filename,'extension'=>$extension]);
+    $project->media()->save($media);
+    return $resultArray = array('status' => 1, 'message' => 'The Image uploaded Successfully');
+}
+
+public function deleteSubSectionImages(Request $request)
+{
+    $mediaId = $request->mediaId;
+    if($mediaId != '')
+    {
+        $projectMedia = Media::find($mediaId);
+        if($projectMedia)
         {
-            $projectMedia = Media::find($mediaId);
-            if($projectMedia)
+            if($projectMedia->project->project_site == url())
             {
-                if($projectMedia->project->project_site == url())
-                {
-                    $projectMedia = Media::where('type',$projectMedia->type)->where('project_id',(int)$request->projectId)->get();
-                    foreach ($projectMedia as $media) {
-                        File::delete($media->path);
-                        $media->delete();
-                    }
-                    return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
+                $projectMedia = Media::where('type',$projectMedia->type)->where('project_id',(int)$request->projectId)->get();
+                foreach ($projectMedia as $media) {
+                    File::delete($media->path);
+                    $media->delete();
                 }
+                return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
             }
         }
     }
+}
 
-    public function deleteProjectCarouselImages(Request $request)
+public function deleteProjectCarouselImages(Request $request)
+{
+    $mediaId = $request->mediaId;
+    if($mediaId != '')
     {
-        $mediaId = $request->mediaId;
-        if($mediaId != '')
+        $projectMedia = Media::find($mediaId);
+        if($projectMedia)
         {
-            $projectMedia = Media::find($mediaId);
-            if($projectMedia)
+            if($projectMedia->project->project_site == url())
             {
-                if($projectMedia->project->project_site == url())
-                {
-                    File::delete($projectMedia->path);
-                    $projectMedia->delete();
-                    return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
-                }
+                File::delete($projectMedia->path);
+                $projectMedia->delete();
+                return $resultArray = array('status' => 1, 'message' => 'Image deleted Successfully', 'mediaImageId' => $mediaId);
             }
         }
     }
+}
 
-    public function prospectusDownload(Request $request)
-    {
-        $project = Project::find($request->projectId);
-        if($project){
-            if($project->project_site == url()){
-                $data = ProspectusDownload::create([
-                    'user_id' => Auth::user()->id,
-                    'project_id' => $project->id,
-                    'project_site' => url()
-                ]);
-            }
-            return $data;
+public function prospectusDownload(Request $request)
+{
+    $project = Project::find($request->projectId);
+    if($project){
+        if($project->project_site == url()){
+            $data = ProspectusDownload::create([
+                'user_id' => Auth::user()->id,
+                'project_id' => $project->id,
+                'project_site' => url()
+            ]);
         }
+        return $data;
     }
+}
 
     /**
      * @param $projectId
@@ -1228,13 +1228,13 @@ class ProjectsController extends Controller
 
 
         if ($validator->fails()) {
-         return array(
-          'status' => false,
-          'message' => $validator->errors()->first()
-      );
-     }
+           return array(
+              'status' => false,
+              'message' => $validator->errors()->first()
+          );
+       }
 
-     try {
+       try {
             // Get remaining days for invoice due date
         $dueDate = Carbon::createFromFormat('Y-m-d', $request->due_date);
         $dateDiff = date_diff(Carbon::now(), $dueDate);
@@ -1284,8 +1284,16 @@ class ProjectsController extends Controller
         $user = Auth::user();
         $project = Project::findOrFail($this->audkID);
         $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
-
-        return view('users.buyAudc',compact('color','user','project', 'exchanges'));
+        $balanceAudk = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                'query'=>['user_id'=>$user->id,'project_id'=>$this->audkID]
+            ]);
+            $responseAudk = $requestAudk->getBody()->getContents();
+            $balanceAudk = json_decode($responseAudk);
+        }
+        return view('users.buyAudc',compact('color','user','project', 'exchanges','balanceAudk'));
     }
 
     /**
@@ -1466,10 +1474,10 @@ class ProjectsController extends Controller
 
         // Update transaction in DB
         CryptoExchangeTransaction::where('id', $transactionId)
-            ->update([
-                'transaction_hash' => $responseResult->data->transaction_hash,
-                'transaction_response1' => json_encode($responseResult->data->transaction1)
-            ]);
+        ->update([
+            'transaction_hash' => $responseResult->data->transaction_hash,
+            'transaction_response1' => json_encode($responseResult->data->transaction1)
+        ]);
 
         return array( 'status' => true, 'data' => $responseResult->data);
     }
@@ -1500,10 +1508,10 @@ class ProjectsController extends Controller
 
         // Update transaction in DB
         CryptoExchangeTransaction::where('id', $transactionId)
-            ->update([
-                'dest_token_amount' => $audc,
-                'transaction_response2' => json_encode($responseResult->data->transaction2)
-            ]);
+        ->update([
+            'dest_token_amount' => $audc,
+            'transaction_response2' => json_encode($responseResult->data->transaction2)
+        ]);
 
         return array( 'status' => true, 'data' => $responseResult->data);
     }
