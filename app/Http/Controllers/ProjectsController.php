@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use App\ProjectConfiguration;
 use App\Jobs\SendReminderEmail;
 use App\Http\Requests\FAQRequest;
+use App\Jobs\LoadProjectWallet;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\ProjectConfigurationPartial;
@@ -461,6 +462,8 @@ class ProjectsController extends Controller
                 $project->is_coming_soon = 0;
                 $project->eoi_button = 0;
                 $project->is_funding_closed = 0;
+                $project->use_tokens = 1;
+                $this->dispatch(new LoadProjectWallet($project));
                 $project->save();
             }elseif($request->project_status == 'funding_closed') {
                 $project->active = 1;
