@@ -168,7 +168,7 @@ $_SESSION['code'] = md5(microtime(true));
     <!-- Loader for jquery Ajax calls. -->
     <div class="loader-overlay" style="display: none;">
         <div class="overlay-loader-image">
-            <img id="loader-image" src="{{ asset('/assets/images/loader.GIF') }}">
+            <img id="loader-image" src="{{ asset('/assets/images/loader1.gif') }}">
         </div>
     </div>
     <!-- topbar nav content here -->
