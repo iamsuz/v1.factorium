@@ -106,6 +106,27 @@ class PagesController extends Controller
                 $projects = $siteProjects->merge($listingProjects)->reverse();
             }
 
+            //Filter projects listing
+            if ($filterKey = request('filter')) {
+                switch ($filterKey) {
+                    case 'buy':
+                        $projects = $projects->filter(function ($value) {
+                            return !$value->soldInvoice->count() && !$value->repurchased->count() && !$value->repurchased_by_partial_pay->count();
+                        });
+                        break;
+                    case 'sold':
+                        $projects = $projects->filter(function ($value) {
+                            return $value->soldInvoice->count() > 0;
+                        });
+                        break;
+                    case 'repaid':
+                        $projects = $projects->filter(function ($value) {
+                            return ($value->repurchased->count() > 0) || ($value->repurchased_by_partial_pay->count() > 0);
+                        });
+                        break;
+                }
+            }
+
             // Check if user type is set
             if (!$user->factorium_user_type) {
                 return redirect(route('users.user.type'))->withMessage('<div class="alert alert-warning">Please select user type and proceed!</div>');

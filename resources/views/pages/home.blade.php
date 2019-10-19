@@ -688,10 +688,10 @@
 									</div>
 										<br>
 									<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
-										<button class="filterbtn active" onclick="filterSelection('all')"> Show all</button>
-										<button class="filterbtn" onclick="filterSelection('buy')"> Buy Now</button>
-										<button class="filterbtn" onclick="filterSelection('sold')"> Invoice Sold</button>
-										<button class="filterbtn" onclick="filterSelection('repaid')">Invoice Paid</button>
+										<button class="filterbtn @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')"> Show all</button>
+										<button class="filterbtn @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
+										<button class="filterbtn @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
+										<button class="filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
 									</div>	
 
 									@if(count($projects)==1)
@@ -3189,8 +3189,12 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			@endif
 		}
 
-		filterSelection("all")
 		function filterSelection(c) {
+
+			let filterUrl = '{{ route('home') }}?filter=' + c + '#projects';
+			window.location.href = filterUrl;
+			return;
+
 			console.log(c);
 			$.ajax({
 				url: '/projects/filter',
