@@ -110,21 +110,24 @@
 							<p>Please send DAI to your exchange wallet address "<span class="dai-user-account">{{ $user->wallet_address }}</span>" so that you can buy AUDC using it.</p><br>
 							<p><button type="button" class="btn btn-primary btn-sm refresh-dai-balance">I have transferred DAI to {{ $user->wallet_address }}, refresh my balance</button></p>
 						</div>
-						<h3 class="text-center">Buy AUDC Token using DAI<br>( Balance: <span class="dai-user-balance">{{ $user->dai_balance }}</span> DAI )</h3>
+						<h3 class="text-center">Buy AUDC Token using DAI</h3>
+						<h4 class="text-center">
+							( Balances: <span class="dai-user-balance">--</span> DAI @if($balanceAudk), {{$balanceAudk->balance}} AUDC @endif )
+						</h4>
 						<div>
 							<form action="#" method="POST" id="dai_audc_exchange_form">
 								{{ csrf_field() }}
 								<div class="row">
 									<div class="col-md-6 form-group">
 										<label>Amount</label>
-										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the number of DAI to buy AUDC" max="10000" @if(request('amount')) value="{{ ceil((float)request('amount')) }}" @endif>
+										<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter the amount to buy AUDC" max="100000" @if(request('amount')) value="{{ ceil((float)request('amount')) }}" @endif>
 									</div>
 									<div class="col-md-6 form-group">
 										<label>&nbsp;</label>
 										<input type="submit" class="btn btn-primary form-control" name="submit" value="Buy">
 									</div>
 								</div>
-								<p><small><small>** Make sure you have enough DAI in your wallet.</small></small></p>
+								<p><small><small class="balance-note">** Make sure you have enough DAI in your wallet.</small></small></p>
 							</form>
 						</div>
 						<br>
@@ -136,6 +139,7 @@
 										<th>From token</th>
 										<th>To token</th>
 										<th>Status</th>
+										<th>Transaction Hash</th>
 										<th>Created at</th>
 									</tr>
 								</thead>
@@ -146,11 +150,17 @@
 										<td>{{ $exchange->source_token_amount . ' ' . $exchange->source_token }}</td>
 										<td>{{ $exchange->dest_token_amount . ' ' . $exchange->dest_token }}</td>
 										<td>
-											@if($exchange->transaction_response2)
+											@if($exchange->transaction_response1 && $exchange->transaction_response2)
 											Success
 											@else
-											Failed
+											Failed @if(!$exchange->transaction_response1)<small>(DAI transfer failed)</small>@endif
 											@endif
+										</td>
+										<td>
+											<small><i>
+												1:@if($exchange->transaction_response1){{ $exchange->transaction_hash }} @else - @endif <br>
+												2:@if($exchange->transaction_response2){{ json_decode($exchange->transaction_response2)->hash }} @else - @endif
+											</i></small>
 										</td>
 										<td>{{ date("d/m/Y", strtotime($exchange->created_at)) }}</td>
 									</tr>
@@ -181,16 +191,27 @@
 		$('#exchangeTable').DataTable({
 			"bSort" : false
 		});
+
+		// Change event on DAI to AUDC amount field
+		$('#dai_audc_exchange_form input[name=amount_to_invest]').on('change keyup', function (e) {
+			let amount = $(this).val();
+			if(amount != NaN && amount != '') {
+				let daiAmount = Math.ceil( (parseFloat(amount)/1.48) * 100 ) / 100;
+				$('.balance-note').html('** Make sure you have ' + daiAmount + ' DAI in your wallet to receive ' + amount + ' AUDC tokens.');
+			}
+		});
+
 		@if(session()->has('audcBankDetailsModal'))
 			$('#audcBankDetailsModal').modal('show');
 		@endif
 		$('#dai_audc_exchange_form').on('submit', function (e) {
 			e.preventDefault();
-			let daiAmount = $('#dai_audc_exchange_form input[name=amount_to_invest]').val();
-			if(daiAmount == NaN || daiAmount == '') {
+			let amount = $('#dai_audc_exchange_form input[name=amount_to_invest]').val();
+			if(amount == NaN || amount == '') {
 				alert('Please enter valid amount');
 				return;
 			}
+			let daiAmount = Math.ceil( (parseFloat(amount)/1.48) * 100 ) / 100;
 			$('.loader-overlay').show();
 
 			// Check DAI balance

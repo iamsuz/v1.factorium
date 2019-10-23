@@ -19,6 +19,26 @@ Projects | Dashboard | @parent
 			@if (Session::has('message'))
 			{!! Session::get('message') !!}
 			@endif
+            <div>
+				<h4>RECEIVABLE FILTERS</h4>
+				<ul class="nav nav-tabs">
+					<li class="@if(!request('filter') || (request('filter') == 'inactive')) active @endif"><a onclick="filterSelection('inactive')" href="#">Inactive</a></li>
+					<li class="dropdown @if(request('filter') && (request('filter') == 'live')) active @endif">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Live <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li class="@if(request('sub-filter') && (request('sub-filter') == 'application_received')) active @endif"><a href="#" onclick="filterSelection('live', 'application_received')">Application received</a></li>
+							<li class="@if(request('sub-filter') && (request('sub-filter') == 'application_approval')) active @endif"><a href="#" onclick="filterSelection('live', 'application_approval')">Application approval</a></li>
+							<li class="@if(request('sub-filter') && (request('sub-filter') == 'funds_received')) active @endif"><a href="#" onclick="filterSelection('live', 'funds_received')">Funds received</a></li>
+							<li class="@if(request('sub-filter') && (request('sub-filter') == 'receivable_not_issued')) active @endif"><a href="#" onclick="filterSelection('live', 'receivable_not_issued')">Receivable not issued</a></li>
+						</ul>
+					</li>
+					<li class="@if(request('filter') && (request('filter') == 'upcoming')) active @endif"><a onclick="filterSelection('upcoming')" href="#">Upcoming</a></li>
+					<li class="@if(request('filter') && (request('filter') == 'eoi')) active @endif"><a onclick="filterSelection('eoi')" href="#">EoI</a></li>
+					<li class="@if(request('filter') && (request('filter') == 'closed')) active @endif"><a onclick="filterSelection('closed')" href="#">Funding closed</a></li>
+					<li class="@if(request('filter') && (request('filter') == 'all')) active @endif"><a onclick="filterSelection('all')" href="#">Show all</a></li>
+				</ul>
+			</div>
+				<br><br>
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped" id="projectsTable">
 					<thead>
@@ -120,6 +140,17 @@ Projects | Dashboard | @parent
 		if(confirm('Are you sure you want to duplicate the project?')) {
 			location.href = '{{ route("home") }}/dashboard/project/' + projectId + '/copy';
 		}
+	}
+
+	function filterSelection(filter, subFilter = null) {
+		let filterUrl = '';
+		if (!subFilter) {
+			filterUrl = '?filter=' + filter ;
+		} else {
+			filterUrl = '?filter=' + filter + '&sub-filter=' + subFilter;
+		}
+		window.location.href = filterUrl;
+		return;
 	}
 </script>
 @stop

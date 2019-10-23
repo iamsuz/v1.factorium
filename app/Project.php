@@ -226,4 +226,24 @@ class Project extends Model
     {
         return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '1', 'money_received' => 1, 'is_repurchased' => '0']);
     }
+
+    public function applicationReceived()
+    {
+        return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '0', 'money_received' => '0']);
+    }
+
+    public function applicationApproval()
+    {
+        return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '1', 'money_received' => '1']);
+    }
+
+    public function fundsReceived()
+    {
+        return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '0', 'money_received' => '1']);
+    }
+
+    public function receivableNotIssued()
+    {
+        return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '0', 'money_received' => '1', 'share_certificate_issued_at' => null]);
+    }
 }

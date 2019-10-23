@@ -131,6 +131,58 @@ class DashboardController extends Controller
         $projects = $projects->where('project_site',url());
         $pledged_investments = InvestmentInvestor::where('hide_investment', '0')->get();
 
+        // Filter projects
+        if ($filterKey = request('filter')) {
+            switch ($filterKey) {
+                case 'inactive':
+                    $projects = $projects->filter(function ($value) { return !$value->active; });
+                    break;
+                case 'live':
+                    switch (request('sub-filter')) {
+                        case 'application_received':
+                            $projects = $projects->filter(function ($value) {
+                                return $value->active &&
+                                    !$value->is_funding_closed &&
+                                    $value->applicationReceived->count();
+                            });
+                            break;
+                        case 'application_approval':
+                            $projects = $projects->filter(function ($value) {
+                                return $value->active &&
+                                    !$value->is_funding_closed &&
+                                    $value->applicationApproval->count();
+                            });
+                            break;
+                        case 'funds_received':
+                            $projects = $projects->filter(function ($value) {
+                                return $value->active &&
+                                    !$value->is_funding_closed &&
+                                    $value->fundsReceived->count();
+                            });
+                            break;
+                        case 'receivable_not_issued':
+                            $projects = $projects->filter(function ($value) {
+                                return $value->active &&
+                                    !$value->is_funding_closed &&
+                                    $value->receivableNotIssued->count();
+                            });
+                            break;
+                    }
+                    break;
+                case 'upcoming':
+                    $projects = $projects->filter(function ($value) { return $value->is_coming_soon; });
+                    break;
+                case 'eoi':
+                    $projects = $projects->filter(function ($value) { return $value->projectEoi->count(); });
+                    break;
+                case 'closed':
+                    $projects = $projects->filter(function ($value) { return $value->is_funding_closed; });
+                    break;
+            }
+        } else {
+            $projects = $projects->filter(function ($value) { return !$value->active; });
+        }
+
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }
 
