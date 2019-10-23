@@ -818,8 +818,10 @@
 														</div>
 														<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 															<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">
-																@if($project->soldInvoice->count() || $project->repurchased->count())
+																@if($project->soldInvoice->count())
 																	<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																@elseif($project->repurchased->count())
+																	<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																@else
 																	<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
 																@endif
@@ -985,8 +987,10 @@
 															</div>
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">
-																	@if($project->soldInvoice->count() || $project->repurchased->count())
+																	@if($project->soldInvoice->count())
 																		<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																	@elseif($project->repurchased->count())
+																		<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																	@else
 																		<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
 																	@endif
@@ -1148,8 +1152,10 @@
 																</div>
 																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">
-																		@if($project->soldInvoice->count() || $project->repurchased->count())
+																		@if($project->soldInvoice->count())
 																			<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																		@elseif($project->repurchased->count())
+																			<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																		@else
 																			<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
 																		@endif
