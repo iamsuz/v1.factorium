@@ -361,4 +361,8 @@ Route::get('/invoice/{invoice_id}/refresh', ['as' => 'invoice.refresh', 'uses' =
 Route::post('/invoice/issued/to', ['as' => 'invoice.issued.to', 'uses' => 'ProjectsController@getEntittyName']);
 Route::get('/user/invoices/submitted',['as'=>'users.invoices.submitted','uses'=>'UsersController@userInvoicesSubmitted']);
 Route::get('/user/projects/{project_id}/deactivate', ['as'=>'user.projects.deactivate', 'uses'=>'UsersController@deactivateProject']);
+Route::get('/users/audc/redeem',['as'=>'project.user.audc.redeem','uses'=>'ProjectsController@audcRedeem']);
+Route::post('/users/cash/redeem',['as'=>'project.user.audc.redeemRequest','uses'=>'ProjectsController@audcRedeemRequest']);
+Route::get('/dashboard/audc/redeem',['as'=>'dashboard.audc.redeem','uses'=>'DashboardController@audcRedeem']);
+Route::patch('/dashboard/audc/{redeemAudcToken_id}/redeem',['as'=>'dashboard.audc.transfer','uses'=>'DashboardController@audcRedeemConfirm']);
 /* End Factorium Routes */

@@ -46,6 +46,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use SendGrid\Mail\Mail as SendgridMail;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\RedeemAudcToken;
+use Illuminate\Support\Facades\Auth;
 
 
 class DashboardController extends Controller
@@ -135,49 +137,49 @@ class DashboardController extends Controller
         if ($filterKey = request('filter')) {
             switch ($filterKey) {
                 case 'inactive':
-                    $projects = $projects->filter(function ($value) { return !$value->active; });
-                    break;
+                $projects = $projects->filter(function ($value) { return !$value->active; });
+                break;
                 case 'live':
-                    switch (request('sub-filter')) {
-                        case 'application_received':
-                            $projects = $projects->filter(function ($value) {
-                                return $value->active &&
-                                    !$value->is_funding_closed &&
-                                    $value->applicationReceived->count();
-                            });
-                            break;
-                        case 'application_approval':
-                            $projects = $projects->filter(function ($value) {
-                                return $value->active &&
-                                    !$value->is_funding_closed &&
-                                    $value->applicationApproval->count();
-                            });
-                            break;
-                        case 'funds_received':
-                            $projects = $projects->filter(function ($value) {
-                                return $value->active &&
-                                    !$value->is_funding_closed &&
-                                    $value->fundsReceived->count();
-                            });
-                            break;
-                        case 'receivable_not_issued':
-                            $projects = $projects->filter(function ($value) {
-                                return $value->active &&
-                                    !$value->is_funding_closed &&
-                                    $value->receivableNotIssued->count();
-                            });
-                            break;
-                    }
+                switch (request('sub-filter')) {
+                    case 'application_received':
+                    $projects = $projects->filter(function ($value) {
+                        return $value->active &&
+                        !$value->is_funding_closed &&
+                        $value->applicationReceived->count();
+                    });
                     break;
+                    case 'application_approval':
+                    $projects = $projects->filter(function ($value) {
+                        return $value->active &&
+                        !$value->is_funding_closed &&
+                        $value->applicationApproval->count();
+                    });
+                    break;
+                    case 'funds_received':
+                    $projects = $projects->filter(function ($value) {
+                        return $value->active &&
+                        !$value->is_funding_closed &&
+                        $value->fundsReceived->count();
+                    });
+                    break;
+                    case 'receivable_not_issued':
+                    $projects = $projects->filter(function ($value) {
+                        return $value->active &&
+                        !$value->is_funding_closed &&
+                        $value->receivableNotIssued->count();
+                    });
+                    break;
+                }
+                break;
                 case 'upcoming':
-                    $projects = $projects->filter(function ($value) { return $value->is_coming_soon; });
-                    break;
+                $projects = $projects->filter(function ($value) { return $value->is_coming_soon; });
+                break;
                 case 'eoi':
-                    $projects = $projects->filter(function ($value) { return $value->projectEoi->count(); });
-                    break;
+                $projects = $projects->filter(function ($value) { return $value->projectEoi->count(); });
+                break;
                 case 'closed':
-                    $projects = $projects->filter(function ($value) { return $value->is_funding_closed; });
-                    break;
+                $projects = $projects->filter(function ($value) { return $value->is_funding_closed; });
+                break;
             }
         } else {
             $projects = $projects->filter(function ($value) { return !$value->active; });
@@ -2130,6 +2132,46 @@ public function deactivateProject($project_id)
             }
             return view('dashboard.projects.audcProject', compact('project', 'investments','color', 'shareInvestments', 'transactions', 'positions', 'projectsInterests', 'projectsEois', 'balanceAudk', 'investorTokens', 'investorTokensJobDetails','buyer'));
         }
+    }
+    public function audcRedeem()
+    {
+        if(\App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id) {
+            $project_id = \App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id;
+            $project = Project::findOrFail($project_id);
+            // dd($project->user_id);
+            $color = Color::where('project_site',url())->first();
+            $buyer = User::where('email',$project->invoice_issue_from_email)->first();
+            $balanceAudk = false;
+            if($project->is_wallet_tokenized && $project->use_tokens){
+                $client = new \GuzzleHttp\Client();
+                $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                    'query'=>['user_id'=>$buyer->id,'project_id'=>$this->audkID]
+                ]);
+                $responseAudk = $requestAudk->getBody()->getContents();
+                $balanceAudk = json_decode($responseAudk);
+            }
+            $redeemRequests = RedeemAudcToken::where('user_id',$project->user_id)->get();
+            // dd($buyer);
+            return view('dashboard.projects.audcRedeem',compact('color','project','balanceAudk','redeemRequests'));
+        }
+    }
+    public function audcRedeemConfirm(Request $request,AppMailer $mailer,$redeemAudcToken_id)
+    {
+        // dd($redeemAudcToken_id,$request->user_address,$request->admin_address);
+        $redeemAudc = RedeemAudcToken::findOrFail($redeemAudcToken_id);
+        // dd($redeemAudc->user->id);
 
+        $userAdmin = Auth::User();
+        // dd($userAdmin);
+        $client = new \GuzzleHttp\Client();
+        $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/repurchase',['query'=>['user_id'=> $userAdmin->id,'project_id'=>$this->audkID,'securityTokens'=>$redeemAudc->amount,'project_address'=>$redeemAudc->user->wallet_address]]);
+        $responseInvest = $requestInvest->getBody()->getContents();
+        $resultInvest = json_decode($responseInvest);
+            // dd($resultInvest);
+        $redeemAudc->transaction_hash = $resultInvest->hash;
+        $redeemAudc->confirmed = 1;
+        $redeemAudc->confirmed_by = $userAdmin->id;
+        $redeemAudc->save();
+        return redirect()->back()->withMessage('Your transaction for request fund has been approved and processed');
     }
 }

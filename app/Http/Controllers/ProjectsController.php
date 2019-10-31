@@ -41,6 +41,7 @@ use App\ProjectEOI;
 use App\ProspectusDownload;
 use App\Jobs\AutomateTokenGenerate;
 use App\Services\Konkrete as KonkreteClient;
+use App\RedeemAudcToken;
 
 class ProjectsController extends Controller
 {
@@ -1538,5 +1539,70 @@ public function prospectusDownload(Request $request)
             'message' => 'Gas is Ok!',
             'data' => isset($responseResult->data) ? $responseResult->data : []
         );
+    }
+    //audc redeem tab
+    public function audcRedeem()
+    {
+        $color = Color::where('project_site',url())->first();
+        $user = Auth::user();
+        $project = Project::findOrFail($this->audkID);
+        $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $balanceAudk = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                'query'=>['user_id'=>$user->id,'project_id'=>$this->audkID]
+            ]);
+            $responseAudk = $requestAudk->getBody()->getContents();
+            $balanceAudk = json_decode($responseAudk);
+        }
+        return view('users.redeemAudc',compact('user','color','exchanges','balanceAudk'));
+    }
+    //audc redeem for cash request registered
+    public function audcRedeemRequest(Request $request,AppMailer $mailer)
+    {
+        $validation_rules = array( 'audc_amount' => 'required',
+            'paid_type' => 'required|string' 
+        );
+        $validator = Validator::make($request->all(), $validation_rules);
+        if ($validator->fails()) {
+            return array('status' => false, 'message' => $validator->errors()->first());
+        }
+
+        $user = Auth::user();
+        $project = Project::findOrFail($this->audkID);
+        $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $balanceAudk = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                'query'=>['user_id'=>$user->id,'project_id'=>$this->audkID]
+            ]);
+            $responseAudk = $requestAudk->getBody()->getContents();
+            $balanceAudk = json_decode($responseAudk);
+        }
+
+        if($balanceAudk->balance && $balanceAudk->balance > $request->audc_amount ){
+            $redeemRequest = RedeemAudcToken::create([
+                'user_id' => $user->id,
+                'amount' => $request->audc_amount,
+                'paid_in' => $request->paid_type
+            ]);
+            if($request->paid_type == 'cash'){
+                $mailer->sendAudcRedeemByCashEmailToUser($user);
+                return array(
+                    'status' => true,
+                    'message' => '<p class="alert alert-success ">Thank you for requesting this redemption request, as a security measure we have sent an email to your registered address confirming this request. Please respond to that email with your Bank account details.<br><br>Once we receive that we will process your request.</p>');
+            }elseif($request->paid_type == 'dai'){
+                $mailer->sendAudcRedeemByDaiEmailToUser($user);
+                return array(
+                    'status' => true,
+                    'message' => '<p class="alert alert-success ">Thank you for requesting this redemption request, as a security measure we have sent an email to your registered address confirming this request. Please respond to that email with your DAI address.<br><br>Once we receive that we will process your request.</p>');
+            }
+        }else{
+            return array(
+                'status' => true,
+                'message' => '<p class="alert alert-danger ">You have insufficient audc.</p>');
+        }
     }
 }

@@ -14,6 +14,7 @@
 	</div></a>
 	<a href="{{route('users.show', [$user])}}" class="list-group-item @if($active == 1) active @endif">Profile </a>
 	<a href="{{route('project.user.audc', [$user])}}" class="list-group-item @if($active == 15) active @endif">Buy AUDC</a>
+	<a href="{{route('project.user.audc.redeem')}}" class="list-group-item @if($active == 17) active @endif">Redeem AUDC</a>
 	<a href="{{route('users.wallet')}}" class="list-group-item @if($active == 12) active @endif" id="load_wallet">Wallet </a>
 	<a href="{{route('users.market', [$user])}}" class="list-group-item hide @if($active == 13) active @endif">Market </a>
 	<a href="{{route('users.referral', [$user])}}" class="list-group-item @if($active == 11) active @endif">Referral </a>
