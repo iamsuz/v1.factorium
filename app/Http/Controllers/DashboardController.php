@@ -2150,7 +2150,7 @@ public function deactivateProject($project_id)
                 $responseAudk = $requestAudk->getBody()->getContents();
                 $balanceAudk = json_decode($responseAudk);
             }
-            $redeemRequests = RedeemAudcToken::where('user_id',$project->user_id)->get();
+            $redeemRequests = RedeemAudcToken::all();
             // dd($buyer);
             return view('dashboard.projects.audcRedeem',compact('color','project','balanceAudk','redeemRequests'));
         }
@@ -2162,12 +2162,11 @@ public function deactivateProject($project_id)
         // dd($redeemAudc->user->id);
 
         $userAdmin = Auth::User();
-        // dd($userAdmin);
+        // dd($this->audkID);
         $client = new \GuzzleHttp\Client();
-        $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/repurchase',['query'=>['user_id'=> $userAdmin->id,'project_id'=>$this->audkID,'securityTokens'=>$redeemAudc->amount,'project_address'=>$redeemAudc->user->wallet_address]]);
+        $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/repurchase',['query'=>['user_id'=> $redeemAudc->user->id,'project_id'=>$this->audkID,'securityTokens'=>$redeemAudc->amount,'project_address'=>$userAdmin->wallet_address]]);
         $responseInvest = $requestInvest->getBody()->getContents();
         $resultInvest = json_decode($responseInvest);
-            // dd($resultInvest);
         $redeemAudc->transaction_hash = $resultInvest->hash;
         $redeemAudc->confirmed = 1;
         $redeemAudc->confirmed_by = $userAdmin->id;
