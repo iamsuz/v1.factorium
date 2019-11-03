@@ -34,13 +34,17 @@
 							<input type="number" name="amount_to_redeem_cash" class="form-control" placeholder="Enter a amount to redeem audc" required="required" min="1" max="@if($balanceAudk->balance){{  $balanceAudk->balance }}@endif">
 						</div>
 						<div class="col-md-4">
-							<label>&nbsp;</label><br>
-							<div class="col-md-4 col-offset-md-2">
+							<label for="paidType" class="control-label">CASH/DAI</label><br>
+							{{-- <div class="">
 								<label><input type="radio" name="paid_type" value="cash" Checked>Cash</label>
 							</div>
 							<div class="col-md-4">
 								<label><input type="radio" name="paid_type" value="dai">Dai</label>
-							</div>
+							</div> --}}
+							<select id="paidType" class="form-control" name="paid_type">
+								<option value="cash">Cash</option>
+								<option value="dai">Dai</option>
+							</select>
 						</div>
 						<div class="col-md-4">
 							<label>&nbsp;</label>
@@ -63,20 +67,25 @@
 		$('#audcRedeemForm').on('submit', function (e) {
 			e.preventDefault();
 			let audcAmount = $('#audcRedeemForm input[name=amount_to_redeem_cash]').val();
-			let paidType =  $('#audcRedeemForm input:radio[name=paid_type]:checked').val();
-			// console.log(paidType,audcAmount);
+			// var e = document.getElementById("paid_type");
+			// var paidType = e.options[e.selectedIndex].value;
+			// let paidType =  $('#audcRedeemForm select[name=paid_type]:selected').val();
+			let paidType = $('#audcRedeemForm  #paidType option').attr('value');
+			console.log(paidType,audcAmount);
+			$('.loader-overlay').show();
 			$.ajax({
 				url: '{{ route('project.user.audc.redeemRequest') }}',
 				type: 'POST',
 				dataType: 'JSON',
 				data: { 'audc_amount': audcAmount,
-						'paid_type': paidType },
+				'paid_type': paidType },
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			}).done(function (data) {
 				if (data.status) {
 					$('.msg').html(data.message);
+					$('.loader-overlay').hide();
 					return;
 				}
 			});	
