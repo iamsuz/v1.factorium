@@ -645,4 +645,28 @@ class AppMailer
             $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->bcc($this->bcc)->subject($this->subject);
         });
     }
+    public function sendAudcRedeemByCashEmailToUser($user)
+    {
+        $this->to = $user->email;
+        $this->view = 'emails.audcRedeemCashRequest';
+        $this->subject = 'Confirm your redemption request';
+        $this->data = compact('user');
+        $this->deliver();
+    }
+    public function sendAudcRedeemByDaiEmailToUser($user)
+    {
+        $this->to = $user->email;
+        $this->view = 'emails.audcRedeemDaiRequest';
+        $this->subject = 'Confirm your redemption request';
+        $this->data = compact('user');
+        $this->deliver();
+    }
+    public function sendAudcRedeemCompleteEmailToUser()
+    {
+        $this->to = $user->email;
+        $this->view = 'emails.audcRedeemComplete';
+        $this->subject = 'complete your redemption request';
+        $this->data = compact('user');
+        $this->deliver();   
+    }
 }

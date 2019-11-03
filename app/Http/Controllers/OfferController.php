@@ -80,14 +80,17 @@ class OfferController extends Controller
     {
       $request = new Request(array_except($request->all(),['password']));
       $project = Project::findOrFail($request->project_id);
-      $min_amount_invest = $project->investment->minimum_accepted_amount;
       $investments = InvestmentInvestor::where('project_id',$project->id)
       ->where('accepted',1)
       ->get();
       $acceptedAmount = $investments->sum('amount');
       $goalAmount = $project->investment->goal_amount;
       $maxAmount = round($project->investment->invoice_amount, 2);
-
+      if($request->project_id === $this->audkID){
+        $min_amount_invest = 1;
+      }else{
+        $min_amount_invest = $project->investment->minimum_accepted_amount;
+      }
       if((int)$request->amount_to_invest < (int)$min_amount_invest)
       {
         return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
@@ -95,7 +98,6 @@ class OfferController extends Controller
       if((int)$maxAmount < (int)$request->amount_to_invest){
         return redirect()->back()->withErrors(['The amount to invest must be less than '.$maxAmount]);
       }
-
       $validation_rules = array(
         'amount_to_invest'   => 'required'
       );
@@ -129,7 +131,6 @@ class OfferController extends Controller
           return redirect()->back()->withErrors('Something went wrong');
         }
       }
-
       $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
         $amount_5 = $amount*0.05; //5 percent of investment
         if($user->idDoc != NULL){

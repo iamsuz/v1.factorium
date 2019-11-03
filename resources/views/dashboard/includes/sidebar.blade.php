@@ -4,6 +4,7 @@
 	<a href="{{route('dashboard.users')}}" class="list-group-item @if($active == 2) active @endif">Users <i class="fa fa-users pull-right"></i></a>
 	<a href="{{route('dashboard.projects')}}" class="list-group-item @if($active == 3) active @endif">Receivables <i class="fa fa-paperclip pull-right"></i></a>
 	<a href="{{route('dashboard.audc')}}" class="list-group-item @if($active == 13) active @endif">AUDC <i class="fa fa-folder-open-o pull-right"></i></a>
+	<a href="{{route('dashboard.audc.redeem')}}" class="list-group-item @if($active == 14) active @endif">Redeem AUDC <i class="fa fa-folder-open-o pull-right"></i></a>
 	<a href="{{route('dashboard.thirdPartyListings')}}" class="list-group-item @if($active == 12) active @endif">Third Party <br> Listings <i class="fa fa-user-plus pull-right"></i></a>
 	<a href="{{route('dashboard.market')}}" class="list-group-item @if($active == 11) active @endif">Market <i class="fa fa-paperclip pull-right"></i></a>
 	<a href="{{route('dashboard.kyc')}}" class="list-group-item @if($active == 9) active @endif">KYC Requests <i class="fa fa-file pull-right"></i></a>

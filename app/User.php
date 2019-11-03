@@ -238,4 +238,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasOne('App\UserKyc')->where('kyc_type', 'digital_id');
     }
+    public function RedeemAudcToken()
+    {
+        return $this->hasMany('App\RedeemAudcToken');
+    }
 }
