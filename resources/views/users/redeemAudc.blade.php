@@ -67,9 +67,6 @@
 		$('#audcRedeemForm').on('submit', function (e) {
 			e.preventDefault();
 			let audcAmount = $('#audcRedeemForm input[name=amount_to_redeem_cash]').val();
-			// var e = document.getElementById("paid_type");
-			// var paidType = e.options[e.selectedIndex].value;
-			// let paidType =  $('#audcRedeemForm select[name=paid_type]:selected').val();
 			let paidType = $('#audcRedeemForm  #paidType option').attr('value');
 			console.log(paidType,audcAmount);
 			$('.loader-overlay').show();
