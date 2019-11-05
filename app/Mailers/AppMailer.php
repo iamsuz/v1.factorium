@@ -661,11 +661,11 @@ class AppMailer
         $this->data = compact('user');
         $this->deliver();
     }
-    public function sendAudcRedeemCompleteEmailToUser()
+    public function sendAudcRedeemCompleteEmailToUser($user)
     {
         $this->to = $user->email;
         $this->view = 'emails.audcRedeemComplete';
-        $this->subject = 'complete your redemption request';
+        $this->subject = 'Completed your redemption request';
         $this->data = compact('user');
         $this->deliver();   
     }

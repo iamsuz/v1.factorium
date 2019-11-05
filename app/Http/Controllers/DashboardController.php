@@ -2157,12 +2157,8 @@ public function deactivateProject($project_id)
     }
     public function audcRedeemConfirm(Request $request,AppMailer $mailer,$redeemAudcToken_id)
     {
-        // dd($redeemAudcToken_id,$request->user_address,$request->admin_address);
         $redeemAudc = RedeemAudcToken::findOrFail($redeemAudcToken_id);
-        // dd($redeemAudc->user->id);
-
         $userAdmin = Auth::User();
-        // dd($this->audkID);
         $client = new \GuzzleHttp\Client();
         $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/repurchase',['query'=>['user_id'=> $redeemAudc->user->id,'project_id'=>$this->audkID,'securityTokens'=>$redeemAudc->amount,'project_address'=>$userAdmin->wallet_address]]);
         $responseInvest = $requestInvest->getBody()->getContents();
@@ -2171,6 +2167,7 @@ public function deactivateProject($project_id)
         $redeemAudc->confirmed = 1;
         $redeemAudc->confirmed_by = $userAdmin->id;
         $redeemAudc->save();
-        return redirect()->back()->withMessage('Your transaction for request fund has been approved and processed');
+        $mailer->sendAudcRedeemCompleteEmailToUser($redeemAudc->user);
+        return redirect()->back()->withMessage('<div class="alert alert-success text-center ">Your transaction for request fund has been approved and processed</div>');
     }
 }

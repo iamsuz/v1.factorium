@@ -87,8 +87,6 @@ Dashboard | @parent
 										@else
 										<input type="submit" name="redeem_confirm" id="redeem_confirm{{$redeemRequest->id}}" class="btn btn-primary money-received-btn" value="Redeem">
 										@endif
-										{{-- <input type="hidden" name="admin_address" value="{{Auth::User()->wallet_address}}"> --}}
-										<input type="hidden" name="user_address" value="{{$redeemRequest->user->wallet_address}}">
 									</form>
 								</div>
 							</td>
@@ -112,7 +110,9 @@ Dashboard | @parent
 			"order": [0, 'desc'],
 			"iDisplayLength": 25
 		});
-
+		$("input[type=submit]").click(function(){
+			$('.loader-overlay').show();
+		});
 	});
 </script>
 @endsection
