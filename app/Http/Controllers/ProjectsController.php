@@ -1232,13 +1232,13 @@ public function prospectusDownload(Request $request)
 
 
         if ($validator->fails()) {
-           return array(
-              'status' => false,
-              'message' => $validator->errors()->first()
-          );
-       }
+         return array(
+          'status' => false,
+          'message' => $validator->errors()->first()
+      );
+     }
 
-       try {
+     try {
             // Get remaining days for invoice due date
         $dueDate = Carbon::createFromFormat('Y-m-d', $request->due_date);
         $dateDiff = date_diff(Carbon::now(), $dueDate);
@@ -1550,7 +1550,8 @@ public function prospectusDownload(Request $request)
             $responseAudk = $requestAudk->getBody()->getContents();
             $balanceAudk = json_decode($responseAudk);
         }
-        return view('users.redeemAudc',compact('user','color','exchanges','balanceAudk'));
+        $redeemAudc = RedeemAudcToken::where('user_id',$user->id)->get();
+        return view('users.redeemAudc',compact('user','color','exchanges','balanceAudk','redeemAudc'));
     }
     //audc redeem for cash request registered
     public function audcRedeemRequest(Request $request,AppMailer $mailer)
