@@ -37,7 +37,7 @@
 				<div id="buy_using_cash" class="tab-pane fade in active">
 					<h3 class="text-center">Redeem AUDC Token<br>
 						@if($balanceAudk)
-						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}}
+						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{-- {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} --}}
 						@else AUDC
 						@endif Balance: {{$balanceAudk->balance}}
 						@endif

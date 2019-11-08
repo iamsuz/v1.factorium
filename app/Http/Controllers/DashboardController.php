@@ -2159,8 +2159,9 @@ public function deactivateProject($project_id)
     {
         $redeemAudc = RedeemAudcToken::findOrFail($redeemAudcToken_id);
         $userAdmin = Auth::User();
+        $project = Project::where('id',$this->audkID)->first();
         $client = new \GuzzleHttp\Client();
-        $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/repurchase',['query'=>['user_id'=> $redeemAudc->user->id,'project_id'=>$this->audkID,'securityTokens'=>$redeemAudc->amount,'project_address'=>$userAdmin->wallet_address]]);
+        $requestInvest = $client->request('POST',$this->uri.'/investment/transaction/repurchase',['query'=>['user_id'=> $redeemAudc->user->id,'project_id'=>$this->audkID,'securityTokens'=>$redeemAudc->amount,'project_address'=>$project->wallet_address]]);
         $responseInvest = $requestInvest->getBody()->getContents();
         $resultInvest = json_decode($responseInvest);
         $redeemAudc->transaction_hash = $resultInvest->hash;

@@ -43,8 +43,8 @@ Dashboard | @parent
 					<h3 class="text-center">{{$project->title}}</h3>
 					<p class="text-center"><strong>Project Wallet Address:</strong></p><p class="text-center"><small >{{ $project->wallet_address }}</small></p>
 					@if($balanceAudk)
-					<h4 class="text-center">
-						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}}
+					<h4 class="text-center">hi
+						@if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{-- {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} --}}
 						@else AUDC
 						@endif Balance: {{$balanceAudk->balance}}
 					</h4>
@@ -74,7 +74,7 @@ Dashboard | @parent
 						<tr>
 							<td>INV{{ $redeemRequest->id }}</td>
 							<td>{{ $redeemRequest->user->first_name }} </td>
-							<td>{{ date("d/m/Y",strtotime($redeemRequest->created_at)) }}</td>
+							<td><span class="hide">{{$redeemRequest->created_at}}</span>{{ date("d/m/Y",strtotime($redeemRequest->created_at)) }}</td>
 							<td>{{ $redeemRequest->amount }}</td>
 							<td>{{ $redeemRequest->paid_in }}</td>
 							<td>
@@ -107,7 +107,7 @@ Dashboard | @parent
 <script type="text/javascript">
 	$(document).ready(function () {
 		var redeemsTable = $('#redeemsTable').DataTable({
-			"order": [0, 'desc'],
+			"order": [2, 'desc'],
 			"iDisplayLength": 25
 		});
 		$("input[type=submit]").click(function(){
