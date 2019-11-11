@@ -49,7 +49,7 @@ Login | @parent
 								{!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
 							</div>
 							<div class="form-group">
-								{!! Form::text('invite_code', null, array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
+								{!! Form::hidden('invite_code', 'factorium', array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
 								@if(session()->has('invite_code_error'))
 								<div class="alert alert-danger">
 									{{ session()->get('invite_code_error') }}
