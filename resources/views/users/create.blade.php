@@ -46,7 +46,7 @@ Sign up for free Australia's top Venture Crowdfunding
 
 									{!! Form::email('email', null, array('placeholder'=>'Email', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'email', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'', 'required'=>'true')) !!}
 									{!! $errors->first('email', '<small class="text-danger">:message</small>') !!}<br>
-									{!! Form::hidden('invite_code', 'factorium', array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
+									{!! Form::text('invite_code', 'factorium', array('placeholder'=>'Invite code', 'class'=>'form-control', 'tabindex'=>'2', 'id'=>'invite_code', 'data-toggle'=>'popover', 'data-trigger'=>'hover', 'data-placement'=>'bottom', 'data-content'=>'','required'=>'required')) !!}
 									@if(session()->has('invite_code_error'))
 										<div class="alert alert-danger">
 											{{ session()->get('invite_code_error') }}
