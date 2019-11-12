@@ -422,7 +422,7 @@ $_SESSION['code'] = md5(microtime(true));
     // Signin bonus message
     @if (Session::has('loginaction'))
     @if(\Cookie::get('login_bonus'))
-    swal("Welcome back {{Auth::user()->first_name}}", "We have added {{\Cookie::get('login_bonus')}} KONKRETE as a sign in bonus", "success", {
+    swal("Welcome back {{Auth::user()->first_name}}", "success", {
         buttons: {
             start_over: "Continue to site >>"
         }

@@ -466,13 +466,13 @@ return response()->json(array('success'=>false,'auth'=>$auth));
             if(Auth::user()->last_login){
                 if(!Auth::user()->last_login->gt(\Carbon\Carbon::now()->subDays(1)) && $daily_bonus_konkrete != 0){
                     $loginBonus = rand(1, $daily_bonus_konkrete);
-                    Credit::create([
-                        'user_id' => Auth::user()->id,
-                        'amount' => $loginBonus,
-                        'type' => 'Daily login bonus',
-                        'project_site' => url(),
-                        'currency' => 'factor'
-                    ]);
+                    // Credit::create([
+                    //     'user_id' => Auth::user()->id,
+                    //     'amount' => $loginBonus,
+                    //     'type' => 'Daily login bonus',
+                    //     'project_site' => url(),
+                    //     'currency' => 'factor'
+                    // ]);
                 }
             }
             if(!Auth::user()->wallet_address){
