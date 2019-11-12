@@ -504,8 +504,8 @@ return response()->json(array('success'=>false,'auth'=>$auth));
                 $this->redirectTo = "/#projects";
             }
             Session::flash('loginaction', 'success.');
-            // return redirect($this->redirectTo);
-            return redirect($this->redirectTo)->withCookie(cookie('login_bonus', $loginBonus, 1));
+            return redirect($this->redirectTo);
+            // return redirect($this->redirectTo)->withCookie(cookie('login_bonus', $loginBonus, 1));
         }
         if (Auth::viaRemember()) {
             Auth::user()->update(['last_login'=> Carbon::now()]);
