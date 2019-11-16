@@ -686,7 +686,7 @@
 											</a>
 										</div>
 									</div>
-										<br>
+									<br>
 									<div id="myBtnContainer" @if(!Auth::check()) class="hide" @endif >
 										<button class="filterbtn @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')"> Show all</button>
 										<button class="filterbtn @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
@@ -697,12 +697,12 @@
 									@if(count($projects)==1)
 									@foreach($projects->chunk(1) as $sets)
 									<div class="row" >
-									@foreach($sets as $project)
-									<?php
-									$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
-									$paid = $investments->where('project_id',$project->id)->where('accepted',1);
-									$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
-									$invoice_sold = '0';
+										@foreach($sets as $project)
+										<?php
+										$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+										$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+										$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+										$invoice_sold = '0';
 									/*if($paid->sum('amount') == $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 										$invoice_sold = '1';
 									}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
@@ -819,11 +819,11 @@
 														<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 															<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">
 																@if($project->soldInvoice->count())
-																	<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																@elseif($project->repurchased->count())
-																	<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																@else
-																	<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
+																<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
 																@endif
 															</h4>
 														</div>
@@ -857,12 +857,12 @@
 								@endif
 								@foreach($projects->chunk(3) as $sets)
 								<div class="row" id="project-section-to-reload1">
-								@foreach($sets as $project)
-								<?php
-								$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
-								$paid = $investments->where('project_id',$project->id)->where('accepted',1);
-								$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
-								$invoice_sold = '0';
+									@foreach($sets as $project)
+									<?php
+									$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+									$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+									$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+									$invoice_sold = '0';
 								/*if($paid->sum('amount') == $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 									$invoice_sold = '1';
 								}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
@@ -983,16 +983,16 @@
 															{{--																</div>--}}
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_expected_return) display:none; @endif padding: 0 5px;"><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span style="white-space: nowrap;">@if($project->investment)${{number_format((int)$project->investment->invoice_amount)}}@endif</span><small><small><br>@if($config=$project->projectconfiguration)@if($config->expected_return_label_text){{$config->expected_return_label_text}}@else Invoice Amount @endif @else Invoice Amount @endif</small></small></h4>
 															</div>
-															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;"><span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="@if(!$invoice_sold) {{ $project->investment->fund_raising_close_date }} @endif"> @if($project->investment){{$project->investment->remaining_hours}}@endif</span><small><small><br>Days</small></small></h4>
+															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.6s" style="@if(!$project->projectconfiguration->show_duration) display:none; @endif border-left: thin solid #000; padding: 0 5px;" ><h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">@if(!$invoice_sold)<span class="invoice-due-date" id="invoice_due_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="@if(!$invoice_sold) {{ $project->investment->fund_raising_close_date }} @endif"> @if($project->investment){{$project->investment->remaining_hours}}@endif</span>@elseif($invoice_sold == 1) <span class="invoice-sold-date" id="invoice_sold_date_{{ $project->id }}" data-project-id="{{ $project->id }}" data-due-date="{{ $project->investment->fund_raising_close_date }}"data-sold-date="{{ $project->soldInvoice->first()->share_certificate_issued_at }}"></span>@endif<small><small><br>Days</small></small></h4>
 															</div>
 															<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 																<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">
 																	@if($project->soldInvoice->count())
-																		<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																	<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																	@elseif($project->repurchased->count())
-																		<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																	<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																	@else
-																		<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
+																	<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
 																	@endif
 																</h4>
 															</div>
@@ -1026,12 +1026,12 @@
 									@endif
 									@foreach($projects->chunk(2) as $sets)
 									<div class="row" id="project-section-to-reload2">
-									@foreach($sets as $project)
-									<?php
-									$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
-									$paid = $investments->where('project_id',$project->id)->where('accepted',1);
-									$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
-									$invoice_sold = '0';
+										@foreach($sets as $project)
+										<?php
+										$pledged_amount = $investments->where('project_id', $project->id)->where('hide_investment', false)->sum('amount');
+										$paid = $investments->where('project_id',$project->id)->where('accepted',1);
+										$repurchased = $investments->where('project_id',$project->id)->where('accepted',1)->where('is_repurchased',1);
+										$invoice_sold = '0';
 									/*if($paid->sum('amount') == $project->investment->goal_amount && $repurchased->sum('amount') ==! $project->investment->goal_amount){
 										$invoice_sold = '1';
 									}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
@@ -1153,11 +1153,11 @@
 																<div class="col-xs-4 col-sm-4 col-md-4 text-center" data-wow-duration="1.5s" data-wow-delay="0.5s" style="border-left: thin solid #000; padding: 0 5px;">
 																	<h4 class="first_color" style="color:#282a73;margin-top:1px;margin-bottom:1px;font-size:22px;">
 																		@if($project->soldInvoice->count())
-																			<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																		<span>${{number_format($project->soldInvoice->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																		@elseif($project->repurchased->count())
-																			<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
+																		<span>${{number_format($project->repurchased->first()->amount, 2)}}</span><small><small><br>Asking Price</small></small>
 																		@else
-																			<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
+																		<span class="invoice-asking-amount" id="invoice_asking_amount_{{ $project->id }}" data-project-id="{{ $project->id }}">@if($project->investment) ${{number_format($project->investment->calculated_asking_price, 2)}} @endif</span><small><small><br>Asking Price</small></small>
 																		@endif
 																	</h4>
 																</div>
@@ -2307,6 +2307,7 @@
 
 			showCountDownOption();
 			refreshAskingPrice();
+			showCountDownPause();
 		});
 @if(Auth::guest())
 @else
@@ -3241,6 +3242,36 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			})
 		}
 
+		function showCountDownPause(){
+			$('.invoice-sold-date').each(function (index, value) {
+				let projectId = $(this).attr('data-project-id');
+				let dueDateTs = $(this).attr('data-due-date');
+				let soldDate = $(this).attr('data-sold-date');
+
+				var datetimeOfdueDateTs = new Date( dueDateTs ).getTime();
+				var datetimeOfsoldDate = new Date( soldDate ).getTime();
+				var timeDiff = datetimeOfdueDateTs-datetimeOfsoldDate;
+				if(timeDiff > 0){
+					var difference = timeDiff;
+
+					var daysDifference = Math.floor(difference/1000/60/60/24);
+					difference -= daysDifference*1000*60*60*24
+
+					var hoursDifference = Math.floor(difference/1000/60/60);
+					difference -= hoursDifference*1000*60*60
+
+					var minutesDifference = Math.floor(difference/1000/60);
+					difference -= minutesDifference*1000*60
+
+					var secondsDifference = Math.floor(difference/1000);
+
+					console.log(daysDifference+':'+hoursDifference+':'+minutesDifference+':'+secondsDifference);
+					$('#invoice_sold_date_' + projectId).html(daysDifference+':'+hoursDifference+':'+minutesDifference+':'+secondsDifference);
+				}
+				console.log('sold');
+			})
+		}
+
 		function refreshAskingPrice() {
 			setInterval(function() {
 				$('.invoice-asking-amount').each(function (index, value) {
@@ -3263,13 +3294,13 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 		let number_format = function (number, decimal_pos, decimal_sep, thousand_sep) {
 			let ts = (thousand_sep == null ? ',' : thousand_sep)
-					, ds = (decimal_sep == null ? '.' : decimal_sep)
-					, dp = (decimal_pos == null ? 2 : decimal_pos)
+			, ds = (decimal_sep == null ? '.' : decimal_sep)
+			, dp = (decimal_pos == null ? 2 : decimal_pos)
 
-					, n = Math.abs(Math.floor(number)).toString()
+			, n = Math.abs(Math.floor(number)).toString()
 
-					, i = n.length % 3
-					, f = ((number < 0) ? '-' : '') + n.substr(0, i);
+			, i = n.length % 3
+			, f = ((number < 0) ? '-' : '') + n.substr(0, i);
 
 			for (; i < n.length; i += 3) {
 				if (i != 0) f += ts;
