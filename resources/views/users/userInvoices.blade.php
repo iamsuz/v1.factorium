@@ -109,8 +109,8 @@
 					// 	alert("Request: "+JSON.stringify(request));
 					// }
 				}).done(function () {
-					location.reload();
 					$('#statusOfConfirmation').html('<i>Pending</i>');
+					location.reload();
 				});
 			})
 		});
