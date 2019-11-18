@@ -109,8 +109,7 @@
 					// 	alert("Request: "+JSON.stringify(request));
 					// }
 				}).done(function () {
-					$('.loader-overlay').hide();
-					$('.invoiceConfirmationModal').modal('hide');
+					location.reload();
 					$('#statusOfConfirmation').html('<i>Pending</i>');
 				});
 			})
