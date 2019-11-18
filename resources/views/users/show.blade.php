@@ -166,10 +166,10 @@
 							@if($user->date_of_birth)<dd>{{ date("d/m/Y",strtotime($user->date_of_birth)) }}</dd><br> @endif
 							@if($user->line_1)<dd>{{ $user->line_1 }} @if($user->line_2) {{ $user->line_2 }} @endif @if($user->city),{{ $user->city }} @endif @if($user->state),{{ $user->state }} @endif @if($user->postal_code) - {{ $user->postal_code }}. @endif @if($user->country) <br>{{ $user->country }} @endif </dd> @endif
 						</div>
-						<hr>
+						{{-- <hr class="hide"> --}}
 						<dt></dt>
-						<dd style="margin-left: 0px;">
-							<div class="col-md-10 col-md-offset-1 wow fadeIn text-center" data-wow-duration="1.5s" data-wow-delay="0.2s">
+						{{-- <dd style="margin-left: 0px;">
+							<div class="col-md-10 col-md-offset-1 wow fadeIn text-center " data-wow-duration="1.5s" data-wow-delay="0.2s">
 								<h2 class="text-center wow fadeIn" data-wow-duration="1.5s" data-wow-delay="0.3s" style="font-size:3em;"> Earn Factor tokens
 								</h2>
 								@forelse(auth()->user()->getReferrals() as $referral)
@@ -193,7 +193,7 @@
 								</small>
 							</center>
 						</div>
-					</dd>
+					</dd> --}}
 				</dl>
 			</li>
 		</ul>
