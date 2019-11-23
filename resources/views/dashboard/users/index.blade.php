@@ -86,11 +86,11 @@ Users | Dashboard | @parent
 	$(document).ready(function(){
 		onChangeMsg();
 		var usersTable = $('#usersTable').DataTable({
-			"order": [[5, 'desc'], [0, 'desc']],
+			"order": [[0, 'desc']],
 			"iDisplayLength": 50
 		});
 		$('#usersTable_info').addClass('hide');
-		$('#usersTable_paginate').addClass('hide');
+		// $('#usersTable_paginate').addClass('hide');
 		$('#usersTable_length').addClass('hide');
 		function onChangeMsg() {
 			$('.note-content').change(function() {
