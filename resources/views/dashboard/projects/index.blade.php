@@ -22,7 +22,7 @@ Projects | Dashboard | @parent
             <div>
 				<h4>RECEIVABLE FILTERS</h4>
 				<ul class="nav nav-tabs">
-					<li class="@if(!request('filter') || (request('filter') == 'inactive')) active @endif"><a onclick="filterSelection('inactive')" href="#">Inactive</a></li>
+					<li class="@if(request('filter') && (request('filter') == 'inactive')) active @endif"><a onclick="filterSelection('inactive')" href="#">Inactive</a></li>
 					<li class="dropdown @if(request('filter') && (request('filter') == 'live')) active @endif">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Live <span class="caret"></span></a>
 						<ul class="dropdown-menu">
@@ -35,7 +35,7 @@ Projects | Dashboard | @parent
 					<li class="@if(request('filter') && (request('filter') == 'upcoming')) active @endif"><a onclick="filterSelection('upcoming')" href="#">Upcoming</a></li>
 					<li class="@if(request('filter') && (request('filter') == 'eoi')) active @endif"><a onclick="filterSelection('eoi')" href="#">EoI</a></li>
 					<li class="@if(request('filter') && (request('filter') == 'closed')) active @endif"><a onclick="filterSelection('closed')" href="#">Funding closed</a></li>
-					<li class="@if(request('filter') && (request('filter') == 'all')) active @endif"><a onclick="filterSelection('all')" href="#">Show all</a></li>
+					<li class="@if(!request('filter') || (request('filter') == 'all')) active @endif"><a onclick="filterSelection('all')" href="#">Show all</a></li>
 				</ul>
 			</div>
 				<br><br>

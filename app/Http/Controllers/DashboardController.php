@@ -181,9 +181,9 @@ class DashboardController extends Controller
                 $projects = $projects->filter(function ($value) { return $value->is_funding_closed; });
                 break;
             }
-        } else {
-            $projects = $projects->filter(function ($value) { return !$value->active; });
-        }
+        } //else {
+            //$projects = $projects->filter(function ($value) { return !$value->active; });
+        // }
 
         return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
     }
