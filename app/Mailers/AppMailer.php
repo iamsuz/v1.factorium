@@ -276,6 +276,24 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendAUDCToUser($investment,$formLink,Investment $investmentDetails)
+    {
+        $this->to = $investment->user->email;
+        $this->view = 'emails.audcIssuedToUserEmail';
+
+        $this->subject = 'You have received '.$investment->amount.' AUDC in your wallet on Factorium';
+        $this->data = compact('investment','formLink','investmentDetails');
+
+        if($investment->project->share_vs_unit) {
+            $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
+        }else {
+            $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
+
+        }
+
+        $this->deliver();
+    }
+
     public function sendInvoiceToAdmin($investment,$formLink)
     {
         $role = Role::findOrFail(1);
@@ -590,6 +608,20 @@ class AppMailer
         $this->deliver();
     }
 
+    public function sendAudcBuyMailToAdmin($investment_id,$amount)
+    {
+        $amount = $amount;
+        $investment = InvestmentInvestor::findOrFail($investment_id);
+        $buyer = User::where('email',$investment->project->invoice_issue_from_email)->first();
+        $project = $investment->project;
+        $seller = $project->user;
+        $this->to = $investment->project->invoice_issue_from_email;
+        $this->view = 'emails.audcDuePayment';
+        $this->subject = '<Fname> <Lname> has applied to buy <X> AUDC '.$investment->project->title.' is now due';
+        $this->data = compact('investment','buyer','seller','amount');
+        $this->deliver();
+    }
+
     public function overrideMailerConfig()
     {
         $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
@@ -667,6 +699,6 @@ class AppMailer
         $this->view = 'emails.audcRedeemComplete';
         $this->subject = 'Completed your redemption request';
         $this->data = compact('user');
-        $this->deliver();   
+        $this->deliver();
     }
 }

@@ -471,10 +471,12 @@ class DashboardController extends Controller
         $investment = InvestmentInvestor::findOrFail($investment_id);
         $investmentDetails = Investment::where('project_id', $investment->project_id)->first();
         // dd($investment_id);
+        $isAudc = 0;
         if($investment){
             if($investment->project->is_wallet_tokenized)
             {
                 if($investment->project->id === $this->audkID){
+                    $isAudc = 1;
                     $tokens = $investment->amount;
                 }else{
                     $tokens = $investment->project->investment->total_projected_costs;
@@ -541,8 +543,11 @@ class DashboardController extends Controller
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
                    $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
                }
-
-               $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+               if($isAudc = 1){
+                $mailer->sendAUDCToUser($investment,$formLink,$investmentDetails);
+               }else{
+                $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+               }
                  // $mailer->sendInvoiceToAdmin($investment,$formLink);
            }
            if(isset($investment->pay_investment_id)){

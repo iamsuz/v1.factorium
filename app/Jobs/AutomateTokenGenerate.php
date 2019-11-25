@@ -33,6 +33,7 @@ class AutomateTokenGenerate extends Job implements SelfHandling,ShouldQueue
     public function handle()
     {
         $project = $this->project;
+        $project= Project::findOrFail($project);
         $tokens = $project->investment->invoice_amount;
         $url = env('KONKRETE_IP', 'http://localhost:5050');
         $client = new \GuzzleHttp\Client();

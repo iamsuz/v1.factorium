@@ -495,7 +495,6 @@ class ProjectsController extends Controller
         }
         $location = $project->location;
         $location->update($request->all());
-
         if (!file_exists('assets/documents/projects/'.$project->id)) {
             File::makeDirectory('assets/documents/projects/'.$project->id, 0775, true);
         }
@@ -567,7 +566,7 @@ class ProjectsController extends Controller
                 $tokenSymbol = $project->token_symbol;
                 $projectHash = $project->project_site;
 
-                // $this->dispatch(new AutomateTokenGenerate($projectId,$numberOfTokens,$tokenSymbol,$projectHash));
+                $this->dispatch(new AutomateTokenGenerate($projectId,$numberOfTokens,$tokenSymbol,$projectHash));
             }
         }
         return redirect()->back()->withMessage('<p class="alert alert-success text-center">Successfully Updated.</p>');
@@ -1232,13 +1231,13 @@ public function prospectusDownload(Request $request)
 
 
         if ($validator->fails()) {
-         return array(
-          'status' => false,
-          'message' => $validator->errors()->first()
-      );
-     }
+           return array(
+              'status' => false,
+              'message' => $validator->errors()->first()
+          );
+       }
 
-     try {
+       try {
             // Get remaining days for invoice due date
         $dueDate = Carbon::createFromFormat('Y-m-d', $request->due_date);
         $dateDiff = date_diff(Carbon::now(), $dueDate);
@@ -1345,7 +1344,35 @@ public function prospectusDownload(Request $request)
         $request['project_id'] = $this->audkID;
         $request['interested_to_buy'] = 0;
         $request['signature_type'] = 0;
-        $this->offer->store($request,$mailer);
+        $project = Project::findOrFail($request->project_id);
+        $investments = InvestmentInvestor::where('project_id',$project->id)
+        ->where('accepted',1)
+        ->get();
+        $acceptedAmount = $investments->sum('amount');
+        $goalAmount = $project->investment->goal_amount;
+        $maxAmount = round($project->investment->invoice_amount, 2);
+        if($request->project_id === $this->audkID){
+            $min_amount_invest = 1;
+        }else{
+            $min_amount_invest = $project->investment->minimum_accepted_amount;
+        }
+        if((int)$request->amount_to_invest < (int)$min_amount_invest)
+        {
+            return redirect()->back()->withErrors(['The amount to invest must be at least '.$min_amount_invest]);
+        }
+        if((int)$maxAmount < (int)$request->amount_to_invest){
+            return redirect()->back()->withErrors(['The amount to invest must be less than '.$maxAmount]);
+        }
+        $amount = floatval(str_replace(',', '', str_replace('A$ ', '', $request->amount_to_invest)));
+        $amount_5 = $amount*0.05; //5 percent of investment
+        if($user->idDoc != NULL){
+            $investingAs = $user->idDoc->get()->last()->investing_as;
+        }else{
+            $investingAs = $request->investing_as;
+        }
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type]);
+        $investor = InvestmentInvestor::get()->last();
+        // $this->offer->store($request,$mailer);
         return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>')->with(['audcBankDetailsModal'=>'show']);
     }
 
@@ -1557,7 +1584,7 @@ public function prospectusDownload(Request $request)
     public function audcRedeemRequest(Request $request,AppMailer $mailer)
     {
         $validation_rules = array( 'audc_amount' => 'required',
-            'paid_type' => 'required|string' 
+            'paid_type' => 'required|string'
         );
         $validator = Validator::make($request->all(), $validation_rules);
         if ($validator->fails()) {
