@@ -1372,6 +1372,7 @@ public function prospectusDownload(Request $request)
         }
         $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type]);
         $investor = InvestmentInvestor::get()->last();
+        $mailer->sendAudcBuyMailToAdmin($investor);
         // $this->offer->store($request,$mailer);
         return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>')->with(['audcBankDetailsModal'=>'show']);
     }

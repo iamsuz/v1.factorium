@@ -608,17 +608,19 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendAudcBuyMailToAdmin($investment_id,$amount)
+    public function sendAudcBuyMailToAdmin(InvestmentInvestor $investor)
     {
-        $amount = $amount;
-        $investment = InvestmentInvestor::findOrFail($investment_id);
-        $buyer = User::where('email',$investment->project->invoice_issue_from_email)->first();
-        $project = $investment->project;
-        $seller = $project->user;
-        $this->to = $investment->project->invoice_issue_from_email;
-        $this->view = 'emails.audcDuePayment';
-        $this->subject = '<Fname> <Lname> has applied to buy <X> AUDC '.$investment->project->title.' is now due';
-        $this->data = compact('investment','buyer','seller','amount');
+        $role = Role::findOrFail(1);
+        $recipients = ['info@estatebaron.com'];
+        foreach ($role->users as $adminUser) {
+            if($adminUser->registration_site == url()){
+                array_push($recipients, $adminUser->email);
+            }
+        }
+        $this->to = $recipients;
+        $this->view = 'emails.buyAudcEmailToAdmin';
+        $this->subject = $investor->user->first_name.$investor->user->last_name.' has applied to buy '.$investor->amount.' AUDC.';
+        $this->data = compact('investor');
         $this->deliver();
     }
 
