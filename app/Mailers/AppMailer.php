@@ -619,7 +619,7 @@ class AppMailer
         }
         $this->to = $recipients;
         $this->view = 'emails.buyAudcEmailToAdmin';
-        $this->subject = $investor->user->first_name.$investor->user->last_name.' has applied to buy '.$investor->amount.' AUDC.';
+        $this->subject = $investor->user->first_name.' '.$investor->user->last_name.' has applied to buy '.$investor->amount.' AUDC.';
         $this->data = compact('investor');
         $this->deliver();
     }
