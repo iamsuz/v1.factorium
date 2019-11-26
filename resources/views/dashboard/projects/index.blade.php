@@ -49,7 +49,6 @@ Projects | Dashboard | @parent
 							<th>Status</th>
 							<th>Asking Amount</th>
 							<th>Invoice Amount</th>
-							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -111,7 +110,7 @@ Projects | Dashboard | @parent
 							<td>@if($project->investment)${{number_format($project->investment->goal_amount,2)}} @else Not Specified @endif</td>
 							<?php $pledged_amount = $pledged_investments->where('project_id', $project->id)->sum('amount');?>
 							<td>@if($project->investment)${{-- {{ number_format($pledged_amount)}} --}}{{number_format($project->investment->total_projected_costs,2)}} @else Not Specified @endif</td>
-							<td><button class="btn btn-default btn-sm" onclick="duplicateProject({{$project->id}})">Duplicate</button></td>
+							<td class="hide"><button class="btn btn-default btn-sm" onclick="duplicateProject({{$project->id}})">Duplicate</button></td>
 						</tr>
 						@endforeach
 					</tbody>
