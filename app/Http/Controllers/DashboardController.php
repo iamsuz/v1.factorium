@@ -543,7 +543,7 @@ class DashboardController extends Controller
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
                    $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
                }
-               if($isAudc = 1){
+               if($isAudc == 1){
                 $mailer->sendAUDCToUser($investment,$formLink,$investmentDetails);
                }else{
                 $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
