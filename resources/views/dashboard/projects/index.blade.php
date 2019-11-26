@@ -49,6 +49,7 @@ Projects | Dashboard | @parent
 							<th>Status</th>
 							<th>Asking Amount</th>
 							<th>Invoice Amount</th>
+							<th class="hide"></th>
 						</tr>
 					</thead>
 					<tbody>
