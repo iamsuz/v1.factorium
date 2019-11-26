@@ -21,7 +21,7 @@
 							<h2>
 								@if($transactionAUDK)
 								Thank you for applying to invest ${{$amount}} in {{$project->title}}.
-								{{$amount}} @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} @else AUDK @endif has been deducted from your wallet and sent to the issuers wallet. Once the application has been accepted, you will receive the security tokens for the {{$project->title}} in your wallet. We will be in touch with next steps.
+								{{$amount}} @if(isset(App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id)) {{App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->token_symbol}} @else AUDK @endif has been deducted from your wallet and sent to the issuers wallet. Once the application has been accepted, you will receive the asset tokens for the {{$project->title}} in your wallet. We will be in touch with next steps.
 								@else
 								Thank you <br><div style="margin-top: 1.2rem;"> Please deposit ${{number_format($amount)}} to</div>
 								@endif
