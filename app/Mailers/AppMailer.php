@@ -280,17 +280,9 @@ class AppMailer
     {
         $this->to = $investment->user->email;
         $this->view = 'emails.audcIssuedToUserEmail';
-
+        $formLink = url().'/users/wallet';
         $this->subject = 'You have received '.$investment->amount.' AUDC in your wallet on Factorium';
         $this->data = compact('investment','formLink','investmentDetails');
-
-        if($investment->project->share_vs_unit) {
-            $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
-        }else {
-            $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
-
-        }
-
         $this->deliver();
     }
 
