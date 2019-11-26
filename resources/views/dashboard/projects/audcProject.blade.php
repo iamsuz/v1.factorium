@@ -66,8 +66,8 @@
 							<th>Investment Date</th>
 							<th>Invoice Asking Amount</th>
 							{{-- <th>Is Money Received</th> --}}
-							<th>@if($project->share_vs_unit)  @else  @endif Receivable</th>
-							<th>Send Reminder Email</th>
+							<th>Issue Audc</th>
+							<th class="hide">Send Reminder Email</th>
 							<th>Investment Confirmation</th>
 							<th>Investor Document</th>
 							<th>Joint Investor</th>
@@ -181,7 +181,7 @@
 									@endif
 								</div>
 							</td>
-							<td>
+							<td class="hide">
 								@if($investment->money_received || $investment->accepted)
 								@else
 								<div class="col-md-1" style="text-align: right;">
