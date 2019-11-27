@@ -410,7 +410,7 @@ Offer Doc
 														<div class="col-sm-12">
 															<div class="row">
 																<div class="col-sm-6 @if($errors->first('line_1')){{'has-error'}} @endif">
-																	{!! Form::text('line_1', isset($user->line_1) ? $user->line_1 : null, array('placeholder'=>'line 1', 'class'=>'form-control','required')) !!}
+																	{!! Form::text('line_1', isset($user->line_1) ? $user->line_1 : null, array('placeholder'=>'line 1', 'class'=>'form-control')) !!}
 																	{!! $errors->first('line_1', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('line_2')){{'has-error'}} @endif">
@@ -427,11 +427,11 @@ Offer Doc
 														<div class="col-sm-12">
 															<div class="row">
 																<div class="col-sm-6 @if($errors->first('city')){{'has-error'}} @endif">
-																	{!! Form::text('city', isset($user->city) ? $user->city :null, array('placeholder'=>'City', 'class'=>'form-control','required')) !!}
+																	{!! Form::text('city', isset($user->city) ? $user->city :null, array('placeholder'=>'City', 'class'=>'form-control')) !!}
 																	{!! $errors->first('city', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('state')){{'has-error'}} @endif">
-																	{!! Form::text('state', isset($user->state) ? $user->state : null, array('placeholder'=>'state', 'class'=>'form-control','required')) !!}
+																	{!! Form::text('state', isset($user->state) ? $user->state : null, array('placeholder'=>'state', 'class'=>'form-control')) !!}
 																	{!! $errors->first('state', '<small class="text-danger">:message</small>') !!}
 																</div>
 															</div>
@@ -444,7 +444,7 @@ Offer Doc
 														<div class="col-sm-12">
 															<div class="row">
 																<div class="col-sm-6 @if($errors->first('postal_code')){{'has-error'}} @endif">
-																	{!! Form::text('postal_code', isset($user->postal_code) ? $user->postal_code :null, array('placeholder'=>'postal code', 'class'=>'form-control','required')) !!}
+																	{!! Form::text('postal_code', isset($user->postal_code) ? $user->postal_code :null, array('placeholder'=>'postal code', 'class'=>'form-control')) !!}
 																	{!! $errors->first('postal_code', '<small class="text-danger">:message</small>') !!}
 																</div>
 																<div class="col-sm-6 @if($errors->first('country')){{'has-error'}} @endif">
