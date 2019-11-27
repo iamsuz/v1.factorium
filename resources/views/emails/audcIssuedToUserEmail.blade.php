@@ -579,7 +579,7 @@
   Your purchase of {{$investment->amount}} AUDC is now complete, you can access your wallet and start buying receivables now.
   <br><br>
 <br>
-<a href="{{ $formLink }}" style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#fff;text-decoration:none;padding:15px;cursor:pointer; background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><b>Wallet</b></a>
+<a href="{{ $formLink }}" style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#fff;text-decoration:none;padding:15px;cursor:pointer; background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><b>Buy Invoice @if($investment->redirect_project_id){{  $investment->redirect_project_id}} @endif</b></a>
 </span></span></span>
 &nbsp;
 <br><br>

@@ -45,6 +45,7 @@
 					<div class="">
 						<form class="" action="{{route('project.user.audc.buy')}}" method="POST" name="audcForm" id="audcForm">
 							{{ csrf_field() }}
+							<input type="hidden" name="redirect_pid" value="{{ request()->redirect_pid }}">
 							<div class="row">
 								<div class="col-md-6 form-group">
 									<label>Amount</label>

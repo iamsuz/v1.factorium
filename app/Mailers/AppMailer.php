@@ -280,7 +280,11 @@ class AppMailer
     {
         $this->to = $investment->user->email;
         $this->view = 'emails.audcIssuedToUserEmail';
-        $formLink = url().'/users/wallet';
+        if(!$investment->redirect_project_id){
+            $formLink = url().'/?filter=buy#projects';
+        }else{
+            $formLink = url().'/projects/'.$investment->redirect_project_id.'/interest';
+        }
         $this->subject = 'You have received '.$investment->amount.' AUDC in your wallet on Factorium';
         $this->data = compact('investment','formLink','investmentDetails');
         $this->deliver();
@@ -557,142 +561,142 @@ class AppMailer
             $this->deliverWithFile();
         }
         else{
-           $this->deliver();
-        }
+         $this->deliver();
+     }
+ }
+ public function sendInvoiceIssuedToEmail($email, $project,$newUser)
+ {
+    $project = $project;
+    $newUser = $newUser;
+    $fromUser = $project->user;
+    if($newUser == '1'){
+        $user = UserRegistration::where('email',$project->invoice_issue_from_email)->first();
+    }else{
+        $user = User::where('email',$project->invoice_issue_from_email)->first();
     }
-    public function sendInvoiceIssuedToEmail($email, $project,$newUser)
-    {
-        $project = $project;
-        $newUser = $newUser;
-        $fromUser = $project->user;
-        if($newUser == '1'){
-            $user = UserRegistration::where('email',$project->invoice_issue_from_email)->first();
-        }else{
-            $user = User::where('email',$project->invoice_issue_from_email)->first();
-        }
-        $this->to = $email;
-        $this->view = 'emails.invoiceIssuedToEmail';
-        $this->subject = 'You have requested payment terms from '.$fromUser->first_name.' '.$fromUser->last_name;
-        $this->data = compact('fromUser', 'project','newUser','user');
-        $this->deliver();
-    }
+    $this->to = $email;
+    $this->view = 'emails.invoiceIssuedToEmail';
+    $this->subject = 'You have requested payment terms from '.$fromUser->first_name.' '.$fromUser->last_name;
+    $this->data = compact('fromUser', 'project','newUser','user');
+    $this->deliver();
+}
 
-    public function sendPasswordResetEmailToUser($user_info,$token)
+public function sendPasswordResetEmailToUser($user_info,$token)
 {
-        $token = $token;
-        $this->to = $user_info;
-        $this->view = 'emails.password';
-        $this->subject = 'Your Password Reset Link';
-        $this->data = compact('token');
-        $this->deliver();
-    }
-    public function audcDuePayemntToBuyer($investment_id,$amount)
-    {
-        $amount = $amount;
-        $investment = InvestmentInvestor::findOrFail($investment_id);
-        $buyer = User::where('email',$investment->project->invoice_issue_from_email)->first();
-        $project = $investment->project;
-        $seller = $project->user;
-        $this->to = $investment->project->invoice_issue_from_email;
-        $this->view = 'emails.audcDuePayment';
-        $this->subject = 'Your payment for '.$investment->project->title.' is now due';
-        $this->data = compact('investment','buyer','seller','amount');
-        $this->deliver();
-    }
+    $token = $token;
+    $this->to = $user_info;
+    $this->view = 'emails.password';
+    $this->subject = 'Your Password Reset Link';
+    $this->data = compact('token');
+    $this->deliver();
+}
+public function audcDuePayemntToBuyer($investment_id,$amount)
+{
+    $amount = $amount;
+    $investment = InvestmentInvestor::findOrFail($investment_id);
+    $buyer = User::where('email',$investment->project->invoice_issue_from_email)->first();
+    $project = $investment->project;
+    $seller = $project->user;
+    $this->to = $investment->project->invoice_issue_from_email;
+    $this->view = 'emails.audcDuePayment';
+    $this->subject = 'Your payment for '.$investment->project->title.' is now due';
+    $this->data = compact('investment','buyer','seller','amount');
+    $this->deliver();
+}
 
-    public function sendAudcBuyMailToAdmin(InvestmentInvestor $investor)
-    {
-        $role = Role::findOrFail(1);
-        $recipients = ['info@estatebaron.com'];
-        foreach ($role->users as $adminUser) {
-            if($adminUser->registration_site == url()){
-                array_push($recipients, $adminUser->email);
-            }
+public function sendAudcBuyMailToAdmin(InvestmentInvestor $investor)
+{
+    $role = Role::findOrFail(1);
+    $recipients = ['info@estatebaron.com'];
+    foreach ($role->users as $adminUser) {
+        if($adminUser->registration_site == url()){
+            array_push($recipients, $adminUser->email);
         }
-        $this->to = $recipients;
-        $this->view = 'emails.buyAudcEmailToAdmin';
-        $this->subject = $investor->user->first_name.' '.$investor->user->last_name.' has applied to buy '.$investor->amount.' AUDC.';
-        $this->data = compact('investor');
-        $this->deliver();
     }
+    $this->to = $recipients;
+    $this->view = 'emails.buyAudcEmailToAdmin';
+    $this->subject = $investor->user->first_name.' '.$investor->user->last_name.' has applied to buy '.$investor->amount.' AUDC.';
+    $this->data = compact('investor');
+    $this->deliver();
+}
 
-    public function overrideMailerConfig()
-    {
-        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
-        $config = $siteconfig->mailSetting()->first();
+public function overrideMailerConfig()
+{
+    $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+    $config = $siteconfig->mailSetting()->first();
         // Config::set('mail.driver',$configs['driver']);
-        \Config::set('mail.host',$config->host);
-        \Config::set('mail.port',$config->port);
-        \Config::set('mail.username',$config->username);
-        \Config::set('mail.password',$config->password);
-        \Config::set('mail.sendmail',$config->from);
-        $this->from = $config->from;
-        $app = \App::getInstance();
-        $app['swift.transport'] = $app->share(function ($app) {
-           return new TransportManager($app);
-       });
+    \Config::set('mail.host',$config->host);
+    \Config::set('mail.port',$config->port);
+    \Config::set('mail.username',$config->username);
+    \Config::set('mail.password',$config->password);
+    \Config::set('mail.sendmail',$config->from);
+    $this->from = $config->from;
+    $app = \App::getInstance();
+    $app['swift.transport'] = $app->share(function ($app) {
+     return new TransportManager($app);
+ });
 
-        $mailer = new \Swift_Mailer($app['swift.transport']->driver());
-        Mail::setSwiftMailer($mailer);
-    }
+    $mailer = new \Swift_Mailer($app['swift.transport']->driver());
+    Mail::setSwiftMailer($mailer);
+}
 
-    public function deliver()
-    {
-        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
-        $config = $siteconfig->mailSetting()->first();
-        if($config){
-            $this->overrideMailerConfig();
-        }
-        $this->mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
-        });
+public function deliver()
+{
+    $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+    $config = $siteconfig->mailSetting()->first();
+    if($config){
+        $this->overrideMailerConfig();
     }
+    $this->mailer->send($this->view, $this->data, function ($message) {
+        $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject);
+    });
+}
 
-    public function deliverWithFile()
-    {
-        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
-        $config = $siteconfig->mailSetting()->first();
-        if($config){
-            $this->overrideMailerConfig();
-        }
-        $this->mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
-        });
+public function deliverWithFile()
+{
+    $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+    $config = $siteconfig->mailSetting()->first();
+    if($config){
+        $this->overrideMailerConfig();
     }
+    $this->mailer->send($this->view, $this->data, function ($message) {
+        $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->subject($this->subject)->attach($this->pathToFile);
+    });
+}
 
-    public function deliverWithBcc()
-    {
-        $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
-        $config = $siteconfig->mailSetting()->first();
-        if($config){
-            $this->overrideMailerConfig();
-        }
-        $this->mailer->send($this->view, $this->data, function ($message) {
-            $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->bcc($this->bcc)->subject($this->subject);
-        });
+public function deliverWithBcc()
+{
+    $siteconfig = SiteConfigurationHelper::getConfigurationAttr();
+    $config = $siteconfig->mailSetting()->first();
+    if($config){
+        $this->overrideMailerConfig();
     }
-    public function sendAudcRedeemByCashEmailToUser($user)
-    {
-        $this->to = $user->email;
-        $this->view = 'emails.audcRedeemCashRequest';
-        $this->subject = 'Confirm your redemption request';
-        $this->data = compact('user');
-        $this->deliver();
-    }
-    public function sendAudcRedeemByDaiEmailToUser($user)
-    {
-        $this->to = $user->email;
-        $this->view = 'emails.audcRedeemDaiRequest';
-        $this->subject = 'Confirm your redemption request';
-        $this->data = compact('user');
-        $this->deliver();
-    }
-    public function sendAudcRedeemCompleteEmailToUser($user)
-    {
-        $this->to = $user->email;
-        $this->view = 'emails.audcRedeemComplete';
-        $this->subject = 'Completed your redemption request';
-        $this->data = compact('user');
-        $this->deliver();
-    }
+    $this->mailer->send($this->view, $this->data, function ($message) {
+        $message->from($this->from, ($titleName=SiteConfigurationHelper::getConfigurationAttr()->title_text) ? $titleName : 'Estate Baron')->to($this->to)->bcc($this->bcc)->subject($this->subject);
+    });
+}
+public function sendAudcRedeemByCashEmailToUser($user)
+{
+    $this->to = $user->email;
+    $this->view = 'emails.audcRedeemCashRequest';
+    $this->subject = 'Confirm your redemption request';
+    $this->data = compact('user');
+    $this->deliver();
+}
+public function sendAudcRedeemByDaiEmailToUser($user)
+{
+    $this->to = $user->email;
+    $this->view = 'emails.audcRedeemDaiRequest';
+    $this->subject = 'Confirm your redemption request';
+    $this->data = compact('user');
+    $this->deliver();
+}
+public function sendAudcRedeemCompleteEmailToUser($user)
+{
+    $this->to = $user->email;
+    $this->view = 'emails.audcRedeemComplete';
+    $this->subject = 'Completed your redemption request';
+    $this->data = compact('user');
+    $this->deliver();
+}
 }

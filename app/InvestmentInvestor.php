@@ -19,7 +19,7 @@ class InvestmentInvestor extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'project_id', 'investment_id','amount', 'accepted','investment_confirmation', 'share_certificate_issued_at', 'share_number', 'share_certificate_path', 'is_cancelled', 'is_repurchased', 'signature_data', 'application_path', 'interested_to_buy','signature_type','signature_data_type', 'hide_investment', 'investing_as','transaction_hash','investment_completion','pay_investment_id','is_partial_repay','partial_repay_amount','partial_repay_percentage'];
+    protected $fillable = ['user_id', 'project_id', 'investment_id','amount', 'accepted','investment_confirmation', 'share_certificate_issued_at', 'share_number', 'share_certificate_path', 'is_cancelled', 'is_repurchased', 'signature_data', 'application_path', 'interested_to_buy','signature_type','signature_data_type', 'hide_investment', 'investing_as','transaction_hash','investment_completion','pay_investment_id','is_partial_repay','partial_repay_amount','partial_repay_percentage','redirect_project_id'];
 
     /**
      * boolean fields
@@ -60,4 +60,8 @@ class InvestmentInvestor extends Model
     {
         return $this->hasOne('App\WholesaleInvestment');
     }
+    // public function redirectAudc()
+    // {
+    //     return $this->hasOne('App\Project');
+    // }
 }

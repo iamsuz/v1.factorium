@@ -609,7 +609,7 @@ class ProjectsController extends Controller
             $balance = json_decode($responseBalance);
             $transactionAUDK = false;
             if($balance->balance < $amount){
-              return redirect()->route('project.user.audc','amount='.$amount)->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
+                return redirect()->route('project.user.audc',['amount='.$amount.'&redirect_pid='.$project->id])->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
           }
       }
         // if(Auth::user()->verify_id != 2){
@@ -1332,6 +1332,10 @@ public function prospectusDownload(Request $request)
         $validation_rules = array(
             'amount_to_invest'   => 'required'
         );
+        $redirect_pid = Project::find($request->redirect_pid);
+        if(!$redirect_pid){
+            $request['redirect_pid'] = NULL;
+        }
         $validator = Validator::make($request->all(), $validation_rules);
         if ($validator->fails()) {
             return redirect()
@@ -1370,7 +1374,7 @@ public function prospectusDownload(Request $request)
         }else{
             $investingAs = $request->investing_as;
         }
-        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type]);
+        $user->investments()->attach($project, ['investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,'redirect_project_id'=>$request->redirect_pid]);
         $investor = InvestmentInvestor::get()->last();
         $mailer->sendAudcBuyMailToAdmin($investor);
         // $this->offer->store($request,$mailer);

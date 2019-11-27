@@ -306,7 +306,6 @@ class OfferController extends Controller
         return view('projects.gform.thankyouAudk', compact('project', 'user', 'amount_5', 'amount','transactionAUDK','audkProject', 'investor'));
       }
     }
-
     $this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
     $this->dispatch(new SendReminderEmail($user,$project,$investor));
 
