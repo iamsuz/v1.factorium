@@ -1495,7 +1495,7 @@
 </section>
 <br><br><br>
 @if(!Auth::guest())
-<div style="position: fixed;bottom: 1em;left: 1em;">
+<div style="position: fixed;bottom: 1em;left: 1em;" class="hide">
 	<div id="countdown hide" style="display: none;">
 		<div id="countdown-number"></div>
 		<svg>

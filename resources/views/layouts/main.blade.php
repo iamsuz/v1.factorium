@@ -257,7 +257,7 @@ $_SESSION['code'] = md5(microtime(true));
         @yield('content-section')
     </div>
     @if(!Auth::guest())
-    <div style="position: fixed;bottom: 1em;left: 1em;">
+    <div style="position: fixed;bottom: 1em;left: 1em;" class="hide">
         <div id="countdown" class="hide">
             <div id="countdown-number"></div>
             <svg>
@@ -272,7 +272,7 @@ $_SESSION['code'] = md5(microtime(true));
     </div>
     @endif
     @if(!Auth::guest())
-    <div style="position: fixed;bottom: 1em;left: 1em; z-index: 9999;">
+    <div style="position: fixed;bottom: 1em;left: 1em; z-index: 9999;" class="hide">
         <div id="countdown" class="hide">
             <div id="countdown-number"></div>
             <svg>
