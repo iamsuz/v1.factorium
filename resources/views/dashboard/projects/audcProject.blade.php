@@ -61,14 +61,16 @@
 				<table class="table table-bordered table-striped" id="investorsTable" style="margin-top: 2em;">
 					<thead>
 						<tr>
-							<th>Unique ID</th>
+							<th>Transaction Id</th>
+							<th>User Id</th>
+							<th>User Wallet</th>
 							<th>Investors Details</th>
-							<th>Investment Date</th>
-							<th>Invoice Asking Amount</th>
+							<th>Purchase Date</th>
+							<th>Amount</th>
 							{{-- <th>Is Money Received</th> --}}
 							<th>Issue Audc</th>
 							<th class="hide">Send Reminder Email</th>
-							<th>Investment Confirmation</th>
+							{{-- <th>Investment Confirmation</th> --}}
 							<th>Investor Document</th>
 							<th>Joint Investor</th>
 							<th>Company or Trust</th>
@@ -91,6 +93,8 @@
 								</a>
 								@endif
 							</td>
+							<td>{{ $investment->user->id}}</td>
+							<td>{{ $investment->user->wallet_address }}</td>
 							<td>
 								<div class="col-md-3 text-left">
 									<a href="{{route('dashboard.users.show', [$investment->user_id])}}" >
@@ -195,9 +199,9 @@
 									<a class="send-investment-reminder" href="{{route('dashboard.investment.reminder', [$investment->id])}}" style="cursor: pointer;" data-toggle="tooltip" title="Send Reminder"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
 									@endif
 								</div>
-								@endif
+								@endif 
 							</td>
-							<td>
+							{{-- <td>
 								@if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id)
 								@if(!$investment->accepted)
 								<i class="fa fa-times" aria-hidden="true" style="color: #6db980;">&nbsp;<br><small style=" font-family: SourceSansPro-Regular;"> Other Investment has been accepted</small></i>
@@ -227,7 +231,7 @@
 								@endif
 								@endif
 								@endif
-							</td>
+							</td> --}}
 							<td>
 								@if($investment->userInvestmentDoc->where('type','normal_name')->last())
 								<a href="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}" target="_blank">{{$investment->user->first_name}} {{$investment->user->last_name}} Doc</a>
@@ -515,7 +519,7 @@
 
 
 		var shareRegistryTable = $('#shareRegistryTable').DataTable({
-			"order": [[5, 'desc'], [0, 'desc']],
+			"order": [[0, 'desc']],
 			"iDisplayLength": 50,
 			"aoColumnDefs": [
 			{
