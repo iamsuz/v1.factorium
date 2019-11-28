@@ -481,7 +481,8 @@ class UsersController extends Controller
             return redirect()->route('users.investments', $user)->withMessage('<p class="alert text-center alert-warning">You can not access that profile.</p>');
         }
         $investments = InvestmentInvestor::where('user_id', $user->id)
-        ->where('project_site', url())->get();
+        ->where('project_site', url())->whereNotIn('project_id', [$this->audkID])->get();
+
         return view('users.investments', compact('user','color', 'investments'));
     }
 
