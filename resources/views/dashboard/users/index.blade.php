@@ -23,7 +23,7 @@ Users | Dashboard | @parent
 				<table class="table table-bordered table-striped" id="usersTable">
 					<thead>
 						<tr>
-							<th></th>
+							<th>User Id</th>
 							<th>Details</th>
 							<th>Notes</th>
 							<th>Wallet Address</th>

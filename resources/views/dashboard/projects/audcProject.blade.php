@@ -61,40 +61,28 @@
 				<table class="table table-bordered table-striped" id="investorsTable" style="margin-top: 2em;">
 					<thead>
 						<tr>
-							<th>Transaction Id</th>
 							<th>User Id</th>
-							<th>User Wallet</th>
 							<th>Investors Details</th>
 							<th>Purchase Date</th>
 							<th>Amount</th>
 							{{-- <th>Is Money Received</th> --}}
 							<th>Issue Audc</th>
-							<th class="hide">Send Reminder Email</th>
+							<th>Transaction Id</th>
+							<th>User Wallet</th>
+							{{-- <th class="hide">Send Reminder Email</th> --}}
 							{{-- <th>Investment Confirmation</th> --}}
-							<th>Investor Document</th>
-							<th>Joint Investor</th>
-							<th>Company or Trust</th>
+							{{-- <th>Investor Document</th> --}}
+							{{-- <th>Joint Investor</th> --}}
+							{{-- <th>Company or Trust</th> --}}
 							@if(!$project->retail_vs_wholesale)<th>Wholesale Investment</th>@endif
-							<th>Application Form</th>
+							{{-- <th>Application Form</th> --}}
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($investments as $investment)
 						@if(!$investment->hide_investment)
 						<tr id="application{{$investment->id}}"  @if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id) @if(!$investment->accepted) style="color: #ccc;" @endif  @endif>
-							<td>
-								INV{{$investment->id}}
-								<a href="{{route('dashboard.application.view', [$investment->id])}}" class="edit-application" style="margin-top: 1.2em;"><br>
-									<i class="fa fa-edit" aria-hidden="true"></i>
-								</a>
-								@if(!$investment->money_received && !$investment->accepted)
-								<a href="javascript:void(0);" class="hide-investment" data="{{$investment->id}}"><br>
-									<i class="fa fa-trash" aria-hidden="true"></i>
-								</a>
-								@endif
-							</td>
 							<td>{{ $investment->user->id}}</td>
-							<td>{{ $investment->user->wallet_address }}</td>
 							<td>
 								<div class="col-md-3 text-left">
 									<a href="{{route('dashboard.users.show', [$investment->user_id])}}" >
@@ -185,7 +173,19 @@
 									@endif
 								</div>
 							</td>
-							<td class="hide">
+							<td>
+								INV{{$investment->id}}
+								<a href="{{route('dashboard.application.view', [$investment->id])}}" class="edit-application" style="margin-top: 1.2em;"><br>
+									<i class="fa fa-edit" aria-hidden="true"></i>
+								</a>
+								@if(!$investment->money_received && !$investment->accepted)
+								<a href="javascript:void(0);" class="hide-investment" data="{{$investment->id}}"><br>
+									<i class="fa fa-trash" aria-hidden="true"></i>
+								</a>
+								@endif
+							</td>
+							<td>{{ $investment->user->wallet_address }}</td>
+							{{-- <td class="hide">
 								@if($investment->money_received || $investment->accepted)
 								@else
 								<div class="col-md-1" style="text-align: right;">
@@ -200,7 +200,7 @@
 									@endif
 								</div>
 								@endif 
-							</td>
+							</td> --}}
 							{{-- <td>
 								@if(in_array('1',$investments->pluck('accepted')->toArray()) && App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->audk_default_project_id != $project->id)
 								@if(!$investment->accepted)
@@ -232,7 +232,7 @@
 								@endif
 								@endif
 							</td> --}}
-							<td>
+							{{-- <td>
 								@if($investment->userInvestmentDoc->where('type','normal_name')->last())
 								<a href="/{{$investment->userInvestmentDoc->where('type','normal_name')->last()->path}}" target="_blank">{{$investment->user->first_name}} {{$investment->user->last_name}} Doc</a>
 								<a href="#" class="pop">
@@ -259,8 +259,8 @@
 								@else
 								NA
 								@endif
-							</td>
-							<td>
+							</td> --}}
+							{{-- <td>
 								@if($investment->userInvestmentDoc)
 								@if($investment->userInvestmentDoc->where('type','joint_investor')->last())
 								<a href="/{{$investment->userInvestmentDoc->where('type','joint_investor')->last()->path}}" target="_blank">{{$investment->investingJoint->joint_investor_first_name}} {{$investment->investingJoint->joint_investor_last_name}} Doc</a>
@@ -269,8 +269,8 @@
 								NA
 								@endif
 								@endif
-							</td>
-							<td>
+							</td> --}}
+							{{-- <td>
 								@if($investment->userInvestmentDoc)
 								@if($investment->userInvestmentDoc->where('type','trust_or_company')->last())
 								<a href="/{{$investment->userInvestmentDoc->where('type','trust_or_company')->last()->path}}" target="_blank">
@@ -282,15 +282,17 @@
 								@else
 								NA
 								@endif
-							</td>
+							</td> --}}
 							@if(!$project->retail_vs_wholesale)
-							<td>@if($investment->wholesaleInvestment)<a href="#" data-toggle="modal" data-target="#trigger{{$investment->wholesaleInvestment->investment_investor_id}}">Investment Info</a> @else NA @endif</td>
-							@endif
 							<td>
+								@if($investment->wholesaleInvestment)<a href="#" data-toggle="modal" data-target="#trigger{{$investment->wholesaleInvestment->investment_investor_id}}">Investment Info</a> @else NA @endif
+							</td>
+							@endif
+							{{-- <td>
 								<a href="{{route('user.view.application', [base64_encode($investment->id)])}}" target="_blank">
 									View Application Form
 								</a>
-							</td>
+							</td> --}}
 						</tr>
 						@endif
 						@endforeach
