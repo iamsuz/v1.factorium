@@ -129,8 +129,7 @@ class DashboardController extends Controller
     public function projects()
     {
         $color = Color::where('project_site',url())->first();
-        $projects = Project::all();
-        $projects = $projects->where('project_site',url());
+        $projects = Project::where('project_site',url())->whereNotIn('id',[$this->audkID])->get();
         $pledged_investments = InvestmentInvestor::where('hide_investment', '0')->get();
 
         // Filter projects
