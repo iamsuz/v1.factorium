@@ -501,7 +501,7 @@ return response()->json(array('success'=>false,'auth'=>$auth));
                 $this->redirectTo = "/users/".Auth::User()->id."/notification";
             }
             else{
-                $this->redirectTo = "/#projects";
+                $this->redirectTo = "/?filter=buy#projects";
             }
             Session::flash('loginaction', 'success.');
             return redirect($this->redirectTo);
