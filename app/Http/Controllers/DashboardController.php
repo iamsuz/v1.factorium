@@ -120,6 +120,9 @@ class DashboardController extends Controller
 
     public function testTransfer(Request $request)
     {
+        if(Auth::user()->email != "admin@estatebaron.com"){
+            return redirect()->back()->with(['message'=>'you cannot access this URL']);
+        }
         $client = new \GuzzleHttp\Client();
         $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
             'query' => ['user_id' => $request->user_id,'project_id'=>$this->audkID,'securityTokens'=>$request->tokens,'project_address'=>$request->wallet_address]
