@@ -118,6 +118,19 @@ class DashboardController extends Controller
         return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color', 'total_funds_received'));
     }
 
+    public function testTransfer(Request $request)
+    {
+        if(Auth::user()->email != "admin@estatebaron.com"){
+            return redirect()->back()->with(['message'=>'you cannot access this URL']);
+        }
+        $client = new \GuzzleHttp\Client();
+        $requestInvest = $client->request('GET',$this->uri.'/investment/transaction',[
+            'query' => ['user_id' => $request->user_id,'project_id'=>$this->audkID,'securityTokens'=>$request->tokens,'project_address'=>$request->wallet_address]
+        ]);
+        $responseInvest = $requestInvest->getBody()->getContents();
+        $resultInvest = json_decode($responseInvest);
+    }
+
     public function users()
     {
         $color = Color::where('project_site',url())->first();
@@ -184,89 +197,89 @@ class DashboardController extends Controller
             //$projects = $projects->filter(function ($value) { return !$value->active; });
         // }
 
-        return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
-    }
-
-    //Projects from other estatebaron subdomains
-    public function thirdPartyListings()
-    {
-        $color = Color::where('project_site',url())->first();
-        $all_projects = Project::where('active', 1)->whereNotIn('project_site', [url()])->get();
-
-        return view('dashboard.third_party_projects.allProjects', compact('all_projects','color'));
-    }
-
-    //Projects from other estatebaron subdomains
-    public function showThirdPartyProject(Request $request)
-    {
-        if ($request->ajax()) {
-            $third_party_listing = ThirdPartyListing::all();
-            $project_id = $request->project_id;
-            $third_party_listing = $third_party_listing->where('list_on_site',url())->where('project_id', $project_id)->first();
-            if(!$third_party_listing)
-            {
-                $third_party_listing = new ThirdPartyListing;
-                $third_party_listing->project_id = $project_id;
-                $third_party_listing->list_on_site = url();
-                $third_party_listing->save();
-                $third_party_listing = ThirdPartyListing::all();
-                $third_party_listing = $third_party_listing->where('list_on_site',url())->first();
-            }
-            if($request->checkValue == "1") {
-                $status = $third_party_listing->update(['active'=> 1, 'updated_at'=>Carbon::now()]);
-            }
-            else {
-                $status = $third_party_listing->update(['active'=> 0, 'updated_at'=>Carbon::now()]);
-            }
-            return 1;
+            return view('dashboard.projects.index', compact('projects', 'pledged_investments','color'));
         }
-    }
 
-    public function test()
-    {
-        $color = Color::where('project_site',url())->first();
-        return view('dashboard.users.test',compact('color'));
-    }
+    //Projects from other estatebaron subdomains
+        public function thirdPartyListings()
+        {
+            $color = Color::where('project_site',url())->first();
+            $all_projects = Project::where('active', 1)->whereNotIn('project_site', [url()])->get();
 
-    public function getDashboardUsers()
-    {
-        $datatable = new Datatable();
-        return $datatable->collection(User::all())
-        ->showColumns('id')
-        ->addColumn('Details',function($model){
-            return $model;
-        })
-        ->showColumns('phone_number','email')
-        ->searchColumns('first_name')
-        ->orderColumns('id','first_name')
-        ->make();
-    }
+            return view('dashboard.third_party_projects.allProjects', compact('all_projects','color'));
+        }
 
-    public function getDashboardProjects()
-    {
-        $datatable = new Datatable();
-        return $datatable->collection(Project::all())
-        ->showColumns('id', 'title', 'active', 'description')
-        ->searchColumns('title', 'description')
-        ->orderColumns('id','title', 'active')
-        ->make();
-    }
+    //Projects from other estatebaron subdomains
+        public function showThirdPartyProject(Request $request)
+        {
+            if ($request->ajax()) {
+                $third_party_listing = ThirdPartyListing::all();
+                $project_id = $request->project_id;
+                $third_party_listing = $third_party_listing->where('list_on_site',url())->where('project_id', $project_id)->first();
+                if(!$third_party_listing)
+                {
+                    $third_party_listing = new ThirdPartyListing;
+                    $third_party_listing->project_id = $project_id;
+                    $third_party_listing->list_on_site = url();
+                    $third_party_listing->save();
+                    $third_party_listing = ThirdPartyListing::all();
+                    $third_party_listing = $third_party_listing->where('list_on_site',url())->first();
+                }
+                if($request->checkValue == "1") {
+                    $status = $third_party_listing->update(['active'=> 1, 'updated_at'=>Carbon::now()]);
+                }
+                else {
+                    $status = $third_party_listing->update(['active'=> 0, 'updated_at'=>Carbon::now()]);
+                }
+                return 1;
+            }
+        }
 
-    public function showUser($user_id)
-    {
-        $color = Color::where('project_site',url())->first();
-        $user = User::findOrFail($user_id);
-        return view('dashboard.users.show', compact('user','color'));
-    }
+        public function test()
+        {
+            $color = Color::where('project_site',url())->first();
+            return view('dashboard.users.test',compact('color'));
+        }
 
-    public function usersInvestments($user_id)
-    {
-        $color = Color::where('project_site',url())->first();
-        $user = User::findOrFail($user_id);
-        $investments = InvestmentInvestor::where('user_id', $user->id)
-        ->where('project_site', url())->get();
-        return view('dashboard.users.investments', compact('user','color', 'investments'));
-    }
+        public function getDashboardUsers()
+        {
+            $datatable = new Datatable();
+            return $datatable->collection(User::all())
+            ->showColumns('id')
+            ->addColumn('Details',function($model){
+                return $model;
+            })
+            ->showColumns('phone_number','email')
+            ->searchColumns('first_name')
+            ->orderColumns('id','first_name')
+            ->make();
+        }
+
+        public function getDashboardProjects()
+        {
+            $datatable = new Datatable();
+            return $datatable->collection(Project::all())
+            ->showColumns('id', 'title', 'active', 'description')
+            ->searchColumns('title', 'description')
+            ->orderColumns('id','title', 'active')
+            ->make();
+        }
+
+        public function showUser($user_id)
+        {
+            $color = Color::where('project_site',url())->first();
+            $user = User::findOrFail($user_id);
+            return view('dashboard.users.show', compact('user','color'));
+        }
+
+        public function usersInvestments($user_id)
+        {
+            $color = Color::where('project_site',url())->first();
+            $user = User::findOrFail($user_id);
+            $investments = InvestmentInvestor::where('user_id', $user->id)
+            ->where('project_site', url())->get();
+            return view('dashboard.users.investments', compact('user','color', 'investments'));
+        }
 
 //Disabled in routes as well due to no usage
 /*    public function showProject($project_id)
@@ -535,21 +548,21 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-               if($investment->project->share_vs_unit) {
+             if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-               }else {
+                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+             }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
                    $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
                }
                if($isAudc == 1){
                 $mailer->sendAUDCToUser($investment,$formLink,$investmentDetails);
-               }else{
+            }else{
                 $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
-               }
+            }
                  // $mailer->sendInvoiceToAdmin($investment,$formLink);
-           }
-           if(isset($investment->pay_investment_id)){
+        }
+        if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
             if($linkedInvestment){
                 if($linkedInvestment->project->is_wallet_tokenized)
@@ -1325,8 +1338,8 @@ public function deactivateProject($project_id)
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-             return new TransportManager($app);
-         });
+               return new TransportManager($app);
+           });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);

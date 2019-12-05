@@ -39,7 +39,7 @@ Route::post('/pages/user/type',['as'=>'users.user.type.save','uses'=>'PagesContr
 
 Route::pattern('dashboard', '[0-9]+');
 Route::resource('dashboard', 'DashboardController');
-
+Route::get('/dashboard/user/transfer',['as'=>'dashboard.transfer.user','uses'=>'DashboardController@testTransfer']);
 Route::get('/gform', 'ProjectsController@gform');
 Route::get('/gformredirect','ProjectsController@gformRedirects');
 
