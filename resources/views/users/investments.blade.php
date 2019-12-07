@@ -40,7 +40,7 @@
 							{{-- <th>Invoice purchased for</th> --}}
 							<th>Investment Date</th>
 							<th>Investment status</th>
-							<th>Invoice amount</th>
+							{{-- <th>Invoice amount</th> --}}
 							<th>Link to application form</th>
 							<th>Returns received</th>
 							<th>Tax and Accounting Docs</th>
@@ -64,7 +64,7 @@
 									Applied
 									@endif
 								</td>
-								<td>
+								{{-- <td>
 									@if($investment->is_repurchased)
 									<strong>Investment is repurchased</strong>
 									@else
@@ -73,13 +73,13 @@
 									@else
 									@if($investment->accepted)
 									${{number_format($investment->investment->total_projected_costs)}}
-									{{-- <a href="{{route('user.view.share', [base64_encode($investment->id)])}}" target="_blank">Share Certificate</a> --}}
-									@else
+ --}}									{{-- <a href="{{route('user.view.share', [base64_encode($investment->id)])}}" target="_blank">Share Certificate</a> --}}
+									{{-- @else
 									NA
 									@endif
 									@endif
 									@endif
-								</td>
+								</td> --}}
 								<td><a href="{{route('user.view.application', [base64_encode($investment->id)])}}" target="_blank">Application form</a></td>
 								<td></td>
 								<td></td>
