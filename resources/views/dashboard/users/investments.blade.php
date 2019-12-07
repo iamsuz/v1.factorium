@@ -37,7 +37,7 @@
 					<thead>
 						<tr>
 							<th>Project Name</th>
-							<th>Investment Amount</th>
+							{{-- <th>Investment Amount</th> --}}
 							<th>Investment Date</th>
 							<th>Investment status</th>
 							<th>Link to share certificate</th>
@@ -50,8 +50,8 @@
 						@foreach($investments as $investment)
 							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
-								<td>${{number_format($investment->amount)}}</td>
-								<td>{{$investment->created_at->toFormattedDateString()}}</td>
+								{{-- <td>${{number_format($investment->amount)}}</td> --}}
+								<td><span class="hide">{{ $investment->created_at }}</span>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
 									@if($investment->accepted)
 									Shares issued
@@ -97,7 +97,7 @@
 	
 	$(document).ready(function(){
 		var usersTable = $('#investmentsTable').DataTable({
-			"order": [[5, 'desc'], [0, 'desc']],
+			"order": [[1, 'desc']],
 			"iDisplayLength": 50
 		});
 	});

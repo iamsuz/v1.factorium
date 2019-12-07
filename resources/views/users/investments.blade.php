@@ -37,7 +37,7 @@
 					<thead>
 						<tr>
 							<th>Project Name</th>
-							<th>Invoice purchased for</th>
+							{{-- <th>Invoice purchased for</th> --}}
 							<th>Investment Date</th>
 							<th>Investment status</th>
 							<th>Invoice amount</th>
@@ -51,8 +51,8 @@
 						@foreach($investments as $investment)
 							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
-								<td>${{number_format($investment->investment->goal_amount)}}</td>
-								<td>{{$investment->created_at->toFormattedDateString()}}</td>
+								{{-- <td>${{number_format($investment->investment->goal_amount)}}</td> --}}
+								<td><span class="hide">{{ $investment->created_at }}</span>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
 									@if($investment->accepted)
 									Receivable issued
@@ -109,7 +109,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var usersTable = $('#investmentsTable').DataTable({
-			"order": [[2, 'desc']],
+			"order": [1, 'desc'],
 			"iDisplayLength": 50
 		});
 	});
