@@ -93,7 +93,7 @@
 							</td>
 							<td>
 								<div class="col-md-2 text-right">
-									{{$investment->created_at->toFormattedDateString()}}
+									<span class="hide">{{$investment->created_at}}</span>{{$investment->created_at->toFormattedDateString()}}
 								</div>
 							</td>
 							<td>
@@ -535,7 +535,7 @@
 			"iDisplayLength": 50
 		});
 		var investorsTable = $('#investorsTable').DataTable({
-			"order": [0, 'desc'],
+			"order": [2, 'desc'],
 			"iDisplayLength": 25
 		});
 		var transactionTable = $('#transactionTable').DataTable({
