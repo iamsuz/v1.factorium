@@ -301,19 +301,21 @@ class AppMailer
         }
         $this->bcc = 'abhi.mahavarkar@gmail.com';
         $this->to = $recipients;
-        $this->view = 'emails.adminInvoice';
-        if($investment->project->share_vs_unit) {
-            $this->subject = 'Share certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
-        }else {
-            $this->subject = 'Unit certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
-        }
+        // $this->view = 'emails.adminInvoice';
+        $this->view = 'emails.adminInvoiceBuyNotify';
+        // if($investment->project->share_vs_unit) {
+        //     $this->subject = 'Share certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
+        // }else {
+        //     $this->subject = 'Unit certificate for '.$investment->project->title.' for '.$investment->user->first_name.' '.$investment->user->last_name;
+        // }
+        $this->subject = $investment->project->title.' has been bought by '.$investment->user->first_name.' '.$investment->user->last_name;
         $this->data = compact('investment','formLink');
-        if($investment->project->share_vs_unit) {
-            $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
-        }else {
-            $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
+        // if($investment->project->share_vs_unit) {
+        //     $this->pathToFile = storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf';
+        // }else {
+        //     $this->pathToFile = storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf';
 
-        }
+        // }
         $this->deliver();
     }
 
