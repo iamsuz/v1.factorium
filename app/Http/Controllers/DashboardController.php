@@ -559,8 +559,9 @@ class DashboardController extends Controller
                 $mailer->sendAUDCToUser($investment,$formLink,$investmentDetails);
             }else{
                 $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
+                $mailer->sendInvoiceToAdmin($investment,$formLink);
             }
-                 // $mailer->sendInvoiceToAdmin($investment,$formLink);
+                 
         }
         if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
