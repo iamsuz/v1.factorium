@@ -41,7 +41,7 @@
 	<div>
 		<h2 align="center"><b>Application</b></h2><br>
 		<h4><b>Receivable Name</b></h4>
-		<input type="text" name="" class="form-control" placeholder="Project SPV Name" @if($investment->project->projectspvdetail) value="{{$investment->project->projectspvdetail->spv_name}}" @endif style="width: 100%;"><br>
+		<input type="text" name="" class="form-control" placeholder="Invoice name" @if($investment->project) value="{{$investment->project->title}}" @endif style="width: 100%;"><br>
 		<p>This Application Form is important. If you are in doubt as to how to deal with it, please contact your professional adviser without delay. You should read the entire Factoring Arrangement carefully before completing this form.</p>
 		<h4><b>Purchase price</b></h4>
 		<input type="text" name="" class="form-control" placeholder="5000" value="{{$investment->amount}}"><br>
