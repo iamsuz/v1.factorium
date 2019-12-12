@@ -239,9 +239,14 @@ Edit {{$project->title}} | Dashboard | @parent
 									<div class="row">
 										<div class="form-group @if($errors->first('description')){{'has-error'}} @endif">
 											{!!Form::label('description', 'Invoice issued to', array('class'=>'col-sm-3 control-label'))!!}
-											<div class="col-sm-8">
+											<div class="col-sm-3">
 												{!! Form::text('description', null, array('placeholder'=>'Invoice issued to', 'class'=>'form-control')) !!}
 												{!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
+											</div>
+											{!!Form::label('invoice_issue_from_email', 'Invoice issued to Email', array('class'=>'col-sm-2 control-label'))!!}
+											<div class="col-sm-3">
+												{!! Form::text('invoice_issue_from_email', null, array('placeholder'=>'Invoice issued from Email', 'class'=>'form-control')) !!}
+												{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
 											</div>
 										</div>
 									</div>
@@ -252,11 +257,12 @@ Edit {{$project->title}} | Dashboard | @parent
 												{!! Form::text('invoice_issued_from', null, array('placeholder'=>'Invoice issued from', 'class'=>'form-control')) !!}
 												{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
 											</div>
-											{!!Form::label('invoice_issue_from_email', 'Email', array('class'=>'col-sm-2 control-label'))!!}
+											{!!Form::label(null, 'Invoice issued from Email', array('class'=>'col-sm-2 control-label'))!!}
 											<div class="col-sm-3">
-												{!! Form::text('invoice_issue_from_email', null, array('placeholder'=>'Invoice issued from Email', 'class'=>'form-control')) !!}
-												{!! $errors->first('invoice_issued_from', '<small class="text-danger">:message</small>') !!}
+												{!! Form::text(null,  $project->user->email , array('placeholder'=>'', 'class'=>'form-control', 'readonly' => 'readonly')) !!}
+												{!! $errors->first(null, '<small class="text-danger">:message</small>') !!}
 											</div>
+											
 										</div>
 									</div>
 									<br><br>
