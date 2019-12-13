@@ -1041,7 +1041,7 @@ public function deactivateProject($project_id)
             }
 
             // send dividend email to admins
-            // $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
+            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
             // $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
 
             // send dividend emails to investors
