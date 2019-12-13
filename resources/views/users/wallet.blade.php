@@ -39,7 +39,7 @@
 										@foreach($project_balance as $key => $balance)
 										<tr>
 											<td>{{$key}}</td>
-											<td>@if(isset($balance)){{$balance->balance}} {{$balance->tokenSymbol}} @else Na @endif</td>
+											<td>@if(isset($balance))<a href="https://ropsten.etherscan.io/token/{{$balance}}?a={{$user->wallet_address}}" target="_blank">Balance</a> @else Na @endif</td>
 										</tr>
 										@endforeach
 									</tbody>

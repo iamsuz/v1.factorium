@@ -718,13 +718,14 @@ class UsersController extends Controller
             $project_balance = [];
             foreach ($investments as $investment) {
                 $projectName = Project::find($investment->project_id);
-                $client = new \GuzzleHttp\Client();
-                $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
-                    'query'=>['user_id'=> $user->id,'project_id'=>$investment->project_id]
-                ]);
-                $responseBalance = $requestBalance->getBody()->getContents();
-                $balance = json_decode($responseBalance);
-                $project_balance[$projectName->title] = $balance;
+                $cAddress = $projectName->contract_address;
+                // $client = new \GuzzleHttp\Client();
+                // $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
+                //     'query'=>['user_id'=> $user->id,'project_id'=>$investment->project_id]
+                // ]);
+                // $responseBalance = $requestBalance->getBody()->getContents();
+                // $balance = json_decode($responseBalance);
+                $project_balance[$projectName->title] = $cAddress;
             }
         }
         return view('users.wallet',compact('user','color','project_balance'));
