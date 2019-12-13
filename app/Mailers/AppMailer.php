@@ -80,8 +80,9 @@ class AppMailer
     public function sendRepurchaseNotificationToInvestor($investment, $repurchaseRate, $shareNumber, $project){
         $this->to = $investment->user->email;
         $this->view = 'emails.userRepurchaseNotify';
-        $this->subject = 'Receivable Repurchase';
-        $this->data = compact('investment','repurchaseRate','shareNumber','project');
+        $audcLink = url().'/users/login?next=users/wallet';
+        $this->subject = $project->title.' repaid '.($investment->is_partial_repay ? 'partially' : 'fully');
+        $this->data = compact('investment','repurchaseRate','shareNumber','project','audcLink');
 
         $this->deliver();
     }

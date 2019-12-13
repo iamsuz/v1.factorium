@@ -1014,6 +1014,7 @@ public function deactivateProject($project_id)
     }
 
     public function declareRepurchase(Request $request, AppMailer $mailer, $projectId){
+        // dd('hi');
         $investorList = $request->investors_list;
         $repurchaseRate = $request->repurchase_rate;
         $project = Project::findOrFail($projectId);
@@ -1040,7 +1041,7 @@ public function deactivateProject($project_id)
             }
 
             // send dividend email to admins
-            $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
+            // $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
             // $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
 
             // send dividend emails to investors
