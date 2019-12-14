@@ -561,18 +561,18 @@
                               <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear {{$investment->user->first_name}},</span></span></span></strong>
 
                               <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-                                <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">
-                                  {{$project->title}} has now been partial repaid. {{$dividendAmount}} has now been deposited to your wallet.
-                                </span><br><br>
-                                <span style="color:#000">Congratulations on the successful outcome.</span><br><br>
-                                <span style="color:#000">You can view more opportunities to buy Invoices at a discount below.</span><br><br>
-                                <span style="color:#000">Buy Invoices at a discount</span><br>
-                                <br><br><br>
-                                <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">
-                                  @if($project->projectspvdetail){{$project->projectspvdetail->spv_md_name}}<br>@endif
-                                  @if($project->projectspvdetail){{$project->projectspvdetail->spv_name}}@else {{'Estate Baron Team'}} @endif
-                                </span></span></span><br><br>
-                              </div>
+                                <span style="color:#000">
+                                  <span style="font-size:14px">
+                                    <span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">
+                                      {{ $project->title }} has now been repaid {{ $investment->is_partial_repay ? 'partially' : 'fully' }}. Your wallet address will show an increase in AUDC of {{number_format($transaction->rate * 0.01 * $transaction->number_of_shares ,2)}}. You may redeem AUDC anytime without fees or use it to buy more invoices on the platform.    
+                                    </span><br><br>
+                                    <span style="color:#000"><a href="{{ $audcLink }}" style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#fff;text-decoration:none;padding:15px;cursor:pointer; background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif">My AUDC Balance </a> </span><br><br>
+                                  </span></span></div>
+                                  <div>
+                                    <br><br><br>
+                                    <span style="color:#"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px">Regards,</span></span></span><br>
+                                    <br><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Team</span></span></span><br><br>
+                                  </div>
                             </div>
                           </td>
                         </tr>

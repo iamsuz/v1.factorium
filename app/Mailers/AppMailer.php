@@ -489,6 +489,15 @@ class AppMailer
         $this->deliverWithFile();
     }
 
+    public function sendPartialRepurchaseNotificationToInvestor($investment, $project, $transaction){
+        $this->to = $investment->user->email;
+        $this->view = 'emails.userFixedDividendDistributioNotify';
+        $this->subject = $project->title.' repaid '.($investment->is_partial_repay ? 'partially' : 'fully');
+        $audcLink = url().'/users/login?next=users/wallet';
+        $this->data = compact('investment','project','transaction','audcLink');
+        $this->deliver();
+    }
+
     public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project)
     {
         $role = Role::findOrFail(1);

@@ -974,7 +974,7 @@ public function deactivateProject($project_id)
                         $balance = json_decode($responseRepurchaseAudk);
                     }
                 }
-                Transaction::create([
+                $transaction = Transaction::create([
                     'user_id' => $investment->user_id,
                     'project_id' => $investment->project_id,
                     'investment_investor_id' => $investment->id,
@@ -993,8 +993,9 @@ public function deactivateProject($project_id)
                     $investment->partial_repay_amount = $project->investment->total_projected_costs * ((int)$dividendPercent/100);
                 }
                 $investment->save();
+                $mailer->sendPartialRepurchaseNotificationToInvestor($investment, $project,$transaction);
 
-                $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project,'dividendAmount'=>$dividendAmount));
+                // $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project,'dividendAmount'=>$dividendAmount));
                 // $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
                 // if($result->http_response_code != 200){
                 //     array_push($failedEmails, $investment->user->email);
