@@ -320,90 +320,90 @@
       width:600px !important;
     }
 
-  } @media only screen and (max-width: 480px){
-    body,table,td,p,a,li,blockquote{
-      -webkit-text-size-adjust:none !important;
-    }
+    } @media only screen and (max-width: 480px){
+      body,table,td,p,a,li,blockquote{
+        -webkit-text-size-adjust:none !important;
+      }
 
-  } @media only screen and (max-width: 480px){
-    body{
-      width:100% !important;
-      min-width:100% !important;
-    }
+      } @media only screen and (max-width: 480px){
+        body{
+          width:100% !important;
+          min-width:100% !important;
+        }
 
-  } @media only screen and (max-width: 480px){
-    #bodyCell{
-      padding-top:10px !important;
-    }
+        } @media only screen and (max-width: 480px){
+          #bodyCell{
+            padding-top:10px !important;
+          }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImage{
-      width:100% !important;
-    }
+          } @media only screen and (max-width: 480px){
+            .mcnImage{
+              width:100% !important;
+            }
 
-  } @media only screen and (max-width: 480px){
-    .mcnCartContainer,.mcnCaptionTopContent,.mcnRecContentContainer,.mcnCaptionBottomContent,.mcnTextContentContainer,.mcnBoxedTextContentContainer,.mcnImageGroupContentContainer,.mcnCaptionLeftTextContentContainer,.mcnCaptionRightTextContentContainer,.mcnCaptionLeftImageContentContainer,.mcnCaptionRightImageContentContainer,.mcnImageCardLeftTextContentContainer,.mcnImageCardRightTextContentContainer{
-      max-width:100% !important;
-      width:100% !important;
-    }
+            } @media only screen and (max-width: 480px){
+              .mcnCartContainer,.mcnCaptionTopContent,.mcnRecContentContainer,.mcnCaptionBottomContent,.mcnTextContentContainer,.mcnBoxedTextContentContainer,.mcnImageGroupContentContainer,.mcnCaptionLeftTextContentContainer,.mcnCaptionRightTextContentContainer,.mcnCaptionLeftImageContentContainer,.mcnCaptionRightImageContentContainer,.mcnImageCardLeftTextContentContainer,.mcnImageCardRightTextContentContainer{
+                max-width:100% !important;
+                width:100% !important;
+              }
 
-  } @media only screen and (max-width: 480px){
-    .mcnBoxedTextContentContainer{
-      min-width:100% !important;
-    }
+              } @media only screen and (max-width: 480px){
+                .mcnBoxedTextContentContainer{
+                  min-width:100% !important;
+                }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImageGroupContent{
-      padding:9px !important;
-    }
+                } @media only screen and (max-width: 480px){
+                  .mcnImageGroupContent{
+                    padding:9px !important;
+                  }
 
-  } @media only screen and (max-width: 480px){
-    .mcnCaptionLeftContentOuter .mcnTextContent,.mcnCaptionRightContentOuter .mcnTextContent{
-      padding-top:9px !important;
-    }
+                  } @media only screen and (max-width: 480px){
+                    .mcnCaptionLeftContentOuter .mcnTextContent,.mcnCaptionRightContentOuter .mcnTextContent{
+                      padding-top:9px !important;
+                    }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImageCardTopImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
-      padding-top:18px !important;
-    }
+                    } @media only screen and (max-width: 480px){
+                      .mcnImageCardTopImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
+                        padding-top:18px !important;
+                      }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImageCardBottomImageContent{
-      padding-bottom:9px !important;
-    }
+                      } @media only screen and (max-width: 480px){
+                        .mcnImageCardBottomImageContent{
+                          padding-bottom:9px !important;
+                        }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImageGroupBlockInner{
-      padding-top:0 !important;
-      padding-bottom:0 !important;
-    }
+                        } @media only screen and (max-width: 480px){
+                          .mcnImageGroupBlockInner{
+                            padding-top:0 !important;
+                            padding-bottom:0 !important;
+                          }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImageGroupBlockOuter{
-      padding-top:9px !important;
-      padding-bottom:9px !important;
-    }
+                          } @media only screen and (max-width: 480px){
+                            .mcnImageGroupBlockOuter{
+                              padding-top:9px !important;
+                              padding-bottom:9px !important;
+                            }
 
-  } @media only screen and (max-width: 480px){
-    .mcnTextContent,.mcnBoxedTextContentColumn{
-      padding-right:18px !important;
-      padding-left:18px !important;
-    }
+                            } @media only screen and (max-width: 480px){
+                              .mcnTextContent,.mcnBoxedTextContentColumn{
+                                padding-right:18px !important;
+                                padding-left:18px !important;
+                              }
 
-  } @media only screen and (max-width: 480px){
-    .mcnImageCardLeftImageContent,.mcnImageCardRightImageContent{
-      padding-right:18px !important;
-      padding-bottom:0 !important;
-      padding-left:18px !important;
-    }
+                              } @media only screen and (max-width: 480px){
+                                .mcnImageCardLeftImageContent,.mcnImageCardRightImageContent{
+                                  padding-right:18px !important;
+                                  padding-bottom:0 !important;
+                                  padding-left:18px !important;
+                                }
 
-  } @media only screen and (max-width: 480px){
-    .mcpreview-image-uploader{
-      display:none !important;
-      width:100% !important;
-    }
+                                } @media only screen and (max-width: 480px){
+                                  .mcpreview-image-uploader{
+                                    display:none !important;
+                                    width:100% !important;
+                                  }
 
-  } @media only screen and (max-width: 480px){
+                                  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Heading 1
@@ -414,7 +414,7 @@
     line-height:125% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Heading 2
@@ -425,7 +425,7 @@
     line-height:125% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Heading 3
@@ -436,7 +436,7 @@
     line-height:125% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Heading 4
@@ -447,7 +447,7 @@
     line-height:150% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Boxed Text
@@ -458,7 +458,7 @@
     line-height:150% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Preheader Visibility
@@ -468,7 +468,7 @@
     display:block !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Preheader Text
@@ -479,7 +479,7 @@
     line-height:150% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Header Text
@@ -490,7 +490,7 @@
     line-height:150% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Body Text
@@ -501,7 +501,7 @@
     line-height:150% !important;
   }
 
-} @media only screen and (max-width: 480px){
+  } @media only screen and (max-width: 480px){
   /*
    Mobile Styles
    Footer Text
@@ -518,136 +518,121 @@
     <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;background-color: #FAFAFA;">
       <tr>
         <td align="center" valign="top" id="bodyCell" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 10px;width: 100%;border-top: 0;">
-          <!-- BEGIN TEMPLATE // -->
-            <!--[if gte mso 9]>
-            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
             <tr>
-            <td align="center" valign="top" width="600" style="width:600px;">
-              <![endif]-->
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
-                <tr>
-                  <td valign="top" id="templatePreheader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"></td>
-                </tr>
-                <tr>
-                  <td valign="top" id="templateHeader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                    <tbody class="mcnImageBlockOuter">
-                      <tr>
-                        <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
-                          <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                            <tbody><tr>
-                              <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
-                                <!-- <img align="center" alt="" src="http://www.vestabyte.com/assets/images/email/vb.png" width="600" style="max-width: 650px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage"> -->
-                                {{-- <p style="font-family:helvetica; font-weight:bolder; text-align: left; padding-left: 18px; color: #fff; font-size: 25px;">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</p> --}}
-                                <table  border="0" cellpadding="18" cellspacing="0" align="left">
-                                  <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
-                               </table>
-                              <br><br>
-                              </td>
-                            </tr>
-                          </tbody></table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table></td>
-                </tr>
-                <tr>
-                  <td valign="top" id="templateBody" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 2px solid #EAEAEA;padding-top: 0;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                    <tbody class="mcnTextBlockOuter">
-                      <tr>
-                        <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                          <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
-                            <tbody><tr>
-                              <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;"><br> <br>
-                                <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear Admin(s),</span></span></span></strong>
-
-                                <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
-                                  <span style="color:#000"><span style="font-size:14px"><span style="font-family:helvetica; font-weight:lighter; line-height:21px; color: #000;">Please distribute the following partial repurchase amounts to the following financiers:<br><br>
-                                  <span style="font-family:helvetica; font-weight:lighter; line-height:21px; color:#000;"><b>Rate: </b>{{$dividendPercent}}%</span><br><br>
-
-                                    <table align="left" border="1" cellpadding="4" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
-                                    <thead style=" font-size: 13px; text-align: center;"><tr>
-                                      <th>Financier Name</th>
-                                      <th>Financier Bank account name</th>
-                                      <th>Financier bank</th>
-                                      <th>Financier BSB</th>
-                                      <th>Financier Account</th>
-                                      <th>Invoice amount</th>
-                                      <th>Partial Repayment</th>
-                                    </tr></thead>
-                                    <tbody>
-                                      @foreach($investments as $investment)
-                                      <tr>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{$investment->user->first_name}} {{$investment->user->last_name}}</span></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->account_name}} @else {{$investment->user->account_name}} @endif</span></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->bank_name}} @else {{$investment->user->bank_name}} @endif</span></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->bsb}} @else {{$investment->user->bsb}} @endif</span></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">@if($investment->investingJoint) {{$investment->investingJoint->account_number}} @else {{$investment->user->account_number}} @endif</span></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">${{$project->investment->total_projected_costs}}</span><br></td>
-                                      <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">${{$project->investment->total_projected_costs * ((int)$dividendPercent/100)}}</span><br></td>
-                                      </tr>
-                                      @endforeach
-                                    </tbody>
-                                    </table>
-                                    <table align="left" border="0" cellpadding="2" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
-                                    <tbody>
-                                    <br>
-                                    </tbody>
-                                    </table>
-                                    <span style="color:#000;">Regards,</span><br>
-                                    <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">
-                                    @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Team<br><br>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody></table>
+              <td valign="top" id="templatePreheader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"></td>
+            </tr>
+            <tr>
+              <td valign="top" id="templateHeader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <tbody class="mcnImageBlockOuter">
+                  <tr>
+                    <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
+                      <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <tbody><tr>
+                          <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-align:right;background-color: @if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->nav_footer_color}}@else #2D2D4B @endif;">
+                            <table  border="0" cellpadding="18" cellspacing="0" align="left">
+                              <td style="font-family:helvetica; font-weight:bolder; text-align: left; color: #fff; font-size: 25px;" cell-padding="18">@if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif</td>
+                            </table>
+                            <br><br>
                           </td>
                         </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td valign="top" id="templateFooter" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                    <tbody class="mcnFollowBlockOuter">
-                      <tr>
-                        <td align="center" valign="top" style="padding: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowBlockInner">
-                          <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                            <tbody><tr>
-                              <td align="center" style="padding-left: 9px;padding-right: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContent">
-                                  <tbody><tr>
-                                    <td align="center" valign="top" style="padding-top: 9px;padding-right: 9px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                      <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                        <tbody><tr>
-                                          <td align="center" valign="top" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                          </td>
-                                        </tr>
-                                      </tbody></table>
-                                    </td>
+                      </tbody></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table></td>
+            </tr>
+            <tr>
+              <td valign="top" id="templateBody" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 2px solid #EAEAEA;padding-top: 0;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <tbody class="mcnTextBlockOuter">
+                  <tr>
+                    <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                      <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                        <tbody><tr>
+                          <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 100%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;"><br> <br>
+                            <strong><span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-family:helvetica; font-weight:bolder; line-height:21px"><span style="font-size:20px">Dear Admin(s),</span></span></span></strong>
+
+                            <div style="font-size: 13px;text-align:justify; font-family:'Helvetica';font-weight:lighter;line-height:21px;"><br>
+                              <table align="left" border="0" cellpadding="4" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                                <thead style=" font-size: 13px; text-align: center;">
+                                  <tr>
+                                    <th>Project wallet:</th>
+                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $project->wallet_address }}</span></td>
                                   </tr>
-                                </tbody></table>
-                              </td>
-                            </tr>
-                          </tbody></table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;table-layout: fixed !important;">
-                  <tbody class="mcnDividerBlockOuter">
-                    <tr>
-                      <td class="mcnDividerBlockInner" style="min-width: 100%;padding: 10px 18px 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                        <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-top-width: 2px;border-top-style: solid;border-top-color: #EEEEEE;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                          <tbody><tr>
-                            <td style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                              <span></span>
+                                  <tr>
+                                    <th>Seller wallet:
+                                    </th>
+                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $project->user->wallet_address }}</span></td>
+                                  </tr>
+                                  <tr>
+                                    <th>Buyer wallet:</th>
+                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $buyer->wallet_address }}</span></td>
+                                  </tr>
+                                  <tr>
+                                    <th>Financier wallet:</th>
+                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $transaction->user->wallet_address }}</span></td>
+                                  </tr></thead>
+                                </table>
+                                <table align="left" border="0" cellpadding="2" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                                  <tbody>
+                                    <br>
+                                  </tbody>
+                                </table>
+                                <span style="color:#000;">Regards,</span><br>
+                                <span style="color:@if($siteColor=App\Helpers\SiteConfigurationHelper::getSiteThemeColors())#{{$siteColor->heading_color}}@else #282a73 @endif"><span style="font-size:16px"><span style="font-family:helvetica; font-weight:bold; line-height:21px">
+                                  @if($siteTitle=App\Helpers\SiteConfigurationHelper::getConfigurationAttr()->website_name){{$siteTitle}}@else Estate Baron @endif Team<br><br>
+                                </div>
+                              </div>
                             </td>
                           </tr>
                         </tbody></table>
                       </td>
                     </tr>
                   </tbody>
-                </table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" id="templateFooter" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <tbody class="mcnFollowBlockOuter">
+                  <tr>
+                    <td align="center" valign="top" style="padding: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowBlockInner">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <tbody><tr>
+                          <td align="center" style="padding-left: 9px;padding-right: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContent">
+                              <tbody><tr>
+                                <td align="center" valign="top" style="padding-top: 9px;padding-right: 9px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                  <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                    <tbody><tr>
+                                      <td align="center" valign="top" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                      </td>
+                                    </tr>
+                                  </tbody></table>
+                                </td>
+                              </tr>
+                            </tbody></table>
+                          </td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;table-layout: fixed !important;">
+                <tbody class="mcnDividerBlockOuter">
+                  <tr>
+                    <td class="mcnDividerBlockInner" style="min-width: 100%;padding: 10px 18px 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                      <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-top-width: 2px;border-top-style: solid;border-top-color: #EEEEEE;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <tbody><tr>
+                          <td style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <span></span>
+                          </td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                 <tbody class="mcnTextBlockOuter">
                   <tr>
                     <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">

@@ -548,20 +548,20 @@ class DashboardController extends Controller
 
                  // $pdf = PDF::loadView('pdf.invoice', ['investment' => $investment, 'shareInit' => $shareInit, 'investing' => $investing, 'shareStart' => $shareStart, 'shareEnd' => $shareEnd]);
                  // $pdf->setPaper('a4', 'landscape');
-             if($investment->project->share_vs_unit) {
+               if($investment->project->share_vs_unit) {
                      // $pdf->save(storage_path().'/app/invoices/Share-Certificate-'.$investment->id.'.pdf');
-                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
-             }else {
+                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/share';
+               }else {
                      // $pdf->save(storage_path().'/app/invoices/Unit-Certificate-'.$investment->id.'.pdf');
-                   $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
-               }
-               if($isAudc == 1){
+                 $formLink = url().'/user/view/'.base64_encode($investment->id).'/unit';
+             }
+             if($isAudc == 1){
                 $mailer->sendAUDCToUser($investment,$formLink,$investmentDetails);
             }else{
                 $mailer->sendInvoiceToUser($investment,$formLink,$investmentDetails);
                 $mailer->sendInvoiceToAdmin($investment,$formLink);
             }
-                 
+
         }
         if(isset($investment->pay_investment_id)){
             $linkedInvestment = InvestmentInvestor::findOrFail($investment->pay_investment_id);
@@ -907,7 +907,7 @@ public function deactivateProject($project_id)
     }
 
     public function declareFixedDividend(Request $request, AppMailer $mailer, $projectId)
-    {
+    { 
         $investorList = $request->investors_list;
         $dividendPercent = $request->fixed_dividend_percent;
         $project = Project::findOrFail($projectId);
@@ -916,7 +916,7 @@ public function deactivateProject($project_id)
         ->where('accepted', 1)
         ->orderBy('share_certificate_issued_at','ASC')
         ->get();
-        // dd($shareInvestments[0]->partial_repay_amount);
+        
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
@@ -950,7 +950,6 @@ public function deactivateProject($project_id)
 
             // send dividend email to admins
             $csvPath = $this->exportFixedDividendCSV($investments, $dividendPercent, $project);
-            $mailer->sendFixedDividendDistributionNotificationToAdmin($investments, $dividendPercent, $csvPath, $project);
 
             // send dividend emails to investors
             $failedEmails = [];
@@ -993,8 +992,8 @@ public function deactivateProject($project_id)
                     $investment->partial_repay_amount = $project->investment->total_projected_costs * ((int)$dividendPercent/100);
                 }
                 $investment->save();
+                $mailer->sendFixedDividendDistributionNotificationToAdmin($investments, $buyer, $project,$transaction);
                 $mailer->sendPartialRepurchaseNotificationToInvestor($investment, $project,$transaction);
-
                 // $content = \View::make('emails.userFixedDividendDistributioNotify', array('investment' => $investment, 'dividendPercent' => $dividendPercent, 'project' => $project,'dividendAmount'=>$dividendAmount));
                 // $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
                 // if($result->http_response_code != 200){
@@ -1043,7 +1042,7 @@ public function deactivateProject($project_id)
 
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
-            // $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
+            $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
 
             // send dividend emails to investors
             $failedEmails = [];
@@ -1341,8 +1340,8 @@ public function deactivateProject($project_id)
             \Config::set('mail.sendmail',$config->from);
             $app = \App::getInstance();
             $app['swift.transport'] = $app->share(function ($app) {
-               return new TransportManager($app);
-           });
+             return new TransportManager($app);
+         });
 
             $mailer = new \Swift_Mailer($app['swift.transport']->driver());
             \Mail::setSwiftMailer($mailer);

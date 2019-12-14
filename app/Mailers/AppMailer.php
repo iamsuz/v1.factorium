@@ -471,7 +471,7 @@ class AppMailer
         $this->deliverWithFile();
     }
 
-    public function sendFixedDividendDistributionNotificationToAdmin($investments, $dividendPercent, $csvPath, $project)
+    public function sendFixedDividendDistributionNotificationToAdmin($investments, $buyer, $project,$transaction)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -482,11 +482,10 @@ class AppMailer
         }
         $this->to = $recipients;
         $this->view = 'emails.adminFixedDividendDistributioNotify';
-        $this->subject = 'Distribute partial repurchase amount to financiers for '.$project->title;
-        $this->data = compact('investments', 'dividendPercent', 'project');
-        $this->pathToFile = $csvPath;
+        $this->subject = $project->title.' has been partially repaid with '.number_format($transaction->rate * 0.01 * $transaction->number_of_shares ,2).' AUDC';
+        $this->data = compact('investments', 'buyer', 'project','transaction');
 
-        $this->deliverWithFile();
+        $this->deliver();
     }
 
     public function sendPartialRepurchaseNotificationToInvestor($investment, $project, $transaction){
