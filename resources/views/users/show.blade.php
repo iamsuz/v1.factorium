@@ -150,7 +150,7 @@
 							<dt></dt>
 							<dd>{{ $user->entity_name }}</dd>
 							<dt></dt>
-							<dd>{{ $user->wallet_address }}</dd>
+							<dd><a href="https://ropsten.etherscan.io/address/{{$user->wallet_address}}" target="_blank" style="none">{{ $user->wallet_address }}</a></dd>
 							<dt></dt>
 							<dd{{--  style="margin-left: 230px !important;" --}}>
 								<div class="row">

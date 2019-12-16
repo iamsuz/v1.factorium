@@ -557,20 +557,20 @@
                                 <thead style=" font-size: 13px; text-align: center;">
                                   <tr>
                                     <th style="text-align: left">Project wallet:</th>
-                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $project->wallet_address }}</span></td>
+                                    <td valign="top" class="mcnTextContent"><a href="https://ropsten.etherscan.io/address/{{ $project->wallet_address }}" target="_blank"><span style="color:#000; font-size: 13px;">{{ $project->wallet_address }}</span></a></td>
                                   </tr>
                                   <tr>
                                     <th style="text-align: left">Seller wallet:
                                     </th>
-                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $project->user->wallet_address }}</span></td>
+                                    <td valign="top" class="mcnTextContent"><a href="https://ropsten.etherscan.io/address/{{ $project->user->wallet_address }}" target="_blank"><span style="color:#000; font-size: 13px;">{{ $project->user->wallet_address }}</span></a></td>
                                   </tr>
                                   <tr>
                                     <th style="text-align: left">Buyer wallet:</th>
-                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $buyer->wallet_address }}</span></td>
+                                    <td valign="top" class="mcnTextContent"><a href="https://ropsten.etherscan.io/address/{{ $buyer->wallet_address }}" target="_blank"><span style="color:#000; font-size: 13px;">{{ $buyer->wallet_address }}</span></a></td>
                                   </tr>
                                   <tr>
                                     <th style="text-align: left">Financier wallet:</th>
-                                    <td valign="top" class="mcnTextContent"><span style="color:#000; font-size: 13px;">{{ $transaction->user->wallet_address }}</span></td>
+                                    <td valign="top" class="mcnTextContent"><a href="https://ropsten.etherscan.io/address/{{ $transaction->user->wallet_address }}" target="_blank"><span style="color:#000; font-size: 13px;">{{ $transaction->user->wallet_address }}</span></a></td>
                                   </tr></thead>
                                 </table>
                                 <table align="left" border="0" cellpadding="2" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
