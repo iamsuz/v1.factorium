@@ -497,7 +497,7 @@ class AppMailer
         $this->deliver();
     }
 
-    public function sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project)
+    public function sendRepurchaseNotificationToAdmin($investments, $buyer, $transaction, $project)
     {
         $role = Role::findOrFail(1);
         $recipients = ['info@estatebaron.com'];
@@ -508,15 +508,9 @@ class AppMailer
         }
         $this->to = $recipients;
         $this->view = 'emails.adminRepurchaseNotify';
-        if($project->share_vs_unit) {
-            $this->subject = 'Receivable Repurchase';
-        } else {
-            $this->subject = 'Units Repurchase';
-        }
-        $this->data = compact('investments', 'repurchaseRate', 'project');
-        $this->pathToFile = $csvPath;
-
-        $this->deliverWithFile();
+        $this->subject = $project->title.' has been fully repaid with '.$transaction->amount.' AUDC';
+        $this->data = compact('investments', 'buyer', 'transaction', 'project');
+        $this->deliver();
     }
 
     public function sendInvestmentRequestToAdmin($user, $project, $formLink)
@@ -572,11 +566,11 @@ class AppMailer
             $this->deliverWithFile();
         }
         else{
-         $this->deliver();
-     }
- }
- public function sendInvoiceIssuedToEmail($email, $project,$newUser)
- {
+           $this->deliver();
+       }
+   }
+   public function sendInvoiceIssuedToEmail($email, $project,$newUser)
+   {
     $project = $project;
     $newUser = $newUser;
     $fromUser = $project->user;
@@ -644,8 +638,8 @@ public function overrideMailerConfig()
     $this->from = $config->from;
     $app = \App::getInstance();
     $app['swift.transport'] = $app->share(function ($app) {
-     return new TransportManager($app);
- });
+       return new TransportManager($app);
+   });
 
     $mailer = new \Swift_Mailer($app['swift.transport']->driver());
     Mail::setSwiftMailer($mailer);

@@ -1042,7 +1042,7 @@ public function deactivateProject($project_id)
 
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
-            $mailer->sendRepurchaseNotificationToAdmin($investments, $repurchaseRate, $csvPath, $project);
+            
 
             // send dividend emails to investors
             $failedEmails = [];
@@ -1094,7 +1094,7 @@ public function deactivateProject($project_id)
                     }
                 }
 
-                Transaction::create([
+                $transaction = Transaction::create([
                     'user_id' => $investment->user_id,
                     'project_id' => $investment->project_id,
                     'investment_investor_id' => $investment->id,
@@ -1106,6 +1106,7 @@ public function deactivateProject($project_id)
                 ]);
 
                 $shareNumber = explode('-', $investment->share_number);
+                $mailer->sendRepurchaseNotificationToAdmin($investments, $buyer, $transaction, $project);
                 $mailer->sendRepurchaseNotificationToInvestor($investment, $repurchaseRate, $shareNumber, $project);
                 // $content = \View::make('emails.userRepurchaseNotify', array('investment' => $investment, 'repurchaseRate' => $repurchaseRate, 'project' => $project, 'shareNumber' => $shareNumber));
                 // $result = $this->queueEmailsUsingMailgun($investment->user->email, $subject, $content->render());
