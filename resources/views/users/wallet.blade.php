@@ -20,7 +20,7 @@
 					<dl class="dl-horizontal">
 						<div class="text-center">
 							<h2>Wallet Address</h2>
-							<h4 class="alert alert-success">{{$user->wallet_address}}</h4>
+							<a href="https://ropsten.etherscan.io/address/{{$user->wallet_address}}" target="_blank"><h4 class="alert alert-success">{{$user->wallet_address}}</h4></a>
 						</div>
 						<hr>
 						<dt></dt>
