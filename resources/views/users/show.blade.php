@@ -150,6 +150,8 @@
 							<dt></dt>
 							<dd>{{ $user->entity_name }}</dd>
 							<dt></dt>
+							<dd>{{ $user->wallet_address }}</dd>
+							<dt></dt>
 							<dd{{--  style="margin-left: 230px !important;" --}}>
 								<div class="row">
 									<div class="col-md-5">

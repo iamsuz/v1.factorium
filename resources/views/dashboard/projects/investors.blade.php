@@ -430,10 +430,11 @@
 								<thead>
 									<tr>
 										<th class="select-check hide nosort"><input type="checkbox" class="check-all" name=""></th>
-										<th>Unique ID</th>
+										<th>User ID</th>
 										{{-- <th>@if($project->share_vs_unit) Share @else Unit @endif numbers</th> --}}
 										<th>Invoice name</th>
 										<th>Investor Name</th>
+										<th>Wallet Address</th>
 										<th>Investment type</th>
 										<th>Joint Investor Name</th>
 										<th>Entity details</th>
@@ -456,10 +457,11 @@
 										<td class="text-center select-check hide">
 
 											@if(!$shareInvestment->is_cancelled) <input type="checkbox" class="investor-check" name="" value="{{$shareInvestment->id}}"> @endif</td>
-											<td>INV{{$shareInvestment->id}}</td>
+											<td>{{$shareInvestment->user->id}}</td>
 											{{-- <td>@if($shareInvestment->share_number){{$shareInvestment->share_number}}@else{{'NA'}}@endif</td> --}}
 											<td>@if($shareInvestment->project->projectspvdetail){{$shareInvestment->project->projectspvdetail->spv_name}}@endif</td>
 											<td>{{$shareInvestment->user->first_name}} {{$shareInvestment->user->last_name}}</td>
+											<td>{{$shareInvestment->user->wallet_address}}</td>
 											<td>{{$shareInvestment->investing_as}}</td>
 											<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->joint_investor_first_name.' '.$shareInvestment->investingJoint->joint_investor_last_name}}@else{{'NA'}}@endif</td>
 											<td>@if($shareInvestment->investingJoint){{$shareInvestment->investingJoint->investing_company}}@else{{'NA'}}@endif</td>
