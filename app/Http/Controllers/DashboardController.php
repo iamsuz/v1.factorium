@@ -134,7 +134,7 @@ class DashboardController extends Controller
     public function users()
     {
         $color = Color::where('project_site',url())->first();
-        $users = User::where('registration_site',url())->paginate(30);;
+        $users = User::where('registration_site',url())->paginate(125);
         // dd($users);
         return view('dashboard.users.index', compact('users','color'));
     }
