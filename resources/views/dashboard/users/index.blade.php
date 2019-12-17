@@ -5,7 +5,15 @@ Users | Dashboard | @parent
 @stop
 
 @section('css-section')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+{{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css"> --}}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<style type="text/css">
+	tfoot input {
+		width: 100%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+</style>
 @stop
 
 @section('content-section')
@@ -19,8 +27,8 @@ Users | Dashboard | @parent
 			@if (Session::has('message'))
 			{!! Session::get('message') !!}
 			@endif
-			<div class="table-responsive">
-				<table class="table table-bordered table-striped" id="usersTable">
+			<div class="">
+				<table class="display " id="usersTable">
 					<thead>
 						<tr>
 							<th>User Id</th>
@@ -66,6 +74,16 @@ Users | Dashboard | @parent
 						</tr>
 						@endforeach
 					</tbody>
+					<tfoot>
+						<tr>
+							<th>User Id</th>
+							<th>Details</th>
+							<th>Notes</th>
+							<th>Wallet Address</th>
+							<th>Active</th>
+							<th>Registration</th>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 			<div>
@@ -85,38 +103,61 @@ Users | Dashboard | @parent
 <script type="text/javascript">
 	$(document).ready(function(){
 		onChangeMsg();
-		var usersTable = $('#usersTable').DataTable({
-			"order": [[0, 'desc']],
-			"iDisplayLength": 50
-		});
-		$('#usersTable_info').addClass('hide');
-		$('#usersTable_paginate').addClass('hide');
-		$('#usersTable_length').addClass('hide');
-		function onChangeMsg() {
-			$('.note-content').change(function() {
-				swal("User Note Added Successfully!", {
-					icon: "success",
-					buttons: false,
-					timer: 1350,
-				});
-			})
-		}
+		// var usersTable = $('#usersTable').DataTable({
+		// 	"order": [[0, 'desc']],
+		// 	"iDisplayLength": 4
+		// });
+		// $('#usersTable_info').addClass('hide');
+		// $('#usersTable_paginate').addClass('hide');
+		// $('#usersTable_length').addClass('hide');
 
-		$('.note-content').blur(function () {
-			var form = $(this).parent();
-			$.ajax({
-				url     : form.attr('action'),
-				type    : form.attr('method'),
-				dataType: 'json',
-				data    : form.serialize(),
-				success : function( data ) {
-					onChangeMsg();
-				},
-				error   : function( xhr, err ) {
-					alert('Error');
-				}
-			});
-		});
-	});
+		$('#usersTable tfoot th').each( function () {
+			var title = $(this).text();
+			$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+		} );
+		
+    // DataTable
+    var usersTable = $('#usersTable').DataTable();
+    
+    // Apply the search
+    usersTable.columns().every( function () {
+    	var that = this;
+    	
+    	// $( 'input', this.footer() ).on( 'keyup change clear', function () {
+    	// 	if ( that.search() !== this.value ) {
+    	// 		that
+    	// 		.search( this.value )
+    	// 		.draw();
+    	// 	}
+    	// } );
+    } );
+
+    
+    function onChangeMsg() {
+    	$('.note-content').change(function() {
+    		swal("User Note Added Successfully!", {
+    			icon: "success",
+    			buttons: false,
+    			timer: 1350,
+    		});
+    	})
+    }
+
+    $('.note-content').blur(function () {
+    	var form = $(this).parent();
+    	$.ajax({
+    		url     : form.attr('action'),
+    		type    : form.attr('method'),
+    		dataType: 'json',
+    		data    : form.serialize(),
+    		success : function( data ) {
+    			onChangeMsg();
+    		},
+    		error   : function( xhr, err ) {
+    			alert('Error');
+    		}
+    	});
+    });
+});
 </script>
 @stop
