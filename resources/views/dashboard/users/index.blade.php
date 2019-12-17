@@ -89,10 +89,23 @@ Users | Dashboard | @parent
 			"order": [[0, 'desc']],
 			"iDisplayLength": 10
 		});
-		$('#usersTable_info').addClass('hide');
+		$('#usersTable_info').addClass('show');
 		$('#usersTable_paginate').addClass('hide');
-		$('#usersTable_length').addClass('hide');
+		$('#usersTable_length').addClass('show');
 		$('#usersTable_filter').addClass('show');
+
+		usersTable.columns().every( function () {
+			var that = this;
+
+			$( 'input', this.footer() ).on( 'keyup change clear', function () {
+				if ( that.search() !== this.value ) {
+					that
+					.search( this.value )
+					.draw();
+				}
+			} );
+		} );
+
 		function onChangeMsg() {
 			$('.note-content').change(function() {
 				swal("User Note Added Successfully!", {
