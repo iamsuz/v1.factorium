@@ -87,11 +87,12 @@ Users | Dashboard | @parent
 		onChangeMsg();
 		var usersTable = $('#usersTable').DataTable({
 			"order": [0, 'desc'],
-			"iDisplayLength": 10
+			"iDisplayLength": 5
 		});
-		$('#usersTable_info').addClass('hide');
-		// $('#usersTable_paginate').addClass('hide');
+		// $('#usersTable_info').addClass('hide');
+		// $('#usersTable_paginate').addClass('show');
 		$('#usersTable_length').addClass('hide');
+		$('#usersTable_seach').addClass('show');
 		function onChangeMsg() {
 			$('.note-content').change(function() {
 				swal("User Note Added Successfully!", {
