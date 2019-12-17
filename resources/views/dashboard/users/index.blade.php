@@ -59,7 +59,7 @@ Users | Dashboard | @parent
 								{!! Form::hidden('user_id', $user->id) !!}
 								{!! Form::close() !!}
 							</td>
-							<td>@if($user->wallet_address) {{$user->wallet_address}} @else Not yet @endif</td>
+							<td>@if($user->wallet_address) <a href="https://ropsten.etherscan.io/address/{{$user->wallet_address}}" target="_blank">{{$user->wallet_address}}</a> @else Not yet @endif</td>
 							<td>@if($user->active && $user->activated_on)<time datetime="{{$user->activated_on}}">{{$user->activated_on->toFormattedDateString()}}</time> <br> <a href="{{route('dashboard.users.deactivate', [$user])}}">Deactivate</a>@else Not Active <br> <a href="{{route('dashboard.users.activate', [$user])}}">Activate</a>@endif</td>
 							<td><time datetime="{{$user->created_at}}">{{$user->created_at->toFormattedDateString()}}</time></td>
 							{{-- <td>@foreach($user->roles as $role) {{$role->role}}<br> @endforeach</td> --}}
