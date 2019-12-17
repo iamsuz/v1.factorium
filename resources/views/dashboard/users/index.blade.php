@@ -71,8 +71,8 @@ Users | Dashboard | @parent
 			<div>
 				<span class="pull-left">Total Users {!! $users->total() !!}</span>
 			</div>
-			{{-- <div class="pull-right"> {!! $users->render() !!} <br>
-			</div> --}}
+			<div class="pull-right"> {!! $users->render() !!} <br>
+			</div>
 		</div>
 	</div>
 </div>
@@ -86,13 +86,13 @@ Users | Dashboard | @parent
 	$(document).ready(function(){
 		onChangeMsg();
 		var usersTable = $('#usersTable').DataTable({
-			"order": [0, 'desc'],
-			"iDisplayLength": 5
+			"order": [[0, 'desc']],
+			"iDisplayLength": 10
 		});
-		// $('#usersTable_info').addClass('hide');
-		// $('#usersTable_paginate').addClass('show');
+		$('#usersTable_info').addClass('hide');
+		$('#usersTable_paginate').addClass('hide');
 		$('#usersTable_length').addClass('hide');
-		$('#usersTable_seach').addClass('show');
+		$('#usersTable_filter').addClass('show');
 		function onChangeMsg() {
 			$('.note-content').change(function() {
 				swal("User Note Added Successfully!", {
