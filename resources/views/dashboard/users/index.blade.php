@@ -97,8 +97,10 @@ Users | Dashboard | @parent
 @stop
 
 @section('js-section')
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{{-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script> --}}
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -115,24 +117,24 @@ Users | Dashboard | @parent
 			var title = $(this).text();
 			$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
 		} );
-		
+
     // DataTable
     var usersTable = $('#usersTable').DataTable();
-    
+
     // Apply the search
     usersTable.columns().every( function () {
     	var that = this;
-    	
-    	// $( 'input', this.footer() ).on( 'keyup change clear', function () {
-    	// 	if ( that.search() !== this.value ) {
-    	// 		that
-    	// 		.search( this.value )
-    	// 		.draw();
-    	// 	}
-    	// } );
+
+    	$( 'input', this.footer() ).on( 'keyup change clear', function () {
+    		if ( that.search() !== this.value ) {
+    			that
+    			.search( this.value )
+    			.draw();
+    		}
+    	} );
     } );
 
-    
+
     function onChangeMsg() {
     	$('.note-content').change(function() {
     		swal("User Note Added Successfully!", {
