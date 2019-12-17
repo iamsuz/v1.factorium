@@ -71,8 +71,8 @@ Users | Dashboard | @parent
 			<div>
 				<span class="pull-left">Total Users {!! $users->total() !!}</span>
 			</div>
-			<div class="pull-right"> {!! $users->render() !!} <br>
-			</div>
+			{{-- <div class="pull-right"> {!! $users->render() !!} <br>
+			</div> --}}
 		</div>
 	</div>
 </div>
