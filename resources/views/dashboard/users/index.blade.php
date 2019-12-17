@@ -86,8 +86,8 @@ Users | Dashboard | @parent
 	$(document).ready(function(){
 		onChangeMsg();
 		var usersTable = $('#usersTable').DataTable({
-			"order": [[0, 'desc']],
-			"iDisplayLength": 50
+			"order": [0, 'desc'],
+			"iDisplayLength": 10
 		});
 		$('#usersTable_info').addClass('hide');
 		// $('#usersTable_paginate').addClass('hide');
