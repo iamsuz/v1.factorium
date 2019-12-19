@@ -17,27 +17,27 @@ Dashboard | @parent
 					<div class="row" style="padding-top:1.2em;">
 						<div class="col-md-4">
 							<div class="thumbnail text-center">
-								<div class="caption">
-									<h3><b>{{$users->count()}}</b></h3>
+								<div class="caption" style="margin-bottom: 2.2em; height: 140px;">
+									<h3><b>{{$users_count}}</b></h3>
 									<h4><small>Total Users</small> </h4>
-									<P><small>({{$users->where('active', '0')->count()}} Inactive Users)</small></P>
+									<P><small>({{$inactive_user}} Inactive Users)</small></P>
 									<P><a href="{{route('dashboard.users')}}" class="btn btn-primary btn-sm" role="button">All Users</a></P>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="thumbnail text-center">
-								<div class="caption">
-									<h3><b>{{$projects->count()}}</b></h3>
+								<div class="caption" style="margin-bottom: 2.2em; height: 140px;" >
+									<h3><b>{{$projects_total}}</b></h3>
 									<h4><small>Receivables</small> </h4>
-									<P><small>({{$projects->where('active', '0')->count()}} Inactive &amp; {{$projects->where('active', '2')->count()}} Private Receivables)</small></P>
+									{{-- <P><small>({{$projects->where('active', '0')->count()}} Inactive &amp; {{$projects->where('active', '2')->count()}} Private Receivables)</small></P> --}}
 									<p><a href="{{route('dashboard.projects')}}" class="btn btn-primary btn-sm" role="button">All Receivables</a></p>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="thumbnail text-center">
-								<div class="caption" style="margin-bottom: 2.2em;">
+								<div class="caption" style="margin-bottom: 2.2em; height: 140px;">
 
 									<h4><b>${{number_format($pledged_investments) }}</b></h4> (applied)
 									{{-- <h4><small>Funds Raised ${{number_format($total_goal) }}</small> </h4> --}}

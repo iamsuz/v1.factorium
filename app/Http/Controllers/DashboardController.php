@@ -85,16 +85,16 @@ class DashboardController extends Controller
         $users = User::where('registration_site',url());
         $projects = Project::all();
         $projects = $projects->where('project_site',url());
-        $notes = Note::all();
+        // $notes = Note::all();
         // $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
         // $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('hide_investment', 0);
         $activeP = $projects->where('project_site',url())->where('active', true);
-        $goal_amount = [];
+        // $goal_amount = [];
         $amount = [];
         $funds_received = [];
 
         foreach ($activeP as $proj) {
-            $goal_amount[] = $proj->investment->goal_amount;
+            // $goal_amount[] = $proj->investment->goal_amount;
             $investors = $proj->investors;
 
             $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('project_id', $proj->id)->where('hide_investment', false);
@@ -110,12 +110,15 @@ class DashboardController extends Controller
             //     $amount[] = $investor->getOriginal('pivot_amount');
             // }
         }
-
-        $total_goal = array_sum($goal_amount);
+        $users_count = $users->count();
+        $projects_total = $projects->count();
+        $inactive_user = $users->where('active', '0')->count();
+        // dd($users_count,$projects_count,$inactive_user);
+        // $total_goal = array_sum($goal_amount);
         $pledged_investments = array_sum($amount);
         $total_funds_received = array_sum($funds_received);
 
-        return view('dashboard.index', compact('users', 'projects', 'pledged_investments', 'total_goal', 'notes','color', 'total_funds_received'));
+        return view('dashboard.index', compact('projects_total', 'pledged_investments','color', 'total_funds_received','users_count','inactive_user'));
     }
 
     public function testTransfer(Request $request)
