@@ -84,7 +84,7 @@ class DashboardController extends Controller
         $color = Color::where('project_site',url())->first();
         $users = User::where('registration_site',url());
         $projects = Project::all();
-        $projects = $projects->where('project_site',url());
+        // $projects = $projects->where('project_site',url());
         // $notes = Note::all();
         // $total_goal = Investment::all()->where('project_site',url())->sum('goal_amount');
         // $pledged_investments = InvestmentInvestor::all()->where('project_site',url())->where('hide_investment', 0);
