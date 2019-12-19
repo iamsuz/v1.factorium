@@ -19,7 +19,7 @@ Projects | Dashboard | @parent
 			@if (Session::has('message'))
 			{!! Session::get('message') !!}
 			@endif
-            <div>
+			<div>
 				<h4>RECEIVABLE FILTERS</h4>
 				<ul class="nav nav-tabs">
 					<li class="@if(request('filter') && (request('filter') == 'inactive')) active @endif"><a onclick="filterSelection('inactive')" href="#">Inactive</a></li>
@@ -38,7 +38,7 @@ Projects | Dashboard | @parent
 					<li class="@if(!request('filter') || (request('filter') == 'all')) active @endif"><a onclick="filterSelection('all')" href="#">Show all</a></li>
 				</ul>
 			</div>
-				<br><br>
+			<br><br>
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped" id="projectsTable">
 					<thead>
@@ -47,6 +47,7 @@ Projects | Dashboard | @parent
 							<th>Title</th>
 							{{-- <th>Description</th> --}}
 							<th>Status</th>
+							<th>Invoice Payment Date</th>
 							<th>Asking Amount</th>
 							<th>Invoice Amount</th>
 							<th class="hide"></th>
@@ -57,47 +58,47 @@ Projects | Dashboard | @parent
 						<tr class="@if(!$project->active) inactive @endif">
 							<td>{{$project->id}}</td>
 							<td>
-							<a href="{{route('dashboard.projects.edit', [$project])}}">{{$project->title}}</a><br>
-							@if(!$project->projectspvdetail && $project->is_coming_soon == '0')
-							Submitted <br> <a href="#" id="alert">Activate</a>
-							@else
-							@if($project->activated_on && $project->active == '1')<a href="{{route('dashboard.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a><br> @endif
+								<a href="{{route('dashboard.projects.edit', [$project])}}">{{$project->title}}</a><br>
+								@if(!$project->projectspvdetail && $project->is_coming_soon == '0')
+								Submitted <br> <a href="#" id="alert">Activate</a>
+								@else
+								@if($project->activated_on && $project->active == '1')<a href="{{route('dashboard.projects.deactivate', [$project])}}" style="font-size: 14px;font-family: SourceSansPro-Regular;">Deactivate</a><br> @endif
 								@if($project->activated_on && $project->active == '1')
-									<time datetime="{{$project->activated_on}}">
+								<time datetime="{{$project->activated_on}}">
 									{{$project->activated_on->diffForHumans()}}
-									</time><br>
+								</time><br>
 								@elseif($project->activated_on && $project->active == '2') Private<br>
 								@elseif($project->activated_on && $project->active == '0') Deactivate <br> <a href="{{route('dashboard.projects.activate', [$project])}}"> Activate </a><br>
 								@else($project->active == '0') Submitted <br> <a href="{{route('dashboard.projects.activate', [$project])}}">Activate</a><br>
 								@endif
-							<a href="{{route('dashboard.projects.investors', [$project])}}">Investors <i class="fa fa-angle-double-right"></i></a>
-							@endif
+								<a href="{{route('dashboard.projects.investors', [$project])}}">Investors <i class="fa fa-angle-double-right"></i></a>
+								@endif
 							</td>
 							{{-- <td>{!!substr($project->description, 0, 50)!!}...</td> --}}
 							<td>
 								@if($project->is_funding_closed == '1') Funding Closed <br>
-									@if($project->investors->first())
-									@if($project->repurchased) @if($project->repurchased->first()) Repurchased
-									@elseif($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
-									@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received
-									@elseif($project->investors->first()->pivot->money_received != '1') Application received
-									@endif @endif @endif @endif
+								@if($project->investors->first())
+								@if($project->repurchased) @if($project->repurchased->first()) Repurchased
+								@elseif($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
+								@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received
+								@elseif($project->investors->first()->pivot->money_received != '1') Application received
+								@endif @endif @endif @endif
 										{{-- @if($project->investors->first()->pivot->is_repurchased == '1') Repurchased
 										@elseif($project->investors->first()->pivot->accepted == '1') Invoice Issued
 										@elseif($project->investors->first()->pivot->money_received != '1') Application received
 										@elseif($project->investors->first()->pivot->money_received == '1') Money Received
 										@endif --}}
-									@endif
-								@elseif($project->eoi_button == '1') EOI @elseif($project->is_coming_soon == '1') Upcoming @elseif($project->active == '1') Active <br>
-								@if($project->investors->first())
+										@endif
+										@elseif($project->eoi_button == '1') EOI @elseif($project->is_coming_soon == '1') Upcoming @elseif($project->active == '1') Active <br>
+										@if($project->investors->first())
 								{{-- @if($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
-								@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received @endif @endif @endif --}}
+									@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received @endif @endif @endif --}}
 
-								@if($project->repurchased) @if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) Repurchased
-								@elseif($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
-								@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received
-								@elseif($project->investors->first()->pivot->money_received != '1') Application received
-								@endif @endif @endif @endif
+									@if($project->repurchased) @if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) Repurchased
+									@elseif($project->soldInvoice) @if($project->soldInvoice->first()) Invoice Issued
+									@elseif($project->moneyReceived) @if($project->moneyReceived->first()) Money Received
+									@elseif($project->investors->first()->pivot->money_received != '1') Application received
+									@endif @endif @endif @endif
 
 								{{-- @if($project->investors->first()->pivot->is_repurchased == '1') Repurchased
 								@elseif($project->investors->first()->pivot->accepted == '1') Invoice Issued
@@ -107,7 +108,7 @@ Projects | Dashboard | @parent
 								@endif
 								@else Inactive @endif
 							</td>
-
+							<td>{{ date("d/m/Y",strtotime($project->investment->fund_raising_close_date)) }}</td>
 							<td>@if($project->investment)${{number_format($project->investment->goal_amount,2)}} @else Not Specified @endif</td>
 							<?php $pledged_amount = $pledged_investments->where('project_id', $project->id)->sum('amount');?>
 							<td>@if($project->investment)${{-- {{ number_format($pledged_amount)}} --}}{{number_format($project->investment->total_projected_costs,2)}} @else Not Specified @endif</td>
@@ -133,7 +134,7 @@ Projects | Dashboard | @parent
 		});
 	});
 	$(document).on("click","#alert",function(){
-	 swal ( "Oops !" ,  "Please add the Project SPV Details first." ,  "error" );
+		swal ( "Oops !" ,  "Please add the Project SPV Details first." ,  "error" );
 	});
 
 	function duplicateProject(projectId) {

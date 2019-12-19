@@ -37,6 +37,7 @@
 					<thead>
 						<tr>
 							<th>Project Name</th>
+							<th>Invoice Payment Date</th>
 							{{-- <th>Invoice purchased for</th> --}}
 							<th>Investment Date</th>
 							<th>Investment status</th>
@@ -51,6 +52,7 @@
 						@foreach($investments as $investment)
 							<tr @if($investment->is_cancelled) style="color: #CCC;" @endif>
 								<td>{{$investment->project->title}}</td>
+								<td>{{ $investment->investment->fund_raising_close_date->toFormattedDateString() }} </td>
 								{{-- <td>${{number_format($investment->investment->goal_amount)}}</td> --}}
 								<td><span class="hide">{{ $investment->created_at }}</span>{{$investment->created_at->toFormattedDateString()}}</td>
 								<td>
