@@ -1352,6 +1352,20 @@ public function prospectusDownload(Request $request)
         $investments = InvestmentInvestor::where('project_id',$project->id)
         ->where('accepted',1)
         ->get();
+        //check balance
+        $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $balanceAudk = false;
+        if($project->is_wallet_tokenized){
+            $client = new \GuzzleHttp\Client();
+            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+                'query'=>['user_id'=>$user->id,'project_id'=>$this->audkID]
+            ]);
+            $responseAudk = $requestAudk->getBody()->getContents();
+            $balanceAudk = json_decode($responseAudk);
+        }
+        if($balanceAudk->balance + $request->amount_to_invest > 1000){
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >You can not buy audc.</p>');
+        }
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
         $maxAmount = round($project->investment->invoice_amount, 2);
