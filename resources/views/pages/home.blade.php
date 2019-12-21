@@ -692,8 +692,12 @@
 										<button class="filterbtn @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
 										<button class="filterbtn @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
 										<button class="filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
-									</div>	
-
+									</div>
+									<div style="padding-top: 1em;">	
+										@if (Session::has('message'))
+										{!! Session::get('message') !!}
+										@endif
+									</div>
 									@if(count($projects)==1)
 									@foreach($projects->chunk(1) as $sets)
 									<div class="row" >

@@ -608,6 +608,9 @@ class ProjectsController extends Controller
             $responseBalance = $requestBalance->getBody()->getContents();
             $balance = json_decode($responseBalance);
             $transactionAUDK = false;
+            if($balance->balance + $amount > 1000){
+                return redirect('/?filter=buy#projects')->withMessage('<p class="alert alert-success text-center">you are allowed a maximum of only 1000 AUDC.</p>');
+            }
             if($balance->balance < $amount){
                 return redirect()->route('project.user.audc',['amount='.$amount.'&redirect_pid='.$project->id])->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
           }
