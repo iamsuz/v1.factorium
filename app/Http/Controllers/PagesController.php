@@ -90,10 +90,18 @@ class PagesController extends Controller
             $currentUserRole = 'guest';
         } else {
             $user = Auth::user();
+            $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->get();
+            foreach ($siteProjects as $item) {
+                if (!$item->soldInvoice->count() && !$item->repurchased->count() && !$item->repurchased_by_partial_pay->count()) {
+                    if(Carbon::parse($item->investment->fund_raising_close_date)->lt(Carbon::now())){
+                        $item->update(['active' => 0]);
+                    }
+                }
+            }
             $roles = $user->roles;
             if ($roles->contains('role', 'admin') || $roles->contains('role', 'master')) {
                 $siteProjects = Project::whereIn('active', ['1', '2'])->where('project_site',url())->orderBy('project_rank', 'asc')->get();
-                $projects = $siteProjects->merge($listingProjects)->reverse();
+                // $projects = $siteProjects->merge($listingProjects)->reverse();
                 // dd($projects);
                 if($user->registration_site == url()){
                     $admin_access = 1;
@@ -104,17 +112,10 @@ class PagesController extends Controller
                 }
             } else {
                 $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
-                $projects = $siteProjects->merge($listingProjects)->reverse();
+                // $projects = $siteProjects->merge($listingProjects)->reverse();
             }
-            // dd($projects->count());
-            foreach ($projects as $item) {
-                if (!$item->soldInvoice->count() && !$item->repurchased->count() && !$item->repurchased_by_partial_pay->count()) {
-                    if(Carbon::parse($item->investment->fund_raising_close_date)->lt(Carbon::now())){
-                        // echo($item->title.'<br>');
-                        $item->update(['active' => 0]);
-                    }
-                }
-            }
+
+            $projects = $siteProjects->merge($listingProjects)->reverse();
             //Filter projects listing
             if ($filterKey = request('filter')) {
                 switch ($filterKey) {
