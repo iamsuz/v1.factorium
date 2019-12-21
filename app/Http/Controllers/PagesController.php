@@ -35,6 +35,7 @@ use App\Testimonial;
 use App\Helpers\SiteConfigurationHelper;
 use App\ProjectInterest;
 use App\ThirdPartyListing;
+use Carbon\Carbon;
 
 
 class PagesController extends Controller
@@ -105,25 +106,33 @@ class PagesController extends Controller
                 $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
                 $projects = $siteProjects->merge($listingProjects)->reverse();
             }
-
+            // dd($projects->count());
+            foreach ($projects as $item) {
+                if (!$item->soldInvoice->count() && !$item->repurchased->count() && !$item->repurchased_by_partial_pay->count()) {
+                    if(Carbon::parse($item->investment->fund_raising_close_date)->lt(Carbon::now())){
+                        echo($item->title.'<br>');
+                        $item->update(['active' => 0]);
+                    }
+                }
+            }
             //Filter projects listing
             if ($filterKey = request('filter')) {
                 switch ($filterKey) {
                     case 'buy':
-                        $projects = $projects->filter(function ($value) {
-                            return !$value->soldInvoice->count() && !$value->repurchased->count() && !$value->repurchased_by_partial_pay->count();
-                        });
-                        break;
+                    $projects = $projects->filter(function ($value) {
+                        return !$value->soldInvoice->count() && !$value->repurchased->count() && !$value->repurchased_by_partial_pay->count();
+                    });
+                    break;
                     case 'sold':
-                        $projects = $projects->filter(function ($value) {
-                            return $value->soldInvoice->count() > 0;
-                        });
-                        break;
+                    $projects = $projects->filter(function ($value) {
+                        return $value->soldInvoice->count() > 0;
+                    });
+                    break;
                     case 'repaid':
-                        $projects = $projects->filter(function ($value) {
-                            return ($value->repurchased->count() > 0) || ($value->repurchased_by_partial_pay->count() > 0);
-                        });
-                        break;
+                    $projects = $projects->filter(function ($value) {
+                        return ($value->repurchased->count() > 0) || ($value->repurchased_by_partial_pay->count() > 0);
+                    });
+                    break;
                 }
             }
 
