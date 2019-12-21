@@ -110,7 +110,7 @@ class PagesController extends Controller
             foreach ($projects as $item) {
                 if (!$item->soldInvoice->count() && !$item->repurchased->count() && !$item->repurchased_by_partial_pay->count()) {
                     if(Carbon::parse($item->investment->fund_raising_close_date)->lt(Carbon::now())){
-                        echo($item->title.'<br>');
+                        // echo($item->title.'<br>');
                         $item->update(['active' => 0]);
                     }
                 }
