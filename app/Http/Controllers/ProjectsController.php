@@ -1364,7 +1364,7 @@ public function prospectusDownload(Request $request)
             $balanceAudk = json_decode($responseAudk);
         }
         if($balanceAudk->balance + $request->amount_to_invest > 1000){
-            return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >You can not buy audc.</p>');
+            return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >you are allowed a maximum of only 1000 AUDC.</p>');
         }
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
