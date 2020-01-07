@@ -608,9 +608,9 @@ class ProjectsController extends Controller
             $responseBalance = $requestBalance->getBody()->getContents();
             $balance = json_decode($responseBalance);
             $transactionAUDK = false;
-            if($balance->balance + $amount > 1000){
-                return redirect('/?filter=buy#projects')->withMessage('<p class="alert alert-success text-center">you are allowed a maximum of only 1000 AUDC.</p>');
-            }
+            // if($balance->balance + $amount > 1000){
+            //     return redirect('/?filter=buy#projects')->withMessage('<p class="alert alert-success text-center">you are allowed a maximum of only 1000 AUDC.</p>');
+            // }
             if($balance->balance < $amount){
                 return redirect()->route('project.user.audc',['amount='.$amount.'&redirect_pid='.$project->id])->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
           }
@@ -1355,20 +1355,20 @@ public function prospectusDownload(Request $request)
         $investments = InvestmentInvestor::where('project_id',$project->id)
         ->where('accepted',1)
         ->get();
-        //check balance
-        $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
-        $balanceAudk = false;
-        if($project->is_wallet_tokenized){
-            $client = new \GuzzleHttp\Client();
-            $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
-                'query'=>['user_id'=>$user->id,'project_id'=>$this->audkID]
-            ]);
-            $responseAudk = $requestAudk->getBody()->getContents();
-            $balanceAudk = json_decode($responseAudk);
-        }
-        if($balanceAudk->balance + $request->amount_to_invest > 1000){
-            return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >you are allowed a maximum of only 1000 AUDC.</p>');
-        }
+        // //check balance
+        // $exchanges = CryptoExchangeTransaction::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        // $balanceAudk = false;
+        // if($project->is_wallet_tokenized){
+        //     $client = new \GuzzleHttp\Client();
+        //     $requestAudk = $client->request('GET',$this->uri.'/getBalance',[
+        //         'query'=>['user_id'=>$user->id,'project_id'=>$this->audkID]
+        //     ]);
+        //     $responseAudk = $requestAudk->getBody()->getContents();
+        //     $balanceAudk = json_decode($responseAudk);
+        // }
+        // if($balanceAudk->balance + $request->amount_to_invest > 1000){
+        //     return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >you are allowed a maximum of only 1000 AUDC.</p>');
+        // }
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
         $maxAmount = round($project->investment->invoice_amount, 2);

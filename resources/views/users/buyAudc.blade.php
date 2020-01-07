@@ -50,7 +50,7 @@
 							<div class="row">
 								<div class="col-md-6 form-group">
 									<label>Amount</label>
-									<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter a amount to buy an AUDC" max="{{ (1000 - $balanceAudk->balance) }}" required="required" value="{{request()->amount}}" step="any">
+									<input type="number" name="amount_to_invest" class="form-control" placeholder="Enter a amount to buy an AUDC" max="1000" required="required" value="{{request()->amount}}" step="any">
 								</div>
 								<div class="col-md-6 form-group">
 									<label>&nbsp;</label>
