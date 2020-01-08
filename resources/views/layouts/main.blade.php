@@ -141,14 +141,14 @@ $_SESSION['code'] = md5(microtime(true));
     border-radius: 50px;
     transition: transform .2s;
     letter-spacing: 1px;
-    border-color: {{ '#' . $color->heading_color }};
-    color: {{ '#' . $color->heading_color }} !important;
+    border-color: @if($color){{ '#' . $color->heading_color }} @endif;
+    color: @if($color){{ '#' . $color->heading_color }} !important @endif;
 }
 .btn-custom-theme:hover{
     transform: scale(1.04);
     background-color: transparent;
-    border-color: {{ '#' . $color->heading_color }};
-    color: {{ '#' . $color->heading_color }} !important;
+    border-color: @if($color) {{ '#' . $color->heading_color }} @endif;
+    color: @if($color) {{ '#' . $color->heading_color }} !important @endif;
 }
 
 

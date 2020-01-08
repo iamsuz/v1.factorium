@@ -1395,6 +1395,7 @@ public function prospectusDownload(Request $request)
         $investor = InvestmentInvestor::get()->last();
         $mailer->sendAudcBuyMailToAdmin($investor);
         // $this->offer->store($request,$mailer);
+
         return redirect()->back()->withMessage('<p class="alert alert-danger text-center first_color" >Your transation has been initiated Successfully</p>')->with(['audcBankDetailsModal'=>'show']);
     }
 

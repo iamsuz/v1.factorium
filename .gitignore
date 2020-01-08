@@ -5,3 +5,4 @@ bootstrap/cache/
 storage/
 .env
 .DS_Store
+composer.lock
