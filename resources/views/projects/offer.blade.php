@@ -148,7 +148,7 @@ Offer Doc
 									{!! csrf_field() !!}
 									<div class="row" id="section-1">
 										<div class="col-md-4">
-											<label class="form-label">Receivable Name</label>
+											<label class="form-label">Receivable Sujit Name</label>
 											<input class="form-control" type="text" name="project_spv_name" placeholder="Receivable name" style="width: 100%;" @if($projects_spv) value="{{$project->title}}" disabled @endif >
 											{{-- <h5>Name of the Entity established as a Special Purpose Vehicle for this project that you are investing in</h5> --}}
 										</div>
@@ -816,8 +816,48 @@ Offer Doc
 {!! Html::script('plugins/wow.min.js') !!}
 <!-- Script for reCaptcha -->
 <script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+  <script>
+    // this will be where our code will be
+    window.addEventListener('load', async () => {
+    	console.log("Insside");
+    // var contract;
+    // const contractAddress = "0x80b75C6E12BcE443F53A1cF4B2740304f622deF0";
+    // const contractMessage = async () => {
+    //   contract = new web3.eth.Contract(abi, contractAddress);
+    //   let message = await contract.methods.getMessage().call();
+    //   return message;
+    // }
+    // const changeMessage = async (text) => {
+    //   await text;
+    //   let newMessage = await contract.methods.setMessage(text).call()
+    // }
+    // Modern dapp browsers...
+    if (window.ethereum) {
+      window.web3 = new Web3(ethereum);
+      try {
+        // Request account access if needed
+        // await ethereum.enable();
+        // var message = await contractMessage();
+        // var elm = document.getElementById("message");
+        // elm.innerHTML = message;
+        // $('#newMessage').submit(function (e) {
+        //   e.preventDefault();
+        //   console.log(e);
+        // });
+      } catch (error) {
+        // User denied account access...
+      }
+    }
+    // Non-dapp browsers...
+    else {
+      console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    }
+  });
+  </script>
 <script>
 	$(function () {
+		console.log("Inside");
 		// Function that runs with interval for side panel
 		var x = Math.floor((Math.random() * 20000) + 10000);
 		window.setInterval(function(){
