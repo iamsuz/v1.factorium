@@ -354,6 +354,7 @@ class DashboardController extends Controller
             $contractRes = json_decode($res->getContent());
             $contract = $contractRes->data;
         }
+        $balance = NULL;
         if($project->contract_address && $project->is_wallet_tokenized) {
             $client = new \GuzzleHttp\Client();
             $request = $client->request('GET',$this->uri.'/getProjectBalance',[
@@ -910,7 +911,7 @@ public function deactivateProject($project_id)
     }
 
     public function declareFixedDividend(Request $request, AppMailer $mailer, $projectId)
-    { 
+    {
         $investorList = $request->investors_list;
         $dividendPercent = $request->fixed_dividend_percent;
         $project = Project::findOrFail($projectId);
@@ -919,7 +920,7 @@ public function deactivateProject($project_id)
         ->where('accepted', 1)
         ->orderBy('share_certificate_issued_at','ASC')
         ->get();
-        
+
         if($investorList != ''){
             $investors = explode(',', $investorList);
             $investments = InvestmentInvestor::findMany($investors);
@@ -1045,7 +1046,7 @@ public function deactivateProject($project_id)
 
             // send dividend email to admins
             $csvPath = $this->exportRepurchaseCSV($investments, $repurchaseRate, $project);
-            
+
 
             // send dividend emails to investors
             $failedEmails = [];

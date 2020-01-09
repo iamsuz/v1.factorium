@@ -600,21 +600,21 @@ class ProjectsController extends Controller
         $acceptedAmount = $investments->sum('amount');
         $goalAmount = $project->investment->goal_amount;
         $maxAmount = $goalAmount - $acceptedAmount;
-        if($project->use_tokens){
-            $client = new \GuzzleHttp\Client();
-            $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
-              'query'=>['user_id'=> $user->id,'project_id'=>$this->audkID]
-          ]);
-            $responseBalance = $requestBalance->getBody()->getContents();
-            $balance = json_decode($responseBalance);
-            $transactionAUDK = false;
-            // if($balance->balance + $amount > 1000){
-            //     return redirect('/?filter=buy#projects')->withMessage('<p class="alert alert-success text-center">you are allowed a maximum of only 1000 AUDC.</p>');
-            // }
-            if($balance->balance < $amount){
-                return redirect()->route('project.user.audc',['amount='.$amount.'&redirect_pid='.$project->id])->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
-          }
-      }
+      //   if($project->use_tokens){
+      //       $client = new \GuzzleHttp\Client();
+      //       $requestBalance = $client->request('GET',$this->uri.'/getBalance',[
+      //         'query'=>['user_id'=> $user->id,'project_id'=>$this->audkID]
+      //     ]);
+      //       $responseBalance = $requestBalance->getBody()->getContents();
+      //       $balance = json_decode($responseBalance);
+      //       $transactionAUDK = false;
+      //       // if($balance->balance + $amount > 1000){
+      //       //     return redirect('/?filter=buy#projects')->withMessage('<p class="alert alert-success text-center">you are allowed a maximum of only 1000 AUDC.</p>');
+      //       // }
+      //       if($balance->balance < $amount){
+      //           return redirect()->route('project.user.audc',['amount='.$amount.'&redirect_pid='.$project->id])->withMessage('<p class="alert alert-success text-center">You dont have sufficient AUDC to invest in that invoice please buy AUDC</p>');
+      //     }
+      // }
         // if(Auth::user()->verify_id != 2){
         //     return redirect()->route('users.verification', Auth::user())->withMessage('<p class="alert alert-warning text-center alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> As part of our commitment to meeting Australian Securities Law we are required to do some additional user verification to meet Anti Money Laundering and Counter Terror Financing requirements.<br> This wont take long, promise!</p>');
         // }
