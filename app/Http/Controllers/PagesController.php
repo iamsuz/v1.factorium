@@ -78,8 +78,9 @@ class PagesController extends Controller
         if(Auth::guest()) {
             $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
             $projectIds = [];
+            //removed condition signin to seeinvoices up for sate $item->repurchased->count()
             foreach ($siteProjects as $item) {
-                if ($item->repurchased->count()) {
+                if ($item->count()) {
                     if (in_array($item->id, $projectIds) === false) {
                         array_push($projectIds, $item->id);
                     }

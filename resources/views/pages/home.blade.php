@@ -679,7 +679,7 @@
 									<input class="hide" type="file" name="
 									project_thumb_image" id="project_thumb_image">
 									<input type="hidden" name="project_thumb_image_name" id="project_thumb_image_name">
-									<div class="@if(Auth::check()) hide  @endif row" >
+									<div class="@if(Auth::check()) hide  @endif hide row" >
 										<div class="col-md-4 col-md-offset-4 text-center" >
 											<a href="/users/login" class="btn btn-block buy-now-btn first_color">
 												Sign in to see invoices up for sale
