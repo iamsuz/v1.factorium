@@ -315,12 +315,21 @@
 					</td>
 					<td id="invoiceIssuedFrom">{{$project->invoice_issued_from}}</td>
 				</tr>
+				@if(Auth::user())
 				@if($user->factorium_user_type == 'financier' && $project->confirmation)
 				<tr>
 					<td>
 						<b>Financier Entity Name</b>
 					</td>
 					<td id="entityName">{{$user->entity_name}}</td>
+				</tr>
+				@endif
+				@else
+				<tr>
+					<td>
+						<b>Financier Entity Name</b>
+					</td>
+					<td id="entityName">Will be wallet address from metamask </td>
 				</tr>
 				@endif
 			</tbody>
