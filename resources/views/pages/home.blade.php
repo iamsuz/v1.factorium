@@ -399,107 +399,126 @@
 								<br><br><br>
 								<div class="row">
 									<div class="center-btn text-center homepg-btn1-section col-md-12" data-wow-duration="1.5s" data-wow-delay="0.5s">
-										<a href="@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects'){!!$siteConfiguration->homepg_btn1_gotoid!!} @else @if(Auth::check()) /#projects @else /users/login @endif @endif" @if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects') class=" @else @if(Auth::check()) data-href="/#{{'projects'}}" class="scrollto scroll-links @else  class=" @endif @endif btn btn-lg font-regular buy-now-btn reference-link-with-js" role="button" style="font-size:22px;z-index: 99999;border:2px solid;">
-											@if(!empty($siteConfiguration))
-											@if($siteConfiguration->homepg_btn1_text != '')
-											{!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
-											@else
-											View Live Ventures
-											@endif
-											@else
-											View Live Ventures
-											@endif
-										</a>
-										@if(Auth::guest())
+										<a href="
+										@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects')
+										{!!$siteConfiguration->homepg_btn1_gotoid!!}
 										@else
-										@if($admin_access == 1)
-										<div class="text-center">
-											<i class="fa fa-pencil edit-pencil-style edit-homepg-btn-text1" style="font-size: 20px; font-size: 20px; margin: 20px 0px 0px -20px; position: absolute;" data-toggle="tooltip" title="Edit Button Text" data-placement="right"></i>
-										</div>
+										@if(Auth::check())
+										/#projects
+										@else
+										/users/login
+										@endif
+										@endif"
+										@if($siteConfiguration->homepg_btn1_gotoid!='' && $siteConfiguration->homepg_btn1_gotoid != 'projects')
+										class="
+										@else
+										@if(Auth::check())
+										data-href="/#{{'projects'}}" class="scrollto scroll-links
+										@else
+										class="
 										@endif
 										@endif
+										btn btn-lg font-regular buy-now-btn reference-link-with-js" role="button" style="font-size:22px;z-index: 99999;border:2px solid;">
+										@if(!empty($siteConfiguration))
+										@if($siteConfiguration->homepg_btn1_text != '')
+										{!! nl2br(e($siteConfiguration->homepg_btn1_text)) !!}
+										@else
+										View Live Ventures
+										@endif
+										@else
+										View Live Ventures
+										@endif
+									</a>
+									@if(Auth::guest())
+									@else
+									@if($admin_access == 1)
+									<div class="text-center">
+										<i class="fa fa-pencil edit-pencil-style edit-homepg-btn-text1" style="font-size: 20px; font-size: 20px; margin: 20px 0px 0px -20px; position: absolute;" data-toggle="tooltip" title="Edit Button Text" data-placement="right"></i>
 									</div>
-									<br>
+									@endif
+									@endif
 								</div>
 								<br>
 							</div>
-						</div>
-						<div class="row" style="padding: 10% 0 10% 0;background:rgba(255,255,255,1); margin-left: 0px; margin-right: 0px;">
-							<div class="col-md-4 text-center">
-								<h1 style="font-size: 5em;" ><span style="color: #000;">{{ $totalProjects }}</span></h1>
-								<h3 style="color: #000;" >Invoices</h3>
-							</div>
-							<div class="col-md-4  text-center ">
-								<h1 style="font-size: 5em; color: #000;" ><span>{{ $users }}</span></h1>
-								<h3 style="color: #000;" >Financiers</h3>
-							</div>
-							<div class="col-md-4  text-center ">
-								<h1 style="font-size: 5em; color: #000;" ><span>100%</span></h1>
-								<h3 style="color: #000" >Repayment Rate</h3>
-							</div>
-						</div>
-						<div class="row" style="background:rgba(0,0,0,0);  margin-left: 0px; margin-right: 0px;">
-							<div class="col-md-6" style="padding-right: 0px;">
-								<div class="col-md-3 col-xs-6"  >
-									<img src="/assets/images/spons/5b5e697ac3f7cb075a48c0a6_Konkrete logo-dark-500 -comp.png" width="100%" style="padding-top:21px;">
-								</div>
-								<div class="col-md-3 col-xs-6" style="padding:0px">
-									<img src="/assets/images/spons/anti-hero-capital.png" width="100%">
-								</div>
-								<div class="col-md-3 col-xs-6" style="padding: 0px;">
-									<img src="/assets/images/spons/signum-capital.png" width="100%">
-								</div>
-								<div class="col-md-3 col-xs-6" style="padding: 0px;">
-									<img src="/assets/images/spons/5baad0100657c03f43ca6178_AFR.png" width="100%">
-								</div>
-							</div>
-							<div class="col-md-6" style="padding-left: 0px;">
-								<div class="col-md-3 col-xs-6" style="padding: 0px;">
-									<img src="/assets/images/spons/5baad00f0657c02052ca6177_Skynews.png" width="100%">
-								</div>
-								<div class="col-md-3 col-xs-6" style="padding: 0px;" >
-									<img src="/assets/images/spons/5bac21335d3456838f1f1d3d_Thirty K.png" width="100%">
-								</div>
-								<div class="col-md-3 col-xs-6" style="padding: 0px;">
-									<img src="/assets/images/spons/5bac21339e1da03725525ed0_Global banking and finance review.png" width="100%">
-								</div>
-								<div class="col-md-3 col-xs-6" style="padding: 0px;">
-									<img src="/assets/images/spons/5bb16032c110e4dd90804988_CTN.png" width="100%">
-								</div>
-							</div>
-						</div>
-						<div class="content container" id="promo-content" style="padding-top:1%;">
-							@if(Auth::guest())
-							@else
-							@if($admin_access == 1)
-							<br><br>
-							<form action="{{route('configuration.uploadVideo')}}" method="POST">
-								{{csrf_field()}}
-								<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em; background: rgba(0, 0, 0, 0.3); padding: 5px 15px 5px 15px; border-radius: 20px;">Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
-								<button class="btn btn-primary btn-sm" type="submit" style="margin-left: 1.5em;">Save</button>
-							</form>
-							@endif
-							@endif
 							<br>
-							@if(Auth::guest())
-							@else
-							@if($admin_access == 1)
-							<div class="row">
-								<div class="col-md-12">
-									<div class="edit-button-style edit-homepg-back-img" style=""><a><i class="fa fa fa-edit fa-lg"></i></a></div>
-									<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px;"><small>Edit Background</small></span>
-									<input class="hide" type="file" name="homepg_back_img" id="homepg_back_img">
-									<input type="hidden" name="homepg_back_img_name" id="homepg_back_img_name">
-								</div>
-							</div><br>
-							<div class="row text-center col-md-6">
-								<div class="col-md-1 update-overlay-opacity" action="decrease" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 100% 0% 0% 100%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>-</b></span></div>
-								<div class="col-md-3" style="background-color: rgba(255, 255, 255, 0.7); border:1px solid #000;"><span style="color: #000;"><small><small>Overlay Opacity</small></small></span></div>
-								<div class="col-md-1 update-overlay-opacity" action="increase" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 0% 100% 100% 0%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>+</b></span></div>
+						</div>
+					</div>
+					<div class="row" style="padding: 10% 0 10% 0;background:rgba(255,255,255,1); margin-left: 0px; margin-right: 0px;">
+						<div class="col-md-4 text-center">
+							<h1 style="font-size: 5em;" ><span style="color: #000;">{{ $totalProjects }}</span></h1>
+							<h3 style="color: #000;" >Invoices</h3>
+						</div>
+						<div class="col-md-4  text-center ">
+							<h1 style="font-size: 5em; color: #000;" ><span>{{ $users }}</span></h1>
+							<h3 style="color: #000;" >Financiers</h3>
+						</div>
+						<div class="col-md-4  text-center ">
+							<h1 style="font-size: 5em; color: #000;" ><span>100%</span></h1>
+							<h3 style="color: #000" >Repayment Rate</h3>
+						</div>
+					</div>
+					<div class="row" style="background:rgba(0,0,0,0);  margin-left: 0px; margin-right: 0px;">
+						<div class="col-md-6" style="padding-right: 0px;">
+							<div class="col-md-3 col-xs-6"  >
+								<img src="/assets/images/spons/5b5e697ac3f7cb075a48c0a6_Konkrete logo-dark-500 -comp.png" width="100%" style="padding-top:21px;">
 							</div>
-							@endif
-							@endif
-							<br>
+							<div class="col-md-3 col-xs-6" style="padding:0px">
+								<img src="/assets/images/spons/anti-hero-capital.png" width="100%">
+							</div>
+							<div class="col-md-3 col-xs-6" style="padding: 0px;">
+								<img src="/assets/images/spons/signum-capital.png" width="100%">
+							</div>
+							<div class="col-md-3 col-xs-6" style="padding: 0px;">
+								<img src="/assets/images/spons/5baad0100657c03f43ca6178_AFR.png" width="100%">
+							</div>
+						</div>
+						<div class="col-md-6" style="padding-left: 0px;">
+							<div class="col-md-3 col-xs-6" style="padding: 0px;">
+								<img src="/assets/images/spons/5baad00f0657c02052ca6177_Skynews.png" width="100%">
+							</div>
+							<div class="col-md-3 col-xs-6" style="padding: 0px;" >
+								<img src="/assets/images/spons/5bac21335d3456838f1f1d3d_Thirty K.png" width="100%">
+							</div>
+							<div class="col-md-3 col-xs-6" style="padding: 0px;">
+								<img src="/assets/images/spons/5bac21339e1da03725525ed0_Global banking and finance review.png" width="100%">
+							</div>
+							<div class="col-md-3 col-xs-6" style="padding: 0px;">
+								<img src="/assets/images/spons/5bb16032c110e4dd90804988_CTN.png" width="100%">
+							</div>
+						</div>
+					</div>
+					<div class="content container" id="promo-content" style="padding-top:1%;">
+						@if(Auth::guest())
+						@else
+						@if($admin_access == 1)
+						<br><br>
+						<form action="{{route('configuration.uploadVideo')}}" method="POST">
+							{{csrf_field()}}
+							<span style="font-weight: bold; margin-left: 2em; margin-right: 1.5em; background: rgba(0, 0, 0, 0.3); padding: 5px 15px 5px 15px; border-radius: 20px;">Video:</span><input type="text" name="explainer_video_url" value="{{$siteConfiguration->explainer_video_url}}" data-toggle="tooltip" title="Please enter the iframe link (source) of the video you would like to upload" size="35">
+							<button class="btn btn-primary btn-sm" type="submit" style="margin-left: 1.5em;">Save</button>
+						</form>
+						@endif
+						@endif
+						<br>
+						@if(Auth::guest())
+						@else
+						@if($admin_access == 1)
+						<div class="row">
+							<div class="col-md-12">
+								<div class="edit-button-style edit-homepg-back-img" style=""><a><i class="fa fa fa-edit fa-lg"></i></a></div>
+								<span style="margin: 5px 5px 5px 22px; float: left; background: rgba(0, 0, 0, 0.3); padding: 2px 10px 2px 20px; border-radius: 20px;"><small>Edit Background</small></span>
+								<input class="hide" type="file" name="homepg_back_img" id="homepg_back_img">
+								<input type="hidden" name="homepg_back_img_name" id="homepg_back_img_name">
+							</div>
+						</div><br>
+						<div class="row text-center col-md-6">
+							<div class="col-md-1 update-overlay-opacity" action="decrease" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 100% 0% 0% 100%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>-</b></span></div>
+							<div class="col-md-3" style="background-color: rgba(255, 255, 255, 0.7); border:1px solid #000;"><span style="color: #000;"><small><small>Overlay Opacity</small></small></span></div>
+							<div class="col-md-1 update-overlay-opacity" action="increase" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 0% 100% 100% 0%; border:1px solid #000; cursor: pointer;"><span style="color: #000;"><b>+</b></span></div>
+						</div>
+						@endif
+						@endif
+						<br>
 							{{-- <div class="text-center " data-wow-duration="1.5s" data-wow-delay="0.6s">
 								<a href="#how-it-works" class="scrollto" style="color:#fff;">Tell Me More <i class="fa fa-angle-down"></i></a>
 							</div> --}}
@@ -693,7 +712,7 @@
 										<button class="filterbtn @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
 										<button class="filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
 									</div>
-									{{-- <div style="padding-top: 1em;">	
+									{{-- <div style="padding-top: 1em;">
 										@if (Session::has('message'))
 										{!! Session::get('message') !!}
 										@endif
@@ -712,7 +731,7 @@
 									}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
 										$invoice_sold = '2';
 									}*/
-									if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) 
+									if($project->repurchased->first() || $project->repurchased_by_partial_pay->first())
 									{
 										$invoice_sold = 2;
 									}else if($project->soldInvoice) {
@@ -752,7 +771,7 @@
 														</div>
 														<div class="col-md-6" style="padding-top: 10px">
 															<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-															<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+															<a class="btn btn-block buy-now-btn white-space-wrap" data-id="{{$project->id}}" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
 														</div>
 													</div>
 													<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -872,7 +891,7 @@
 								}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
 									$invoice_sold = '2';
 								}*/
-								if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) 
+								if($project->repurchased->first() || $project->repurchased_by_partial_pay->first())
 								{
 									$invoice_sold = 2;
 								}else if($project->soldInvoice) {
@@ -1041,7 +1060,7 @@
 									}elseif($repurchased->sum('amount') == $project->investment->goal_amount){
 										$invoice_sold = '2';
 									}*/
-									if($project->repurchased->first() || $project->repurchased_by_partial_pay->first()) 
+									if($project->repurchased->first() || $project->repurchased_by_partial_pay->first())
 									{
 										$invoice_sold = 2;
 									}else if($project->soldInvoice) {
@@ -1814,9 +1833,66 @@
 			<!-- TinyMCE Rich text editor -->
 			{!! Html::script('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') !!}
 			{!! Html::script(asset('js/jQuery.countdownTimer.min.js')) !!}
-
+			<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
 			<script>
-				jQuery(document).ready(function($) {
+		    // this will be where our code will be
+		    window.addEventListener('load', async () => {
+		    	console.log("Insside");
+		    // var contract;
+		    // const contractAddress = "0x80b75C6E12BcE443F53A1cF4B2740304f622deF0";
+		    // const contractMessage = async () => {
+		    //   contract = new web3.eth.Contract(abi, contractAddress);
+		    //   let message = await contract.methods.getMessage().call();
+		    //   return message;
+		    // }
+		    // const changeMessage = async (text) => {
+		    //   await text;
+		    //   let newMessage = await contract.methods.setMessage(text).call()
+		    // }
+		    // Modern dapp browsers...
+		    if (window.ethereum) {
+		    	window.web3 = new Web3(ethereum);
+		    	try {
+        		// Request account access if needed
+        		await ethereum.enable();
+        		var financiersAddress = ethereum.selectedAddress;
+        		console.log(ethereum.selectedAddress);
+        		window.web3.eth.getBalance(ethereum.selectedAddress).then(function(bal) {
+        			console.log(bal/10**18);
+        		});
+        		$('.buy-now-btn').on('click',function (e) {
+        			e.preventDefault();
+        			$.ajax({
+        				'type': 'POST',
+        				'URL': "{{route('offer.store')}}",
+        				data: financiersAddress,
+        				headers: {
+        					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        				},
+        				success: function (transaction) {
+        					console.log(transaction);
+        				}
+        			});
+        		})
+		        // var message = await contractMessage();
+		        // var elm = document.getElementById("message");
+		        // elm.innerHTML = message;
+		        // $('#newMessage').submit(function (e) {
+		        //   e.preventDefault();
+		        //   console.log(e);
+		        // });
+		    } catch (error) {
+        		// User denied account access...
+        	}
+        }
+    // Non-dapp browsers...
+    else {
+    	console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    }
+});
+</script>
+<script>
+	jQuery(document).ready(function($) {
 					// overlay timer changes
 					@if(!Auth::guest())
 					var start = new Date("{{Auth::user()->last_login->toDateTimeString()}}");

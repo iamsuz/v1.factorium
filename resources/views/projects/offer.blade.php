@@ -837,7 +837,7 @@ Offer Doc
       window.web3 = new Web3(ethereum);
       try {
         // Request account access if needed
-        await ethereum.enable();
+        // await ethereum.enable();
         // var message = await contractMessage();
         // var elm = document.getElementById("message");
         // elm.innerHTML = message;

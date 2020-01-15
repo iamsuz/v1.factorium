@@ -37,7 +37,7 @@ class OfferController extends Controller
      */
     public function __construct()
     {
-      $this->middleware('auth');
+      $this->middleware('auth',['except'=>['store']]);
       $this->middleware('admin', ['only' => ['requestForm', 'cancelRequestForm']]);
       $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
       if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
@@ -78,6 +78,7 @@ class OfferController extends Controller
 
     public function store(Request $request, AppMailer $mailer)
     {
+      dd($request);
       $request = new Request(array_except($request->all(),['password']));
       $project = Project::findOrFail($request->project_id);
       $investments = InvestmentInvestor::where('project_id',$project->id)
