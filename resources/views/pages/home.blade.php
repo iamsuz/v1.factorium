@@ -1854,6 +1854,7 @@
 		    	window.web3 = new Web3(ethereum);
 		    	try {
         		// Request account access if needed
+        		ethereum.autoRefreshOnNetworkChange = false;
         		await ethereum.enable();
         		var financiersAddress = ethereum.selectedAddress;
         		console.log(ethereum.selectedAddress);
@@ -1862,18 +1863,37 @@
         		});
         		$('.buy-now-btn').on('click',function (e) {
         			e.preventDefault();
-        			$.ajax({
-        				'type': 'POST',
-        				'URL': "{{route('offer.store')}}",
-        				data: financiersAddress,
-        				headers: {
-        					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        				},
-        				success: function (transaction) {
-        					console.log(transaction);
-        				}
-        			});
-        		})
+        			// $.ajax({
+        			// 	'type': 'POST',
+        			// 	'URL': "{{route('offer.store')}}",
+        			// 	data: financiersAddress,
+        			// 	headers: {
+        			// 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        			// 	},
+        			// 	success: function (transaction) {
+        			// 		console.log(transaction);
+        			// 	}
+        			// });
+        			console.log("{{ $project->id }}");
+        			const params = {
+        				"from": financiersAddress,
+        				"to": "{{ $project->contract_address }}",
+  						"gasPrice": "750000", // 10000000000000
+  						"value": "1000", // 2441406250
+  						"data": ""
+  					}
+
+  					ethereum.sendAsync({
+  						method: 'eth_sendTransaction',
+  						params: [params],
+  						from: financiersAddress, // Provide the user's account to use.
+  					}, function (err, result) {
+  					// A typical node-style, error-first callback.
+  					// The result varies by method, per the JSON RPC API.
+  					// For example, this method will return a transaction hash on success.
+					})
+
+  				})
 		        // var message = await contractMessage();
 		        // var elm = document.getElementById("message");
 		        // elm.innerHTML = message;
@@ -1884,6 +1904,7 @@
 		    } catch (error) {
         		// User denied account access...
         	}
+
         }
     // Non-dapp browsers...
     else {
@@ -1902,7 +1923,7 @@
 						// console.log(startdate);
 						var enddate=new Date("{{Auth::user()->last_login->toDateTimeString()}}");
 						var diff = startdate - enddate;
-						var s = diff/1000;
+						var s = diff/1000   ;
 						var h = Math.floor(s/3600); //Get whole hours
 						s -= h*3600;
     					var m = Math.floor(s/60); //Get remaining minutes
@@ -2440,7 +2461,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			var origHeight = $('#orig_height').val();
 			var hiwImgAction = $('#image_action').val();
 			var projectId = $('#project_id').val();
-			console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
+			// console.log(imageName+'|'+xValue+'|'+yValue+'|'+wValue+'|'+hValue);
 			$.ajax({
 				url: '/configuration/cropUploadedImage',
 				type: 'POST',
@@ -2503,7 +2524,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 		function editHomePageText1(){
 			$('.edit-homepg-text1').click(function(){
 				var str1 = $.trim($('.homepg-text1 h2').html()).replace(/\r?\n|\r/g, "");
-				console.log(str1);
+				// console.log(str1);
 				$('.homepg-text1').html('<textarea class="form-control text-textarea" name="homepg_text1_text" id="homepg_text1_text" rows="3" placeholder="You Can Add Description Here"></textarea>' +
 					'<br><button type="button" class="btn btn-default text1-update-btn" style="margin-bottom:67px;"><small>Update<small></button>');
 				$('#homepg_text1_text').val(str1.replace(/<br ?\/?>/g, "\n"));
@@ -3282,7 +3303,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 			window.location.href = filterUrl;
 			return;
 
-			console.log(c);
+			// console.log(c);
 			$.ajax({
 				url: '/projects/filter',
 				type: 'get',
@@ -3292,7 +3313,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				},
 			}).done(function(data){
-				console.log(data);
+				// console.log(data);
 			});
 		}
 		// Add active class to the current button (highlight it)
@@ -3327,7 +3348,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 				let projectId = $(this).attr('data-project-id');
 				let dueDateTs = $(this).attr('data-due-date');
 				let soldDate = $(this).attr('data-sold-date');
-				console.log(soldDate);
+				// console.log(soldDate);
 				var datetimeOfdueDateTs = new Date( dueDateTs ).getTime();
 				var datetimeOfsoldDate = new Date( soldDate ).getTime();
 				var timeDiff = datetimeOfdueDateTs-datetimeOfsoldDate;
@@ -3345,12 +3366,12 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 
 					var secondsDifference = Math.floor(difference/1000);
 
-					console.log(daysDifference+':'+hoursDifference+':'+minutesDifference+':'+secondsDifference);
+					// console.log(daysDifference+':'+hoursDifference+':'+minutesDifference+':'+secondsDifference);
 					$('#invoice_sold_date_' + projectId).html(daysDifference+':'+hoursDifference+':'+minutesDifference+':'+secondsDifference);
 				}else{
 					$('#invoice_sold_date_' + projectId).html('Expired');
 				}
-				console.log('sold');
+				// console.log('sold');
 			})
 		}
 
