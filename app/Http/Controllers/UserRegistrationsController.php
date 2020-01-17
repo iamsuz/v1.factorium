@@ -471,7 +471,8 @@ class UserRegistrationsController extends Controller
             'phone_number' => 'required|numeric',
             'password' => 'required|min:6|max:60',
             'token'=>'required',
-            'country_code'=>'required'
+            'country_code'=>'required',
+            'wallet_address'=>'required'
         ]);
 
         $userReg = UserRegistration::whereToken($request->token)->firstOrFail();

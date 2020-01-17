@@ -35,7 +35,7 @@ Fill the user details | @parent
 												{!! Form::text('last_name', null, array('placeholder'=>'Last Name', 'class'=>'form-control', 'tabindex'=>'2', 'required'=>'true')) !!}
 												{!! $errors->first('last_name', '<small class="text-danger">:message</small>') !!}
 												{!! Form::hidden('token', $user->token) !!}
-
+												{!! Form::hidden('wallet_address',null ,array('id' => 'invisible_id')) !!}
 											</div>
 										</div>
 									</div>
@@ -93,6 +93,39 @@ Fill the user details | @parent
 </div>
 
 @section('js-section')
+<script type="text/javascript">
+		// this will be where our code will be
+		$("#submit_button").attr("disabled", true);
+		window.addEventListener('load', async () => {
+			console.log("Insside");
+		    // Modern dapp browsers...
+		    if (window.ethereum) {
+		    	console.log("Insside window");
+		    	// console.log(window.ethereum);
+		    	window.web3 = new Web3(ethereum);
+		    	try {
+        		// Request account access if needed
+        		ethereum.autoRefreshOnNetworkChange = false;
+        		const accounts = await ethereum.enable();
+        		var financiersAddress = ethereum.selectedAddress;
+        		document.getElementById('invisible_id').value = financiersAddress
+        		$("#submit_button").attr("disabled", false);
+        		console.log(ethereum.selectedAddress);
+        		window.web3.eth.getBalance(ethereum.selectedAddress).then(function(bal) {
+        			console.log(bal/10**18);
+        		});
+        	} catch (error) {
+        		// User denied account access...
+        		console.log('User denied account access');
+        	}
+
+        }
+    // Non-dapp browsers...
+    else {
+    	console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    }
+});
+</script>
 <script type="text/javascript">
 	jQuery('form').submit(function(){
 		$(this).find(':submit').attr( 'disabled','disabled' );

@@ -1838,17 +1838,6 @@
 		    // this will be where our code will be
 		    window.addEventListener('load', async () => {
 		    	console.log("Insside");
-		    // var contract;
-		    // const contractAddress = "0x80b75C6E12BcE443F53A1cF4B2740304f622deF0";
-		    // const contractMessage = async () => {
-		    //   contract = new web3.eth.Contract(abi, contractAddress);
-		    //   let message = await contract.methods.getMessage().call();
-		    //   return message;
-		    // }
-		    // const changeMessage = async (text) => {
-		    //   await text;
-		    //   let newMessage = await contract.methods.setMessage(text).call()
-		    // }
 		    // Modern dapp browsers...
 		    if (window.ethereum) {
 		    	window.web3 = new Web3(ethereum);
@@ -1894,13 +1883,6 @@
 					})
 
   				})
-		        // var message = await contractMessage();
-		        // var elm = document.getElementById("message");
-		        // elm.innerHTML = message;
-		        // $('#newMessage').submit(function (e) {
-		        //   e.preventDefault();
-		        //   console.log(e);
-		        // });
 		    } catch (error) {
         		// User denied account access...
         	}
