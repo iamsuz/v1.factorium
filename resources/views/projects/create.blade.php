@@ -33,6 +33,8 @@ Create New Project | @parent
 		<div class="row ">
 			<div class="col-md-6 col-md-offset-3 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
 				{!! Form::open(array('route'=>'projects.store', 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true)) !!}
+				<input type="hidden" name="wallet_address_buyer" value="" required="true">
+				<input type="hidden" name="contract_hash" value="" required="true">
 				{{-- <fieldset>
 					<br>
 					<div class="row">
@@ -130,12 +132,32 @@ Create New Project | @parent
 </div>
 @stop
 @section('js-section')
-{!! Html::script('js/konkrete.js') !!}
+{{-- {!! Html::script('js/konkrete.js') !!} --}}
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/assets/abi/smartInvoiceABI.js"></script>
+<script src="/assets/abi/byteCode.js"></script>
 <script type="text/javascript">
-
+	window.addEventListener('load', async () => {
+		if (typeof BrowserSolc == 'undefined') {
+			console.log("You have to load browser-solc.js in the page.  We recommend using a <script> tag.");
+			throw new Error();
+		}
+		// console.log(abi);
+		$("#app_submit").on("click", async(e) => {
+			e.preventDefault();
+			var amount = $('input[name=invoice_amount]').val();
+			var askingAmount = $('input[name=asking_amount]').val();
+			var dueDate = $('input[name=due_date]').val();
+			var someDate = new Date(dueDate);
+			someDate = someDate.getTime();
+			var walletAddressBuyer = $('input[name=wallet_address_buyer').val();
+			if(amount == null){
+				window.reload;
+			}
+			await compileCode(amount,askingAmount,someDate,walletAddressBuyer);
+		});
+	});
 	$(document).ready(function () {
-
 		//Disable default html5 datepicker
 		$('input[type=date]').on('click', function(event) {
 			event.preventDefault();
@@ -150,7 +172,7 @@ Create New Project | @parent
 		}).datepicker("setDate", new Date().getDay+30);
 
 		// Calculate Asking Price
-		$('input[name=invoice_amount], input[name=due_date]').change(function () { 
+		$('input[name=invoice_amount], input[name=due_date]').change(function () {
 			let invoiceAmount = $('input[name=invoice_amount]').val();
 			let dueDate = $('input[name=due_date]').val();
 
@@ -201,6 +223,7 @@ Create New Project | @parent
 					}
 					console.log(data);
 					$('input[name=description]').val(data.data.description);
+					$('input[name=wallet_address_buyer').val(data.data.wallet_address);
 				});
 			}
 		});

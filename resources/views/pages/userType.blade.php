@@ -7,7 +7,7 @@ User Type
 @section('css-section')
 <style>
     h1, h2, h3, h4 {
-        color: {{ '#' . $color->nav_footer_color }};
+        color: @if($color) {{ '#' . $color->nav_footer_color }} @endif;
     }
 </style>
 @stop

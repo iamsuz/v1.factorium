@@ -25,6 +25,7 @@ Fill the user details | @parent
 							<br>
 							<div class="row">
 								<div class="form-group <?php if($errors->first('first_name') && $errors->first('last_name')){echo 'has-error';}?>">
+									<input type="hidden" name="wAddress" value="" id="wAddress" required="true">
 									<div class="col-sm-offset-1 col-sm-10">
 										<div class="row">
 											<div class="col-sm-6 <?php if($errors->first('first_name')){echo 'has-error';}?>">
@@ -127,6 +128,7 @@ Fill the user details | @parent
 });
 </script>
 <script type="text/javascript">
+
 	jQuery('form').submit(function(){
 		$(this).find(':submit').attr( 'disabled','disabled' );
 		$('.loader-overlay').show();

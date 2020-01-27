@@ -57,6 +57,25 @@
 <script>
 	$(document).ready(function () {
 		new Clipboard('.btn');
+		if(ethereum != 'undefined'){
+			ethereum.enable();
+			if({{$user->wallet_address == NULL}}){
+				$.ajax({
+					type: 'POST',
+					url: "{{route('users.updateWalletAddress')}}",
+					data: {address: ethereum.selectedAddress},
+					headers:{ 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+					success: function (result) {
+						console.log(result);
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				},function (e) {
+					console.log(e);
+				});
+			}
+		}
 	});
 </script>
 @endsection

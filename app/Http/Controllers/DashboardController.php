@@ -349,11 +349,11 @@ class DashboardController extends Controller
         }
 
         $contract = array();
-        if($project->contract_address) {
-            $res = $this->konkrete->getContractDetails($project_id);
-            $contractRes = json_decode($res->getContent());
-            $contract = $contractRes->data;
-        }
+        // if($project->contract_address) {
+        //     $res = $this->konkrete->getContractDetails($project_id);
+        //     $contractRes = json_decode($res->getContent());
+        //     $contract = $contractRes->data;
+        // }
         $balance = NULL;
         if($project->contract_address && $project->is_wallet_tokenized) {
             $client = new \GuzzleHttp\Client();

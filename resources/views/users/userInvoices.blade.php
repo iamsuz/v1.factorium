@@ -91,27 +91,27 @@
 			$('#confirmInvoiceBtn').on('click',function (e) {
 				$('.loader-overlay').show();
 				$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait... your request is processed. Please do not refresh or reload the page.</p><br></div>');
-				$.ajax({
-					url : '/user/invoice/'+project.id+'/confirm',
-					type : 'POST',
-					data : {
-						'numberOfWords' : 10
-					},
-					dataType:'json',
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
-					// success : function(data) {
-					// 	location.reload();
-					// },
-					// error : function(request,error)
-					// {
-					// 	alert("Request: "+JSON.stringify(request));
-					// }
-				}).done(function () {
-					$('#statusOfConfirmation').html('<i>Pending</i>');
-					location.reload();
-				});
+				var hash = project.transaction_hash.toString();
+				if(project.contract_address){
+					commit(project);
+				}else{
+					web3.eth.getTransactionReceipt(hash,function (err,res) {
+						console.log(res);
+						contract_address = res.contractAddress;
+						$.ajax({
+							url:'/project/'+project.id+'/update/contractAddress',
+							type:'POST',
+							data: {contract_address},
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							},
+							success: function (data) {
+								console.log(data);
+								commit(project);
+							}
+						})
+					});
+				}
 			})
 		});
 	});

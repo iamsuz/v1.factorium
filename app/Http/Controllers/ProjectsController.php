@@ -266,19 +266,19 @@ class ProjectsController extends Controller
 
         $characters = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $length = strlen($characters);
-        $tokenSymbol = '';
+        $tokenSymbol = 'INV';
         for ($i = 0; $i < 4; $i++) {
             $tokenSymbol .= $characters[rand(0, $length - 1)];
         }
 
-        $client = new \GuzzleHttp\Client();
-        $request = $client->request('GET',$this->uri.'/createProject',[
-            'query' => ['project_id' => $project->id]
-        ]);
-        $response = $request->getBody()->getContents();
-        $result = json_decode($response);
-        $project->wallet_address = $result->signingKey->address;
-        $project->token_symbol = $tokenSymbol;
+        // $client = new \GuzzleHttp\Client();
+        // $request = $client->request('GET',$this->uri.'/createProject',[
+        //     'query' => ['project_id' => $project->id]
+        // ]);
+        // $response = $request->getBody()->getContents();
+        // $result = json_decode($response);
+        $project->transaction_hash = $request->contract_hash;
+        $project->token_symbol = 'INV';
         $project->save();
         $mailer->sendProjectSubmit($user, $project,$investmentDetails);
         return redirect()->back()->withMessage('<p class="alert alert-success text-center first_color" >Thank you for submitting your Receivable.<br>We will review the details and contact you shortly.</p>');
@@ -1277,8 +1277,11 @@ public function prospectusDownload(Request $request)
     {
         $active = Auth::User();
         if(!($active->email == $request->invoice_issue_from_email)){
-            $user = User::where('email',$request->invoice_issue_from_email)->value('entity_name');
-            return array('status'=> true, 'data' => array('description'=> $user));
+            $user = User::where('email',$request->invoice_issue_from_email);
+            // dd($user->first()->wallet_address);
+            $address = $user->first()->wallet_address;
+            $entityName = $user->value('entity_name');
+            return array('status'=> true, 'data' => array('description'=> $entityName,'wallet_address'=> $address));
         }else{
             return array('status'=> false, 'message' => 'You cannot issue an invoice to yourself');
         }
@@ -1649,5 +1652,13 @@ public function prospectusDownload(Request $request)
                 'status' => true,
                 'message' => '<p class="alert alert-danger ">You have insufficient audc.</p>');
         }
+    }
+
+    public function updateContractAddress(Request $request,$id)
+    {
+        $project = Project::findOrFail($id);
+        $project->contract_address = $request->contract_address;
+        $project->save();
+        return redirect()->back();
     }
 }

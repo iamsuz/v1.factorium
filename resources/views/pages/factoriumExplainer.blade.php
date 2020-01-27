@@ -47,12 +47,12 @@ Factorium Explainer
     }
 
     h1, h2, h3, h4 {
-        color: {{ '#' . $color->nav_footer_color }};
+        color: @if($color) {{ '#' . $color->nav_footer_color }} @endif;
     }
 
     @keyframes shadow-pulse {
         0% {
-            box-shadow: 0 0 0 0px{{ '#' . $color->heading_color }};
+            box-shadow: 0 0 0 0px @if($color) {{ '#' . $color->heading_color }} @endif;
         }
         100% {
             box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);

@@ -771,7 +771,7 @@
 														</div>
 														<div class="col-md-6" style="padding-top: 10px">
 															<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-															<a class="btn btn-block buy-now-btn white-space-wrap" data-id="{{$project->id}}" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+															<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" >{{ $buyBtnText }}</a>
 														</div>
 													</div>
 													<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -941,7 +941,7 @@
 															</div>
 															<div class="col-md-6" style="padding-top: 10px;">
 																<?php $buyBtnText = ($invoice_sold =='1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-																<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+																<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice"  @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}">{{ $buyBtnText }}</a>
 															</div>
 														</div>
 														<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1106,7 +1106,7 @@
 																</div>
 																<div class="col-md-6" style="padding-top: 10px;">
 																	<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-																	<a class="btn btn-block buy-now-btn white-space-wrap" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}">{{ $buyBtnText }}</a>
+																	<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}">{{ $buyBtnText }}</a>
 																</div>
 															</div>
 															<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1834,6 +1834,7 @@
 			{!! Html::script('/assets/plugins/tinymce/js/tinymce/tinymce.min.js') !!}
 			{!! Html::script(asset('js/jQuery.countdownTimer.min.js')) !!}
 			<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+			<script type="text/javascript" src="/assets/abi/smartInvoiceABI.js"></script>
 			<script>
 		    // this will be where our code will be
 		    window.addEventListener('load', async () => {

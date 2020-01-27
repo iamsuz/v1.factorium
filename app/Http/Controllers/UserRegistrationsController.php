@@ -523,13 +523,13 @@ class UserRegistrationsController extends Controller
             Auth::user()->update(['last_login'=> Carbon::now()]);
             // return view('users.registrationFinish', compact('user','color'));
             $user = Auth::user();
-            $client = new \GuzzleHttp\Client();
-            $req = $client->request('GET',$this->uri.'/userWallet',[
-                'query' => ['user_id' => $user->id]
-            ]);
-            $res = $req->getBody()->getContents();
-            $result = json_decode($res);
-            $user->wallet_address = $result->signingKey->address;
+            // $client = new \GuzzleHttp\Client();
+            // $req = $client->request('GET',$this->uri.'/userWallet',[
+            //     'query' => ['user_id' => $user->id]
+            // ]);
+            // $res = $req->getBody()->getContents();
+            // $result = json_decode($res);
+            $user->wallet_address = $request->wAddress;
             $user->save();
             return redirect(\route('pages.explainer'))->withCookie(\Cookie::forget('referrer'));
         }

@@ -433,16 +433,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'investor') && $user->roles->count() > 1) {
-         $role = Role::whereRole('investor')->firstOrFail();
+           $role = Role::whereRole('investor')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Investor Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * delete Developer role from user
@@ -458,16 +458,16 @@ class UsersController extends Controller
         }
 
         if ($user->roles->contains('role', 'developer') && $user->roles->count() > 1) {
-         $role = Role::whereRole('developer')->firstOrFail();
+           $role = Role::whereRole('developer')->firstOrFail();
 
-         $user->roles()->detach($role);
+           $user->roles()->detach($role);
 
-         return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
-     }
+           return back()->withMessage('<p class="alert alert-success text-center">Successfully Deleted Developer Role</p>');
+       }
 
-     return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
+       return back()->withMessage('<p class="alert alert-warning text-center">Unauthorized action.</p>');
 
- }
+   }
 
     /**
      * get user investments
@@ -702,16 +702,16 @@ class UsersController extends Controller
     {
         $color = Color::where('project_site',url())->first();
         $user = Auth::user();
-        if(!$user->wallet_address){
-            $client = new \GuzzleHttp\Client();
-            $request = $client->request('GET',$this->uri.'/userWallet',[
-                'query'=> ['user_id'=> $user->id]
-            ]);
-            $response = $request->getBody()->getContents();
-            $result = json_decode($response);
-            $user->wallet_address = $result->signingKey->address;
-            $user->save();
-        }
+        // if(!$user->wallet_address){
+        //     $client = new \GuzzleHttp\Client();
+        //     $request = $client->request('GET',$this->uri.'/userWallet',[
+        //         'query'=> ['user_id'=> $user->id]
+        //     ]);
+        //     $response = $request->getBody()->getContents();
+        //     $result = json_decode($response);
+        //     $user->wallet_address = $result->signingKey->address;
+        //     $user->save();
+        // }
         $investments = InvestmentInvestor::select('project_id')->distinct()->where('user_id', $user->id)
         ->where('accepted', '1')->get();
         if($investments){
@@ -729,6 +729,14 @@ class UsersController extends Controller
             }
         }
         return view('users.wallet',compact('user','color','project_balance'));
+    }
+
+    public function usersWalletUpdate(Request $request)
+    {
+        $user = Auth::user();
+        $user->wallet_address = $request->address;
+        $user->save();
+        return response()->json(['result'=>true]);
     }
 
     public function market(Request $request)
@@ -791,8 +799,13 @@ class UsersController extends Controller
         $request['token_symbol'] = $project->token_symbol;
         $request['number_of_tokens'] = $project->investment->invoice_amount;
         $request['project_id'] = $project->id;
-        $this->dispatch(new AutomateTokenGenerate($project));
+        // this has been commented because we are deploying tokens at seller level
+        // $this->dispatch(new AutomateTokenGenerate($project));
         $project->confirmation = 1;
+        $project->active = 1;
+        $project->is_coming_soon = 0;
+        $project->eoi_button = 0;
+        $project->is_funding_closed = 0;
         $project->save();
         return response()->json([
             'status' => '1',
