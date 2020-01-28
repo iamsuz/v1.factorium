@@ -101,10 +101,12 @@ Fill the user details | @parent
 			console.log("Insside");
 		    // Modern dapp browsers...
 		    if (window.ethereum) {
+		    	// Please connect to metamask
 		    	console.log("Insside window");
 		    	// console.log(window.ethereum);
 		    	window.web3 = new Web3(ethereum);
 		    	try {
+		    		// you are connected to metamask
         		// Request account access if needed
         		ethereum.autoRefreshOnNetworkChange = false;
         		const accounts = await ethereum.enable();
@@ -116,6 +118,7 @@ Fill the user details | @parent
         			console.log(bal/10**18);
         		});
         	} catch (error) {
+        		// please connect to metamask
         		// User denied account access...
         		console.log('User denied account access');
         	}
@@ -123,6 +126,7 @@ Fill the user details | @parent
         }
     // Non-dapp browsers...
     else {
+    	// your browser does not have metamask please download and connect
     	console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
 });
