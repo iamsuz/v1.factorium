@@ -1836,67 +1836,49 @@
 			<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
 			<script type="text/javascript" src="/assets/abi/smartInvoiceABI.js"></script>
 			<script>
-		    // this will be where our code will be
-		    window.addEventListener('load', async () => {
-		    	console.log("Insside");
-		    // Modern dapp browsers...
-		    if (window.ethereum) {
-		    	window.web3 = new Web3(ethereum);
-		    	try {
-        		// Request account access if needed
-        		ethereum.autoRefreshOnNetworkChange = false;
-        		await ethereum.enable();
-        		var financiersAddress = ethereum.selectedAddress;
-        		console.log(ethereum.selectedAddress);
-        		window.web3.eth.getBalance(ethereum.selectedAddress).then(function(bal) {
-        			console.log(bal/10**18);
-        		});
-        		$('.buy-now-btn').on('click',function (e) {
-        			e.preventDefault();
-        			// $.ajax({
-        			// 	'type': 'POST',
-        			// 	'URL': "{{route('offer.store')}}",
-        			// 	data: financiersAddress,
-        			// 	headers: {
-        			// 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        			// 	},
-        			// 	success: function (transaction) {
-        			// 		console.log(transaction);
-        			// 	}
-        			// });
-        			console.log("{{ $project->id }}");
-        			const params = {
-        				"from": financiersAddress,
-        				"to": "{{ $project->contract_address }}",
-  						"gasPrice": "750000", // 10000000000000
-  						"value": "1000", // 2441406250
-  						"data": ""
-  					}
-
-  					ethereum.sendAsync({
-  						method: 'eth_sendTransaction',
-  						params: [params],
-  						from: financiersAddress, // Provide the user's account to use.
-  					}, function (err, result) {
-  					// A typical node-style, error-first callback.
-  					// The result varies by method, per the JSON RPC API.
-  					// For example, this method will return a transaction hash on success.
-					})
-
-  				})
-		    } catch (error) {
-        		// User denied account access...
-        	}
-
-        }
-    // Non-dapp browsers...
-    else {
-    	console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-    }
-});
-</script>
-<script>
-	jQuery(document).ready(function($) {
+				window.addEventListener('load', async () => {
+		    		// Modern dapp browsers...
+		    		if (window.ethereum) {
+		    			window.web3 = new Web3(ethereum);
+		    			try {
+        					// Request account access if needed
+        					ethereum.autoRefreshOnNetworkChange = false;
+        					await ethereum.enable();
+        					var financiersAddress = ethereum.selectedAddress;
+        					$('.buy-invoice').on('click', function(e){
+        						e.preventDefault();
+        						var project_id = $(this).data('id');
+        						var contract_address = $(this).data('address');
+        						console.log(contract_address);
+        						var myContract  = new web3.eth.Contract(abi,contract_address);
+        						// await myContract.methods.buyInvoice({}).send({
+        						// })
+        						console.log(myContract);
+			        			// $.ajax({
+			        			// 	'type': 'POST',
+			        			// 	'URL': "{{route('offer.store')}}",
+			        			// 	data: financiersAddress,
+			        			// 	headers: {
+			        			// 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        			// 	},
+			        			// 	success: function (transaction) {
+			        			// 		console.log(transaction);
+			        			// 	}
+			        			//  });
+			       				//  console.log("{{ $project->id }}");
+			       			})
+        				} catch (error) {
+        					// User denied account access...
+        				}
+        			}
+    				// Non-dapp browsers...
+    				else {
+    					console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    				}
+    			});
+    		</script>
+    		<script>
+    			jQuery(document).ready(function($) {
 					// overlay timer changes
 					@if(!Auth::guest())
 					var start = new Date("{{Auth::user()->last_login->toDateTimeString()}}");
