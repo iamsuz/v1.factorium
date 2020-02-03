@@ -93,24 +93,11 @@
 				$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait... your request is processed. Please do not refresh or reload the page.</p><br></div>');
 				var hash = project.transaction_hash.toString();
 				if(project.contract_address){
+					console.log('Going for commit got my contract address');
 					commit(project);
 				}else{
-					web3.eth.getTransactionReceipt(hash,function (err,res) {
-						console.log(res);
-						contract_address = res.contractAddress;
-						$.ajax({
-							url:'/project/'+project.id+'/update/contractAddress',
-							type:'POST',
-							data: {contract_address},
-							headers: {
-								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-							},
-							success: function (data) {
-								console.log(data);
-								commit(project);
-							}
-						})
-					});
+					console.log('Going for getContractAdderss got my transaction hash');
+					getContractAdderss(project,hash);
 				}
 			})
 		});

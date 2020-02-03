@@ -19,7 +19,9 @@ Fill the user details | @parent
 			<section id="signUpForm">
 				<div class="row">
 					<div class="col-md-12">
-						{!! Form::open(array('route'=>'registration.storeDetails', 'class'=>'form-horizontal', 'role'=>'form')) !!}
+						<div class="alert alert-info text-center" role="alert" id="alert">Connect to metamask
+						</div>
+						{!! Form::open(array('route'=>'registration.storeDetails', 'class'=>'form-horizontal', 'role'=>'form','id'=>'detailsForm')) !!}
 						<fieldset>
 							<h3 class="text-center h1-faq">Please fill the following details to complete your registration</h3>
 							<br>
@@ -101,43 +103,41 @@ Fill the user details | @parent
 			console.log("Insside");
 		    // Modern dapp browsers...
 		    if (window.ethereum) {
-		    	// Please connect to metamask
-		    	console.log("Insside window");
 		    	// console.log(window.ethereum);
 		    	window.web3 = new Web3(ethereum);
 		    	try {
-		    		// you are connected to metamask
-        		// Request account access if needed
-        		ethereum.autoRefreshOnNetworkChange = false;
-        		const accounts = await ethereum.enable();
-        		var financiersAddress = ethereum.selectedAddress;
-        		document.getElementById('invisible_id').value = financiersAddress
-        		$("#submit_button").attr("disabled", false);
-        		console.log(ethereum.selectedAddress);
-        		window.web3.eth.getBalance(ethereum.selectedAddress).then(function(bal) {
-        			console.log(bal/10**18);
-        		});
-        	} catch (error) {
-        		// please connect to metamask
-        		// User denied account access...
-        		console.log('User denied account access');
-        	}
+		    		ethereum.autoRefreshOnNetworkChange = false;
+		    		const accounts = await ethereum.enable();
+		    		$('#alert').text('You are now connected to metamask');
+		    		var financiersAddress = ethereum.selectedAddress;
+		    		document.getElementById('invisible_id').value = financiersAddress
+		    		$("#submit_button").attr("disabled", false);
+		    		$('#wAddress').val(ethereum.selectedAddress);
+		    		console.log(ethereum.selectedAddress);
+		    		window.web3.eth.getBalance(ethereum.selectedAddress).then(function(bal) {
+		    			console.log(bal/10**18);
+		    		});
+		    	} catch (error) {
+		    		$('#alert').text('You have denied the metamask access');
+	        		// please connect to metamask
+	        		// User denied account access...
+	        		console.log('User denied account access');
+	        	}
+	        }
+	        else {
+    			// your browser does not have metamask please download and connect
+    			$('#alert').html('Non-Ethereum browser detected. You should consider trying <a href="https://metamask.io/">MetaMask!</a>');
+    			console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    		}
+    	});
+    </script>
+    <script type="text/javascript">
 
-        }
-    // Non-dapp browsers...
-    else {
-    	// your browser does not have metamask please download and connect
-    	console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-    }
-});
-</script>
-<script type="text/javascript">
+    	jQuery('form').submit(function(){
+    		$(this).find(':submit').attr( 'disabled','disabled' );
+    		$('.loader-overlay').show();
+    	});
+    </script>
+    @stop
 
-	jQuery('form').submit(function(){
-		$(this).find(':submit').attr( 'disabled','disabled' );
-		$('.loader-overlay').show();
-	});
-</script>
-@stop
-
-@stop
+    @stop

@@ -37,7 +37,7 @@ class OfferController extends Controller
      */
     public function __construct()
     {
-      $this->middleware('auth',['except'=>['store']]);
+      $this->middleware('auth',['except'=>['store','invoiceBuy']]);
       $this->middleware('admin', ['only' => ['requestForm', 'cancelRequestForm']]);
       $this->uri = env('KONKRETE_IP', 'http://localhost:5050');
       if(isset(SiteConfiguration::where('project_site', url())->first()->audk_default_project_id)){
@@ -66,6 +66,20 @@ class OfferController extends Controller
     public function create()
     {
         //
+    }
+
+    public function invoiceBuy(Request $request,$id,AppMailer $mailer)
+    {
+      $project = Project::findOrFail($id);
+      $investingAs = 'Individual Investor';
+      $investments = InvestmentInvestor::create([
+        'investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,
+        'financier_wallet_address'=>$request->financiersAddress,'transaction_hash'=>$request->transactionHash
+      ]);
+      //$this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
+      //$this->dispatch(new SendReminderEmail($user,$project,$investor));
+
+      return redirect()->back()->with(['message'=>'Successful']);
     }
 
     /**

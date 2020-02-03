@@ -310,6 +310,10 @@ Route::post('/configuration/updateKonkreteAllocationChanges', ['as'=> 'configura
 Route::post('/configuration/updateSendgridAPIKey', ['as'=> 'configuration.updateSendgridAPIKey', 'uses'=>'SiteConfigurationsController@updateSendgridAPIKey']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
+Route::post('/invoice/{id}/buy',['as'=>'offer.bought','uses'=>'OfferController@invoiceBuy']);
+
+
+
 Route::get('/projects/showedit/{project_id}', ['as'=>'projects.showedit', 'uses'=>'ProjectsController@showedit']);
 Route::get('/dashboard/projects/{investment_id}/investments/cancel', ['as'=>'dashboard.investment.cancel', 'uses'=>'DashboardController@investmentCancel']);
 Route::post('/dashboard/projects/{project_id}/investment/declareDividend', ['as'=>'dashboard.investment.declareDividend', 'uses'=>'DashboardController@declareDividend']);

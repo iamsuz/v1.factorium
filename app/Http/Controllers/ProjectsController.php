@@ -1270,7 +1270,7 @@ public function prospectusDownload(Request $request)
     {
         $project = Project::findOrFail($projectId);
         $askingAmount = $project->investment->calculated_asking_price;
-
+        dd($project->investment->calculated_asking_price);
         return array('status' => true, 'data' => array('asking_amount' => $askingAmount));
     }
     public function getEntittyName(Request $request)
@@ -1659,6 +1659,6 @@ public function prospectusDownload(Request $request)
         $project = Project::findOrFail($id);
         $project->contract_address = $request->contract_address;
         $project->save();
-        return redirect()->back();
+        return array('project'=> $project);
     }
 }

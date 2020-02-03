@@ -22,9 +22,9 @@ $_SESSION['code'] = md5(microtime(true));
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="author" content="Estate Baron">
+    <meta name="author" content="Konkrete">
     {{-- <meta name="description" content="Invest in top Australian property developments of your choice with as little as $100. Australia's only platform open to everyone not just wholesale investors."> --}}
-    <meta name="copyright" content="Estate Baron Crowdinvest Pty Ltd copyright (c) 2016">
+    <meta name="copyright" content="Konkrete Distributed Registries Ltd (ABN 67617252909)">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <?php

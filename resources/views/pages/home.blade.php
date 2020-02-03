@@ -771,7 +771,7 @@
 														</div>
 														<div class="col-md-6" style="padding-top: 10px">
 															<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-															<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" >{{ $buyBtnText }}</a>
+															<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" data-amount="@if($project->investment){{number_format($project->investment->calculated_asking_price, 2)}}@endif" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" >{{ $buyBtnText }}</a>
 														</div>
 													</div>
 													<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -941,7 +941,7 @@
 															</div>
 															<div class="col-md-6" style="padding-top: 10px;">
 																<?php $buyBtnText = ($invoice_sold =='1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-																<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice"  @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}">{{ $buyBtnText }}</a>
+																<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice"  @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" data-amount="@if($project->investment){{number_format($project->investment->calculated_asking_price, 2)}}@endif">{{ $buyBtnText }}</a>
 															</div>
 														</div>
 														<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1106,7 +1106,7 @@
 																</div>
 																<div class="col-md-6" style="padding-top: 10px;">
 																	<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
-																	<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}">{{ $buyBtnText }}</a>
+																	<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" data-amount="@if($project->investment){{number_format($project->investment->calculated_asking_price, 2)}}@endif">{{ $buyBtnText }}</a>
 																</div>
 															</div>
 															<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1816,6 +1816,7 @@
 					</div>
 				</div>
 			</div>
+			@include('partials.approveTokenModal')
 			<script type = "text/javascript"
 			src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 			{!! Html::script('js/bootstrap.min.js') !!}
@@ -1835,6 +1836,8 @@
 			{!! Html::script(asset('js/jQuery.countdownTimer.min.js')) !!}
 			<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
 			<script type="text/javascript" src="/assets/abi/smartInvoiceABI.js"></script>
+			<script type="text/javascript" src="/assets/abi/daiABI.js"></script>
+			<script type="text/javascript" src="/assets/js/app.js"></script>
 			<script>
 				window.addEventListener('load', async () => {
 		    		// Modern dapp browsers...
@@ -1845,27 +1848,19 @@
         					ethereum.autoRefreshOnNetworkChange = false;
         					await ethereum.enable();
         					var financiersAddress = ethereum.selectedAddress;
-        					$('.buy-invoice').on('click', function(e){
+        					$('.buy-invoice').on('click', function(e) {
         						e.preventDefault();
-        						var project_id = $(this).data('id');
-        						var contract_address = $(this).data('address');
-        						console.log(contract_address);
-        						var myContract  = new web3.eth.Contract(abi,contract_address);
-        						// await myContract.methods.buyInvoice({}).send({
-        						// })
-        						console.log(myContract);
-			        			// $.ajax({
-			        			// 	'type': 'POST',
-			        			// 	'URL': "{{route('offer.store')}}",
-			        			// 	data: financiersAddress,
-			        			// 	headers: {
-			        			// 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			        			// 	},
-			        			// 	success: function (transaction) {
-			        			// 		console.log(transaction);
-			        			// 	}
-			        			//  });
-			       				//  console.log("{{ $project->id }}");
+        						var pAddress = $(this).data('address');
+        						var askingAmount = $(this).data('amount');
+        						var pid = $(this).data('id');
+        						$('#modalTitleApprDai').text('Invoice '+pid.toString());
+        						$('#approveTokenModal').modal('show');
+        						$('#apprDai').on('click',function(r){
+        							approval(pAddress,askingAmount);
+        						});
+        						$('#buyApprInvoice').on('click',function(b){
+        							byInvoice(pAddress,askingAmount,pid);
+        						});
 			       			})
         				} catch (error) {
         					// User denied account access...
@@ -3353,6 +3348,7 @@ function updateCoords(coords, w, h, origWidth, origHeight){
 						},
 					}).done(function(data){
 						if (data.status) {
+							console.log(data);
 							$('#invoice_asking_amount_' + projectId).html('$' + number_format(data.data.asking_amount, 3));
 						}
 					});

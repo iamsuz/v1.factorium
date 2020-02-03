@@ -472,7 +472,7 @@ class UserRegistrationsController extends Controller
             'password' => 'required|min:6|max:60',
             'token'=>'required',
             'country_code'=>'required',
-            'wallet_address'=>'required'
+            'wAddress'=>'required'
         ]);
 
         $userReg = UserRegistration::whereToken($request->token)->firstOrFail();
