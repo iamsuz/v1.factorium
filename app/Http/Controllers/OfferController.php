@@ -70,16 +70,38 @@ class OfferController extends Controller
 
     public function invoiceBuy(Request $request,$id,AppMailer $mailer)
     {
+      $id = base64_decode($id);
       $project = Project::findOrFail($id);
+      $this->validate($request, [
+        'financiersAddress' => 'required',
+        'transactionHash' => 'required',
+      ]);
       $investingAs = 'Individual Investor';
-      $investments = InvestmentInvestor::create([
-        'investment_id'=>$project->investment->id,'amount'=>$amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>$request->interested_to_buy,'signature_data_type'=>$request->signature_data_type,'signature_type'=>$request->signature_type,
-        'financier_wallet_address'=>$request->financiersAddress,'transaction_hash'=>$request->transactionHash
+      $investments = InvestmentInvestor::create(['project_id'=>$id,
+        'investment_id'=>$project->investment->id,'amount'=>$request->amount,'project_site'=>url(),'investing_as'=>$investingAs, 'signature_data'=>$request->signature_data, 'interested_to_buy'=>0,'signature_data_type'=>$request->signature_data_type,'signature_type'=>0,'financier_wallet_address'=>$request->financiersAddress,'transaction_hash'=>$request->transactionHash,'money_received'=>1,'accepted'=>1,
       ]);
       //$this->dispatch(new SendInvestorNotificationEmail($user,$project, $investor));
       //$this->dispatch(new SendReminderEmail($user,$project,$investor));
+      // return 'success';
+      return response()->json(['data'=>true]);
+    }
 
-      return redirect()->back()->with(['message'=>'Successful']);
+
+    public function settleInvoice(Request $request,$id)
+    {
+      $id = base64_decode($id);
+      $project = Project::findOrFail($id);
+      $this->validate($request, [
+        'transactionHash' => 'required'
+      ]);
+      $investments = $project->soldInvoice->first();
+      if($investments->is_repurchased){
+        return response()->json(['data'=>false]);
+      }
+      $investments->is_repurchased = 1;
+      $investments->financier_wallet_address = $request->transactionHash;
+      $investments->save();
+      return response()->json(['data'=>true]);
     }
 
     /**

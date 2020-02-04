@@ -767,11 +767,15 @@
 													<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%" />
 													<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 														<div class="col-md-6" style="padding-top: 10px;">
-															<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
+															<a class="btn btn-block buy-now-btn" href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 														</div>
 														<div class="col-md-6" style="padding-top: 10px">
 															<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
 															<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" data-amount="@if($project->investment){{number_format($project->investment->calculated_asking_price, 2)}}@endif" @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" >{{ $buyBtnText }}</a>
+															@if($project->repurchased)
+															<br>
+															<button data-toggle="modal" data-target="#redeemInvTokenModal"></button>
+															@endif
 														</div>
 													</div>
 													<div class="project-thumb-overflow" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -937,11 +941,15 @@
 														<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
 														<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 															<div class="col-md-6" style="padding-top: 10px;">
-																<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" target="_blank" style="padding: 5px; border: 0px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px;height: 20px;">{{$project->token_symbol}}</a>
+																<a class="btn btn-block buy-now-btn" href="https://kovan.etherscan.io/token/{{$project->contract_address}}" target="_blank" style="padding: 5px; border: 0px;"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px;height: 20px;">{{$project->token_symbol}}</a>
 															</div>
 															<div class="col-md-6" style="padding-top: 10px;">
 																<?php $buyBtnText = ($invoice_sold =='1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
 																<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice"  @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" data-amount="@if($project->investment){{number_format($project->investment->calculated_asking_price, 2)}}@endif">{{ $buyBtnText }}</a>
+																@if(!$project->repurchased->isEmpty())
+															<br>
+															<button class="btn btn-info buy-now-btn redeemInvTokenModal" data-address="{{$project->contract_address}}"> Redeem Inv Token</button>
+															@endif
 															</div>
 														</div>
 														<div class="project-thumb-overflow text-center" @if(!$project->is_coming_soon) style="display:none;" @endif>
@@ -1102,7 +1110,7 @@
 															<img src="@if($projectThumb=$project->media->where('type', 'project_thumbnail')->where('project_site', url())->last()){{asset($projectThumb->path)}} @else {{asset('assets/images/Default_thumbnail.jpg')}} @endif" class="img-responsive project-image-style" style="width: 100%"/>
 															<div class="row" style="padding: 10px 10px 0px 10px; font-size: 16px;">
 																<div class="col-md-6" style="padding-top: 10px;">
-																	<a class="btn btn-block buy-now-btn" href="https://ropsten.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
+																	<a class="btn btn-block buy-now-btn" href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="padding: 5px; border: 0px;" target="_blank"><img src="/assets/images/etherium_logo.png" style="margin-right: 20px; height:20px;">{{$project->token_symbol}}</a>
 																</div>
 																<div class="col-md-6" style="padding-top: 10px;">
 																	<?php $buyBtnText = ($invoice_sold == '1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
@@ -1817,6 +1825,7 @@
 				</div>
 			</div>
 			@include('partials.approveTokenModal')
+			@include('partials.redeemInvTokenModal')
 			<script type = "text/javascript"
 			src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 			{!! Html::script('js/bootstrap.min.js') !!}
@@ -1853,15 +1862,28 @@
         						var pAddress = $(this).data('address');
         						var askingAmount = $(this).data('amount');
         						var pid = $(this).data('id');
+        						var hPid = btoa(pid);
         						$('#modalTitleApprDai').text('Invoice '+pid.toString());
         						$('#approveTokenModal').modal('show');
         						$('#apprDai').on('click',function(r){
         							approval(pAddress,askingAmount);
         						});
         						$('#buyApprInvoice').on('click',function(b){
-        							byInvoice(pAddress,askingAmount,pid);
+        							byInvoice(pAddress,askingAmount,hPid,pid);
         						});
-			       			})
+        					});
+        					$('.redeemInvTokenModal').on('click',function (e) {
+        						e.preventDefault();
+        						$('#redeemInvTokenModal').modal('show');
+        						var cAddress = $(this).data('address');
+        						getInvTokenBalance(cAddress);
+        						$('form#redeemTokenForm').submit(function (t) {
+        							t.preventDefault();
+        							var invToken = $('input[name="invToken"]').val();
+        							redeemInvToken(cAddress, invToken);
+        							//getDaiBalance(ethereum.selectedAddress);
+        						});
+        					});
         				} catch (error) {
         					// User denied account access...
         				}
@@ -1891,30 +1913,30 @@
     					var s = Math.floor(s);
     					//countdownNumberEl.textContent = s;
     					$id = {{Auth::user()->id}};
-    					if(s == 59){
-    						console.log('Minute passed and Token deducted');
-    						$.ajax({
-    							'type': 'POST',
-    							'url': '/user/'+$id+'/tokenDeduction',
-    							data: {test:'test'},
-    							headers: {
-    								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    							},
-    							success: function(credit) {
-    								console.log(credit.credit);
-    								if(credit.error){
-    									$('#factor_token').html(credit.error).fadeIn();
-    								}else{
-    									$('#factor_token').html(credit.credit+' Factor').fadeIn();
-    								}
-    							},
-    							error: function (data) {
-    								console.log(data.error);
-    								$('#factor_token').html(data.error).fadeIn();
-    							}
-    						},function (e) {
-    						});
-    					}
+    					// if(s == 59){
+    					// 	console.log('Minute passed and Token deducted');
+    					// 	$.ajax({
+    					// 		'type': 'POST',
+    					// 		'url': '/user/'+$id+'/tokenDeduction',
+    					// 		data: {test:'test'},
+    					// 		headers: {
+    					// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    					// 		},
+    					// 		success: function(credit) {
+    					// 			console.log(credit.credit);
+    					// 			if(credit.error){
+    					// 				$('#factor_token').html(credit.error).fadeIn();
+    					// 			}else{
+    					// 				$('#factor_token').html(credit.credit+' Factor').fadeIn();
+    					// 			}
+    					// 		},
+    					// 		error: function (data) {
+    					// 			console.log(data.error);
+    					// 			$('#factor_token').html(data.error).fadeIn();
+    					// 		}
+    					// 	},function (e) {
+    					// 	});
+    					// }
     					$('.Timer').text((h < 10 ? '0'+h : h)+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s));
     				}, 1000);
 					@endif

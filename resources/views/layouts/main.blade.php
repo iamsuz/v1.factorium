@@ -419,9 +419,25 @@ $_SESSION['code'] = md5(microtime(true));
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
 <script src="http://code.dappbench.com/browser-solc.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="/assets/abi/smartInvoiceABI.js"></script>
+<script type="text/javascript" src="/assets/abi/daiABI.js"></script>
 <script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/error.js"></script>
 <!-- End Inspectlet Embed Code -->
 <script type="text/javascript">
+
+    window.addEventListener('load', async () => {
+        // Modern dapp browsers...
+        if (window.ethereum) {
+            window.web3 = new Web3(ethereum);
+            try {
+                ethereum.autoRefreshOnNetworkChange = false;
+                await ethereum.enable();
+            }catch{
+                console.log('User denied the access');
+            }
+        }
+    });
+
 
     // Signin bonus message
     @if (Session::has('loginaction'))

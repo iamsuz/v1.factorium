@@ -1,4 +1,4 @@
-async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer) {
+async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer,e) {
 	if (typeof BrowserSolc == 'undefined') {
 		console.log("You have to load browser-solc.js in the page.  We recommend using a <script> tag.");
 		throw new Error();
@@ -36,8 +36,14 @@ async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer) {
 				value: '0',
 				data:byteCode
 			},function (err,res) {
-				$('input[name=contract_hash]').val(res);
-				$('form').submit();
+				if(res){
+					$('input[name=contract_hash]').val(res);
+					e.currentTarget.submit();
+				}else{
+					$('.loader-overlay').hide();
+					$('#alertCreateInvoice').removeClass('hide');
+					$('#alertCreateInvoice').html('You have rejected the contract deployment');
+				}
 			});
 			console.log(newContrtact);
 		}else{
@@ -89,13 +95,17 @@ async function approval(cAddress,pAmount){
 	},function (err,res) {
 		status = res;
 	});
+	// check the balance of the msg.sender as even if the msg.sender has less balance he can
+	// approve more tokens than he holds and then why buying invoice it will throw error in
+	// transaction and user wont be able to figure out easily
 	console.log(daiContract.methods);
 	if(status == 1){
 		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
 			from: ethereum.selectedAddress
 		},async (err,res) => {
 			if(res < pAmount){
-				//add one more check if you approved yesterday and today askingAMount is changed with day has passsed
+				//add one more check if you approved yesterday and today askingAMount is
+				//changed with day has passsed
 				//remaining amount of DAI that is (pAmount - res) is the new pAmount for approve
 				await daiContract.methods.approve(cAddress, pAmount).send({
 					from: ethereum.selectedAddress
@@ -104,7 +114,12 @@ async function approval(cAddress,pAmount){
 						console.log(err);
 					}
 					if(result){
-						$('#buyApprInvoice').attr('disabled','false');
+						$('#apprAlertModal').removeClass('hide');
+						$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
+						$('#lockLogo').removeClass('fa-lock');
+						$('#lockLogo').addClass('fa-unlock');
+						$('#buyApprInvoice').removeAttr('disabled');
+						$('#apprDai').attr('disabled','true');
 					}
 				});
 			}else{
@@ -113,18 +128,21 @@ async function approval(cAddress,pAmount){
 				$('#lockLogo').removeClass('fa-lock');
 				$('#lockLogo').addClass('fa-unlock');
 				$('#buyApprInvoice').removeAttr('disabled');
+				$('#apprDai').attr('disabled','true');
 			}
 			console.log(res);
 		})
 	}else if(status == 2){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
+		$('#apprDai').attr('disabled','true');
 	} else if(status == 3){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
+		$('#apprDai').attr('disabled','true');
 	}
 }
-async function byInvoice(pAddress,pAmount,pid){
+async function byInvoice(pAddress,pAmount,hPid,pid){
 	var projectContract = new web3.eth.Contract(abi,pAddress);
 	pEAmount = web3.utils.toWei(pAmount.toString(), 'ether');
 	var financiersAddress = ethereum.selectedAddress;
@@ -136,19 +154,108 @@ async function byInvoice(pAddress,pAmount,pid){
 		}
 		$.ajax({
 			type: 'POST',
-			url: "/invoice/"+pid+"/buy",
-			data: { financiersAddress: financiersAddress,
+			url: "/invoice/"+hPid+"/buy",
+			data: {
+				_toke: "{{ csrf_token() }}",
+				financiersAddress: financiersAddress,
 				transactionHash: result,
 				amount: pAmount,
 			},
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
-			success: function (transaction) {
-				console.log(transaction);
+			success: function (data) {
+				if(data){
+					location.reload();
+				}
 			}
 		});
 	});
+}
+
+async function approvalSettle(cAddress,pAmount){
+	var daiCAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa";
+	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
+	pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
+	var proContract = new web3.eth.Contract(abi,cAddress);
+	var status;
+	await proContract.methods.status().call({
+		from: ethereum.selectedAddress
+	},function (err,res) {
+		status = res;
+	});
+	// check the balance of the msg.sender as even if the msg.sender has less balance he can
+	// approve more tokens than he holds and then why buying invoice it will throw error in
+	// transaction and user wont be able to figure out easily
+	console.log(daiContract.methods);
+	if(status == 2){
+		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
+			from: ethereum.selectedAddress
+		},async (err,res) => {
+			if(res < pAmount){
+				//add one more check if you approved yesterday and today askingAMount is
+				//changed with day has passsed
+				//remaining amount of DAI that is (pAmount - res) is the new pAmount for approve
+				await daiContract.methods.approve(cAddress, pAmount).send({
+					from: ethereum.selectedAddress
+				},function(err,result){
+					if(err){
+						console.log(err);
+					}
+					if(result){
+						$('#apprAlertModal').removeClass('hide');
+						$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
+						$('#lockLogo').removeClass('fa-lock');
+						$('#lockLogo').addClass('fa-unlock');
+						$('#settleApprInvoiceBtn').removeAttr('disabled');
+						$('#apprDai').attr('disabled','true');
+					}
+				});
+			}else{
+				$('#apprAlertModal').removeClass('hide');
+				$('#apprAlertModal').text('You have already approved DAI tokens for this Smart Invoice');
+				$('#lockLogo').removeClass('fa-lock');
+				$('#lockLogo').addClass('fa-unlock');
+				$('#settleApprInvoiceBtn').removeAttr('disabled');
+				$('#apprDai').attr('disabled','true');
+			}
+			console.log(res);
+		})
+	}else if(status == 3){
+		$('#apprAlertModal').removeClass('hide');
+		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
+		$('#apprDai').attr('disabled','true');
+	}
+}
+
+async function settleInvoice(pAddress,pid) {
+	var pContract = new web3.eth.Contract(abi,pAddress);
+	var hPid = btoa(pid);
+	await pContract.methods.settle().send({
+		from:ethereum.selectedAddress
+	},function (err,result) {
+		if(err){
+			$.ajax({
+				type: 'POST',
+				url: "/invoice/"+hPid+"/settle",
+				data: {
+					_toke: "{{ csrf_token() }}",
+					transactionHash: 'result'
+				},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+				success: function (data) {
+					if(data){
+						//location.reload();
+					}
+				}
+			});
+		}else{
+			console.log('User has rejected the tranasction');
+		}
+	});
+	console.log(pContract);
 }
 
 async function getContractAdderss(project,hash) {
@@ -168,6 +275,52 @@ async function getContractAdderss(project,hash) {
 					commit(data.project);
 				}
 			})
+		}else{
+			userInvoiceError();
+			$('#alertBuyerInv').html('Sorry! We coudnt find valid transaction hash, this seems not a valid Invoice');
 		}
+	});
+}
+
+
+async function getInvTokenBalance(cAddress) {
+	var pContract = new web3.eth.Contract(abi,cAddress);
+	var uAddress = ethereum.selectedAddress;
+	await pContract.methods.balanceOf(uAddress).call({
+		from: ethereum.selectedAddress
+	},function (err,res) {
+		if(res){
+			pAmount = web3.utils.fromWei(res.toString(), 'ether');
+			if(pAmount >0 ){
+				$('input[name="invToken"]').val(pAmount);
+				$('input[name="invToken"]').attr('max',pAmount);
+				$('.lockLogo').removeClass('fa-lock');
+				$('.lockLogo').addClass('fa-unlock');
+			}else{
+				$('#redeemTokenBtn').attr('disabled','true');
+			}
+		}
+	});
+}
+async function redeemInvToken(cAddress,amount) {
+	var pContract = new web3.eth.Contract(abi,cAddress);
+	pAmount = web3.utils.toWei(amount.toString(), 'ether');
+	await pContract.methods.redeemInvTokens(pAmount).send({
+		from: ethereum.selectedAddress
+	},function (err, res) {
+		if(res){
+			$('#redeemedInvToken').html('You have redeemed '+amount+'INV Tokens');
+		}
+	})
+}
+
+async function getDaiBalance(uAddress){
+	var balance;
+	var daiCAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa";
+	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
+	daiContract.methods.balanceOf(uAddress).call({
+		from: ethereum.selectedAddress
+	},function (err,res) {
+		$('#daiBalance').html('Your Dai Balance is '+res);
 	});
 }

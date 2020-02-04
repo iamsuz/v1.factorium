@@ -21,20 +21,20 @@ Create New Project | @parent
 			@endif
 			@if ($errors->has())
 			<br>
-			<div class="alert alert-danger">
+			<div class="alert alert-danger" >
 				@foreach ($errors->all() as $error)
 				{{ $error }}<br>
 				@endforeach
 			</div>
 			@endif
+			<div class="alert alert-danger hide text-center" id="alertCreateInvoice">
+			</div>
 		</div>
 	</div>
 	<section id="project-form">
 		<div class="row ">
 			<div class="col-md-6 col-md-offset-3 wow fadeIn animated" data-wow-duration="0.8s" data-wow-delay="0.5s">
-				{!! Form::open(array('route'=>'projects.store', 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true)) !!}
-				<input type="hidden" name="wallet_address_buyer" value="" required="true">
-				<input type="hidden" name="contract_hash" value="" required="true">
+				{!! Form::open(array('route'=>'projects.store', 'class'=>'form-horizontal', 'role'=>'form', 'files'=>true, 'id'=>'createInvoiceForm')) !!}
 				{{-- <fieldset>
 					<br>
 					<div class="row">
@@ -56,7 +56,7 @@ Create New Project | @parent
 								<div class="col-sm-6">
 									<div class="@if($errors->first('invoice_amount')){{'has-error'}} @endif">
 										<h4 class="first_color">Amount</h4>
-										{!! Form::input('number', 'invoice_amount', null, array('placeholder'=>'Amount', 'class'=>'form-control', 'tabindex'=>'2')) !!}
+										{!! Form::input('number', 'invoice_amount', null, array('placeholder'=>'Amount', 'class'=>'form-control', 'tabindex'=>'2', 'required'=>'true')) !!}
 										{!! $errors->first('invoice_amount', '<small class="text-danger">:message</small>') !!}
 									</div>
 								</div>
@@ -96,7 +96,7 @@ Create New Project | @parent
 							</div>
 							<div class="col-sm-6">
 								<h4 class="invoice_issue_from_email first_color">Email</h4>
-								{!! Form::input('email','invoice_issue_from_email', null, array('placeholder'=>'Invoice issued to Email', 'class'=>'form-control', 'tabindex'=>'5')) !!}
+								{!! Form::input('email','invoice_issue_from_email', null, array('placeholder'=>'Invoice issued to Email', 'class'=>'form-control', 'tabindex'=>'5','required'=>'true')) !!}
 								{!! $errors->first('invoice_issue_from_email', '<small class="text-danger">:message</small>') !!}
 							</div>
 						</div>
@@ -115,7 +115,8 @@ Create New Project | @parent
 						</div>
 					</div>
 				</fieldset>
-
+				<input type="hidden" name="wallet_address_buyer" value="" required="true">
+				<input type="hidden" name="contract_hash" value="" required="true">
 				<fieldset>
 					<br><br>
 					<div class="row text-center">
@@ -143,8 +144,9 @@ Create New Project | @parent
 			throw new Error();
 		}
 		// console.log(abi);
-		$("#app_submit").on("click", async(e) => {
+		$("form#createInvoiceForm").submit(async(e) => {
 			e.preventDefault();
+			$('.loader-overlay').show();
 			var amount = $('input[name=invoice_amount]').val();
 			var askingAmount = $('input[name=asking_amount]').val();
 			var dueDate = $('input[name=due_date]').val();
@@ -154,7 +156,8 @@ Create New Project | @parent
 			if(amount == null){
 				window.reload;
 			}
-			await compileCode(amount,askingAmount,someDate,walletAddressBuyer);
+			var result = compileCode(amount,askingAmount,someDate,walletAddressBuyer,e);
+			console.log(result);
 		});
 	});
 	$(document).ready(function () {
@@ -226,9 +229,6 @@ Create New Project | @parent
 					$('input[name=wallet_address_buyer').val(data.data.wallet_address);
 				});
 			}
-		});
-		$("input[type=submit]").click(function(){
-			$('.loader-overlay').show();
 		});
 	});
 </script>
