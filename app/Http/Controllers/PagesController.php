@@ -52,6 +52,15 @@ class PagesController extends Controller
         $monolog = \Log::getMonolog();
         dd($monolog);
     }
+
+    public function invoice()
+    {
+        $color = Color::all();
+        $color = $color->where('project_site',url())->first();
+        $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
+        return view('pages.invoice',compact('projects','color'));
+    }
+
     /**
     * returns home page
     * @return view [home page is returned]

@@ -24,7 +24,7 @@
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-script')
     @endif
-    
+
     @section('meta-section')
     @show
 
@@ -35,7 +35,7 @@
     </title>
     <!-- Bootstrap -->
     {!! Html::style('/css/bootstrap.min.css') !!}
-    {!! Html::style('/plugins/font-awesome-4.4.0/css/font-awesome.min.css') !!}
+    {{-- {!! Html::style('/plugins/font-awesome-4.4.0/css/font-awesome.min.css') !!} --}}
 
     @section('css-app')
     {!! Html::style('/css/app3.css') !!}
@@ -48,8 +48,8 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/Html5shiv/3.7.0/Html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-    <!-- End Inspectlet Embed Code -->
+<![endif]-->
+<!-- End Inspectlet Embed Code -->
 </head>
 <body data-spy="scroll">
     @if (Config::get('analytics.gtm.enable'))
@@ -61,7 +61,7 @@
         <div class="container" id="containernav">
             <div class="logo pull-left">
                 <a href="{{route('home')}}">
-                <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="100" alt="estate baron logo" id="logo" style="margin-top:0em;"></span>
+                    <span class="logo-title"><img src="{{asset('assets/images/main_logo.png')}}" width="100" alt="estate baron logo" id="logo" style="margin-top:0em;"></span>
                 </a>
             </div><!--//logo-->
             <div class="navbar-header">
@@ -115,9 +115,9 @@
 
     <!-- footer content here -->
     @section('footer-section')
-    <footer id="footer" class="chunk-box">
+    <footer id="footer" class="chunk-box" style="background-color: #ffffff;">
         <div class="container">
-            <div class="row">
+            <div class="row hide">
                 <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.2s">
                     <center>
                         <!-- <h1>Vestabyte</h1> -->
@@ -160,6 +160,10 @@
     {!! Html::script('/js/bootstrap.min.js') !!}
     {!! Html::script('/js/circle-progress.js')!!}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/assets/abi/smartInvoiceABI.js"></script>
+    <script type="text/javascript" src="/assets/abi/daiABI.js"></script>
+    <script type="text/javascript" src="/assets/js/app.js"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -179,7 +183,7 @@
                     if(mq.matches){
                         $('#section-colors-left').removeClass('hide');
                     }else{
-                    }   
+                    }
                 }
                 else {
                     $('#header').removeClass('navbar-fixed-top');

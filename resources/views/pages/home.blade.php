@@ -946,7 +946,7 @@
 															<div class="col-md-6" style="padding-top: 10px;">
 																<?php $buyBtnText = ($invoice_sold =='1') ? 'Invoice Sold' : (($invoice_sold == '2') ? 'Invoice Paid' : 'Buy ' . $project->title . ' Now'); ?>
 																<a class="btn btn-block buy-now-btn white-space-wrap buy-invoice"  @if($invoice_sold == '1' || $invoice_sold == '2') style="border: none; cursor: default;" disabled @else href="{{route('projects.interest', [$project->id])}}" @endif title="{{ $buyBtnText }}" data-id="{{$project->id}}" data-address="{{$project->contract_address}}" data-amount="@if($project->investment){{number_format($project->investment->calculated_asking_price, 2)}}@endif">{{ $buyBtnText }}</a>
-																@if(!$project->repurchased->isEmpty())
+															@if(!$project->repurchased->isEmpty())
 															<br>
 															<button class="btn btn-info buy-now-btn redeemInvTokenModal" data-address="{{$project->contract_address}}"> Redeem Inv Token</button>
 															@endif

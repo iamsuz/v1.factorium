@@ -3,7 +3,8 @@
  * Application Routes
  * -------------------------------------------------------------------------------------------------------------------
  */
-Route::get('/', ['as'=>'home', 'uses'=>'PagesController@home']);
+Route::get('/home', ['as'=>'home', 'uses'=>'PagesController@home']);
+Route::get('/',['as'=>'home','uses'=>'PagesController@invoice']);
 Route::get('/konkrete',['as'=>'konkrete','uses'=>'PagesController@konkrete']);
 Route::get('/konkreteG',['as'=>'konkreteGuzzle','uses'=>'PagesController@konkreteGuzzle']);
 Route::get('/tests', ['as'=>'home2', 'uses'=>'PagesController@something']);

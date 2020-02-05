@@ -315,12 +315,9 @@ async function redeemInvToken(cAddress,amount) {
 }
 
 async function getDaiBalance(uAddress){
-	var balance;
 	var daiCAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa";
 	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
-	daiContract.methods.balanceOf(uAddress).call({
+	return await daiContract.methods.balanceOf(uAddress).call({
 		from: ethereum.selectedAddress
-	},function (err,res) {
-		$('#daiBalance').html('Your Dai Balance is '+res);
 	});
 }
