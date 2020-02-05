@@ -1,7 +1,7 @@
 async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer,e) {
 	if (typeof BrowserSolc == 'undefined') {
 		console.log("You have to load browser-solc.js in the page.  We recommend using a <script> tag.");
-		throw new Error();
+		// throw new Error();
 	}
 	if(window.ethereum){
 		var web3 = new Web3(ethereum);
