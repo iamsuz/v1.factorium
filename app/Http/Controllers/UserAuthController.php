@@ -475,17 +475,17 @@ return response()->json(array('success'=>false,'auth'=>$auth));
                     // ]);
                 }
             }
-            if(!Auth::user()->wallet_address){
-                $user = Auth::user();
-                $client = new \GuzzleHttp\Client();
-                $requestG = $client->request('GET',$this->uri.'/userWallet',[
-                    'query'=> ['user_id'=> $user->id]
-                ]);
-                $response = $requestG->getBody()->getContents();
-                $result = json_decode($response);
-                $user->wallet_address = $result->signingKey->address;
-                $user->save();
-            }
+            // if(!Auth::user()->wallet_address){
+            //     $user = Auth::user();
+            //     $client = new \GuzzleHttp\Client();
+            //     $requestG = $client->request('GET',$this->uri.'/userWallet',[
+            //         'query'=> ['user_id'=> $user->id]
+            //     ]);
+            //     $response = $requestG->getBody()->getContents();
+            //     $result = json_decode($response);
+            //     $user->wallet_address = $result->signingKey->address;
+            //     $user->save();
+            // }
             Auth::user()->update(['last_login'=> Carbon::now()]);
             if (Auth::user()->roles->contains('role', 'admin') || Auth::user()->roles->contains('role', 'master')) {
                 $this->redirectTo = "/dashboard";
