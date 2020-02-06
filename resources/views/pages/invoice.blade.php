@@ -19,11 +19,16 @@ Create New Project | @parent
 		transform: scale(1.04);
 	}
 	.list-group-item{
-		border: none;
 		/*border-bottom: 1px solid #ddd;*/
+<<<<<<< HEAD
 		/*border-radius: 0px;*/
 		margin-left: -1px;
 		margin-right: -1px;
+=======
+		/*border-top: 1px solid;*/
+		margin-left: 0px;
+		margin-right: 0px;
+>>>>>>> efbf74dfc29986c54c448d4ff2acb0d7ade93577
 	}
 	.list-group{
 		margin-bottom: 0px;
@@ -194,10 +199,9 @@ Create New Project | @parent
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try{
-				console.log('inside try');
 				if(ethereum._metamask.isEnabled()){
 					var uAddress = ethereum.selectedAddress;
-					var shortText = jQuery.trim(uAddress.toString()).substring(0, 5)+ "...";
+					var shortText = jQuery.trim(uAddress.toString()).substring(0, 8)+ "...";
 					console.log(ethereum);
 					$('#connectToWalletBtn').text(shortText);
 					var balance = await getDaiBalance(ethereum.selectedAddress);
