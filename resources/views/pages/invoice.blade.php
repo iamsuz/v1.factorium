@@ -21,10 +21,9 @@ Create New Project | @parent
 	.list-group-item{
 		border: none;
 		/*border-bottom: 1px solid #ddd;*/
-		/*border-top: 1px solid;*/
-		border-radius: 0px;
-		margin-left: 0px;
-		margin-right: 0px;
+		/*border-radius: 0px;*/
+		margin-left: -1px;
+		margin-right: -1px;
 	}
 	.list-group{
 		margin-bottom: 0px;
@@ -80,11 +79,13 @@ Create New Project | @parent
 </section>
 @endif
 <section id="mainFold" style="background-color: #070a0e; height: 60vh;">
-	<div class="row" style="padding-top:30px;">
-		<div class="col-md-2 col-md-offset-8">
-		</div>
-		<div class="col-md-2">
-			<button class="btn" data-toggle="modal" data-target="#connectToWallet" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" id="connectToWalletBtn">Connect to wallet</button>
+	<div class="container">
+		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
+			<div class="col-md-2 col-md-offset-8">
+			</div>
+			<div class="col-md-2">
+				<button class="btn" data-toggle="modal" data-target="#connectToWallet" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" id="connectToWalletBtn">Connect to wallet</button>
+			</div>
 		</div>
 	</div>
 	<br><br><br><br>
@@ -97,40 +98,42 @@ Create New Project | @parent
 </section>
 <section>
 	<div class="container">
-		<div class="row">
+		<div class="row" style="">
 			<div class="col-md-6" id="buy-invoice-panel">
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
 					<div class="panel-heading row">
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-3">
 							Project Name
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-3">
 							Asking Amount
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-3">
 							Project Name
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3 col-xs-3">
 							Status
 						</div>
 					</div>
 					<div class="panel-body">
-						<div class="list-group">
+						<div class="">
 							@foreach($projects as $project)
-							<a href="#" class="list-group-item row">
-								<div class="col-md-3">
-									{{$project->title}}
-								</div>
-								<div class="col-md-3">
-									{{$project->investment->asking_amount}}
-								</div>
-								<div class="col-md-3">
-									Project Name
-								</div>
-								<div class="col-md-3">
-									Project Name
-								</div>
-							</a>
+							<div class="" style="border-top: 1px solid; width:100%;">
+								<a href="#" class="list-group-item row" style="padding: 1em 0;">
+									<div class="col-md-3 col-xs-3">
+										{{$project->title}}
+									</div>
+									<div class="col-md-3 col-xs-3">
+										{{$project->investment->asking_amount}}
+									</div>
+									<div class="col-md-3 col-xs-3">
+										Project Name
+									</div>
+									<div class="col-md-3 col-xs-3">
+										Project Name
+									</div>
+								</a>
+							</div>
 							@endforeach
 						</div>
 					</div>
@@ -138,12 +141,40 @@ Create New Project | @parent
 			</div>
 			<div class="col-md-6" id="sold-invoice-panel">
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
-					<div class="panel-heading">Panel Heading</div>
+					<div class="panel-heading row">					
+						<div class="col-md-3 col-xs-3">
+							Project Name
+						</div>
+						<div class="col-md-3 col-xs-3">
+							Asking Amount
+						</div>
+						<div class="col-md-3 col-xs-3">
+							Project Name
+						</div>
+						<div class="col-md-3 col-xs-3">
+							Status
+						</div>
+					</div>
 					<div class="panel-body">
-						<div class="list-group">
-							<a href="#" class="list-group-item">First item</a>
-							<a href="#" class="list-group-item">Second item</a>
-							<a href="#" class="list-group-item">Third item</a>
+						<div class="">
+							@foreach($projects as $project)
+							<div class="" style="border-top: 1px solid; width:100%;">
+								<a href="#" class="list-group-item row" style="padding: 1em 0;">
+									<div class="col-md-3 col-xs-3">
+										{{$project->title}}
+									</div>
+									<div class="col-md-3 col-xs-3">
+										{{$project->investment->asking_amount}}
+									</div>
+									<div class="col-md-3 col-xs-3">
+										Project Name
+									</div>
+									<div class="col-md-3 col-xs-3">
+										Project Name
+									</div>
+								</a>
+							</div>
+							@endforeach
 						</div>
 					</div>
 				</div>
