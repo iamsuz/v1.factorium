@@ -182,7 +182,6 @@ Create New Project | @parent
 			</div>
 		</div>
 	</div>
-</div>
 </section>
 @include('partials.connectToWallet')
 @stop
