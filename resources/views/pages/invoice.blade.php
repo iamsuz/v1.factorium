@@ -36,7 +36,10 @@ Buy Invoice | @parent
 		margin-right: 0px;
 	}
 	#buy-invoice-panel{
-		margin-top: -65px;
+		margin-top: -35px;
+	}
+	#myBtnContainer{
+		margin-top: -105px;
 	}
 	#sold-invoice-panel{
 		margin-top: -70px;
@@ -110,22 +113,27 @@ Buy Invoice | @parent
 				<p class="investedAmount">0 DAI</p>
 			</div>
 		</div>
-		<div id="myBtnContainer" class=" @if(!Auth::check()) hide @endif row" style="color: #333;">
-			<div class="col-md-6 ">
-				<button class="btn btn-sm filterbtn col-md-3 col-md-offset-1 @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')" > Show all</button>
-				<button class="btn btn-sm filterbtn col-md-3 col-md-offset-2 @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
-			</div>
-			<div class="col-md-6">
-				<button class="btn btn-sm filterbtn col-md-3  col-md-offset-3 @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
-				<button class="btn btn-sm filterbtn col-md-3 col-md-offset-2 @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
-			</div>
-		</div>
 	</div>
 </section>
 <section>
 	<div class="container">
+		<div class="row" id="myBtnContainer">
+			<div class="col-md-2">
+				<button class="btn btn-block btn-default filterbtn @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')" > Show all</button>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-block btn-default filterbtn  @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-block btn-default filterbtn  @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-block btn-default filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
+			</div>
+		</div>
 		<div class="row text-center" style="">
 			<div class="col-md-12" id="buy-invoice-panel">
+				<br><br>
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
 					<div class="panel-heading row" style="padding: 2rem 0;color: #aab8c1;">
 						<div class="col-md-3 col-xs-3">
@@ -190,8 +198,16 @@ Buy Invoice | @parent
 				console.log('inside try');
 				if(ethereum._metamask.isEnabled()){
 					var uAddress = ethereum.selectedAddress;
+					window.ethereum.on('accountsChanged', async (accounts) => {
+						var uAddress = accounts[0];
+						var shortText = jQuery.trim(uAddress.toString()).substring(0, 10)+ "...";
+						$('#connectToWalletBtn').text(shortText);
+						var balance = await getDaiBalance(ethereum.selectedAddress);
+						var balance = web3.utils.fromWei(balance.toString(), 'ether');
+						var b = Number(balance).toFixed(3);
+						$('#balanceBtn').text(b);
+					});
 					var shortText = jQuery.trim(uAddress.toString()).substring(0, 10)+ "...";
-					console.log(ethereum);
 					$('#connectToWalletBtn').text(shortText);
 					var balance = await getDaiBalance(ethereum.selectedAddress);
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
@@ -211,12 +227,12 @@ Buy Invoice | @parent
 								var hPid = btoa(pid);
 								byInvoice(cAddress,askAmount,hPid,pid);
 							} else if($(this).hasClass('redeem-btn')){
-        						getInvTokenBalance(cAddress);
-        						$('#redeemInvTokenModal').modal('show');
-        						$('form#redeemTokenForm').submit(function (t) {
-        							t.preventDefault();
-        							var invToken = $('input[name="invToken"]').val();
-        							redeemInvToken(cAddress, invToken);
+								getInvTokenBalance(cAddress);
+								$('#redeemInvTokenModal').modal('show');
+								$('form#redeemTokenForm').submit(function (t) {
+									t.preventDefault();
+									var invToken = $('input[name="invToken"]').val();
+									redeemInvToken(cAddress, invToken);
         							//getDaiBalance(ethereum.selectedAddress);
         						});
 							}
@@ -261,7 +277,6 @@ Buy Invoice | @parent
 </script>
 <script type="text/javascript">
 	function filterSelection(c) {
-
 		let filterUrl = '{{ route('home') }}?filter=' + c + '#projects';
 		window.location.href = filterUrl;
 		return;

@@ -298,24 +298,26 @@ async function settleInvoice(pAddress,pid) {
 	await pContract.methods.settle().send({
 		from:ethereum.selectedAddress
 	},function (err,result) {
-		if(err){
+		if(result){
 			$.ajax({
 				type: 'POST',
 				url: "/invoice/"+hPid+"/settle",
 				data: {
 					_toke: "{{ csrf_token() }}",
-					transactionHash: 'result'
+					transactionHash: result
 				},
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				},
 				success: function (data) {
 					if(data){
-						//location.reload();
+						location.reload();
 					}
 				}
 			});
 		}else{
+			$('#apprAlertModal').removeClass('hide');
+			$('#apprAlertModal').text('You have rejected the settlement');
 			console.log('User has rejected the tranasction');
 		}
 	});
