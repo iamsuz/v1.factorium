@@ -55,9 +55,31 @@ class PagesController extends Controller
 
     public function invoice()
     {
+        $listingProjects = new Collection();
         $color = Color::all();
         $color = $color->where('project_site',url())->first();
-        $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'desc')->get();
+        $siteProjects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'desc')->get();
+        $projects = $siteProjects->merge($listingProjects)->reverse();
+            //Filter projects listing
+            if ($filterKey = request('filter')) {
+                switch ($filterKey) {
+                    case 'buy':
+                    $projects = $projects->filter(function ($value) {
+                        return !$value->soldInvoice->count() && !$value->repurchased->count() && !$value->repurchased_by_partial_pay->count();
+                    });
+                    break;
+                    case 'sold':
+                    $projects = $projects->filter(function ($value) {
+                        return $value->soldInvoice->count() > 0;
+                    });
+                    break;
+                    case 'repaid':
+                    $projects = $projects->filter(function ($value) {
+                        return ($value->repurchased->count() > 0) || ($value->repurchased_by_partial_pay->count() > 0);
+                    });
+                    break;
+                }
+            }
         return view('pages.invoice',compact('projects','color'));
     }
 

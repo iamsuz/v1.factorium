@@ -78,7 +78,7 @@ Buy Invoice | @parent
 	</div>
 </section>
 @endif
-<section id="mainFold" style="background-color: #070a0e; height: 60vh;color: #fff;">
+<section id="mainFold" style="background-color: #070a0e; height: 62vh;color: #fff;">
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
 			<div class="col-md-2">
@@ -108,6 +108,16 @@ Buy Invoice | @parent
 				<br>
 				<h3 class="invested-amount">Invested Amount</h3>
 				<p class="investedAmount">0 DAI</p>
+			</div>
+		</div>
+		<div id="myBtnContainer" class=" @if(!Auth::check()) hide @endif row" style="color: #333;">
+			<div class="col-md-6 ">
+				<button class="btn btn-sm filterbtn col-md-3 col-md-offset-1 @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')" > Show all</button>
+				<button class="btn btn-sm filterbtn col-md-3 col-md-offset-2 @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
+			</div>
+			<div class="col-md-6">
+				<button class="btn btn-sm filterbtn col-md-3  col-md-offset-3 @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
+				<button class="btn btn-sm filterbtn col-md-3 col-md-offset-2 @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
 			</div>
 		</div>
 	</div>
@@ -238,5 +248,13 @@ Buy Invoice | @parent
 			console.log(result);
 		});
 	});
+</script>
+<script type="text/javascript">
+	function filterSelection(c) {
+
+		let filterUrl = '{{ route('home') }}?filter=' + c + '#projects';
+		window.location.href = filterUrl;
+		return;
+	}
 </script>
 @stop
