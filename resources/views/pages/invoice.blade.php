@@ -1,7 +1,7 @@
 @extends('layouts.mainproject')
 
 @section('title-section')
-Create New Project | @parent
+Buy Invoice | @parent
 @stop
 
 @section('css-section')
@@ -36,7 +36,7 @@ Create New Project | @parent
 		margin-right: 0px;
 	}
 	#buy-invoice-panel{
-		margin-top: -70px;
+		margin-top: -65px;
 	}
 	#sold-invoice-panel{
 		margin-top: -70px;
@@ -78,38 +78,54 @@ Create New Project | @parent
 	</div>
 </section>
 @endif
-<section id="mainFold" style="background-color: #070a0e; height: 60vh;">
+<section id="mainFold" style="background-color: #070a0e; height: 60vh;color: #fff;">
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
-			<div class="col-md-2 col-md-offset-8">
+			<div class="col-md-1 col-md-offset-9">
+				<button class="btn" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" ><span id="balanceBtn"></span> Dai</button>
 			</div>
 			<div class="col-md-2">
 				<button class="btn" data-toggle="modal" data-target="#connectToWallet" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" id="connectToWalletBtn">Connect to wallet</button>
 			</div>
 		</div>
-	</div>
-	<br><br><br><br>
-	<div class="row text-center">
-		<button class="btn btn-lg btn-primary buy-now-btn circle-btn">
-			Approve Dai<br>
-			<span id="balanceBtn"></span>
-		</button>
+		<br><br><br><br>
+		<div class="row text-center">
+			<div class="col-md-4">
+				<br>
+				<h3 class="project-name">Project Name</h3>
+				<p class="askingAmt">Asking Amount</p>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-lg btn-info buy-now-btn circle-btn">
+					Approve Dai<br>
+					<span class="askingAmt"></span>
+				</button>
+			</div>
+			<div class="col-md-4">
+				<br>
+				<h3 class="invested-amount">Invested Amount</h3>
+				<p class="investedAmount">Amount</p>
+			</div>
+		</div>
 	</div>
 </section>
 <section>
 	<div class="container">
-		<div class="row" style="">
-			<div class="col-md-6" id="buy-invoice-panel">
+		<div class="row text-center" style="">
+			<div class="col-md-12" id="buy-invoice-panel">
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
-					<div class="panel-heading row">
+					<div class="panel-heading row" style="padding: 2rem 0;">
 						<div class="col-md-3 col-xs-3">
 							Project Name
 						</div>
-						<div class="col-md-3 col-xs-3">
+						<div class="col-md-2 col-xs-2">
+							Invoice Amount
+						</div>
+						<div class="col-md-2 col-xs-2">
 							Asking Amount
 						</div>
-						<div class="col-md-3 col-xs-3">
-							Project Name
+						<div class="col-md-2 col-xs-2">
+							Due Date
 						</div>
 						<div class="col-md-3 col-xs-3">
 							Status
@@ -119,56 +135,18 @@ Create New Project | @parent
 						<div class="">
 							@foreach($projects as $project)
 							<div class="" style="border-top: 1px solid; width:100%;">
-								<a href="#" class="list-group-item row" style="padding: 1em 0;">
+								<a href="#" class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
 									<div class="col-md-3 col-xs-3">
 										{{$project->title}}
 									</div>
-									<div class="col-md-3 col-xs-3">
-										{{$project->investment->asking_amount}}
+									<div class="col-md-2 col-xs-2">
+										{{$project->investment->total_projected_costs}}
 									</div>
-									<div class="col-md-3 col-xs-3">
-										Project Name
+									<div class="col-md-2 col-xs-2">
+										{{$project->investment->getCalculatedAskingPriceAttribute()}}
 									</div>
-									<div class="col-md-3 col-xs-3">
-										Project Name
-									</div>
-								</a>
-							</div>
-							@endforeach
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6" id="sold-invoice-panel">
-				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
-					<div class="panel-heading row">					
-						<div class="col-md-3 col-xs-3">
-							Project Name
-						</div>
-						<div class="col-md-3 col-xs-3">
-							Asking Amount
-						</div>
-						<div class="col-md-3 col-xs-3">
-							Project Name
-						</div>
-						<div class="col-md-3 col-xs-3">
-							Status
-						</div>
-					</div>
-
-					<div class="panel-body">
-						<div class="">
-							@foreach($projects as $project)
-							<div class="" style="border-top: 1px solid; width:100%;">
-								<a href="#" class="list-group-item row" style="padding: 1em 0;">
-									<div class="col-md-3 col-xs-3">
-										{{$project->title}}
-									</div>
-									<div class="col-md-3 col-xs-3">
-										{{$project->investment->asking_amount}}
-									</div>
-									<div class="col-md-3 col-xs-3">
-										Project Name
+									<div class="col-md-2 col-xs-2">
+										{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date))}}
 									</div>
 									<div class="col-md-3 col-xs-3">
 										Project Name
@@ -198,14 +176,23 @@ Create New Project | @parent
 				console.log('inside try');
 				if(ethereum._metamask.isEnabled()){
 					var uAddress = ethereum.selectedAddress;
-					var shortText = jQuery.trim(uAddress.toString()).substring(0, 5)+ "...";
+					var shortText = jQuery.trim(uAddress.toString()).substring(0, 8)+ "...";
 					console.log(ethereum);
 					$('#connectToWalletBtn').text(shortText);
 					var balance = await getDaiBalance(ethereum.selectedAddress);
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
 					var b = Number(balance).toFixed(2);
 					$('#balanceBtn').text(b);
-					console.log('Enabled');
+					$('a.list-group-item').click(function () {
+						var askAmount = $(this).data('asking');
+						$('.project-name').text('Invoice '+$(this).data('id'));
+						$('.askingAmt').text('$'+askAmount);
+						var cAddress = $(this).data('address');
+						approvalStatus(cAddress,askAmount);
+						$('.circle-btn').on('click',async (e) => {
+							await approval(cAddress,askAmount);
+						});
+					});
 				}else{
 					$('#connectToWallet').modal('show');
 					console.log('not enabled');

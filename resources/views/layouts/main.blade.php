@@ -367,14 +367,6 @@ $_SESSION['code'] = md5(microtime(true));
                             <a href="https://download.asic.gov.au/media/3797986/rg185-published-24-march-2016.pdf" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Non Cash Payment Facility</span></a>
                         </li>
                     </ul>
-<!--                     <span style="margin:0 0 1px;">
-                        <a href="mailto:info@vestabyte.com" style="color:#fed405; font-size: 14px;" class="font-semibold second_color">info@vestabyte.com</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:+61398117015" class="font-semibold second_color" style="color:#fed405; font-size: 14px;">+61398117015</a>
-                    </span> -->
-                <!-- <address style="margin:0px;">
-                    <p class="h1-faq" data-wow-duration="1.5s" data-wow-delay="0.8s" style="color:#fff;">
-                        569/585 Little Collins Street Melbourne VIC 3000.
-                    </p>
-                </address> -->
             </div>
             <br>
         </div>

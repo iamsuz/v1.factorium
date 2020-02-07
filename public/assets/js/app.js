@@ -84,6 +84,48 @@ async function commit(project) {
 		}
 	});
 }
+
+async function approvalStatus(cAddress,pAmount) {
+	var daiCAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa";
+	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
+	var oAmount = pAmount;
+	pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
+	var proContract = new web3.eth.Contract(abi,cAddress);
+	var status;
+	await proContract.methods.status().call({
+		from: ethereum.selectedAddress
+	},function (err,res) {
+		status = res;
+	});
+	if(status == 0){
+		$('.circle-btn').html('Yet to Approve by Buyer');
+	}else if(status == 1){
+		$('.circle-btn').removeAttr('disabled');
+		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
+			from: ethereum.selectedAddress
+		},function (err,res) {
+			if(res >= pAmount){
+				console.log(res);
+				$('.circle-btn').html('Buy Now<br><span class="askingAmt">'+oAmount+'</span>');
+			}else{
+				$('.circle-btn').html('Approve Dai<br><span class="askingAmt">'+oAmount+'</span>');
+			}
+		})
+	}else if(status == 2){
+		$('#apprAlertModal').removeClass('hide');
+		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
+		$('.circle-btn').html('Sold');
+		$('.circle-btn').attr('disabled',true);
+		$('#apprDai').attr('disabled','true');
+	} else if(status == 3){
+		$('#apprAlertModal').removeClass('hide');
+		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
+		$('.circle-btn').html('Settled');
+		$('.circle-btn').attr('disabled',true);
+		$('#apprDai').attr('disabled','true');
+	}
+}
+
 async function approval(cAddress,pAmount){
 	var daiCAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa";
 	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
@@ -98,7 +140,6 @@ async function approval(cAddress,pAmount){
 	// check the balance of the msg.sender as even if the msg.sender has less balance he can
 	// approve more tokens than he holds and then why buying invoice it will throw error in
 	// transaction and user wont be able to figure out easily
-	console.log(daiContract.methods);
 	if(status == 1){
 		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
 			from: ethereum.selectedAddress
@@ -114,8 +155,10 @@ async function approval(cAddress,pAmount){
 						console.log(err);
 					}
 					if(result){
+						console.log('Buy now'+ status);
 						$('#apprAlertModal').removeClass('hide');
 						$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
+						$('.circle-btn').html('Buy Now');
 						$('#lockLogo').removeClass('fa-lock');
 						$('#lockLogo').addClass('fa-unlock');
 						$('#buyApprInvoice').removeAttr('disabled');
@@ -123,8 +166,10 @@ async function approval(cAddress,pAmount){
 					}
 				});
 			}else{
+				console.log('Buy now'+ status);
 				$('#apprAlertModal').removeClass('hide');
 				$('#apprAlertModal').text('You have already approved DAI tokens for this Smart Invoice');
+				$('.circle-btn').html('Buy Now');
 				$('#lockLogo').removeClass('fa-lock');
 				$('#lockLogo').addClass('fa-unlock');
 				$('#buyApprInvoice').removeAttr('disabled');
@@ -133,12 +178,16 @@ async function approval(cAddress,pAmount){
 			console.log(res);
 		})
 	}else if(status == 2){
+		console.log('Sold'+ status);
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
+		$('.circle-btn').html('Sold');
 		$('#apprDai').attr('disabled','true');
 	} else if(status == 3){
+		console.log('Settled'+ status);
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
+		$('.circle-btn').html('Settled');
 		$('#apprDai').attr('disabled','true');
 	}
 }

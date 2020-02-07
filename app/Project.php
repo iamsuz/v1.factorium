@@ -246,4 +246,5 @@ class Project extends Model
     {
         return $this->hasMany('App\InvestmentInvestor')->where(['accepted' => '0', 'money_received' => '1', 'share_certificate_issued_at' => null]);
     }
+
 }

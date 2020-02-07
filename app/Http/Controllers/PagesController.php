@@ -57,7 +57,7 @@ class PagesController extends Controller
     {
         $color = Color::all();
         $color = $color->where('project_site',url())->first();
-        $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'asc')->get();
+        $projects = Project::where(['active'=>'1','project_site'=>url()])->orderBy('project_rank', 'desc')->get();
         return view('pages.invoice',compact('projects','color'));
     }
 
