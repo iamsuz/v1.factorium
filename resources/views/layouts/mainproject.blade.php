@@ -128,10 +128,10 @@
                         @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
                         <img class="img-responsive" src="{{asset($mainLogo->path)}}" alt="Logo" width="200">
                         @else
-                        <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Logo" width="200">
+                        <img class="img-responsive" src="https://konkrete.io/assets/images/konkrete_full_logo_dark.png" alt="Logo" width="200">
                         @endif
                         @else
-                        <img class="img-responsive" src="{{asset('assets/images/main_logo.png')}}" alt="Logo" width="200">
+                        <img class="img-responsive" src="https://konkrete.io/assets/images/konkrete_full_logo_dark.png" alt="Logo" width="200">
                         @endif
                     </center>
                 </div>
