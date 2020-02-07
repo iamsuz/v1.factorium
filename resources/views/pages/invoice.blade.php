@@ -81,11 +81,14 @@ Buy Invoice | @parent
 <section id="mainFold" style="background-color: #070a0e; height: 60vh;color: #fff;">
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
-			<div class="col-md-1 col-md-offset-9">
+			<div class="col-md-2">
+				<img src="https://konkrete.io/assets/images/konkrete_full_logo_dark.png" width="200px;">
+			</div>
+			<div class="col-md-1 col-md-offset-7">
 				<button class="btn" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" ><span id="balanceBtn"></span> Dai</button>
 			</div>
 			<div class="col-md-2">
-				<button class="btn" data-toggle="modal" data-target="#connectToWallet" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" id="connectToWalletBtn">Connect to wallet</button>
+				<button class="btn pull-right" data-toggle="modal" data-target="#connectToWallet" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" id="connectToWalletBtn">Connect to wallet</button>
 			</div>
 		</div>
 		<br><br><br><br>
@@ -176,12 +179,12 @@ Buy Invoice | @parent
 				console.log('inside try');
 				if(ethereum._metamask.isEnabled()){
 					var uAddress = ethereum.selectedAddress;
-					var shortText = jQuery.trim(uAddress.toString()).substring(0, 8)+ "...";
+					var shortText = jQuery.trim(uAddress.toString()).substring(0, 10)+ "...";
 					console.log(ethereum);
 					$('#connectToWalletBtn').text(shortText);
 					var balance = await getDaiBalance(ethereum.selectedAddress);
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
-					var b = Number(balance).toFixed(2);
+					var b = Number(balance).toFixed(3);
 					$('#balanceBtn').text(b);
 					$('a.list-group-item').click(function () {
 						var askAmount = $(this).data('asking');
@@ -209,6 +212,10 @@ Buy Invoice | @parent
 				//ethereum.autoRefreshOnNetworkChange = false;
 				//await ethereum.enable();
 			}catch{
+				$('#connectToWallet').modal('show');
+				$('#metamaskConnect').on('click',function (e) {
+					ethereum.enable();
+				});
 				console.log('User has denied the access');
 			}
 		}else{

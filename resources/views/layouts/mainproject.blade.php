@@ -59,7 +59,7 @@
     @endif
     <!-- topbar nav content here -->
     @section('topbar-section')
-    <nav class="navbar navbar-default header hide" id="header" role="navigation">
+    <nav class="navbar navbar-default header hide hidden" id="header" role="navigation">
         <div class="container" id="containernav">
             <div class="logo pull-left">
                 <a href="{{route('home')}}">

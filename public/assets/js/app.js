@@ -118,9 +118,10 @@ async function approvalStatus(cAddress,pAmount) {
 	}else if(status == 2){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
-		$('.circle-btn').html('Sold');
-		$('.circle-btn').attr('disabled',true);
+		$('.circle-btn').html('Bought<br><span class="askingAmt">'+oAmount+'</span>');
+		$('.circle-btn').attr('disabled','true');
 		$('.investedAmount').html(oAmount+' Dai');
+		$('.circle-btn').addClass('sold-btn')
 		$('#apprDai').attr('disabled','true');
 	} else if(status == 3){
 		$('#apprAlertModal').removeClass('hide');
