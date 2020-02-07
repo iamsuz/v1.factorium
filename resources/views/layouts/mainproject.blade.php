@@ -44,7 +44,9 @@
     @show
 
     @yield('css-section')
-
+    <noscript>
+        You need to enable JavaScript to run this app. The Factorium dApp is a distributed application to interact with the Factorium Protocol on the Ethereum blockchain. This app requires JavaScript to run. If you are interested in learning more about Factorium, please visit <a href="https://factorium.co">https://factorium.co</a>.
+    </noscript>
     <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

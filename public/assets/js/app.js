@@ -122,12 +122,19 @@ async function approvalStatus(cAddress,pAmount) {
 		$('.circle-btn').attr('disabled','true');
 		$('.investedAmount').html(oAmount+' Dai');
 		$('.circle-btn').addClass('sold-btn')
+		$('.circle-btn').removeClass('redeem-btn');
+		$('.circle-btn').removeClass('buy-now');
+		$('.circle-btn').removeClass('approval-btn');
 		$('#apprDai').attr('disabled','true');
 	} else if(status == 3){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
-		$('.circle-btn').html('Settled');
-		$('.circle-btn').attr('disabled',true);
+		$('.circle-btn').html('Redeem');
+		$('.circle-btn').removeAttr('disabled');
+		$('.circle-btn').removeClass('sold-btn')
+		$('.circle-btn').removeClass('buy-now');
+		$('.circle-btn').removeClass('approval-btn');
+		$('.circle-btn').addClass('redeem-btn');
 		$('.investedAmount').html(oAmount+' Dai');
 		$('#apprDai').attr('disabled','true');
 	}
@@ -212,7 +219,7 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 				type: 'POST',
 				url: "/invoice/"+hPid+"/buy",
 				data: {
-					_toke: "{{ csrf_token() }}",
+					_token: "{{ csrf_token() }}",
 					financiersAddress: financiersAddress,
 					transactionHash: result,
 					amount: pAmount,
@@ -354,6 +361,7 @@ async function getInvTokenBalance(cAddress) {
 				$('.lockLogo').removeClass('fa-lock');
 				$('.lockLogo').addClass('fa-unlock');
 			}else{
+				$('input[name="invToken"]').val(0);
 				$('#redeemTokenBtn').attr('disabled','true');
 			}
 		}

@@ -13,7 +13,7 @@
           <div class="row text-center">
             <div class="alert alert-info hide" id="apprAlertModal"></div>
             <div class="col-md-6">
-              <button id="apprDai" style="border-radius: 0;" class="btn btn-default btn-lg btn-block" id="getInvToken">Get INV Tokens</button>
+              <button id="apprDai" style="border-radius: 0;" class="btn btn-default btn-lg btn-block" id="getInvToken">INV Tokens</button>
             </div>
             <div class="col-md-6">
               <input type="number" name="invToken" class="form-control" placeholder="Balance" value="0.00" max="" min="0">

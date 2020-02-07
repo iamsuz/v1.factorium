@@ -175,6 +175,7 @@ Buy Invoice | @parent
 	</div>
 </section>
 @include('partials.connectToWallet')
+@include('partials.redeemInvTokenModal')
 @stop
 @section('js-section')
 {{-- {!! Html::script('js/konkrete.js') !!} --}}
@@ -209,6 +210,15 @@ Buy Invoice | @parent
 							}else if($(this).hasClass('buy-now')){
 								var hPid = btoa(pid);
 								byInvoice(cAddress,askAmount,hPid,pid);
+							} else if($(this).hasClass('redeem-btn')){
+        						getInvTokenBalance(cAddress);
+        						$('#redeemInvTokenModal').modal('show');
+        						$('form#redeemTokenForm').submit(function (t) {
+        							t.preventDefault();
+        							var invToken = $('input[name="invToken"]').val();
+        							redeemInvToken(cAddress, invToken);
+        							//getDaiBalance(ethereum.selectedAddress);
+        						});
 							}
 						});
 					});
