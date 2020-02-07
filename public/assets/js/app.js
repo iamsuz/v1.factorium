@@ -106,9 +106,13 @@ async function approvalStatus(cAddress,pAmount) {
 		},function (err,res) {
 			if(res >= pAmount){
 				console.log(res);
+				$('.circle-btn').addClass('buy-now');
+				$('.circle-btn').removeClass('approval-btn');
 				$('.circle-btn').html('Buy Now<br><span class="askingAmt">'+oAmount+'</span>');
+				$('.investedAmount').html('0 Dai');
 			}else{
 				$('.circle-btn').html('Approve Dai<br><span class="askingAmt">'+oAmount+'</span>');
+				$('.investedAmount').html('0 Dai');
 			}
 		})
 	}else if(status == 2){
@@ -116,12 +120,14 @@ async function approvalStatus(cAddress,pAmount) {
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
 		$('.circle-btn').html('Sold');
 		$('.circle-btn').attr('disabled',true);
+		$('.investedAmount').html(oAmount+' Dai');
 		$('#apprDai').attr('disabled','true');
 	} else if(status == 3){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
 		$('.circle-btn').html('Settled');
 		$('.circle-btn').attr('disabled',true);
+		$('.investedAmount').html(oAmount+' Dai');
 		$('#apprDai').attr('disabled','true');
 	}
 }
@@ -175,8 +181,7 @@ async function approval(cAddress,pAmount){
 				$('#buyApprInvoice').removeAttr('disabled');
 				$('#apprDai').attr('disabled','true');
 			}
-			console.log(res);
-		})
+		});
 	}else if(status == 2){
 		console.log('Sold'+ status);
 		$('#apprAlertModal').removeClass('hide');
@@ -201,24 +206,26 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 		if(err){
 			console.log(err);
 		}
-		$.ajax({
-			type: 'POST',
-			url: "/invoice/"+hPid+"/buy",
-			data: {
-				_toke: "{{ csrf_token() }}",
-				financiersAddress: financiersAddress,
-				transactionHash: result,
-				amount: pAmount,
-			},
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			},
-			success: function (data) {
-				if(data){
-					location.reload();
+		if(result){
+			$.ajax({
+				type: 'POST',
+				url: "/invoice/"+hPid+"/buy",
+				data: {
+					_toke: "{{ csrf_token() }}",
+					financiersAddress: financiersAddress,
+					transactionHash: result,
+					amount: pAmount,
+				},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+				success: function (data) {
+					if(data){
+						location.reload();
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 }
 

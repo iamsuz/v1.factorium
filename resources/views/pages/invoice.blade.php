@@ -96,7 +96,7 @@ Buy Invoice | @parent
 				<p class="askingAmt">Asking Amount</p>
 			</div>
 			<div class="col-md-4">
-				<button class="btn btn-lg btn-info buy-now-btn circle-btn">
+				<button class="btn btn-lg btn-info buy-now-btn circle-btn approval-btn">
 					Approve Dai<br>
 					<span class="askingAmt"></span>
 				</button>
@@ -104,7 +104,7 @@ Buy Invoice | @parent
 			<div class="col-md-4">
 				<br>
 				<h3 class="invested-amount">Invested Amount</h3>
-				<p class="investedAmount">Amount</p>
+				<p class="investedAmount">0 DAI</p>
 			</div>
 		</div>
 	</div>
@@ -114,7 +114,7 @@ Buy Invoice | @parent
 		<div class="row text-center" style="">
 			<div class="col-md-12" id="buy-invoice-panel">
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
-					<div class="panel-heading row" style="padding: 2rem 0;">
+					<div class="panel-heading row" style="padding: 2rem 0;color: #aab8c1;">
 						<div class="col-md-3 col-xs-3">
 							Project Name
 						</div>
@@ -134,7 +134,7 @@ Buy Invoice | @parent
 					<div class="panel-body">
 						<div class="">
 							@foreach($projects as $project)
-							<div class="" style="border-top: 1px solid; width:100%;">
+							<div class="" style="border-top: 1px solid #e3e9eb; width:100%;">
 								<a href="#" class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
 									<div class="col-md-3 col-xs-3">
 										{{$project->title}}
@@ -185,12 +185,18 @@ Buy Invoice | @parent
 					$('#balanceBtn').text(b);
 					$('a.list-group-item').click(function () {
 						var askAmount = $(this).data('asking');
-						$('.project-name').text('Invoice '+$(this).data('id'));
+						var pid = $(this).data('id');
+						$('.project-name').text('Invoice '+pid);
 						$('.askingAmt').text('$'+askAmount);
 						var cAddress = $(this).data('address');
 						approvalStatus(cAddress,askAmount);
-						$('.circle-btn').on('click',async (e) => {
-							await approval(cAddress,askAmount);
+						$('.circle-btn').on('click',function (e) {
+							if($(this).hasClass('approval-btn')){
+								approval(cAddress,askAmount);
+							}else if($(this).hasClass('buy-now')){
+								var hPid = btoa(pid);
+								byInvoice(cAddress,askAmount,hPid,pid);
+							}
 						});
 					});
 				}else{
