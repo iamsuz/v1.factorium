@@ -103,7 +103,7 @@ Buy Invoice | @parent
 			</div>
 			<div class="col-md-4">
 				<button class="btn btn-lg btn-info buy-now-btn circle-btn approval-btn">
-					Approve Dai<br>
+					Unlock Dai<br>
 					<span class="askingAmt"></span>
 				</button>
 			</div>

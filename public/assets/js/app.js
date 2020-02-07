@@ -111,7 +111,7 @@ async function approvalStatus(cAddress,pAmount) {
 				$('.circle-btn').html('Buy Now<br><span class="askingAmt">'+oAmount+'</span>');
 				$('.investedAmount').html('0 Dai');
 			}else{
-				$('.circle-btn').html('Approve Dai<br><span class="askingAmt">'+oAmount+'</span>');
+				$('.circle-btn').html('Unlock Dai<br><span class="askingAmt">'+oAmount+'</span>');
 				$('.investedAmount').html('0 Dai');
 			}
 		})
