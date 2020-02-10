@@ -13,7 +13,7 @@
     <!-- <link rel="shortcut icon" href="/favicon.png" type="image/x-icon"> -->
     <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
     <!-- Open Graphic -->
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg" />
     <meta property="og:site_name" content="Factorium" />
     <meta property="og:url" content="https://factorium.co" />
@@ -29,7 +29,11 @@
 
     @section('meta-section')
     @show
-
+    <?php
+    if(isset($_SESSION['code'])){
+        echo 'code:'.$_SESSION['code'];
+    }
+    ?>
     <title>
         @section('title-section')
         Factorium : Crowd Investment Real Estate Investment
@@ -38,7 +42,6 @@
     <!-- Bootstrap -->
     {!! Html::style('/css/bootstrap.min.css') !!}
     {{-- {!! Html::style('/plugins/font-awesome-4.4.0/css/font-awesome.min.css') !!} --}}
-
     @section('css-app')
     {!! Html::style('/css/app3.css') !!}
     @show
@@ -59,6 +62,12 @@
     @if (Config::get('analytics.gtm.enable'))
     @include('partials.gtm-noscript')
     @endif
+     <!-- Loader for jquery Ajax calls. -->
+    <div class="loader-overlay" style="display: none;">
+        <div class="overlay-loader-image">
+            <img id="loader-image" src="{{ asset('/assets/images/loader1.gif') }}">
+        </div>
+    </div>
     <!-- topbar nav content here -->
     @section('topbar-section')
     <nav class="navbar navbar-default header hide hidden" id="header" role="navigation">

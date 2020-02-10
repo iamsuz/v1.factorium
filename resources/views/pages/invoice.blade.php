@@ -6,8 +6,8 @@ Buy Invoice | @parent
 
 @section('css-section')
 <style>
-	body{
-
+	.content{
+		position: relative;
 	}
 	.buy-now-btn {
 		background-color: transparent;
@@ -37,12 +37,6 @@ Buy Invoice | @parent
 	}
 	#buy-invoice-panel{
 		margin-top: -35px;
-	}
-	#myBtnContainer{
-		margin-top: -105px;
-	}
-	#sold-invoice-panel{
-		margin-top: -70px;
 	}
 	.circle-btn{
 		height: 130px;
@@ -81,7 +75,7 @@ Buy Invoice | @parent
 	</div>
 </section>
 @endif
-<section id="mainFold" style="background-color: #070a0e; height: 62vh;color: #fff;">
+<section class="main-fold" id="mainFold" style="background-color: #070a0e;color: #fff;">
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
 			<div class="col-md-2">
@@ -94,14 +88,13 @@ Buy Invoice | @parent
 				<button class="btn pull-right" data-toggle="modal" data-target="#connectToWallet" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" id="connectToWalletBtn">Connect to wallet</button>
 			</div>
 		</div>
-		<br><br><br><br>
-		<div class="row text-center">
+		<div class="row text-center" style="margin-top: 10vh;">
 			<div class="col-md-4">
 				<br>
 				<h3 class="project-name">Project Name</h3>
 				<p class="askingAmt">Asking Amount</p>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4 text-center">
 				<button class="btn btn-lg btn-info buy-now-btn circle-btn approval-btn">
 					Unlock Dai<br>
 					<span class="askingAmt"></span>
@@ -115,9 +108,9 @@ Buy Invoice | @parent
 		</div>
 	</div>
 </section>
-<section>
-	<div class="container">
-		<div class="row" id="myBtnContainer">
+<section class="second-fold" style="background-color: #070a0e;">
+	<div class="container" style="padding: 85px 15px 15px 15px;">
+		<div class="row">
 			<div class="col-md-2">
 				<button class="btn btn-block btn-default filterbtn @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')" > Show all</button>
 			</div>
@@ -131,6 +124,10 @@ Buy Invoice | @parent
 				<button class="btn btn-block btn-default filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
 			</div>
 		</div>
+	</div>
+</section>
+<section class="third-fold">
+	<div class="container">
 		<div class="row text-center" id="buy-invoice-panel">
 			<div class="col-md-12">
 				<br><br>
@@ -195,7 +192,6 @@ Buy Invoice | @parent
 		if (window.ethereum) {
 			window.web3 = new Web3(ethereum);
 			try{
-				console.log('inside try');
 				if(ethereum._metamask.isEnabled()){
 					var uAddress = ethereum.selectedAddress;
 					window.ethereum.on('accountsChanged', async (accounts) => {
@@ -221,12 +217,14 @@ Buy Invoice | @parent
 						var cAddress = $(this).data('address');
 						approvalStatus(cAddress,askAmount);
 						$('.circle-btn').on('click',function (e) {
+							$('.loader-overlay').show();
 							if($(this).hasClass('approval-btn')){
 								approval(cAddress,askAmount);
 							}else if($(this).hasClass('buy-now')){
 								var hPid = btoa(pid);
 								byInvoice(cAddress,askAmount,hPid,pid);
 							} else if($(this).hasClass('redeem-btn')){
+								$('.loader-overlay').hide();
 								getInvTokenBalance(cAddress);
 								$('#redeemInvTokenModal').modal('show');
 								$('form#redeemTokenForm').submit(function (t) {
@@ -247,11 +245,14 @@ Buy Invoice | @parent
 				});
 				//ethereum.autoRefreshOnNetworkChange = false;
 				//await ethereum.enable();
-			}catch{
-				$('#connectToWallet').modal('show');
-				$('#metamaskConnect').on('click',function (e) {
-					ethereum.enable();
-				});
+			}catch(err){
+				if(!ethereum._metamask.isEnabled()){
+					$('#connectToWallet').modal('show');
+					$('#metamaskConnect').on('click',function (e) {
+						ethereum.enable();
+					});
+				}
+				console.log(err);
 				console.log('User has denied the access');
 			}
 		}else{

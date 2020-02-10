@@ -11,7 +11,6 @@
       <div class="modal-body">
         <form class="form-group" id="redeemTokenForm" action="#">
           <div class="row text-center">
-            <div class="alert alert-info hide" id="apprAlertModal"></div>
             <div class="col-md-6">
               <button id="apprDai" style="border-radius: 0;" class="btn btn-default btn-lg btn-block" id="getInvToken">INV Tokens</button>
             </div>

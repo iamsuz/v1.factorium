@@ -311,7 +311,7 @@ Route::post('/configuration/updateKonkreteAllocationChanges', ['as'=> 'configura
 Route::post('/configuration/updateSendgridAPIKey', ['as'=> 'configuration.updateSendgridAPIKey', 'uses'=>'SiteConfigurationsController@updateSendgridAPIKey']);
 Route::post('/configuration/home/changeFontFamily', ['as'=>'configuration.changeFontFamily', 'uses'=>'SiteConfigurationsController@changeFontFamily']);
 Route::resource('offer', 'OfferController');
-Route::post('/invoice/{id}/buy',['as'=>'offer.bought','uses'=>'OfferController@invoiceBuy']);
+Route::POST('/invoice/{id}/buy',['as'=>'offer.bought','uses'=>'OfferController@invoiceBuy']);
 Route::post('/invoice/{id}/settle',['as'=>'offer.settle','uses'=>'OfferController@settleInvoice']);
 
 
