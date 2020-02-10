@@ -131,8 +131,8 @@ Buy Invoice | @parent
 				<button class="btn btn-block btn-default filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
 			</div>
 		</div>
-		<div class="row text-center" style="">
-			<div class="col-md-12" id="buy-invoice-panel">
+		<div class="row text-center" id="buy-invoice-panel">
+			<div class="col-md-12">
 				<br><br>
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
 					<div class="panel-heading row" style="padding: 2rem 0;color: #aab8c1;">
