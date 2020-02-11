@@ -216,18 +216,16 @@ async function approval(cAddress,pAmount){
 	}
 }
 async function byInvoice(pAddress,pAmount,hPid,pid){
-	// var projectContract = new web3.eth.Contract(abi,pAddress);
-	// pEAmount = web3.utils.toWei(pAmount.toString(), 'ether');
-	// var financiersAddress = ethereum.selectedAddress;
-	// await projectContract.methods.buyInvoice(pEAmount).send({
-	// 	from: ethereum.selectedAddress
-	// },function(err,result){
-	// 	if(err){
-	// 		console.log(err);
-	// 	}
-	// 	if(result){
-	var financiersAddress = 'test';
-	var result = 'asdsfe';
+	var projectContract = new web3.eth.Contract(abi,pAddress);
+	pEAmount = web3.utils.toWei(pAmount.toString(), 'ether');
+	var financiersAddress = ethereum.selectedAddress;
+	await projectContract.methods.buyInvoice(pEAmount).send({
+		from: ethereum.selectedAddress
+	},function(err,result){
+		if(err){
+			console.log(err);
+		}
+		if(result){
 			$.ajax({
 				type: 'POST',
 				url: "/invoice/"+hPid+"/buy",
@@ -246,8 +244,8 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 					}
 				}
 			});
-	// 	}
-	// });
+		}
+	});
 }
 
 async function approvalSettle(cAddress,pAmount){
