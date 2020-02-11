@@ -161,6 +161,10 @@ async function approval(cAddress,pAmount){
 		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
 			from: ethereum.selectedAddress
 		},async (err,res) => {
+			if(err){
+				$('.loader-overlay').hide();
+				console.log('User has rejected transaction');
+			}
 			if(res < pAmount){
 				//add one more check if you approved yesterday and today askingAMount is
 				//changed with day has passsed

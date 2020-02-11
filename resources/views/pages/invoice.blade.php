@@ -133,7 +133,7 @@ Buy Invoice | @parent
 				<br><br>
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
 					<div class="panel-heading row" style="padding: 2rem 0;color: #aab8c1;">
-						<div class="col-md-3 col-xs-3">
+						<div class="col-md-2 col-xs-2">
 							Project Name
 						</div>
 						<div class="col-md-2 col-xs-2">
@@ -145,7 +145,10 @@ Buy Invoice | @parent
 						<div class="col-md-2 col-xs-2">
 							Due Date
 						</div>
-						<div class="col-md-3 col-xs-3">
+						<div class="col-md-2 col-xs-2">
+							Interest Rate
+						</div>
+						<div class="col-md-2 col-xs-2">
 							Status
 						</div>
 					</div>
@@ -154,7 +157,7 @@ Buy Invoice | @parent
 							@foreach($projects as $project)
 							<div class="" style="border-top: 1px solid #e3e9eb; width:100%;">
 								<a href="#" class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
-									<div class="col-md-3 col-xs-3">
+									<div class="col-md-2 col-xs-2">
 										{{$project->title}}
 									</div>
 									<div class="col-md-2 col-xs-2">
@@ -166,8 +169,17 @@ Buy Invoice | @parent
 									<div class="col-md-2 col-xs-2">
 										{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date))}}
 									</div>
-									<div class="col-md-3 col-xs-3">
-										Project Name
+									<div class="col-md-2 col-xs-2">
+										5%
+									</div>
+									<div class="col-md-2 col-xs-2">
+										@if(!$project->repurchased->isEmpty())
+										<i>Settled</i>
+										@elseif(!$project->soldInvoice->isEmpty())
+										<i>Sold</i>
+										@else
+										Buy Now
+										@endif
 									</div>
 								</a>
 							</div>
