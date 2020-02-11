@@ -51,30 +51,16 @@ Buy Invoice | @parent
 @stop
 
 @section('content-section')
-@if (Session::has('message'))
-<section class="container">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<br><br>
-			@if (Session::has('message'))
-			<br>
-			{!! Session::get('message') !!}
-			<br>
-			@endif
-			@if ($errors->has())
-			<br>
-			<div class="alert alert-danger" >
-				@foreach ($errors->all() as $error)
-				{{ $error }}<br>
-				@endforeach
-			</div>
-			@endif
-			<div class="alert alert-danger hide text-center" id="alertCreateInvoice">
+<section style="background-color: #070a0e;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="alert alert-danger hide text-center" id="alertAllInvoice">
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
-@endif
 <section class="main-fold" id="mainFold" style="background-color: #070a0e;color: #fff;">
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
@@ -205,6 +191,7 @@ Buy Invoice | @parent
 			window.web3 = new Web3(ethereum);
 			try{
 				if(ethereum._metamask.isEnabled()){
+					(!ethereum.selectedAddress) ? $('#connectToWallet').modal('show') : console.log('Enabled');
 					var uAddress = ethereum.selectedAddress;
 					window.ethereum.on('accountsChanged', async (accounts) => {
 						var uAddress = accounts[0];
@@ -221,7 +208,8 @@ Buy Invoice | @parent
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
 					var b = Number(balance).toFixed(3);
 					$('#balanceBtn').text(b);
-					$('a.list-group-item').click(function () {
+					$('a.list-group-item').on('click',function (e) {
+						console.log($(this));
 						var askAmount = $(this).data('asking');
 						var pid = $(this).data('id');
 						$('.project-name').text('Invoice '+pid);
@@ -229,12 +217,15 @@ Buy Invoice | @parent
 						var cAddress = $(this).data('address');
 						approvalStatus(cAddress,askAmount);
 						$('.circle-btn').on('click',function (e) {
-							$('.loader-overlay').show();
+							e.preventDefault();
 							if($(this).hasClass('approval-btn')){
+								console.log($(this));
 								approval(cAddress,askAmount);
+								$('.loader-overlay').show();
 							}else if($(this).hasClass('buy-now')){
 								var hPid = btoa(pid);
 								byInvoice(cAddress,askAmount,hPid,pid);
+								$('.loader-overlay').show();
 							} else if($(this).hasClass('redeem-btn')){
 								$('.loader-overlay').hide();
 								getInvTokenBalance(cAddress);
@@ -265,9 +256,10 @@ Buy Invoice | @parent
 					});
 				}
 				console.log(err);
-				console.log('User has denied the access');
+				showAlertMessage('User has denied the access',5000);
 			}
 		}else{
+			showAlertMessage('Browser does not have metamask',3000000);
 			console.log('Browser does not have metamask');
 		}
 		// console.log(abi);

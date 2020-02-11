@@ -101,6 +101,7 @@ async function approvalStatus(cAddress,pAmount) {
 	});
 	if(status == 0){
 		$('.circle-btn').html('Yet to Approve by Buyer');
+		return false;
 	}else if(status == 1){
 		$('.circle-btn').removeAttr('disabled');
 		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
@@ -110,12 +111,16 @@ async function approvalStatus(cAddress,pAmount) {
 				console.log(res);
 				$('.circle-btn').addClass('buy-now');
 				$('.circle-btn').removeClass('approval-btn');
+				$('.circle-btn').removeClass('sold-btn')
 				$('.circle-btn').html('Buy Now<br><span class="askingAmt">'+oAmount+'</span>');
 				$('.investedAmount').html('0 Dai');
 			}else{
+				$('.circle-btn').removeClass('sold-btn');
+				$('.circle-btn').addClass('approval-btn');
 				$('.circle-btn').html('Unlock Dai<br><span class="askingAmt">'+oAmount+'</span>');
 				$('.investedAmount').html('0 Dai');
 			}
+			return true;
 		})
 	}else if(status == 2){
 		$('#apprAlertModal').removeClass('hide');
@@ -140,6 +145,7 @@ async function approvalStatus(cAddress,pAmount) {
 		$('.investedAmount').html(oAmount+' Dai');
 		$('#apprDai').attr('disabled','true');
 	}
+	return true;
 }
 
 async function approval(cAddress,pAmount){
@@ -163,7 +169,8 @@ async function approval(cAddress,pAmount){
 		},async (err,res) => {
 			if(err){
 				$('.loader-overlay').hide();
-				console.log('User has rejected transaction');
+				console.log('Error while checking the allowance for user');
+				return 0;
 			}
 			if(res < pAmount){
 				//add one more check if you approved yesterday and today askingAMount is
@@ -173,7 +180,9 @@ async function approval(cAddress,pAmount){
 					from: ethereum.selectedAddress
 				},function(err,result){
 					if(err){
-						console.log(err);
+						showAlertMessage('You have rejected the transaction',5000);
+						$('.loader-overlay').hide();
+						return false;
 					}
 					if(result){
 						console.log('Buy now'+ status);
@@ -185,6 +194,7 @@ async function approval(cAddress,pAmount){
 						$('#buyApprInvoice').removeAttr('disabled');
 						$('#apprDai').attr('disabled','true');
 						$('.loader-overlay').hide();
+						return true;
 					}
 				});
 			}else{
@@ -197,6 +207,7 @@ async function approval(cAddress,pAmount){
 				$('#lockLogo').addClass('fa-unlock');
 				$('#buyApprInvoice').removeAttr('disabled');
 				$('#apprDai').attr('disabled','true');
+				return false;
 			}
 		});
 	}else if(status == 2){
@@ -206,6 +217,7 @@ async function approval(cAddress,pAmount){
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
 		$('.circle-btn').html('Sold');
 		$('#apprDai').attr('disabled','true');
+		return false;
 	} else if(status == 3){
 		console.log('Settled'+ status);
 		$('#apprAlertModal').removeClass('hide');
@@ -213,6 +225,7 @@ async function approval(cAddress,pAmount){
 		$('#apprAlertModal').text('Invoice is already settled, Please dont approve DAI tokens');
 		$('.circle-btn').html('Settled');
 		$('#apprDai').attr('disabled','true');
+		return false;
 	}
 }
 async function byInvoice(pAddress,pAmount,hPid,pid){
@@ -224,6 +237,7 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 	},function(err,result){
 		if(err){
 			console.log(err);
+			showAlertMessage('You have rejected the transaction',5000);
 		}
 		if(result){
 			$.ajax({
@@ -258,6 +272,9 @@ async function approvalSettle(cAddress,pAmount){
 	await proContract.methods.status().call({
 		from: ethereum.selectedAddress
 	},function (err,res) {
+		if(err){
+			showAlertMessage('You have rejected the transaction',5000);
+		}
 		status = res;
 	});
 	// check the balance of the msg.sender as even if the msg.sender has less balance he can
@@ -277,6 +294,7 @@ async function approvalSettle(cAddress,pAmount){
 				},function(err,result){
 					if(err){
 						console.log(err);
+						showAlertMessage('You have rejected the transaction',5000);
 					}
 					if(result){
 						$('#apprAlertModal').removeClass('hide');
@@ -389,6 +407,8 @@ async function redeemInvToken(cAddress,amount) {
 	},function (err, res) {
 		if(res){
 			$('#redeemedInvToken').html('You have redeemed '+amount+'INV Tokens');
+		}else{
+			showAlertMessage('You have rejected the transaction',5000);
 		}
 	})
 }
@@ -416,7 +436,6 @@ function GetNetwork(networkId,daiCAddress) {
 }
 
 async function checkNetwork() {
-	console.log(ethereum.networkVersion);
 	n = ethereum.networkVersion;
 	var network;
 	if(n == 1){
@@ -439,4 +458,8 @@ async function checkNetwork() {
 		console.log('You are connected to RPC');
 	}
 	return network;
+}
+
+function test(arg) {
+	console.log(arg);
 }

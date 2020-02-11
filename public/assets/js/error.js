@@ -7,3 +7,12 @@ function loaderOverlay() {
 	$('.loader-overlay').show();
 	$('.overlay-loader-image').after('<div class="text-center alert alert-info"><h3>It may take a while!</h3><p>Please wait... your request is processed. Please do not refresh or reload the page.</p><br></div>');
 }
+
+function showAlertMessage(msg,interval) {
+	$('.loader-overlay').hide();
+	$('#alertAllInvoice').removeClass('hide');
+	setInterval(function () {
+		$('#alertAllInvoice').addClass('hide');
+	},interval);
+	$('#alertAllInvoice').html(msg);
+}

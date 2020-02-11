@@ -235,6 +235,7 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/assets/abi/smartInvoiceABI.js"></script>
     <script type="text/javascript" src="/assets/abi/daiABI.js"></script>
+    <script type="text/javascript" src="/assets/js/error.js"></script>
     <script type="text/javascript" src="/assets/js/app.js"></script>
 
     <script type="text/javascript">

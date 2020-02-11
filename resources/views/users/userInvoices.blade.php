@@ -57,7 +57,7 @@
 								@elseif(!$project->soldInvoice->isEmpty())
 								<button data-toggle="modal" data-target="#aprTokenSettleModal" class="btn btn-block btn-default settleInvoiceBtn" data-address="{{$project->contract_address}}" data-id="{{$project->id}}" data-amount="{{$project->investment->total_projected_costs}}">Settle</button>
 								@elseif($project->confirmation)
-								<i style="color: #030303;">Confirmed</i>
+								<button data-toggle="modal" data-target="#aprTokenSettleModal" class="btn btn-block btn-default settleInvoiceBtn" data-address="{{$project->contract_address}}" data-id="{{$project->id}}" data-amount="{{$project->investment->total_projected_costs}}">Settle without Financed</button>
 								@else
 								<button data-toggle="modal" data-target=".invoiceConfirmationModal" class="btn btn-info btn-block invoiceConfirmationModal1" data="{{$project}}" >Confirm</button>
 								@endif
