@@ -151,7 +151,7 @@ Create New Project | @parent
 			var askingAmount = $('input[name=asking_amount]').val();
 			var dueDate = $('input[name=due_date]').val();
 			var someDate = new Date(dueDate);
-			someDate = someDate.getTime();
+			someDate = someDate.getTime()/1000;
 			var walletAddressBuyer = $('input[name=wallet_address_buyer').val();
 			if(amount == null){
 				window.reload;

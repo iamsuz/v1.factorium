@@ -207,39 +207,42 @@ Asset Tokenization
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
 					var b = Number(balance).toFixed(3);
 					$('#balanceBtn').text(b);
+					var askAmount;
+					var pid;
+					var cAddress;
 					$('li.list-group-item').on('click',function (e) {
 						$('li.list-group-item').each(function () {
 							$(this).removeClass('list-group-item-info');
 						});
 						$(this).addClass('list-group-item-info');
-						var askAmount = $(this).data('asking');
-						var pid = $(this).data('id');
+						askAmount = $(this).data('asking');
+						pid = $(this).data('id');
 						$('.project-name').text('Invoice '+pid);
 						$('.askingAmt').text('$'+askAmount);
-						var cAddress = $(this).data('address');
+						cAddress = $(this).data('address');
 						approvalStatus(cAddress,askAmount);
-						$('.circle-btn').on('click',function (e) {
-							e.preventDefault();
-							if($(this).hasClass('approval-btn')){
-								console.log($(this));
-								approval(cAddress,askAmount);
-								$('.loader-overlay').show();
-							}else if($(this).hasClass('buy-now')){
-								var hPid = btoa(pid);
-								byInvoice(cAddress,askAmount,hPid,pid);
-								$('.loader-overlay').show();
-							} else if($(this).hasClass('redeem-btn')){
-								$('.loader-overlay').hide();
-								getInvTokenBalance(cAddress);
-								$('#redeemInvTokenModal').modal('show');
-								$('form#redeemTokenForm').submit(function (t) {
-									t.preventDefault();
-									var invToken = $('input[name="invToken"]').val();
-									redeemInvToken(cAddress, invToken);
+					});
+					$('.circle-btn').on('click',function (e) {
+						e.preventDefault();
+						if($(this).hasClass('approval-btn')){
+							console.log($(this));
+							approval(cAddress,askAmount);
+							$('.loader-overlay').show();
+						}else if($(this).hasClass('buy-now')){
+							var hPid = btoa(pid);
+							byInvoice(cAddress,askAmount,hPid,pid);
+							$('.loader-overlay').show();
+						} else if($(this).hasClass('redeem-btn')){
+							$('.loader-overlay').hide();
+							getInvTokenBalance(cAddress);
+							$('#redeemInvTokenModal').modal('show');
+							$('form#redeemTokenForm').submit(function (t) {
+								t.preventDefault();
+								var invToken = $('input[name="invToken"]').val();
+								redeemInvToken(cAddress, invToken);
         							//getDaiBalance(ethereum.selectedAddress);
         						});
-							}
-						});
+						}
 					});
 				}else{
 					$('#connectToWallet').modal('show');
