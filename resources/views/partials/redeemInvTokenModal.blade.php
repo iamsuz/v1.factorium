@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" id="modalTitleApprDai">
+        <h4 class="modal-title text-center" id="modalTitleApprDai">
           <i class="fa fa-lock lockLogo" aria-hidden="true" style="font-size: 45px;" ></i>
         </h4>
       </div>
