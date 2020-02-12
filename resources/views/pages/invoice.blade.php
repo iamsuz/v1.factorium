@@ -65,7 +65,7 @@ Asset Tokenization
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
 			<div class="col-md-2">
-				<img src="/assets/images/white.png" width="200px;">
+				<a href="/"><img src="/assets/images/white.png" width="200px;"></a>
 			</div>
 			<div class="col-md-1 col-md-offset-7">
 				<button class="btn" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" ><span id="balanceBtn"></span> Dai</button>
