@@ -224,15 +224,14 @@ Asset Tokenization
 					});
 					$('.circle-btn').on('click',function (e) {
 						e.preventDefault();
-						if($(this).hasClass('approval-btn')){
-							console.log($(this));
+						if($(this).hasClass('approval-btn') && cAddress && askAmount){
 							approval(cAddress,askAmount);
 							$('.loader-overlay').show();
-						}else if($(this).hasClass('buy-now')){
+						}else if($(this).hasClass('buy-now') && cAddress && askAmount && hpid){
 							var hPid = btoa(pid);
 							byInvoice(cAddress,askAmount,hPid,pid);
 							$('.loader-overlay').show();
-						} else if($(this).hasClass('redeem-btn')){
+						} else if($(this).hasClass('redeem-btn') && cAddress){
 							$('.loader-overlay').hide();
 							getInvTokenBalance(cAddress);
 							$('#redeemInvTokenModal').modal('show');
@@ -242,6 +241,8 @@ Asset Tokenization
 								redeemInvToken(cAddress, invToken);
         							//getDaiBalance(ethereum.selectedAddress);
         						});
+						}else{
+							showAlertMessage('Please select any project',4000);
 						}
 					});
 				}else{
