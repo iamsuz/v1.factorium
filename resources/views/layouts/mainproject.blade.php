@@ -11,7 +11,7 @@
     <meta name="description" content="Invest with small amounts in the construction of 2 townhouses in the prestigious mount waverley school zone. 20% returns in 18 months, Refer to PDS for details">
     <meta name="copyright" content="Konkrete Distributed Registries Ltd">
     <!-- <link rel="shortcut icon" href="/favicon.png" type="image/x-icon"> -->
-    <link rel="shortcut icon" href="/favicon.png?v=<?php echo filemtime('favicon.png'); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="https://factorium.co/assets/images/media/home_page/1563164676.png?v=1563164676" type="image/x-icon">
     <!-- Open Graphic -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta property="og:image" content="https://www.estatebaron.com/images/hero-image-1.jpg" />
