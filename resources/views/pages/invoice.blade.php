@@ -1,7 +1,7 @@
 @extends('layouts.mainproject')
 
 @section('title-section')
-Asset Tokenization | @parent
+Asset Tokenization
 @stop
 
 @section('css-section')
