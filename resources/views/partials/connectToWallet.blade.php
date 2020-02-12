@@ -1,4 +1,4 @@
-<div id="connectToWallet" class="modal fade" role="dialog">
+<div id="connectToWallet" class="modal fade" role="dialog" data-backdrop="static">
   <div class="modal-dialog modal-sm" style="width: 400px;">
 
     <!-- Modal content-->
