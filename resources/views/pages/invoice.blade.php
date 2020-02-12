@@ -1,7 +1,7 @@
 @extends('layouts.mainproject')
 
 @section('title-section')
-Buy Invoice | @parent
+Asset Tokenization | @parent
 @stop
 
 @section('css-section')
@@ -36,7 +36,7 @@ Buy Invoice | @parent
 		margin-right: 0px;
 	}
 	#buy-invoice-panel{
-		margin-top: -35px;
+		margin-top: -64px;
 	}
 	.circle-btn{
 		height: 130px;
@@ -65,7 +65,7 @@ Buy Invoice | @parent
 	<div class="container">
 		<div class="row" style="padding-top:30px; margin-right: 0px !important;">
 			<div class="col-md-2">
-				<img src="https://konkrete.io/assets/images/konkrete_full_logo_dark.png" width="200px;">
+				<img src="/assets/images/white.png" width="200px;">
 			</div>
 			<div class="col-md-1 col-md-offset-7">
 				<button class="btn" style="background-color: #141e27; color: #fff;" data-backdrop="static" data-keyboard="false" ><span id="balanceBtn"></span> Dai</button>
@@ -77,7 +77,7 @@ Buy Invoice | @parent
 		<div class="row text-center" style="margin-top: 10vh;">
 			<div class="col-md-4">
 				<br>
-				<h3 class="project-name">Project Name</h3>
+				<h3 class="project-name">Asset Name</h3>
 				<p class="askingAmt">Asking Amount</p>
 			</div>
 			<div class="col-md-4 text-center">
@@ -95,7 +95,7 @@ Buy Invoice | @parent
 	</div>
 </section>
 <section class="second-fold" style="background-color: #070a0e;">
-	<div class="container" style="padding: 85px 15px 15px 15px;">
+	<div class="container" style="padding: 85px 15px 85px 15px;">
 		<div class="row">
 			<div class="col-md-2">
 				<button class="btn btn-block btn-default filterbtn @if(!request('filter') || (request('filter') == 'all')) active @endif" onclick="filterSelection('all')" > Show all</button>
@@ -104,10 +104,10 @@ Buy Invoice | @parent
 				<button class="btn btn-block btn-default filterbtn  @if(request('filter') && (request('filter') == 'buy')) active @endif" onclick="filterSelection('buy')"> Buy Now</button>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-block btn-default filterbtn  @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Invoice Sold</button>
+				<button class="btn btn-block btn-default filterbtn  @if(request('filter') && (request('filter') == 'sold')) active @endif" onclick="filterSelection('sold')"> Asset Bought</button>
 			</div>
 			<div class="col-md-2">
-				<button class="btn btn-block btn-default filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Invoice Paid</button>
+				<button class="btn btn-block btn-default filterbtn @if(request('filter') && (request('filter') == 'repaid')) active @endif" onclick="filterSelection('repaid')">Redeem</button>
 			</div>
 		</div>
 	</div>
@@ -116,14 +116,13 @@ Buy Invoice | @parent
 	<div class="container">
 		<div class="row text-center" id="buy-invoice-panel">
 			<div class="col-md-12">
-				<br><br>
 				<div class="panel panel-default" style="box-shadow: 0px 0px 10px grey;">
 					<div class="panel-heading row" style="padding: 2rem 0;color: #aab8c1;">
 						<div class="col-md-2 col-xs-2">
-							Project Name
+							Asset Name
 						</div>
 						<div class="col-md-2 col-xs-2">
-							Invoice Amount
+							Due Amount
 						</div>
 						<div class="col-md-2 col-xs-2">
 							Asking Amount
@@ -132,7 +131,7 @@ Buy Invoice | @parent
 							Due Date
 						</div>
 						<div class="col-md-2 col-xs-2">
-							Interest Rate
+							APR
 						</div>
 						<div class="col-md-2 col-xs-2">
 							Status
@@ -142,9 +141,9 @@ Buy Invoice | @parent
 						<div class="">
 							@foreach($projects as $project)
 							<div class="" style="border-top: 1px solid #e3e9eb; width:100%;">
-								<a href="#" class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
+								<li class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
 									<div class="col-md-2 col-xs-2">
-										{{$project->title}}
+										{{$project->title}} <a href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="color: #424242;" target="_blank"> <i class="fa fa-external-link" aria-hidden="true"></i></a>
 									</div>
 									<div class="col-md-2 col-xs-2">
 										{{$project->investment->total_projected_costs}}
@@ -167,7 +166,7 @@ Buy Invoice | @parent
 										Buy Now
 										@endif
 									</div>
-								</a>
+								</li>
 							</div>
 							@endforeach
 						</div>
@@ -208,8 +207,7 @@ Buy Invoice | @parent
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
 					var b = Number(balance).toFixed(3);
 					$('#balanceBtn').text(b);
-					$('a.list-group-item').on('click',function (e) {
-						console.log($(this));
+					$('li.list-group-item').on('click',function (e) {
 						var askAmount = $(this).data('asking');
 						var pid = $(this).data('id');
 						$('.project-name').text('Invoice '+pid);
@@ -263,21 +261,6 @@ Buy Invoice | @parent
 			console.log('Browser does not have metamask');
 		}
 		// console.log(abi);
-		$("form#createInvoiceForm").submit(async(e) => {
-			e.preventDefault();
-			$('.loader-overlay').show();
-			var amount = $('input[name=invoice_amount]').val();
-			var askingAmount = $('input[name=asking_amount]').val();
-			var dueDate = $('input[name=due_date]').val();
-			var someDate = new Date(dueDate);
-			someDate = someDate.getTime();
-			var walletAddressBuyer = $('input[name=wallet_address_buyer').val();
-			if(amount == null){
-				window.reload;
-			}
-			var result = compileCode(amount,askingAmount,someDate,walletAddressBuyer,e);
-			console.log(result);
-		});
 	});
 </script>
 <script type="text/javascript">

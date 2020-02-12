@@ -14,13 +14,13 @@
           <div class="col-md-8 col-md-offset-2">
             <img src="/assets/images/konkrete_logo_dark.png" height="90px" width="90px" style="text-shadow: 10px 10px 5px grey;">
             <h3>Connect Wallet</h3>
-            <p>To start using Konkrete</p>
+            <p>To start using Factorium</p>
           </div>
         </div>
         <br><br><br><br>
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
-            <button class="btn btn-lg btn-block buy-now-btn btn-primary" id="metamaskConnect">Metamask</button>
+            <button class="btn btn-lg btn-block buy-now-btn btn-primary" id="metamaskConnect"><img src="/assets/images/metamask-logo-png-transparent.png" width="25px">&nbsp;&nbsp;&nbsp; Metamask</button>
           </div>
         </div>
       </div>

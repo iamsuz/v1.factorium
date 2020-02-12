@@ -45,7 +45,7 @@
     @section('css-app')
     {!! Html::style('/css/app3.css') !!}
     @show
-
+    {!! Html::style('plugins/font-awesome-4.6.3/css/font-awesome.min.css') !!}
     @yield('css-section')
     <noscript>
         You need to enable JavaScript to run this app. The Factorium dApp is a distributed application to interact with the Factorium Protocol on the Ethereum blockchain. This app requires JavaScript to run. If you are interested in learning more about Factorium, please visit <a href="https://factorium.co">https://factorium.co</a>.
@@ -137,10 +137,10 @@
                         @if($mainLogo = $siteConfigMedia->where('type', 'brand_logo')->first())
                         <img class="img-responsive" src="{{asset($mainLogo->path)}}" alt="Logo" width="200">
                         @else
-                        <img class="img-responsive" src="https://konkrete.io/assets/images/konkrete_full_logo_dark.png" alt="Logo" width="200">
+                        <img class="img-responsive" src="/assets/images/white.png" alt="Logo" width="200">
                         @endif
                         @else
-                        <img class="img-responsive" src="https://konkrete.io/assets/images/konkrete_full_logo_dark.png" alt="Logo" width="200">
+                        <img class="img-responsive" src="/assets/images/white.png" alt="Logo" width="200">
                         @endif
                     </center>
                 </div>
@@ -204,7 +204,7 @@
                             <a href="{{ route('pages.dispute') }}" style="color:#fff;" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Internal Dispute Resolution Process</span></a>
                         </li>
                         <li class="footer-list-item">
-                            <a href="https://download.asic.gov.au/media/3797986/rg185-published-24-march-2016.pdf" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px;">Non Cash Payment Facility</span></a>
+                            <a href="https://download.asic.gov.au/media/3797986/rg185-published-24-march-2016.pdf" target="_blank" class="a-link fold-text-color"><span class="font-semibold" style="font-size: 16px; color:#fff;">Non Cash Payment Facility</span></a>
                         </li>
                     </ul>
                 </div>
