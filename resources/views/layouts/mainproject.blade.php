@@ -128,7 +128,7 @@
 
     <!-- footer content here -->
     @section('footer-section')
-    <footer id="footer" class="chunk-box" @if($color) style='background-color: #{{$color->nav_footer_color}}' @endif>
+    <footer id="footer" class="chunk-box" style='background-color: #070a0e;'>
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.2s">
