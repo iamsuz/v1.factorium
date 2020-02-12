@@ -241,21 +241,18 @@ Asset Tokenization | @parent
 					$('#connectToWallet').modal('show');
 					console.log('not enabled');
 				}
-				$('#metamaskConnect').on('click',function (e) {
-					ethereum.enable();
-				});
 				//ethereum.autoRefreshOnNetworkChange = false;
 				//await ethereum.enable();
 			}catch(err){
 				if(!ethereum._metamask.isEnabled()){
 					$('#connectToWallet').modal('show');
-					$('#metamaskConnect').on('click',function (e) {
-						ethereum.enable();
-					});
 				}
 				console.log(err);
 				showAlertMessage('User has denied the access',5000);
 			}
+			$('#metamaskConnect').on('click',function (e) {
+				ethereum.enable();
+			});
 		}else{
 			showAlertMessage('Browser does not have metamask',3000000);
 			console.log('Browser does not have metamask');
