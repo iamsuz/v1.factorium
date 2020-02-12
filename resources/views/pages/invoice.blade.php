@@ -251,7 +251,9 @@ Asset Tokenization | @parent
 				showAlertMessage('User has denied the access',5000);
 			}
 			$('#metamaskConnect').on('click',function (e) {
-				ethereum.enable();
+				ethereum.enable().then(function (accounts) {
+					location.reload();
+				});
 			});
 		}else{
 			showAlertMessage('Browser does not have metamask',3000000);
