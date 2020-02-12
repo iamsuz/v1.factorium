@@ -208,6 +208,10 @@ Asset Tokenization
 					var b = Number(balance).toFixed(3);
 					$('#balanceBtn').text(b);
 					$('li.list-group-item').on('click',function (e) {
+						$('li.list-group-item').each(function () {
+							$(this).removeClass('list-group-item-info');
+						});
+						$(this).addClass('list-group-item-info');
 						var askAmount = $(this).data('asking');
 						var pid = $(this).data('id');
 						$('.project-name').text('Invoice '+pid);
