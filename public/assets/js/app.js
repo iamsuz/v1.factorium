@@ -176,7 +176,7 @@ async function approval(cAddress,pAmount){
 			from: ethereum.selectedAddress
 		},async (err,res) => {
 			if(err){
-				$('.loader-overlay').hide();
+				// $('.loader-overlay').hide();
 				console.log('Error while checking the allowance for user');
 				return 0;
 			}
@@ -188,17 +188,20 @@ async function approval(cAddress,pAmount){
 					daiContract.methods.approve(cAddress, pAmount).send({
 						from: ethereum.selectedAddress
 					},function (err,res) {
+						$('.circle-btn').attr('disabled','true');
 						$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
 					}).on('confirmation', (confirmationNumber) => {
-						if(confirmationNumber === 2){
+						if(confirmationNumber === 5){
 							$('#apprAlertModal').removeClass('hide');
 							$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
 							$('.circle-btn').html('Buy Now');
+
 							$('#lockLogo').removeClass('fa-lock');
 							$('#lockLogo').addClass('fa-unlock');
 							$('#buyApprInvoice').removeAttr('disabled');
+							$('.circle-btn').removeAttr('disabled');
 							$('#apprDai').attr('disabled','true');
-							$('.loader-overlay').hide();
+							// $('.loader-overlay').hide();
 							resolve();
 						}
 					}).on('error',(error)=>{
