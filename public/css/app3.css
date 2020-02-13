@@ -2,7 +2,7 @@
 
 body {
 	color: #424242;
-	font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 	font-size: 16px;
 	/*padding-top:3em;*/
 	font-weight:100;
@@ -256,7 +256,7 @@ footer {
 .header .main-nav .nav .nav-item {
 	font-weight: normal;
 	margin-right: 30px;
-	font-family: 'Montserrat', sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 .header .main-nav .nav .nav-item.active a {
 	color: #6690b9;

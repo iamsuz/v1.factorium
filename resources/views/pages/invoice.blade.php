@@ -227,7 +227,7 @@ Asset Tokenization
 						if($(this).hasClass('approval-btn') && cAddress && askAmount){
 							approval(cAddress,askAmount);
 							$('.loader-overlay').show();
-						}else if($(this).hasClass('buy-now') && cAddress && askAmount && hpid){
+						}else if($(this).hasClass('buy-now') && cAddress && askAmount){
 							var hPid = btoa(pid);
 							byInvoice(cAddress,askAmount,hPid,pid);
 							$('.loader-overlay').show();

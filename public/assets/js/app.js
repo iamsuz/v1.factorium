@@ -58,32 +58,39 @@ async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer,e)
 async function commit(project) {
 	var web3 = new Web3(ethereum);
 	var myContract = new web3.eth.Contract(abi,project.contract_address);
-	await myContract.methods.commit().send({
-		from: ethereum.selectedAddress
-	},function (err,result) {
-		if(result){
-			$.ajax({
-				url: '/user/invoice/'+project.id+'/confirm',
-				type : 'POST',
-				data : {
-					'numberOfWords' : 10
-				},
-				dataType:'json',
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-				success : function(data) {
+	return new Promise((resolve, reject) => {
+		myContract.methods.commit().send({from: ethereum.selectedAddress})
+		.on('confirmation', (confirmationNumber) => {
+			if (confirmationNumber === 2) {
+				$.ajax({
+					url: '/user/invoice/'+project.id+'/confirm',
+					type : 'POST',
+					data : {
+						'numberOfWords' : 10
+					},
+					dataType:'json',
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+					success : function(data) {
+						location.reload();
+					},
+					error : function(request,error)
+					{
+						alert("Request: "+JSON.stringify(request));
+					}
+				}).done(function () {
+					$('#statusOfConfirmation').html('<i>Pending</i>');
 					location.reload();
-				},
-				error : function(request,error)
-				{
-					alert("Request: "+JSON.stringify(request));
-				}
-			}).done(function () {
-				$('#statusOfConfirmation').html('<i>Pending</i>');
-				location.reload();
-			});
-		}
+				});
+				resolve()
+			}
+		})
+		.on('error', (error) => {
+			location.reload();
+			alert(error);
+			reject(error)
+		})
 	});
 }
 
@@ -162,7 +169,7 @@ async function approval(cAddress,pAmount){
 		status = res;
 	});
 	// check the balance of the msg.sender as even if the msg.sender has less balance he can
-	// approve more tokens than he holds and then why buying invoice it will throw error in
+	// approve more tokens than he holds and then while buying invoice it will throw error in
 	// transaction and user wont be able to figure out easily
 	if(status == 1){
 		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
@@ -177,26 +184,29 @@ async function approval(cAddress,pAmount){
 				//add one more check if you approved yesterday and today askingAMount is
 				//changed with day has passsed
 				//remaining amount of DAI that is (pAmount - res) is the new pAmount for approve
-				await daiContract.methods.approve(cAddress, pAmount).send({
-					from: ethereum.selectedAddress
-				},function(err,result){
-					if(err){
-						showAlertMessage('You have rejected the transaction',5000);
+				return new Promise((resolve,reject) => {
+					daiContract.methods.approve(cAddress, pAmount).send({
+						from: ethereum.selectedAddress
+					},function (err,res) {
+						$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
+					}).on('confirmation', (confirmationNumber) => {
+						if(confirmationNumber === 2){
+							$('#apprAlertModal').removeClass('hide');
+							$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
+							$('.circle-btn').html('Buy Now');
+							$('#lockLogo').removeClass('fa-lock');
+							$('#lockLogo').addClass('fa-unlock');
+							$('#buyApprInvoice').removeAttr('disabled');
+							$('#apprDai').attr('disabled','true');
+							$('.loader-overlay').hide();
+							resolve();
+						}
+					}).on('error',(error)=>{
+						showAlertMessage(error.message,5000);
 						$('.loader-overlay').hide();
-						return false;
-					}
-					if(result){
-						console.log('Buy now'+ status);
-						$('#apprAlertModal').removeClass('hide');
-						$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
-						$('.circle-btn').html('Buy Now');
-						$('#lockLogo').removeClass('fa-lock');
-						$('#lockLogo').addClass('fa-unlock');
-						$('#buyApprInvoice').removeAttr('disabled');
-						$('#apprDai').attr('disabled','true');
-						$('.loader-overlay').hide();
-						return true;
-					}
+						$('.circle-btn').html('Unlock Dai');
+						reject(error);
+					});
 				});
 			}else{
 				console.log('Buy now'+ status);
@@ -233,33 +243,42 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 	var projectContract = new web3.eth.Contract(abi,pAddress);
 	pEAmount = web3.utils.toWei(pAmount.toString(), 'ether');
 	var financiersAddress = ethereum.selectedAddress;
-	await projectContract.methods.buyInvoice(pEAmount).send({
-		from: ethereum.selectedAddress
-	},function(err,result){
-		if(err){
-			console.log(err);
-			showAlertMessage('You have rejected the transaction',5000);
-		}
-		if(result){
-			$.ajax({
-				type: 'POST',
-				url: "/invoice/"+hPid+"/buy",
-				data: {
-					financiersAddress: financiersAddress,
-					transactionHash: result,
-					amount: pAmount,
-				},
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-				async: true,
-				success: function (data) {
-					if(data){
-						location.reload();
+	return new Promise((resolve,reject)=>{
+		projectContract.methods.buyInvoice(pEAmount).send({
+			from:ethereum.selectedAddress
+		},function (err,result) {
+			$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
+		}).on('confirmation',(confirmationNumber)=>{
+			if(confirmationNumber === 2){
+				$.ajax({
+					type: 'POST',
+					url: "/invoice/"+hPid+"/buy",
+					data: {
+						financiersAddress: financiersAddress,
+						transactionHash: result,
+						amount: pAmount,
+					},
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					},
+					async: true,
+					success: function (data) {
+						if(data){
+							location.reload();
+						}
 					}
-				}
-			});
-		}
+				});
+				$('.circle-btn').html('Bought');
+				$('.circle-btn').attr('disabled','true');
+				$('#apprDai').attr('disabled','true');
+				$('.loader-overlay').hide();
+				resolve()
+			}
+		}).on('error',(error)=>{
+			$('.circle-btn').html('Buy Now');
+			showAlertMessage(error.message,5000);
+			reject(error);
+		});
 	});
 }
 
