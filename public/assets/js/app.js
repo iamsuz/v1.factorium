@@ -246,19 +246,21 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 	var projectContract = new web3.eth.Contract(abi,pAddress);
 	pEAmount = web3.utils.toWei(pAmount.toString(), 'ether');
 	var financiersAddress = ethereum.selectedAddress;
+	var res;
 	return new Promise((resolve,reject)=>{
 		projectContract.methods.buyInvoice(pEAmount).send({
 			from:ethereum.selectedAddress
 		},function (err,result) {
+			res = result;
 			$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
 		}).on('confirmation',(confirmationNumber)=>{
-			if(confirmationNumber === 2){
+			if(confirmationNumber === 5){
 				$.ajax({
 					type: 'POST',
 					url: "/invoice/"+hPid+"/buy",
 					data: {
 						financiersAddress: financiersAddress,
-						transactionHash: result,
+						transactionHash: res,
 						amount: pAmount,
 					},
 					headers: {
@@ -466,19 +468,19 @@ async function checkNetwork() {
 		console.log('You are conneceted to mainnet');
 	}else if(n == 3){
 		network = new GetNetwork(3,'');
-		console.log('You are connected to Ropsten');
+		networkInfo('Note: You are currently connected to the Ropsten Testnet');
 	}else if(n == 42){
 		network = new GetNetwork(42,'0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa');
-		console.log('You are connected to Kovan');
+		networkInfo('Note: You are currently connected to the Kovan Testnet');
 	}else if(n == 4){
 		network = new GetNetwork(4,'');
-		console.log('You are connected to Rinkeby');
+		networkInfo('Note: You are currently connected to the Rinkeby Testnet');
 	}else if(n == 5){
 		network = new GetNetwork(5,'');
-		console.log('You are connected to Goerli');
+		networkInfo('Note: You are currently connected to the Goerli Testnet');
 	}else{
 		network = new GetNetwork(0,'');
-		console.log('You are connected to RPC');
+		networkInfo('Note: You are currently connected to the RPC Testnet');
 	}
 	return network;
 }

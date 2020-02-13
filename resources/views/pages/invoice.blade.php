@@ -62,6 +62,12 @@ Asset Tokenization
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<p class="hide text-center" id="networkInfo" style="color: #fff;">
+				</p>
+			</div>
+		</div>
 	</div>
 </section>
 <section class="main-fold" id="mainFold" style="background-color: #070a0e;color: #fff;">
@@ -84,7 +90,7 @@ Asset Tokenization
 				<p class="askingAmt">Asking Amount</p>
 			</div>
 			<div class="col-md-4 text-center">
-				<button class="btn btn-lg btn-info buy-now-btn circle-btn approval-btn">
+				<button class="btn btn-lg btn-success buy-now-btn circle-btn approval-btn">
 					Unlock Dai<br>
 					<span class="askingAmt"></span>
 				</button>
@@ -146,7 +152,7 @@ Asset Tokenization
 							<div class="" style="border-top: 1px solid #e3e9eb; width:100%;">
 								<li class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
 									<div class="col-md-2 col-xs-2">
-										{{$project->title}} <a href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="color: #424242;" target="_blank"> <i class="fa fa-external-link" aria-hidden="true"></i></a>
+										{{$project->title}} <a href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="color: #424242;" target="_blank"> <i class="fa fa-external-link" aria-hidden="true" style="font-size: 10px;"></i></a>
 									</div>
 									<div class="col-md-2 col-xs-2">
 										{{$project->investment->total_projected_costs}}

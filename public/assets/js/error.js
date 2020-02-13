@@ -16,3 +16,8 @@ function showAlertMessage(msg,interval) {
 	},interval);
 	$('#alertAllInvoice').html(msg);
 }
+
+function networkInfo(msg) {
+	$('#networkInfo').removeClass('hide');
+	$('#networkInfo').html(msg);
+}
