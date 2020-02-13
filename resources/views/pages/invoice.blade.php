@@ -6,6 +6,9 @@ Asset Tokenization
 
 @section('css-section')
 <style>
+	body{
+		color: #000;
+	}
 	.content{
 		position: relative;
 	}
