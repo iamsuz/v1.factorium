@@ -1278,6 +1278,9 @@ public function prospectusDownload(Request $request)
         $active = Auth::User();
         if(!($active->email == $request->invoice_issue_from_email)){
             $user = User::where('email',$request->invoice_issue_from_email);
+            if(!$user->first()){
+                return array('status'=> false, 'message' => 'Sorry, Buyer needs to be a user on Factorium');
+            }
             // dd($user->first()->wallet_address);
             $address = $user->first()->wallet_address;
             $entityName = $user->value('entity_name');

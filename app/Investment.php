@@ -68,15 +68,13 @@ class Investment extends Model
         $currentDate = Carbon::now();
         $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->fund_raising_close_date);
 
-        if ($currentDate >= $dueDate) {
-            return $this->invoice_amount;
-        }
-
+        // if ($currentDate >= $dueDate) {
+        //     return $this->invoice_amount;
+        // }
         $dateDiff = $currentDate->diffInDays($dueDate);
         // Get asking price
         $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
         $askingAmount = round($this->invoice_amount * ( 1 - ( $discountFactor )), 3);
-
         return $askingAmount;
     }
 

@@ -90,7 +90,7 @@ Asset Tokenization
 				<p class="askingAmt">Asking Amount</p>
 			</div>
 			<div class="col-md-4 text-center">
-				<button class="btn btn-lg btn-success buy-now-btn circle-btn approval-btn">
+				<button class="btn btn-lg btn-info buy-now-btn circle-btn approval-btn">
 					Unlock Dai<br>
 					<span class="askingAmt"></span>
 				</button>
@@ -155,10 +155,10 @@ Asset Tokenization
 										{{$project->title}} <a href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="color: #424242;" target="_blank"> <i class="fa fa-external-link" aria-hidden="true" style="font-size: 10px;"></i></a>
 									</div>
 									<div class="col-md-2 col-xs-2">
-										{{$project->investment->total_projected_costs}}
+										{{$project->investment->invoice_amount/10**18}}
 									</div>
 									<div class="col-md-2 col-xs-2">
-										{{$project->investment->getCalculatedAskingPriceAttribute()}}
+										{{number_format($project->investment->getCalculatedAskingPriceAttribute()/10**18,3)}}
 									</div>
 									<div class="col-md-2 col-xs-2">
 										{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date))}}
@@ -224,10 +224,10 @@ Asset Tokenization
 							$(this).removeClass('list-group-item-info');
 						});
 						$(this).addClass('list-group-item-info');
-						askAmount = $(this).data('asking');
+						askAmount = Number($(this).data('asking'));
 						pid = $(this).data('id');
 						$('.project-name').text('Invoice '+pid);
-						$('.askingAmt').text('$'+askAmount);
+						$('.askingAmt').text('$'+(askAmount/10**18).toFixed(3));
 						cAddress = $(this).data('address');
 						approvalStatus(cAddress,askAmount);
 					});

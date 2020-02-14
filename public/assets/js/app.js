@@ -15,7 +15,6 @@ async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer,e)
 	BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", async(compiler) => {
 		optimize = 1;
 		var result = compiler.compile(source,optimize);
-		console.log(result);
 		var byteCode = result.contracts[':SmartInvoice'].bytecode;
 		if(window.ethereum){
 			var web3 = new Web3(ethereum);
@@ -23,8 +22,6 @@ async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer,e)
 			_askingAmount = web3.utils.toWei(_askingAmount.toString(), 'ether')
 			var myContract = new web3.eth.Contract(JSON.parse(result.contracts[':SmartInvoice'].interface),null,{
 				from:ethereum.selectedAddress,
-				gas:'2500000',
-				value:'0',
 				data:byteCode
 			});
 			console.log(myContract);
@@ -35,8 +32,6 @@ async function compileCode(_amount,_askingAmount,_dueDate,_walletAddressBuyer,e)
 				arguments:[_amount,_askingAmount,_dueDate,_walletAddressBuyer,daiAddr,_sym]
 			}).send({
 				from:ethereum.selectedAddress,
-				gas:'2500000',
-				value: '0',
 				data:byteCode
 			},function (err,res) {
 				if(res){
@@ -61,7 +56,8 @@ async function commit(project) {
 	return new Promise((resolve, reject) => {
 		myContract.methods.commit().send({from: ethereum.selectedAddress})
 		.on('confirmation', (confirmationNumber) => {
-			if (confirmationNumber === 2) {
+			$('#confirmationBlock').html(confirmationNumber);
+			if (confirmationNumber === 10) {
 				$.ajax({
 					url: '/user/invoice/'+project.id+'/confirm',
 					type : 'POST',
@@ -98,8 +94,8 @@ async function approvalStatus(cAddress,pAmount) {
 	var n = await checkNetwork();
 	var daiCAddress = n.daiCAddress;
 	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
-	var oAmount = pAmount;
-	pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
+	var oAmount = (pAmount/10**18).toFixed(3);
+	// pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
 	var proContract = new web3.eth.Contract(abi,cAddress);
 	var status;
 	await proContract.methods.status().call({

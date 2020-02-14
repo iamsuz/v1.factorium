@@ -237,40 +237,6 @@
     <script type="text/javascript" src="/assets/abi/daiABI.js"></script>
     <script type="text/javascript" src="/assets/js/error.js"></script>
     <script type="text/javascript" src="/assets/js/app.js"></script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('[data-toggle="popover"]').popover();
-            $('a[data-disabled]').click(function (e) {
-                e.preventDefault();
-            });
-            $('body').scrollspy({ target: '#header', offset: 400});
-            var mq = window.matchMedia("(min-width: 1140px)");
-            $(window).bind('scroll', function() {
-                if ($(window).scrollTop() > 50) {
-                    $('#header').addClass('navbar-fixed-top');
-                    $('#logo').removeClass('hide');
-                    $('#nav_home').removeClass('hide');
-                    $('#header').removeClass('hide');
-                    if(mq.matches){
-                        $('#section-colors-left').removeClass('hide');
-                    }else{
-                    }
-                }
-                else {
-                    $('#header').removeClass('navbar-fixed-top');
-                    $('#logo').addClass('hide');
-                    $('#nav_home').addClass('hide');
-                    $('#header').addClass('hide');
-                    if(mq.matches){
-                        $('#section-colors-left').addClass('hide');
-                    }else{
-                    }
-                }
-            });
-        });
-    </script>
     @yield('js-section')
 </body>
 </Html>
