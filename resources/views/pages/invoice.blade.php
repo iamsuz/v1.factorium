@@ -94,6 +94,7 @@ Asset Tokenization
 					Unlock Dai<br>
 					<span class="askingAmt"></span>
 				</button>
+				<p id="confirmationMessage" class="hide">Waiting for confirmation</p>
 			</div>
 			<div class="col-md-4">
 				<br>
@@ -246,7 +247,6 @@ Asset Tokenization
 						e.preventDefault();
 						if($(this).hasClass('approval-btn') && cAddress && tAmount){
 							approval(cAddress,tAmount);
-							// $('.loader-overlay').show();
 						}else if($(this).hasClass('buy-now') && cAddress && askAmount){
 							var hPid = btoa(pid);
 							byInvoice(cAddress,askAmount,hPid,pid);

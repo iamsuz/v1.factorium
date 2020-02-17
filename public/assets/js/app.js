@@ -110,7 +110,8 @@ async function approvalStatus(cAddress,pAmount,aAmount) {
 		var bal = await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
 			from: ethereum.selectedAddress
 		},function (err,res) {
-			if(res >= pAmount){
+			console.log(res);
+			if(res >= web3.utils.toWei(pAmount.toString(), 'ether')){
 				$('.circle-btn').addClass('buy-now');
 				$('.circle-btn').removeClass('approval-btn');
 				$('.circle-btn').removeClass('sold-btn')
@@ -239,12 +240,17 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 	var financiersAddress = ethereum.selectedAddress;
 	var res;
 	return new Promise((resolve,reject)=>{
+		console.log(pEAmount);
 		projectContract.methods.buyInvoice(pEAmount).send({
 			from:ethereum.selectedAddress
 		},function (err,result) {
-			res = result;
+			res = result; //dont remove res = result as it uses in the next confirmation call
+			if(result){
+				$('#confirmationMessage').removeClass('hide');
+			}
 			$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
 		}).on('confirmation',(confirmationNumber)=>{
+			$('#confirmationMessage').html(confirmationNumber+' of 5 Blocks confirmed');
 			if(confirmationNumber === 5){
 				$.ajax({
 					type: 'POST',
@@ -418,15 +424,20 @@ async function getInvTokenBalance(cAddress) {
 async function redeemInvToken(cAddress,amount) {
 	var pContract = new web3.eth.Contract(abi,cAddress);
 	pAmount = web3.utils.toWei(amount.toString(), 'ether');
-	await pContract.methods.redeemInvTokens(pAmount).send({
-		from: ethereum.selectedAddress
-	},function (err, res) {
-		if(res){
-			$('#redeemedInvToken').html('You have redeemed '+amount+'INV Tokens');
-		}else{
-			showAlertMessage('You have rejected the transaction',5000);
-		}
-	})
+	return new Promise((resolve,reject)=>{
+		pContract.methods.redeemInvTokens(pAmount).send({
+			from: ethereum.selectedAddress
+		}).on('confirmation',(confirmationNumber)=>{
+			console.log('transaction is confirmed');
+			if(confirmationNumber === 10){
+				resolve();
+			}
+		}).on('error',(error)=>{
+			location.reload();
+			alert(error);
+			reject(error);
+		});
+	});
 }
 
 async function getDaiBalance(uAddress){
