@@ -154,7 +154,7 @@ async function approval(cAddress,pAmount){
 	var n = await checkNetwork();
 	var daiCAddress = n.daiCAddress;
 	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
-	pAmount = web3.utils.toWei(pAmount.toString(), 'wei');
+	pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
 	var proContract = new web3.eth.Contract(abi,cAddress);
 	var status;
 	await proContract.methods.status().call({
