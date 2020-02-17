@@ -90,12 +90,11 @@ async function commit(project) {
 	});
 }
 
-async function approvalStatus(cAddress,pAmount) {
+async function approvalStatus(cAddress,pAmount,aAmount) {
 	var n = await checkNetwork();
 	var daiCAddress = n.daiCAddress;
 	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
-	var oAmount = (pAmount/10**18).toFixed(3);
-	// pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
+	pAmount = web3.utils.toWei(pAmount.toString(), 'wei');
 	var proContract = new web3.eth.Contract(abi,cAddress);
 	var status;
 	await proContract.methods.status().call({
@@ -108,30 +107,29 @@ async function approvalStatus(cAddress,pAmount) {
 		return false;
 	}else if(status == 1){
 		$('.circle-btn').removeAttr('disabled');
-		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
+		var bal = await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
 			from: ethereum.selectedAddress
 		},function (err,res) {
 			if(res >= pAmount){
-				console.log(res);
 				$('.circle-btn').addClass('buy-now');
 				$('.circle-btn').removeClass('approval-btn');
 				$('.circle-btn').removeClass('sold-btn')
-				$('.circle-btn').html('Buy Now<br><span class="askingAmt">'+oAmount+'</span>');
+				$('.circle-btn').html('Buy Now<br><span class="askingAmt">'+(aAmount).toFixed(3)+'</span>');
 				$('.investedAmount').html('0 Dai');
 			}else{
 				$('.circle-btn').removeClass('sold-btn');
 				$('.circle-btn').addClass('approval-btn');
-				$('.circle-btn').html('Unlock Dai<br><span class="askingAmt">'+oAmount+'</span>');
+				$('.circle-btn').html('Unlock Dai<br><span class="askingAmt">'+ Number(pAmount).toFixed(3)+'</span>');
 				$('.investedAmount').html('0 Dai');
 			}
 			return true;
-		})
+		});
 	}else if(status == 2){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
-		$('.circle-btn').html('Bought<br><span class="askingAmt">'+oAmount+'</span>');
+		$('.circle-btn').html('Bought<br><span class="askingAmt">'+(oAmount/10**18).toFixed(3)+'</span>');
 		$('.circle-btn').attr('disabled','true');
-		$('.investedAmount').html(oAmount+' Dai');
+		$('.investedAmount').html((oAmount/10**18).toFixed(3)+' Dai');
 		$('.circle-btn').addClass('sold-btn')
 		$('.circle-btn').removeClass('redeem-btn');
 		$('.circle-btn').removeClass('buy-now');
@@ -146,7 +144,7 @@ async function approvalStatus(cAddress,pAmount) {
 		$('.circle-btn').removeClass('buy-now');
 		$('.circle-btn').removeClass('approval-btn');
 		$('.circle-btn').addClass('redeem-btn');
-		$('.investedAmount').html(oAmount+' Dai');
+		$('.investedAmount').html((oAmount/10**18).toFixed(3)+' Dai');
 		$('#apprDai').attr('disabled','true');
 	}
 	return true;
@@ -156,7 +154,7 @@ async function approval(cAddress,pAmount){
 	var n = await checkNetwork();
 	var daiCAddress = n.daiCAddress;
 	var daiContract  = new web3.eth.Contract(daiABI,daiCAddress);
-	pAmount = web3.utils.toWei(pAmount.toString(), 'ether');
+	pAmount = web3.utils.toWei(pAmount.toString(), 'wei');
 	var proContract = new web3.eth.Contract(abi,cAddress);
 	var status;
 	await proContract.methods.status().call({
@@ -177,11 +175,8 @@ async function approval(cAddress,pAmount){
 				return 0;
 			}
 			if(res < pAmount){
-				//add one more check if you approved yesterday and today askingAMount is
-				//changed with day has passsed
-				//remaining amount of DAI that is (pAmount - res) is the new pAmount for approve
 				return new Promise((resolve,reject) => {
-					daiContract.methods.approve(cAddress, pAmount).send({
+					daiContract.methods.approve(cAddress, pAmount.toString()).send({
 						from: ethereum.selectedAddress
 					},function (err,res) {
 						$('.circle-btn').attr('disabled','true');

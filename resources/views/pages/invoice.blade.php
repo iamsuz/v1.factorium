@@ -149,16 +149,16 @@ Asset Tokenization
 					<div class="panel-body">
 						<div class="">
 							@foreach($projects as $project)
-							<div class="" style="border-top: 1px solid #e3e9eb; width:100%;">
-								<li class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}">
+							<div class=""  style="border-top: 1px solid #e3e9eb; width:100%;">
+								<li class="list-group-item row" style="padding: 1em 0;" data-id="{{$project->id}}" data-asking="{{$project->investment->getCalculatedAskingPriceAttribute()}}" data-address="{{$project->contract_address}}" data-dueD="{{$project->investment->fund_raising_close_date}}" data-amount="{{$project->investment->invoice_amount}}">
 									<div class="col-md-2 col-xs-2">
 										{{$project->title}} <a href="https://kovan.etherscan.io/token/{{$project->contract_address}}" style="color: #424242;" target="_blank"> <i class="fa fa-external-link" aria-hidden="true" style="font-size: 10px;"></i></a>
 									</div>
 									<div class="col-md-2 col-xs-2">
-										{{$project->investment->invoice_amount/10**18}}
+										{{$project->investment->invoice_amount}}
 									</div>
 									<div class="col-md-2 col-xs-2">
-										{{number_format($project->investment->getCalculatedAskingPriceAttribute()/10**18,3)}}
+										{{number_format($project->investment->getCalculatedAskingPriceAttribute(),3)}}
 									</div>
 									<div class="col-md-2 col-xs-2">
 										{{date('d-m-Y', strtotime($project->investment->fund_raising_close_date))}}
@@ -216,25 +216,36 @@ Asset Tokenization
 					var balance = web3.utils.fromWei(balance.toString(), 'ether');
 					var b = Number(balance).toFixed(3);
 					$('#balanceBtn').text(b);
-					var askAmount;
-					var pid;
-					var cAddress;
+					var askAmount, pid, cAddress, dueD, amount,df,tAmount;
+					@if(request('filter') && (request('filter') == 'sold'))
+					$('li.list-group-item').each(function () {
+						var ca = $(this).data('address');
+						getInvTokenBalance(ca).then(async (res) => {
+							if(res === 0){
+								$('li.list-group-item').addClass('hide');
+							}
+						});
+					});
+					@endif
 					$('li.list-group-item').on('click',function (e) {
 						$('li.list-group-item').each(function () {
 							$(this).removeClass('list-group-item-info');
 						});
 						$(this).addClass('list-group-item-info');
+						tAmount = $(this).data('amount');
+						console.log(tAmount);
 						askAmount = Number($(this).data('asking'));
+						dueD = new Date($(this).data('dued'));
+						cAddress = $(this).data('address');
 						pid = $(this).data('id');
 						$('.project-name').text('Invoice '+pid);
-						$('.askingAmt').text('$'+(askAmount/10**18).toFixed(3));
-						cAddress = $(this).data('address');
-						approvalStatus(cAddress,askAmount);
+						$('.askingAmt').text('$'+(askAmount).toFixed(3));
+						approvalStatus(cAddress,tAmount,askAmount);
 					});
 					$('.circle-btn').on('click',function (e) {
 						e.preventDefault();
-						if($(this).hasClass('approval-btn') && cAddress && askAmount){
-							approval(cAddress,askAmount);
+						if($(this).hasClass('approval-btn') && cAddress && tAmount){
+							approval(cAddress,tAmount);
 							// $('.loader-overlay').show();
 						}else if($(this).hasClass('buy-now') && cAddress && askAmount){
 							var hPid = btoa(pid);
