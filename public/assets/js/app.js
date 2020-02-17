@@ -127,9 +127,9 @@ async function approvalStatus(cAddress,pAmount,aAmount) {
 	}else if(status == 2){
 		$('#apprAlertModal').removeClass('hide');
 		$('#apprAlertModal').text('Invoice is bought by someone please dont approve the DAI tokens');
-		$('.circle-btn').html('Bought<br><span class="askingAmt">'+(oAmount/10**18).toFixed(3)+'</span>');
+		$('.circle-btn').html('Bought<br><span class="askingAmt">'+(aAmount).toFixed(3)+'</span>');
 		$('.circle-btn').attr('disabled','true');
-		$('.investedAmount').html((oAmount/10**18).toFixed(3)+' Dai');
+		$('.investedAmount').html((aAmount).toFixed(3)+' Dai');
 		$('.circle-btn').addClass('sold-btn')
 		$('.circle-btn').removeClass('redeem-btn');
 		$('.circle-btn').removeClass('buy-now');
@@ -144,7 +144,7 @@ async function approvalStatus(cAddress,pAmount,aAmount) {
 		$('.circle-btn').removeClass('buy-now');
 		$('.circle-btn').removeClass('approval-btn');
 		$('.circle-btn').addClass('redeem-btn');
-		$('.investedAmount').html((oAmount/10**18).toFixed(3)+' Dai');
+		$('.investedAmount').html((aAmount).toFixed(3)+' Dai');
 		$('#apprDai').attr('disabled','true');
 	}
 	return true;
