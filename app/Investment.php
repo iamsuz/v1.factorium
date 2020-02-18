@@ -62,6 +62,12 @@ class Investment extends Model
         return $dateDiff;
     }
 
+    function round_out ($value, $places=0) {
+        if ($places < 0) { $places = 0; }
+        $mult = pow(10, $places);
+        return ($value >= 0 ? ceil($value * $mult):floor($value * $mult)) / $mult;
+    }
+
     public function getCalculatedAskingPriceAttribute()
     {
         // Get remaining days for invoice due date
@@ -74,7 +80,7 @@ class Investment extends Model
         $dateDiff = $currentDate->diffInDays($dueDate);
         // Get asking price
         $discountFactor = ( 5 / 100 ) * ( $dateDiff / 60 );
-        $askingAmount = $this->invoice_amount * ( 1 - ( $discountFactor ));
+        $askingAmount = $this->round_out($this->invoice_amount * ( 1 - ( $discountFactor )),12);
         return $askingAmount;
     }
 

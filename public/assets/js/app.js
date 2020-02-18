@@ -180,9 +180,13 @@ async function approval(cAddress,pAmount){
 					daiContract.methods.approve(cAddress, pAmount.toString()).send({
 						from: ethereum.selectedAddress
 					},function (err,res) {
-						$('.circle-btn').attr('disabled','true');
-						$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
+						if(res){
+							$('#confirmationMessage').removeClass('hide');
+							$('.circle-btn').attr('disabled','true');
+							$('.circle-btn').html('<i class="fa fa-spinner fa-pulse fa-5x" aria-hidden="true"></i>');
+						}
 					}).on('confirmation', (confirmationNumber) => {
+						$('#confirmationMessage').html(confirmationNumber+' of 5 Blocks confirmed');
 						if(confirmationNumber === 5){
 							$('#apprAlertModal').removeClass('hide');
 							$('#apprAlertModal').text('Thank you for approval, Now you can buy invoice');
@@ -240,7 +244,6 @@ async function byInvoice(pAddress,pAmount,hPid,pid){
 	var financiersAddress = ethereum.selectedAddress;
 	var res;
 	return new Promise((resolve,reject)=>{
-		console.log(pEAmount);
 		projectContract.methods.buyInvoice(pEAmount).send({
 			from:ethereum.selectedAddress
 		},function (err,result) {
@@ -302,30 +305,36 @@ async function approvalSettle(cAddress,pAmount){
 	// check the balance of the msg.sender as even if the msg.sender has less balance he can
 	// approve more tokens than he holds and then why buying invoice it will throw error in
 	// transaction and user wont be able to figure out easily
-	console.log(daiContract.methods);
 	if(status == 2){
 		await daiContract.methods.allowance(ethereum.selectedAddress,cAddress).call({
 			from: ethereum.selectedAddress
 		},async (err,res) => {
 			if(res < pAmount){
-				//add one more check if you approved yesterday and today askingAMount is
-				//changed with day has passsed
-				//remaining amount of DAI that is (pAmount - res) is the new pAmount for approve
-				await daiContract.methods.approve(cAddress, pAmount).send({
-					from: ethereum.selectedAddress
-				},function(err,result){
-					if(err){
-						console.log(err);
-						showAlertMessage('You have rejected the transaction',5000);
-					}
-					if(result){
-						$('#apprAlertModal').removeClass('hide');
-						$('#apprAlertModal').text('Thank you for approval, Now you can settle invoice');
-						$('#lockLogo').removeClass('fa-lock');
-						$('#lockLogo').addClass('fa-unlock');
-						$('#settleApprInvoiceBtn').removeAttr('disabled');
-						$('#apprDai').attr('disabled','true');
-					}
+				return new Promise((resolve,reject) => {
+					daiContract.methods.approve(cAddress, pAmount).send({
+						from: ethereum.selectedAddress
+					},function(err,result){
+						if(err){
+							console.log(err);
+							showAlertMessage('You have rejected the transaction',5000);
+						}
+						if(result){
+							$('#apprAlertModal').removeClass('hide');
+							$('#apprAlertModal').text('Thank you for approval, Now you can settle invoice');
+							$('#lockLogo').removeClass('fa-lock');
+							$('#lockLogo').addClass('fa-unlock');
+							$('#settleApprInvoiceBtn').removeAttr('disabled');
+							$('#apprDai').attr('disabled','true');
+						}
+					}).on('confirmation',(confirmationNumber)=>{
+						$('#confirmationMessage').html(confirmationNumber+' of 5 Blocks confirmed');
+						if(confirmationNumber === 5){
+							resolve();
+						}
+					}).on('error',(error)=>{
+						alert(error);
+						reject(error);
+					});
 				});
 			}else{
 				$('#apprAlertModal').removeClass('hide');

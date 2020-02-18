@@ -235,7 +235,7 @@ Asset Tokenization
 						$(this).addClass('list-group-item-info');
 						tAmount = $(this).data('amount');
 						console.log(tAmount);
-						askAmount = Number($(this).data('asking'));
+						askAmount = Math.round(($(this).data('asking'))*10**18)/10**18;
 						dueD = new Date($(this).data('dued'));
 						cAddress = $(this).data('address');
 						pid = $(this).data('id');
