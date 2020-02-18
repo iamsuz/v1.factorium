@@ -146,7 +146,7 @@
                 </div>
             </div>
             <br>
-            <div class="row @if(!$siteConfiguration->show_social_icons) hide @endif">
+            <div class="row hide @if(!$siteConfiguration->show_social_icons) hide @endif">
                 <div class="col-md-12 text-center " data-wow-duration="1.5s" data-wow-delay="0.3s">
                     <a href="{{ $siteConfiguration->facebook_link }}" target="_blank">
                         <span class="fa-stack fa">
