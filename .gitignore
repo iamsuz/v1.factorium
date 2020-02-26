@@ -6,3 +6,6 @@ storage/
 .env
 .DS_Store
 composer.lock
+database/
+config/
+app/
