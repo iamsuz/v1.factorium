@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.4.24;
 
 /**
  * Open Zeppelin ERC20 implementation. https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/contracts/token/ERC20
@@ -79,7 +79,26 @@ interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-contract SmartInvoice {
+contract SafeMath {
+    function safeAdd(uint a, uint b) internal pure returns (uint c) {
+        c = a + b;
+        require(c >= a);
+    }
+    function safeSub(uint a, uint b) internal pure returns (uint c) {
+        require(b <= a);
+        c = a - b;
+    }
+    function safeMul(uint a, uint b) internal pure returns (uint c) {
+        c = a * b;
+        require(a == 0 || c / a == b);
+    }
+    function safeDiv(uint a, uint b) internal pure returns (uint c) {
+        require(b > 0);
+        c = a / b;
+    }
+}
+
+contract SmartInvoice is SafeMath{
 
     enum Status { UNCOMMITTED, COMMITTED, BOUGHT, SETTLED }
     function getStatusString(Status status)
@@ -88,33 +107,46 @@ contract SmartInvoice {
     returns (string memory)
     {
         if (Status.UNCOMMITTED == status) {
-            return 'UNCOMMITTED';
+            return "UNCOMMITTED";
         }
         if (Status.COMMITTED == status) {
-            return 'COMMITTED';
+            return "COMMITTED";
         }
         if(Status.BOUGHT == status){
-            return 'BOUGHT';
+            return "BOUGHT";
         }
         if (Status.SETTLED == status) {
-            return 'SETTLED';
+            return "SETTLED";
         }
-        return 'ERROR';
+        return "ERROR";
     }
-    uint256 private amount;
-    uint256 private totalSupply;
-    string public symbol = 'INV';
-    uint8 public decimals = 18;
+    uint256 public totalSupply;
+    string public symbol;
+    uint8 public decimals;
     uint256 public dueDate;
     uint256 public askingPrice;
-    IERC20 public assetToken;
+    address public admin;
     address public seller;
     address public payer;
-    string public referenceHash;
+    uint256 private date;
+    IERC20 public daiAddr;
     mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
 
     Status  public status;
-    status = Status.UNCOMMITTED;
+
+    event Transfer(
+        address indexed _from,
+        address indexed _to,
+        uint256 _value
+        );
+    event Approval(
+        address indexed _owner,
+        address indexed _spender,
+        uint256 _value
+        );
+    event Burn(address indexed burner, uint256 value);
+
     /**
      * @dev Constructor that gives msg.sender all of existing tokens.
      * _amount is the paramenter for to keep the track of tokens
@@ -123,85 +155,93 @@ contract SmartInvoice {
      * _seller the one who creates the smart Invoice
      * _payer the wallet for which the smart invoice is created (Buyer)
      */
-    // constructor(uint256 _amount,
-    //             uint256 _askingPrice,
-    //             uint256 _dueDate,
-    //             address _seller,
-    //             address _payer,
-    //             string memory _referenceHash) public {
-    //     require(_seller != address(0), 'seller cannot be 0x0');
-    //     require(_payer != address(0), 'payer cannot be 0x0');
-    //     require(_amount > 0, 'amount cannot be 0');
-    //     require(_askingPrice < _amount, 'asking price cannot be greter than amount');
-    //     require(_seller == msg.sender, 'Only seller can create this invoice');
-    //     totalSupply = _amount;
-    //     amount = _amount;
-    //     askingPrice = _askingPrice;
-    //     dueDate = _dueDate;
-    //     seller = _seller;
-    //     payer = _payer;
-    //     referenceHash = _referenceHash;
+    constructor(uint256 _amount,
+                uint256 _askingPrice,
+                uint256 _dueDate,
+                address _payer,
+                IERC20 _daiAddr,
+                string _symbol) public {
+        require(_payer != address(0), "payer cannot be 0x0");
+        require(_amount > 0, "amount cannot be 0");
+        require(_askingPrice < _amount, "asking price cannot be greter than amount");
+        totalSupply = _amount;
+        decimals = 18;
+        askingPrice = _askingPrice;
+        dueDate = _dueDate;
+        seller = msg.sender;
+        payer = _payer;
+        require(seller != _payer,"seller cannot be payer");
+        daiAddr = _daiAddr;
+        symbol = _symbol;
+        status = Status.UNCOMMITTED;
+    }
 
-    //     status = Status.UNCOMMITTED;
-    // }
+    modifier getAskingPrice() {
+        updateAskingPrice();
+        _;
+    }
 
-    //changeSeller function change sthe seller address
-    //_newSeller is the new seller wallet address
+    function updateAskingPrice() public returns(uint256){
+        /** Due date must be in seconds **/
+        require(dueDate >= now,"Due date has been passed");
+        uint256 dateDiff = (dueDate - now) / 86400;
+        askingPrice = safeDiv(safeMul(totalSupply, safeSub(6000, safeMul(5,dateDiff))),6000);
+        return askingPrice;
+    }
+
 
     function changeSeller(address _newSeller) public returns (bool) {
-        require(msg.sender == seller, 'caller not current seller');
-        require(_newSeller != address(0), 'new seller cannot be 0x0');
-        require(status != Status.SETTLED, 'can not change seller after settlement');
+        require(msg.sender == seller, "caller not current seller");
+        require(_newSeller != address(0), "new seller cannot be 0x0");
+        require(status != Status.SETTLED, "can not change seller after settlement");
+        require(status != Status.COMMITTED, "Can not change seller after committed from buyer");
+        require(status != Status.BOUGHT, "Can not change seller after buying invoice");
         seller = _newSeller;
         return true;
     }
 
-    //commit is the function where payer will accept the smart invoice
 
     function commit() public returns (bool) {
-        require(msg.sender == payer, 'only payer can commit');
-        require(status == Status.UNCOMMITTED, 'can only commit while status in UNCOMMITTED');
+        require(msg.sender == payer, "only payer can commit");
+        require(status == Status.UNCOMMITTED, "can only commit while status in UNCOMMITTED");
         status = Status.COMMITTED;
+        balanceOf[seller] = safeAdd(balanceOf[seller],totalSupply);
         return true;
     }
 
-    //buyInvoice is a function where any wallet address (financier) will buy the invoice with the total amount
-    // you cannot by partial invoice the wallet has to buy the full invoice
-
-    function buyInvoice() external payable returns (bool) {
-        require(totalSupply > 0);
-        require(status != Status.BOUGHT, 'already bought');
-        require(msg.value >= askingPrice,'asking price needs to be available as ether and it should be equal or greated than asking amount');
-        balanceOf[msg.sender] += totalSupply;
-        totalSupply = 0;
-        seller.call.value(msg.value)('Transferred ether to seller');
+    function buyInvoice(uint256 _dai) public getAskingPrice returns (bool) {
+        require(status != Status.BOUGHT, "already bought");
+        require(_dai >= askingPrice,"DAI should be equal or greated than asking price");
+        require(balanceOf[seller] == totalSupply);
         status = Status.BOUGHT;
+        balanceOf[seller] = safeSub(balanceOf[seller],totalSupply);
+        balanceOf[msg.sender] = safeAdd(balanceOf[msg.sender],totalSupply);
+        emit Transfer(seller, msg.sender, totalSupply);
+        require(daiAddr.transferFrom(msg.sender, seller, _dai));
         return true;
     }
 
-    //settle is a function where the payer (Buyer) will pay the money to the invoice
-    //only payer wallet address can be invoke this function
-    //use https://www.epochconverter.com/ for the now time
-
-    function settle() public payable returns (bool) {
-        require(msg.sender == payer, 'only payer can settle');
-        //we have to add a functionality where if user is past the due date then payer should get penalised
-        require(status == Status.BOUGHT, 'Not bought by anyone, cannot settle');
-        require(status != Status.SETTLED, 'already settled');
-        require(msg.value >= amount);
-        balanceOf[address(this)] += msg.value;
+    function settle() public returns (bool) {
+        require(msg.sender == payer, "only payer can settle");
+        require(status != Status.SETTLED, "already settled");
         status = Status.SETTLED;
+        emit Transfer(msg.sender, address(this), totalSupply);
+        require(daiAddr.transferFrom(msg.sender, address(this), totalSupply));
         return true;
     }
-
-    //reddemInvTokens is a functionality where financier will return the INV tokens to smart contract and he will get the payment back
 
     function redeemInvTokens(uint256 _amount) public returns(bool){
-        //This has not figured out how to ask for INV tokens or how to check the tokens are created from the same smart contract address;
-        require(balanceOf[msg.sender] <= amount);
-        require(status == Status.SETTLED, 'Not settled buy payer');
-        balanceOf[msg.sender] -= _amount;
-        msg.sender.call.value(address(this).balance - (address(this).balance - _amount))('Transferred ether to financier');
+        require(balanceOf[msg.sender] <= totalSupply);
+        require(status == Status.SETTLED, "Not settled by payer");
+        _burn(msg.sender,_amount);
+        require(daiAddr.transferFrom(address(this),msg.sender,_amount));
         return true;
     }
+
+    function _burn(address _who, uint256 _value) internal {
+        require(_value <= balanceOf[_who]);
+        balanceOf[_who] = safeSub(balanceOf[_who],_value);
+        emit Burn(_who, _value);
+        emit Transfer(_who, address(0), _value);
+  }
 }
